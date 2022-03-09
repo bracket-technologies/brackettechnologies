@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "bracketjs"
+  },
+  "targets": {
+    "bracketjs": {
+      "hosting": {
+        "app": [
+          "bracketjs"
+        ]
+      }
+    }
+  }
+}

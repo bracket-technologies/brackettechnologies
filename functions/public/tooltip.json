@@ -1,0 +1,6 @@
+{
+    "type": "View?id=tooltip;class=flex-start;style.zIndex=999;style.width=fit-content;style.alignItems=center;style.position=absolute;style.transition=opacity .1s;style.top=-1000px;style.left=-1000px;style.opacity=0;style.pointerEvents=none;style.padding=.5rem 1rem;style.backgroundColor=#444444dd;style.borderRadius=.5rem",
+    "children": [{
+        "type": "Text?id=tooltip-text;style.width=fit-content;style.fontSize=1.1rem;style.color=#fff"
+    }]
+}

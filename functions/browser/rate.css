@@ -1,0 +1,61 @@
+.half-stars {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.half-stars .rating-group {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.half-stars .rating__icon {
+  pointer-events: none;
+}
+.half-stars .rating__input {
+  opacity: 0;
+  height: 0;
+  width: 0;
+  pointer-events: none;
+}
+.half-stars .rating__label {
+  cursor: pointer;
+  /* if you change the left/right padding, update the margin-right property of .rating__label-half as well. */
+  padding: 0 0.1em;
+  font-size: 2rem;
+}
+.half-stars .rating__label-half {
+  padding-right: 0;
+  margin-right: -0.6em;
+  z-index: 2;
+}
+.half-stars .rating__icon-star {
+  color: orange;
+}
+.half-stars .rating__icon-none {
+  color: #eee;
+}
+.half-stars .rating__input-none:checked + .rating__label .rating__icon-none {
+  color: red;
+}
+.half-stars .rating__input:checked ~ .rating__label .rating__icon-star {
+  color: #ddd;
+}
+.half-stars .rating-group:hover .rating__label .rating__icon-star,
+.half-stars .rating-group:hover .rating__label-half .rating__icon-star {
+  color: orange;
+}
+.half-stars .rating__input:hover ~ .rating__label .rating__icon-star,
+.half-stars .rating__input:hover ~ .rating__label-half .rating__icon-star {
+  color: #ddd;
+}
+.half-stars
+  .rating-group:hover
+  .rating__input-none:not(:hover)
+  + .rating__label
+  .rating__icon-none {
+  color: #eee;
+}
+.half-stars .rating__input-none:hover + .rating__label .rating__icon-none {
+  color: red;
+}

@@ -1,0 +1,12 @@
+I- change a remote: 
+    1. git remote remove origin
+    2. git remote add origin <link>
+    3. git push -u origin main
+
+II- delete functions file in firebase: firebase functions:delete app
+
+III- terminal: firebase login (to login to firebase)/ firebsase logout (to logout from firebase)
+
+IIV- firebase re authentication: firebase login --reauth
+
+// firebase deploy --only "functions:app"

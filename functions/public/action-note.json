@@ -1,0 +1,19 @@
+{
+    "type": "View?id=action-note;class=box-shadow;style.position=fixed;style.zIndex=10;style.maxWidth=40rem;style.minWidth=25rem;style.opacity=.9;style.backgroundColor=#0d6efd;style.padding=1rem 3rem;style.left=center;style.top=0;style.transform=translateY(-200%);style.transition=transform .2s;style.borderRadius=0 0 1.5rem 1.5rem",
+    "children": [{
+        "type": "View?class=flex-box;style.width=100%",
+        "children": [{
+            "type": "Text?id=action-note-text;text=Action Note;style.color=#fff;style.fontSize=1.4rem"
+        }, {
+            "type": "Icon?icon.name=bi-x;style.color=#fff;style.position=absolute;style.fontSize=1.8rem;style.right=.4rem;style.cursor=pointer",
+            "controls": {
+                "event": "click?():action-note.style().transform.equal():translateY(-200%)"
+            }
+        }]
+    }],
+    "controls" : [{
+        "event": "mouseenter?().note-timer.clearTimeout()"
+    }, {
+        "event": "mouseleave?().note-timer=().setTimeout():[().style().transform.equal():translateY(-200%)]:5000"
+    }]
+}
