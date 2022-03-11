@@ -25,9 +25,8 @@ const watch = ({ controls, id }) => {
             if (!window.value[id]) return clearInterval(local[`${name}-timer`])
             
             var value = toValue({ id, value: name })
-            
-            if ((value === undefined && local[`${name}-watch`] === undefined) 
-            || isEqual(value, local[`${name}-watch`])) return
+
+            if ((value === undefined && local[`${name}-watch`] === undefined) || isEqual(value, local[`${name}-watch`])) return
 
             local[`${name}-watch`] = clone(value)
             

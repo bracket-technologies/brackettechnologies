@@ -342,7 +342,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         if (k0 === "log()") {
 
             var args = k.split(":")
-            var _log = toValue({ req, res, _window, id, e, _, value: args[1] || "here", params })
+            var _log = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            if (_log === undefined) _log = o !== undefined ? o : "here"
             console.log(_log)
             return o
         }
@@ -385,7 +386,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
             
         } else if (k0 === "data()") {
-            console.log(path);
+            
             breakRequest = true
             answer = reducer({ req, res, _window, id, e, value, key, path: [...o.derivations, ...path.slice(i + 1)], object: global[o.Data], params, _ })
  
@@ -1195,13 +1196,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
  
         } else if (k0 === "field()") {
             
-            var lastValue = path.lastIndexOf("()") + 1
-            breakRequest = lastValue
-            var fields = path.slice(0, lastValue + 1)
-            fields = fields.slice(i).join(".").split("field():").slice(1)
-            fields.map(field => {
-                var f = toValue({ req, res, _window, id, value: field.split(".")[0], params, _, e })
-                var v = toValue({ req, res, _window, id, value: field.split(".")[1].split("value():")[1], params, _, e })
+            var fields = k.split(":").slice(1)
+            fields.map((field, i) => {
+                if (i % 2) return
+                var f = toValue({ req, res, _window, id, value: field, params, _, e })
+                var v = toValue({ req, res, _window, id, value: fields[i + 1], params, _, e })
                 o[f] = v
             })
             answer = o
@@ -1614,12 +1613,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (k[0] === "_") {
 
                     var _path = global.codes[arg] ? global.codes[arg].split(".") : [arg]
-                    answer = o.map((o, index) => reducer({ req, res, _window, id, path: _path, value, key, params, index, _: o, e }) )
+                    answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: _path, value, key, object: o, params, index, _: o, e }) )
             
                 } else {
 
                     var _path = global.codes[arg] ? global.codes[arg].split(".") : [arg]
-                    answer = o.map((o, index) => reducer({ req, res, _window, id, path: _path, object: o, value, key, params, index, _, e }) )
+                    answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: _path, object: o, value, key, params, index, _, e }) )
                 }
             })
 

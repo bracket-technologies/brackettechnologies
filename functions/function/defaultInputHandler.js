@@ -95,7 +95,7 @@ const defaultInputHandler = ({ id }) => {
     // rating input
     // if (local.class.includes("rating__input")) value = local.element.getAttribute("defaultValue")
     
-    if (local.Data && (local.input ? !local.input.preventDefault : true)) setData({ id, data: { value } })
+      if (local.Data && (local.input ? !local.input.preventDefault : true)) setData({ id, data: { value } })
     }
 
     // resize

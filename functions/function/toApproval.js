@@ -33,90 +33,6 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
 
     if (key && key.includes('coded()') && key.length === 12) key = global.codes[key]
 
-    // ex: key1=string1=string2=string3
-    if (condition[2]) {
-
-      condition[1] = condition[1].split("||")
-
-      // ex: key1=value1||key2=value2||key3=value3
-      if (condition[1].length > 1) {
-
-        condition[2] = condition.slice(2, condition.length).join("=")
-        approval = toApproval({ _window, e, string: `${condition[0]}=${condition[1][0]}`, id, _, req, res })
-        if (approval) return
-
-        // approval isn't true yet => keep trying
-        key = condition[1][1]
-        value = condition.slice(2).join("=")
-        string = `${key}=${value}`
-        return approval = toApproval({ _window, e, string, id, _, req, res })
-      }
-
-      // ex: key=value1=value2=value3
-      else {
-        condition[2] = condition.slice(2, condition.length).join("=")
-
-        // key!=value1!=value2!=value3
-        if (key.slice(-1) === "!") {
-          if (condition[2].slice(-1) === "!") {
-            condition[2] = condition[2].slice(0, -1)
-          }
-        }
-
-        approval = toApproval({ _window, e, string: `${key}=${condition[2]}`, id, _, req, res })
-        if (!approval) return
-
-        // approval is true till now => keep going
-        if (key.slice(-1) === "!" && value.slice(-1) === "!") value = value.slice(0, -1)
-      }
-
-    } else if (value) {
-
-      value = value.split("||")
-
-      if (value.length === 1) value = value[0]
-      else if (value[1]) {
-
-        // ex: key1=value1||key2=value2...
-        if (value[1].includes("=")) {
-
-          var string = `${key}=${value[0]}`
-          approval = toApproval({ _window, e, string, id, _, req, res })
-          if (approval) return
-
-          string = value.slice(1).join("||")
-          return (approval = toApproval({ _window, e, string, id, _, req, res }))
-        }
-
-        // ex: key=value1||value2||value3
-        value[1] = value.slice(1, value.length).join("||")
-        var string = `${key}=${value[1]}`
-        approval = toApproval({ _window, e, string, id, _, req, res })
-        if (approval) return
-
-        // approval isn't true yet => keep trying
-        value = value[0]
-      }
-    }
-
-    if (key) {
-
-      key = key.split("||")
-
-      if (key.length === 1) key = key[0]
-      // ex. key1||key2||key3=value
-      else if (key[1]) {
-
-        key[1] = key.slice(1, key.length).join("||")
-        var string = `${key[1]}${value ? `=${value}` : ""}`
-        approval = toApproval({ _window, e, string, id, _, req, res })
-        if (approval) return
-
-        // approval isn't true yet => keep trying
-        key = key[0]
-      }
-    }
-
     // operator has !
     if (key.includes("!")) {
       if (key.split("!")[0]) {
@@ -142,15 +58,15 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
     id = mainId
 
     // id
-    if (key.slice(0, 3) === "():") {
+    /*if (key.slice(0, 3) === "():") {
       
-      var newId = key.split(":")[1]
+      var _id = key.split(":")[1]
       key = key.split(":")[0]
 
       // id
-      var _id = toValue({ _window, id, value: newId, e, _, req, res })
+      _id = toValue({ _window, id, value: newId, e, _, req, res })
       if (_id) id = _id
-    }
+    }*/
 
     var keygen = generate()
     var local = _window ? _window.value[id] : window.value[id]

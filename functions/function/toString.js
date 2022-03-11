@@ -11,7 +11,7 @@ const toString = (object, field) => {
     if (Array.isArray(value)) {
 
       if (value.length === 0) string += `${key}=_array`
-      else string += `${key}=_array.push().${value.join(".push().")}`
+      else string += `${key}=_array.push():${value.join(".push():")}`
 
     } else if (typeof value === "object") {
 
