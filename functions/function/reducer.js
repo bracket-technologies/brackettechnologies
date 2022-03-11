@@ -55,8 +55,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     
         if (!approved) {
             
-            if (path[1] && path[1].includes("else()")) 
-                return toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e })
+            if (path[1] && path[1].includes("else()")) {
+                var tst= toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e })
+                console.log(clone(tst));
+                return tst
+            }
 
             if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
 
@@ -232,14 +235,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 object = {}
                 var args = path[0].split(":").slice(1)
-                args.map((el, i) => {
+                args.map((arg, i) => {
 
                     if (i % 2) return
-                    var f = toValue({ req, res, _window, id, _, e, value: el, params })
+                    var f = toValue({ req, res, _window, id, _, e, value: arg, params })
                     var v = toValue({ req, res, _window, id, _, e, value: args[i + 1], params })
                     object[f] = v
-                })
 
+                })
+                
             } else if (path0 === "[{}]") object = [{}]
         }
 
@@ -256,8 +260,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
     
     var lastIndex = path.length - 1, k0
-
-    var answer = path.reduce((o, k, i) => {
+    
+    var answer = path.length === 0 ? object : path.reduce((o, k, i) => {
 
         if ((!isNaN(k) && !Array.isArray(o) && k !== "") || k === 0) k = k + ""
         
