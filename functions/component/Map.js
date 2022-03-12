@@ -27,7 +27,7 @@ module.exports = (component) => {
             }, {
                 type: "View?class=flex-box;style.gap=.5rem;style.opacity=0;style.flex=1;style.marginRight=.5rem;style.transition=.1s;style.justifyContent=flex-end",
                 children: [{
-                    type: "Icon?name=bi-three-dots-vertical;actionlist.undeletable;actionlist.placement=left;mode.dark.style.color=#888;class=flex-box pointer;style.color=#888;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
+                    type: "Icon?mainMap;name=bi-three-dots-vertical;actionlist.undeletable;actionlist.placement=left;mode.dark.style.color=#888;class=flex-box pointer;style.color=#888;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
                 }]
             }]
         }, {
@@ -46,7 +46,7 @@ module.exports = (component) => {
                 }, {
                     type: "View?style.minWidth=2rem;text=?().data().type().not():map.and():[().data().type().not():array]"
                 }, {
-                    type: "Input?preventDefault();mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=().derivations.lastIndex();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?().derivations.lastIndex().num().type().not():number",
+                    type: "Input?preventDefault;mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=().derivations.lastIndex();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?().derivations.lastIndex().num().type().not():number",
                     controls: [{
                         event: "input?global().innerdata=().data().clone();().data().delete();global().element-value=().val();global().derivation-index=().derivations.length().subs():1;().Data().path():[().derivations.clone().pull():[().derivations.length().else():1.subs():1].push():[().val()]].equal():[global().innerdata];().parent().parent().deepChildren().map():[derivations.[global().derivation-index].equal():[global().element-value]]"
                     }, {

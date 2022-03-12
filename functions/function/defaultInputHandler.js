@@ -51,50 +51,50 @@ const defaultInputHandler = ({ id }) => {
 
     // VAR[id] doesnot exist
     if (!window.value[id]) return e.target.removeEventListener("input", myFn)
+    
+    if (!local["preventDefault"]) {
+      
+      // for number inputs, strings are rejected
+      if (local.input && local.input.type === "number") {
 
-    if (!local["preventDefault()"]) {
+        value = parseFloat(value)
 
-    // for number inputs, strings are rejected
-    if (local.input && local.input.type === "number") {
+        if (isNaN(value) || local.data === "free") return local.input.value = value.slice(0, -1)
+        if (local.input.min > value) value = local.input.min
+        else if (local.input.max < value) value = local.input.max
 
-      value = parseFloat(value)
-
-      if (isNaN(value) || local.data === "free") return local.input.value = value.slice(0, -1)
-      if (local.input.min > value) value = local.input.min
-      else if (local.input.max < value) value = local.input.max
-
-      local.input.value = value
-    }
-
-    // for uploads
-    if (local.input.type === "file") return global.upload = e.target.files
-    /* if (local.input.type === "file") {
-
-      global.upload = local.upload = {}
-
-      value = e.target.files
-      if (value.length === 0) return
-
-      // add files to global for saving
-      const readFile = (file) => {
-        return new Promise(res => {
-
-          let myReader = new FileReader()
-          myReader.onloadend = () => res(myReader.result)
-          myReader.readAsDataURL(file)
-        })
+        local.input.value = value
       }
 
-      var file = await readFile(value[0])
-      var fileName = `${local.input.title || Date.now()}-${generate()}`
-      var fileType = file.substring(file.indexOf("/") + 1, file.indexOf("base64"))
+      // for uploads
+      if (local.input.type === "file") return global.upload = e.target.files
+      /* if (local.input.type === "file") {
 
-      return global.upload = local.upload = { file, fileName, src: value[0], fileType }
-    } */
+        global.upload = local.upload = {}
 
-    // rating input
-    // if (local.class.includes("rating__input")) value = local.element.getAttribute("defaultValue")
-    
+        value = e.target.files
+        if (value.length === 0) return
+
+        // add files to global for saving
+        const readFile = (file) => {
+          return new Promise(res => {
+
+            let myReader = new FileReader()
+            myReader.onloadend = () => res(myReader.result)
+            myReader.readAsDataURL(file)
+          })
+        }
+
+        var file = await readFile(value[0])
+        var fileName = `${local.input.title || Date.now()}-${generate()}`
+        var fileType = file.substring(file.indexOf("/") + 1, file.indexOf("base64"))
+
+        return global.upload = local.upload = { file, fileName, src: value[0], fileType }
+      } */
+
+      // rating input
+      // if (local.class.includes("rating__input")) value = local.element.getAttribute("defaultValue")
+      
       if (local.Data && (local.input ? !local.input.preventDefault : true)) setData({ id, data: { value } })
     }
 

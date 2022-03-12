@@ -17,7 +17,7 @@ module.exports = {
     
     // get params
     if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits.join(";"), mount: true })
-    if (_params.break) return
+    if (_params && _params.break) return
 
     // override params
     if (_params) params = override(params, _params)

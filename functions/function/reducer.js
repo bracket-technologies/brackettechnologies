@@ -55,11 +55,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     
         if (!approved) {
             
-            if (path[1] && path[1].includes("else()")) {
-                var tst= toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e })
-                console.log(clone(tst));
-                return tst
-            }
+            if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e })
 
             if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
 
@@ -343,10 +339,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         return answer = !o ? true : false
 
         // log
-        if (k0 === "log()") {
+        if (k0.includes("log()")) {
 
-            var args = k.split(":")
-            var _log = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            var args = k.split(":"), __
+            if (k0[0] === "_") __ = o
+            var _log = toValue({ req, res, _window, id, e, _: __ ? __ : _, value: args[1], params })
             if (_log === undefined) _log = o !== undefined ? o : "here"
             console.log(_log)
             return o
@@ -357,9 +354,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         else if (k !== "data()" && k !== "Data()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
             
             var el = k
+            breakRequest = i + 1
             el = toValue({ req, res, _window, id, e, _, value: k, params })
             if (Array.isArray(o)) o.splice(el, 1)
             else delete o[el]
+            return
             
         } else if (k === "while()") {
             
@@ -386,7 +385,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0.includes("coded()")) {
             
             var newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _ })
-            newValue = newValue ? [ newValue.toString(), ...path.slice(i + 1)] : path.slice(i + 1)
+            newValue = newValue !== undefined ? [ newValue.toString(), ...path.slice(i + 1)] : path.slice(i + 1)
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
             
         } else if (k0 === "data()") {
@@ -504,9 +503,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "prev()" || k0 === "prevSibling()") {
 
-            var element = o.element
-            if (o.templated || o.link) element = _window ? _window.value[o.parent].element : window.value[o.parent].element
+            var element, _el = o.element
+            if (o.templated || o.link) _el = _window ? _window.value[o.parent] : window.value[o.parent]
 
+            if (!_el) return
+            if (_el.nodeType === Node.ELEMENT_NODE) element = _el
+            else if (_el) element = _el.element
+            else return
+            
             var previousSibling = element.previousSibling
             if (!previousSibling) return
             var _id = previousSibling.id
