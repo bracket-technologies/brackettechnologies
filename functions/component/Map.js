@@ -6,7 +6,7 @@ module.exports = (component) => {
     
     return {
         ...component,
-        type: "View?global().opened-maps=[]<<!global().opened-maps;class=flex-column;style.marginLeft=2rem<<().isField;style.width=100%;style.width=calc(100% - 2rem)<<().isField;style.borderLeft=1px solid #ddd<<().isField.isdefined();mode.dark.style.borderLeft=1px solid #888",
+        type: "View?global().opened-maps=_array<<!global().opened-maps;class=flex-column;style.marginLeft=2rem<<().isField;style.width=100%;style.width=calc(100% - 2rem)<<().isField;style.borderLeft=1px solid #ddd<<().isField.isdefined();mode.dark.style.borderLeft=1px solid #888",
         children: [{
             type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?!().parent().isField",
             controls: [{
@@ -65,11 +65,11 @@ module.exports = (component) => {
                 }, {
                     type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?().data().type().is():map"
                 }, {
-                    type: "View?style.overflow=auto;style.whiteSpace=nowrap",
+                    type: "View?style.overflow=auto;style.whiteSpace=nowrap?().data().type().is():string",
                     children: [{
                         type: "View?style.display=inline-flex",
                         children: [{
-                            type: "Input?mode.dark.style.color=#c39178;input.readonly<<().derivations.lastElement().is():id;style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#ce743a?().data().type().is():string",
+                            type: "Input?mode.dark.style.color=#c39178;input.readonly<<().derivations.lastElement().is():id;style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#ce743a",
                             controls: [{
                                 event: "keyup?global().insert-index=().parent().parent().parent().parent().parent().children()._findIndex():[_.id.is():[().parent().parent().parent().parent().id]].add():1;().parent().parent().parent().parent().parent().data().field():_string:_string<<().parent().parent().parent().parent().parent().data().type().is():map;().parent().parent().parent().parent().parent().data().splice():_string:[global().insert-index]<<().parent().parent().parent().parent().parent().data().type().is():array;().parent().parent().parent().parent().parent().children().slice():[global().insert-index]._map():[_.1stChild().2ndChild().text().equal():[_.1stChild().2ndChild().text().num().add():1].then():[global().last-index.equal():[_.derivations.length().subs():1]]:[global().el-index.equal():[_.derivations.lastElement().num().add():1]]:[_.deepChildren().map():[derivations.[global().last-index].equal():[global().el-index]]]]<<global().insert-index.less():[().parent().parent().parent().parent().parent().data().length().add():1].and():[().parent().parent().parent().parent().parent().data().type().is():array]?e().key=Enter",
                                 actions: "insert:[().parent().parent().parent().parent().parent().id]?insert.component=().parent().parent().parent().parent().parent().children.1.clone().removeMapping();insert.path=if():[().parent().parent().parent().parent().parent().data().type().is():array]:[().parent().parent().parent().parent().parent().derivations.clone().push():[global().insert-index]].else():[().parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=global().insert-index"

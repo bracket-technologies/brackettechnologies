@@ -61,7 +61,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 var _path = path.slice(2)
                 _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
-                return reducer({ _window, id, path: _path, value, key, params, object, index, _, e, req, res })
+                var _ds = reducer({ _window, id, value, key, index, path: _path, params, object, params, _, e, req, res })
+                return _ds
 
             } else return 
 
@@ -72,6 +73,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
                 path.shift()
             }
+            path0 = path[0] || ""
         }
     }
     
@@ -142,7 +144,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         return object = setInterval(myFn, _timer)
     }
     
-    if (!object) {
+    if (!object && object !== 0 && object !== false) {
 
         object = path0 === "()" ? local
         : path0 === "index()" ? index
@@ -324,6 +326,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 }
             }
         }
+
+        if (k0 === "_quotation" || k0 === "'") {
+            
+            answer = "'"
+
+        } else if (k0 === "_quotations" || k0 === `"`) {
+            
+            answer = `"`
+
+        } else if (k0 === "_string" || k0 === "''") {
+            
+            answer = ""
+
+        } else if (k0 === "_dots" || k0 === "...") {
+            
+            answer = "..."
+
+        }
         
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
         
@@ -390,8 +410,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "data()") {
             
             breakRequest = true
-            answer = reducer({ req, res, _window, id, e, value, key, path: [...o.derivations, ...path.slice(i + 1)], object: global[o.Data], params, _ })
- 
+            answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...path.slice(i + 1)], object: global[o.Data], params, _ })
+
             delete local["data()"]
 
         } else if (k0 === "Data()") {
@@ -807,7 +827,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = index
 
-        } else if (k0 === "_array" || k0 === "[]" || k0 === "_list") {
+        } else if (k0 === "_array" || k0 === "_list") {
             
             answer = []
             var args = k.split(":").slice(1)
@@ -815,22 +835,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 el = toValue({ req, res, _window, id, _, e, value: el, params })
                 answer.push(el)
             })
-
-        } else if (k0 === "_quotation" || k0 === "'") {
-            
-            answer = "'"
-
-        } else if (k0 === "_quotations" || k0 === `"`) {
-            
-            answer = `"`
-
-        } else if (k0 === "_string" || k0 === "''") {
-            
-            answer = ""
-
-        } else if (k0 === "_dots" || k0 === "...") {
-            
-            answer = "..."
 
         } else if (k0 === "_object" || k0 === "_map" || k0 === "{}") {
             
@@ -1236,7 +1240,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = o
             
         } else if (k0 === "push()") {
-
+            
             var args = k.split(":")
             var _push = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
             o.push(_push)

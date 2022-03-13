@@ -187,12 +187,12 @@ const uploadApi = async ({ req, res, db, storage }) => {
   if (string) params = toParam({ _window: { value: {} }, string })
   var upload = params.upload
 
-  // fileType
-  upload.fileType = upload.fileType.split("-").join("/")
+  // file Type
+  upload.type = upload.type.split("-").join("/")
   // convert base64 to buffer
   var buffer = Buffer.from(file, "base64")
   
-  await storage.ref().child(`${collection}/${upload.doc}`).put(buffer, { contentType: upload.fileType })
+  await storage.ref().child(`${collection}/${upload.doc}`).put(buffer, { contentType: upload.type })
   .then(async snapshot => {
 
     success = true
@@ -211,10 +211,11 @@ const uploadApi = async ({ req, res, db, storage }) => {
     id: upload.doc,
     name : upload.name,
     description: upload.description,
+    type: upload.type,
     tags: upload.tags,
     title : upload.title
   }
-
+  
   await db.collection(collection).doc(data.id).set(data).then(() => {
 
     success = true

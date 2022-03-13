@@ -15,11 +15,11 @@ const upload = async ({ id, e, upload = {}, ...params }) => {
   var file = await readFile(upload.file)
   
   // get file type
-  var fileType = file.substring("data:".length, file.indexOf(";base64"))
-  upload.fileType = fileType.split("/").join("-")
+  var type = file.substring("data:".length, file.indexOf(";base64"))
+  upload.type = type.split("/").join("-")
 
   // get regex exp
-  var regex = new RegExp(`^data:${fileType};base64,`, "gi")
+  var regex = new RegExp(`^data:${type};base64,`, "gi")
   file = file.replace(regex, "")
 
   // decrease upload length

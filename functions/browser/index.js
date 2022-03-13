@@ -1460,94 +1460,9 @@ module.exports = (component) => {
   
   borderMarker = borderMarker !== undefined ? borderMarker : true
   readonly = readonly !== undefined ? readonly : false
-
-  var idlist = [id, text.text !== undefined && `${id}-text`, icon.name && `${id}-icon`].filter(id => id)
   var mount = hover.mount ? true : false
 
-  if (model === "featured")
-    return {
-      ...component,
-      class: "flex-box item",
-      component: "Item",
-      type: `View?touchableOpacity`,
-      tooltip,
-      hover: {
-        ...hover,
-        id,
-        style: {
-          border: "1px solid #ee384e",
-          marginRight: "0",
-          marginLeft: "0",
-          marginBottom: "1px",
-          ...style.after, 
-          ...hover.style 
-        }
-      },
-      style: {
-        position: "relative",
-        justifyContent: text.text !== undefined ? "flex-start" : "center",
-        width: "100%",
-        height: "4rem",
-        cursor: "pointer",
-        pointerEvents: "fill",
-        marginRight: "1px",
-        marginLeft: "1px",
-        marginBottom: "1px",
-        borderRadius: "0.45rem",
-        ...style
-      },
-      children: [{
-        type: `Icon?id=${id}-icon?const.${icon.name}`,
-        ...icon,
-        hover: {
-          id,
-          mount,
-          disable: true,
-          ...icon.hover,
-          style: {
-            color: style.after.color || "#ee384e",
-            ...icon.style.after,
-            ...icon.hover.style
-          }
-        },
-        style: {
-          width: "4rem",
-          color: style.color || "#444",
-          fontSize: "1.8rem",
-          ...icon.style
-        }
-      }, {
-        type: `Text?text=${text.text};id=${id}-text?[${text.text}]`,
-        text,
-        hover: {
-          id,
-          mount,
-          disable: true,
-          ...text.hover,
-          style: {
-            color: style.after.color || "#ee384e",
-            ...text.style.after,
-            ...text.hover.style
-          }
-        },
-        style: {
-          fontSize: style.fontSize || "1.4rem",
-          color: style.color || "#444",
-          userSelect: "none",
-          ...text.style
-        }
-      }],
-      controls: [
-      ...controls,
-      {
-        event: `click?():global().${state}.hover.freeze=false?global().${state}.undefined().or():[global().${state}.0.not().${id}]`,
-        actions: [
-          `resetStyles:global().${state}`,
-          `mountAfterStyles?global().${state}=[${id},${id}-icon,${id}-text];():global().${state}.hover.freeze??global().${state}`,
-        ]
-      }]
-    }
-    
+  
   if (model === "classic")
     return {
       ...component,
@@ -1600,7 +1515,7 @@ module.exports = (component) => {
           ...icon.style,
         }
       }, {
-        type: `Text?id=${id}-text?[${text.text}]`,
+        type: `Text?id=${id}-text;text=${text.text}.str()?[${text.text}]`,
         ...text,
         hover: {
           id,
@@ -1624,10 +1539,10 @@ module.exports = (component) => {
       }],
       controls: [...controls,
       {
-        event: `click?():global().${state}.hover.freeze=false?global().${state}.undefined().or():[global().${state}.0.not().${id}]`,
+        event: `click?():[global().${state}].hover.freeze=false?global().${state}.undefined().or():[global().${state}.0.not():${id}]`,
         actions: [
           `resetStyles:global().${state}`,
-          `mountAfterStyles:global().${state}?global().${state}=[${id},${id}-icon,${id}-text];():global().${state}.hover.freeze`,
+          `mountAfterStyles:[global().${state}]?global().${state}=_array:${id}:${id}-icon:${id}-text;():[global().${state}].hover.freeze`,
         ]
       }]
     }
@@ -1642,7 +1557,7 @@ module.exports = (component) => {
     
     return {
         ...component,
-        type: "View?global().opened-maps=[]<<!global().opened-maps;class=flex-column;style.marginLeft=2rem<<().isField;style.width=100%;style.width=calc(100% - 2rem)<<().isField;style.borderLeft=1px solid #ddd<<().isField.isdefined();mode.dark.style.borderLeft=1px solid #888",
+        type: "View?global().opened-maps=_array<<!global().opened-maps;class=flex-column;style.marginLeft=2rem<<().isField;style.width=100%;style.width=calc(100% - 2rem)<<().isField;style.borderLeft=1px solid #ddd<<().isField.isdefined();mode.dark.style.borderLeft=1px solid #888",
         children: [{
             type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?!().parent().isField",
             controls: [{
@@ -1701,11 +1616,11 @@ module.exports = (component) => {
                 }, {
                     type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?().data().type().is():map"
                 }, {
-                    type: "View?style.overflow=auto;style.whiteSpace=nowrap",
+                    type: "View?style.overflow=auto;style.whiteSpace=nowrap?().data().type().is():string",
                     children: [{
                         type: "View?style.display=inline-flex",
                         children: [{
-                            type: "Input?mode.dark.style.color=#c39178;input.readonly<<().derivations.lastElement().is():id;style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#ce743a?().data().type().is():string",
+                            type: "Input?mode.dark.style.color=#c39178;input.readonly<<().derivations.lastElement().is():id;style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#ce743a",
                             controls: [{
                                 event: "keyup?global().insert-index=().parent().parent().parent().parent().parent().children()._findIndex():[_.id.is():[().parent().parent().parent().parent().id]].add():1;().parent().parent().parent().parent().parent().data().field():_string:_string<<().parent().parent().parent().parent().parent().data().type().is():map;().parent().parent().parent().parent().parent().data().splice():_string:[global().insert-index]<<().parent().parent().parent().parent().parent().data().type().is():array;().parent().parent().parent().parent().parent().children().slice():[global().insert-index]._map():[_.1stChild().2ndChild().text().equal():[_.1stChild().2ndChild().text().num().add():1].then():[global().last-index.equal():[_.derivations.length().subs():1]]:[global().el-index.equal():[_.derivations.lastElement().num().add():1]]:[_.deepChildren().map():[derivations.[global().last-index].equal():[global().el-index]]]]<<global().insert-index.less():[().parent().parent().parent().parent().parent().data().length().add():1].and():[().parent().parent().parent().parent().parent().data().type().is():array]?e().key=Enter",
                                 actions: "insert:[().parent().parent().parent().parent().parent().id]?insert.component=().parent().parent().parent().parent().parent().children.1.clone().removeMapping();insert.path=if():[().parent().parent().parent().parent().parent().data().type().is():array]:[().parent().parent().parent().parent().parent().derivations.clone().push():[global().insert-index]].else():[().parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=global().insert-index"
@@ -3580,34 +3495,17 @@ const droplist = ({ id, e }) => {
     
     items = items.filter(item => item !== undefined && item !== '')
     dropList.children = clone(items).map(item => {
-      var readonly = false, input = false, droplist, itemList = []
-
-      if (typeof item === "string" || typeof item === "boolean") {
-
-        item = item.toString()
-        item = item.split(">>")
-        readonly = item[1] === "readonly"
-        input = item[1] === "input"
-        item = item[0]
-
-      } else if (Array.isArray(item)) {
-        
-        itemList = clone(item)
-        item = itemList.find(item => !item.includes("readonly"))
-        input = true
-        droplist = true
-      }
 
       return {
-        type: `Item?${toString(local.droplist.item)};caller=${id};text.text=const.${item};readonly=${readonly}`,
+        type: `Item?${toString(local.droplist.item)};caller=${id};text.text=${item}`,
         controls: [...(local.droplist.controls || []), {
           event: `click?():${isButton ? `${id}-text` : id}.val()=${item}<<!${local.droplist.disabled};action.resize:${id};().data()=${item}<<${isButton}?():${id}.droplist.readonly.not();!readonly;global().droplist-positioner=${id}`,
           actions: [
             `?().data()=${item}?!():${id}.lang;!():${id}.currency;!():${id}.day;!():${id}.duration;${!local.droplist.isMap}`,
             // for lang & currency droplists
             `?().data().${item}=():${input_id}.data();():${input_id}.data().delete();():${input_id}.derivations=():${input_id}.derivations.pull():[().derivations.length().subs():1].push():${item}?const.${input_id};():${id}.lang||():${id}.currency||():${id}.duration||():${id}.day;():${input_id}.derivations.lastIndex()!=${item}`,
-            `focus:${input_id};click:${input_id}??[${input_id}]`,
-            `resetStyles:droplist;update:[():${id}.parent().parent().id]?global().opened-maps.push():[():${id}.derivations.join():-]<<${item}.is():array.or():[${item}.is():map];global().droplist-positioner.delete();():${id}.data().equal():[if():[${item}.is():controls.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:event:_string]].else():[if():[${item}.is():controls]:[_map:event:_string].else():[if():[${item}.is():children.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:type:_string]].else():[if():[${item}.is():children]:[_map:type:_string].else():[if():[${item}.is():string]:_string.else():[if():[${item}.is():timestamp]:[today().getTime().num()].else():[if():[${item}.is():number]:[today().getTime().num()].else():[if():[${item}.is():boolean]:[true.bool()].else():[if():[${item}.is():array]:_array.else():[if():[${item}.is():map]:[_map:_string:_string]]]]]]]]]]]?${item}.isnot():[():${id}.data().type()]`
+            `focus:${input_id};click:${input_id}??${input_id}.isdefined()`,
+            `resetStyles:droplist;update:[():${id}.parent().parent().id]?global().opened-maps.push():[():${id}.derivations.join():-]<<${item}.is():array.or():[${item}.is():map];global().droplist-positioner.delete();():${id}.data()=if():[${item}.is():controls.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:event:_string]].elif():[${item}.is():controls]:[_map:event:_string].elif():[${item}.is():children.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:type:_string]].elif():[${item}.is():children]:[_map:type:_string].elif():[${item}.is():string]:_string.elif():[${item}.is():timestamp]:[today().getTime().num()].elif():[${item}.is():number]:0.elif():[${item}.is():boolean]:[true.bool()].elif():[${item}.is():array]:_array.elif():[${item}.is():map]:[_map:_string:_string];log():[():${id}.data()]?${item}.isnot():[():${id}.data().type()]`
           ]
         }]
       }
@@ -5279,7 +5177,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 var _path = path.slice(2)
                 _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
-                return reducer({ _window, id, path: _path, value, key, params, object, index, _, e, req, res })
+                var _ds = reducer({ _window, id, value, key, index, path: _path, params, object, params, _, e, req, res })
+                return _ds
 
             } else return 
 
@@ -5290,6 +5189,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
                 path.shift()
             }
+            path0 = path[0] || ""
         }
     }
     
@@ -5360,7 +5260,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         return object = setInterval(myFn, _timer)
     }
     
-    if (!object) {
+    if (!object && object !== 0 && object !== false) {
 
         object = path0 === "()" ? local
         : path0 === "index()" ? index
@@ -5542,6 +5442,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 }
             }
         }
+
+        if (k0 === "_quotation" || k0 === "'") {
+            
+            answer = "'"
+
+        } else if (k0 === "_quotations" || k0 === `"`) {
+            
+            answer = `"`
+
+        } else if (k0 === "_string" || k0 === "''") {
+            
+            answer = ""
+
+        } else if (k0 === "_dots" || k0 === "...") {
+            
+            answer = "..."
+
+        }
         
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
         
@@ -5608,8 +5526,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "data()") {
             
             breakRequest = true
-            answer = reducer({ req, res, _window, id, e, value, key, path: [...o.derivations, ...path.slice(i + 1)], object: global[o.Data], params, _ })
- 
+            answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...path.slice(i + 1)], object: global[o.Data], params, _ })
+
             delete local["data()"]
 
         } else if (k0 === "Data()") {
@@ -6025,7 +5943,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = index
 
-        } else if (k0 === "_array" || k0 === "[]" || k0 === "_list") {
+        } else if (k0 === "_array" || k0 === "_list") {
             
             answer = []
             var args = k.split(":").slice(1)
@@ -6033,22 +5951,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 el = toValue({ req, res, _window, id, _, e, value: el, params })
                 answer.push(el)
             })
-
-        } else if (k0 === "_quotation" || k0 === "'") {
-            
-            answer = "'"
-
-        } else if (k0 === "_quotations" || k0 === `"`) {
-            
-            answer = `"`
-
-        } else if (k0 === "_string" || k0 === "''") {
-            
-            answer = ""
-
-        } else if (k0 === "_dots" || k0 === "...") {
-            
-            answer = "..."
 
         } else if (k0 === "_object" || k0 === "_map" || k0 === "{}") {
             
@@ -6454,7 +6356,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = o
             
         } else if (k0 === "push()") {
-
+            
             var args = k.split(":")
             var _push = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
             o.push(_push)
@@ -9466,11 +9368,11 @@ const upload = async ({ id, e, upload = {}, ...params }) => {
   var file = await readFile(upload.file)
   
   // get file type
-  var fileType = file.substring("data:".length, file.indexOf(";base64"))
-  upload.fileType = fileType.split("/").join("-")
+  var type = file.substring("data:".length, file.indexOf(";base64"))
+  upload.type = type.split("/").join("-")
 
   // get regex exp
-  var regex = new RegExp(`^data:${fileType};base64,`, "gi")
+  var regex = new RegExp(`^data:${type};base64,`, "gi")
   file = file.replace(regex, "")
 
   // decrease upload length
