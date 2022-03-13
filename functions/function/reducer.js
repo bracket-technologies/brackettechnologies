@@ -258,9 +258,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     var lastIndex = path.length - 1, k0
     
     var answer = path.length === 0 ? object : path.reduce((o, k, i) => {
-
-        if ((!isNaN(k) && !Array.isArray(o) && k !== "") || k === 0) k = k + ""
         
+        k = k.toString()
         k0 = k.split(":")[0]
         
         // fake lastIndex

@@ -2248,7 +2248,7 @@ module.exports = ({ controls, id }) => {
   var text = controls.text || ""
   
   return [{
-    event: `click?():mininote-text.element.text()=${text};global().mininote-timer.clearTimeout();():mininote.style().opacity=1;():mininote.style().transform=scale(1);global().mininote-timer=timer().[():mininote.style().opacity.equal():[[0].str()].and():[():mininote.style().transform.equal():[scale(0)]]].3000`,
+    event: `click?():mininote-text.text()=${text};global().mininote-timer.clearTimeout();():mininote.style().opacity=1;():mininote.style().transform=scale(1);global().mininote-timer=timer():[():mininote.style().opacity.equal():[0.str()].and():[():mininote.style().transform.equal():scale(0)]]:3000`,
     actions: "setPosition:mininote?position.positioner=mouse;position.placement=right"
   }]
 }
@@ -3607,7 +3607,7 @@ const droplist = ({ id, e }) => {
             // for lang & currency droplists
             `?().data().${item}=():${input_id}.data();():${input_id}.data().delete();():${input_id}.derivations=():${input_id}.derivations.pull():[().derivations.length().subs():1].push():${item}?const.${input_id};():${id}.lang||():${id}.currency||():${id}.duration||():${id}.day;():${input_id}.derivations.lastIndex()!=${item}`,
             `focus:${input_id};click:${input_id}??[${input_id}]`,
-            `resetStyles:droplist;update:[():${id}.parent().parent().id]?global().opened-maps.push():[():${id}.derivations.join():-]<<${item}.is():array.or():[${item}.is():map];global().droplist-positioner.delete();():${id}.data().equal():[if():[${item}.is():controls.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:event:_string]].else():[if():[${item}.is():controls]:[_map:event:_string].else():[if():[${item}.is():children.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:type:_string]].else():[if():[${item}.is():children]:[_map:type:_string].else():[if():[${item}.is():string]:_string.else():[if():[${item}.is():timestamp]:[today().getTime().num()].else():[if():[${item}.is():number]:[today().getTime().num()].else():[if():[${item}.is():boolean]:[true.bool()].else():[if():[${item}.is():array]:[_array:_string].else():[if():[${item}.is():map]:[_map:_string:_string]]]]]]]]]]]?${item}.isnot():[():${id}.data().type()]`
+            `resetStyles:droplist;update:[():${id}.parent().parent().id]?global().opened-maps.push():[():${id}.derivations.join():-]<<${item}.is():array.or():[${item}.is():map];global().droplist-positioner.delete();():${id}.data().equal():[if():[${item}.is():controls.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:event:_string]].else():[if():[${item}.is():controls]:[_map:event:_string].else():[if():[${item}.is():children.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:type:_string]].else():[if():[${item}.is():children]:[_map:type:_string].else():[if():[${item}.is():string]:_string.else():[if():[${item}.is():timestamp]:[today().getTime().num()].else():[if():[${item}.is():number]:[today().getTime().num()].else():[if():[${item}.is():boolean]:[true.bool()].else():[if():[${item}.is():array]:_array.else():[if():[${item}.is():map]:[_map:_string:_string]]]]]]]]]]]?${item}.isnot():[():${id}.data().type()]`
           ]
         }]
       }
@@ -5476,9 +5476,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     var lastIndex = path.length - 1, k0
     
     var answer = path.length === 0 ? object : path.reduce((o, k, i) => {
-
-        if ((!isNaN(k) && !Array.isArray(o) && k !== "") || k === 0) k = k + ""
         
+        k = k.toString()
         k0 = k.split(":")[0]
         
         // fake lastIndex
