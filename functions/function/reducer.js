@@ -343,6 +343,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = "..."
 
+        } else if (k0 === "_dot") {
+            
+            answer = "."
+
         }
         
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined

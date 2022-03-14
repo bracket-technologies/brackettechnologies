@@ -68,7 +68,7 @@ const dimensions = ({ id, text }) => {
   if (pStyle.width === "100%")
   lDiv.style.width = (local.element ? local.element.clientWidth : lDiv.style.width) + "px"
   
-  lDiv.style.width = lDiv.clientWidth + 1 + "px"
+  lDiv.style.width = lDiv.clientWidth + 2 + "px"
 
   var lResult = {
     width: lDiv.clientWidth,
