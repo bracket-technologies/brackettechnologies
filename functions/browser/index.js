@@ -5459,6 +5459,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = "..."
 
+        } else if (k0 === "_dot") {
+            
+            answer = "."
+
         }
         
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
@@ -7222,7 +7226,7 @@ const dimensions = ({ id, text }) => {
   if (pStyle.width === "100%")
   lDiv.style.width = (local.element ? local.element.clientWidth : lDiv.style.width) + "px"
   
-  lDiv.style.width = lDiv.clientWidth + 1 + "px"
+  lDiv.style.width = lDiv.clientWidth + 2 + "px"
 
   var lResult = {
     width: lDiv.clientWidth,
