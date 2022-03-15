@@ -1,6 +1,5 @@
 const axios = require("axios")
 const { clone } = require("./clone")
-const { toString } = require("./toString")
 const { toAwait } = require("./toAwait")
 
 const save = async ({ id, e, save = {}, ...params }) => {
@@ -13,7 +12,7 @@ const save = async ({ id, e, save = {}, ...params }) => {
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
 
-  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${toString({ save })}`, _data)
+  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}`, { data:_data, save })
 
   local.save = data
 

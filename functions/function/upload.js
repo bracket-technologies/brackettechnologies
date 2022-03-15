@@ -1,5 +1,4 @@
 const axios = require("axios")
-const { toString } = require("./toString")
 const { toAwait } = require("./toAwait")
 
 const upload = async ({ id, e, upload = {}, ...params }) => {
@@ -25,7 +24,7 @@ const upload = async ({ id, e, upload = {}, ...params }) => {
   // decrease upload length
   delete upload.file
   
-  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/file/${collection}?${toString({ upload })}`, { file })
+  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/file/${collection}`, { file, upload })
 
   local.upload = data
 

@@ -7274,7 +7274,6 @@ module.exports = {
 },{"./update":126}],94:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
-const { toString } = require("./toString")
 const { toAwait } = require("./toAwait")
 
 const save = async ({ id, e, save = {}, ...params }) => {
@@ -7287,7 +7286,7 @@ const save = async ({ id, e, save = {}, ...params }) => {
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
 
-  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${toString({ save })}`, _data)
+  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}`, { data:_data, save })
 
   local.save = data
 
@@ -7344,7 +7343,7 @@ module.exports = {
   }
 }
 */
-},{"./clone":39,"./toAwait":109,"./toString":122,"axios":130}],95:[function(require,module,exports){
+},{"./clone":39,"./toAwait":109,"axios":130}],95:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { toAwait } = require('./toAwait')
@@ -9356,7 +9355,6 @@ module.exports = {update, removeChildren}
 
 },{"./clone":39,"./controls":43,"./createElement":48,"./generate":67,"./setElement":98,"./starter":101,"./toArray":108}],127:[function(require,module,exports){
 const axios = require("axios")
-const { toString } = require("./toString")
 const { toAwait } = require("./toAwait")
 
 const upload = async ({ id, e, upload = {}, ...params }) => {
@@ -9382,7 +9380,7 @@ const upload = async ({ id, e, upload = {}, ...params }) => {
   // decrease upload length
   delete upload.file
   
-  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/file/${collection}?${toString({ upload })}`, { file })
+  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/file/${collection}`, { file, upload })
 
   local.upload = data
 
@@ -9430,7 +9428,7 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./toAwait":109,"./toString":122,"axios":130}],128:[function(require,module,exports){
+},{"./toAwait":109,"axios":130}],128:[function(require,module,exports){
 module.exports = {
     values: () => {}
 }

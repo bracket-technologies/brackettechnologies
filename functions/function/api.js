@@ -126,13 +126,10 @@ var getApi = async ({ req, res, db }) => {
 var postApi = async ({ req, res, db }) => {
   // api/collection?params?conditions
 
-  var data = req.body
+  var data = req.body.data
   var path = req.url.split("/")[2].split("?")
   var collection = path[0]
-  var string = path[1], params = {}
-  if (string) params = toParam({ _window: { value: {} }, string, id: "" })
-
-  var save = params.save
+  var save = req.body.save
   var ref = db.collection(collection)
   var success, message
 
@@ -183,9 +180,7 @@ const uploadApi = async ({ req, res, db, storage }) => {
   var file = req.body.file, url
   var path = req.url.split("/")[3].split("?")
   var collection = path[0]
-  var string = path[1], params = {}
-  if (string) params = toParam({ _window: { value: {} }, string })
-  var upload = params.upload
+  var upload = req.body.upload
 
   // file Type
   upload.type = upload.type.split("-").join("/")
