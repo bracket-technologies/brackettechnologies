@@ -81,14 +81,12 @@ var createElement = ({ _window, id, req, res }) => {
       id = params.id
     }
 
-    if (local.data && (!local.Data || params.Data)) {
+    if (params.data !== undefined || params.Data) {
 
       local.Data = local.Data || generate()
-      global[local.Data] = clone(local.data || global[local.Data])
-      global[`${local.Data}-options`] = global[`${local.Data}-options`] || {}
+      global[local.Data] = clone(local.data !== undefined ? local.data : (global[local.Data] !== undefined ? global[local.Data] : {}))
+      local.data = global[local.Data]
     }
-
-    if (local.Data) global[`${params.Data}-options`] = global[`${params.Data}-options`] || {}
 
     // view
     if (params.view) {
@@ -123,7 +121,6 @@ var createElement = ({ _window, id, req, res }) => {
 
       local.Data = generate()
       global[local.Data] = local.data || {}
-      global[`${local.Data}-options`] = {}
     }
 
     local.derivations.push(...path)

@@ -1,7 +1,18 @@
+const { addEventListener } = require("./event")
+const { isEqual } = require("./isEqual")
+const { toArray } = require("./toArray")
+
 const setElement = ({ id }) => {
 
     var local = window.value[id]
     if (!local) return delete window.value[id]
+
+    // before loading event
+    var beforeLoadingControls = local.controls && toArray(local.controls).find(control => control.event && control.event.split("?")[0].includes("beforeLoading"))
+    if (beforeLoadingControls) {
+        addEventListener({ controls: beforeLoadingControls, id })
+        local.controls = local.controls.filter(controls => !isEqual(controls, beforeLoadingControls))
+    }
 
     // status
     local.status = "Mounting Element"

@@ -149,7 +149,7 @@ const Input = (component) => {
                     "type": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
                 }, {
                     "type": `Text?text=Input is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
-                }]   
+                }]
             }],
             "controls": [{
                 "event": "click?().lastChild().style().display=if():[().required.mount]:flex.else():none;().2ndChild().style().backgroundColor=if():[().required.mount]:#FFF4F4.else():[().2ndChild().style.backgroundColor.else():[().2ndChild().style.backgroundColor].else():inherit];().2ndChild().style().border=if():[().required.mount]:[1px solid #d72c0d].else():[().2ndChild().clicked.style.border.else():[().2ndChild().style.border].else():1px solid #ccc]"

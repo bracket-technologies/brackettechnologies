@@ -17,7 +17,7 @@ const events = [
 ]
 
 const addEventListener = ({ _window, controls, id, req, res }) => {
-
+  
   const { execute } = require("./execute")
 
   var local = _window ? _window.value[id] : window.value[id]
@@ -70,13 +70,12 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     var eventid = event.split(":")[1]
     if (eventid) idList = toValue({ _window, req, res, id, value: eventid })
     else idList = clone(_idList)
+
+    // timer
+    timer = event.split(":")[2] || 0
     
     // event
     event = event.split(":")[0]
-
-    // action>>timer
-    timer = event.split(">>")[1] || 0
-    event = event.split(">>")[0]
 
     if (!event) return
 
@@ -119,7 +118,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       }
       
       // onload event
-      if (event === "loaded" || event === "loading") return myFn({ target: _local.element })
+      if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _local.element })
 
       var myFn1 = (e) => {
         

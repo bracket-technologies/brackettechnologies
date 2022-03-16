@@ -7,16 +7,11 @@ module.exports = {
     search: async ({ id, e, search, ...params }) => {
         
         var local = window.value[id]
-        var global = window.global
         var collection = search.collection = search.collection || search.path
         
         var { data } = await axios.get(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${toString({ search })}`)
 
         local.search = clone(data)
-        
-        // push options to global
-        global[`${local.Data}-options`] = global[`${local.Data}-options`] || {}
-        global[`${local.Data}-options`].search = search
         
         console.log(data)
         

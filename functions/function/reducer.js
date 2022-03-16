@@ -51,11 +51,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path0 === "if()") {
         
         var args = path[0].split(":")
-        var approved = toValue({ req, res, _window, id, value: args[1], params, index, _, e })
+        var approved = toValue({ req, res, _window, id, value: args[1], params, index, _, e, object })
     
         if (!approved) {
             
-            if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e })
+            if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e, object })
 
             if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
 
@@ -68,7 +68,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else {
 
-            object = toValue({ req, res, _window, id, value: args[2], params, index, _, e })
+            object = toValue({ req, res, _window, id, value: args[2], params, index, _, e, object })
             path.shift()
             while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
                 path.shift()
@@ -88,7 +88,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
         }
 
-        var _id = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+        var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
         if (_id) local = _window ? _window.value[_id] : window.value[_id]
 
         var _once = path[1] === "once()"
@@ -99,9 +99,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         path[0] = "()"
     }
     
-    if (path && (path.includes("equal()") || path.includes("equals()"))) {
+    if (path && (path.includes("equal()") || path.includes("equals()") || path.includes("eq()"))) {
         
-        var _index = path.findIndex(k => k && (k.includes("equal()") || k.includes("equals()")))
+        var _index = path.findIndex(k => k && (k.includes("equal()") || k.includes("equals()") || k.includes("eq()")))
         if (_index !== -1 && _index === path.length - 2) {
             
             key = true
@@ -110,7 +110,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (path[_index][0] === "_")
             _ = reducer({ req, res, _window, id, path: path.slice(0, _index).join("."), params, object, _, e })
 
-            value = toValue({ req, res, _window, id, _, e, value: args[1], params })
+            value = toValue({ req, res, _window, id, _, e, value: args[1], params, object })
             path = path.slice(0, _index)
         }
     }
@@ -118,8 +118,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path0 === "while()") {
             
         var args = path[0].split(":")
-        while (toValue({ req, res, _window, id, value: args[1], params, _, e })) {
-            toValue({ req, res, _window, id, value: args[2], params, _, e })
+        while (toValue({ req, res, _window, id, value: args[1], params, _, e, object })) {
+            toValue({ req, res, _window, id, value: args[2], params, _, e, object })
         }
         path = path.slice(1)
     }
@@ -163,6 +163,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         if (!object && path[0]) {
             
+            if (path0 === "generate()") return generate()
             if (path0 === "desktop()") return global.device.type === "desktop"
             if (path0 === "tablet()") return global.device.type === "tablet"
             if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
@@ -274,7 +275,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         if (breakRequest === true || breakRequest >= i) return o
         
         // equal
-        if ((path[i + 1] + "") && ((path[i + 1] + "").includes("equal()") || (path[i + 1] + "").includes("equals()"))) {
+        if ((path[i + 1] + "") && ((path[i + 1] + "").includes("equal()") || (path[i + 1] + "").includes("equals()") || (path[i + 1] + "").includes("eq()"))) {
             
             key = true
             var args = path[i + 1].split(":")
@@ -1589,14 +1590,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0.includes("filter()")) {
             
-            var args = k.split(":")
-            if (k[0] === "_") {
-                answer = o.filter(o => toValue({ req, res, _window, id, e,  _: o, value: args[1], params }))
-            } else {
-                var cond = toValue({ req, res, _window, id, e, value: path[1], params, _ })
-                if (!cond) answer = o.filter(o => o !== undefined)
-                else answer = o.filter(o => o === cond)
-            }
+            var args = k.split(":").slice(1)
+            args.map(arg => {
+
+                if (k[0] === "_") {
+
+                    var _path = global.codes[arg] ? global.codes[arg].split(".") : [arg]
+                    answer = toArray(o).filter((o, index) => reducer({ req, res, _window, id, path: _path, value, key, object: o, params, index, _: o, e }) )
+            
+                } else {
+
+                    var _path = global.codes[arg] ? global.codes[arg].split(".") : [arg]
+                    answer = toArray(o).filter((o, index) => reducer({ req, res, _window, id, path: _path, object: o, value, key, params, index, _, e }) )
+                }
+            })
             
         } else if (k0.includes("filterById()")) {
 

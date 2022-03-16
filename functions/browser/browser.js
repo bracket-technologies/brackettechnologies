@@ -13,7 +13,6 @@ value.document = document
 value.document.element = document
 value.body.element = document.body
 value.window = { element: window }
-value.root.element = root
 
 // lunch arabic text
 var _ar = document.createElement("P")
@@ -40,10 +39,10 @@ document.addEventListener('click', e => {
 }, false)
 
 // not auth
-if (window.global.currentPage === "developer-editor") {
+/*if (window.global.currentPage === "developer-editor") {
     var await = [`global().project-auth=().search.data.code;document().body.innerHTML=You are not authenticated!<<global().project-auth.isnot().${getCookie({ name: "project-auth" })}`]
     search({ search: { collection: "authentication", doc: global.data.project.id }, await, asyncer: "search", id: "body" })
-}
+}*/
 
 setElement({ id: "public" })
 setElement({ id: "root" })

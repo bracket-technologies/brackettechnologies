@@ -93,7 +93,7 @@ var getApi = async ({ req, res, db }) => {
   if (search.field) Object.entries(search.field).map(([key, value]) => {
 
     var operator = keys(value)[0]
-    ref = ref.where(key, toFirebaseOperator(operator), value[operator])
+    ref = ref.where(decodeURI(key), toFirebaseOperator(operator), decodeURI(value[operator]))
   })
 
   if (search.orderBy) ref = ref.orderBy(search.orderBy)

@@ -3,7 +3,6 @@ const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
 const { isArabic } = require("./isArabic")
 const { resize } = require("./resize")
-const { clone } = require("./clone")
 
 const starter = ({ id }) => {
   
