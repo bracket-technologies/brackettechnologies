@@ -23,7 +23,8 @@ var createElement = ({ _window, id, req, res }) => {
   if (!local.type) return
 
   // destructure type, params, & conditions from type
-  local.type = local.type.split("/?").join("_question")
+  
+  // local.type = local.type.split("/?").join("_question")
   var type = local.type.split("?")[0]
   var params = local.type.split("?")[1]
   var conditions = local.type.split("?")[2]
@@ -77,8 +78,9 @@ var createElement = ({ _window, id, req, res }) => {
     
     if (params.id) {
 
-      delete Object.assign(value, {[params.id]: value[id]})[id]
+      delete Object.assign(value, { [params.id]: value[id] })[id]
       id = params.id
+      value[id].id = id
     }
 
     if (params.data !== undefined || params.Data || (local.data !== undefined && !local.Data)) {
