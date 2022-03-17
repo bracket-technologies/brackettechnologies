@@ -8982,6 +8982,8 @@ module.exports = {
         else if (k === "userSelect") k = "user-select";
         else if (k === "clipPath") k = "clip-path";
         else if (k === "flexWrap") k = "flex-wrap";
+        else if (k === "wordWrap") k = "word-wrap";
+        else if (k === "wordBreak") k = "word-break";
         else if (k === "verticalAlign") k = "vertical-align";
         else if (k === "borderBottom") k = "border-bottom";
         else if (k === "borderLeft") k = "border-left";
