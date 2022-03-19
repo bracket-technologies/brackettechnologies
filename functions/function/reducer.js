@@ -14,7 +14,7 @@ const { decode } = require("./decode")
 const { exportJson } = require("./exportJson")
 const { importJson } = require("./importJson")
 const { toId } = require("./toId")
-const { setCookie, getCookie } = require("./cookie")
+const { setCookie, getCookie, eraseCookie } = require("./cookie")
 const { override } = require("./merge")
 const { focus } = require("./focus")
 const { toSimplifiedDate } = require("./toSimplifiedDate")
@@ -192,6 +192,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 object = getCookie({ name: _name, req, res })
                 if (!object) return 
+                
+            } else if (path0 === "eraseCookie()") {
+
+                // eraseCookie():name
+                var _name, args = path[0].split(":")
+                if (args[1]) _name = toValue({ req, res, _window, id, e, _, params, value: args[1] })
+
+                return eraseCookie({ name: _name })
                 
             } else if (path0 === "setCookie()") {
     
@@ -1731,6 +1739,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var cname = toValue({ req, res, _window, id, e, _, params, value: args[1] })
             answer = getCookie({ name: cname, req, res })
         
+        } else if (k0 === "eraseCookie()") {
+
+            // eraseCookie():name
+            var _name, args = k.split(":")
+            if (args[1]) _name = toValue({ req, res, _window, id, e, _, params, value: args[1] })
+
+            eraseCookie({ name: _name })
+            return o
+            
         } else if (k0 === "setCookie()") {
 
             // setCookie:name:expdays

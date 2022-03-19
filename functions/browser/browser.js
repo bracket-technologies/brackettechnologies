@@ -1,7 +1,5 @@
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
-const { getCookie } = require("../function/cookie")
-const { search } = require("../function/search")
 
 window.value = JSON.parse(document.getElementById("value").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -22,12 +20,6 @@ _ar.style.position = "absolute"
 _ar.style.top = "-1000px"
 value.body.element.appendChild(_ar)
 
-/*
-var _firebase = firebase.initializeApp(global.config)
-global.db = _firebase.firestore()
-global.storage = _firebase.storage().ref()
-*/
-
 history.pushState(null, global.data.page[global.currentPage].title, global.path)
 
 // clicked element
@@ -45,11 +37,11 @@ document.addEventListener('click', e => {
 }*/
 
 setElement({ id: "public" })
-setElement({ id: "root" })
+setElement({ id: "root", main: true })
 
 setTimeout(() => {
     starter({ id: "public" })
-    starter({ id: "root" })
+    starter({ id: "root", main: true })
 }, 0)
 
 Object.entries(window.value).map(([id, value]) => {

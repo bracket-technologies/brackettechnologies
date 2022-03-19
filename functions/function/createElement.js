@@ -76,11 +76,10 @@ var createElement = ({ _window, id, req, res }) => {
     params = toParam({ _window, string: params, id, req, res, mount: true })
     // value[id] = local = override(local, params)
     
-    if (params.id) {
+    if (params.id && params.id !== id) {
 
       delete Object.assign(value, { [params.id]: value[id] })[id]
       id = params.id
-      value[id].id = id
     }
 
     if (params.data !== undefined || params.Data || (local.data !== undefined && !local.Data)) {

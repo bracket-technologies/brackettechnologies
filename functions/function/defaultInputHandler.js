@@ -1,7 +1,7 @@
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
-const { generate } = require("./generate")
+// const { generate } = require("./generate")
 
 const defaultInputHandler = ({ id }) => {
 
@@ -43,7 +43,7 @@ const defaultInputHandler = ({ id }) => {
   local.element.addEventListener("keydown", (e) => {
     if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
   })
-
+  
   var myFn = async (e) => {
     
     e.preventDefault()

@@ -26,8 +26,8 @@ const update = ({ id }) => {
   // onloading
   if (id === "root" && global.data.page[global.currentPage].controls) {
 
-    global.data.page[global.currentPage].controls = toArray(global.data.page[global.currentPage].controls)
-    var loadingEventControls = global.data.page[global.currentPage].controls.find(controls => controls.event.split("?")[0].includes("loading"))
+    var loadingEventControls = toArray(global.data.page[global.currentPage].controls)
+      .find(controls => controls.event.split("?")[0].includes("loading"))
     if (loadingEventControls) controls({ id: "root", controls: loadingEventControls })
   }
   
@@ -47,13 +47,13 @@ const update = ({ id }) => {
     
   local.element.innerHTML = innerHTML
 
-  // onloading
-  if (id === "root" && global.data.page[global.currentPage].controls) {
+  // onloaded
+  /*if (id === "root" && global.data.page[global.currentPage].controls) {
 
-    global.data.page[global.currentPage].controls = toArray(global.data.page[global.currentPage].controls)
-    var loadedEventControls = global.data.page[global.currentPage].controls.find(controls => controls.event.split("?")[0].includes("loaded"))
+    var loadedEventControls = toArray(global.data.page[global.currentPage].controls)
+      .find(controls => controls.event.split("?")[0].includes("loaded"))
     if (loadedEventControls) controls({ id: "root", controls: loadedEventControls })
-  }
+  }*/
   
   var children = [...local.element.children]
   children.map(child => {
@@ -61,7 +61,6 @@ const update = ({ id }) => {
     var id = child.id
     setElement({ id })
     setTimeout(() => starter({ id }), 0)
-    
   })
 }
 
@@ -70,7 +69,7 @@ const removeChildren = ({ id }) => {
   var value = window.value
   var local = value[id]
 
-  if (!local.element) return delete value[id]
+  if (!local.element && id !== "root") return delete value[id]
   var children = [...local.element.children]
 
   children.map((child) => {

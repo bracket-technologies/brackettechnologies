@@ -25,11 +25,11 @@ module.exports = {
       .map((child, index) => {
 
         var id = child.id || generate()
-        window.value[id] = clone(child)
+        window.value[id] = child
         window.value[id].id = id
         window.value[id].index = index
         window.value[id].parent = local.id
-
+        
         return createElement({ id })
 
       }).join("")

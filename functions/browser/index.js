@@ -1,8 +1,6 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
-const { getCookie } = require("../function/cookie")
-const { search } = require("../function/search")
 
 window.value = JSON.parse(document.getElementById("value").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -23,12 +21,6 @@ _ar.style.position = "absolute"
 _ar.style.top = "-1000px"
 value.body.element.appendChild(_ar)
 
-/*
-var _firebase = firebase.initializeApp(global.config)
-global.db = _firebase.firestore()
-global.storage = _firebase.storage().ref()
-*/
-
 history.pushState(null, global.data.page[global.currentPage].title, global.path)
 
 // clicked element
@@ -46,11 +38,11 @@ document.addEventListener('click', e => {
 }*/
 
 setElement({ id: "public" })
-setElement({ id: "root" })
+setElement({ id: "root", main: true })
 
 setTimeout(() => {
     starter({ id: "public" })
-    starter({ id: "root" })
+    starter({ id: "root", main: true })
 }, 0)
 
 Object.entries(window.value).map(([id, value]) => {
@@ -59,7 +51,7 @@ Object.entries(window.value).map(([id, value]) => {
 
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
-},{"../function/cookie":40,"../function/search":91,"../function/setElement":94,"../function/starter":97}],2:[function(require,module,exports){
+},{"../function/setElement":94,"../function/starter":97}],2:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -1768,7 +1760,11 @@ const getCookie = ({ name, req }) => {
   return cookie
 }
 
-module.exports = {setCookie, getCookie}
+const eraseCookie = ({ name }) => {   
+  document.cookie = name +'=; Max-Age=-99999999;'  
+}
+
+module.exports = {setCookie, getCookie, eraseCookie}
 },{}],41:[function(require,module,exports){
 const control = require("../control/control")
 
@@ -2132,11 +2128,10 @@ var createElement = ({ _window, id, req, res }) => {
     params = toParam({ _window, string: params, id, req, res, mount: true })
     // value[id] = local = override(local, params)
     
-    if (params.id) {
+    if (params.id && params.id !== id) {
 
       delete Object.assign(value, { [params.id]: value[id] })[id]
       id = params.id
-      value[id].id = id
     }
 
     if (params.data !== undefined || params.Data || (local.data !== undefined && !local.Data)) {
@@ -2539,7 +2534,7 @@ module.exports = {decode}
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
-const { generate } = require("./generate")
+// const { generate } = require("./generate")
 
 const defaultInputHandler = ({ id }) => {
 
@@ -2581,7 +2576,7 @@ const defaultInputHandler = ({ id }) => {
   local.element.addEventListener("keydown", (e) => {
     if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
   })
-
+  
   var myFn = async (e) => {
     
     e.preventDefault()
@@ -2649,7 +2644,7 @@ const defaultInputHandler = ({ id }) => {
 }
 
 module.exports = { defaultInputHandler }
-},{"./data":47,"./generate":63,"./isArabic":71,"./resize":88}],50:[function(require,module,exports){
+},{"./data":47,"./isArabic":71,"./resize":88}],50:[function(require,module,exports){
 const derive = (data, keys, defaultData, editable) => {
   if (!Array.isArray(keys)) keys = keys.split(".");
 
@@ -3852,11 +3847,11 @@ module.exports = {
       .map((child, index) => {
 
         var id = child.id || generate()
-        window.value[id] = clone(child)
+        window.value[id] = child
         window.value[id].id = id
         window.value[id].index = index
         window.value[id].parent = local.id
-
+        
         return createElement({ id })
 
       }).join("")
@@ -4355,7 +4350,7 @@ const { decode } = require("./decode")
 const { exportJson } = require("./exportJson")
 const { importJson } = require("./importJson")
 const { toId } = require("./toId")
-const { setCookie, getCookie } = require("./cookie")
+const { setCookie, getCookie, eraseCookie } = require("./cookie")
 const { override } = require("./merge")
 const { focus } = require("./focus")
 const { toSimplifiedDate } = require("./toSimplifiedDate")
@@ -4533,6 +4528,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 object = getCookie({ name: _name, req, res })
                 if (!object) return 
+                
+            } else if (path0 === "eraseCookie()") {
+
+                // eraseCookie():name
+                var _name, args = path[0].split(":")
+                if (args[1]) _name = toValue({ req, res, _window, id, e, _, params, value: args[1] })
+
+                return eraseCookie({ name: _name })
                 
             } else if (path0 === "setCookie()") {
     
@@ -6072,6 +6075,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var cname = toValue({ req, res, _window, id, e, _, params, value: args[1] })
             answer = getCookie({ name: cname, req, res })
         
+        } else if (k0 === "eraseCookie()") {
+
+            // eraseCookie():name
+            var _name, args = k.split(":")
+            if (args[1]) _name = toValue({ req, res, _window, id, e, _, params, value: args[1] })
+
+            eraseCookie({ name: _name })
+            return o
+            
         } else if (k0 === "setCookie()") {
 
             // setCookie:name:expdays
@@ -6498,6 +6510,9 @@ module.exports = {
         
         history.pushState(null, title, global.path)
         document.title = title
+
+        // main view has been routed
+        if (window.value.root) window.value.root.mainViewHasBeenRouted = true
         
         update({ id: "root" })
         document.body.scrollTop = document.documentElement.scrollTop = 0
@@ -6744,20 +6759,21 @@ const setData = ({ id, data }) => {
 module.exports = { setData }
 
 },{"./clone":35,"./reducer":84,"./setContent":92}],94:[function(require,module,exports){
-const { addEventListener } = require("./event")
-const { isEqual } = require("./isEqual")
+const { controls } = require("./controls")
 const { toArray } = require("./toArray")
 
-const setElement = ({ id }) => {
+const setElement = ({ id, main }) => {
 
     var local = window.value[id]
     if (!local) return delete window.value[id]
 
     // before loading event
-    var beforeLoadingControls = local.controls && toArray(local.controls).find(control => control.event && control.event.split("?")[0].includes("beforeLoading"))
+    var beforeLoadingControls = local.controls && toArray(local.controls)
+        .filter(control => control.event && control.event.split("?")[0].includes("beforeLoading"))
     if (beforeLoadingControls) {
-        addEventListener({ controls: beforeLoadingControls, id })
-        local.controls = local.controls.filter(controls => !isEqual(controls, beforeLoadingControls))
+        controls({ controls: beforeLoadingControls, id })
+        local.controls = local.controls.filter(controls => !controls.event.includes("beforeLoading"))
+        if (main && window.value.root.mainViewHasBeenRouted) return
     }
 
     // status
@@ -6781,7 +6797,7 @@ const setElement = ({ id }) => {
 }
     
 module.exports = { setElement }
-},{"./event":54,"./isEqual":72,"./toArray":104}],95:[function(require,module,exports){
+},{"./controls":39,"./toArray":104}],95:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
 
   var value = window.value
@@ -7079,23 +7095,25 @@ const { toParam } = require("./toParam")
 const { isArabic } = require("./isArabic")
 const { resize } = require("./resize")
 
-const starter = ({ id }) => {
+const starter = ({ id, main }) => {
   
   const { defaultEventHandler } = require("./event")
   const { controls } = require("./controls")
   const { defaultInputHandler } = require("./defaultInputHandler")
 
   var local = window.value[id]
-  if (!local || !local.element) return delete window.value[id]
+
+  // main View Has Been Routed
+  if (main && window.value.root.mainViewHasBeenRouted) return
 
   // status
   local.status = "Mounting Functions"
 
   /* Defaults must start before controls */
-
+  
   // arabic text
   isArabic({ id })
-
+  
   // input handlers
   defaultInputHandler({ id })
 
@@ -8417,11 +8435,12 @@ const { focus } = require("./focus")
 const { removeChildren } = require("./update")
 const { toArray } = require("./toArray")
 
-const toggleView = ({ toggle }) => {
+const toggleView = ({ toggle, id }) => {
 
   var value = window.value
   var global = window.global
-  var local = value[value[toggle.id].parent]
+  var toggleId = toggle.id || id
+  var local = value[value[toggleId].parent]
 
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
@@ -8434,16 +8453,17 @@ const toggleView = ({ toggle }) => {
 
   // fadeout
   var timer = toggle.timer || toggle.fadeout.timer || 200
-  value[toggle.id].element.style.transition = toggle.fadeout.transition || `${timer}ms ease-out`
-  value[toggle.id].element.style.transform = toggle.fadeout.transform || "translateX(-10%)"
-  value[toggle.id].element.style.opacity = toggle.fadeout.opacity || "0"
+  value[toggleId].element.style.transition = toggle.fadeout.transition || `${timer}ms ease-out`
+  value[toggleId].element.style.transform = toggle.fadeout.transform || "translateX(-10%)"
+  value[toggleId].element.style.opacity = toggle.fadeout.opacity || "0"
 
   // remove id from VALUE
-  removeChildren({ id: toggle.id })
-  delete value[toggle.id]
+  removeChildren({ id: toggleId })
+  delete value[toggleId]
 
   // reset children for root
-  if (toggle.id === "root") children = global.data.page[global.currentPage]["view-id"].map(view => global.data.view[view])
+  if (toggleId === "root") children = global.data.page[toggle.page || global.currentPage]["view-id"]
+    .map(view => global.data.view[view])
   
   var innerHTML = children
     .map((child, index) => {
@@ -8526,8 +8546,8 @@ const update = ({ id }) => {
   // onloading
   if (id === "root" && global.data.page[global.currentPage].controls) {
 
-    global.data.page[global.currentPage].controls = toArray(global.data.page[global.currentPage].controls)
-    var loadingEventControls = global.data.page[global.currentPage].controls.find(controls => controls.event.split("?")[0].includes("loading"))
+    var loadingEventControls = toArray(global.data.page[global.currentPage].controls)
+      .find(controls => controls.event.split("?")[0].includes("loading"))
     if (loadingEventControls) controls({ id: "root", controls: loadingEventControls })
   }
   
@@ -8547,13 +8567,13 @@ const update = ({ id }) => {
     
   local.element.innerHTML = innerHTML
 
-  // onloading
-  if (id === "root" && global.data.page[global.currentPage].controls) {
+  // onloaded
+  /*if (id === "root" && global.data.page[global.currentPage].controls) {
 
-    global.data.page[global.currentPage].controls = toArray(global.data.page[global.currentPage].controls)
-    var loadedEventControls = global.data.page[global.currentPage].controls.find(controls => controls.event.split("?")[0].includes("loaded"))
+    var loadedEventControls = toArray(global.data.page[global.currentPage].controls)
+      .find(controls => controls.event.split("?")[0].includes("loaded"))
     if (loadedEventControls) controls({ id: "root", controls: loadedEventControls })
-  }
+  }*/
   
   var children = [...local.element.children]
   children.map(child => {
@@ -8561,7 +8581,6 @@ const update = ({ id }) => {
     var id = child.id
     setElement({ id })
     setTimeout(() => starter({ id }), 0)
-    
   })
 }
 
@@ -8570,7 +8589,7 @@ const removeChildren = ({ id }) => {
   var value = window.value
   var local = value[id]
 
-  if (!local.element) return delete value[id]
+  if (!local.element && id !== "root") return delete value[id]
   var children = [...local.element.children]
 
   children.map((child) => {

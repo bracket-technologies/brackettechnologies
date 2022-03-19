@@ -4,23 +4,25 @@ const { toParam } = require("./toParam")
 const { isArabic } = require("./isArabic")
 const { resize } = require("./resize")
 
-const starter = ({ id }) => {
+const starter = ({ id, main }) => {
   
   const { defaultEventHandler } = require("./event")
   const { controls } = require("./controls")
   const { defaultInputHandler } = require("./defaultInputHandler")
 
   var local = window.value[id]
-  if (!local || !local.element) return delete window.value[id]
+
+  // main View Has Been Routed
+  if (main && window.value.root.mainViewHasBeenRouted) return
 
   // status
   local.status = "Mounting Functions"
 
   /* Defaults must start before controls */
-
+  
   // arabic text
   isArabic({ id })
-
+  
   // input handlers
   defaultInputHandler({ id })
 

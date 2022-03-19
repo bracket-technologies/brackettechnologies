@@ -27,4 +27,8 @@ const getCookie = ({ name, req }) => {
   return cookie
 }
 
-module.exports = {setCookie, getCookie}
+const eraseCookie = ({ name }) => {   
+  document.cookie = name +'=; Max-Age=-99999999;'  
+}
+
+module.exports = {setCookie, getCookie, eraseCookie}

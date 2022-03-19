@@ -1,17 +1,18 @@
-const { addEventListener } = require("./event")
-const { isEqual } = require("./isEqual")
+const { controls } = require("./controls")
 const { toArray } = require("./toArray")
 
-const setElement = ({ id }) => {
+const setElement = ({ id, main }) => {
 
     var local = window.value[id]
     if (!local) return delete window.value[id]
 
     // before loading event
-    var beforeLoadingControls = local.controls && toArray(local.controls).find(control => control.event && control.event.split("?")[0].includes("beforeLoading"))
+    var beforeLoadingControls = local.controls && toArray(local.controls)
+        .filter(control => control.event && control.event.split("?")[0].includes("beforeLoading"))
     if (beforeLoadingControls) {
-        addEventListener({ controls: beforeLoadingControls, id })
-        local.controls = local.controls.filter(controls => !isEqual(controls, beforeLoadingControls))
+        controls({ controls: beforeLoadingControls, id })
+        local.controls = local.controls.filter(controls => !controls.event.includes("beforeLoading"))
+        if (main && window.value.root.mainViewHasBeenRouted) return
     }
 
     // status

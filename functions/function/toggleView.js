@@ -7,11 +7,12 @@ const { focus } = require("./focus")
 const { removeChildren } = require("./update")
 const { toArray } = require("./toArray")
 
-const toggleView = ({ toggle }) => {
+const toggleView = ({ toggle, id }) => {
 
   var value = window.value
   var global = window.global
-  var local = value[value[toggle.id].parent]
+  var toggleId = toggle.id || id
+  var local = value[value[toggleId].parent]
 
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
@@ -24,16 +25,17 @@ const toggleView = ({ toggle }) => {
 
   // fadeout
   var timer = toggle.timer || toggle.fadeout.timer || 200
-  value[toggle.id].element.style.transition = toggle.fadeout.transition || `${timer}ms ease-out`
-  value[toggle.id].element.style.transform = toggle.fadeout.transform || "translateX(-10%)"
-  value[toggle.id].element.style.opacity = toggle.fadeout.opacity || "0"
+  value[toggleId].element.style.transition = toggle.fadeout.transition || `${timer}ms ease-out`
+  value[toggleId].element.style.transform = toggle.fadeout.transform || "translateX(-10%)"
+  value[toggleId].element.style.opacity = toggle.fadeout.opacity || "0"
 
   // remove id from VALUE
-  removeChildren({ id: toggle.id })
-  delete value[toggle.id]
+  removeChildren({ id: toggleId })
+  delete value[toggleId]
 
   // reset children for root
-  if (toggle.id === "root") children = global.data.page[global.currentPage]["view-id"].map(view => global.data.view[view])
+  if (toggleId === "root") children = global.data.page[toggle.page || global.currentPage]["view-id"]
+    .map(view => global.data.view[view])
   
   var innerHTML = children
     .map((child, index) => {
