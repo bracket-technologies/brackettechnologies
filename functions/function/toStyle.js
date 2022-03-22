@@ -8,6 +8,7 @@ module.exports = {
       Object.entries(local.style).map(([k, v]) => {
         if (k === "after" || k.includes(">>")) return;
         else if (k === "userSelect") k = "user-select";
+        else if (k === "inlineSize") k = "inline-size";
         else if (k === "clipPath") k = "clip-path";
         else if (k === "flexWrap") k = "flex-wrap";
         else if (k === "wordWrap") k = "word-wrap";
