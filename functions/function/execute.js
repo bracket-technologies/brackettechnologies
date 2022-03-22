@@ -94,7 +94,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
             params.awaiter = awaiter
             params.asyncer = isAsyncer
           }
-
+          
           await _method[name]({ _window, ...params, e, id })
         })
       }

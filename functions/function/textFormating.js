@@ -1,5 +1,4 @@
 const { capitalize } = require("./capitalize")
-const { toCode } = require("./toCode")
 
 const formats = [
     "_quest", "_question", "_semi", "_equal", "_excl", "_comma",
@@ -12,7 +11,7 @@ const textFormating = ({ _window, text, id }) => {
     var local = _window ? _window.value[id] : window.value[id]
     var style = local.style || {}
     var global = _window ? _window.global : window.global
-    var _text = toCode({ _window, string: text }), newText = _text
+    var _text = text, newText = _text
     var color = style.color
     color = color ? `color:${color}` : ""
     

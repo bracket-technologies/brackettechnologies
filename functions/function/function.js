@@ -81,6 +81,7 @@ const {getDaysInMonth} = require("./getDaysInMonth")
 const {reload} = require("./reload")
 const {fileReader} = require("./fileReader")
 const {position, getPadding} = require("./position")
+const {searchArduino} = require("./arduino")
 const {
   setStyle,
   resetStyles,
@@ -91,6 +92,7 @@ const {resize, dimensions, converter} = require("./resize")
 const {createData, clearData} = require("./data")
 
 module.exports = {
+  searchArduino,
   switchMode,
   getDaysInMonth,
   importJson,

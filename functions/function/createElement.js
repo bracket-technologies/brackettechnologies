@@ -5,6 +5,8 @@ const { override } = require("./merge")
 const { clone } = require("./clone")
 const { createTags } = require("./createTags")
 const { reducer } = require("./reducer")
+const { toCode } = require("./toCode")
+const { toValue } = require("./toValue")
 
 var createElement = ({ _window, id, req, res }) => {
 
@@ -12,7 +14,7 @@ var createElement = ({ _window, id, req, res }) => {
   var local = value[id]
   var global = _window ? _window.global : window.global
   var parent = value[local.parent]
-
+  
   // html
   if (local.html) return local.html
 
@@ -22,19 +24,17 @@ var createElement = ({ _window, id, req, res }) => {
   // no value
   if (!local.type) return
 
+  local.type = toCode({ _window, string: local.type })
+
   // destructure type, params, & conditions from type
   
-  // local.type = local.type.split("/?").join("_question")
   var type = local.type.split("?")[0]
   var params = local.type.split("?")[1]
   var conditions = local.type.split("?")[2]
 
   // [type]
-  if (type.slice(0, 1) === "[" && type.slice(-1) === "]") {
-    type = type.slice(1).slice(0, -1)
-    if (!local.duplicatedElement) local.mapType = true
-  }
-  local.type = type
+  if (!local.duplicatedElement && type.includes("coded()")) local.mapType = true
+  type = local.type = toValue({ _window, value: type, id, req, res})
 
   // parent
   local.parent = parent.id
@@ -103,9 +103,6 @@ var createElement = ({ _window, id, req, res }) => {
       }
     }
   }
-
-  // pass values To Children
-  // if (parent.passToChildren) local = override(local, parent.passToChildren)
 
   // duplicated element
   if (local.duplicatedElement) {

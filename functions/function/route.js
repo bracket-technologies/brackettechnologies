@@ -15,9 +15,6 @@ module.exports = {
         
         history.pushState(null, title, global.path)
         document.title = title
-
-        // main view has been routed
-        if (window.value.root) window.value.root.mainViewHasBeenRouted = true
         
         update({ id: "root" })
         document.body.scrollTop = document.documentElement.scrollTop = 0

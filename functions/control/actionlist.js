@@ -8,9 +8,9 @@ module.exports = ({ controls, id }) => {
   return [{
     event: "click",
     actions: [
-      `resetStyles:actionlist?global().actionlist-caller.delete();break?():actionlist.style().opacity=1;global().actionlist-caller=${id}`,
+      `?():actionlist.style().opacity.eq():0;():actionlist.style().transform.eq():[scale(0.5)];():actionlist.style().pointerEvents.eq():none;global().actionlist-caller.delete();break?():actionlist.style().opacity=1;global().actionlist-caller=${id}`,
       `setStyle:actionlist<<[${controls.style}]?${styles}`,
-      `resetStyles:actionlist;update:actionlist?().actionlist.undeletable=():actionlist.undeletable.or():_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;global().actionlist-caller=${id};global().actionlist-caller-id=${id};path=${controls.path || ""}`,
+      `update:actionlist?().actionlist.undeletable=():actionlist.undeletable.or():_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;global().actionlist-caller=${id};global().actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.style().opacity.eq():0;():actionlist.style().transform.eq():[scale(0.5)];():actionlist.style().pointerEvents.eq():none`,
       `setPosition:actionlist;mountAfterStyles:actionlist?position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance}`
     ]
   }]

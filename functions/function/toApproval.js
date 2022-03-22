@@ -2,7 +2,6 @@ const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
-const { toCode } = require("./toCode")
 
 const toApproval = ({ _window, e, string, id, _, req, res }) => {
 
@@ -74,7 +73,6 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
     if (!local) return approval = false
     
     // to path
-    key = toCode({ _window, id, string: key, e })
     var path = typeof key === "string" ? key.split(".") : []
     
     // const
@@ -84,7 +82,7 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
     else if (key === "desktop()") local[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") local[keygen] = global.device.type === "tablet"
     else if (path[1] || path[0].includes("()")) local[keygen] = reducer({ _window, id, path, value, e, _, req, res })
-    else local[keygen] = local[key]
+    else local[keygen] = key
     
     if (value === undefined) {
       approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])

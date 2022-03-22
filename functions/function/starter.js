@@ -4,16 +4,13 @@ const { toParam } = require("./toParam")
 const { isArabic } = require("./isArabic")
 const { resize } = require("./resize")
 
-const starter = ({ id, main }) => {
+const starter = ({ id, once }) => {
   
   const { defaultEventHandler } = require("./event")
   const { controls } = require("./controls")
   const { defaultInputHandler } = require("./defaultInputHandler")
 
   var local = window.value[id]
-
-  // main View Has Been Routed
-  if (main && window.value.root.mainViewHasBeenRouted) return
 
   // status
   local.status = "Mounting Functions"
@@ -58,9 +55,9 @@ const starter = ({ id, main }) => {
   // run starter for children
   var children = [...local.element.children]
 
-  children.map(child => {
+  if (!once) children.map(child => {
 
-    const id = child.id
+    var id = child.id
     if (!id) return
     starter({ id })
   })
@@ -69,7 +66,7 @@ const starter = ({ id, main }) => {
   Object.entries(control).map(([type, control]) => {
 
     if (local[type]) {
-
+      
       local.controls = toArray(local.controls)
       var _controls = control({ id, controls: local[type] })
       _controls && local.controls.push(..._controls)
@@ -78,9 +75,6 @@ const starter = ({ id, main }) => {
   
   // execute controls
   if (local.controls) controls({ id })
-
-  // flicker
-  // if (local.flicker) setTimeout(() => local.element.style.opacity = local.flicker.opacity, 0)
 
   local.status = "Mounted"
 }

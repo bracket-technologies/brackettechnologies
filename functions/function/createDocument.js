@@ -5,6 +5,7 @@ const { controls } = require("./controls")
 const { getJsonFiles } = require("./getJsonFiles")
 const { toApproval } = require("./toApproval")
 const { capitalize } = require("./capitalize")
+const { toCode } = require("./toCode")
 //
 require('dotenv').config()
 
@@ -13,20 +14,10 @@ const createDocument = async ({ req, res, db }) => {
     // Create a cookies object
     var domain = req.headers["x-forwarded-host"]
     var host = req.headers["host"]
-    var mydomain = host === "localhost:5000" || domain === "bracketjs.com" || domain === "www.bracketjs.com" || domain.includes("bracketjs.web.app")
     
     // current page
     var currentPage = req.url.split("/")[1] || ""
     currentPage = currentPage || "main"
-
-    // params
-    // var params = isDeveloperEditor ? req.url.split("/")[3] : req.url.split("/")[2]
-    // params = toParam({ _window: { global: {}, value: {} }, string: params })
-
-    // conditions
-    // var conditions = currentPage.split("?")[2] || currentPage.split("/")[3]
-    // var approved = toApproval({ _window: { global: {}, value: {} }, string: conditions })
-    // if (!approved) return res.send("Conditional page mount not Approved!")
     
     var promises = [], user, page, view, css, js, project, editorAuth
     
@@ -42,8 +33,6 @@ const createDocument = async ({ req, res, db }) => {
         codes: {},
         host,
         domain: domain || host,
-        // config,
-        mydomain,
         currentPage,
         path: req.url,
         cookies: req.cookies,
@@ -150,7 +139,8 @@ const createDocument = async ({ req, res, db }) => {
     // forward
     if (global.data.page[currentPage].forward) {
 
-        var forward = global.data.page[currentPage].forward.split("?")
+        var forward = global.data.page[currentPage].forward
+        forward = toCode({ _window, id, string: forward }).split("?")
         var params = forward[1]
         var conditions = forward[2]
         forward = forward[0]

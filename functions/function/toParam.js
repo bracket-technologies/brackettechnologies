@@ -1,6 +1,5 @@
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
-const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
@@ -8,7 +7,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
   const { toApproval } = require("./toApproval")
 
   var localId = id
-  var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
   var params = {}
@@ -77,9 +75,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     id = localId
 
     var keys = typeof key === "string" ? key.split(".") : [], timer
-
-    // keys from brackets to dots
-    key = toCode({ _window, string: key, e, id })
 
     // id
     /* if (key && key.slice(0, 3) === "():") {

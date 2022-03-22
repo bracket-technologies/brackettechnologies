@@ -3,7 +3,6 @@ const { toArray } = require("./toArray")
 const controls = ({ _window, controls, id, req, res }) => {
 
   const { addEventListener } = require("./event")
-  const { execute } = require("./execute")
   const { watch } = require("./watch")
 
   var local = _window ? _window.value[id] : window.value[id]
@@ -16,8 +15,6 @@ const controls = ({ _window, controls, id, req, res }) => {
     if (controls.watch) watch({ _window, controls, id, req, res })
     // event
     else if (controls.event) addEventListener({ _window, controls, id, req, res })
-    // execute onload
-    else execute({ _window, controls, id, req, res })
   })
 }
 

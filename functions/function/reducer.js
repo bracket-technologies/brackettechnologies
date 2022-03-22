@@ -1,6 +1,5 @@
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
-const { toCode } = require("./toCode")
 const { isEqual } = require("./isEqual")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -28,16 +27,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     var local = _window ? _window.value[id] : window.value[id], breakRequest, coded, mainId = id
     var global = _window ? _window.global : window.global
 
-    // ?
-    if (path[0]) {
-        // if (path.length === 1 && (path[0].toString().indexOf("[") === -1 || path[0].toString().indexOf("]") === -1)) {}
-        /* else */ path = toCode({ _window, id, string: toArray(path).join("."), e }).split(".")
-    }
-
     // path[0] = path0:args
-    var path0 = path[0] ? path[0].split(":")[0] : ""
+    var path0 = path[0] ? path[0].toString().split(":")[0] : ""
 
-    // coded
+    // codeds
     if (path0.slice(0, 7) === "coded()" && path.length === 1) {
 
         coded = true
@@ -99,9 +92,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         path[0] = "()"
     }
     
-    if (path && (path.includes("equal()") || path.includes("equals()") || path.includes("eq()"))) {
+    if (path && (path.includes("equal()") || path.includes("equals()") || path.includes("eq()") || path.includes("=()"))) {
         
-        var _index = path.findIndex(k => k && (k.includes("equal()") || k.includes("equals()") || k.includes("eq()")))
+        var _index = path.findIndex(k => k && (k.includes("equal()") || k.includes("equals()") || k.includes("eq()") || path.includes("=()")))
         if (_index !== -1 && _index === path.length - 2) {
             
             key = true
@@ -135,13 +128,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path0 === "setInterval()") {
             
         var args = path[0].split(":")
-        if (path.length === 1) {
-            if (params) return params["setInterval()"] = generate()
-            return "setInterval()"
-        }
-        var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
+        var _actions = toValue({ req, res, _window, id, value: args[1], params, _, e })
         var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
-        return object = setInterval(myFn, _timer)
+        var myFn = () => execute({ id, actions: _actions, e })
+        return setInterval(myFn, _timer)
     }
     
     if (!object && object !== 0 && object !== false) {
@@ -218,6 +208,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 var args = path[0].split(":")
                 var actions = toValue({ req, res, _window, id, value: args[1], params, _, e })
                 return execute({ _window, id, actions, params, e })
+
             }
             
             else if (path0 === "today()") object = new Date()
@@ -283,7 +274,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         if (breakRequest === true || breakRequest >= i) return o
         
         // equal
-        if ((path[i + 1] + "") && ((path[i + 1] + "").includes("equal()") || (path[i + 1] + "").includes("equals()") || (path[i + 1] + "").includes("eq()"))) {
+        if ((path[i + 1] + "") && ((path[i + 1] + "").includes("equal()") || (path[i + 1] + "").includes("equals()") || (path[i + 1] + "").includes("=()") || (path[i + 1] + "").includes("eq()"))) {
             
             key = true
             var args = path[i + 1].split(":")
@@ -306,7 +297,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return answer
         }
         
-        // if():conds:ans.else():ans || if():conds:ans.elseif():conds:ans
+        // if():conds:ans.else():ans || if():conds:ans.elif():conds:ans
         if (k0 === "if()") {
         
             var args = k.split(":")
@@ -317,7 +308,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (path[i + 1] && path[i + 1].includes("else()")) 
                     return answer = toValue({ req, res, _window, id, value: path[i + 1].split(":")[1], index, params, _, e })
     
-                if (path[i + 1] && (path[i + 1].includes("elseif()") || path[i + 1].includes("elseif()"))) {
+                if (path[i + 1] && (path[i + 1].includes("elseif()") || path[i + 1].includes("elif()"))) {
     
                     breakRequest = i + 1
                     var _path = path.slice(i + 2)
@@ -986,7 +977,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "and()") {
             
             if (!o) {
-                breakRequest = true
                 answer = false
             } else {
                 var args = k.split(":").slice(1)
@@ -1057,41 +1047,51 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = Math.abs(o)
             if (isPrice) answer = answer.toLocaleString()
             
-        } else if (k0 === "dividedBy()" || k0 === "divide()" || k0 === "divided()" || k0 === "divideBy()") {
+        } else if (k0 === "dividedBy()" || k0 === "divide()" || k0 === "divided()" || k0 === "divideBy()" || k0 === "/()") {
             
-            var args = k.split(":")
-            var b = toValue({ req, res, _window, id, value: args[1], params, _, e })
-            
-            o = o.toString()
-            b = b.toString()
+            var args = k.split(":").slice(1)
+            answer = o
+            args.map(arg => {
+                var b = toValue({ req, res, _window, id, value: arg, params, _, e })
+                
+                answer = answer === 0 ? answer : (answer || "")
+                b = b === 0 ? b : (b || "")
+                answer = answer.toString()
+                b = b.toString()
+                
+                var isPrice
+                if (answer.includes(",") || b.includes(",")) isPrice = true
+                
+                b = toNumber(b)
+                answer = toNumber(answer)
 
-            var isPrice
-            if (o.includes(",") || b.includes(",")) isPrice = true
-
-            b = toNumber(b)
-            o = toNumber(o)
-
-            answer = o / b
+                answer = answer % b === 0 ? answer / b : answer * 1.0 / b
+            })
             if (isPrice) answer = answer.toLocaleString()
             
-        } else if (k0 === "times()" || k0 === "multiplyBy()" || k0 === "multiply()" || k0 === "mult()") {
+        } else if (k0 === "times()" || k0 === "multiplyBy()" || k0 === "multiply()" || k0 === "mult()" || k0 === "x()" || k0 === "*()") {
             
-            var args = k.split(":")
-            var b = toValue({ req, res, _window, id, value: args[1], params, _, e })
-            
-            o = o.toString()
-            b = b.toString()
-            
-            var isPrice
-            if (o.includes(",") || b.includes(",")) isPrice = true
-            
-            b = toNumber(b)
-            o = toNumber(o)
+            var args = k.split(":").slice(1)
+            answer = o
+            args.map(arg => {
+                var b = toValue({ req, res, _window, id, value: arg, params, _, e })
+                
+                answer = answer === 0 ? answer : (answer || "")
+                b = b === 0 ? b : (b || "")
+                answer = answer.toString()
+                b = b.toString()
+                
+                var isPrice
+                if (answer.includes(",") || b.includes(",")) isPrice = true
+                
+                b = toNumber(b)
+                answer = toNumber(answer)
 
-            answer = o * b
+                answer = answer * b
+            })
             if (isPrice) answer = answer.toLocaleString()
             
-        } else if (k0 === "add()" || k0 === "plus()") {
+        } else if (k0 === "add()" || k0 === "plus()" || k0 === "+()") {
             
             var args = k.split(":").slice(1)
             answer = o
@@ -1114,7 +1114,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             })
             if (isPrice) answer = answer.toLocaleString()
             
-        } else if (k0 === "subs()" || k0 === "minus()") {
+        } else if (k0 === "subs()" || k0 === "minus()" || k0 === "-()") {
             
             var args = k.split(":").slice(1)
             answer = o
@@ -1790,6 +1790,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
             var _ids = getDeepChildren({ _window, id: _id }).map(val => val.id)
             answer = _ids.find(_id => _id === o)
+
+        } else if (k0 === "isnotChildOfId()") {
+            
+            var args = k.split(":")
+            var _id = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
+            var _ids = getDeepChildren({ _window, id: _id }).map(val => val.id)
+            answer = _ids.find(_id => _id === o)
+            answer = answer ? false : true
 
         } else if (k0 === "allChildren()" || k0 === "deepChildren()") { 
             // all values of local element and children elements in object formula

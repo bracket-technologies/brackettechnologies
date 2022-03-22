@@ -439,3 +439,34 @@ i {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/*  Place holder color  */
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #aaa;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #aaa;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #aaa;
+}
+
+
+.ar::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #aaa;
+  opacity: 1; /* Firefox */
+  font-family: "Tajawal", sans-serif;
+}
+
+.ar:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #aaa;
+  font-family: "Tajawal", sans-serif;
+}
+
+.ar::-ms-input-placeholder { /* Microsoft Edge */
+  color: #aaa;
+  font-family: "Tajawal", sans-serif;
+}

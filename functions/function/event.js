@@ -4,7 +4,6 @@ const { toValue } = require("./toValue")
 const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
-// const { reducer } = require("./reducer")
 
 const events = [
   "click",
@@ -77,8 +76,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     // event
     event = event.split(":")[0]
 
-    if (!event) return
-
+    if (!event || !local) return
     clearTimeout(local[`${event}-timer`])
 
     // add event listener
@@ -91,10 +89,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
         // body
         if (id === "body") id = mainID
-        var _local = _window ? _window.value[id] : window.value[id]
+        var __local = _window ? _window.value[id] : window.value[id]
         
         // VALUE[id] doesnot exist
-        if (!_local) return e.target.removeEventListener(event, myFn)
+        if (!__local) return e.target.removeEventListener(event, myFn)
         
         // approval
         var approved = toApproval({ _window, req, res, string: events[2], e, id: mainID })
@@ -104,7 +102,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         if (once) e.target.removeEventListener(event, myFn)
         
         // params
-        /* params = */toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true })
+        toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true })
 
         // break
         if (local.break) return
@@ -126,22 +124,21 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           // body
           if (id === "body") id = mainID
-          var _local = _window ? _window.value[id] : window.value[id]
+          var __local = _window ? _window.value[id] : window.value[id]
 
           if (once) e.target.removeEventListener(event, myFn)
 
           // VALUE[id] doesnot exist
-          if (!_local) return e.target.removeEventListener(event, myFn)
+          if (!__local) return e.target.removeEventListener(event, myFn)
           
           // approval
           var approved = toApproval({ string: events[2], e, id: mainID })
           if (!approved) return
 
           // params
-          /* params = */toParam({ string: events[1], e, id: mainID, mount: true })
+          toParam({ string: events[1], e, id: mainID, mount: true })
           
-          if (controls.actions)
-          await execute({ controls, e, id: mainID })
+          if (controls.actions) await execute({ controls, e, id: mainID })
 
           // await params
           if (local.await && local.await.length > 0)

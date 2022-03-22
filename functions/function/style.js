@@ -5,7 +5,7 @@ const setStyle = ({ id, style = {} }) => {
 
   var local = window.value[id]
   local.style = local.style || {}
-
+  
   Object.entries(style).map(([key, value]) => {
 
     if (key === "after") return

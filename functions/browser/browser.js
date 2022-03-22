@@ -36,17 +36,17 @@ document.addEventListener('click', e => {
     search({ search: { collection: "authentication", doc: global.data.project.id }, await, asyncer: "search", id: "body" })
 }*/
 
+// default global mode
+global.mode = global["default-mode"] = global["default-mode"] || "Light"
+
 setElement({ id: "public" })
-setElement({ id: "root", main: true })
+var toReturn = setElement({ id: "root" })
 
 setTimeout(() => {
     starter({ id: "public" })
-    starter({ id: "root", main: true })
+    if (!toReturn) starter({ id: "root" })
 }, 0)
 
 Object.entries(window.value).map(([id, value]) => {
     if (value.status === "Loading") delete window.value[id]
 })
-
-// default global mode
-global.mode = global["default-mode"] = global["default-mode"] || "Light"

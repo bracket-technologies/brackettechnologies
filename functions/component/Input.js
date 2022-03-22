@@ -94,7 +94,7 @@ const Input = (component) => {
                 }, Input({ ...component, component: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
                 ]
             }, {
-                "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?[${password}]`,
+                "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${toString(password)}?${password}`,
                 "children": [{
                     "type": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
                     "controls": [{
@@ -132,7 +132,7 @@ const Input = (component) => {
         label.text = label.text.split("=").join("_equal")
 
         return {
-            id, path, Data, parent, derivations, required,
+            id, Data, parent, derivations, required, path,
             "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
             "children": [{
                 "type": `Text?text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
@@ -142,7 +142,7 @@ const Input = (component) => {
                     "event": "click?global().clickedElement=().next().getInput().element;().next().getInput().focus()"
                 }]
             }, 
-                Input({ ...component, component: true, parent: id, style: override({ backgroundColor: "inherit", transition: ".1s", width: "100%", padding: ".5rem", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc" }, style) }),
+                Input({ ...component, component: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
                 "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
                 "children": [{
@@ -181,7 +181,7 @@ const Input = (component) => {
                 ...style,
             },
             children: [...children, {
-                type: `Icon?id=${id}-icon?[${icon.name}]`,
+                type: `Icon?id=${id}-icon?${icon.name}`,
                 ...icon,
                 hover: {
                     ...icon.hover,
@@ -199,7 +199,7 @@ const Input = (component) => {
                     ...icon.style
                 }
             }, {
-                type: `Text?id=${id}-msg;msg=${msg};text=${msg}?[${msg}]`,
+                type: `Text?id=${id}-msg;msg=${msg};text=${msg}?${msg}`,
                 style: {
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
@@ -210,8 +210,8 @@ const Input = (component) => {
             }, {
                 type: `Input`,
                 id: `${id}-input`,
-                path,
-                class: input.class,
+                path: component.path,
+                class: `${input.class} ${component.class.includes("ar") ? "ar" : ""}`,
                 input,
                 currency, 
                 day,
@@ -246,7 +246,8 @@ const Input = (component) => {
                     fontSize: style.fontSize || '1.4rem',
                     maxHeight: style.maxHeight || "initial",
                     border: '0',
-                    padding: '0.5rem',
+                    height: "100%",
+                    padding: "0.5rem",
                     color: '#444',
                     outline: 'none',
                     userSelect: password ? "none" : "initial",
@@ -254,10 +255,10 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: `keyup??().data();e().key=Enter;[${duplicatable}]`,
+                    event: `keyup??().data();e().key=Enter;${duplicatable}`,
                     actions: `duplicate:${id}?${duplicatable && duplicatable.path ? `duplicate.path=${duplicatable.path}` : ''}`
                 }, {
-                    event: "select;mousedown?e.preventDefault()"
+                    event: "select;mousedown?e().preventDefault()"
                 }, {
                     event: "input?().parent().parent().required.mount=false;().parent().parent().click()?().parent().parent().required.mount;e().target.value.exist()"
                 }]
@@ -279,7 +280,7 @@ const Input = (component) => {
                 children: [{
                     type: `Icon?icon.name=bi-caret-down-fill;style.color=#444;style.fontSize=1.2rem;style.width=1rem;style.marginRight=.5rem?():${id}-input.droplist.items.isdefined()`
                 }, {
-                    type: `Icon?class=pointer;icon.name=bi-files;style.color=#444;style.fontSize=1.2rem;style.width=1rem;style.marginRight=.5rem;hoverable;style.after.color=#116dff?[${duplicatable}]`,
+                    type: `Icon?class=pointer;icon.name=bi-files;style.color=#444;style.fontSize=1.2rem;style.width=1rem;style.marginRight=.5rem;hoverable;style.after.color=#116dff?${duplicatable}`,
                     controls: {
                         event: `click??():${id}-input.data();[${duplicatable}]`,
                         actions: `duplicate:${id}?${duplicatable && duplicatable.path ? `duplicate.path=${duplicatable.path}` : "" }`
@@ -287,7 +288,7 @@ const Input = (component) => {
                 }, {
                     type: `Text?text=${note};style.color=#666;style.fontSize=1.3rem;style.padding=.5rem?[${note}]`
                 }, {
-                    type: `Text?id=${id}-key;key=${key};text=${key};droplist.items<<!${readonly}=await()._array:[any.Enter a special key:._param.readonly]:[any.${key}._param.input];hoverable;duplicated=${duplicated}?[${key}]`,
+                    type: `Text?id=${id}-key;key=${key};text=${key};droplist.items<<!${readonly}=await()._array:[any.Enter a special key:._param.readonly]:[any.${key}._param.input];hoverable;duplicated=${duplicated}?${key}`,
                     style: {
                         fontSize: '1.3rem',
                         color: '#666',
@@ -298,7 +299,7 @@ const Input = (component) => {
                         after: { color: '#0d6efd' }
                     },
                 }, {
-                    type: `Text?id=${id}-currency;currency=${currency};text=${currency};droplist.items<<!${readonly}=await().global().asset.findByName():Currency.options.map():name;hoverable;duplicated=${duplicated}?[${currency}]`,
+                    type: `Text?id=${id}-currency;currency=${currency};text=${currency};droplist.items<<!${readonly}=await().global().asset.findByName():Currency.options.map():name;hoverable;duplicated=${duplicated}?${currency}`,
                     style: {
                         fontSize: '1.3rem',
                         color: '#666',
@@ -309,7 +310,7 @@ const Input = (component) => {
                         after: { color: '#0d6efd' }
                     },
                 }, {
-                    type: `Text?path=unit;id=${id}-unit;droplist.items<<!${readonly}=await().global().asset.findByName():Unit.options.map():name;hoverable?[${unit}]`,
+                    type: `Text?path=unit;id=${id}-unit;droplist.items<<!${readonly}=await().global().asset.findByName():Unit.options.map():name;hoverable?${unit}`,
                     style: {
                         fontSize: '1.3rem',
                         color: '#666',
@@ -321,7 +322,7 @@ const Input = (component) => {
                     },
                     actions: `setData?data.value=${unit}?!().data()`
                 }, {
-                    type: `Text?id=${id}-day;day=${day || 'day'};text=${day};droplist.items<<!${readonly}=await()._array:Monday:Tuesday:Wednesday:Thursday:Friday:Saturday:Sunday;droplist.day;hoverable;duplicated=${duplicated}?[${day}]`,
+                    type: `Text?id=${id}-day;day=${day || 'day'};text=${day};droplist.items<<!${readonly}=await()._array:Monday:Tuesday:Wednesday:Thursday:Friday:Saturday:Sunday;droplist.day;hoverable;duplicated=${duplicated}?${day}`,
                     style: {
                         fontSize: '1.3rem',
                         color: '#666',
@@ -332,7 +333,7 @@ const Input = (component) => {
                         after: { color: '#0d6efd' }
                     }
                 }, {
-                    type: `Text?id=${id}-duration;duration=${duration || 'hr'};text=${duration};droplist.items<<!${readonly}=_array:sec:min:hr:day:week:month:3month:year;droplist.duration;hoverable;duplicated=${duplicated}?[${duration}]`,
+                    type: `Text?id=${id}-duration;duration=${duration || 'hr'};text=${duration};droplist.items<<!${readonly}=_array:sec:min:hr:day:week:month:3month:year;droplist.duration;hoverable;duplicated=${duplicated}?${duration}`,
                     style: {
                         fontSize: '1.3rem',
                         color: '#666',
@@ -343,7 +344,7 @@ const Input = (component) => {
                         after: { color: '#0d6efd' }
                     }
                 }, {
-                    type: `Text?id=${id}-language;lang=${lang};text=${lang};droplist.items<<!${readonly}=await().global().asset.findByName():Language.options.map():name;droplist.lang;hoverable;duplicated=${duplicated}?[${lang}]`,
+                    type: `Text?id=${id}-language;lang=${lang};text=${lang};droplist.items<<!${readonly}=await().global().asset.findByName():Language.options.map():name;droplist.lang;hoverable;duplicated=${duplicated}?${lang}`,
                     style: {
                         fontSize: '1.3rem',
                         color: '#666',
@@ -354,14 +355,14 @@ const Input = (component) => {
                         after: { color: '#0d6efd' }
                     }
                 }, {
-                    type: `Checkbox?id=${id}-google;class=align-center;path=google;style.cursor=pointer;style.margin=0 .25rem?[${google}]`,
+                    type: `Checkbox?id=${id}-google;class=align-center;path=google;style.cursor=pointer;style.margin=0 .25rem?${google}`,
                     controls: [{
                         event: `change;loaded?():${id}-more.style().display=none<<!e().target.checked;():${id}-more.style().display=flex<<e().target.checked`
                     }]
                 }, {
-                    type: `Icon?id=${id}-more;name=bi-three-dots-vertical;path=type;style.width=1.5rem;style.display=none;style.color=#666;style.cursor=pointer;style.fontSize=2rem;global().google-items=_array:outlined:rounded:sharp:twoTone;droplist.items=_array:[any.Enter google icon type]:[global().google-items];hoverable?[${google}]`,
+                    type: `Icon?id=${id}-more;name=bi-three-dots-vertical;path=type;style.width=1.5rem;style.display=none;style.color=#666;style.cursor=pointer;style.fontSize=2rem;global().google-items=_array:outlined:rounded:sharp:twoTone;droplist.items=_array:[any.Enter google icon type]:[global().google-items];hoverable?${google}`,
                 }, {
-                    type: `Icon?class=align-center;name=bi-x;id=${id}-x;hoverable?[${clearable}].or():${removable}`,
+                    type: `Icon?class=align-center;name=bi-x;id=${id}-x;hoverable?${clearable}.or():${removable}`,
                     style: {
                         fontSize: '2rem',
                         color: '#444',
@@ -372,11 +373,11 @@ const Input = (component) => {
                         event: 'click',
                         actions: [
                             // remove element
-                            `remove:${id}??${removable};():${id}.length().greater():${minlength};!():${id}-input.data()<<[${clearable}]`,
+                            `remove:${id}??${removable};():${id}.length().greater():${minlength};!():${id}-input.data()<<${clearable}`,
                             // clear data
                             `focus;resize?().Data().path():[[():${id}.clearable.path].or():[():${id}-input.derivations]]=_string;():${id}-input.val()=_string?():${id}.clearable.isdefined()?${id}-input`,
                             // for key
-                            `focus:${id}-input?():${id}-input.val()=_string;():${edit}-key.element.innerHTML=():${edit}-key.key;():${edit}-input.path=():${edit}-key.key;():${edit}-input.derivations=():${edit}.derivations.push():[${edit}-key.key];().Data().[():${edit}-input.derivations]=():${edit}-input.val()?[${edit}]`
+                            `focus:${id}-input?():${id}-input.val()=_string;():${edit}-key.element.innerHTML=():${edit}-key.key;():${edit}-input.path=():${edit}-key.key;():${edit}-input.derivations=():${edit}.derivations.push():[${edit}-key.key];().Data().[():${edit}-input.derivations]=():${edit}-input.val()?${edit}`
                         ]
                     }]
                 }]

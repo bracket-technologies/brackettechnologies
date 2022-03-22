@@ -3,6 +3,7 @@ const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
 const { isEqual } = require("./isEqual")
+const { toCode } = require("./toCode")
 
 const watch = ({ controls, id }) => {
 
@@ -11,7 +12,7 @@ const watch = ({ controls, id }) => {
     var local = window.value[id]
     if (!local) return
 
-    var watch = controls.watch
+    var watch = toCode({ id, string: controls.watch })
     var approved = toApproval({ id, string: watch.split('?')[2] })
     if (!approved) return
 

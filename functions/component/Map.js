@@ -52,7 +52,7 @@ module.exports = (component) => {
                     }, {
                         event: "keyup?():droplist.children().[global().keyup-index].click()<<global().droplist-positioner.and():[global().keyup-index];global().keyup-index=0;().next().click();timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter"
                     }, {
-                        event: "keyup?():droplist.children().[global().keyup-index].mouseleave();global().keyup-index.equal():[if():[e().keyCode.is():40]:[global().keyup-index.add():1].else():[global().keyup-index.subs():1]];():droplist.children().[global().keyup-index].mouseenter()?e().keyCode.is():40.or():[e().keyCode.is():38];global().droplist-positioner;if():[e().keyCode.is():38]:[global().keyup-index.isgreater():0].else():[if():[e().keyCode.is():40]:[global().keyup-index.less():[().next().droplist.items.length().subs():1]]]"
+                        event: "keyup?():droplist.children().[global().keyup-index].mouseleave();global().keyup-index.equal():[if():[e().keyCode.is():40]:[global().keyup-index.add():1].else():[global().keyup-index.subs():1]];():droplist.children().[global().keyup-index].mouseenter()?e().keyCode.is():40.or():[e().keyCode.is():38];global().droplist-positioner;if():[e().keyCode.is():38]:[global().keyup-index.isgreater():0].elif():[e().keyCode.is():40]:[global().keyup-index.less():[().next().droplist.items.length().subs():1]]"
                     }]
                 }, {
                     type: "Text?text=().derivations.lastIndex();class=flex-box;mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?().derivations.lastIndex().num().type().is():number"

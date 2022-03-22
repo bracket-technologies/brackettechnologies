@@ -69,7 +69,7 @@ app.delete("*", (req, res) => {
 // get
 app.get("*", (req, res) => {
   var path = req.url.split("/")
-
+  
   // api
   if (path[1] === "api") return getApi({ req, res, db })
   

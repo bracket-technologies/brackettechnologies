@@ -5,6 +5,7 @@ const { toParam } = require("./toParam")
 // const { override } = require("./merge")
 
 const component = require("../component/component")
+const { toCode } = require("./toCode")
 
 module.exports = {
   createComponent: ({ _window, id, req, res }) => {
@@ -17,7 +18,7 @@ module.exports = {
     value[id] = local = component[local.type](local)
 
     // destructure type, params, & conditions from type
-    local.type = local.type.split("/?").join("_question")
+    local.type = toCode({ _window, id, string: local.type })
     var type = local.type.split("?")[0]
     var params = local.type.split("?")[1]
     var conditions = local.type.split("?")[2]
