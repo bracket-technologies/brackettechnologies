@@ -541,6 +541,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "1stChild()") {
             
+            if (!o.element) return
             if (!o.element.children[0]) return undefined
             var _id = o.element.children[0].id
             if ((_window ? _window.value[_id] : window.value[_id]).component === "Input") 
@@ -586,6 +587,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "lastChild()") {
 
+            if (!o.element) return
             if (!o.element.children[0]) return undefined
             var _id = o.element.children[o.element.children.length - 1].id
             if ((_window ? _window.value[_id] : window.value[_id]).component === "Input")
@@ -595,6 +597,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "children()") {
             
+            if (!o.element) return
             answer = [...o.element.children].map(el => {
                 
                 var _id = el.id
@@ -1027,6 +1030,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             if (typeof o === "number") answer = -1 * o
             else if (typeof o === "boolean") answer = !o
+            else if (typeof o === "string" && o === "true" || o === "false") {
+                if (o === "true") answer = false
+                else answer = true
+            }
 
         } else if (k0 === "negative()" || k0 === "neg()") {
 

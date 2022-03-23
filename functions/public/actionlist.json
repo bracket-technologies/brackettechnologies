@@ -1,5 +1,5 @@
 {
-    "type": "View?class=box-shadow;id=actionlist;style.zIndex=10;style.transition=opacity .1s;style.width=fit-content;style.height=fit-content;style.overflowY=auto;style.maxWidth=40rem;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=fixed;style.padding=.5rem;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.after.transform=scale(1);style.after.opacity=1;style.after.pointerEvents=auto",
+    "type": "View?class=box-shadow;id=actionlist;style.zIndex=10;style.transition=opacity .1s, transform .1s;style.width=fit-content;style.height=fit-content;style.maxWidth=40rem;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=fixed;style.padding=.5rem;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff",
     "children": [{
         "type": "Item?tooltip.text=add new;icon.name=bi-plus;style.fontSize=1.7rem;droplist.items=await().global().map-length.equal():[().data().length()].then():[global().map-items.equal():_array]:[while():[global().map-length.greater():-1]:[global().map-items.push():[global().map-length].then():[global().map-length.equal():[global().map-length.subs():1]]]].return():[global().map-items];droplist.placement=left;droplist.readonly?().data();().data().type().is():map.or():[().data().type().is():array]",
         "controls": [{
@@ -48,9 +48,7 @@
         }]
     }],
     "controls": [{
-        
-    }, {
         "event": "mouseleave;click:body??global().actionlist-caller;!e().target.id.isChildOfId():[global().actionlist-caller]",
-        "actions": "blur::200?()::400.if():[e().target.id.isnotChildOfId():[global().actionlist-caller].and():[().mouseenter.isfalse()]]:[().style().opacity.eq():0.then():[().style().transform.eq():[scale(0.5)]]:[().style().pointerEvents.eq():none]:[global().actionlist-caller.delete()]]?!().mouseenter;!e().target.id.isChildOfId():[global().actionlist-caller]"
+        "actions": "blur::200?()::400.if():[e().target.id.isnotChildOfId():[global().actionlist-caller].and():[().mouseenter.isfalse()]]:[().style().opacity.eq():0.then():[().style().transform.eq():[scale(0.5)]]:[().style().pointerEvents.eq():none]:[().children().map():[style().pointerEvents.eq():none]]:[global().actionlist-caller.delete()]]?!().mouseenter;!e().target.id.isChildOfId():[global().actionlist-caller]"
     }]
 }
