@@ -17,6 +17,7 @@ const { setCookie, getCookie, eraseCookie } = require("./cookie")
 const { override } = require("./merge")
 const { focus } = require("./focus")
 const { toSimplifiedDate } = require("./toSimplifiedDate")
+const { toClock } = require("./toClock")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res }) => {
     
@@ -128,9 +129,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path0 === "setInterval()") {
             
         var args = path[0].split(":")
-        var _actions = toValue({ req, res, _window, id, value: args[1], params, _, e })
+        // var _actions = toValue({ req, res, _window, id, value: args[1], params, _, e })
         var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
-        var myFn = () => execute({ id, actions: _actions, e })
+        // var myFn = () => execute({ id, actions: _actions, e })
+        var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
         return setInterval(myFn, _timer)
     }
     
@@ -1378,6 +1380,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "today()") {
             
             answer = new Date()
+
+        } else if (k0 === "toClock()") {
+            
+            answer = toClock({ timestamp: o })
 
         } else if (k0 === "toSimplifiedDateAr()") {
             
