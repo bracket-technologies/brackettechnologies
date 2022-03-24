@@ -12,12 +12,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
   var params = {}
 
   string.split(";").map((param) => {
-
-    // break
-    if (params.break) return
     
     var key, value, id = localId
     var local = _window ? _window.value[id] : window.value[id]
+
+    // break
+    if (params.break || local.break) return
 
     if (param.slice(0, 2) === "#:") {
       local["#"] = toArray(local["#"])

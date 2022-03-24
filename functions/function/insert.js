@@ -6,6 +6,7 @@ const { generate } = require("./generate")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 const { toAwait } = require("./toAwait")
+const { toParam } = require("./toParam")
 
 module.exports = {
   insert: ({ id, insert, ...params }) => {
@@ -29,6 +30,10 @@ module.exports = {
         window.value[id].id = id
         window.value[id].index = index
         window.value[id].parent = local.id
+        window.value[id].style = window.value[id].style || {}
+        window.value[id].reservedStyles = toParam({ id, string: window.value[id].type.split("?")[1] || "" }).style || {}
+        window.value[id].style.transition = null
+        window.value[id].style.opacity = "0"
         
         return createElement({ id })
 
@@ -59,22 +64,20 @@ module.exports = {
       delete window.value[_id]
     }
 
-    el.style.opacity = "0"
-
     if (index >= local.element.children.length) local.element.appendChild(el)
     else local.element.insertBefore(el, local.element.children[index])
 
+    setElement({ id: el.id })
     setTimeout(() => {
+      starter({ id: el.id })
 
-      setElement({ id: el.id })
-      setTimeout(() => starter({ id: el.id }), 0)
-      setTimeout(() => el.style.opacity = "1", 0)
-      // focus({ id: el.id })
-
-      // await params
-      toAwait({ id, params })
-
+      window.value[el.id].style.transition = window.value[el.id].element.style.transition = window.value[el.id].reservedStyles.transition || null
+      window.value[el.id].style.opacity = window.value[el.id].element.style.opacity = window.value[el.id].reservedStyles.opacity || "1"
+      delete window.value[el.id].reservedStyles
     }, 0)
+  
+    // await params
+    toAwait({ id, params })
     
     if (lDiv) {
       document.body.removeChild(lDiv)

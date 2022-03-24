@@ -79,32 +79,23 @@ const toggleView = ({ toggle, id }) => {
     }).join("")
 
   // mount innerhtml
+  local.element.innerHTML = innerHTML
+
+  var children = [...local.element.children]
+  children.map(child => {
+
+    var id = child.id
+    setElement({ id })
+    setTimeout(() => starter({ id }), 0)
+  })
+  
+  // fadein
   setTimeout(() => {
-    
-    local.element.innerHTML = innerHTML
 
-    setTimeout(() => {
-
-      var children = [...local.element.children]
-      children.map(child => {
-  
-        var id = child.id
-        setElement({ id })
-        setTimeout(() => starter({ id }), 0)
-      })
-      
-      // fadein
-      setTimeout(() => {
-  
-        var timer = toggle.timer || toggle.fadein.timer || 200
-        children[0].style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`
-        children[0].style.transform = toggle.fadein.after.transform || "translateX(0)"
-        children[0].style.opacity = toggle.fadein.after.opacity || "1"
-  
-      }, toggle.timer || 200)
-      
-      // focus({ id: local.id })
-    }, 0)
+    var timer = toggle.timer || toggle.fadein.timer || 200
+    children[0].style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`
+    children[0].style.transform = toggle.fadein.after.transform || "translateX(0)"
+    children[0].style.opacity = toggle.fadein.after.opacity || "1"
 
   }, toggle.timer || 200)
 }

@@ -5,6 +5,7 @@ const { toArray } = require("./toArray")
 const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { controls } = require("./controls")
+const { toParam } = require("./toParam")
 
 const update = ({ id }) => {
 
@@ -40,12 +41,21 @@ const update = ({ id }) => {
       value[id].id = id
       value[id].index = index
       value[id].parent = local.id
+      value[id].style = value[id].style || {}
+      value[id].reservedStyles = toParam({ id, string: value[id].type.split("?")[1] || "" }).style || {}
+      value[id].style.transition = null
+      value[id].style.opacity = "0"
 
       return createElement({ id })
 
     }).join("")
     
-  local.element.innerHTML = innerHTML
+      
+  var lDiv = document.createElement("div")
+  document.body.appendChild(lDiv)
+  lDiv.style.position = "absolute"
+  lDiv.style.display = "none"
+  lDiv.innerHTML = innerHTML
 
   // onloaded
   /*if (id === "root" && global.data.page[global.currentPage].controls) {
@@ -55,13 +65,30 @@ const update = ({ id }) => {
     if (loadedEventControls) controls({ id: "root", controls: loadedEventControls })
   }*/
   
-  var children = [...local.element.children]
+  var children = [...lDiv.children]
   children.map(child => {
 
     var id = child.id
     setElement({ id })
-    setTimeout(() => starter({ id }), 0)
+    setTimeout(() => {
+      starter({ id })
+      
+      value[child.id].style.transition = value[child.id].element.style.transition = value[child.id].reservedStyles.transition || null
+      value[child.id].style.opacity = value[child.id].element.style.opacity = value[child.id].reservedStyles.opacity || "1"
+      delete value[child.id].reservedStyles
+    }, 0)
+
   })
+
+  setTimeout(() => {
+    local.element.innerHTML = ""
+    children.map(child => local.element.appendChild(child))
+    
+    if (lDiv) {
+      document.body.removeChild(lDiv)
+      lDiv = null
+    }
+  }, 0)
 }
 
 const removeChildren = ({ id }) => {
