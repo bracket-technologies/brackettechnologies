@@ -70,19 +70,24 @@ const update = ({ id }) => {
 
     var id = child.id
     setElement({ id })
-    setTimeout(() => {
-      starter({ id })
-      
-      value[child.id].style.transition = value[child.id].element.style.transition = value[child.id].reservedStyles.transition || null
-      value[child.id].style.opacity = value[child.id].element.style.opacity = value[child.id].reservedStyles.opacity || "1"
-      delete value[child.id].reservedStyles
-    }, 0)
-
   })
 
   setTimeout(() => {
+
     local.element.innerHTML = ""
-    children.map(child => local.element.appendChild(child))
+    children.map(child => {
+
+      var id = child.id
+
+      value[id].element = child
+      starter({ id })
+      
+      value[id].style.transition = value[id].element.style.transition = value[id].reservedStyles.transition || null
+      value[id].style.opacity = value[id].element.style.opacity = value[id].reservedStyles.opacity || "1"
+      delete value[id].reservedStyles
+      
+      local.element.appendChild(child)
+    })
     
     if (lDiv) {
       document.body.removeChild(lDiv)

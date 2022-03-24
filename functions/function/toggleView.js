@@ -78,26 +78,42 @@ const toggleView = ({ toggle, id }) => {
 
     }).join("")
 
-  // mount innerhtml
-  local.element.innerHTML = innerHTML
+      
+  var lDiv = document.createElement("div")
+  document.body.appendChild(lDiv)
+  lDiv.style.position = "absolute"
+  lDiv.style.display = "none"
+  lDiv.innerHTML = innerHTML
 
-  var children = [...local.element.children]
+  var children = [...lDiv.children]
   children.map(child => {
 
     var id = child.id
     setElement({ id })
-    setTimeout(() => starter({ id }), 0)
   })
   
   // fadein
   setTimeout(() => {
 
+    var child = children[0]
+
+    local.element = child
+    starter({ id: child.id })
+
     var timer = toggle.timer || toggle.fadein.timer || 200
-    children[0].style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`
-    children[0].style.transform = toggle.fadein.after.transform || "translateX(0)"
-    children[0].style.opacity = toggle.fadein.after.opacity || "1"
+    child.style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`
+    child.style.transform = toggle.fadein.after.transform || "translateX(0)"
+    child.style.opacity = toggle.fadein.after.opacity || "1"
+
+    // append innerhtml
+    local.element.appendChild(child)
 
   }, toggle.timer || 200)
+
+  if (lDiv) {
+    document.body.removeChild(lDiv)
+    lDiv = null
+  }
 }
 
 module.exports = {toggleView}

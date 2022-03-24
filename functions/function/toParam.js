@@ -17,7 +17,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     var local = _window ? _window.value[id] : window.value[id]
 
     // break
-    if (params.break || local.break) return
+    if (params.break || local && local.break) return
 
     if (param.slice(0, 2) === "#:") {
       local["#"] = toArray(local["#"])

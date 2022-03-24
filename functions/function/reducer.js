@@ -602,14 +602,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!o.element) return
             answer = [...o.element.children].map(el => {
                 
-                var _id = el.id
-                if ((_window ? _window.value[_id] : window.value[_id]).component === "Input") {
+                var _id = el.id, _local = _window ? _window.value[_id] : window.value[_id]
+                if (!_local) return
+                if (_local.component === "Input") {
 
-                    _id = (_window ? _window.value[_id] : window.value[_id]).element.getElementsByTagName("INPUT")[0].id
-                    return _window ? _window.value[_id] : window.value[_id]
+                    _id = (_local).element.getElementsByTagName("INPUT")[0].id
+                    return _local
 
-                } else return _window ? _window.value[_id] : window.value[_id]
+                } else return _local
             })
+            answer = answer.filter(comp => comp && comp.id)
             
         } else if (k0 === "style()") {
             

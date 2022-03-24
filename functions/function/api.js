@@ -45,6 +45,7 @@ var getApi = async ({ req, res, db }) => {
   }
 
   if (search.doc) {
+    
     await ref.doc(search.doc.toString()).get().then(doc => {
 
       success = true
