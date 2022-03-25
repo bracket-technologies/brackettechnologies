@@ -182,6 +182,7 @@ const uploadApi = async ({ req, res, db, storage }) => {
   var path = req.url.split("/")[3].split("?")
   var collection = path[0]
   var upload = req.body.upload
+  var ref = db.collection(collection)
 
   // file Type
   upload.type = upload.type.split("-").join("/")
@@ -191,9 +192,7 @@ const uploadApi = async ({ req, res, db, storage }) => {
   await storage.ref().child(`${collection}/${upload.doc}`).put(buffer, { contentType: upload.type })
   .then(async snapshot => {
 
-    success = true
-    message = `${collection}/${upload.name} uploaded successfuly!`
-    await snapshot.ref.getDownloadURL().then(downloadURL => url = downloadURL)
+    url = await snapshot.ref.getDownloadURL()
 
   }).catch(error => {
 
@@ -206,16 +205,16 @@ const uploadApi = async ({ req, res, db, storage }) => {
     url,
     id: upload.doc,
     name : upload.name,
-    description: upload.description,
+    description: upload.description || "",
     type: upload.type,
     tags: upload.tags,
     title : upload.title
   }
-  
-  await db.collection(collection).doc(data.id).set(data).then(() => {
+
+  await ref.doc(data.id).set(data).then(() => {
 
     success = true
-    message = `${capitalize(collection)} saved successfuly!`
+    message = `${collection} saved successfuly!`
 
   }).catch(error => {
 

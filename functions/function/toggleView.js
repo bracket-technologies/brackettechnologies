@@ -86,17 +86,17 @@ const toggleView = ({ toggle, id }) => {
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
+  var children = [...lDiv.children]
   
   // append child
   setTimeout(() => {
   
     local.element.innerHTML = ""
-    var children = [...lDiv.children]
     children.map(el => {
   
       var id = el.id
-      setElement({ id })
       local.element.appendChild(el)
+      setElement({ id })
       starter({ id })
       
       value[id].style.transition = el.style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`

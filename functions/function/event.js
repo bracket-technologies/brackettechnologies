@@ -116,12 +116,13 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       }
       
       // onload event
-      if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _local.element })
+      if (event === "loaded" || event === "loading" || event === "beforeLoading") 
+      return myFn({ target: _local.element })
 
       var myFn1 = (e) => {
         
         local[`${event}-timer`] = setTimeout(async () => {
-
+          
           // body
           if (id === "body") id = mainID
           var __local = _window ? _window.value[id] : window.value[id]

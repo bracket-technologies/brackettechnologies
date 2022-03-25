@@ -66,11 +66,6 @@ const update = ({ id }) => {
   }*/
   
   var children = [...lDiv.children]
-  children.map(child => {
-
-    var id = child.id
-    setElement({ id })
-  })
 
   setTimeout(() => {
 
@@ -78,8 +73,8 @@ const update = ({ id }) => {
     children.map(child => {
 
       var id = child.id
-      value[id].element = child
       local.element.appendChild(child)
+      setElement({ id })
       starter({ id })
       
       value[id].style.transition = value[id].element.style.transition = value[id].reservedStyles.transition || null
