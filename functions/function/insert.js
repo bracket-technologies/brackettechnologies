@@ -1,6 +1,6 @@
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
-const { removeChildren } = require("./update")
+//const { removeChildren } = require("./update")
 const { starter } = require("./starter")
 const { generate } = require("./generate")
 const { setElement } = require("./setElement")
@@ -19,7 +19,7 @@ module.exports = {
     if (component || replace) {
 
       var _local = clone(component || replace)
-      if (data) _local.data = data
+      if (data) _local.data = clone(data)
       if (path) _local.derivations = (Array.isArray(path) ? path : path.split(".")) || []
 
       var innerHTML = toArray(_local)
@@ -55,7 +55,7 @@ module.exports = {
       elementId = elementId || value.id || el && el.id
       el = el || value.el || window.value[elementId].el
     }
-
+/*
     if (replace) {
 
       var _id = replace.id
@@ -63,10 +63,11 @@ module.exports = {
       replace.element.remove()
       delete window.value[_id]
     }
+*/
 
     if (index >= local.element.children.length) local.element.appendChild(el)
     else local.element.insertBefore(el, local.element.children[index])
-
+    
     setElement({ id: el.id })
     setTimeout(() => {
       starter({ id: el.id })

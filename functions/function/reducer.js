@@ -87,7 +87,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         var _once = path[1] === "once()"
         if (_once) path = path.slice(1)
-        else if (_id) id = _id
+        // else if (_id) id = _id
         
         // path = path.slice(1)
         path[0] = "()"

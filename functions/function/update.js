@@ -78,15 +78,13 @@ const update = ({ id }) => {
     children.map(child => {
 
       var id = child.id
-
       value[id].element = child
+      local.element.appendChild(child)
       starter({ id })
       
       value[id].style.transition = value[id].element.style.transition = value[id].reservedStyles.transition || null
       value[id].style.opacity = value[id].element.style.opacity = value[id].reservedStyles.opacity || "1"
       delete value[id].reservedStyles
-      
-      local.element.appendChild(child)
     })
     
     if (lDiv) {

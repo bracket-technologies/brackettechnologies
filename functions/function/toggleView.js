@@ -16,7 +16,7 @@ const toggleView = ({ toggle, id }) => {
     || value[id] && value[id].element.children[0] && value[id].element.children[0].id
   var parentId = toggleId ? value[toggleId].parent : id
   var local = {}
-  var viewId = toggle.viewId
+  var viewId = toggle.viewId || toggle.view
 
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
@@ -48,12 +48,12 @@ const toggleView = ({ toggle, id }) => {
   if (!local || !local.element) return
 
   // fadeout
-  var timer = toggle.timer || toggle.fadeout.timer || 200
+  var timer = toggle.timer || toggle.fadeout.timer || 0
 
   if (toggleId && value[toggleId] && value[toggleId].element) {
     
     value[toggleId].element.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
-    value[toggleId].element.style.transform = toggle.fadeout.after.transform || "translateX(-10%)"
+    value[toggleId].element.style.transform = toggle.fadeout.after.transform || null
     value[toggleId].element.style.opacity = toggle.fadeout.after.opacity || "0"
 
     // remove id from VALUE
@@ -72,12 +72,11 @@ const toggleView = ({ toggle, id }) => {
       value[id].style = {}
       value[id].style.transition = toggle.fadein.before.transition || null
       value[id].style.opacity = toggle.fadein.before.opacity || "0"
-      value[id].style.transform = toggle.fadein.before.transform || "translateX(10%)"
+      value[id].style.transform = toggle.fadein.before.transform || null
 
       return createElement({ id })
 
     }).join("")
-
       
   var lDiv = document.createElement("div")
   document.body.appendChild(lDiv)
@@ -85,35 +84,31 @@ const toggleView = ({ toggle, id }) => {
   lDiv.style.display = "none"
   lDiv.innerHTML = innerHTML
 
-  var children = [...lDiv.children]
-  children.map(child => {
-
-    var id = child.id
-    setElement({ id })
-  })
+  // timer
+  var timer = toggle.timer || toggle.fadein.timer || 0
   
-  // fadein
+  // append child
   setTimeout(() => {
+  
+    local.element.innerHTML = ""
+    var children = [...lDiv.children]
+    children.map(el => {
+  
+      var id = el.id
+      setElement({ id })
+      local.element.appendChild(el)
+      starter({ id })
+      
+      value[id].style.transition = el.style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`
+      value[id].style.transform = el.style.transform = toggle.fadein.after.transform || null
+      value[id].style.opacity = el.style.opacity = toggle.fadein.after.opacity || "1"
+    })
 
-    var child = children[0]
-
-    local.element = child
-    starter({ id: child.id })
-
-    var timer = toggle.timer || toggle.fadein.timer || 200
-    child.style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`
-    child.style.transform = toggle.fadein.after.transform || "translateX(0)"
-    child.style.opacity = toggle.fadein.after.opacity || "1"
-
-    // append innerhtml
-    local.element.appendChild(child)
-
-  }, toggle.timer || 200)
-
-  if (lDiv) {
-    document.body.removeChild(lDiv)
-    lDiv = null
-  }
+    if (lDiv) {
+      document.body.removeChild(lDiv)
+      lDiv = null
+    }
+  }, timer)
 }
 
-module.exports = {toggleView}
+module.exports = { toggleView }

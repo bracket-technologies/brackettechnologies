@@ -8,7 +8,7 @@ const setElement = ({ id }) => {
     var local = window.value[id]
     var global = window.global
     if (!local) return delete window.value[id]
-
+    
     // before loading event
     var beforeLoadingControls = local.controls && toArray(local.controls)
         .filter(control => control.event && control.event.split("?")[0].includes("beforeLoading"))

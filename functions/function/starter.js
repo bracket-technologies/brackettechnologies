@@ -11,7 +11,8 @@ const starter = ({ id, once }) => {
   const { defaultInputHandler } = require("./defaultInputHandler")
 
   var local = window.value[id]
-
+  if (!local) return
+  
   // status
   local.status = "Mounting Functions"
 
@@ -53,14 +54,7 @@ const starter = ({ id, once }) => {
   // if (local.style) setStyle({ id, style: local.style })
 
   // run starter for children
-  var children = [...local.element.children]
-
-  if (!once) children.map(child => {
-
-    var id = child.id
-    if (!id) return
-    starter({ id })
-  })
+  if (!once) [...local.element.children].map(child => starter({ id: child.id }))
 
   // lunch auto controls
   Object.entries(control).map(([type, control]) => {
