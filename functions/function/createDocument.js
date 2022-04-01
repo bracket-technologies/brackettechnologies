@@ -163,6 +163,7 @@ const createDocument = async ({ req, res, db }) => {
     var innerHTML = ""
     innerHTML = createElement({ _window: { global, value }, id: "root", req, res })
     innerHTML += createElement({ _window: { global, value }, id: "public", req, res })
+    global.idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 
     // meta
     global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
@@ -175,8 +176,9 @@ const createDocument = async ({ req, res, db }) => {
     var language = global.data.page[currentPage].language || "en"
     var direction = (language === "ar" || language === "fa") ? "rtl" : "ltr"
     
-    res.send(`<!DOCTYPE html>
-        <html lang="${language}" dir="${direction}" class="html">
+    res.send(
+    `<!DOCTYPE html>
+    <html lang="${language}" dir="${direction}" class="html">
         <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -186,6 +188,9 @@ const createDocument = async ({ req, res, db }) => {
             <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
             <title>${global.data.page[currentPage].title}</title>
             <link rel="stylesheet" href="/index.css"/>
+            <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
+            <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
+            <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
         </head>
         <body>
             ${innerHTML}
@@ -193,7 +198,7 @@ const createDocument = async ({ req, res, db }) => {
             <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>
         </body>
-        </html>`)
+    </html>`)
 }
 
 module.exports = { createDocument }

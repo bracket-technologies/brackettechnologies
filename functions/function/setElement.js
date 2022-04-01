@@ -4,7 +4,6 @@ const { toArray } = require("./toArray")
 
 const setElement = ({ id }) => {
 
-    var toReturn
     var local = window.value[id]
     var global = window.global
     if (!local) return delete window.value[id]
@@ -28,20 +27,8 @@ const setElement = ({ id }) => {
     local.element = document.getElementById(id)
     if (!local.element) return delete window.value[id]
 
-    // run starter for children
-    var children = [...local.element.children]
-    
-    children.map(el => {
-
-        if (toReturn) return
-        var id = el.id
-        if (!id) return
-        toReturn = setElement({ id })
-    })
-
     // status
     local.status = "Element Loaded"
-    return toReturn
 }
     
 module.exports = { setElement }

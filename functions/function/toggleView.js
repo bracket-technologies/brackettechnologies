@@ -33,7 +33,9 @@ const toggleView = ({ toggle, id }) => {
 
     global.currentPage = togglePage.split("/")[0]
     var title = global.data.page[global.currentPage].title
-    history.pushState(null, title, togglePage === "main" ? "/" : togglePage)
+    global.path = togglePage = togglePage === "main" ? "/" : togglePage
+    
+    history.pushState(null, title, togglePage)
     document.title = title
     local = value.root
     children = global.data.page[global.currentPage]["view-id"].map(view => global.data.view[view])
@@ -77,37 +79,28 @@ const toggleView = ({ toggle, id }) => {
       return createElement({ id })
 
     }).join("")
-      
-  var lDiv = document.createElement("div")
-  document.body.appendChild(lDiv)
-  lDiv.style.position = "absolute"
-  lDiv.style.display = "none"
-  lDiv.innerHTML = innerHTML
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
-  var children = [...lDiv.children]
+  local.element.innerHTML = ""
+  local.element.innerHTML = innerHTML
+
+  var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+  idList.map(id => setElement({ id }))
+  idList.map(id => starter({ id }))
   
-  // append child
+  // set visible
   setTimeout(() => {
   
-    local.element.innerHTML = ""
+    var children = [...local.element.children]
     children.map(el => {
   
       var id = el.id
-      local.element.appendChild(el)
-      setElement({ id })
-      starter({ id })
-      
       value[id].style.transition = el.style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`
       value[id].style.transform = el.style.transform = toggle.fadein.after.transform || null
       value[id].style.opacity = el.style.opacity = toggle.fadein.after.opacity || "1"
     })
-
-    if (lDiv) {
-      document.body.removeChild(lDiv)
-      lDiv = null
-    }
+    
   }, timer)
 }
 

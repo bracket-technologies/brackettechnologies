@@ -7,10 +7,9 @@ require("firebase/firestore")
 
 // config
 require('dotenv').config()
-var config = JSON.parse(process.env.FIREBASE_CONFIG)
 
 // firebase
-firebase.initializeApp(config)
+firebase.initializeApp({"apiKey": "AIzaSyB6fGcnoqzRjUUytNv6R05euQ6RYsBJK3o", "authDomain": "bracketjs.firebaseapp.com", "projectId": "bracketjs", "storageBucket": "bracketjs.appspot.com", "messagingSenderId": "869789439383", "appId": "1:869789439383:web:09ed5cda97e32200bba0d2"})
 var db = firebase.firestore()
 var storage = firebase.storage()
 

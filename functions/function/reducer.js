@@ -90,7 +90,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         // else if (_id) id = _id
         
         // path = path.slice(1)
-        path[0] = "()"
+        path[0] = path0 = "()"
+    }
+    
+    // )(:id
+    if (path0.slice(0, 2) === ")(") {
+
+        var args = path[0].split(":")
+
+        if (args[2]) {
+            var _timer = parseInt(args[2])
+            path[0] = `${args.slice(0, -1).join(":")}`
+            return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
+        }
+
+        var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
+        path.splice(1, 0, _id)
+        path[0] = ")("
     }
     
     if (path && (path.includes("equal()") || path.includes("equals()") || path.includes("eq()") || path.includes("=()"))) {
@@ -140,7 +156,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         object = path0 === "()" ? local
         : path0 === "index()" ? index
-        : path0 === "global()" ? _window ? _window.global : window.global
+        : (path0 === "global()" || path0 === ")(") ? _window ? _window.global : window.global
         : (path0 === "e()" || path0 === "event()") ? e
         : path0 === "undefined" ? undefined
         : path0 === "false" ? false

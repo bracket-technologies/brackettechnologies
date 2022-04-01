@@ -4,7 +4,7 @@ const { toParam } = require("./toParam")
 const { isArabic } = require("./isArabic")
 const { resize } = require("./resize")
 
-const starter = ({ id, once }) => {
+const starter = ({ id }) => {
   
   const { defaultEventHandler } = require("./event")
   const { controls } = require("./controls")
@@ -49,12 +49,6 @@ const starter = ({ id, once }) => {
 
   // resize
   if (local.type === "Input") resize({ id })
-
-  // setStyles
-  // if (local.style) setStyle({ id, style: local.style })
-
-  // run starter for children
-  if (!once) [...local.element.children].map(child => starter({ id: child.id }))
 
   // lunch auto controls
   Object.entries(control).map(([type, control]) => {

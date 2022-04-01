@@ -48,6 +48,17 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     // action does not exist
     actions.map(action => {
 
+      if (action.slice(0, 8) === "async():") {
+
+        var _actions = action.split(":").slice(1)
+        action = _actions[0]
+        params.awaiter = params.awaiter || ""
+        if (_actions.slice(1)[0]) params.awaiter += `async():${_actions.slice(1).join(":")}`
+        params.asyncer = true
+      }
+
+      if (action.slice(0, 7) === "coded()") return execute({ _window, controls, actions: global.codes[action], e, id, params })
+
       // action === name:id:timer<<condition
       var caseCondition = action.split('<<')[1]
       var name = action.split('<<')[0]

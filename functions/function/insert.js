@@ -55,27 +55,18 @@ module.exports = {
       elementId = elementId || value.id || el && el.id
       el = el || value.el || window.value[elementId].el
     }
-/*
-    if (replace) {
-
-      var _id = replace.id
-      removeChildren({ id: _id })
-      replace.element.remove()
-      delete window.value[_id]
-    }
-*/
 
     if (index >= local.element.children.length) local.element.appendChild(el)
     else local.element.insertBefore(el, local.element.children[index])
-    
-    setElement({ id: el.id })
-    setTimeout(() => {
-      starter({ id: el.id })
 
-      window.value[el.id].style.transition = window.value[el.id].element.style.transition = window.value[el.id].reservedStyles.transition || null
-      window.value[el.id].style.opacity = window.value[el.id].element.style.opacity = window.value[el.id].reservedStyles.opacity || "1"
-      delete window.value[el.id].reservedStyles
-    }, 0)
+    var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+  
+    idList.map(id => setElement({ id }))
+    idList.map(id => starter({ id }))
+
+    window.value[el.id].style.transition = window.value[el.id].element.style.transition = window.value[el.id].reservedStyles.transition || null
+    window.value[el.id].style.opacity = window.value[el.id].element.style.opacity = window.value[el.id].reservedStyles.opacity || "1"
+    delete window.value[el.id].reservedStyles
   
     // await params
     toAwait({ id, params })

@@ -30,22 +30,10 @@ document.addEventListener('click', e => {
     
 }, false)
 
-// not auth
-/*if (window.global.currentPage === "developer-editor") {
-    var await = [`global().project-auth=().search.data.code;document().body.innerHTML=You are not authenticated!<<global().project-auth.isnot().${getCookie({ name: "project-auth" })}`]
-    search({ search: { collection: "authentication", doc: global.data.project.id }, await, asyncer: "search", id: "body" })
-}*/
-
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
-
-setElement({ id: "public" })
-var toReturn = setElement({ id: "root" })
-
-setTimeout(() => {
-    starter({ id: "public" })
-    if (!toReturn) starter({ id: "root" })
-}, 0)
+global.idList.map(id => setElement({ id }))
+global.idList.map(id => starter({ id }))
 
 Object.entries(window.value).map(([id, value]) => {
     if (value.status === "Loading") delete window.value[id]

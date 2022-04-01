@@ -1,6 +1,3 @@
-const { clone } = require("./clone")
-const { override } = require("./merge")
-
 module.exports = {
   toAwait: ({ id, e, params = {} }) => {
 
@@ -9,19 +6,18 @@ module.exports = {
 
     if (!params.asyncer) return
     
-    var awaiter = clone(params.awaiter), awaits = clone(params.await), _params
+    var awaiter = params.awaiter, awaits = params.await, _params
 
     delete params.asyncer
     delete params.awaiter
     delete params.await
     
     // get params
-    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits.join(";"), mount: true })
+    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, mount: true })
     if (_params && _params.break) return
 
     // override params
-    if (_params) params = override(params, _params)
-
+    if (_params) params = { ...params, ..._params }
 
     if (awaiter) execute({ id, e, actions: awaiter, params })
   }

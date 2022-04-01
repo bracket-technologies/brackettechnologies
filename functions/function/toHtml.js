@@ -110,7 +110,7 @@ module.exports = {
       _local.style = local.link.style
       if (_local.style) style = toStyle({ _window, id })
 
-      tag = `<a id=${id} href=${local.link.path || global.host} style='${style}'>${tag}</a>`
+      tag = `<a id='${id}' href=${local.link.path || global.host} style='${style}'>${tag}</a>`
     }
 
     return tag

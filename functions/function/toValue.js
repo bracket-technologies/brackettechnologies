@@ -113,12 +113,12 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
   var path = typeof value === "string" ? value.split(".") : []
   
   /* value */
-  if (value === "global()") value = _window ? _window.global : window.global
-  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
+  if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
   else if (path[0].includes("()") && path.length === 1) value = reducer({ _window, id, e, path, params, object: object || (_window ? _window.value : window.value), _, req, res })
-  else if (path[1]) value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
+  else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
   else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res })
   else if (value === "()") value = local
+  else if (value === "global()" || value === ")(") value = _window ? _window.global : window.global
   else if (typeof value === "boolean") {}
   else if (!isNaN(value)) value = parseFloat(value)
   else if (value === undefined || value === "generate") value = generate()

@@ -7,6 +7,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
   const { toApproval } = require("./toApproval")
 
   var localId = id
+  var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
   var params = {}
@@ -33,6 +34,17 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     } else key = param
 
     // await
+    if (key.slice(0, 8) === "async():") {
+
+      var awaiter = param.split(":").slice(1)
+      if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
+      var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount })
+      params = { ...params, ..._params }
+      params.await = params.await || ""
+      if (awaiter.slice(1)[0]) return params.await += `async():${awaiter.slice(1).join(":")};`
+    }
+
+    // await
     if (key.includes("await().")) {
 
       var awaiter = param.split("await().")[1]
@@ -47,14 +59,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
         return params.await.push(param)
       }
     }
-
-    // await
-    /* if (value && value.includes("await.")) {
-      
-      var _value = value.split("await.")[1]
-      params.await = toArray(params.await) || []
-      return params.await.push(`${key}=${_value}`)
-    } */
 
     // event
     if (key.includes("event.") && !key.split("event.")[0]) {
@@ -76,41 +80,11 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
 
     var keys = typeof key === "string" ? key.split(".") : [], timer
 
-    // id
-    /* if (key && key.slice(0, 3) === "():") {
-
-      var key0 = key.split(".")[0]
-      var newId = key0.split(":")[1]
-      timer = key0.split(":")[2]
-      key = `${key.split(".")[0].split(":")[0]}.${key.split(".").slice(1).join(".")}`
-      keys = key.split(".")
-      
-      // id
-      var _id = toValue({ _window, id, value: newId, params, e, req, res })
-      if (_id) id = _id
-    }
-
-    // local
-    var local = _window ? _window.value[id] : window.value[id]
-    */
-
-    // array id
-    /*if (Array.isArray(id)) {
-
-      id.slice(1).map(id => {
-        var state = generate()
-        global[state] = value
-        toParam({ id, e, string: `${key}=global().${state}`, req, res })
-      })
-
-      id = id[0]
-    }*/
-
     // conditions
     if (key && key.includes("<<")) {
       
       var condition = key.split("<<")[1]
-      var approved = toApproval({ id, e, string: condition, req, res })
+      var approved = toApproval({ id, e, string: condition, req, res, _window })
       if (!approved) return
       key = key.split("<<")[0]
     }
@@ -125,10 +99,10 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     }
 
     // object structure
-    if (path.length > 1 || path[0].includes("()")) {
+    if (path.length > 1 || path[0].includes("()") || path[0].includes(")(")) {
       
       // mount state & value
-      if (path[0].includes("()")) {
+      if (path[0].includes("()") || path[0].includes(")(")) {
       
         var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res })
         if (timer) {

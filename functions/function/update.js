@@ -49,44 +49,23 @@ const update = ({ id }) => {
       return createElement({ id })
 
     }).join("")
-    
-      
-  var lDiv = document.createElement("div")
-  document.body.appendChild(lDiv)
-  lDiv.style.position = "absolute"
-  lDiv.style.display = "none"
-  lDiv.innerHTML = innerHTML
-
-  // onloaded
-  /*if (id === "root" && global.data.page[global.currentPage].controls) {
-
-    var loadedEventControls = toArray(global.data.page[global.currentPage].controls)
-      .find(controls => controls.event.split("?")[0].includes("loaded"))
-    if (loadedEventControls) controls({ id: "root", controls: loadedEventControls })
-  }*/
   
-  var children = [...lDiv.children]
+  local.element.innerHTML = ""
+  local.element.innerHTML = innerHTML
 
-  setTimeout(() => {
+  var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 
-    local.element.innerHTML = ""
-    children.map(child => {
+  idList.map(id => setElement({ id }))
+  idList.map(id => starter({ id }))
 
-      var id = child.id
-      local.element.appendChild(child)
-      setElement({ id })
-      starter({ id })
-      
-      value[id].style.transition = value[id].element.style.transition = value[id].reservedStyles.transition || null
-      value[id].style.opacity = value[id].element.style.opacity = value[id].reservedStyles.opacity || "1"
-      delete value[id].reservedStyles
-    })
-    
-    if (lDiv) {
-      document.body.removeChild(lDiv)
-      lDiv = null
-    }
-  }, 0)
+  var children = [...local.element.children]
+  children.map(el => {
+
+    var id = el.id
+    value[id].style.transition = value[id].element.style.transition = value[id].reservedStyles.transition || null
+    value[id].style.opacity = value[id].element.style.opacity = value[id].reservedStyles.opacity || "1"
+    delete value[id].reservedStyles
+  })
 }
 
 const removeChildren = ({ id }) => {
@@ -114,4 +93,4 @@ const removeChildren = ({ id }) => {
   })
 }
 
-module.exports = {update, removeChildren}
+module.exports = { update, removeChildren }
