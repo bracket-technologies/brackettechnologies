@@ -1,6 +1,5 @@
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
-const { toAwait } = require("./toAwait")
 const { compare } = require("./compare")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { clone } = require("./clone")
@@ -56,9 +55,6 @@ const filter = ({ filter = {}, id, e, ...params }) => {
   
   global[Data] = data
   local.filter = { success: true, data }
-
-  // await params
-  toAwait({ id, e, params })
 }
 
 module.exports = {filter}

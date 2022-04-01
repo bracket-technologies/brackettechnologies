@@ -24,9 +24,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     const { remove } = require("./remove")
     const { toValue } = require("./toValue")
     const { execute } = require("./execute")
+    const { toParam } = require("./toParam")
 
     var local = _window ? _window.value[id] : window.value[id], breakRequest, coded, mainId = id
     var global = _window ? _window.global : window.global
+
+    if (path.join(".").includes("=")) return toParam({ req, res, _window, e, string: path.join("."), _, object })
 
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
@@ -483,7 +486,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var element = o.element
             if (o.templated || o.link) element = _window ? _window.value[o.parent].element : window.value[o.parent].element
 
-            var nextSibling = element.nextSibling
+            var nextSibling = element.nextElementSibling
             if (!nextSibling) return
             var _id = nextSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
@@ -494,7 +497,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var element = o.element
             if (o.templated || o.link) element = _window ? _window.value[o.parent].element : window.value[o.parent].element
 
-            var nextSibling = element.nextSibling
+            var nextSibling = element.nextElementSibling
             while (nextSibling) {
                 var _id = nextSibling.id
                 nextSiblings.push(_window ? _window.value[_id] : window.value[_id])
@@ -552,7 +555,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (_el) element = _el.element
             else return
             
-            var previousSibling = element.previousSibling
+            var previousSibling = element.previousElementSibling
             if (!previousSibling) return
             var _id = previousSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
@@ -1389,7 +1392,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = o.toLowerCase()
             
-        } else if (k0 === "length()") {
+        } else if (k0 === "length()" || k0 === "len()") {
             
             if (Array.isArray(o)) answer = o.length
             else if (typeof o === "string") answer = o.split("").length

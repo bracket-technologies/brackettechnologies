@@ -3203,6 +3203,7 @@ const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
 const _method = require("./function")
 const { toCode } = require("./toCode")
+const toAwait = require("./toAwait")
 
 const execute = ({ _window, controls, actions, e, id, params }) => {
 
@@ -3306,6 +3307,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
           }
           
           await _method[name]({ _window, ...params, e, id })
+          if (name !== "search" && name !== "save" && name !== "erase" && name !== "searchArduino" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
         })
       }
 
@@ -3331,7 +3333,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 module.exports = { execute }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./function":63,"./toApproval":104,"./toArray":105,"./toCode":109,"./toParam":116,"./toValue":122}],57:[function(require,module,exports){
+},{"./function":63,"./toApproval":104,"./toArray":105,"./toAwait":106,"./toCode":109,"./toParam":116,"./toValue":122}],57:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -3368,7 +3370,6 @@ module.exports = {
 },{}],60:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
-const { toAwait } = require("./toAwait")
 const { compare } = require("./compare")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { clone } = require("./clone")
@@ -3424,14 +3425,11 @@ const filter = ({ filter = {}, id, e, ...params }) => {
   
   global[Data] = data
   local.filter = { success: true, data }
-
-  // await params
-  toAwait({ id, e, params })
 }
 
 module.exports = {filter}
 
-},{"./clone":36,"./compare":38,"./isEqual":73,"./toArray":105,"./toAwait":106,"./toFirebaseOperator":112}],61:[function(require,module,exports){
+},{"./clone":36,"./compare":38,"./isEqual":73,"./toArray":105,"./toFirebaseOperator":112}],61:[function(require,module,exports){
 require('dotenv').config()
 
 module.exports = {}//firebase
@@ -3831,7 +3829,6 @@ const { starter } = require("./starter")
 const { generate } = require("./generate")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
-const { toAwait } = require("./toAwait")
 const { toParam } = require("./toParam")
 
 module.exports = {
@@ -3893,9 +3890,6 @@ module.exports = {
     window.value[el.id].style.transition = window.value[el.id].element.style.transition = window.value[el.id].reservedStyles.transition || null
     window.value[el.id].style.opacity = window.value[el.id].element.style.opacity = window.value[el.id].reservedStyles.opacity || "1"
     delete window.value[el.id].reservedStyles
-  
-    // await params
-    toAwait({ id, params })
     
     if (lDiv) {
       document.body.removeChild(lDiv)
@@ -3903,7 +3897,7 @@ module.exports = {
     }
   }
 }
-},{"./clone":36,"./createElement":45,"./generate":64,"./setElement":95,"./starter":98,"./toArray":105,"./toAwait":106,"./toParam":116}],72:[function(require,module,exports){
+},{"./clone":36,"./createElement":45,"./generate":64,"./setElement":95,"./starter":98,"./toArray":105,"./toParam":116}],72:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -4359,9 +4353,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     const { remove } = require("./remove")
     const { toValue } = require("./toValue")
     const { execute } = require("./execute")
+    const { toParam } = require("./toParam")
 
     var local = _window ? _window.value[id] : window.value[id], breakRequest, coded, mainId = id
     var global = _window ? _window.global : window.global
+
+    if (path.join(".").includes("=")) return toParam({ req, res, _window, e, string: path.join("."), _, object })
 
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
@@ -4818,7 +4815,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var element = o.element
             if (o.templated || o.link) element = _window ? _window.value[o.parent].element : window.value[o.parent].element
 
-            var nextSibling = element.nextSibling
+            var nextSibling = element.nextElementSibling
             if (!nextSibling) return
             var _id = nextSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
@@ -4829,7 +4826,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var element = o.element
             if (o.templated || o.link) element = _window ? _window.value[o.parent].element : window.value[o.parent].element
 
-            var nextSibling = element.nextSibling
+            var nextSibling = element.nextElementSibling
             while (nextSibling) {
                 var _id = nextSibling.id
                 nextSiblings.push(_window ? _window.value[_id] : window.value[_id])
@@ -4887,7 +4884,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (_el) element = _el.element
             else return
             
-            var previousSibling = element.previousSibling
+            var previousSibling = element.previousElementSibling
             if (!previousSibling) return
             var _id = previousSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
@@ -5724,7 +5721,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = o.toLowerCase()
             
-        } else if (k0 === "length()") {
+        } else if (k0 === "length()" || k0 === "len()") {
             
             if (Array.isArray(o)) answer = o.length
             else if (typeof o === "string") answer = o.split("").length
@@ -6337,7 +6334,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./capitalize":34,"./clone":36,"./cookie":41,"./decode":49,"./execute":56,"./exportJson":57,"./focus":62,"./generate":64,"./getDateTime":65,"./getDaysInMonth":66,"./getType":69,"./importJson":70,"./isEqual":73,"./merge":77,"./position":83,"./remove":87,"./toArray":105,"./toClock":108,"./toId":114,"./toNumber":115,"./toPrice":118,"./toSimplifiedDate":119,"./toValue":122}],86:[function(require,module,exports){
+},{"./capitalize":34,"./clone":36,"./cookie":41,"./decode":49,"./execute":56,"./exportJson":57,"./focus":62,"./generate":64,"./getDateTime":65,"./getDaysInMonth":66,"./getType":69,"./importJson":70,"./isEqual":73,"./merge":77,"./position":83,"./remove":87,"./toArray":105,"./toClock":108,"./toId":114,"./toNumber":115,"./toParam":116,"./toPrice":118,"./toSimplifiedDate":119,"./toValue":122}],86:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
@@ -7003,27 +7000,27 @@ module.exports = {setPosition}
 
 },{}],97:[function(require,module,exports){
 const { reducer } = require("./reducer")
-const { toAwait } = require("./toAwait")
 const { toNumber } = require("./toNumber")
 
-const sort = ({ sort = {}, id, e, ...params}) => {
+const sort = ({ sort = {}, id, e }) => {
 
   var global = window.global
   var local = window.value[id]
   if (!local) return
 
-  var sort = params.sort || {}
   var Data = sort.Data || local.Data
-  var options = global[`${Data}-options`]
+  var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
 
   options.sort = options.sort === "ascending" ? "descending" : "ascending"
   var path = (sort.path || "").split(".")
   let isDate = false
 
+  if (!Array.isArray(data) && typeof data === "object") data = Object.values(data)
+
   data.sort((a, b) => {
 
-    a = reducer({ id, path, object: a }) || "!"
+    a = reducer({ id, path, object: a, e }) || "!"
     if (a !== undefined) {
       a = a.toString()
 
@@ -7040,7 +7037,7 @@ const sort = ({ sort = {}, id, e, ...params}) => {
       else a = toNumber(a)
     }
 
-    b = reducer({ id, path, object: b }) || "!"
+    b = reducer({ id, path, object: b, e }) || "!"
     if (b !== undefined) {
       b = b.toString()
 
@@ -7113,13 +7110,10 @@ const sort = ({ sort = {}, id, e, ...params}) => {
   })
 
   global[Data] = data
-
-  // await params
-  toAwait({ id, e, params })
 }
 
 module.exports = {sort}
-},{"./reducer":85,"./toAwait":106,"./toNumber":115}],98:[function(require,module,exports){
+},{"./reducer":85,"./toNumber":115}],98:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -7976,7 +7970,7 @@ const { reducer } = require("./reducer")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) => {
   const { toApproval } = require("./toApproval")
 
   var localId = id
@@ -7984,6 +7978,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
 
   if (typeof string !== "string" || !string) return string || {}
   var params = {}
+
+  if (string.includes("coded()") && string.length === 12) string = global.codes[string]
 
   string.split(";").map((param) => {
     
@@ -8044,7 +8040,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     }
     
     if (value === undefined) value = generate()
-    else value = toValue({ _window, id, e, value, params, req, res })
+    else value = toValue({ _window, id, e, value, params, req, res, _ })
 
     // condition not approved
     if (value === "*return*") return
@@ -8057,7 +8053,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     if (key && key.includes("<<")) {
       
       var condition = key.split("<<")[1]
-      var approved = toApproval({ id, e, string: condition, req, res, _window })
+      var approved = toApproval({ id, e, string: condition, req, res, _window, _ })
       if (!approved) return
       key = key.split("<<")[0]
     }
@@ -8072,12 +8068,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     }
 
     // object structure
-    if (path.length > 1 || path[0].includes("()") || path[0].includes(")(")) {
+    if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
       
       // mount state & value
-      if (path[0].includes("()") || path[0].includes(")(")) {
+      if (path[0].includes("()") || path[0].includes(")(") || object) {
       
-        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res })
+        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object })
         if (timer) {
           
           timer = parseInt(timer)
@@ -8088,7 +8084,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
 
       } else {
         
-        if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res })
+        if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _ })
 
         path.reduce((obj, key, index) => {
 
@@ -8298,12 +8294,17 @@ const { reducer } = require("./reducer")
 const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
 
   const { toApproval } = require("./toApproval")
+  const { toParam } = require("./toParam")
 
   var local = _window ? _window.value[id] : window.value[id]
   var global = _window ? _window.global : window.global
 
   if (!value) return value
 
+  // value is a param
+  if (value.includes("=")) return toParam({ req, res, _window, id, e, string: value, _, object })
+
+  // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
   
   // return const value
@@ -8313,6 +8314,55 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
   // return await value
   if (value.split("await().")[1] !== undefined && !value.split("await().")[0])
   return value.split("await().")[1]
+    
+  // auto question
+  if (value.includes("_question")) value = value.split("_question").join("?")
+  
+  // auto question
+  if (value.includes("_quest")) value = value.split("_quest").join("?")
+
+  // auto equal
+  if (value.includes("_equal")) value = value.split("_equal").join("=")
+
+  // auto semicolon
+  if (value.includes("_semi")) value = value.split("_semi").join(";")
+  
+  // auto comma
+  if (value.includes("_comma")) value = value.split("_comma").join(",")
+  
+  // auto currency
+  if (value.includes("_currency")) value = value.split("_currency").join(global.currency || "$")
+
+  // conditions
+  if (value.includes("<<")) {
+
+    var condition = value.split("<<")[1]
+    var approved = toApproval({ _window, id, e, string: condition, _, req, res })
+    if (!approved) return "*return*"
+    value = value.split("<<")[0]
+  }
+
+  var path = typeof value === "string" ? value.split(".") : []
+  
+  /* value */
+  if (value === "global()" || value === ")(") value = _window ? _window.global : window.global
+  else if (object) value = reducer({ _window, id, object, path, value, params, _, e, req, res })
+  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
+  else if (path[0].includes("()") && path.length === 1) value = reducer({ _window, id, e, path, params, object: object || (_window ? _window.value : window.value), _, req, res })
+  else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
+  else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res })
+  else if (value === "()") value = local
+  else if (typeof value === "boolean") {}
+  else if (!isNaN(value)) value = parseFloat(value)
+  else if (value === undefined || value === "generate") value = generate()
+  else if (value === "e()" || value === "event()") value = e
+  else if (value === "today()") value = new Date()
+  else if (value === "keys()") value = Object.keys(value)
+  else if (value === "values()") value = Object.values(value)
+  else if (value === "undefined") value = undefined
+  else if (value === "false") value = false
+  else if (value === "true") value = true
+  else if (value === "_") value = _
 
   // _
   if (value === "_") return _
@@ -8364,73 +8414,13 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
 
   // auto space
   if (value === "&nbsp") return "&nbsp;"
-    
-  // auto question
-  if (value.includes("_question")) value = value.split("_question").join("?")
-  
-  // auto question
-  if (value.includes("_quest")) value = value.split("_quest").join("?")
-
-  // auto equal
-  if (value.includes("_equal")) value = value.split("_equal").join("=")
-
-  // auto semicolon
-  if (value.includes("_semi")) value = value.split("_semi").join(";")
-  
-  // auto comma
-  if (value.includes("_comma")) value = value.split("_comma").join(",")
-  
-  // auto currency
-  if (value.includes("_currency")) value = value.split("_currency").join(global.currency || "$")
-
-  /*
-  // id
-  if (value.slice(0, 3) === "():") {
-
-    var newId = value.split(":")[1]
-    var _id = toValue({ _window, value: newId, params, _, id, e, req, res })
-    if (_id) id = _id
-    value = `().${value.split(".").slice(1).join(".")}`
-  }
-*/
-  //var local = _window ? _window.value[id] : window.value[id]
-
-  // conditions
-  if (value.includes("<<")) {
-
-    var condition = value.split("<<")[1]
-    var approved = toApproval({ _window, id, e, string: condition, _, req, res })
-    if (!approved) return "*return*"
-    value = value.split("<<")[0]
-  }
-
-  var path = typeof value === "string" ? value.split(".") : []
-  
-  /* value */
-  if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
-  else if (path[0].includes("()") && path.length === 1) value = reducer({ _window, id, e, path, params, object: object || (_window ? _window.value : window.value), _, req, res })
-  else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
-  else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res })
-  else if (value === "()") value = local
-  else if (value === "global()" || value === ")(") value = _window ? _window.global : window.global
-  else if (typeof value === "boolean") {}
-  else if (!isNaN(value)) value = parseFloat(value)
-  else if (value === undefined || value === "generate") value = generate()
-  else if (value === "e()" || value === "event()") value = e
-  else if (value === "today()") value = new Date()
-  else if (value === "keys()") value = Object.keys(value)
-  else if (value === "values()") value = Object.values(value)
-  else if (value === "undefined") value = undefined
-  else if (value === "false") value = false
-  else if (value === "true") value = true
-  else if (value === "_") value = _
 
   return value
 }
 
 module.exports = { toValue }
 
-},{"./generate":64,"./reducer":85,"./toApproval":104}],123:[function(require,module,exports){
+},{"./generate":64,"./reducer":85,"./toApproval":104,"./toParam":116}],123:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")

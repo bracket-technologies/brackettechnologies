@@ -4,6 +4,7 @@ const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
 const _method = require("./function")
 const { toCode } = require("./toCode")
+const toAwait = require("./toAwait")
 
 const execute = ({ _window, controls, actions, e, id, params }) => {
 
@@ -107,6 +108,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
           }
           
           await _method[name]({ _window, ...params, e, id })
+          if (name !== "search" && name !== "save" && name !== "erase" && name !== "searchArduino" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
         })
       }
 

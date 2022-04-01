@@ -3,7 +3,7 @@ const { reducer } = require("./reducer")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) => {
   const { toApproval } = require("./toApproval")
 
   var localId = id
@@ -11,6 +11,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
 
   if (typeof string !== "string" || !string) return string || {}
   var params = {}
+
+  if (string.includes("coded()") && string.length === 12) string = global.codes[string]
 
   string.split(";").map((param) => {
     
@@ -71,7 +73,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     }
     
     if (value === undefined) value = generate()
-    else value = toValue({ _window, id, e, value, params, req, res })
+    else value = toValue({ _window, id, e, value, params, req, res, _ })
 
     // condition not approved
     if (value === "*return*") return
@@ -84,7 +86,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     if (key && key.includes("<<")) {
       
       var condition = key.split("<<")[1]
-      var approved = toApproval({ id, e, string: condition, req, res, _window })
+      var approved = toApproval({ id, e, string: condition, req, res, _window, _ })
       if (!approved) return
       key = key.split("<<")[0]
     }
@@ -99,12 +101,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
     }
 
     // object structure
-    if (path.length > 1 || path[0].includes("()") || path[0].includes(")(")) {
+    if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
       
       // mount state & value
-      if (path[0].includes("()") || path[0].includes(")(")) {
+      if (path[0].includes("()") || path[0].includes(")(") || object) {
       
-        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res })
+        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object })
         if (timer) {
           
           timer = parseInt(timer)
@@ -115,7 +117,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount }) => {
 
       } else {
         
-        if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res })
+        if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _ })
 
         path.reduce((obj, key, index) => {
 

@@ -1,25 +1,25 @@
 const { reducer } = require("./reducer")
-const { toAwait } = require("./toAwait")
 const { toNumber } = require("./toNumber")
 
-const sort = ({ sort = {}, id, e, ...params}) => {
+const sort = ({ sort = {}, id, e }) => {
 
   var global = window.global
   var local = window.value[id]
   if (!local) return
 
-  var sort = params.sort || {}
   var Data = sort.Data || local.Data
-  var options = global[`${Data}-options`]
+  var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
 
   options.sort = options.sort === "ascending" ? "descending" : "ascending"
   var path = (sort.path || "").split(".")
   let isDate = false
 
+  if (!Array.isArray(data) && typeof data === "object") data = Object.values(data)
+
   data.sort((a, b) => {
 
-    a = reducer({ id, path, object: a }) || "!"
+    a = reducer({ id, path, object: a, e }) || "!"
     if (a !== undefined) {
       a = a.toString()
 
@@ -36,7 +36,7 @@ const sort = ({ sort = {}, id, e, ...params}) => {
       else a = toNumber(a)
     }
 
-    b = reducer({ id, path, object: b }) || "!"
+    b = reducer({ id, path, object: b, e }) || "!"
     if (b !== undefined) {
       b = b.toString()
 
@@ -109,9 +109,6 @@ const sort = ({ sort = {}, id, e, ...params}) => {
   })
 
   global[Data] = data
-
-  // await params
-  toAwait({ id, e, params })
 }
 
 module.exports = {sort}

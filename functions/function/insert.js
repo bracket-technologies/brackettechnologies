@@ -5,7 +5,6 @@ const { starter } = require("./starter")
 const { generate } = require("./generate")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
-const { toAwait } = require("./toAwait")
 const { toParam } = require("./toParam")
 
 module.exports = {
@@ -67,9 +66,6 @@ module.exports = {
     window.value[el.id].style.transition = window.value[el.id].element.style.transition = window.value[el.id].reservedStyles.transition || null
     window.value[el.id].style.opacity = window.value[el.id].element.style.opacity = window.value[el.id].reservedStyles.opacity || "1"
     delete window.value[el.id].reservedStyles
-  
-    // await params
-    toAwait({ id, params })
     
     if (lDiv) {
       document.body.removeChild(lDiv)
