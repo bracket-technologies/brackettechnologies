@@ -110,7 +110,7 @@ var createElement = ({ _window, id, req, res }) => {
     delete local.path
     delete local.data
   }
-
+  
   // path & derivations
   var path = (typeof local.path === "string" || typeof local.path === "number") ? local.path.toString().split(".") : []
       

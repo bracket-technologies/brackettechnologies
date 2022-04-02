@@ -13,7 +13,7 @@ var simpleMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep
 var IntoEn = (string) => string.replace(/[\u06F0-\u06F9\u0660-\u0669]/g, d => ((c=d.charCodeAt()) > 1775 ? c - 1776 : c - 1632))
 
 module.exports = {
-    toSimplifiedDate: ({ timestamp, lang, simplified }) => {
+    toSimplifiedDate: ({ timestamp, lang, simplified, time }) => {
 
         timestamp = parseInt(timestamp)
         var date = new Date(timestamp)
@@ -22,21 +22,21 @@ module.exports = {
         var dayofMonth = date.getDate()
         var month = date.getMonth()
         var year = date.getFullYear()
+        var hours = date.getHours()
+        var mins = date.getMinutes()
+        var secs = date.getSeconds()
 
         var simplifiedDate
 
-        if (lang === "ar") {
-            simplifiedDate = daysAr[dayofWeek] + " " + dayofMonth + " " + monthsAr[month] + " " + year
-            simplifiedDate = toArabicNum(simplifiedDate)
-        }
+        if (lang === "ar") simplifiedDate = daysAr[dayofWeek] + " " + dayofMonth + " " + monthsAr[month] + " " + year
         
-        if (lang === "en" && simplified) {
-            simplifiedDate = simpleDays[dayofWeek] + " " + dayofMonth + " " + simpleMonths[month] + " " + year
-        }
+        else if (lang === "en" && simplified) simplifiedDate = simpleDays[dayofWeek] + " " + dayofMonth + " " + simpleMonths[month] + " " + year
         
-        if (lang === "en" && !simplified) {
-            simplifiedDate = days[dayofWeek] + " " + dayofMonth + " " + months[month] + " " + year
-        }
+        else if (lang === "en" && !simplified) simplifiedDate = days[dayofWeek] + " " + dayofMonth + " " + months[month] + " " + year
+
+        if (time) simplifiedDate += " | الساعة " + hours + ":" + mins
+
+        if (lang === "ar") simplifiedDate = toArabicNum(simplifiedDate)
 
         return simplifiedDate
     }

@@ -13,8 +13,8 @@ const sort = ({ sort = {}, id, e }) => {
 
   options.sort = options.sort === "ascending" ? "descending" : "ascending"
   var path = (sort.path || "").split(".")
-  let isDate = false
-
+  var isDate = false
+  
   if (!Array.isArray(data) && typeof data === "object") data = Object.values(data)
 
   data.sort((a, b) => {

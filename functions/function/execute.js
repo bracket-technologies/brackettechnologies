@@ -18,7 +18,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
   toArray(actions).map(_action => {
     _action = toCode({ _window, string: _action, e })
     
-    var awaiter = []
+    var awaiter = ""
     
     // stop after actions
     if (local && local.break) return
@@ -30,7 +30,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     var idList = actions[3] || localId
 
     // id list
-    idList = toValue({ _window, id, value: idList, e })
+    if (actions[3]) idList = toValue({ _window, id, value: idList, e })
     
     actions = actions[0].split(";")
 
@@ -49,8 +49,8 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     // action does not exist
     actions.map(action => {
 
-      if (action.slice(0, 8) === "async():") {
-
+      if (action.includes("async():")) {
+        
         var _actions = action.split(":").slice(1)
         action = _actions[0]
         params.awaiter = params.awaiter || ""
@@ -58,8 +58,9 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
         params.asyncer = true
       }
 
-      if (action.slice(0, 7) === "coded()") return execute({ _window, controls, actions: global.codes[action], e, id, params })
-
+      // action is coded
+      if (action.slice(0, 7) === "coded()") return execute({ _window, actions: global.codes[action], e, id, params })
+      
       // action === name:id:timer<<condition
       var caseCondition = action.split('<<')[1]
       var name = action.split('<<')[0]
@@ -67,8 +68,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       var timer = name.split(":")[2]
       if (timer) timer = parseInt(timer)
       name = name.split(':')[0]
-
-      // action:id
+      
       if (actionid) actionid = toValue({ _window, value: actionid, params, id: localId, e })
       
       const myFn = () => {
@@ -81,7 +81,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
           if (k === "async()") isAsyncer = true
           else if (k === "await()") {
             isAwaiter = true
-            awaiter.push(action.split("await().")[1])
+            awaiter += action.split("await().")[1] + ";"
           }
         })
 
@@ -108,8 +108,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
           }
           
           await _method[name]({ _window, ...params, e, id })
-          if (name !== "search" && name !== "save" && name !== "erase" && name !== "searchArduino" && name !== "importJson" && name !== "upload") 
-            toAwait({ id, e, params })
+          if (name !== "search" && name !== "save" && name !== "erase" && name !== "searchArduino" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
         })
       }
 

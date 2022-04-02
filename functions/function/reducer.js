@@ -29,7 +29,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     var local = _window ? _window.value[id] : window.value[id], breakRequest, coded, mainId = id
     var global = _window ? _window.global : window.global
 
-    if (path.join(".").includes("=")) return toParam({ req, res, _window, e, string: path.join("."), _, object })
+    if (path.join(".").includes("=") || path.join(".").includes(";")) return toParam({ req, res, _window, id, e, string: path.join("."), _, object })
 
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
@@ -74,6 +74,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
     
+    if (path0.slice(0, 2) === ")(") {
+
+        var args = path[0].split(":")
+
+        if (args[2]) {
+            var _timer = parseInt(args[2])
+            path[0] = `${args.slice(0, -1).join(":")}`
+            return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
+        }
+
+        var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
+        if (_id === undefined) _id = args[1]
+        path.splice(1, 0, _id)
+        path[0] = path0 = ")("
+    }
+    
     // ():id || ():id.once()
     if (path0.slice(0, 2) === "()") {
 
@@ -94,22 +110,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         // path = path.slice(1)
         path[0] = path0 = "()"
-    }
-    
-    // )(:id
-    if (path0.slice(0, 2) === ")(") {
-
-        var args = path[0].split(":")
-
-        if (args[2]) {
-            var _timer = parseInt(args[2])
-            path[0] = `${args.slice(0, -1).join(":")}`
-            return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
-        }
-
-        var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
-        path.splice(1, 0, _id)
-        path[0] = ")("
     }
     
     if (path && (path.includes("equal()") || path.includes("equals()") || path.includes("eq()") || path.includes("=()"))) {
@@ -159,7 +159,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         object = path0 === "()" ? local
         : path0 === "index()" ? index
-        : (path0 === "global()" || path0 === ")(") ? _window ? _window.global : window.global
+        : (path0 === "global()" || path0 === ")(")? _window ? _window.global : window.global
         : (path0 === "e()" || path0 === "event()") ? e
         : path0 === "undefined" ? undefined
         : path0 === "false" ? false
@@ -174,7 +174,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         if (!object && path[0]) {
             
-            if (path0 === "generate()") return generate()
+            if (path0 === "generate()") {
+
+                var args = path[0].split(":")
+                var length = toValue({ req, res, _window, id, e, _, value: args[1], params }) || 5
+                return generate(length)
+            } 
             if (path0 === "desktop()") return global.device.type === "desktop"
             if (path0 === "tablet()") return global.device.type === "tablet"
             if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
@@ -282,6 +287,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     
     var answer = path.length === 0 ? object : path.reduce((o, k, i) => {
         
+        if (k === undefined) console.log(path);
+
         k = k.toString()
         k0 = k.split(":")[0]
         
@@ -453,16 +460,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var _parent, _o
 
-            if (local.status === "Mounted") _parent = o.element.parentNode.id
+            if (o.status === "Mounted") _parent = o.element.parentNode.id
             else _parent = o.parent
             _parent = _window ? _window.value[_parent] : window.value[_parent]
 
             if (o.templated || o.link) {
                 _parent = _parent.element.parentNode.id
                 _parent = _window ? _window.value[_parent] : window.value[_parent]
-                _o = _window ? _window.value[_parent] : window.value[_parent]
+                _parent = _window ? _window.value[_parent] : window.value[_parent]
             }
-
+            
             answer = _parent
             
         } else if (k0 === "siblings()") {
@@ -485,7 +492,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var element = o.element
             if (o.templated || o.link) element = _window ? _window.value[o.parent].element : window.value[o.parent].element
-
+            
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
             var _id = nextSibling.id
@@ -498,10 +505,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o.templated || o.link) element = _window ? _window.value[o.parent].element : window.value[o.parent].element
 
             var nextSibling = element.nextElementSibling
+            if (!nextSibling) return
             while (nextSibling) {
                 var _id = nextSibling.id
                 nextSiblings.push(_window ? _window.value[_id] : window.value[_id])
-                nextSibling = (_window ? _window.value[_id] : window.value[_id]).element.nextSibling
+                nextSibling = (_window ? _window.value[_id] : window.value[_id]).element.nextElementSibling
             }
             answer = nextSiblings
 
@@ -549,7 +557,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var element, _el = o.element
             if (o.templated || o.link) _el = _window ? _window.value[o.parent] : window.value[o.parent]
-
+            
             if (!_el) return
             if (_el.nodeType === Node.ELEMENT_NODE) element = _el
             else if (_el) element = _el.element
@@ -576,7 +584,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = (o.element.children[1] || o.element.children[0]).id
             if ((_window ? _window.value[_id] : window.value[_id]).component === "Input") 
             _id = (_window ? _window.value[_id] : window.value[_id]).element.getElementsByTagName("INPUT")[0].id
-            
             answer = _window ? _window.value[_id] : window.value[_id]
 
         } else if (k0 === "3rdChild()") {
@@ -585,7 +592,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = (o.element.children[2] || o.element.children[1] || o.element.children[0]).id
             if ((_window ? _window.value[_id] : window.value[_id]).component === "Input")
             _id = (_window ? _window.value[_id] : window.value[_id]).element.getElementsByTagName("INPUT")[0].id
-            
             answer = _window ? _window.value[_id] : window.value[_id]
 
         } else if (k0 === "3rdlastChild()") {
@@ -1362,7 +1368,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "generate()") {
             
-            answer = generate()
+            var args = k.split(":")
+            var length = toValue({ req, res, _window, id, e, _, value: args[1], params }) || 5
+            answer = generate(length)
 
         } else if (k0 === "includes()") {
             
@@ -1392,7 +1400,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = o.toLowerCase()
             
-        } else if (k0 === "length()" || k0 === "len()") {
+        } else if (k0 === "len()" || k0 === "length()") {
             
             if (Array.isArray(o)) answer = o.length
             else if (typeof o === "string") answer = o.split("").length
@@ -1410,9 +1418,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = toSimplifiedDate({ timestamp: o, lang: "ar" })
 
+        } else if (k0 === "toSimplifiedDateTimeAr()") {
+            
+            answer = toSimplifiedDate({ timestamp: o, lang: "ar", time: true })
+
         } else if (k0 === "toSimplifiedDate()" || k0 === "toSimplifiedDateEn()") {
             
             answer = toSimplifiedDate({ timestamp: o, lang: "en" })
+
+        } else if (k0 === "toSimplifiedDateTime()" || k0 === "toSimplifiedDateTimeEn()") {
+            
+            answer = toSimplifiedDate({ timestamp: o, lang: "en", time: true })
 
         } else if (k0 === "ar()" || k0 === "arabic()") {
             //
@@ -1921,7 +1937,7 @@ const getDeepChildren = ({ _window, id }) => {
     ([...local.element.children]).map(el => {
 
         var _local = _window ? _window.value[el.id] : window.value[el.id]
-
+        
         if ([..._local.element.children].length > 0) 
             all.push(...getDeepChildren({ id: el.id }))
 

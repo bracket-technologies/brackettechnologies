@@ -4,7 +4,8 @@ const english = /[A-Za-z]/
 const isArabic = ({ id, value }) => {
 
   var local = window.value[id]
-  var text = value || local.element && (local.element.value || local.element.innerHTML)
+  if (!local || !local.element) return
+  var text = value || local.element.value || local.element.innerHTML
   if (!text) return
 
   var isarabic = arabic.test(text)

@@ -1,7 +1,7 @@
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
 const { compare } = require("./compare")
-const { toFirebaseOperator } = require("./toFirebaseOperator")
+const { toOperator } = require("./toOperator")
 const { clone } = require("./clone")
 
 const filter = ({ filter = {}, id, e, ...params }) => {
@@ -46,7 +46,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
         .join("")
         )
         .join(""),
-        toFirebaseOperator(o), v))
+        toOperator(o), v))
         .join("")
         .includes("false")
       })

@@ -158,13 +158,13 @@ const setPosition = ({ position, id, e }) => {
     }
 
   } else element.style.left = left + 'px'
-
+  
   // align
   if (align === "left") element.style.left = leftPos + "px"
-  if (align === "top") element.style.top = topPos - height + heightPos + "px"
-  if (align === "bottom") element.style.bottom = bottomPos + "px"
-  if (align === "right") element.style.left = leftPos - width + widthPos + "px"
-
+  else if (align === "top") element.style.top = topPos - height + heightPos + "px"
+  else if (align === "bottom") element.style.bottom = bottomPos + "px"
+  else if (align === "right") element.style.left = leftPos - width + widthPos + "px"
+  
   if (fin) fin.style.left = "unset"
 }
 

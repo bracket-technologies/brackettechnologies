@@ -48,7 +48,7 @@ const Input = (component) => {
 
     if (duplicatable) removable = true
     if (minlength === undefined) minlength = 1
-    if (droplist) droplist.align = "left"
+    if (droplist) droplist.align = droplist.align || "left"
     
     // upload input styles
     var uploadInputStyle = input.type === 'file'

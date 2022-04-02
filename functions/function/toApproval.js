@@ -56,17 +56,6 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
 
     id = mainId
 
-    // id
-    /*if (key.slice(0, 3) === "():") {
-      
-      var _id = key.split(":")[1]
-      key = key.split(":")[0]
-
-      // id
-      _id = toValue({ _window, id, value: newId, e, _, req, res })
-      if (_id) id = _id
-    }*/
-
     var keygen = generate()
     var local = _window ? _window.value[id] : window.value[id]
 

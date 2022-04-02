@@ -59,7 +59,7 @@ module.exports = {
     else local.element.insertBefore(el, local.element.children[index])
 
     var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  
+    
     idList.map(id => setElement({ id }))
     idList.map(id => starter({ id }))
 

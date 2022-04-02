@@ -11,6 +11,6 @@ module.exports = {
       } else if (parseFloat(string).length === string.length) parseFloat(string)
     }
 
-    return string;
+    return string
   },
 };

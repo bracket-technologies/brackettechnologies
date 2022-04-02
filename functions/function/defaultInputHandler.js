@@ -68,32 +68,6 @@ const defaultInputHandler = ({ id }) => {
 
       // for uploads
       if (local.input.type === "file") return global.upload = e.target.files
-      /* if (local.input.type === "file") {
-
-        global.upload = local.upload = {}
-
-        value = e.target.files
-        if (value.length === 0) return
-
-        // add files to global for saving
-        const readFile = (file) => {
-          return new Promise(res => {
-
-            let myReader = new FileReader()
-            myReader.onloadend = () => res(myReader.result)
-            myReader.readAsDataURL(file)
-          })
-        }
-
-        var file = await readFile(value[0])
-        var fileName = `${local.input.title || Date.now()}-${generate()}`
-        var fileType = file.substring(file.indexOf("/") + 1, file.indexOf("base64"))
-
-        return global.upload = local.upload = { file, fileName, src: value[0], fileType }
-      } */
-
-      // rating input
-      // if (local.class.includes("rating__input")) value = local.element.getAttribute("defaultValue")
       
       if (local.Data && (local.input ? !local.input.preventDefault : true)) setData({ id, data: { value } })
     }

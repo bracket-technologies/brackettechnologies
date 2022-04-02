@@ -42,7 +42,7 @@ const {reducer} = require("./reducer")
 const {toStyle} = require("./toStyle")
 const {preventDefault} = require("./preventDefault")
 const {createComponent} = require("./createComponent")
-const {getJsonFiles} = require("./getJsonFiles")
+const {getJsonFiles} = require("./jsonFiles")
 const {toHtml} = require("./toHtml")
 const {setData} = require("./setData")
 const {defaultInputHandler} = require("./defaultInputHandler")
@@ -59,7 +59,7 @@ const {isPath} = require("./isPath")
 const {toNumber} = require("./toNumber")
 const {capitalize} = require("./capitalize")
 const {setElement} = require("./setElement")
-const {toFirebaseOperator} = require("./toFirebaseOperator")
+const {toOperator} = require("./toOperator")
 const {popup} = require("./popup")
 const {keys} = require("./keys")
 const {values} = require("./values")
@@ -185,7 +185,7 @@ module.exports = {
   getDateTime,
   keys,
   values,
-  toFirebaseOperator,
+  toOperator,
   upload,
   toggleView,
   insert

@@ -32,10 +32,10 @@ module.exports = {
       value[id].id = id
       value[id].index = index
       value[id].parent = local.id
-
+      
       return createElement({ _window, id, req, res })
       
-    }).join("")
+    }).join("\n")
     
     var value = (local.input && local.input.value) !== undefined ?
         local.input.value : local.data !== undefined ? local.data : ""
@@ -43,16 +43,16 @@ module.exports = {
     var tag, style = toStyle({ _window, id })
         
     if (typeof value === 'object') value = ''
-
+    
     // src
     if (local.type === "Image" && (local.src || local.data)) local.src = textFormating({ _window, text: local.src || local.data || "", id })
 
     if (local.type === "View") {
-      tag = `<div class='${local.class}' id='${local.id}' style='${style}'>${innerHTML}</div>`
+      tag = `<div class='${local.class}' id='${local.id}' style='${style}'>\n${innerHTML}\n</div>`
     } else if (local.type === "Image") {
       tag = `<img class='${local.class}' alt='${local.alt || ''}' id='${local.id}' style='${style}'>${innerHTML}</img>`
     } else if (local.type === "Table") {
-      tag = `<table class='${local.class}' id='${local.id}' style='${style}'>${innerHTML}</table>`
+      tag = `<table class='${local.class}' id='${local.id}' style='${style}'>\n${innerHTML}\n</table>`
     } else if (local.type === "Row") {
       tag = `<tr class='${local.class}' id='${local.id}' style='${style}'>${innerHTML}</tr>`
     } else if (local.type === "Header") {

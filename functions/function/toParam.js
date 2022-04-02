@@ -12,9 +12,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
   if (typeof string !== "string" || !string) return string || {}
   var params = {}
 
-  if (string.includes("coded()") && string.length === 12) string = global.codes[string]
+  if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
-  string.split(";").map((param) => {
+  string.split(";").map(param => {
     
     var key, value, id = localId
     var local = _window ? _window.value[id] : window.value[id]
@@ -50,15 +50,15 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
     if (key.includes("await().")) {
 
       var awaiter = param.split("await().")[1]
-      params.await = toArray(params.await) || []
-      return params.await.push(awaiter)
+      params.await = params.await || ""
+      return params.await += `${awaiter};`
     }
 
     if (local && local.status === "Loading") {
       if (key.includes("parent()") || key.includes("children()") || key.includes("next()")) {
 
-        params.await = toArray(params.await) || []
-        return params.await.push(param)
+        params.await = params.await || ""
+        return params.await += `${param};`
       }
     }
 
@@ -105,7 +105,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
       
       // mount state & value
       if (path[0].includes("()") || path[0].includes(")(") || object) {
-      
+        
         var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object })
         if (timer) {
           
