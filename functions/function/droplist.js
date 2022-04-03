@@ -36,7 +36,7 @@ const droplist = ({ id, e }) => {
     dropList.children = clone(items).map(item => {
 
       return {
-        type: `Text?class=flex align-center pointer;style.minHeight=3.5rem;style.padding=0 1rem 0 2rem;style.borderRadius=.5rem;style.fontSize=1.4rem;hover.style.width=100%;hover.style.backgroundColor=#eee;${toString(local.droplist.item)};caller=${id};text=${item}`,
+        type: `Text?class=flex align-center pointer;style.minHeight=3.5rem;style.padding=0 1rem;style.borderRadius=.5rem;style.fontSize=1.4rem;hover.style.width=100%;hover.style.backgroundColor=#eee;${toString(local.droplist.item)};caller=${id};text=${item}`,
         controls: [...(local.droplist.controls || []), {
           event: `click??!():${id}.droplist.readonly;global().droplist-positioner=${id}`,
           actions: [

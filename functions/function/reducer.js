@@ -207,7 +207,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (args[1]) _name = toValue({ req, res, _window, id, e, _, params, value: args[1] })
 
                 object = getCookie({ name: _name, req, res })
-                if (!object) return 
+                if (!object) return
                 
             } else if (path0 === "eraseCookie()") {
 
@@ -435,6 +435,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0.includes("coded()")) {
             
+            breakRequest = true
             var newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _ })
             newValue = newValue !== undefined ? [ newValue.toString(), ...path.slice(i + 1)] : path.slice(i + 1)
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
@@ -1085,7 +1086,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "dividedBy()" || k0 === "divide()" || k0 === "divided()" || k0 === "divideBy()" || k0 === "/()") {
             
-            var args = k.split(":").slice(1)
+            var args = k.split(":").slice(1), isPrice
             answer = o
             args.map(arg => {
                 var b = toValue({ req, res, _window, id, value: arg, params, _, e })
@@ -1094,8 +1095,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 b = b === 0 ? b : (b || "")
                 answer = answer.toString()
                 b = b.toString()
-                
-                var isPrice
+            
                 if (answer.includes(",") || b.includes(",")) isPrice = true
                 
                 b = toNumber(b)
@@ -1107,7 +1107,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "times()" || k0 === "multiplyBy()" || k0 === "multiply()" || k0 === "mult()" || k0 === "x()" || k0 === "*()") {
             
-            var args = k.split(":").slice(1)
+            var args = k.split(":").slice(1), isPrice
             answer = o
             args.map(arg => {
                 var b = toValue({ req, res, _window, id, value: arg, params, _, e })
@@ -1117,7 +1117,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 answer = answer.toString()
                 b = b.toString()
                 
-                var isPrice
                 if (answer.includes(",") || b.includes(",")) isPrice = true
                 
                 b = toNumber(b)
@@ -1129,7 +1128,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "add()" || k0 === "plus()" || k0 === "+()") {
             
-            var args = k.split(":").slice(1)
+            var args = k.split(":").slice(1), isPrice
             answer = o
             args.map(arg => {
                 var b = toValue({ req, res, _window, id, value: arg, params, _, e })
@@ -1140,7 +1139,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 b = b.toString()
                 var space = answer.slice(-1) === " " || b.slice(-1) === " "
                 
-                var isPrice
                 if (answer.includes(",") || b.includes(",")) isPrice = true
                 
                 b = toNumber(b)
@@ -1152,7 +1150,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "subs()" || k0 === "minus()" || k0 === "-()") {
             
-            var args = k.split(":").slice(1)
+            var args = k.split(":").slice(1), isPrice
             answer = o
             args.map(arg => {
 

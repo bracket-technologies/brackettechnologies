@@ -55,6 +55,8 @@ module.exports = {
         else if (k === "minHeight") k = "min-height";
         else if (k === "overflowX") k = "overflow-x";
         else if (k === "overflowY") k = "overflow-y";
+        else if (k === "rowGap") k = "row-gap";
+        else if (k === "columnGap") k = "column-gap";
         else if (k === "gridTemplateColumns") k = "grid-template-columns";
         else if (k === "gridAutoColumns") k = "grid-auto-columns";
         else if (k === "gridTemplateRows") k = "grid-template-rows";
