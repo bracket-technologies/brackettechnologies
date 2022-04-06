@@ -146,8 +146,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
 
       }
       
-      key = path[0]
-      
     } else {
 
       if (id && local && mount) local[key] = value

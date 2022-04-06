@@ -1,776 +1,4 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-
-},{}],2:[function(require,module,exports){
-exports.endianness = function () { return 'LE' };
-
-exports.hostname = function () {
-    if (typeof location !== 'undefined') {
-        return location.hostname
-    }
-    else return '';
-};
-
-exports.loadavg = function () { return [] };
-
-exports.uptime = function () { return 0 };
-
-exports.freemem = function () {
-    return Number.MAX_VALUE;
-};
-
-exports.totalmem = function () {
-    return Number.MAX_VALUE;
-};
-
-exports.cpus = function () { return [] };
-
-exports.type = function () { return 'Browser' };
-
-exports.release = function () {
-    if (typeof navigator !== 'undefined') {
-        return navigator.appVersion;
-    }
-    return '';
-};
-
-exports.networkInterfaces
-= exports.getNetworkInterfaces
-= function () { return {} };
-
-exports.arch = function () { return 'javascript' };
-
-exports.platform = function () { return 'browser' };
-
-exports.tmpdir = exports.tmpDir = function () {
-    return '/tmp';
-};
-
-exports.EOL = '\n';
-
-exports.homedir = function () {
-	return '/'
-};
-
-},{}],3:[function(require,module,exports){
-(function (process){(function (){
-// 'path' module extracted from Node.js v8.11.1 (only the posix part)
-// transplited with Babel
-
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-'use strict';
-
-function assertPath(path) {
-  if (typeof path !== 'string') {
-    throw new TypeError('Path must be a string. Received ' + JSON.stringify(path));
-  }
-}
-
-// Resolves . and .. elements in a path with directory names
-function normalizeStringPosix(path, allowAboveRoot) {
-  var res = '';
-  var lastSegmentLength = 0;
-  var lastSlash = -1;
-  var dots = 0;
-  var code;
-  for (var i = 0; i <= path.length; ++i) {
-    if (i < path.length)
-      code = path.charCodeAt(i);
-    else if (code === 47 /*/*/)
-      break;
-    else
-      code = 47 /*/*/;
-    if (code === 47 /*/*/) {
-      if (lastSlash === i - 1 || dots === 1) {
-        // NOOP
-      } else if (lastSlash !== i - 1 && dots === 2) {
-        if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 /*.*/ || res.charCodeAt(res.length - 2) !== 46 /*.*/) {
-          if (res.length > 2) {
-            var lastSlashIndex = res.lastIndexOf('/');
-            if (lastSlashIndex !== res.length - 1) {
-              if (lastSlashIndex === -1) {
-                res = '';
-                lastSegmentLength = 0;
-              } else {
-                res = res.slice(0, lastSlashIndex);
-                lastSegmentLength = res.length - 1 - res.lastIndexOf('/');
-              }
-              lastSlash = i;
-              dots = 0;
-              continue;
-            }
-          } else if (res.length === 2 || res.length === 1) {
-            res = '';
-            lastSegmentLength = 0;
-            lastSlash = i;
-            dots = 0;
-            continue;
-          }
-        }
-        if (allowAboveRoot) {
-          if (res.length > 0)
-            res += '/..';
-          else
-            res = '..';
-          lastSegmentLength = 2;
-        }
-      } else {
-        if (res.length > 0)
-          res += '/' + path.slice(lastSlash + 1, i);
-        else
-          res = path.slice(lastSlash + 1, i);
-        lastSegmentLength = i - lastSlash - 1;
-      }
-      lastSlash = i;
-      dots = 0;
-    } else if (code === 46 /*.*/ && dots !== -1) {
-      ++dots;
-    } else {
-      dots = -1;
-    }
-  }
-  return res;
-}
-
-function _format(sep, pathObject) {
-  var dir = pathObject.dir || pathObject.root;
-  var base = pathObject.base || (pathObject.name || '') + (pathObject.ext || '');
-  if (!dir) {
-    return base;
-  }
-  if (dir === pathObject.root) {
-    return dir + base;
-  }
-  return dir + sep + base;
-}
-
-var posix = {
-  // path.resolve([from ...], to)
-  resolve: function resolve() {
-    var resolvedPath = '';
-    var resolvedAbsolute = false;
-    var cwd;
-
-    for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-      var path;
-      if (i >= 0)
-        path = arguments[i];
-      else {
-        if (cwd === undefined)
-          cwd = process.cwd();
-        path = cwd;
-      }
-
-      assertPath(path);
-
-      // Skip empty entries
-      if (path.length === 0) {
-        continue;
-      }
-
-      resolvedPath = path + '/' + resolvedPath;
-      resolvedAbsolute = path.charCodeAt(0) === 47 /*/*/;
-    }
-
-    // At this point the path should be resolved to a full absolute path, but
-    // handle relative paths to be safe (might happen when process.cwd() fails)
-
-    // Normalize the path
-    resolvedPath = normalizeStringPosix(resolvedPath, !resolvedAbsolute);
-
-    if (resolvedAbsolute) {
-      if (resolvedPath.length > 0)
-        return '/' + resolvedPath;
-      else
-        return '/';
-    } else if (resolvedPath.length > 0) {
-      return resolvedPath;
-    } else {
-      return '.';
-    }
-  },
-
-  normalize: function normalize(path) {
-    assertPath(path);
-
-    if (path.length === 0) return '.';
-
-    var isAbsolute = path.charCodeAt(0) === 47 /*/*/;
-    var trailingSeparator = path.charCodeAt(path.length - 1) === 47 /*/*/;
-
-    // Normalize the path
-    path = normalizeStringPosix(path, !isAbsolute);
-
-    if (path.length === 0 && !isAbsolute) path = '.';
-    if (path.length > 0 && trailingSeparator) path += '/';
-
-    if (isAbsolute) return '/' + path;
-    return path;
-  },
-
-  isAbsolute: function isAbsolute(path) {
-    assertPath(path);
-    return path.length > 0 && path.charCodeAt(0) === 47 /*/*/;
-  },
-
-  join: function join() {
-    if (arguments.length === 0)
-      return '.';
-    var joined;
-    for (var i = 0; i < arguments.length; ++i) {
-      var arg = arguments[i];
-      assertPath(arg);
-      if (arg.length > 0) {
-        if (joined === undefined)
-          joined = arg;
-        else
-          joined += '/' + arg;
-      }
-    }
-    if (joined === undefined)
-      return '.';
-    return posix.normalize(joined);
-  },
-
-  relative: function relative(from, to) {
-    assertPath(from);
-    assertPath(to);
-
-    if (from === to) return '';
-
-    from = posix.resolve(from);
-    to = posix.resolve(to);
-
-    if (from === to) return '';
-
-    // Trim any leading backslashes
-    var fromStart = 1;
-    for (; fromStart < from.length; ++fromStart) {
-      if (from.charCodeAt(fromStart) !== 47 /*/*/)
-        break;
-    }
-    var fromEnd = from.length;
-    var fromLen = fromEnd - fromStart;
-
-    // Trim any leading backslashes
-    var toStart = 1;
-    for (; toStart < to.length; ++toStart) {
-      if (to.charCodeAt(toStart) !== 47 /*/*/)
-        break;
-    }
-    var toEnd = to.length;
-    var toLen = toEnd - toStart;
-
-    // Compare paths to find the longest common path from root
-    var length = fromLen < toLen ? fromLen : toLen;
-    var lastCommonSep = -1;
-    var i = 0;
-    for (; i <= length; ++i) {
-      if (i === length) {
-        if (toLen > length) {
-          if (to.charCodeAt(toStart + i) === 47 /*/*/) {
-            // We get here if `from` is the exact base path for `to`.
-            // For example: from='/foo/bar'; to='/foo/bar/baz'
-            return to.slice(toStart + i + 1);
-          } else if (i === 0) {
-            // We get here if `from` is the root
-            // For example: from='/'; to='/foo'
-            return to.slice(toStart + i);
-          }
-        } else if (fromLen > length) {
-          if (from.charCodeAt(fromStart + i) === 47 /*/*/) {
-            // We get here if `to` is the exact base path for `from`.
-            // For example: from='/foo/bar/baz'; to='/foo/bar'
-            lastCommonSep = i;
-          } else if (i === 0) {
-            // We get here if `to` is the root.
-            // For example: from='/foo'; to='/'
-            lastCommonSep = 0;
-          }
-        }
-        break;
-      }
-      var fromCode = from.charCodeAt(fromStart + i);
-      var toCode = to.charCodeAt(toStart + i);
-      if (fromCode !== toCode)
-        break;
-      else if (fromCode === 47 /*/*/)
-        lastCommonSep = i;
-    }
-
-    var out = '';
-    // Generate the relative path based on the path difference between `to`
-    // and `from`
-    for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
-      if (i === fromEnd || from.charCodeAt(i) === 47 /*/*/) {
-        if (out.length === 0)
-          out += '..';
-        else
-          out += '/..';
-      }
-    }
-
-    // Lastly, append the rest of the destination (`to`) path that comes after
-    // the common path parts
-    if (out.length > 0)
-      return out + to.slice(toStart + lastCommonSep);
-    else {
-      toStart += lastCommonSep;
-      if (to.charCodeAt(toStart) === 47 /*/*/)
-        ++toStart;
-      return to.slice(toStart);
-    }
-  },
-
-  _makeLong: function _makeLong(path) {
-    return path;
-  },
-
-  dirname: function dirname(path) {
-    assertPath(path);
-    if (path.length === 0) return '.';
-    var code = path.charCodeAt(0);
-    var hasRoot = code === 47 /*/*/;
-    var end = -1;
-    var matchedSlash = true;
-    for (var i = path.length - 1; i >= 1; --i) {
-      code = path.charCodeAt(i);
-      if (code === 47 /*/*/) {
-          if (!matchedSlash) {
-            end = i;
-            break;
-          }
-        } else {
-        // We saw the first non-path separator
-        matchedSlash = false;
-      }
-    }
-
-    if (end === -1) return hasRoot ? '/' : '.';
-    if (hasRoot && end === 1) return '//';
-    return path.slice(0, end);
-  },
-
-  basename: function basename(path, ext) {
-    if (ext !== undefined && typeof ext !== 'string') throw new TypeError('"ext" argument must be a string');
-    assertPath(path);
-
-    var start = 0;
-    var end = -1;
-    var matchedSlash = true;
-    var i;
-
-    if (ext !== undefined && ext.length > 0 && ext.length <= path.length) {
-      if (ext.length === path.length && ext === path) return '';
-      var extIdx = ext.length - 1;
-      var firstNonSlashEnd = -1;
-      for (i = path.length - 1; i >= 0; --i) {
-        var code = path.charCodeAt(i);
-        if (code === 47 /*/*/) {
-            // If we reached a path separator that was not part of a set of path
-            // separators at the end of the string, stop now
-            if (!matchedSlash) {
-              start = i + 1;
-              break;
-            }
-          } else {
-          if (firstNonSlashEnd === -1) {
-            // We saw the first non-path separator, remember this index in case
-            // we need it if the extension ends up not matching
-            matchedSlash = false;
-            firstNonSlashEnd = i + 1;
-          }
-          if (extIdx >= 0) {
-            // Try to match the explicit extension
-            if (code === ext.charCodeAt(extIdx)) {
-              if (--extIdx === -1) {
-                // We matched the extension, so mark this as the end of our path
-                // component
-                end = i;
-              }
-            } else {
-              // Extension does not match, so our result is the entire path
-              // component
-              extIdx = -1;
-              end = firstNonSlashEnd;
-            }
-          }
-        }
-      }
-
-      if (start === end) end = firstNonSlashEnd;else if (end === -1) end = path.length;
-      return path.slice(start, end);
-    } else {
-      for (i = path.length - 1; i >= 0; --i) {
-        if (path.charCodeAt(i) === 47 /*/*/) {
-            // If we reached a path separator that was not part of a set of path
-            // separators at the end of the string, stop now
-            if (!matchedSlash) {
-              start = i + 1;
-              break;
-            }
-          } else if (end === -1) {
-          // We saw the first non-path separator, mark this as the end of our
-          // path component
-          matchedSlash = false;
-          end = i + 1;
-        }
-      }
-
-      if (end === -1) return '';
-      return path.slice(start, end);
-    }
-  },
-
-  extname: function extname(path) {
-    assertPath(path);
-    var startDot = -1;
-    var startPart = 0;
-    var end = -1;
-    var matchedSlash = true;
-    // Track the state of characters (if any) we see before our first dot and
-    // after any path separator we find
-    var preDotState = 0;
-    for (var i = path.length - 1; i >= 0; --i) {
-      var code = path.charCodeAt(i);
-      if (code === 47 /*/*/) {
-          // If we reached a path separator that was not part of a set of path
-          // separators at the end of the string, stop now
-          if (!matchedSlash) {
-            startPart = i + 1;
-            break;
-          }
-          continue;
-        }
-      if (end === -1) {
-        // We saw the first non-path separator, mark this as the end of our
-        // extension
-        matchedSlash = false;
-        end = i + 1;
-      }
-      if (code === 46 /*.*/) {
-          // If this is our first dot, mark it as the start of our extension
-          if (startDot === -1)
-            startDot = i;
-          else if (preDotState !== 1)
-            preDotState = 1;
-      } else if (startDot !== -1) {
-        // We saw a non-dot and non-path separator before our dot, so we should
-        // have a good chance at having a non-empty extension
-        preDotState = -1;
-      }
-    }
-
-    if (startDot === -1 || end === -1 ||
-        // We saw a non-dot character immediately before the dot
-        preDotState === 0 ||
-        // The (right-most) trimmed path component is exactly '..'
-        preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-      return '';
-    }
-    return path.slice(startDot, end);
-  },
-
-  format: function format(pathObject) {
-    if (pathObject === null || typeof pathObject !== 'object') {
-      throw new TypeError('The "pathObject" argument must be of type Object. Received type ' + typeof pathObject);
-    }
-    return _format('/', pathObject);
-  },
-
-  parse: function parse(path) {
-    assertPath(path);
-
-    var ret = { root: '', dir: '', base: '', ext: '', name: '' };
-    if (path.length === 0) return ret;
-    var code = path.charCodeAt(0);
-    var isAbsolute = code === 47 /*/*/;
-    var start;
-    if (isAbsolute) {
-      ret.root = '/';
-      start = 1;
-    } else {
-      start = 0;
-    }
-    var startDot = -1;
-    var startPart = 0;
-    var end = -1;
-    var matchedSlash = true;
-    var i = path.length - 1;
-
-    // Track the state of characters (if any) we see before our first dot and
-    // after any path separator we find
-    var preDotState = 0;
-
-    // Get non-dir info
-    for (; i >= start; --i) {
-      code = path.charCodeAt(i);
-      if (code === 47 /*/*/) {
-          // If we reached a path separator that was not part of a set of path
-          // separators at the end of the string, stop now
-          if (!matchedSlash) {
-            startPart = i + 1;
-            break;
-          }
-          continue;
-        }
-      if (end === -1) {
-        // We saw the first non-path separator, mark this as the end of our
-        // extension
-        matchedSlash = false;
-        end = i + 1;
-      }
-      if (code === 46 /*.*/) {
-          // If this is our first dot, mark it as the start of our extension
-          if (startDot === -1) startDot = i;else if (preDotState !== 1) preDotState = 1;
-        } else if (startDot !== -1) {
-        // We saw a non-dot and non-path separator before our dot, so we should
-        // have a good chance at having a non-empty extension
-        preDotState = -1;
-      }
-    }
-
-    if (startDot === -1 || end === -1 ||
-    // We saw a non-dot character immediately before the dot
-    preDotState === 0 ||
-    // The (right-most) trimmed path component is exactly '..'
-    preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
-      if (end !== -1) {
-        if (startPart === 0 && isAbsolute) ret.base = ret.name = path.slice(1, end);else ret.base = ret.name = path.slice(startPart, end);
-      }
-    } else {
-      if (startPart === 0 && isAbsolute) {
-        ret.name = path.slice(1, startDot);
-        ret.base = path.slice(1, end);
-      } else {
-        ret.name = path.slice(startPart, startDot);
-        ret.base = path.slice(startPart, end);
-      }
-      ret.ext = path.slice(startDot, end);
-    }
-
-    if (startPart > 0) ret.dir = path.slice(0, startPart - 1);else if (isAbsolute) ret.dir = '/';
-
-    return ret;
-  },
-
-  sep: '/',
-  delimiter: ':',
-  win32: null,
-  posix: null
-};
-
-posix.posix = posix;
-
-module.exports = posix;
-
-}).call(this)}).call(this,require('_process'))
-},{"_process":4}],4:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],5:[function(require,module,exports){
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
 
@@ -811,7 +39,7 @@ global.idList.map(id => starter({ id }))
 Object.entries(window.value).map(([id, value]) => {
     if (value.status === "Loading") delete window.value[id]
 })
-},{"../function/setElement":100,"../function/starter":103}],6:[function(require,module,exports){
+},{"../function/setElement":96,"../function/starter":99}],2:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -887,7 +115,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":115}],7:[function(require,module,exports){
+},{"../function/toComponent":111}],3:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -908,7 +136,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":115}],8:[function(require,module,exports){
+},{"../function/toComponent":111}],4:[function(require,module,exports){
 const { generate } = require("../function/generate")
 const { toComponent } = require("../function/toComponent")
 
@@ -978,7 +206,7 @@ module.exports = (component) => {
     };
 }
 
-},{"../function/generate":68,"../function/toComponent":115}],9:[function(require,module,exports){
+},{"../function/generate":64,"../function/toComponent":111}],5:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
@@ -1389,7 +617,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":40,"../function/merge":82,"../function/toComponent":115,"../function/toString":125}],10:[function(require,module,exports){
+},{"../function/clone":36,"../function/merge":78,"../function/toComponent":111,"../function/toString":121}],6:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -1528,7 +756,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":115}],11:[function(require,module,exports){
+},{"../function/toComponent":111}],7:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1651,7 +879,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":115}],12:[function(require,module,exports){
+},{"../function/toComponent":111}],8:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent");
 const { generate } = require("../function/generate");
 
@@ -1810,7 +1038,7 @@ module.exports = (component) => {
     };
 }
 
-},{"../function/generate":68,"../function/toComponent":115}],13:[function(require,module,exports){
+},{"../function/generate":64,"../function/toComponent":111}],9:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent");
 
 module.exports = (component) => {
@@ -1852,7 +1080,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":115}],14:[function(require,module,exports){
+},{"../function/toComponent":111}],10:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1879,7 +1107,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":115}],15:[function(require,module,exports){
+},{"../function/toComponent":111}],11:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 const { toString } = require("../function/toString")
 
@@ -1911,7 +1139,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":115,"../function/toString":125}],16:[function(require,module,exports){
+},{"../function/toComponent":111,"../function/toString":121}],12:[function(require,module,exports){
 module.exports = {
   Button : require("./Button"),
   Input : require("./Input"),
@@ -1925,7 +1153,7 @@ module.exports = {
   Swiper : require("./Swiper")
 }
 
-},{"./Button":6,"./Checkbox":7,"./Header":8,"./Input":9,"./Item":10,"./Map":11,"./Rate":12,"./SearchBox":13,"./Swiper":14,"./Switch":15}],17:[function(require,module,exports){
+},{"./Button":2,"./Checkbox":3,"./Header":4,"./Input":5,"./Item":6,"./Map":7,"./Rate":8,"./SearchBox":9,"./Swiper":10,"./Switch":11}],13:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   id = controls.id || id
@@ -1940,7 +1168,7 @@ module.exports = ({ controls, id }) => {
   }]
 }
 
-},{}],18:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var local = window.value[id]
@@ -1967,7 +1195,7 @@ module.exports = ({ controls, id }) => {
         "actions": "setStyle?style=if():[().click.mount]:[().click.style].else():[().click.before]"
     }]
 }
-},{}],19:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var local = window.value[id]
@@ -1991,7 +1219,7 @@ module.exports = ({ controls, id }) => {
         "actions": "setStyle?style=().clicked.before;().clicked.freeze=false"
     }]
 }
-},{}],20:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = {
   item: require("./item"),
   list: require("./list"),
@@ -2013,7 +1241,7 @@ module.exports = {
   loaded: require("./loaded"),
   contentful: require("../function/contentful").contentful
 }
-},{"../function/contentful":43,"./actionlist":17,"./click":18,"./clicked":19,"./droplist":21,"./hover":22,"./hoverable":23,"./item":24,"./list":25,"./loaded":26,"./miniWindow":27,"./mininote":28,"./popup":29,"./pricable":30,"./sorter":31,"./toggler":32,"./tooltip":33,"./touch":34,"./touchableOpacity":35}],21:[function(require,module,exports){
+},{"../function/contentful":39,"./actionlist":13,"./click":14,"./clicked":15,"./droplist":17,"./hover":18,"./hoverable":19,"./item":20,"./list":21,"./loaded":22,"./miniWindow":23,"./mininote":24,"./popup":25,"./pricable":26,"./sorter":27,"./toggler":28,"./tooltip":29,"./touch":30,"./touchableOpacity":31}],17:[function(require,module,exports){
 const { toString } = require("../function/toString")
 
 module.exports = ({ controls, id }) => {
@@ -2030,7 +1258,7 @@ module.exports = ({ controls, id }) => {
     ]
   }]
 }
-},{"../function/toString":125}],22:[function(require,module,exports){
+},{"../function/toString":121}],18:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var local = window.value[id]
@@ -2053,7 +1281,7 @@ module.exports = ({ controls, id }) => {
         "actions": "setStyle?style=().hover.before"
     }]
 }
-},{}],23:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 const {toArray} = require("../function/toArray")
 
 module.exports = ({ id, controls }) => {
@@ -2069,7 +1297,7 @@ module.exports = ({ id, controls }) => {
     }]
 }
 
-},{"../function/toArray":110}],24:[function(require,module,exports){
+},{"../function/toArray":106}],20:[function(require,module,exports){
 module.exports = ({params}) => [
   "setData?data.value=().text",
   `resetStyles?():[global().${params.state}.0].mountonload=false??global().${params.state}`,
@@ -2081,7 +1309,7 @@ module.exports = ({params}) => [
   `mountAfterStyles?().mountonload:global().${params.state}.0??global().${params.state}`,
 ];
 
-},{}],25:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = ({ controls }) => {
 
   return [{
@@ -2100,7 +1328,7 @@ module.exports = ({ controls }) => {
   }]
 }
 
-},{}],26:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 const { toArray } = require("../function/toArray")
 
 module.exports = ({ controls, id }) => {
@@ -2113,7 +1341,7 @@ module.exports = ({ controls, id }) => {
         "actions": id.map(id => `${actions}:${id}`)
     }]
 }
-},{"../function/toArray":110}],27:[function(require,module,exports){
+},{"../function/toArray":106}],23:[function(require,module,exports){
 const { generate } = require("../function/generate");
 
 module.exports = ({ params }) => {
@@ -2130,7 +1358,7 @@ module.exports = ({ params }) => {
   }]
 }
 
-},{"../function/generate":68}],28:[function(require,module,exports){
+},{"../function/generate":64}],24:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   id = controls.id || id
@@ -2141,7 +1369,7 @@ module.exports = ({ controls, id }) => {
     actions: "setPosition:mininote?position.positioner=mouse;position.placement=right"
   }]
 }
-},{}],29:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   id = controls.id || id
@@ -2158,7 +1386,7 @@ module.exports = ({ controls, id }) => {
   }]
 }
 
-},{}],30:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = ({ id }) => {
     
     var input_id = window.value[id].type === 'Input' ? id : `${id}-input`
@@ -2166,7 +1394,7 @@ module.exports = ({ id }) => {
         "event": `input:${input_id}?():${input_id}.data()=():${input_id}.element.value().toPrice().else().0;():${input_id}.element.value=():${input_id}.data().else().0`
     }]
 }
-},{}],31:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 const { toArray } = require("../function/toArray");
 
 module.exports = ({ id, controls }) => {
@@ -2179,7 +1407,7 @@ module.exports = ({ id, controls }) => {
   }]
 }
 
-},{"../function/toArray":110}],32:[function(require,module,exports){
+},{"../function/toArray":106}],28:[function(require,module,exports){
 module.exports = ({ controls }) => {
 
   return [{
@@ -2192,7 +1420,7 @@ module.exports = ({ controls }) => {
   }]
 }
 
-},{}],33:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -2208,7 +1436,7 @@ module.exports = ({ controls, id }) => {
     event: "mouseleave?global().tooltip-timer.clearTimeout();global().tooltip-timer.delete();():tooltip.style().opacity=0"
   }]
 }
-},{}],34:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 const { toArray } = require("../function/toArray")
 
 module.exports = ({ controls, id }) => {
@@ -2233,7 +1461,7 @@ module.exports = ({ controls, id }) => {
         "actions": "setStyle?style=().touch.before?().touch.freeze.not()"
     }]
 }
-},{"../function/toArray":110}],35:[function(require,module,exports){
+},{"../function/toArray":106}],31:[function(require,module,exports){
 module.exports = ({ id }) => {
 
   if (window.value[id].element.style.transition) {
@@ -2255,7 +1483,7 @@ module.exports = ({ id }) => {
   }]
 }
 
-},{}],36:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 const axios = require('axios')
 const { toAwait } = require("./toAwait")
 
@@ -2273,7 +1501,7 @@ module.exports = {
         toAwait({ id, params })
     }
 }
-},{"./toAwait":111,"axios":133}],37:[function(require,module,exports){
+},{"./toAwait":107,"axios":129}],33:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.value[id]
@@ -2296,7 +1524,7 @@ const blur = ({ id }) => {
 
 module.exports = {blur}
 
-},{}],38:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 const capitalize = (string, minimize) => {
   if (typeof string !== "string") return string
 
@@ -2313,7 +1541,7 @@ const capitalize = (string, minimize) => {
 
 module.exports = {capitalize}
 
-},{}],39:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 const {clone} = require("./clone");
 
 const clearValues = (obj) => {
@@ -2355,7 +1583,7 @@ const clearValues = (obj) => {
 
 module.exports = {clearValues};
 
-},{"./clone":40}],40:[function(require,module,exports){
+},{"./clone":36}],36:[function(require,module,exports){
 const clone = (obj) => {
 
   /*if (typeof obj !== "object") return obj
@@ -2400,7 +1628,7 @@ const isElement = (obj) => {
 
 module.exports = {clone}
 
-},{}],41:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 const close = ({ id }) => {
 
   var local = window.value[id]
@@ -2411,7 +1639,7 @@ const close = ({ id }) => {
 
 module.exports = {close}
 
-},{}],42:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = {
     compare: (value1, operator, value2) => {
         if (operator === "==") return value1 === value2
@@ -2422,7 +1650,7 @@ module.exports = {
         else if (operator === "in") return value1.includes(value2)
     }
 }
-},{}],43:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = {
     contentful: ({ id }) => {
         var local = window.value[id]
@@ -2468,7 +1696,7 @@ module.exports = {
         }))
     }
 }
-},{}],44:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 const controls = ({ _window, controls, id, req, res }) => {
@@ -2500,7 +1728,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":59,"./toArray":110,"./watch":132}],45:[function(require,module,exports){
+},{"./event":55,"./toArray":106,"./watch":128}],41:[function(require,module,exports){
 const setCookie = ({ name = "", value, expiry = 360 }) => {
 
   var d = new Date()
@@ -2535,7 +1763,7 @@ const eraseCookie = ({ name }) => {
 }
 
 module.exports = {setCookie, getCookie, eraseCookie}
-},{}],46:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 const control = require("../control/control")
 
 const createActions = ({ params, id }) => {
@@ -2550,7 +1778,7 @@ const createActions = ({ params, id }) => {
 
 module.exports = {createActions}
 
-},{"../control/control":20,"./execute":60}],47:[function(require,module,exports){
+},{"../control/control":16,"./execute":56}],43:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
@@ -2609,7 +1837,7 @@ module.exports = {
   }
 }
 
-},{"../component/component":16,"./clone":40,"./generate":68,"./toApproval":109,"./toCode":114,"./toParam":121}],48:[function(require,module,exports){
+},{"../component/component":12,"./clone":36,"./generate":64,"./toApproval":105,"./toCode":110,"./toParam":117}],44:[function(require,module,exports){
 const { createElement } = require("./createElement")
 // const { toParam } = require("./toParam")
 const { toArray } = require("./toArray")
@@ -2815,7 +2043,7 @@ const createDocument = async ({ req, res, db }) => {
 
 module.exports = { createDocument }
 
-},{"./capitalize":38,"./controls":44,"./createElement":49,"./getJsonFiles":71,"./toApproval":109,"./toArray":110,"./toCode":114,"dotenv":162}],49:[function(require,module,exports){
+},{"./capitalize":34,"./controls":40,"./createElement":45,"./getJsonFiles":67,"./toApproval":105,"./toArray":106,"./toCode":110,"dotenv":159}],45:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -2903,7 +2131,7 @@ var createElement = ({ _window, id, req, res }) => {
     if (params.data !== undefined || params.Data || (local.data !== undefined && !local.Data)) {
       
       local.Data = local.Data || generate()
-      global[local.Data] = clone(local.data !== undefined ? local.data : (global[local.Data] !== undefined ? global[local.Data] : {}))
+      global[local.Data] = local.data !== undefined ? local.data : (global[local.Data] !== undefined ? global[local.Data] : {})
       local.data = global[local.Data]
     }
 
@@ -2955,7 +2183,7 @@ var createElement = ({ _window, id, req, res }) => {
 
 module.exports = { createElement }
 
-},{"./clone":40,"./createTags":50,"./generate":68,"./merge":82,"./reducer":90,"./toApproval":109,"./toCode":114,"./toParam":121,"./toValue":127}],50:[function(require,module,exports){
+},{"./clone":36,"./createTags":46,"./generate":64,"./merge":78,"./reducer":86,"./toApproval":105,"./toCode":110,"./toParam":117,"./toValue":123}],46:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -3209,7 +2437,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":40,"./createComponent":47,"./execute":60,"./generate":68,"./toApproval":109,"./toArray":110,"./toHtml":117}],51:[function(require,module,exports){
+},{"./clone":36,"./createComponent":43,"./execute":56,"./generate":64,"./toApproval":105,"./toArray":106,"./toHtml":113}],47:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -3229,7 +2457,7 @@ const createView = ({ view, id }) => {
 
 module.exports = {createView}
 
-},{"./clone":40,"./toArray":110,"./update":129}],52:[function(require,module,exports){
+},{"./clone":36,"./toArray":106,"./update":125}],48:[function(require,module,exports){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { setContent } = require("./setContent")
@@ -3267,7 +2495,7 @@ const clearData = ({ id, e, clear = {} }) => {
 
 module.exports = { createData, setData, clearData }
 
-},{"./clone":40,"./reducer":90,"./setContent":98,"./setData":99}],53:[function(require,module,exports){
+},{"./clone":36,"./reducer":86,"./setContent":94,"./setData":95}],49:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   if (typeof string !== "string") return string
@@ -3293,7 +2521,7 @@ const decode = ({ _window, string }) => {
 
 module.exports = {decode}
 
-},{}],54:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -3381,7 +2609,7 @@ const defaultInputHandler = ({ id }) => {
 }
 
 module.exports = { defaultInputHandler }
-},{"./data":52,"./isArabic":76,"./resize":94}],55:[function(require,module,exports){
+},{"./data":48,"./isArabic":72,"./resize":90}],51:[function(require,module,exports){
 const derive = (data, keys, defaultData, editable) => {
   if (!Array.isArray(keys)) keys = keys.split(".");
 
@@ -3412,7 +2640,7 @@ const derive = (data, keys, defaultData, editable) => {
 
 module.exports = {derive};
 
-},{}],56:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -3471,7 +2699,7 @@ const droplist = ({ id, e }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":40,"./toString":125,"./toValue":127,"./update":129}],57:[function(require,module,exports){
+},{"./clone":36,"./toString":121,"./toValue":123,"./update":125}],53:[function(require,module,exports){
 const { clearValues } = require("./clearValues")
 const { clone } = require("./clone")
 const { toArray } = require("./toArray")
@@ -3673,7 +2901,7 @@ var duplicates = ({ data, id }) => {}
 
 module.exports = {duplicate, duplicates}
 
-},{"./clearValues":39,"./clone":40,"./createElement":49,"./focus":66,"./generate":68,"./removeDuplicates":93,"./setElement":100,"./starter":103,"./toArray":110}],58:[function(require,module,exports){
+},{"./clearValues":35,"./clone":36,"./createElement":45,"./focus":62,"./generate":64,"./removeDuplicates":89,"./setElement":96,"./starter":99,"./toArray":106}],54:[function(require,module,exports){
 const axios = require("axios");
 const { toString } = require("./toString")
 const { toAwait } = require("./toAwait")
@@ -3738,7 +2966,7 @@ module.exports = {
   }
 }
 */
-},{"./toAwait":111,"./toString":125,"axios":133}],59:[function(require,module,exports){
+},{"./toAwait":107,"./toString":121,"axios":129}],55:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -3931,7 +3159,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":40,"./execute":60,"./toApproval":109,"./toArray":110,"./toCode":114,"./toParam":121,"./toValue":127}],60:[function(require,module,exports){
+},{"./clone":36,"./execute":56,"./toApproval":105,"./toArray":106,"./toCode":110,"./toParam":117,"./toValue":123}],56:[function(require,module,exports){
 (function (global){(function (){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
@@ -4069,7 +3297,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 module.exports = { execute }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./function":67,"./toApproval":109,"./toArray":110,"./toAwait":111,"./toCode":114,"./toParam":121,"./toValue":127}],61:[function(require,module,exports){
+},{"./function":63,"./toApproval":105,"./toArray":106,"./toAwait":107,"./toCode":110,"./toParam":117,"./toValue":123}],57:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -4085,7 +3313,7 @@ module.exports = {
         // linkElement.delete()
     }
 }
-},{}],62:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 const { toValue } = require("./function")
 
 module.exports = {
@@ -4096,14 +3324,14 @@ module.exports = {
         reader.readAsDataURL(file)
     }
 }
-},{"./function":67}],63:[function(require,module,exports){
+},{"./function":63}],59:[function(require,module,exports){
 module.exports = {
   fill: ({ id }) => {
     
   }
 }
 
-},{}],64:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
 const { compare } = require("./compare")
@@ -4165,13 +3393,13 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 
 module.exports = {filter}
 
-},{"./clone":40,"./compare":42,"./isEqual":77,"./toArray":110,"./toOperator":120}],65:[function(require,module,exports){
+},{"./clone":36,"./compare":38,"./isEqual":73,"./toArray":106,"./toOperator":116}],61:[function(require,module,exports){
 require('dotenv').config()
 //var config = JSON.parse(process.env.FIREBASE_CONFIG)
 //var firebase = require("firebase-admin").initializeApp(config)
 
 module.exports = {}//firebase
-},{"dotenv":162}],66:[function(require,module,exports){
+},{"dotenv":159}],62:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var local = window.value[id]
@@ -4207,7 +3435,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],67:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {derive} = require("./derive")
@@ -4314,7 +3542,6 @@ module.exports = {
   route,
   decode,
   contentful,
-  firebase,
   reload,
   toCSV,
   compare,
@@ -4400,7 +3627,7 @@ module.exports = {
   toggleView,
   insert
 }
-},{"./arduino":36,"./blur":37,"./capitalize":38,"./clearValues":39,"./clone":40,"./close":41,"./compare":42,"./contentful":43,"./controls":44,"./cookie":45,"./createActions":46,"./createComponent":47,"./createDocument":48,"./createElement":49,"./createView":51,"./data":52,"./decode":53,"./defaultInputHandler":54,"./derive":55,"./droplist":56,"./duplicate":57,"./erase":58,"./event":59,"./execute":60,"./exportJson":61,"./fileReader":62,"./fill":63,"./filter":64,"./firebase":65,"./focus":66,"./generate":68,"./getDateTime":69,"./getDaysInMonth":70,"./getParam":72,"./importJson":74,"./insert":75,"./isArabic":76,"./isEqual":77,"./isPath":78,"./jsonFiles":79,"./keys":80,"./log":81,"./merge":82,"./note":83,"./overflow":84,"./pause":85,"./play":86,"./popup":87,"./position":88,"./preventDefault":89,"./reducer":90,"./reload":91,"./remove":92,"./resize":94,"./route":95,"./save":96,"./search":97,"./setContent":98,"./setData":99,"./setElement":100,"./setPosition":101,"./sort":102,"./starter":103,"./state":104,"./style":105,"./switchMode":106,"./textarea":108,"./toApproval":109,"./toArray":110,"./toAwait":111,"./toCSV":112,"./toCode":114,"./toComponent":115,"./toControls":116,"./toHtml":117,"./toId":118,"./toNumber":119,"./toOperator":120,"./toParam":121,"./toPath":122,"./toString":125,"./toStyle":126,"./toValue":127,"./toggleView":128,"./update":129,"./upload":130,"./values":131}],68:[function(require,module,exports){
+},{"./arduino":32,"./blur":33,"./capitalize":34,"./clearValues":35,"./clone":36,"./close":37,"./compare":38,"./contentful":39,"./controls":40,"./cookie":41,"./createActions":42,"./createComponent":43,"./createDocument":44,"./createElement":45,"./createView":47,"./data":48,"./decode":49,"./defaultInputHandler":50,"./derive":51,"./droplist":52,"./duplicate":53,"./erase":54,"./event":55,"./execute":56,"./exportJson":57,"./fileReader":58,"./fill":59,"./filter":60,"./firebase":61,"./focus":62,"./generate":64,"./getDateTime":65,"./getDaysInMonth":66,"./getParam":68,"./importJson":70,"./insert":71,"./isArabic":72,"./isEqual":73,"./isPath":74,"./jsonFiles":75,"./keys":76,"./log":77,"./merge":78,"./note":79,"./overflow":80,"./pause":81,"./play":82,"./popup":83,"./position":84,"./preventDefault":85,"./reducer":86,"./reload":87,"./remove":88,"./resize":90,"./route":91,"./save":92,"./search":93,"./setContent":94,"./setData":95,"./setElement":96,"./setPosition":97,"./sort":98,"./starter":99,"./state":100,"./style":101,"./switchMode":102,"./textarea":104,"./toApproval":105,"./toArray":106,"./toAwait":107,"./toCSV":108,"./toCode":110,"./toComponent":111,"./toControls":112,"./toHtml":113,"./toId":114,"./toNumber":115,"./toOperator":116,"./toParam":117,"./toPath":118,"./toString":121,"./toStyle":122,"./toValue":123,"./toggleView":124,"./update":125,"./upload":126,"./values":127}],64:[function(require,module,exports){
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -4419,7 +3646,7 @@ const generate = (length) => {
 
 module.exports = {generate}
 
-},{}],69:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = {
     getDateTime: (time) => {
         
@@ -4440,13 +3667,13 @@ module.exports = {
         return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],70:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],71:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 (function (process){(function (){
 const path = require("path");
 const fs = require("fs");
@@ -4476,7 +3703,7 @@ const getJsonFiles = (folder, fileName, params = {}) => {
 module.exports = {getJsonFiles};
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":4,"fs":1,"path":3}],72:[function(require,module,exports){
+},{"_process":162,"fs":158,"path":161}],68:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 const getParam = ({ string, param, defValue }) => {
@@ -4500,7 +3727,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":121}],73:[function(require,module,exports){
+},{"./toParam":117}],69:[function(require,module,exports){
 module.exports = {
     getType: (value) => {
         if (typeof value === "string") {
@@ -4519,7 +3746,7 @@ module.exports = {
         if (typeof value === "function") return "function"
     }
 }
-},{}],74:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
 
 const getJson = (url) => {
@@ -4559,10 +3786,9 @@ const importJson = ({ id, e, ...params }) => {
 }
 
 module.exports = {importJson, getJson}
-},{"./toAwait":111}],75:[function(require,module,exports){
+},{"./toAwait":107}],71:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
-//const { removeChildren } = require("./update")
 const { starter } = require("./starter")
 const { generate } = require("./generate")
 const { setElement } = require("./setElement")
@@ -4570,7 +3796,7 @@ const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
 
 module.exports = {
-  insert: ({ id, insert, ...params }) => {
+  insert: ({ id, insert }) => {
     
     var { index, value = {}, el, elementId, component, replace, path, data } = insert
     var local = window.value[id], lDiv
@@ -4582,7 +3808,7 @@ module.exports = {
       var _local = clone(component || replace)
       if (data) _local.data = clone(data)
       if (path) _local.derivations = (Array.isArray(path) ? path : path.split(".")) || []
-
+      
       var innerHTML = toArray(_local)
       .map((child, index) => {
 
@@ -4635,7 +3861,7 @@ module.exports = {
     }
   }
 }
-},{"./clone":40,"./createElement":49,"./generate":68,"./setElement":100,"./starter":103,"./toArray":110,"./toParam":121}],76:[function(require,module,exports){
+},{"./clone":36,"./createElement":45,"./generate":64,"./setElement":96,"./starter":99,"./toArray":106,"./toParam":117}],72:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -4668,7 +3894,7 @@ const isArabic = ({ id, value }) => {
 
 module.exports = { isArabic }
 
-},{}],77:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -4758,7 +3984,7 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual};
 
-},{}],78:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
@@ -4775,7 +4001,7 @@ module.exports = {
   },
 };
 
-},{}],79:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -4940,20 +4166,20 @@ const uploadFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadFile }
-},{"./toArray":110,"./toOperator":120,"fs":1}],80:[function(require,module,exports){
+},{"./toArray":106,"./toOperator":116,"fs":158}],76:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],81:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],82:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -5018,7 +4244,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":40,"./toArray":110}],83:[function(require,module,exports){
+},{"./clone":36,"./toArray":106}],79:[function(require,module,exports){
 const note = ({ note: _note }) => {
 
   var value = window.value
@@ -5050,7 +4276,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{}],84:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var local = window.value[id]
@@ -5108,7 +4334,7 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],85:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 const pause = ({ id }) => {
 
   var local = window.value[id]
@@ -5117,7 +4343,7 @@ const pause = ({ id }) => {
 
 module.exports = {pause}
 
-},{}],86:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 const play = ({ id }) => {
 
   var local = window.value[id]
@@ -5130,7 +4356,7 @@ const play = ({ id }) => {
 
 module.exports = {play}
 
-},{}],87:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 const {controls} = require("./controls")
 const {update} = require("./update")
 
@@ -5176,7 +4402,7 @@ const popup = ({ id }) => {
 
 module.exports = {popup}
 
-},{"./controls":44,"./update":129}],88:[function(require,module,exports){
+},{"./controls":40,"./update":125}],84:[function(require,module,exports){
 const { converter } = require("./resize")
 
 const getPadding = (el) => {
@@ -5223,14 +4449,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":94}],89:[function(require,module,exports){
+},{"./resize":90}],85:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],90:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -5307,7 +4533,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
     
-    if (path0.slice(0, 2) === ")(") {
+    if (path0 === ")(") {
 
         var args = path[0].split(":")
 
@@ -5317,10 +4543,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
         }
 
-        var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
-        if (_id === undefined) _id = args[1]
-        path.splice(1, 0, _id)
-        path[0] = path0 = ")("
+        var state = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
+        if (state === undefined) state = args[1]
+        path.splice(1, 0, state)
+        path[0] = ")("
     }
     
     // ():id || ():id.once()
@@ -5388,36 +4614,37 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         return setInterval(myFn, _timer)
     }
     
+    object = path0 === "()" ? local
+    : path0 === "index()" ? index
+    : (path0 === "global()" || path0 === ")(")? _window ? _window.global : window.global
+    : path0 === "e()" ? e
+    : path0 === "_" ? _
+    : (path0 === "document()" || path0 === "doc()")? document
+    : path0 === "window()" ? _window || window
+    : path0 === "history()" ? history
+    : object
+
+    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "history()") path = path.slice(1)
+        
     if (!object && object !== 0 && object !== false) {
 
-        object = path0 === "()" ? local
-        : path0 === "index()" ? index
-        : (path0 === "global()" || path0 === ")(")? _window ? _window.global : window.global
-        : (path0 === "e()" || path0 === "event()") ? e
-        : path0 === "undefined" ? undefined
-        : path0 === "false" ? false
-        : path0 === "true" ? true
-        : path0 === "_" ? _
-        : path0 === "params()" ? params
-        : path0 === "params" ? params
-        : path0 === "document()" ? document
-        : path0 === "window()" ? _window || window
-        : path0 === "history()" ? history
-        : false
-        
-        if (!object && path[0]) {
+        if (path[0]) {
+
+            if (path0 === "undefined") undefined
+            else if (path0 === "false") false
+            else if (path0 === "true") true
             
-            if (path0 === "generate()") {
+            else if (path0 === "generate()") {
 
                 var args = path[0].split(":")
                 var length = toValue({ req, res, _window, id, e, _, value: args[1], params }) || 5
                 return generate(length)
             } 
-            if (path0 === "desktop()") return global.device.type === "desktop"
-            if (path0 === "tablet()") return global.device.type === "tablet"
-            if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
+            else if (path0 === "desktop()") return global.device.type === "desktop"
+            else if (path0 === "tablet()") return global.device.type === "tablet"
+            else if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
 
-            if (path0 === "log()") {
+            else if (path0 === "log()") {
 
                 var args = path[0].split(":").slice(1)
                 return args.map(arg => {
@@ -5427,7 +4654,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 })
             }
 
-            if (path0.includes("coded()")) {
+            else if (path0.includes("coded()")) {
 
                 coded = true
                 object = toValue({ req, res, _window, object, id, value: global.codes[path0], params, _, e })
@@ -7252,13 +6479,13 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./capitalize":38,"./clone":40,"./cookie":45,"./decode":53,"./execute":60,"./exportJson":61,"./focus":66,"./generate":68,"./getDateTime":69,"./getDaysInMonth":70,"./getType":73,"./importJson":74,"./isEqual":77,"./merge":82,"./position":88,"./remove":92,"./toArray":110,"./toClock":113,"./toId":118,"./toNumber":119,"./toParam":121,"./toPrice":123,"./toSimplifiedDate":124,"./toValue":127}],91:[function(require,module,exports){
+},{"./capitalize":34,"./clone":36,"./cookie":41,"./decode":49,"./execute":56,"./exportJson":57,"./focus":62,"./generate":64,"./getDateTime":65,"./getDaysInMonth":66,"./getType":69,"./importJson":70,"./isEqual":73,"./merge":78,"./position":84,"./remove":88,"./toArray":106,"./toClock":109,"./toId":114,"./toNumber":115,"./toParam":117,"./toPrice":119,"./toSimplifiedDate":120,"./toValue":123}],87:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],92:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -7329,7 +6556,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":40,"./reducer":90,"./update":129}],93:[function(require,module,exports){
+},{"./clone":36,"./reducer":86,"./update":125}],89:[function(require,module,exports){
 const removeDuplicates = (object) => {
   
   if (typeof object === "string" || typeof object === "number" || !object) {
@@ -7352,7 +6579,7 @@ const removeDuplicates = (object) => {
 
 module.exports = {removeDuplicates};
 
-},{}],94:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var local = window.value[id]
@@ -7445,7 +6672,7 @@ var converter = (dimension) => {
 
 module.exports = {resize, dimensions, converter}
 
-},{}],95:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 const { update } = require("./update")
 
 module.exports = {
@@ -7468,7 +6695,7 @@ module.exports = {
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
 }
-},{"./update":129}],96:[function(require,module,exports){
+},{"./update":125}],92:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { toAwait } = require("./toAwait")
@@ -7540,7 +6767,7 @@ module.exports = {
   }
 }
 */
-},{"./clone":40,"./toAwait":111,"axios":133}],97:[function(require,module,exports){
+},{"./clone":36,"./toAwait":107,"axios":129}],93:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { toAwait } = require('./toAwait')
@@ -7641,7 +6868,7 @@ module.exports = {
     }
 }
 */
-},{"./clone":40,"./toAwait":111,"./toString":125,"axios":133}],98:[function(require,module,exports){
+},{"./clone":36,"./toAwait":107,"./toString":121,"axios":129}],94:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -7664,7 +6891,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":76}],99:[function(require,module,exports){
+},{"./isArabic":72}],95:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 const {setContent} = require("./setContent")
@@ -7708,7 +6935,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":40,"./reducer":90,"./setContent":98}],100:[function(require,module,exports){
+},{"./clone":36,"./reducer":86,"./setContent":94}],96:[function(require,module,exports){
 const { controls } = require("./controls")
 // const { starter } = require("./starter")
 const { toArray } = require("./toArray")
@@ -7743,7 +6970,7 @@ const setElement = ({ id }) => {
 }
     
 module.exports = { setElement }
-},{"./controls":44,"./toArray":110}],101:[function(require,module,exports){
+},{"./controls":40,"./toArray":106}],97:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
 
   var value = window.value
@@ -7916,7 +7143,7 @@ const setPosition = ({ position, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],102:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 const { reducer } = require("./reducer")
 const { toNumber } = require("./toNumber")
 
@@ -8031,7 +7258,7 @@ const sort = ({ sort = {}, id, e }) => {
 }
 
 module.exports = {sort}
-},{"./reducer":90,"./toNumber":119}],103:[function(require,module,exports){
+},{"./reducer":86,"./toNumber":115}],99:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -8103,12 +7330,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":20,"./controls":44,"./defaultInputHandler":54,"./event":59,"./isArabic":76,"./resize":94,"./toArray":110,"./toParam":121}],104:[function(require,module,exports){
+},{"../control/control":16,"./controls":40,"./defaultInputHandler":50,"./event":55,"./isArabic":72,"./resize":90,"./toArray":106,"./toParam":117}],100:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],105:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -8233,7 +7460,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":94,"./toArray":110}],106:[function(require,module,exports){
+},{"./resize":90,"./toArray":106}],102:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -8297,7 +7524,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":38,"./clone":40,"./style":105}],107:[function(require,module,exports){
+},{"./capitalize":34,"./clone":36,"./style":101}],103:[function(require,module,exports){
 const { capitalize } = require("./capitalize")
 
 const formats = [
@@ -8364,12 +7591,12 @@ const textFormating = ({ _window, text, id }) => {
 }
 
 module.exports = { textFormating }
-},{"./capitalize":38}],108:[function(require,module,exports){
+},{"./capitalize":34}],104:[function(require,module,exports){
 const textarea = ({id}) => {}
 
 module.exports = {textarea}
 
-},{}],109:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 const { toValue } = require("./toValue")
@@ -8465,14 +7692,14 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
 
 module.exports = { toApproval }
 
-},{"./generate":68,"./isEqual":77,"./reducer":90,"./toValue":127}],110:[function(require,module,exports){
+},{"./generate":64,"./isEqual":73,"./reducer":86,"./toValue":123}],106:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? [...data] : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],111:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 module.exports = {
   toAwait: ({ id, e, params = {} }) => {
 
@@ -8498,7 +7725,7 @@ module.exports = {
   }
 }
 
-},{"./execute":60,"./toParam":121}],112:[function(require,module,exports){
+},{"./execute":56,"./toParam":117}],108:[function(require,module,exports){
 module.exports = {
     toCSV: ({ file = {} }) => {
 
@@ -8572,7 +7799,7 @@ module.exports = {
         }
     }
 }
-},{}],113:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp }) => {
 
@@ -8593,7 +7820,7 @@ module.exports = {
         return days + " : " + hrs + " : " + mins + " : " + secs
     }
 }
-},{}],114:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, string, e, codes }) => {
@@ -8643,7 +7870,7 @@ const toCode = ({ _window, string, e, codes }) => {
 
 module.exports = { toCode }
 
-},{"./generate":68}],115:[function(require,module,exports){
+},{"./generate":64}],111:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -8676,12 +7903,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":68,"./toArray":110}],116:[function(require,module,exports){
+},{"./generate":64,"./toArray":106}],112:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],117:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
@@ -8800,7 +8027,7 @@ module.exports = {
     return tag
   }
 }
-},{"./clone":40,"./createElement":49,"./generate":68,"./textFormating":107,"./toArray":110,"./toStyle":126}],118:[function(require,module,exports){
+},{"./clone":36,"./createElement":45,"./generate":64,"./textFormating":103,"./toArray":106,"./toStyle":122}],114:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -8829,7 +8056,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":68}],119:[function(require,module,exports){
+},{"./generate":64}],115:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -8847,7 +8074,7 @@ module.exports = {
   },
 };
 
-},{}],120:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -8863,7 +8090,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],121:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -9012,8 +8239,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
 
       }
       
-      key = path[0]
-      
     } else {
 
       if (id && local && mount) local[key] = value
@@ -9026,19 +8251,19 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
 
 module.exports = { toParam }
 
-},{"./generate":68,"./reducer":90,"./toApproval":109,"./toArray":110,"./toValue":127}],122:[function(require,module,exports){
+},{"./generate":64,"./reducer":86,"./toApproval":105,"./toArray":106,"./toValue":123}],118:[function(require,module,exports){
 const toPath = ({ id }) => {}
 
 module.exports = {toPath}
 
-},{}],123:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 };
 
-},{}],124:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -9082,7 +8307,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],125:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -9116,7 +8341,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],126:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -9188,7 +8413,7 @@ module.exports = {
   }
 }
 
-},{}],127:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 const { generate } = require("./generate")
 const { reducer } = require("./reducer")
 
@@ -9321,7 +8546,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
 
 module.exports = { toValue }
 
-},{"./generate":68,"./reducer":90,"./toApproval":109,"./toParam":121}],128:[function(require,module,exports){
+},{"./generate":64,"./reducer":86,"./toApproval":105,"./toParam":117}],124:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -9358,7 +8583,6 @@ const toggleView = ({ toggle, id }) => {
     global.currentPage = togglePage.split("/")[0]
     var title = global.data.page[global.currentPage].title
     togglePage = togglePage === "main" ? "" : togglePage
-    global.path = togglePage = togglePage ? `${global.projectId}/${togglePage}` : `/${global.projectId}`
 
     history.pushState({}, title, togglePage)
     document.title = title
@@ -9429,7 +8653,7 @@ const toggleView = ({ toggle, id }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":40,"./createElement":49,"./generate":68,"./setElement":100,"./starter":103,"./toArray":110,"./update":129}],129:[function(require,module,exports){
+},{"./clone":36,"./createElement":45,"./generate":64,"./setElement":96,"./starter":99,"./toArray":106,"./update":125}],125:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -9523,7 +8747,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":40,"./controls":44,"./createElement":49,"./generate":68,"./setElement":100,"./starter":103,"./toArray":110,"./toParam":121}],130:[function(require,module,exports){
+},{"./clone":36,"./controls":40,"./createElement":45,"./generate":64,"./setElement":96,"./starter":99,"./toArray":106,"./toParam":117}],126:[function(require,module,exports){
 const axios = require("axios")
 const { toAwait } = require("./toAwait")
 
@@ -9598,11 +8822,11 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./toAwait":111,"axios":133}],131:[function(require,module,exports){
+},{"./toAwait":107,"axios":129}],127:[function(require,module,exports){
 module.exports = {
     values: () => {}
 }
-},{}],132:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -9662,9 +8886,9 @@ const watch = ({ controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":40,"./execute":60,"./isEqual":77,"./toApproval":109,"./toCode":114,"./toParam":121,"./toValue":127}],133:[function(require,module,exports){
+},{"./clone":36,"./execute":56,"./isEqual":73,"./toApproval":105,"./toCode":110,"./toParam":117,"./toValue":123}],129:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":135}],134:[function(require,module,exports){
+},{"./lib/axios":131}],130:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9855,7 +9079,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":141,"../core/createError":142,"./../core/settle":146,"./../helpers/buildURL":150,"./../helpers/cookies":152,"./../helpers/isURLSameOrigin":155,"./../helpers/parseHeaders":157,"./../utils":160}],135:[function(require,module,exports){
+},{"../core/buildFullPath":137,"../core/createError":138,"./../core/settle":142,"./../helpers/buildURL":146,"./../helpers/cookies":148,"./../helpers/isURLSameOrigin":151,"./../helpers/parseHeaders":153,"./../utils":156}],131:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -9913,7 +9137,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":136,"./cancel/CancelToken":137,"./cancel/isCancel":138,"./core/Axios":139,"./core/mergeConfig":145,"./defaults":148,"./helpers/bind":149,"./helpers/isAxiosError":154,"./helpers/spread":158,"./utils":160}],136:[function(require,module,exports){
+},{"./cancel/Cancel":132,"./cancel/CancelToken":133,"./cancel/isCancel":134,"./core/Axios":135,"./core/mergeConfig":141,"./defaults":144,"./helpers/bind":145,"./helpers/isAxiosError":150,"./helpers/spread":154,"./utils":156}],132:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9934,7 +9158,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],137:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -9993,14 +9217,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":136}],138:[function(require,module,exports){
+},{"./Cancel":132}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],139:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10150,7 +9374,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":150,"../helpers/validator":159,"./../utils":160,"./InterceptorManager":140,"./dispatchRequest":143,"./mergeConfig":145}],140:[function(require,module,exports){
+},{"../helpers/buildURL":146,"../helpers/validator":155,"./../utils":156,"./InterceptorManager":136,"./dispatchRequest":139,"./mergeConfig":141}],136:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10206,7 +9430,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":160}],141:[function(require,module,exports){
+},{"./../utils":156}],137:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -10228,7 +9452,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":151,"../helpers/isAbsoluteURL":153}],142:[function(require,module,exports){
+},{"../helpers/combineURLs":147,"../helpers/isAbsoluteURL":149}],138:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -10248,7 +9472,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":144}],143:[function(require,module,exports){
+},{"./enhanceError":140}],139:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10332,7 +9556,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":138,"../defaults":148,"./../utils":160,"./transformData":147}],144:[function(require,module,exports){
+},{"../cancel/isCancel":134,"../defaults":144,"./../utils":156,"./transformData":143}],140:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10376,7 +9600,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],145:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10465,7 +9689,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":160}],146:[function(require,module,exports){
+},{"../utils":156}],142:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -10492,7 +9716,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":142}],147:[function(require,module,exports){
+},{"./createError":138}],143:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10516,7 +9740,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":148,"./../utils":160}],148:[function(require,module,exports){
+},{"./../defaults":144,"./../utils":156}],144:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -10654,7 +9878,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":134,"./adapters/xhr":134,"./core/enhanceError":144,"./helpers/normalizeHeaderName":156,"./utils":160,"_process":4}],149:[function(require,module,exports){
+},{"./adapters/http":130,"./adapters/xhr":130,"./core/enhanceError":140,"./helpers/normalizeHeaderName":152,"./utils":156,"_process":162}],145:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -10667,7 +9891,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],150:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10739,7 +9963,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":160}],151:[function(require,module,exports){
+},{"./../utils":156}],147:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10755,7 +9979,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],152:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10810,7 +10034,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":160}],153:[function(require,module,exports){
+},{"./../utils":156}],149:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10826,7 +10050,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],154:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10839,7 +10063,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],155:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10909,7 +10133,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":160}],156:[function(require,module,exports){
+},{"./../utils":156}],152:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10923,7 +10147,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":160}],157:[function(require,module,exports){
+},{"../utils":156}],153:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10978,7 +10202,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":160}],158:[function(require,module,exports){
+},{"./../utils":156}],154:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11007,7 +10231,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],159:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -11114,7 +10338,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":161}],160:[function(require,module,exports){
+},{"./../../package.json":157}],156:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -11465,36 +10689,31 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":149}],161:[function(require,module,exports){
+},{"./helpers/bind":145}],157:[function(require,module,exports){
 module.exports={
-  "_args": [
-    [
-      "axios@0.21.4",
-      "C:\\Users\\user\\Desktop\\Js\\QuePik CMS\\functions"
-    ]
-  ],
-  "_from": "axios@0.21.4",
+  "_from": "axios@^0.21.1",
   "_id": "axios@0.21.4",
   "_inBundle": false,
   "_integrity": "sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==",
   "_location": "/axios",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "axios@0.21.4",
+    "raw": "axios@^0.21.1",
     "name": "axios",
     "escapedName": "axios",
-    "rawSpec": "0.21.4",
+    "rawSpec": "^0.21.1",
     "saveSpec": null,
-    "fetchSpec": "0.21.4"
+    "fetchSpec": "^0.21.1"
   },
   "_requiredBy": [
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/axios/-/axios-0.21.4.tgz",
-  "_spec": "0.21.4",
-  "_where": "C:\\Users\\user\\Desktop\\Js\\QuePik CMS\\functions",
+  "_shasum": "c67b90dc0568e5c1cf2b0b858c43ba28e2eda575",
+  "_spec": "axios@^0.21.1",
+  "_where": "C:\\Users\\Maliks\\Desktop\\BracketJs\\functions",
   "author": {
     "name": "Matt Zabriskie"
   },
@@ -11504,6 +10723,7 @@ module.exports={
   "bugs": {
     "url": "https://github.com/axios/axios/issues"
   },
+  "bundleDependencies": false,
   "bundlesize": [
     {
       "path": "./dist/axios.min.js",
@@ -11513,6 +10733,7 @@ module.exports={
   "dependencies": {
     "follow-redirects": "^1.14.0"
   },
+  "deprecated": false,
   "description": "Promise based HTTP client for the browser and node.js",
   "devDependencies": {
     "coveralls": "^3.0.0",
@@ -11581,7 +10802,9 @@ module.exports={
   "version": "0.21.4"
 }
 
-},{}],162:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
+
+},{}],159:[function(require,module,exports){
 (function (process){(function (){
 /* @flow */
 /*::
@@ -11703,4 +10926,774 @@ module.exports.config = config
 module.exports.parse = parse
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":4,"fs":1,"os":2,"path":3}]},{},[5]);
+},{"_process":162,"fs":158,"os":160,"path":161}],160:[function(require,module,exports){
+exports.endianness = function () { return 'LE' };
+
+exports.hostname = function () {
+    if (typeof location !== 'undefined') {
+        return location.hostname
+    }
+    else return '';
+};
+
+exports.loadavg = function () { return [] };
+
+exports.uptime = function () { return 0 };
+
+exports.freemem = function () {
+    return Number.MAX_VALUE;
+};
+
+exports.totalmem = function () {
+    return Number.MAX_VALUE;
+};
+
+exports.cpus = function () { return [] };
+
+exports.type = function () { return 'Browser' };
+
+exports.release = function () {
+    if (typeof navigator !== 'undefined') {
+        return navigator.appVersion;
+    }
+    return '';
+};
+
+exports.networkInterfaces
+= exports.getNetworkInterfaces
+= function () { return {} };
+
+exports.arch = function () { return 'javascript' };
+
+exports.platform = function () { return 'browser' };
+
+exports.tmpdir = exports.tmpDir = function () {
+    return '/tmp';
+};
+
+exports.EOL = '\n';
+
+exports.homedir = function () {
+	return '/'
+};
+
+},{}],161:[function(require,module,exports){
+(function (process){(function (){
+// 'path' module extracted from Node.js v8.11.1 (only the posix part)
+// transplited with Babel
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+'use strict';
+
+function assertPath(path) {
+  if (typeof path !== 'string') {
+    throw new TypeError('Path must be a string. Received ' + JSON.stringify(path));
+  }
+}
+
+// Resolves . and .. elements in a path with directory names
+function normalizeStringPosix(path, allowAboveRoot) {
+  var res = '';
+  var lastSegmentLength = 0;
+  var lastSlash = -1;
+  var dots = 0;
+  var code;
+  for (var i = 0; i <= path.length; ++i) {
+    if (i < path.length)
+      code = path.charCodeAt(i);
+    else if (code === 47 /*/*/)
+      break;
+    else
+      code = 47 /*/*/;
+    if (code === 47 /*/*/) {
+      if (lastSlash === i - 1 || dots === 1) {
+        // NOOP
+      } else if (lastSlash !== i - 1 && dots === 2) {
+        if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 /*.*/ || res.charCodeAt(res.length - 2) !== 46 /*.*/) {
+          if (res.length > 2) {
+            var lastSlashIndex = res.lastIndexOf('/');
+            if (lastSlashIndex !== res.length - 1) {
+              if (lastSlashIndex === -1) {
+                res = '';
+                lastSegmentLength = 0;
+              } else {
+                res = res.slice(0, lastSlashIndex);
+                lastSegmentLength = res.length - 1 - res.lastIndexOf('/');
+              }
+              lastSlash = i;
+              dots = 0;
+              continue;
+            }
+          } else if (res.length === 2 || res.length === 1) {
+            res = '';
+            lastSegmentLength = 0;
+            lastSlash = i;
+            dots = 0;
+            continue;
+          }
+        }
+        if (allowAboveRoot) {
+          if (res.length > 0)
+            res += '/..';
+          else
+            res = '..';
+          lastSegmentLength = 2;
+        }
+      } else {
+        if (res.length > 0)
+          res += '/' + path.slice(lastSlash + 1, i);
+        else
+          res = path.slice(lastSlash + 1, i);
+        lastSegmentLength = i - lastSlash - 1;
+      }
+      lastSlash = i;
+      dots = 0;
+    } else if (code === 46 /*.*/ && dots !== -1) {
+      ++dots;
+    } else {
+      dots = -1;
+    }
+  }
+  return res;
+}
+
+function _format(sep, pathObject) {
+  var dir = pathObject.dir || pathObject.root;
+  var base = pathObject.base || (pathObject.name || '') + (pathObject.ext || '');
+  if (!dir) {
+    return base;
+  }
+  if (dir === pathObject.root) {
+    return dir + base;
+  }
+  return dir + sep + base;
+}
+
+var posix = {
+  // path.resolve([from ...], to)
+  resolve: function resolve() {
+    var resolvedPath = '';
+    var resolvedAbsolute = false;
+    var cwd;
+
+    for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+      var path;
+      if (i >= 0)
+        path = arguments[i];
+      else {
+        if (cwd === undefined)
+          cwd = process.cwd();
+        path = cwd;
+      }
+
+      assertPath(path);
+
+      // Skip empty entries
+      if (path.length === 0) {
+        continue;
+      }
+
+      resolvedPath = path + '/' + resolvedPath;
+      resolvedAbsolute = path.charCodeAt(0) === 47 /*/*/;
+    }
+
+    // At this point the path should be resolved to a full absolute path, but
+    // handle relative paths to be safe (might happen when process.cwd() fails)
+
+    // Normalize the path
+    resolvedPath = normalizeStringPosix(resolvedPath, !resolvedAbsolute);
+
+    if (resolvedAbsolute) {
+      if (resolvedPath.length > 0)
+        return '/' + resolvedPath;
+      else
+        return '/';
+    } else if (resolvedPath.length > 0) {
+      return resolvedPath;
+    } else {
+      return '.';
+    }
+  },
+
+  normalize: function normalize(path) {
+    assertPath(path);
+
+    if (path.length === 0) return '.';
+
+    var isAbsolute = path.charCodeAt(0) === 47 /*/*/;
+    var trailingSeparator = path.charCodeAt(path.length - 1) === 47 /*/*/;
+
+    // Normalize the path
+    path = normalizeStringPosix(path, !isAbsolute);
+
+    if (path.length === 0 && !isAbsolute) path = '.';
+    if (path.length > 0 && trailingSeparator) path += '/';
+
+    if (isAbsolute) return '/' + path;
+    return path;
+  },
+
+  isAbsolute: function isAbsolute(path) {
+    assertPath(path);
+    return path.length > 0 && path.charCodeAt(0) === 47 /*/*/;
+  },
+
+  join: function join() {
+    if (arguments.length === 0)
+      return '.';
+    var joined;
+    for (var i = 0; i < arguments.length; ++i) {
+      var arg = arguments[i];
+      assertPath(arg);
+      if (arg.length > 0) {
+        if (joined === undefined)
+          joined = arg;
+        else
+          joined += '/' + arg;
+      }
+    }
+    if (joined === undefined)
+      return '.';
+    return posix.normalize(joined);
+  },
+
+  relative: function relative(from, to) {
+    assertPath(from);
+    assertPath(to);
+
+    if (from === to) return '';
+
+    from = posix.resolve(from);
+    to = posix.resolve(to);
+
+    if (from === to) return '';
+
+    // Trim any leading backslashes
+    var fromStart = 1;
+    for (; fromStart < from.length; ++fromStart) {
+      if (from.charCodeAt(fromStart) !== 47 /*/*/)
+        break;
+    }
+    var fromEnd = from.length;
+    var fromLen = fromEnd - fromStart;
+
+    // Trim any leading backslashes
+    var toStart = 1;
+    for (; toStart < to.length; ++toStart) {
+      if (to.charCodeAt(toStart) !== 47 /*/*/)
+        break;
+    }
+    var toEnd = to.length;
+    var toLen = toEnd - toStart;
+
+    // Compare paths to find the longest common path from root
+    var length = fromLen < toLen ? fromLen : toLen;
+    var lastCommonSep = -1;
+    var i = 0;
+    for (; i <= length; ++i) {
+      if (i === length) {
+        if (toLen > length) {
+          if (to.charCodeAt(toStart + i) === 47 /*/*/) {
+            // We get here if `from` is the exact base path for `to`.
+            // For example: from='/foo/bar'; to='/foo/bar/baz'
+            return to.slice(toStart + i + 1);
+          } else if (i === 0) {
+            // We get here if `from` is the root
+            // For example: from='/'; to='/foo'
+            return to.slice(toStart + i);
+          }
+        } else if (fromLen > length) {
+          if (from.charCodeAt(fromStart + i) === 47 /*/*/) {
+            // We get here if `to` is the exact base path for `from`.
+            // For example: from='/foo/bar/baz'; to='/foo/bar'
+            lastCommonSep = i;
+          } else if (i === 0) {
+            // We get here if `to` is the root.
+            // For example: from='/foo'; to='/'
+            lastCommonSep = 0;
+          }
+        }
+        break;
+      }
+      var fromCode = from.charCodeAt(fromStart + i);
+      var toCode = to.charCodeAt(toStart + i);
+      if (fromCode !== toCode)
+        break;
+      else if (fromCode === 47 /*/*/)
+        lastCommonSep = i;
+    }
+
+    var out = '';
+    // Generate the relative path based on the path difference between `to`
+    // and `from`
+    for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
+      if (i === fromEnd || from.charCodeAt(i) === 47 /*/*/) {
+        if (out.length === 0)
+          out += '..';
+        else
+          out += '/..';
+      }
+    }
+
+    // Lastly, append the rest of the destination (`to`) path that comes after
+    // the common path parts
+    if (out.length > 0)
+      return out + to.slice(toStart + lastCommonSep);
+    else {
+      toStart += lastCommonSep;
+      if (to.charCodeAt(toStart) === 47 /*/*/)
+        ++toStart;
+      return to.slice(toStart);
+    }
+  },
+
+  _makeLong: function _makeLong(path) {
+    return path;
+  },
+
+  dirname: function dirname(path) {
+    assertPath(path);
+    if (path.length === 0) return '.';
+    var code = path.charCodeAt(0);
+    var hasRoot = code === 47 /*/*/;
+    var end = -1;
+    var matchedSlash = true;
+    for (var i = path.length - 1; i >= 1; --i) {
+      code = path.charCodeAt(i);
+      if (code === 47 /*/*/) {
+          if (!matchedSlash) {
+            end = i;
+            break;
+          }
+        } else {
+        // We saw the first non-path separator
+        matchedSlash = false;
+      }
+    }
+
+    if (end === -1) return hasRoot ? '/' : '.';
+    if (hasRoot && end === 1) return '//';
+    return path.slice(0, end);
+  },
+
+  basename: function basename(path, ext) {
+    if (ext !== undefined && typeof ext !== 'string') throw new TypeError('"ext" argument must be a string');
+    assertPath(path);
+
+    var start = 0;
+    var end = -1;
+    var matchedSlash = true;
+    var i;
+
+    if (ext !== undefined && ext.length > 0 && ext.length <= path.length) {
+      if (ext.length === path.length && ext === path) return '';
+      var extIdx = ext.length - 1;
+      var firstNonSlashEnd = -1;
+      for (i = path.length - 1; i >= 0; --i) {
+        var code = path.charCodeAt(i);
+        if (code === 47 /*/*/) {
+            // If we reached a path separator that was not part of a set of path
+            // separators at the end of the string, stop now
+            if (!matchedSlash) {
+              start = i + 1;
+              break;
+            }
+          } else {
+          if (firstNonSlashEnd === -1) {
+            // We saw the first non-path separator, remember this index in case
+            // we need it if the extension ends up not matching
+            matchedSlash = false;
+            firstNonSlashEnd = i + 1;
+          }
+          if (extIdx >= 0) {
+            // Try to match the explicit extension
+            if (code === ext.charCodeAt(extIdx)) {
+              if (--extIdx === -1) {
+                // We matched the extension, so mark this as the end of our path
+                // component
+                end = i;
+              }
+            } else {
+              // Extension does not match, so our result is the entire path
+              // component
+              extIdx = -1;
+              end = firstNonSlashEnd;
+            }
+          }
+        }
+      }
+
+      if (start === end) end = firstNonSlashEnd;else if (end === -1) end = path.length;
+      return path.slice(start, end);
+    } else {
+      for (i = path.length - 1; i >= 0; --i) {
+        if (path.charCodeAt(i) === 47 /*/*/) {
+            // If we reached a path separator that was not part of a set of path
+            // separators at the end of the string, stop now
+            if (!matchedSlash) {
+              start = i + 1;
+              break;
+            }
+          } else if (end === -1) {
+          // We saw the first non-path separator, mark this as the end of our
+          // path component
+          matchedSlash = false;
+          end = i + 1;
+        }
+      }
+
+      if (end === -1) return '';
+      return path.slice(start, end);
+    }
+  },
+
+  extname: function extname(path) {
+    assertPath(path);
+    var startDot = -1;
+    var startPart = 0;
+    var end = -1;
+    var matchedSlash = true;
+    // Track the state of characters (if any) we see before our first dot and
+    // after any path separator we find
+    var preDotState = 0;
+    for (var i = path.length - 1; i >= 0; --i) {
+      var code = path.charCodeAt(i);
+      if (code === 47 /*/*/) {
+          // If we reached a path separator that was not part of a set of path
+          // separators at the end of the string, stop now
+          if (!matchedSlash) {
+            startPart = i + 1;
+            break;
+          }
+          continue;
+        }
+      if (end === -1) {
+        // We saw the first non-path separator, mark this as the end of our
+        // extension
+        matchedSlash = false;
+        end = i + 1;
+      }
+      if (code === 46 /*.*/) {
+          // If this is our first dot, mark it as the start of our extension
+          if (startDot === -1)
+            startDot = i;
+          else if (preDotState !== 1)
+            preDotState = 1;
+      } else if (startDot !== -1) {
+        // We saw a non-dot and non-path separator before our dot, so we should
+        // have a good chance at having a non-empty extension
+        preDotState = -1;
+      }
+    }
+
+    if (startDot === -1 || end === -1 ||
+        // We saw a non-dot character immediately before the dot
+        preDotState === 0 ||
+        // The (right-most) trimmed path component is exactly '..'
+        preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+      return '';
+    }
+    return path.slice(startDot, end);
+  },
+
+  format: function format(pathObject) {
+    if (pathObject === null || typeof pathObject !== 'object') {
+      throw new TypeError('The "pathObject" argument must be of type Object. Received type ' + typeof pathObject);
+    }
+    return _format('/', pathObject);
+  },
+
+  parse: function parse(path) {
+    assertPath(path);
+
+    var ret = { root: '', dir: '', base: '', ext: '', name: '' };
+    if (path.length === 0) return ret;
+    var code = path.charCodeAt(0);
+    var isAbsolute = code === 47 /*/*/;
+    var start;
+    if (isAbsolute) {
+      ret.root = '/';
+      start = 1;
+    } else {
+      start = 0;
+    }
+    var startDot = -1;
+    var startPart = 0;
+    var end = -1;
+    var matchedSlash = true;
+    var i = path.length - 1;
+
+    // Track the state of characters (if any) we see before our first dot and
+    // after any path separator we find
+    var preDotState = 0;
+
+    // Get non-dir info
+    for (; i >= start; --i) {
+      code = path.charCodeAt(i);
+      if (code === 47 /*/*/) {
+          // If we reached a path separator that was not part of a set of path
+          // separators at the end of the string, stop now
+          if (!matchedSlash) {
+            startPart = i + 1;
+            break;
+          }
+          continue;
+        }
+      if (end === -1) {
+        // We saw the first non-path separator, mark this as the end of our
+        // extension
+        matchedSlash = false;
+        end = i + 1;
+      }
+      if (code === 46 /*.*/) {
+          // If this is our first dot, mark it as the start of our extension
+          if (startDot === -1) startDot = i;else if (preDotState !== 1) preDotState = 1;
+        } else if (startDot !== -1) {
+        // We saw a non-dot and non-path separator before our dot, so we should
+        // have a good chance at having a non-empty extension
+        preDotState = -1;
+      }
+    }
+
+    if (startDot === -1 || end === -1 ||
+    // We saw a non-dot character immediately before the dot
+    preDotState === 0 ||
+    // The (right-most) trimmed path component is exactly '..'
+    preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+      if (end !== -1) {
+        if (startPart === 0 && isAbsolute) ret.base = ret.name = path.slice(1, end);else ret.base = ret.name = path.slice(startPart, end);
+      }
+    } else {
+      if (startPart === 0 && isAbsolute) {
+        ret.name = path.slice(1, startDot);
+        ret.base = path.slice(1, end);
+      } else {
+        ret.name = path.slice(startPart, startDot);
+        ret.base = path.slice(startPart, end);
+      }
+      ret.ext = path.slice(startDot, end);
+    }
+
+    if (startPart > 0) ret.dir = path.slice(0, startPart - 1);else if (isAbsolute) ret.dir = '/';
+
+    return ret;
+  },
+
+  sep: '/',
+  delimiter: ':',
+  win32: null,
+  posix: null
+};
+
+posix.posix = posix;
+
+module.exports = posix;
+
+}).call(this)}).call(this,require('_process'))
+},{"_process":162}],162:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}]},{},[1]);

@@ -85,7 +85,7 @@ var createElement = ({ _window, id, req, res }) => {
     if (params.data !== undefined || params.Data || (local.data !== undefined && !local.Data)) {
       
       local.Data = local.Data || generate()
-      global[local.Data] = clone(local.data !== undefined ? local.data : (global[local.Data] !== undefined ? global[local.Data] : {}))
+      global[local.Data] = local.data !== undefined ? local.data : (global[local.Data] !== undefined ? global[local.Data] : {})
       local.data = global[local.Data]
     }
 

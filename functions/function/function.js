@@ -104,7 +104,6 @@ module.exports = {
   route,
   decode,
   contentful,
-  firebase,
   reload,
   toCSV,
   compare,

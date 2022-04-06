@@ -1,6 +1,5 @@
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
-//const { removeChildren } = require("./update")
 const { starter } = require("./starter")
 const { generate } = require("./generate")
 const { setElement } = require("./setElement")
@@ -8,7 +7,7 @@ const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
 
 module.exports = {
-  insert: ({ id, insert, ...params }) => {
+  insert: ({ id, insert }) => {
     
     var { index, value = {}, el, elementId, component, replace, path, data } = insert
     var local = window.value[id], lDiv
@@ -20,7 +19,7 @@ module.exports = {
       var _local = clone(component || replace)
       if (data) _local.data = clone(data)
       if (path) _local.derivations = (Array.isArray(path) ? path : path.split(".")) || []
-
+      
       var innerHTML = toArray(_local)
       .map((child, index) => {
 

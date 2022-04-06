@@ -34,7 +34,6 @@ const toggleView = ({ toggle, id }) => {
     global.currentPage = togglePage.split("/")[0]
     var title = global.data.page[global.currentPage].title
     togglePage = togglePage === "main" ? "" : togglePage
-    global.path = togglePage = togglePage ? `${global.projectId}/${togglePage}` : `/${global.projectId}`
 
     history.pushState({}, title, togglePage)
     document.title = title

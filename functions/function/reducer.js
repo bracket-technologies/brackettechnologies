@@ -74,7 +74,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
     
-    if (path0.slice(0, 2) === ")(") {
+    if (path0 === ")(") {
 
         var args = path[0].split(":")
 
@@ -84,10 +84,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
         }
 
-        var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
-        if (_id === undefined) _id = args[1]
-        path.splice(1, 0, _id)
-        path[0] = path0 = ")("
+        var state = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
+        if (state === undefined) state = args[1]
+        path.splice(1, 0, state)
+        path[0] = ")("
     }
     
     // ():id || ():id.once()
@@ -155,36 +155,37 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         return setInterval(myFn, _timer)
     }
     
+    object = path0 === "()" ? local
+    : path0 === "index()" ? index
+    : (path0 === "global()" || path0 === ")(")? _window ? _window.global : window.global
+    : path0 === "e()" ? e
+    : path0 === "_" ? _
+    : (path0 === "document()" || path0 === "doc()")? document
+    : path0 === "window()" ? _window || window
+    : path0 === "history()" ? history
+    : object
+
+    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "history()") path = path.slice(1)
+        
     if (!object && object !== 0 && object !== false) {
 
-        object = path0 === "()" ? local
-        : path0 === "index()" ? index
-        : (path0 === "global()" || path0 === ")(")? _window ? _window.global : window.global
-        : (path0 === "e()" || path0 === "event()") ? e
-        : path0 === "undefined" ? undefined
-        : path0 === "false" ? false
-        : path0 === "true" ? true
-        : path0 === "_" ? _
-        : path0 === "params()" ? params
-        : path0 === "params" ? params
-        : path0 === "document()" ? document
-        : path0 === "window()" ? _window || window
-        : path0 === "history()" ? history
-        : false
-        
-        if (!object && path[0]) {
+        if (path[0]) {
+
+            if (path0 === "undefined") undefined
+            else if (path0 === "false") false
+            else if (path0 === "true") true
             
-            if (path0 === "generate()") {
+            else if (path0 === "generate()") {
 
                 var args = path[0].split(":")
                 var length = toValue({ req, res, _window, id, e, _, value: args[1], params }) || 5
                 return generate(length)
             } 
-            if (path0 === "desktop()") return global.device.type === "desktop"
-            if (path0 === "tablet()") return global.device.type === "tablet"
-            if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
+            else if (path0 === "desktop()") return global.device.type === "desktop"
+            else if (path0 === "tablet()") return global.device.type === "tablet"
+            else if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
 
-            if (path0 === "log()") {
+            else if (path0 === "log()") {
 
                 var args = path[0].split(":").slice(1)
                 return args.map(arg => {
@@ -194,7 +195,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 })
             }
 
-            if (path0.includes("coded()")) {
+            else if (path0.includes("coded()")) {
 
                 coded = true
                 object = toValue({ req, res, _window, object, id, value: global.codes[path0], params, _, e })
