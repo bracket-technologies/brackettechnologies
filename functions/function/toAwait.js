@@ -18,7 +18,6 @@ module.exports = {
 
     // override params
     if (_params) params = { ...params, ..._params }
-
     if (awaiter) execute({ id, e, actions: awaiter, params })
   }
 }

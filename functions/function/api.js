@@ -1,5 +1,4 @@
 const { toParam } = require("./toParam")
-const { keys } = require("./keys")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { capitalize } = require("./capitalize")
 
@@ -93,7 +92,7 @@ var getApi = async ({ req, res, db }) => {
   // search field
   if (search.field) Object.entries(search.field).map(([key, value]) => {
 
-    var operator = keys(value)[0]
+    var operator = Object.keys(value)[0]
     ref = ref.where(decodeURI(key), toFirebaseOperator(operator), decodeURI(value[operator]))
   })
 

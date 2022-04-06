@@ -1,7 +1,4 @@
-const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
-const {derive} = require("./derive")
-const {duplicate, duplicates} = require("./duplicate")
 const {getParam} = require("./getParam")
 const {isArabic} = require("./isArabic")
 const {isEqual} = require("./isEqual")
@@ -27,7 +24,6 @@ const {setState} = require("./state")
 const {setPosition} = require("./setPosition")
 const {droplist} = require("./droplist")
 const {createView} = require("./createView")
-const {filter} = require("./filter")
 const {remove} = require("./remove")
 const {focus} = require("./focus")
 const {sort} = require("./sort")
@@ -46,13 +42,7 @@ const {getJsonFiles} = require("./jsonFiles")
 const {toHtml} = require("./toHtml")
 const {setData} = require("./setData")
 const {defaultInputHandler} = require("./defaultInputHandler")
-const {createActions} = require("./createActions")
-const {blur} = require("./blur")
-const {fill} = require("./fill")
 const {toAwait} = require("./toAwait")
-const {close} = require("./close")
-const {pause} = require("./pause")
-const {play} = require("./play")
 const {note} = require("./note")
 const {toCode} = require("./toCode")
 const {isPath} = require("./isPath")
@@ -61,27 +51,21 @@ const {capitalize} = require("./capitalize")
 const {setElement} = require("./setElement")
 const {toOperator} = require("./toOperator")
 const {popup} = require("./popup")
-const {keys} = require("./keys")
-const {values} = require("./values")
 const {toggleView} = require("./toggleView")
 const {upload} = require("./upload")
-const {compare} = require("./compare")
 const {toCSV} = require("./toCSV")
 const {decode} = require("./decode")
 const {route} = require("./route")
 const {contentful} = require("./contentful")
 const {importJson} = require("./importJson")
-const firebase = require("./firebase")
 const {getDateTime} = require("./getDateTime")
 const {insert} = require("./insert")
 const {exportJson} = require("./exportJson")
 const {switchMode} = require("./switchMode")
 const {setCookie, getCookie} = require("./cookie")
 const {getDaysInMonth} = require("./getDaysInMonth")
-const {reload} = require("./reload")
 const {fileReader} = require("./fileReader")
 const {position, getPadding} = require("./position")
-const {searchArduino} = require("./arduino")
 const {
   setStyle,
   resetStyles,
@@ -92,7 +76,6 @@ const {resize, dimensions, converter} = require("./resize")
 const {createData, clearData} = require("./data")
 
 module.exports = {
-  searchArduino,
   switchMode,
   getDaysInMonth,
   importJson,
@@ -104,15 +87,9 @@ module.exports = {
   route,
   decode,
   contentful,
-  reload,
   toCSV,
-  compare,
   setElement,
-  clearValues,
   clone,
-  derive,
-  duplicate,
-  duplicates,
   getJsonFiles,
   search,
   getParam,
@@ -151,10 +128,7 @@ module.exports = {
   createComponent,
   setPosition,
   droplist,
-  filter,
   createView,
-  createActions,
-  blur,
   toAwait,
   exportJson,
   toControls,
@@ -173,17 +147,11 @@ module.exports = {
   toStyle,
   toHtml,
   capitalize,
-  fill,
   note,
-  pause,
-  play,
-  close,
   isPath,
   toNumber,
   popup,
   getDateTime,
-  keys,
-  values,
   toOperator,
   upload,
   toggleView,

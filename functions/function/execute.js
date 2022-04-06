@@ -65,9 +65,14 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       var caseCondition = action.split('<<')[1]
       var name = action.split('<<')[0]
       var actionid = name.split(":")[1]
-      var timer = name.split(":")[2]
-      if (timer) timer = parseInt(timer)
+      var timer = name.split(":")[2] || ""
       name = name.split(':')[0]
+      
+      // timer
+      var isInterval = false
+      if (timer.includes("i")) isInterval = params.isInterval = true
+      timer = timer.split("i")[0]
+      if (timer) timer = parseInt(timer)
       
       if (actionid) actionid = toValue({ _window, value: actionid, params, id: localId, e })
       
@@ -112,13 +117,15 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
         })
       }
 
-      if (timer !== undefined) {
+      if (timer || timer === 0) {
 
         if (local) {
 
           var _name = name.split('.')[1] || name.split('.')[0]
-          if (params["setInterval()"]) local[`${_name}-interval`] = setInterval(myFn, timer)
-          else local[`${_name}-timer`] = setTimeout(myFn, timer)
+          if (isInterval) {
+            myFn()
+            local[`${_name}-timer`] = setInterval(() => myFn(), timer)
+          } else local[`${_name}-timer`] = setTimeout(myFn, timer)
 
         } else {
 

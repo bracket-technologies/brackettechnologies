@@ -16,6 +16,9 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
 
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
+
+  // string value
+  if (value[0] === `"` && value[value.length - 1] === `"`) return value.slice(1, -1)
   
   // return const value
   if (value.split("const.")[1] !== undefined && !value.split("const.")[0])

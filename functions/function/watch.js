@@ -14,29 +14,29 @@ const watch = ({ controls, id }) => {
 
     var watch = toCode({ id, string: controls.watch })
     var approved = toApproval({ id, string: watch.split('?')[2] })
-    if (!approved) return
+    if (!approved || !watch) return
 
-    watch.split('?')[0].split(';').map(name => {
+    watch.split('?')[0].split(';').map(_watch => {
 
         var timer = 500
-        local[`${name}-watch`] = clone(toValue({ id, value: name }))
-
+        local[`${_watch}-watch`] = clone(toValue({ id, value: _watch }))
+        
         const myFn = async () => {
             
-            if (!window.value[id]) return clearInterval(local[`${name}-timer`])
+            if (!window.value[id]) return clearInterval(local[`${_watch}-timer`])
             
-            var value = toValue({ id, value: name })
+            var value = toValue({ id, value: _watch })
 
-            if ((value === undefined && local[`${name}-watch`] === undefined) || isEqual(value, local[`${name}-watch`])) return
+            if ((value === undefined && local[`${_watch}-watch`] === undefined) || isEqual(value, local[`${_watch}-watch`])) return
 
-            local[`${name}-watch`] = clone(value)
+            local[`${_watch}-watch`] = clone(value)
             
             // params
             /*params = */toParam({ id, string: watch.split('?')[1], mount: true })
             if (local["once()"]) {
 
                 delete local["once()"]
-                clearInterval(local[`${name}-timer`])
+                clearInterval(local[`${_watch}-timer`])
             }
             
             // approval
@@ -50,8 +50,8 @@ const watch = ({ controls, id }) => {
             if (local.await) toParam({ id, string: local.await.join(';'), mount: true })
         }
 
-        if (local[`${name}-timer`]) clearInterval(local[`${name}-timer`])
-        local[`${name}-timer`] = setInterval(myFn, timer)
+        if (local[`${_watch}-timer`]) clearInterval(local[`${_watch}-timer`])
+        local[`${_watch}-timer`] = setInterval(myFn, timer)
 
     })
 }
