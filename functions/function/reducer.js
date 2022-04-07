@@ -18,6 +18,7 @@ const { override } = require("./merge")
 const { focus } = require("./focus")
 const { toSimplifiedDate } = require("./toSimplifiedDate")
 const { toClock } = require("./toClock")
+const { toApproval } = require("./toApproval")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res }) => {
     
@@ -28,6 +29,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
     var local = _window ? _window.value[id] : window.value[id], breakRequest, coded, mainId = id
     var global = _window ? _window.global : window.global
+
+    // path is a string
+    if (typeof path === "string") path = path.split(".")
 
     if (path.join(".").includes("=") || path.join(".").includes(";")) return toParam({ req, res, _window, id, e, string: path.join("."), _, object })
 
@@ -48,8 +52,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path0 === "if()") {
         
         var args = path[0].split(":")
-        var approved = toValue({ req, res, _window, id, value: args[1], params, index, _, e, object })
-    
+        var approved = toApproval({ _window, e, string: args[1], id, _, req, res })
+        
         if (!approved) {
             
             if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e, object })
@@ -330,7 +334,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         if (k0 === "if()") {
         
             var args = k.split(":")
-            var approved = toValue({ req, res, _window, id, value: args[1], params, index, _, e })
+            var approved = toApproval({ req, res, _window, id, value: args[1], params, index, _, e })
         
             if (!approved) {
                 
@@ -644,6 +648,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             if (o.nodeType === Node.ELEMENT_NODE) answer = o.style
             else if (typeof o === "object") answer = o.element.style
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
             
         } else if (k0 === "getTagElements()") {
           

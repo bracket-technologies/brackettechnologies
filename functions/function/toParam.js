@@ -148,8 +148,19 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
       
     } else {
 
-      if (id && local && mount) local[key] = value
-      params[key] = value
+      // map
+      if (key.includes(":") && key.split(":")[1].slice(0, 7) === "coded()") {
+
+        var args = key.split(":")
+        key = args[0]
+
+        args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: (id && local && mount) ? local[key] : params[key], e, req, res, _ }))
+      
+      } else {
+
+        if (id && local && mount) local[key] = value
+        params[key] = value
+      }
     }
   })
 

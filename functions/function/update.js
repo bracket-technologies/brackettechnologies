@@ -81,8 +81,7 @@ const removeChildren = ({ id }) => {
     // clear time out
     Object.entries(value[id]).map(([k, v]) => {
 
-      if (k.includes("-timer")) setTimeout(() => clearTimeout(v), 1000)
-      if (k.includes("-watch")) clearTimeout(v)
+      if (k.includes("-timer")) clearTimeout(v)
     })
 
     removeChildren({ id })

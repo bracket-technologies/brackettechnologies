@@ -1,15 +1,19 @@
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
-const { toValue } = require("./toValue")
-const { reducer } = require("./reducer")
 
 const toApproval = ({ _window, e, string, id, _, req, res }) => {
+
+  const { toValue } = require("./toValue")
+  const { reducer } = require("./reducer")
 
   // no string
   if (!string || typeof string !== "string") return true
 
   var global = _window ? _window.global : window.global
   var mainId = id, approval = true
+
+  // coded
+  if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
   string.split(";").map(condition => {
 

@@ -1,3 +1,4 @@
+const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
 const {isArabic} = require("./isArabic")
@@ -24,16 +25,15 @@ const {setState} = require("./state")
 const {setPosition} = require("./setPosition")
 const {droplist} = require("./droplist")
 const {createView} = require("./createView")
+const {filter} = require("./filter")
 const {remove} = require("./remove")
 const {focus} = require("./focus")
 const {sort} = require("./sort")
 const {log} = require("./log")
 const {search} = require("./search")
-const {textarea} = require("./textarea")
 const {save} = require("./save")
 const {erase} = require("./erase")
 const {toValue} = require("./toValue")
-const {toPath} = require("./toPath")
 const {reducer} = require("./reducer")
 const {toStyle} = require("./toStyle")
 const {preventDefault} = require("./preventDefault")
@@ -42,6 +42,8 @@ const {getJsonFiles} = require("./jsonFiles")
 const {toHtml} = require("./toHtml")
 const {setData} = require("./setData")
 const {defaultInputHandler} = require("./defaultInputHandler")
+const {createActions} = require("./createActions")
+const {blur} = require("./blur")
 const {toAwait} = require("./toAwait")
 const {note} = require("./note")
 const {toCode} = require("./toCode")
@@ -51,8 +53,10 @@ const {capitalize} = require("./capitalize")
 const {setElement} = require("./setElement")
 const {toOperator} = require("./toOperator")
 const {popup} = require("./popup")
+const {keys} = require("./keys")
 const {toggleView} = require("./toggleView")
 const {upload} = require("./upload")
+const {compare} = require("./compare")
 const {toCSV} = require("./toCSV")
 const {decode} = require("./decode")
 const {route} = require("./route")
@@ -64,6 +68,7 @@ const {exportJson} = require("./exportJson")
 const {switchMode} = require("./switchMode")
 const {setCookie, getCookie} = require("./cookie")
 const {getDaysInMonth} = require("./getDaysInMonth")
+const {reload} = require("./reload")
 const {fileReader} = require("./fileReader")
 const {position, getPadding} = require("./position")
 const {
@@ -87,8 +92,11 @@ module.exports = {
   route,
   decode,
   contentful,
+  reload,
   toCSV,
+  compare,
   setElement,
+  clearValues,
   clone,
   getJsonFiles,
   search,
@@ -113,7 +121,6 @@ module.exports = {
   generate,
   createElement,
   controls,
-  textarea,
   setStyle,
   resetStyles,
   toggleStyles,
@@ -128,7 +135,10 @@ module.exports = {
   createComponent,
   setPosition,
   droplist,
+  filter,
   createView,
+  createActions,
+  blur,
   toAwait,
   exportJson,
   toControls,
@@ -140,7 +150,6 @@ module.exports = {
   save,
   erase,
   toCode,
-  toPath,
   toValue,
   reducer,
   preventDefault,
@@ -152,6 +161,7 @@ module.exports = {
   toNumber,
   popup,
   getDateTime,
+  keys,
   toOperator,
   upload,
   toggleView,

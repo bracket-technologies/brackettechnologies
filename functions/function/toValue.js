@@ -76,6 +76,13 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
   else if (value === "false") value = false
   else if (value === "true") value = true
   else if (value === "_") value = _
+  else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
+        
+    var args = value.split(":")
+    var key = args[0]
+
+    value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _ }))
+  }
 
   // _
   if (value === "_") return _
