@@ -61,8 +61,19 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
   if (value === "global()" || value === ")(") value = _window ? _window.global : window.global
   else if (object) value = reducer({ _window, id, object, path, value, params, _, e, req, res })
   else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
-  else if ((path[0].includes("()")) && path.length === 1) value = reducer({ _window, id, e, path, params, object: object || (_window ? _window.value : window.value), _, req, res })
-  else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
+  else if ((path[0].includes("()")) && path.length === 1) {
+
+    if (value.includes('coded()')) {
+    
+      var newVal = value.split("coded()")[0]
+      value.split("coded()").slice(1).map(val => {
+        newVal += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, id, e, req, res, object })
+        newVal += val.slice(5)
+      })
+      value = newVal
+      
+    } else value = reducer({ _window, id, e, path, params, object: object || (_window ? _window.value : window.value), _, req, res })
+  } else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
   else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res })
   else if (value === "()") value = local
   else if (typeof value === "boolean") {}
@@ -82,6 +93,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
     var key = args[0]
 
     value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _ }))
+
   }
 
   // _

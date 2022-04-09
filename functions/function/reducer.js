@@ -438,7 +438,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = global
 
-        } else if (k0.includes("coded()")) {
+        } else if (k0.slice(0, 7) === "coded()") {
             
             breakRequest = true
             var newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _ })
@@ -1199,7 +1199,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "sum()") {
             
-            answer = o.reduce((o, k) => o + k, 0)
+            answer = o.reduce((o, k) => o + toNumber(k), 0)
 
         } else if (k0 === "src()") {
             
@@ -1888,41 +1888,43 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (key && value !== undefined && i === lastIndex) {
 
-            answer = o[k] = value
-            if (k0 === "display" && local && local.status === "Element Loaded" && local.element.style.display !== "none" && local.style && (local.style.width === "available-width" || local.style.maxWidth === "available-width")) {
-                setTimeout(() => {
+            if (k.includes("coded()")) {
 
-                    var _idlistParent = getDeepParentId({ _window, id })
-                    var padding = ""
-
-                    _idlistParent.map(id => {
-
-                        var _local = _window ? _window.value[id] : window.value[id]
-                        if (_local.element && _local.element.style.padding) {
-
-                            var _padding = _local.element.style.padding.split(" ")
-                            if (_padding.length === 1) padding += ` - ${_padding[0]}`
-                            else if (_padding.length === 2) padding += ` - ${_padding[1]}`
-                            else if (_padding.length === 4) padding += ` - ${_padding[1]}`
-                        }
-                    })
-                        
-                    var left = local.element.getBoundingClientRect().left
-                    var windowWidth = window.innerWidth
-                    var setWidth = (windowWidth - left) + "px"
-                    local.element.style.maxWidth = `calc(${setWidth}${padding})`
-                }, 0)
+                var _key = k.split("coded()")[0]
+                k.split("coded()").slice(1).map(code => {
+                    _key += toValue({ _window, value: global.codes[`coded()${code.slice(0, 5)}`], params, _, id, e, req, res, object })
+                    _key += code.slice(5)
+                })
+                k = _key
             }
-
-        } else if (key && o[k] === undefined && i !== lastIndex) {
-
-            if (!isNaN(path[i + 1])) answer = o[k] = []
-            else answer = o[k] = {}
+            
+            answer = o[k] = value
 
         } else if (k0 === "target" && !o[k] && i === 0) {
     
             answer = o["currentTarget"]
     
+        } else if (k.includes("coded()")) {
+
+            var _key = k.split("coded()")[0]
+            k.split("coded()").slice(1).map(code => {
+                _key += toValue({ _window, value: global.codes[`coded()${code.slice(0, 5)}`], params, _, id, e, req, res, object })
+                _key += code.slice(5)
+            })
+            k = _key
+
+            if (key && o[k] === undefined && i !== lastIndex) {
+
+                if (!isNaN(path[i + 1])) answer = o[k] = []
+                else answer = o[k] = {}
+    
+            } else answer = o[k]
+        
+        } else if (key && o[k] === undefined && i !== lastIndex) {
+
+            if (!isNaN(path[i + 1])) answer = o[k] = []
+            else answer = o[k] = {}
+
         } else answer = o[k]
         
         return answer

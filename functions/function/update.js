@@ -5,13 +5,13 @@ const { toArray } = require("./toArray")
 const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { controls } = require("./controls")
-const { toParam } = require("./toParam")
 
-const update = ({ id }) => {
+const update = ({ id, update = {} }) => {
 
   var value = window.value
   var global = window.global
   var local = value[id]
+  var timer = update.timer || 0
   
   if (!local || !local.element) return
 
@@ -41,8 +41,8 @@ const update = ({ id }) => {
       value[id].index = index
       value[id].parent = local.id
       value[id].style = value[id].style || {}
-      value[id].style.transition = null
       value[id].style.opacity = "0"
+      if (timer) value[id].style.transition = `opacity ${timer}ms`
       
       return createElement({ id })
 
@@ -57,11 +57,15 @@ const update = ({ id }) => {
   idList.map(id => starter({ id }))
   
   var children = [...local.element.children]
-  children.map(el => {
+  if (timer) setTimeout(() => {
+      children.map(el => {
+        
+        value[el.id].style.opacity = value[el.id].element.style.opacity = "1"
+      })
+    }, 0)
+  else children.map(el => {
     
-    value[el.id].style.transition = value[el.id].element.style.transition = null
     value[el.id].style.opacity = value[el.id].element.style.opacity = "1"
-    delete value[el.id].reservedStyles
   })
 }
 
