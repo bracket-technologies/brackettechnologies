@@ -1,20 +1,48 @@
 const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { capitalize } = require("./capitalize")
+const { toCode } = require("./toCode")
 
 var getApi = async ({ req, res, db }) => {
+
   // api/collection?params?conditions
+  var collection = req.url.split("?")[0].split("/")[2]
+  var string = decodeURI(req.url.split("?")[1]), params = {}, _window = { global: {}, value: {} }
+  string = toCode({ _window, string })
   
-  var path = req.url.split("/")[2].split("?")
-  var collection = path[0]
-  var string = path[1], params = {}
-  if (string) params = toParam({ _window: { value: {} }, string, id: "" })
-  
-  var search = params.search
+  if (string) params = toParam({ _window, string, id: "" })
+  var search = params.search,
+  doc = search.document || search.doc, 
+  docs = search.documents || search.docs, 
+  field = search.field || search.fields,
+  limit = search.limit || 25,
+  success, message, data
+
+  if (collection) search.collection = collection
+  if (search.url) {
+
+    var url = search.url
+    delete search.url
+    url +=`/${toString(search)}`
+    if (url.slice(-1) === "/") url = url.slice(0, -1)
+    data = await axios.get(url, {
+      timeout: 1000 * 10
+    })
+    data = data.data
+    if (typeof data === "string") {
+      data = `{ ${data.split("{").slice(1).join("{")}`
+      data = JSON.parse(data)
+    }
+    success = true
+    message = `File/s mounted successfuly!`
+      
+    return res.send({ data, success, message })
+  }
+
   var data = [], success, message
   var ref = db.collection(collection)
 
-  if (search.docs) {
+  if (docs) {
 
     var _docs = [], index = 1, length = Math.floor(search.docs.length / 10) + (search.docs.length % 10 > 0 ? 1 : 0)
     while (index <= length) {
@@ -43,13 +71,13 @@ var getApi = async ({ req, res, db }) => {
     return res.send({ data, success, message })
   }
 
-  if (search.doc) {
+  if (doc) {
     
-    await ref.doc(search.doc.toString()).get().then(doc => {
+    await ref.doc(doc.toString()).get().then(doc => {
 
       success = true
       data = doc.data()
-      message = `${capitalize(search.doc)} document in ${capitalize(search.collection)} mounted successfuly!`
+      message = `Document mounted successfuly!`
       
     }).catch(error => {
   
@@ -60,9 +88,9 @@ var getApi = async ({ req, res, db }) => {
     return res.send({ data, success, message })
   }
 
-  if (!search.doc && !search.field) {
+  if (!doc && !field) {
 
-    if (search.limit) ref = ref.limit(search.limit)
+    if (limit) ref = ref.limit(limit)
     var data = {}
 
     await ref.get().then(q => {
@@ -70,7 +98,7 @@ var getApi = async ({ req, res, db }) => {
       q.forEach(doc => data[doc.id] = doc.data())
 
       success = true
-      message = `Whole ${capitalize(collection)} collection mounted successfuly!`
+      message = `Documents mounted successfuly!`
       
     }).catch(error => {
   
@@ -90,7 +118,7 @@ var getApi = async ({ req, res, db }) => {
   } */
 
   // search field
-  if (search.field) Object.entries(search.field).map(([key, value]) => {
+  if (field) Object.entries(field).map(([key, value]) => {
 
     var operator = Object.keys(value)[0]
     ref = ref.where(decodeURI(key), toFirebaseOperator(operator), decodeURI(value[operator]))
@@ -112,7 +140,7 @@ var getApi = async ({ req, res, db }) => {
 
     success = true
     query.docs.forEach(doc => data.push(doc.data()))
-    message = `${capitalize(collection)} collection of specific fields mounted successfuly!`
+    message = `Documents mounted successfuly!`
     
   }).catch(error => {
 

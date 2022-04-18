@@ -11,7 +11,7 @@ module.exports = {
         if (!global.data.page[currentPage]) return
         global.data.page[currentPage]["view-id"] = global.data.page[currentPage]["view-id"] || []
         global.currentPage = currentPage
-        global.path = path = path ? `${global.projectId}/${path}` : `/${global.projectId}`
+        global.path = path
         
         history.pushState(null, title, global.path)
         document.title = title

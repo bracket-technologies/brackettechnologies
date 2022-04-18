@@ -1,0 +1,100 @@
+{
+    "children": [
+        {
+            "children": [
+                {
+                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;click.sticky;style.transition=.2s"
+                },
+                {
+                    "type": "Text?class=dots;text=Hotel;style.fontSize=1.3rem"
+                },
+                {
+                    "type": "Icon?style.display=none;tooltip.text=add new hotel;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "controls": [
+                        {
+                            "event": "click?().parent().style().display=flex;global().data.editor.hotel.[_string]=_map:creation-date:[today().timestamp()];global().open-doc=[hotel/].add():[global().open-doc];global().open-doc=_string;global().open-collection=[hotel-].add():[global().data.editor.project.id]",
+                            "actions": "insert:[().parent().next().id]?insert.component=().parent().next().children.0.removeMapping();()::50.parent().next().lastChild()._():[_.2ndChild().style().display.equal():none.then():[_.3rdChild().style().display.equal():flex]:[_.lastChild().data.equal():_string]:[_.3rdChild().focus()]];():file-action-popup:100._():[_.style().opacity.equal():0.then():[_.style().pointerEvents.equal():none]:[_.style().zIndex.equal():-1]:[_.style().transform.equal():scale(0)]]"
+                        }
+                    ]
+                }
+            ],
+            "type": "View?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "controls": [
+                {
+                    "event": "mouseenter?().lastChild().style().display=flex"
+                },
+                {
+                    "event": "mouseleave?().lastChild().style().display=none"
+                },
+                {
+                    "event": "click?().next().style().display=if():[().next().style().display.is():none.or():[global().clickedElement().is():[().lastChild()]]]:flex.else():none;().1stChild().style().transform=if():[().next().style().display.is():none]:[rotate(0)].else():[rotate(90deg)]"
+                }
+            ]
+        },
+        {
+            "children": [
+                {
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.width=2.25rem"
+                        },
+                        {
+                            "type": "Text?class=dots;text=().data();tooltip.text=value().data();style.fontSize=1.3rem;style.maxWidth=13rem"
+                        },
+                        {
+                            "type": "Input?class=dots;input.value=().data;style.fontSize=1.3rem;style.border=0;style.height=3rem;style.padding=0;style.display=none;style.flex=1",
+                            "controls": [
+                                {
+                                    "event": "keyup?().text()=global().open-doc;().style().display=none;().prev().style().display=flex;().parent().remove()<<global().open-doc.is():_string.and():[global().data.editor.hotel.[global().open-doc]]?e().key.is():Escape"
+                                },
+                                {
+                                    "actions": "note?note.text=File name could not be empty!<<().text().isEmpty();note.text=File name should be unique!<<global().data.editor.hotel.keys().includes():[().text()]",
+                                    "event": "keyup??e().key.is():Enter.or():[e().key.is():Tab];global().data.editor.hotel.keys().includes():[().text()].or():[().text().isEmpty()]"
+                                },
+                                {
+                                    "actions": [
+                                        "async().erase?erase.collection=global().open-collection;erase.doc=global().open-doc?global().open-doc.isnot():_string",
+                                        "await().note;async().save?save.collection=hotel-.add():[global().data.editor.project.id];save.doc=().text();save.data=global().data.editor.hotel.[().text()];note.text=if():[global().open-doc.isnot():_string]:[File name has been changed!].else():[File has been created!];await().().prev().text()=().text();await().().style().display=none;await().().prev().style().display=flex;await().().parent().data=().text();await().().parent().deepChildren().map():[data.equal():[().text()]];global().clickedElement=().parent().element;await().global().data.editor.hotel.[global().open-doc].delete()<<global().open-doc.isnot():_string;await().().parent().click()",
+                                        "?global().open-doc=hotel/.add():[global().open-doc];global().open-docs.pull():[global().open-docs.findIndex():[is():[global().open-doc]]];():open-view.once().children().pull():0.find():[open-doc.is():[global().open-doc]].remove();():data-viewer-bar.once().children().find():[open-doc.is():[global().open-doc]].remove();():open-view.1stChild().style().display=none<<global().open-docs.length().is():0?global().open-docs.find():[is():[hotel/.add():[global().open-doc]]]"
+                                    ],
+                                    "event": "keyup?global().data.editor.hotel.[().text()]=if():[global().open-doc.isnot():_string]:[global().data.editor.hotel.[global().open-doc].clone()].else():[_map:creation-date:[today().timestamp()]:id:[().text()]];global().open-collection=hotel-.add():[global().data.editor.project.id]?().text();().text().isnot():[global().open-doc];e().key.is():Enter.or():[e().key.is():Tab];global().data.editor.hotel.keys().doesnotInclude():[().text()]"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Icon?name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=.5rem;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue",
+                            "controls": [
+                                {
+                                    "actions": "setPosition:file-action-popup?position.placement=right;position.positioner=().id;():file-action-popup.caller=().id",
+                                    "event": "click?global().open-doc=[hotel/].add():[global().open-doc];global().open-doc=().data.else():_string;global().open-collection=[hotel-].add():[global().data.editor.project.id];if():[():file-action-popup.once().style().opacity.is():1.and():[global().action-popup-caller.is():[().id]]]:[():file-action-popup.style().opacity.equal():0.then():[():file-action-popup.style().pointerEvents.equal():none]:[():file-action-popup.style().zIndex.equal():-1]:[():file-action-popup.style().transform.equal():scale(0)]].else():[global().action-popup-caller.equal():[().id].then():[():file-action-popup.style().opacity.equal():1]:[():file-action-popup.style().pointerEvents.equal():auto]:[():file-action-popup.style().zIndex.equal():10]:[():file-action-popup.style().transform.equal():scale(1)]]"
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "[View]?data=global().data.editor.hotel.keys();class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative?global().data.editor.hotel",
+                    "controls": [
+                        {
+                            "event": "mouseenter?().lastChild().style().display=flex"
+                        },
+                        {
+                            "event": "mouseleave?().lastChild().style().display=none"
+                        },
+                        {
+                            "event": "click?global().open-doc.equal():[[hotel/].add():[().data]];global().open-doc=().data;global().open-collection=[hotel-].add():[global().data.editor.project.id];global().open-map=global().data.editor.hotel.[().data];():data-viewer-bar.children()._map():[_.style().backgroundColor.equal():inherit.then():[_.click.mount.equal():false]];():data-viewer-bar.children()._find():[_.open-doc.is():[global().open-doc]]._():[_.style().backgroundColor.equal():#fff.then():[_.click.mount.equal():true]];():open-view.getChildrenByClassName():data-viewer.map():[style().display.equal():none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc.is():[global().open-doc]].style().display.equal():flex?global().clickedElement().id.isnot():[().lastChild().id];global().open-docs.find():[is():[[hotel/].add():[().data]]]"
+                        },
+                        {
+                            "event": "click?global().open-doc.equal():[[hotel/].add():[().data]];():data-viewer-bar.style().display=flex;global().open-docs.push():[global().open-doc];global().open-doc=().data;global().open-collection=[hotel-].add():[global().data.editor.project.id];global().open-map=global().data.editor.hotel.[().data];():open-view.getChildrenByClassName():data-viewer.map():[style().display.equal():none];():data-viewer-bar.children()._map():[_.style().backgroundColor.equal():inherit.then():[_.click.mount.equal():false]]?global().clickedElement().id.isnot():[().2ndLastChild().id];global().clickedElement().id.isnot():[():lastChild().id];!global().open-docs.find():[is():[[hotel/].add():[().data]]]",
+                            "actions": [
+                                "async().insert:():data-viewer-bar.id?insert.component=():data-viewer-bar.children.0;insert.data=global().open-doc;await().().data-viewer-bar.lastChild()._():[_.style().backgroundColor.equal():#fff.then():[_.click.mount.equal():true].then():[_.open-doc.equal():[global().open-doc]]]",
+                                "async().insert:open-view?insert.component=():open-view.children.1;insert.data=global().open-map.clone();insert.index=():open-view.children().length().subs():1;await().():open-view.2ndLastChild()._():[_.open-doc.equal():[global().open-doc].then():[_.open-doc.equal():[global().open-doc]].then():[_.open-collection.equal():[global().open-collection]]]"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "type": "View?id=hotel-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd"
+        }
+    ],
+    "creation-date": 1643562122803,
+    "type": "View?class=flex column;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0px;style.zIndex=2"
+}

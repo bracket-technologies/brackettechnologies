@@ -43,6 +43,7 @@ var getJsonFiles = ({ search = {} }) => {
 
     data = []
     var docs = fs.readdirSync(path), i = 0
+    var _operator = search.operator || "and"
     
     while ((data.length <= limit) && (i <= docs.length - 1)) {
 
@@ -50,9 +51,14 @@ var getJsonFiles = ({ search = {} }) => {
       var _document = JSON.parse(fs.readFileSync(`${path}/${doc}`))
 
       doc = doc.split(".json")[0]
-      var _data = _document, _push = false
+      var _data = _document, _push = false, pushed = false
+
       Object.keys(fields).map(field => {
+
+        if (pushed) return
         Object.entries(fields[field]).map(([operator, value]) => {
+
+          if (pushed) return
           operator = toOperator(operator)
           
           if (operator === "==") {
@@ -86,7 +92,7 @@ var getJsonFiles = ({ search = {} }) => {
               else _push = false
             } else if (typeof _data[field] === "string") {
               if (value.length >= _data[field].length) {
-                if (value.includes(_data[field])) _push = true
+                if (value.includes(_data[field]) && _data[field]) _push = true
                 else _push = false
               } else {
                 if (_data[field].includes(value)) _push = true
@@ -108,9 +114,14 @@ var getJsonFiles = ({ search = {} }) => {
               }
             }
           }
+
+          if (_push && _operator === "or") {
+            data.push(_data)
+            pushed = true
+          }
         })
       })
-      if (_push) data.push(_data)
+      if (_push && _operator === "and") data.push(_data)
       i += 1
     }
   }
@@ -134,12 +145,12 @@ const postJsonFiles = ({ save = {} }) => {
 const removeJsonFiles = ({ erase = {} }) => {
   
   var collection = erase.collection, 
-  doc = erase.document || erase.doc, 
+  docs = toArray(erase.document || erase.doc || erase.docs), 
   path = `database/${collection}`
+  if (!fs.existsSync(path)) return
 
   // create folder if it doesnot exist
-  if (!fs.existsSync(path)) return
-  fs.unlinkSync(`${path}/${doc}.json`)
+  docs.map(doc => fs.unlinkSync(`${path}/${doc}.json`))
 }
 
 const uploadFile = ({ upload = {} }) => {

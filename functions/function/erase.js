@@ -8,13 +8,13 @@ const erase = async ({ id, e, erase = {}, ...params }) => {
   var collection = erase.collection = erase.collection || erase.path
 
   // no id
-  if (!erase.id && !erase.doc) return
+  if (!erase.id && !erase.doc && !erase.docs) return
   erase.doc = erase.doc || erase.id
+  if (erase.doc === undefined) delete erase.doc
   
   var { data } = await axios.delete(`https://us-central1-bracketjs.cloudfunctions.net/api/${collection}?${encodeURI(toString({ erase }))}`)
   
   local.erase = data
-
   console.log(data)
 
   toAwait({ id, e, params })

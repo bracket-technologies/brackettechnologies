@@ -35,15 +35,13 @@ app.use((req, res, next) => {
   // Request headers you wish to allow
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', true)
 
   // Pass to next layer of middleware
   next()
 })
 
-app.listen(5000, () => console.log("Server Listening to Port 5000"))
+app.listen(80, () => console.log("Server Listening to Port 80"))
 
 exports.app = functions.https.onRequest(app)
 
@@ -68,10 +66,13 @@ app.delete("*", (req, res) => {
 // get
 app.get("*", (req, res) => {
   var path = req.url.split("/")
-  
+
+  // متابعتها لاحقا
+  if (path.includes("_string") || path.includes("undefined")) return res.send("Wrong")
+
   // api
   if (path[1] === "api") return getApi({ req, res, db })
-  
+
   // favicon
   if (req.url === "/favicon.ico") return res.sendStatus(204)
   

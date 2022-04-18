@@ -71,7 +71,7 @@ module.exports = (component) => {
         position: "relative",
         justifyContent: text.text !== undefined ? "flex-start" : "center",
         width: "100%",
-        minHeight: "3.3rem",
+        minHeight: "3rem",
         cursor: readonly ? "initial" : "pointer",
         marginBottom: "1px",
         borderRadius: "0.5rem",

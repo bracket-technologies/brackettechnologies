@@ -32,10 +32,10 @@ const watch = ({ controls, id }) => {
             local[`${_watch}-watch`] = clone(value)
             
             // params
-            /*params = */toParam({ id, string: watch.split('?')[1], mount: true })
-            if (local["once()"]) {
+            toParam({ id, string: watch.split('?')[1], mount: true })
+            if (local["once"] || local["once()"]) {
 
-                delete local["once()"]
+                delete local["once"]
                 clearInterval(local[`${_watch}-timer`])
             }
             

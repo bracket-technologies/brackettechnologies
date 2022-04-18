@@ -99,12 +99,15 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
       params.break = true
       return params
     }
+    
+    // reload
+    if (key === "reload()") document.location.reload(true)
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
       
       // mount state & value
-      if (path[0].includes("()") || path[0].includes(")(") || object) {
+      if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
         
         var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object })
         if (timer) {
@@ -148,19 +151,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
       
     } else {
 
-      // map
-      if (key.includes(":") && key.split(":")[1].slice(0, 7) === "coded()") {
-
-        var args = key.split(":")
-        key = args[0]
-
-        args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: (id && local && mount) ? local[key] : params[key], e, req, res, _ }))
-      
-      } else {
-
-        if (id && local && mount) local[key] = value
-        params[key] = value
-      }
+      if (mount) local[key] = value
+      params[key] = value
     }
   })
 

@@ -811,7 +811,7 @@ global.idList.map(id => starter({ id }))
 Object.entries(window.value).map(([id, value]) => {
     if (value.status === "Loading") delete window.value[id]
 })
-},{"../function/setElement":91,"../function/starter":94}],6:[function(require,module,exports){
+},{"../function/setElement":90,"../function/starter":93}],6:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -887,7 +887,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":105}],7:[function(require,module,exports){
+},{"../function/toComponent":104}],7:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -908,7 +908,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":105}],8:[function(require,module,exports){
+},{"../function/toComponent":104}],8:[function(require,module,exports){
 const { generate } = require("../function/generate")
 const { toComponent } = require("../function/toComponent")
 
@@ -978,7 +978,7 @@ module.exports = (component) => {
     };
 }
 
-},{"../function/generate":62,"../function/toComponent":105}],9:[function(require,module,exports){
+},{"../function/generate":62,"../function/toComponent":104}],9:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
@@ -1063,7 +1063,7 @@ const Input = (component) => {
         label.text = label.text.split("=").join("_equal")
 
         return {
-            id, path, Data, parent, derivations,
+            id, path, Data, parent, derivations, tooltip: component.tooltip,
             "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
@@ -1103,14 +1103,17 @@ const Input = (component) => {
         var path = component.path
         var parent = component.parent
         var Data = component.Data
+        var tooltip = component.tooltip
         var clicked = component.clicked || { style: {} }
         
         delete component.label
         delete component.path
         delete component.id
+        delete component.tooltip
         
         label.text = label.text.split("?").join("_quest")
         label.text = label.text.split("=").join("_equal")
+        label.tooltip = tooltip
 
         return {
             id, Data, parent, derivations, required, path,
@@ -1370,6 +1373,7 @@ const Input = (component) => {
         return {
             ...component,
             style: {
+                cursor: readonly ? "pointer" : "auto",
                 border: "0",
                 width: "fit-content",
                 padding: '0.5rem',
@@ -1389,7 +1393,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":39,"../function/merge":76,"../function/toComponent":105,"../function/toString":114}],10:[function(require,module,exports){
+},{"../function/clone":39,"../function/merge":75,"../function/toComponent":104,"../function/toString":113}],10:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -1463,7 +1467,7 @@ module.exports = (component) => {
         position: "relative",
         justifyContent: text.text !== undefined ? "flex-start" : "center",
         width: "100%",
-        minHeight: "3.3rem",
+        minHeight: "3rem",
         cursor: readonly ? "initial" : "pointer",
         marginBottom: "1px",
         borderRadius: "0.5rem",
@@ -1528,7 +1532,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":105}],11:[function(require,module,exports){
+},{"../function/toComponent":104}],11:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1537,22 +1541,22 @@ module.exports = (component) => {
     
     return {
         ...component,
-        type: "View?global().opened-maps=_array<<!global().opened-maps;class=flex-column;style.marginLeft=2rem<<().isField;style.width=100%;style.width=calc(100% - 2rem)<<().isField;style.borderLeft=1px solid #ddd<<().isField.isdefined();mode.dark.style.borderLeft=1px solid #888",
+        type: "View?)(:opened-maps=_array<<!)(:opened-maps;class=flex-column;style.marginLeft=2rem<<().isField;style():[width=100%;width=calc(100% - 2rem)<<().isField;borderLeft=1px solid #ddd<<().isField];mode.dark.style.borderLeft=1px solid #888",
         children: [{
-            type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?!().parent().isField",
+            type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?!parent().isField",
             controls: [{
-                event: "click?().opened=().1stChild().style().transform.includes():rotate(90deg);().parent().children().pull():0.pullLast().map():[style().display.equal():[if():[().opened]:none.else():flex]];().1stChild().style().transform=if():[().opened]:rotate(0deg).else():rotate(90deg);().1stChild().2ndlast().style().display=if():[().opened]:flex.else():none;().lastSibling().style().display=if():[().opened]:none.else():flex;().1stChild().3rdlast().style().display=if():[().opened]:flex.else():none?global().clickedElement.not():[().2ndChild().element].and():[global().clickedElement.not():[().3rdChild().element]].and():[global().clickedElement.id.not():[().lastChild().1stChild().element.id]]"
+                event: "click?().opened=1stChild().style().transform.includes():rotate(90deg);parent().children().pull():0.pullLast().map():[style().display=if():[().opened]:none.else():flex];1stChild().style().transform=if():[().opened]:rotate(0deg).else():rotate(90deg);1stChild().2ndlast().style().display=if():[().opened]:flex.else():none;lastSibling().style().display=if():[().opened]:none.else():flex;1stChild().3rdlast().style().display=if():[().opened]:flex.else():none?)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
             }, {
-                event: "mouseenter?().lastChild().style().opacity=1"
+                event: "mouseenter?lastChild().style().opacity=1"
             }, {
-                event: "mouseleave?().lastChild().style().opacity=0"
+                event: "mouseleave?lastChild().style().opacity=0"
             }],
             children: [{
                 type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;mode.dark.style.color=#888;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s"
             }, {
                 type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%"
             }, {
-                type: "Text?class=pointer;text=_dots;style.display=none;mode.dark.style.color=#888;style.fontSize=1.4rem"
+                type: "Text?class=pointer;text=...;style.display=none;mode.dark.style.color=#888;style.fontSize=1.4rem"
             }, {
                 type: "Text?style.display=none;text=};style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem"
             }, {
@@ -1562,74 +1566,74 @@ module.exports = (component) => {
                 }]
             }]
         }, {
-            type: "[View]?class=flex column;sort;arrange=().parent().arrange;style.marginLeft=2rem<<!().parent().isField?().data().isdefined()",
+            type: "[View]?class=flex column;sort;arrange=parent().arrange;style.marginLeft=2rem<<!parent().isField?data().isdefined()",
             children: [{
-                type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?().derivations.lastIndex().not():id;().derivations.lastIndex().not():creation-date",
+                type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?derivations().lastElement()!=id;derivations().lastElement()!=creation-date",
                 controls: [{
-                    event: "click?():[().next().id].style().display=if():[().next().style().display.is():flex]:none.else():flex;():[().1stChild().id].style().transform=if():[().1stChild().style().transform.includes():rotate(0deg)]:rotate(90deg).else():rotate(0deg);().1stChild().2ndlast().style().display=if():[().1stChild().2ndlast().style().display.is():flex]:none.else():flex;().next().next().style().display=if():[().next().next().style().display.is():flex]:none.else():flex;().1stChild().3rdlast().style().display=if():[().1stChild().3rdlast().style().display.is():flex.or():[().data().length().is():0]]:none.else():flex?().data().type().is():array.or():[().data().type().is():map];global().clickedElement.id.not():[().2ndChild().element.id].and():[global().clickedElement.id.not():[().3rdChild().element.id]]:[global().clickedElement.id.not():[().lastChild().1stChild().element.id]]"
+                    event: "click?():[next().id].style().display=if():[next().style().display=flex]:none.else():flex;():[1stChild().id].style().transform=if():[1stChild().style().transform.includes():rotate(0deg)]:rotate(90deg).else():rotate(0deg);1stChild().2ndlast().style().display=if():[1stChild().2ndlast().style().display=flex]:none.else():flex;next().next().style().display=if():[next().next().style().display=flex]:none.else():flex;1stChild().3rdlast().style().display=if():[1stChild().3rdlast().style().display=flex||data().len()=0]:none.else():flex?data().type()=array||data().type()=map;)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
                 }, {
-                    event: "mouseenter?().lastChild().style().opacity=1"
+                    event: "mouseenter?lastChild().style().opacity=1"
                 }, {
-                    event: "mouseleave?().lastChild().style().opacity=0"
+                    event: "mouseleave?lastChild().style().opacity=0"
                 }],
                 children: [{
-                    type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;mode.dark.style.color=#888;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s?().data().type().is():map.or():[().data().type().is():array]"
+                    type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;mode.dark.style.color=#888;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s?data().type()=map||data().type()=array"
                 }, {
-                    type: "View?style.minWidth=2rem;text=?().data().type().not():map.and():[().data().type().not():array]"
+                    type: "View?style.minWidth=2rem;text=?data().type()!=map;data().type()!=array"
                 }, {
-                    type: "Input?preventDefault;mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=().derivations.lastIndex();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?().derivations.lastIndex().num().type().not():number",
+                    type: "Input?preventDefault;mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=derivations().lastElement();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?derivations().lastElement().num().type()!=number",
                     controls: [{
-                        event: "input?global().innerdata=().data().clone();().data().delete();global().element-value=().val();global().derivation-index=().derivations.length().subs():1;().Data().path():[().derivations.clone().pull():[().derivations.length().else():1.subs():1].push():[().val()]].equal():[global().innerdata];().parent().parent().deepChildren().map():[derivations.[global().derivation-index].equal():[global().element-value]]"
+                        event: "input?Data().path():[derivations().clone().pull():[derivations().lastIndex()].push():val()]=data().clone();data().del();parent().parent().deepChildren().map():[derivations.[derivations().lastIndex()]=val()]"
                     }, {
-                        event: "keyup?():droplist.children().[global().keyup-index].click().then():[()::200.global().keyup-index.delete()]:[().break.eq():true]<<global().droplist-positioner.and():[global().keyup-index];global().keyup-index=0;().next().click();timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter"
+                        event: "keyup?if():[)(:droplist-positioner;)(:keyup-index]:[():droplist.children().[)(:keyup-index].click();timer():[)(:keyup-index.del()]:200;().break=true];)(:keyup-index=0;next().click();timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter"
                     }, {
-                        event: "keyup?():droplist.children().[global().keyup-index].mouseleave();global().keyup-index.equal():[if():[e().keyCode.is():40]:[global().keyup-index.add():1].else():[global().keyup-index.subs():1]];():droplist.children().[global().keyup-index].mouseenter()?e().keyCode.is():40.or():[e().keyCode.is():38];global().droplist-positioner;if():[e().keyCode.is():38]:[global().keyup-index.isgreater():0].elif():[e().keyCode.is():40]:[global().keyup-index.less():[().next().droplist.items.length().subs():1]]"
+                        event: "keyup?():droplist.children().[)(:keyup-index].mouseleave();)(:keyup-index=if():[e().keyCode=40]:[)(:keyup-index+1].else():[)(:keyup-index-1]];#;():droplist.children().[)(:keyup-index].mouseenter()?e().keyCode=40||e().keyCode=38];)(:droplist-positioner;if():[e().keyCode=38]:[)(:keyup-index.isgreater():0].elif():[e().keyCode=40]:[)(:keyup-index.less():[next().droplist.items.lastIndex()]]"
                     }]
                 }, {
-                    type: "Text?text=().derivations.lastIndex();class=flex-box;mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?().derivations.lastIndex().num().type().is():number"
+                    type: "Text?text=derivations().lastElement();class=flex-box;mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?derivations().lastElement().num().type()=number"
                 }, {
                     type: "Text?text=:;class=flex-box pointer;mode.dark.style.color=#888;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_array:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
                 }, {
-                    type: "Text?text=_quotations;mode.dark.style.color=#c39178;style.color=#ce743a;style.marginRight=.3rem;style.fontSize=1.4rem?().data().type().is():string"
+                    type: `Text?text=";mode.dark.style.color=#c39178;style.color=#ce743a;style.marginRight=.3rem;style.fontSize=1.4rem?data().type()=string`
                 }, {
-                    type: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?().data().type().is():array"
+                    type: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=array"
                 }, {
-                    type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?().data().type().is():map"
+                    type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
                 }, {
-                    type: "View?style.overflow=auto;style.whiteSpace=nowrap?().data().type().is():string",
+                    type: "View?style.overflow=auto;style.whiteSpace=nowrap?data().type()=string",
                     children: [{
                         type: "View?style.display=inline-flex",
                         children: [{
-                            type: "Input?mode.dark.style.color=#c39178;input.readonly<<().derivations.lastElement().is():id;style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#ce743a",
+                            type: "Input?mode.dark.style.color=#c39178;input.readonly<<derivations().lastElement()=id;style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#ce743a",
                             controls: [{
-                                event: "keyup?global().insert-index=().parent().parent().parent().parent().parent().children()._findIndex():[_.id.is():[().parent().parent().parent().parent().id]].add():1;().parent().parent().parent().parent().parent().data().field():_string:_string<<().parent().parent().parent().parent().parent().data().type().is():map;().parent().parent().parent().parent().parent().data().splice():_string:[global().insert-index]<<().parent().parent().parent().parent().parent().data().type().is():array;().parent().parent().parent().parent().parent().children().slice():[global().insert-index]._map():[_.1stChild().2ndChild().text().equal():[_.1stChild().2ndChild().text().num().add():1].then():[global().last-index.equal():[_.derivations.length().subs():1]]:[global().el-index.equal():[_.derivations.lastElement().num().add():1]]:[_.deepChildren().map():[derivations.[global().last-index].equal():[global().el-index]]]]<<global().insert-index.less():[().parent().parent().parent().parent().parent().data().length().add():1].and():[().parent().parent().parent().parent().parent().data().type().is():array]?e().key=Enter",
-                                actions: "insert:[().parent().parent().parent().parent().parent().id]?insert.component=().parent().parent().parent().parent().parent().children.1.clone().removeMapping();insert.path=if():[().parent().parent().parent().parent().parent().data().type().is():array]:[().parent().parent().parent().parent().parent().derivations.clone().push():[global().insert-index]].else():[().parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=global().insert-index"
+                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().field():_string:_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._map():[_.1stChild().2ndChild().text()=_.1stChild().2ndChild().text().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().map():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
+                                actions: "insert:[parent().parent().parent().parent().parent().id]?insert.component=parent().parent().parent().parent().parent().children.1.clone().removeMapping();insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index"
                             }]
                         }]
                     }]
                 }, {
-                    type: "Input?style.height=3.2rem;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.type=number;input.style.color=olive;style.width=fit-content;style.borderRadius=.5rem?().data().type().is():number",
+                    type: "Input?style.height=3.2rem;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.type=number;input.style.color=olive;style.width=fit-content;style.borderRadius=.5rem?data().type().is():number",
                     controls: [{
-                        event: "keyup?global().insert-index=().parent().parent().parent().children()._findIndex():[_.id.is():[().parent().parent().id]].add():1;().parent().parent().parent().data().field():_string:_string<<().parent().parent().parent().data().type().is():map;().parent().parent().parent().data().splice():_string:[global().insert-index]<<().parent().parent().parent().data().type().is():array;().parent().parent().parent().children().slice():[global().insert-index]._map():[_.1stChild().2ndChild().text().equal():[_.1stChild().2ndChild().text().num().add():1].then():[global().last-index.equal():[_.derivations.length().subs():1]]:[global().el-index.equal():[_.derivations.lastElement().num().add():1]]:[_.deepChildren().map():[derivations.[global().last-index].equal():[global().el-index]]]]<<global().insert-index.less():[().parent().parent().parent().data().length().add():1].and():[().parent().parent().parent().data().type().is():array]?e().key=Enter",
-                        actions: "insert:[().parent().parent().parent().id]?insert.component=().parent().parent().parent().children.1.clone().removeMapping();insert.path=if():[().parent().parent().parent().data().type().is():array]:[().parent().parent().parent().derivations.clone().push():[global().insert-index]].else():[().parent().parent().parent().derivations.clone().push():_string];insert.index=global().insert-index"
+                        event: "keyup?if():[parent().parent().parent().data().type()=map]:[)(:insert-index=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;parent().parent().parent().data().field():_string:_string];if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().data().len()+1];parent().parent().parent().data().type()=array]:[parent().parent().parent().children().slice():[)(:insert-index]._map():[_.1stChild().2ndChild().text()=_.1stChild().2ndChild().text().num()+1;)(:last-index=_.derivations.len()-1;#;)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().map():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
+                        actions: "insert:[parent().parent().parent().id]?insert.component=parent().parent().parent().children.1.clone().removeMapping();insert.path=if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index"
                     }]
                 }, {
-                    type: "Input?style.height=3.2rem;readonly;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.color=purple;style.width=fit-content;style.borderRadius=.5rem;droplist.items=_array:true:false?().data().type().is():boolean"
+                    type: "Input?style.height=3.2rem;readonly;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.color=purple;style.width=fit-content;style.borderRadius=.5rem;droplist.items=_array:true:false?data().type()=boolean"
                 }, {
-                    type: "Input?style.height=3.2rem;input.type=datetime-local;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.minWidth=25rem;style.borderRadius=.5rem?().data().type().is():timestamp",
+                    type: "Input?style.height=3.2rem;input.type=datetime-local;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.minWidth=25rem;style.borderRadius=.5rem?data().type()=timestamp",
                     controls: [{
-                        event: "change?().data()=().val().date().timestamp()"
+                        event: "change?data()=val().date().timestamp()"
                     }, {
-                        event: "loaded?().val()=().data().date().getDateTime()"
+                        event: "loaded?val()=data().date().getDateTime()"
                     }]
                 }, {
-                    type: "Text?text=_quotations;mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#ce743a;style.fontSize=1.4rem?().data().type().is():string"
+                    type: `Text?text=";mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#ce743a;style.fontSize=1.4rem?data().type()=string`
                 }, {
-                    type: "Text?class=pointer;style.display=none;mode.dark.style.color=#888;text=_dots;style.fontSize=1.4rem?().data().type().is():array.or():[().data().type().is():map];().data().length().greater():0"
+                    type: "Text?class=pointer;style.display=none;mode.dark.style.color=#888;text=...;style.fontSize=1.4rem?data().type()=array||data().type()=map;data().len().greater():0"
                 }, {
-                    type: "Text?style.display=none;text=];style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?().data().type().is():array"
+                    type: "Text?style.display=none;text=];style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?data().type()=array"
                 }, {
-                    type: "Text?style.display=none;text=};style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?().data().type().is():map"
+                    type: "Text?style.display=none;text=};style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?data().type()=map"
                 }, {
                     type: "View?class=flex-box;style.gap=.5rem;style.opacity=0;style.flex=1;style.marginRight=.5rem;style.transition=.1s;style.justifyContent=flex-end",
                     children: [{
@@ -1637,21 +1641,21 @@ module.exports = (component) => {
                     }]
                 }]
             }, {
-                type: "View?arrange=().parent().arrange;class=flex-start;style.display=flex;style.transition=.2s?().data().type().is():map.or():[().data().type().is():array]",
+                type: "View?arrange=parent().arrange;class=flex-start;style.display=flex;style.transition=.2s?data().type()=map||data().type()=array",
                 children: [{
-                    type: "Map?arrange=().parent().arrange;isField"
+                    type: "Map?arrange=parent().arrange;isField"
                 }]
             }, {
-                type: "Text?class=flex-box;text=];mode.dark.style.color=#888;style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?().data().type().is():array"
+                type: "Text?class=flex-box;text=];mode.dark.style.color=#888;style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=array"
             }, {
-                type: "Text?class=flex-box;text=};mode.dark.style.color=#888;style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?().data().type().is():map"
+                type: "Text?class=flex-box;text=};mode.dark.style.color=#888;style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=map"
             }]
         }, {
-            type: "Text?class=flexbox;style.justifyContent=flex-start;text=};style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?!().parent().isField",
+            type: "Text?class=flexbox;style.justifyContent=flex-start;text=};style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?!parent().isField",
         }]
     }
 }
-},{"../function/toComponent":105}],12:[function(require,module,exports){
+},{"../function/toComponent":104}],12:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent");
 const { generate } = require("../function/generate");
 
@@ -1810,7 +1814,7 @@ module.exports = (component) => {
     };
 }
 
-},{"../function/generate":62,"../function/toComponent":105}],13:[function(require,module,exports){
+},{"../function/generate":62,"../function/toComponent":104}],13:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent");
 
 module.exports = (component) => {
@@ -1852,7 +1856,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":105}],14:[function(require,module,exports){
+},{"../function/toComponent":104}],14:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1879,7 +1883,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":105}],15:[function(require,module,exports){
+},{"../function/toComponent":104}],15:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 const { toString } = require("../function/toString")
 
@@ -1911,7 +1915,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":105,"../function/toString":114}],16:[function(require,module,exports){
+},{"../function/toComponent":104,"../function/toString":113}],16:[function(require,module,exports){
 module.exports = {
   Button : require("./Button"),
   Input : require("./Input"),
@@ -1933,13 +1937,12 @@ module.exports = ({ controls, id }) => {
   return [{
     event: "click",
     actions: [
-      `?():actionlist.children().map():[style().pointerEvents.eq():none];():actionlist.style().opacity=0;():actionlist.style().transform=scale(0.5);():actionlist.style().pointerEvents=none;global().actionlist-caller.delete();break?():actionlist.style().opacity=1;global().actionlist-caller=${id}`,
-      `update:actionlist?().actionlist.undeletable=():actionlist.undeletable.or():_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;global().actionlist-caller=${id};global().actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.style().opacity=0;():actionlist.style().transform=scale(0.5);():actionlist.style().pointerEvents=none;():actionlist.children().map():[style().pointerEvents.eq():none]`,
-      `setPosition:actionlist?():actionlist.children().map():[style().pointerEvents.eq():auto];():actionlist.style().opacity=1;():actionlist.style().transform=scale(1);():actionlist.style().pointerEvents=auto;position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance}`
+      `?():actionlist.children().map():[style().pointerEvents=none];():actionlist.style().opacity=0;():actionlist.style().transform=scale(0.5);():actionlist.style().pointerEvents=none;global().actionlist-caller.delete();break?():actionlist.style().opacity=1;global().actionlist-caller=${id}`,
+      `update:actionlist?().actionlist.undeletable=():actionlist.undeletable.or():_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;global().actionlist-caller=${id};global().actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.style().opacity=0;():actionlist.style().transform=scale(0.5);():actionlist.style().pointerEvents=none;():actionlist.children().map():[style().pointerEvents=none]`,
+      `setPosition:actionlist?():actionlist.children().map():[style().pointerEvents=auto];():actionlist.style().opacity=1;():actionlist.style().transform=scale(1);():actionlist.style().pointerEvents=auto;position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance}`
     ]
   }]
 }
-
 },{}],18:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
@@ -2024,13 +2027,14 @@ module.exports = ({ controls, id }) => {
   return [{
     event: "click",
     actions: [
-      `?():droplist.children().map():[style().pointerEvents=none];():droplist.style().opacity=0;():droplist.style().transform=scale(0.5);():droplist.style().pointerEvents=none;global().droplist-positioner.delete();break?():droplist.style().opacity=1;global().droplist-positioner=${id}`,
-      `droplist:${id}?global().droplist-positioner=${id};():droplist.style().opacity=0;():droplist.style().transform=scale(0.5);():droplist.style().pointerEvents=none;():droplist.children().map():[style().pointerEvents=none]`,
+      `?():droplist.children().map():[style().pointerEvents=none];():droplist.style().opacity=0;():droplist.style().transform=scale(0.5);():droplist.style().pointerEvents=none;)(:droplist-positioner.delete();break?():droplist.style().opacity=1;)(:droplist-positioner=${id}`,
+      `setStyle:droplist?${styles}?[${controls.style}]`,
+      `droplist:${id}?)(:droplist-positioner=${id};():droplist.style().opacity=0;():droplist.style().transform=scale(0.5);():droplist.style().pointerEvents=none;():droplist.children().map():[style().pointerEvents=none]`,
       `setPosition:droplist?():droplist.children().map():[style().pointerEvents=auto];():droplist.style().opacity=1;():droplist.style().transform=scale(1);():droplist.style().pointerEvents=auto;position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align}`
     ]
   }]
 }
-},{"../function/toString":114}],22:[function(require,module,exports){
+},{"../function/toString":113}],22:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var local = window.value[id]
@@ -2069,7 +2073,7 @@ module.exports = ({ id, controls }) => {
     }]
 }
 
-},{"../function/toArray":100}],24:[function(require,module,exports){
+},{"../function/toArray":99}],24:[function(require,module,exports){
 module.exports = ({params}) => [
   "setData?data.value=().text",
   `resetStyles?():[global().${params.state}.0].mountonload=false??global().${params.state}`,
@@ -2113,7 +2117,7 @@ module.exports = ({ controls, id }) => {
         "actions": id.map(id => `${actions}:${id}`)
     }]
 }
-},{"../function/toArray":100}],27:[function(require,module,exports){
+},{"../function/toArray":99}],27:[function(require,module,exports){
 const { generate } = require("../function/generate");
 
 module.exports = ({ params }) => {
@@ -2137,7 +2141,7 @@ module.exports = ({ controls, id }) => {
   var text = controls.text || ""
   
   return [{
-    event: `click?():mininote-text.text()=${text};global().mininote-timer.clearTimeout();():mininote.style().opacity=1;():mininote.style().transform=scale(1);global().mininote-timer=timer():[():mininote.style().opacity.equal():[0.str()].and():[():mininote.style().transform.equal():scale(0)]]:3000`,
+    event: `click?():mininote-text.text()=${text};)(:mininote-timer.clearTimeout();():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000`,
     actions: "setPosition:mininote?position.positioner=mouse;position.placement=right"
   }]
 }
@@ -2179,7 +2183,7 @@ module.exports = ({ id, controls }) => {
   }]
 }
 
-},{"../function/toArray":100}],32:[function(require,module,exports){
+},{"../function/toArray":99}],32:[function(require,module,exports){
 module.exports = ({ controls }) => {
 
   return [{
@@ -2233,7 +2237,7 @@ module.exports = ({ controls, id }) => {
         "actions": "setStyle?style=().touch.before?().touch.freeze.not()"
     }]
 }
-},{"../function/toArray":100}],35:[function(require,module,exports){
+},{"../function/toArray":99}],35:[function(require,module,exports){
 module.exports = ({ id }) => {
 
   if (window.value[id].element.style.transition) {
@@ -2293,7 +2297,15 @@ const capitalize = (string, minimize) => {
       .join(" ")
 }
 
-module.exports = {capitalize}
+const capitalizeFirst = (string, minimize) => {
+  if (typeof string !== "string") return string
+
+  if (minimize) return string.charAt(0).toLowerCase() + string.slice(1)
+
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+module.exports = {capitalize, capitalizeFirst}
 
 },{}],38:[function(require,module,exports){
 const {clone} = require("./clone");
@@ -2471,7 +2483,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":55,"./toArray":100,"./watch":120}],43:[function(require,module,exports){
+},{"./event":55,"./toArray":99,"./watch":119}],43:[function(require,module,exports){
 const setCookie = ({ name = "", value, expiry = 360 }) => {
 
   var d = new Date()
@@ -2580,14 +2592,12 @@ module.exports = {
   }
 }
 
-},{"../component/component":16,"./clone":39,"./generate":62,"./toApproval":99,"./toCode":104,"./toParam":111}],46:[function(require,module,exports){
+},{"../component/component":16,"./clone":39,"./generate":62,"./toApproval":98,"./toCode":103,"./toParam":110}],46:[function(require,module,exports){
 const { createElement } = require("./createElement")
-// const { toParam } = require("./toParam")
 const { toArray } = require("./toArray")
 const { controls } = require("./controls")
-const { getJsonFiles } = require("./getJsonFiles")
+const { getJsonFiles } = require("./jsonFiles")
 const { toApproval } = require("./toApproval")
-const { capitalize } = require("./capitalize")
 const { toCode } = require("./toCode")
 //
 require('dotenv').config()
@@ -2595,14 +2605,13 @@ require('dotenv').config()
 const createDocument = async ({ req, res, db }) => {
 
     // Create a cookies object
-    var domain = req.headers["x-forwarded-host"]
-    var host = req.headers["host"]
+    var host = req.headers["x-forwarded-host"] || req.headers["host"]
     
     // current page
     var currentPage = req.url.split("/")[1] || ""
     currentPage = currentPage || "main"
     
-    var promises = [], user, page, view, css, js, project, editorAuth
+    var promises = [], user, page, view, project
     
     // get assets & views
     var global = {
@@ -2615,13 +2624,13 @@ const createDocument = async ({ req, res, db }) => {
         },
         codes: {},
         host,
-        domain: domain || host,
+        domain: host,
         currentPage,
         path: req.url,
         cookies: req.cookies,
         device: req.device,
         headers: req.headers,
-        public: getJsonFiles("public"),
+        public: getJsonFiles({ search: { collection: "public" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
         country: req.headers["x-country-code"]
@@ -2645,9 +2654,25 @@ const createDocument = async ({ req, res, db }) => {
         }
     }
 
-    // get project data
-    project = db
-        .collection("project").where("domains", "array-contains", domain || host)
+    var bracketDomains = [
+        "bracketjs.com",
+        "localhost",
+        "bracketjs.localhost"
+    ]
+
+    // is brakcet domain
+    var isBracket = bracketDomains.includes(host)
+    
+    if (isBracket) {
+
+        project = getJsonFiles({ search: { collection: "project", fields: { domains: { "array-contains": host } } } })
+        if (project) global.data.project = project = project[0]
+
+    } else {
+
+        // get project data
+        project = db
+        .collection("project").where("domains", "array-contains", host)
         .get().then(doc => {
 
             if (doc.docs[0] && doc.docs[0].exists) {
@@ -2655,31 +2680,34 @@ const createDocument = async ({ req, res, db }) => {
                 global.data.project.id = doc.docs[0].id
             }
         })
-
-    // get editor project data
-    if (currentPage === "developer-editor") {
-
-        var projectID = req.url.split("/")[2]
-        
-        editorAuth = db
-            .collection("authentication").doc(projectID)
-            .get().then(doc => {
-
-                if (doc.exists) global.auth = doc.data().code
-            })
     }
 
     promises.push(project)
-    promises.push(editorAuth)
     await Promise.all(promises)
 
     // project not found
     if (Object.keys(global.data.project).length === 0) return res.send("Project not found!")
+    project = global.data.project
+    global.projectId = project.id
+    
+    if (isBracket) {
 
-    // get user
-    user = db
-        .collection("user").where("project-id", "array-contains", global.data.project.id)
-        .get().then(doc => { 
+        // get user
+        user = getJsonFiles({ search: { collection: "user", fields: { "project-id": { "array-contains": project.id } } } })
+        if (user) global.data.user = user = user[0]
+
+        // get page
+        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
+
+        // get view
+        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
+
+    } else {
+
+        // get user
+        user = db
+        .collection("user").where("project-id", "array-contains", project.id)
+        .get().then(doc => {
             
             if (doc.docs[0].exists) {
                 global.data.user = doc.docs[0].data()
@@ -2687,18 +2715,18 @@ const createDocument = async ({ req, res, db }) => {
             }
         })
 
-    // get page
-    page = db
-        .collection(`page-${global.data.project.id}`)
-        .get().then(q => q.forEach(doc => global.data.page[doc.id] = doc.data() ))
+        // get page
+        page = db
+            .collection(`page-${project.id}`)
+            .get().then(q => q.forEach(doc => global.data.page[doc.id] = doc.data() ))
 
-    // get view
-    view = db
-        .collection(`view-${global.data.project.id}`)
-        .get().then(q => q.forEach(doc => global.data.view[doc.id] = doc.data()))
+        // get view
+        view = db
+            .collection(`view-${project.id}`)
+            .get().then(q => q.forEach(doc => global.data.view[doc.id] = doc.data()))
 
-    promises.push(js)
-    promises.push(css)
+    }
+
     promises.push(page)
     promises.push(view)
     promises.push(user)
@@ -2707,9 +2735,10 @@ const createDocument = async ({ req, res, db }) => {
     
     // user not found
     if (!global.data.user) return res.send("User not found")
-
+    global.data.user = user = global.data.user
+    
     // page doesnot exist
-    if (!global.data.page[currentPage]) return res.send(`${capitalize(currentPage)} page does not exist!`)
+    if (!global.data.page[currentPage]) return res.send("Page not found!")
 
     // mount globals
     if (global.data.page[currentPage].global)
@@ -2770,9 +2799,14 @@ const createDocument = async ({ req, res, db }) => {
             <meta name="description" content="${global.data.page[currentPage].meta.description || ""}">
             <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
             <title>${global.data.page[currentPage].title}</title>
+            <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
             <link rel="stylesheet" href="/index.css"/>
             <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-            <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
             <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
         </head>
         <body>
@@ -2786,7 +2820,7 @@ const createDocument = async ({ req, res, db }) => {
 
 module.exports = { createDocument }
 
-},{"./capitalize":37,"./controls":42,"./createElement":47,"./getJsonFiles":65,"./toApproval":99,"./toArray":100,"./toCode":104,"dotenv":150}],47:[function(require,module,exports){
+},{"./controls":42,"./createElement":47,"./jsonFiles":72,"./toApproval":98,"./toArray":99,"./toCode":103,"dotenv":149}],47:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -2926,7 +2960,7 @@ var createElement = ({ _window, id, req, res }) => {
 
 module.exports = { createElement }
 
-},{"./clone":39,"./createTags":48,"./generate":62,"./merge":76,"./reducer":82,"./toApproval":99,"./toCode":104,"./toParam":111,"./toValue":116}],48:[function(require,module,exports){
+},{"./clone":39,"./createTags":48,"./generate":62,"./merge":75,"./reducer":81,"./toApproval":98,"./toCode":103,"./toParam":110,"./toValue":115}],48:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2988,87 +3022,7 @@ const createTags = ({ _window, id, req, res }) => {
       return createTag({ _window, id, req, res })
     }
   }
-/*
-  if (local.originalKeys) {
 
-    var keys = Object.keys(clone(local.data || {})).filter(key => !local.originalKeys.includes(key))
-
-    if (keys.length > 0) {
-
-      local.length = keys.length
-      delete value[id]
-
-      return keys
-      .map((key, index) => {
-
-        var id = langs.length === 1 ? local.id : generate()
-        var _local = clone(local)
-
-        _local.id = id
-        _local.key = key
-        _local.mapIndex = index
-        value[id] = _local
-
-        return createTag({ _window, id, req, res })
-
-      }).join("")
-    }
-  }
-
-  if (local.lang && !local.templated && !local.duplicated) {
-
-    var langs = Object.keys(clone(local.data || {}))
-
-    if (langs.length > 0) {
-
-      local.length = langs.length
-      delete value[id]
-
-      return langs
-      .map((lang, index) => {
-
-        var id = langs.length === 1 ? local.id : generate()
-        var _local = clone(local)
-
-        _local.id = id
-        _local.lang = lang
-        _local.mapIndex = index
-
-        value[id] = _local
-
-        return createTag({ _window, id, req, res })
-        
-      }).join("")
-    }
-  }
-
-  if (local.currency && !local.templated && !local.duplicated) {
-    
-    var currencies = Object.keys(clone(local.data || {}))
-
-    if (currencies.length > 0) {
-
-      local.length = currencies.length
-      delete value[id]
-
-      return currencies
-      .map((currency, index) => {
-
-        var id = currencies.length === 1 ? local.id : generate()
-        var _local = clone(local)
-
-        _local.id = id
-        _local.currency = currency
-        _local.mapIndex = index
-
-        value[id] = _local
-
-        return createTag({ _window, id, req, res })
-
-      }).join("")
-    }
-  }
-*/
   return createTag({ _window, id, req, res })
 }
 
@@ -3081,13 +3035,6 @@ const createTag = ({ _window, id, req, res }) => {
   // components
   componentModifier({ _window, id })
   createComponent({ _window, id, req, res })
-
-  // flicker for inputs
-  if (local.flicker) {
-    
-    local.flicker = { opacity: local.style.opacity || "1" }
-    local.style.opacity = "0"
-  }
 
   if (local.actions) execute({ _window, actions: local.actions, id, req, res })
   return toHtml({ _window, id, req, res })
@@ -3102,18 +3049,14 @@ const componentModifier = ({ _window, id }) => {
 
     local.icon = local.icon || {}
     local.icon.name = local.name || local.icon.name || ""
-    if (local.icon.google) local.google = true
-
-    if (local.icon.outlined || local.icon.type === "outlined") {
-      local.outlined = true
-    } else if (local.icon.filled || local.icon.type === "filled") {
-      local.filled = true
-    } else if (local.icon.rounded || local.icon.type === "rounded") {
-      local.rounded = true
-    } else if (local.icon.sharp || local.icon.type === "sharp") {
-      local.sharp = true
-    } else if (local.icon.twoTone || local.icon.type === "twoTone") {
-      local.twoTone = true
+    if (local.icon.google || local.google) {
+      
+      if (local.google.outlined) local.outlined = true
+      else if (local.google.filled) local.filled = true
+      else if (local.google.rounded) local.rounded = true
+      else if (local.google.sharp) local.sharp = true
+      else if (local.google.twoTone) local.twoTone = true
+      else local.google = true
     }
   }
 
@@ -3180,7 +3123,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":39,"./createComponent":45,"./execute":56,"./generate":62,"./toApproval":99,"./toArray":100,"./toHtml":107}],49:[function(require,module,exports){
+},{"./clone":39,"./createComponent":45,"./execute":56,"./generate":62,"./toApproval":98,"./toArray":99,"./toHtml":106}],49:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -3200,7 +3143,7 @@ const createView = ({ view, id }) => {
 
 module.exports = {createView}
 
-},{"./clone":39,"./toArray":100,"./update":118}],50:[function(require,module,exports){
+},{"./clone":39,"./toArray":99,"./update":117}],50:[function(require,module,exports){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { setContent } = require("./setContent")
@@ -3238,7 +3181,7 @@ const clearData = ({ id, e, clear = {} }) => {
 
 module.exports = { createData, setData, clearData }
 
-},{"./clone":39,"./reducer":82,"./setContent":89,"./setData":90}],51:[function(require,module,exports){
+},{"./clone":39,"./reducer":81,"./setContent":88,"./setData":89}],51:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   if (typeof string !== "string") return string
@@ -3352,7 +3295,7 @@ const defaultInputHandler = ({ id }) => {
 }
 
 module.exports = { defaultInputHandler }
-},{"./data":50,"./isArabic":70,"./resize":85}],53:[function(require,module,exports){
+},{"./data":50,"./isArabic":69,"./resize":84}],53:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -3395,7 +3338,7 @@ const droplist = ({ id, e }) => {
         controls: [...(local.droplist.controls || []), {
           event: `click??!():${id}.droplist.readonly;global().droplist-positioner=${id}`,
           actions: [
-            `resize:${id}?():${input_id}.data()=${item};():${input_id}.text()=${item}?!${local.droplist.isMap}`,
+            `resize:${id};isArabic:${input_id}?():${input_id}.data()=${item};():${input_id}.text()=${item}?!${local.droplist.isMap}`,
             `update:[():${id}.parent().parent().id]?global().opened-maps.push():[():${id}.derivations.join():-]<<${item}.is():array.or():[${item}.is():map];():${id}.data()=if():[${item}.is():controls.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:event:_string]].elif():[${item}.is():controls]:[_map:event:_string].elif():[${item}.is():children.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:type:_string]].elif():[${item}.is():children]:[_map:type:_string].elif():[${item}.is():string]:_string.elif():[${item}.is():timestamp]:[today().getTime().num()].elif():[${item}.is():number]:0.elif():[${item}.is():boolean]:[true.bool()].elif():[${item}.is():array]:_array.elif():[${item}.is():map]:[_map:_string:_string];():droplist.style().opacity=0;():droplist.style().transform=[scale(0.5)];():droplist.style().pointerEvents=none;():droplist.children().map():[style().pointerEvents=none];global().droplist-positioner.delete();timer():[():droplist.val()=_string]:200?${item}.isnot():[():${id}.data().type()];${local.droplist.isMap}`
           ]
         }]
@@ -3411,7 +3354,7 @@ const droplist = ({ id, e }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":39,"./toString":114,"./toValue":116,"./update":118}],54:[function(require,module,exports){
+},{"./clone":39,"./toString":113,"./toValue":115,"./update":117}],54:[function(require,module,exports){
 const axios = require("axios");
 const { toString } = require("./toString")
 const { toAwait } = require("./toAwait")
@@ -3422,13 +3365,13 @@ const erase = async ({ id, e, erase = {}, ...params }) => {
   var collection = erase.collection = erase.collection || erase.path
 
   // no id
-  if (!erase.id && !erase.doc) return
+  if (!erase.id && !erase.doc && !erase.docs) return
   erase.doc = erase.doc || erase.id
+  if (erase.doc === undefined) delete erase.doc
   
   var { data } = await axios.delete(`https://us-central1-bracketjs.cloudfunctions.net/api/${collection}?${encodeURI(toString({ erase }))}`)
   
   local.erase = data
-
   console.log(data)
 
   toAwait({ id, e, params })
@@ -3476,7 +3419,7 @@ module.exports = {
   }
 }
 */
-},{"./toAwait":101,"./toString":114,"axios":121}],55:[function(require,module,exports){
+},{"./toAwait":100,"./toString":113,"axios":120}],55:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -3669,7 +3612,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":39,"./execute":56,"./toApproval":99,"./toArray":100,"./toCode":104,"./toParam":111,"./toValue":116}],56:[function(require,module,exports){
+},{"./clone":39,"./execute":56,"./toApproval":98,"./toArray":99,"./toCode":103,"./toParam":110,"./toValue":115}],56:[function(require,module,exports){
 (function (global){(function (){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
@@ -3814,7 +3757,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 module.exports = { execute }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./function":61,"./toApproval":99,"./toArray":100,"./toAwait":101,"./toCode":104,"./toParam":111,"./toValue":116}],57:[function(require,module,exports){
+},{"./function":61,"./toApproval":98,"./toArray":99,"./toAwait":100,"./toCode":103,"./toParam":110,"./toValue":115}],57:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -3903,7 +3846,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 
 module.exports = {filter}
 
-},{"./clone":39,"./compare":40,"./isEqual":71,"./toArray":100,"./toOperator":110}],60:[function(require,module,exports){
+},{"./clone":39,"./compare":40,"./isEqual":70,"./toArray":99,"./toOperator":109}],60:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var local = window.value[id]
@@ -4109,7 +4052,7 @@ module.exports = {
   toggleView,
   insert
 }
-},{"./blur":36,"./capitalize":37,"./clearValues":38,"./clone":39,"./compare":40,"./contentful":41,"./controls":42,"./cookie":43,"./createActions":44,"./createComponent":45,"./createDocument":46,"./createElement":47,"./createView":49,"./data":50,"./decode":51,"./defaultInputHandler":52,"./droplist":53,"./erase":54,"./event":55,"./execute":56,"./exportJson":57,"./fileReader":58,"./filter":59,"./focus":60,"./generate":62,"./getDateTime":63,"./getDaysInMonth":64,"./getParam":66,"./importJson":68,"./insert":69,"./isArabic":70,"./isEqual":71,"./isPath":72,"./jsonFiles":73,"./keys":74,"./log":75,"./merge":76,"./note":77,"./overflow":78,"./popup":79,"./position":80,"./preventDefault":81,"./reducer":82,"./reload":83,"./remove":84,"./resize":85,"./route":86,"./save":87,"./search":88,"./setContent":89,"./setData":90,"./setElement":91,"./setPosition":92,"./sort":93,"./starter":94,"./state":95,"./style":96,"./switchMode":97,"./toApproval":99,"./toArray":100,"./toAwait":101,"./toCSV":102,"./toCode":104,"./toComponent":105,"./toControls":106,"./toHtml":107,"./toId":108,"./toNumber":109,"./toOperator":110,"./toParam":111,"./toString":114,"./toStyle":115,"./toValue":116,"./toggleView":117,"./update":118,"./upload":119}],62:[function(require,module,exports){
+},{"./blur":36,"./capitalize":37,"./clearValues":38,"./clone":39,"./compare":40,"./contentful":41,"./controls":42,"./cookie":43,"./createActions":44,"./createComponent":45,"./createDocument":46,"./createElement":47,"./createView":49,"./data":50,"./decode":51,"./defaultInputHandler":52,"./droplist":53,"./erase":54,"./event":55,"./execute":56,"./exportJson":57,"./fileReader":58,"./filter":59,"./focus":60,"./generate":62,"./getDateTime":63,"./getDaysInMonth":64,"./getParam":65,"./importJson":67,"./insert":68,"./isArabic":69,"./isEqual":70,"./isPath":71,"./jsonFiles":72,"./keys":73,"./log":74,"./merge":75,"./note":76,"./overflow":77,"./popup":78,"./position":79,"./preventDefault":80,"./reducer":81,"./reload":82,"./remove":83,"./resize":84,"./route":85,"./save":86,"./search":87,"./setContent":88,"./setData":89,"./setElement":90,"./setPosition":91,"./sort":92,"./starter":93,"./state":94,"./style":95,"./switchMode":96,"./toApproval":98,"./toArray":99,"./toAwait":100,"./toCSV":101,"./toCode":103,"./toComponent":104,"./toControls":105,"./toHtml":106,"./toId":107,"./toNumber":108,"./toOperator":109,"./toParam":110,"./toString":113,"./toStyle":114,"./toValue":115,"./toggleView":116,"./update":117,"./upload":118}],62:[function(require,module,exports){
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -4156,36 +4099,6 @@ module.exports = {
     }
 }
 },{}],65:[function(require,module,exports){
-(function (process){(function (){
-const path = require("path");
-const fs = require("fs");
-
-const getJsonFiles = (folder, fileName, params = {}) => {
-  
-  let data = {};
-  const folderPath = path.join(process.cwd(), folder);
-
-  if (fileName) {
-    data = JSON.parse(fs.readFileSync(path.join(folderPath, fileName)));
-  } else {
-    fs.readdirSync(folderPath).forEach((fileName) => {
-      const file = fs.readFileSync(path.join(folderPath, fileName));
-      fileName = fileName.split(".json")[0];
-      data[fileName] = JSON.parse(file);
-    });
-  }
-
-  if (params.id) {
-    data = data.filter((data) => params.id.find((id) => id === data.id));
-  }
-
-  return data;
-};
-
-module.exports = {getJsonFiles};
-
-}).call(this)}).call(this,require('_process'))
-},{"_process":4,"fs":1,"path":3}],66:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 const getParam = ({ string, param, defValue }) => {
@@ -4209,7 +4122,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":111}],67:[function(require,module,exports){
+},{"./toParam":110}],66:[function(require,module,exports){
 module.exports = {
     getType: (value) => {
         if (typeof value === "string") {
@@ -4228,7 +4141,7 @@ module.exports = {
         if (typeof value === "function") return "function"
     }
 }
-},{}],68:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
 
 const getJson = (url) => {
@@ -4268,7 +4181,7 @@ const importJson = ({ id, e, ...params }) => {
 }
 
 module.exports = {importJson, getJson}
-},{"./toAwait":101}],69:[function(require,module,exports){
+},{"./toAwait":100}],68:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
 const { starter } = require("./starter")
@@ -4288,6 +4201,13 @@ module.exports = {
     if (component || replace) {
 
       var _local = clone(component || replace)
+      
+      // remove mapping
+      if (_local.type.slice(0, 1) === "[") {
+        var _type = _local.type.slice(1).split("]")[0]
+        _local.type = _type + _local.type.split("]").slice(1).join("]")
+      }
+
       if (data) _local.data = clone(data)
       if (path) _local.derivations = (Array.isArray(path) ? path : path.split(".")) || []
       
@@ -4336,6 +4256,7 @@ module.exports = {
     window.value[el.id].style.transition = window.value[el.id].element.style.transition = window.value[el.id].reservedStyles.transition || null
     window.value[el.id].style.opacity = window.value[el.id].element.style.opacity = window.value[el.id].reservedStyles.opacity || "1"
     delete window.value[el.id].reservedStyles
+    local.insert = { child: window.value[el.id], message: "Child inserted succefully", success: true }
     
     if (lDiv) {
       document.body.removeChild(lDiv)
@@ -4343,7 +4264,7 @@ module.exports = {
     }
   }
 }
-},{"./clone":39,"./createElement":47,"./generate":62,"./setElement":91,"./starter":94,"./toArray":100,"./toParam":111}],70:[function(require,module,exports){
+},{"./clone":39,"./createElement":47,"./generate":62,"./setElement":90,"./starter":93,"./toArray":99,"./toParam":110}],69:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -4361,6 +4282,8 @@ const isArabic = ({ id, value }) => {
 
     local.element.classList.add("arabic")
     local.element.style.textAlign = "right"
+    if (local.type !== "Input") local.element.innerHTML = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+    else local.element.value = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
     if (local["placeholder-ar"]) local.element.placeholder = local["placeholder-ar"]
 
   } else {
@@ -4376,7 +4299,7 @@ const isArabic = ({ id, value }) => {
 
 module.exports = { isArabic }
 
-},{}],71:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -4466,7 +4389,7 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual};
 
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
@@ -4483,7 +4406,7 @@ module.exports = {
   },
 };
 
-},{}],73:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -4529,6 +4452,7 @@ var getJsonFiles = ({ search = {} }) => {
 
     data = []
     var docs = fs.readdirSync(path), i = 0
+    var _operator = search.operator || "and"
     
     while ((data.length <= limit) && (i <= docs.length - 1)) {
 
@@ -4536,9 +4460,14 @@ var getJsonFiles = ({ search = {} }) => {
       var _document = JSON.parse(fs.readFileSync(`${path}/${doc}`))
 
       doc = doc.split(".json")[0]
-      var _data = _document, _push = false
+      var _data = _document, _push = false, pushed = false
+
       Object.keys(fields).map(field => {
+
+        if (pushed) return
         Object.entries(fields[field]).map(([operator, value]) => {
+
+          if (pushed) return
           operator = toOperator(operator)
           
           if (operator === "==") {
@@ -4572,7 +4501,7 @@ var getJsonFiles = ({ search = {} }) => {
               else _push = false
             } else if (typeof _data[field] === "string") {
               if (value.length >= _data[field].length) {
-                if (value.includes(_data[field])) _push = true
+                if (value.includes(_data[field]) && _data[field]) _push = true
                 else _push = false
               } else {
                 if (_data[field].includes(value)) _push = true
@@ -4594,9 +4523,14 @@ var getJsonFiles = ({ search = {} }) => {
               }
             }
           }
+
+          if (_push && _operator === "or") {
+            data.push(_data)
+            pushed = true
+          }
         })
       })
-      if (_push) data.push(_data)
+      if (_push && _operator === "and") data.push(_data)
       i += 1
     }
   }
@@ -4620,12 +4554,12 @@ const postJsonFiles = ({ save = {} }) => {
 const removeJsonFiles = ({ erase = {} }) => {
   
   var collection = erase.collection, 
-  doc = erase.document || erase.doc, 
+  docs = toArray(erase.document || erase.doc || erase.docs), 
   path = `database/${collection}`
+  if (!fs.existsSync(path)) return
 
   // create folder if it doesnot exist
-  if (!fs.existsSync(path)) return
-  fs.unlinkSync(`${path}/${doc}.json`)
+  docs.map(doc => fs.unlinkSync(`${path}/${doc}.json`))
 }
 
 const uploadFile = ({ upload = {} }) => {
@@ -4648,20 +4582,20 @@ const uploadFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadFile }
-},{"./toArray":100,"./toOperator":110,"fs":1}],74:[function(require,module,exports){
+},{"./toArray":99,"./toOperator":109,"fs":1}],73:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],75:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],76:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -4726,7 +4660,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":39,"./toArray":100}],77:[function(require,module,exports){
+},{"./clone":39,"./toArray":99}],76:[function(require,module,exports){
 const note = ({ note: _note }) => {
 
   var value = window.value
@@ -4758,7 +4692,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{}],78:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var local = window.value[id]
@@ -4816,7 +4750,7 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],79:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 const {controls} = require("./controls")
 const {update} = require("./update")
 
@@ -4862,7 +4796,7 @@ const popup = ({ id }) => {
 
 module.exports = {popup}
 
-},{"./controls":42,"./update":118}],80:[function(require,module,exports){
+},{"./controls":42,"./update":117}],79:[function(require,module,exports){
 const { converter } = require("./resize")
 
 const getPadding = (el) => {
@@ -4909,18 +4843,18 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":85}],81:[function(require,module,exports){
+},{"./resize":84}],80:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],82:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
-const { capitalize } = require("./capitalize")
+const { capitalize, capitalizeFirst } = require("./capitalize")
 const { clone } = require("./clone")
 const { toNumber } = require("./toNumber")
 const { toPrice } = require("./toPrice")
@@ -4957,15 +4891,41 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
 
+    // addition
+    if (path.join(".").includes("+")) {
+  
+      var values = path.join(".").split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object }))
+      var answer = values[0]
+      values.slice(1).map(val => answer += val)
+      return answer
+    }
+
+    // subtraction
+    if (path.join(".").includes("-")) {
+  
+      var allAreNumbers = true
+      var values = path.join(".").split("-").map(value => {
+
+        if (allAreNumbers) {
+          var num = toValue({ _window, value, params, _, id, e, req, res, object })
+          if (isNaN(num) || num === "") allAreNumbers = false
+        }
+      })
+      
+      if (allAreNumbers) {
+        var answer = values[0]
+        values.slice(1).map(val => answer -= val)
+        console.log(answer);
+        return answer
+      }
+    }
+
     // codeds
     if (path0.slice(0, 7) === "coded()" && path.length === 1) {
-
+        
         coded = true
         return toValue({ req, res, _window, object, id, value: global.codes[path[0]], params, _, e })
     }
-
-    // reload
-    if (path0 === "reload()") document.location.reload(true)
     
     // if
     if (path0 === "if()") {
@@ -5009,7 +4969,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         var state = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
         if (state === undefined) state = args[1]
-        path.splice(1, 0, state)
+        if (state) path.splice(1, 0, state)
         path[0] = ")("
     }
     
@@ -5018,21 +4978,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         var args = path[0].split(":")
 
-        if (args[2]) {
-            var _timer = parseInt(args[2])
-            path[0] = `${args.slice(0, -1).join(":")}`
-            return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
+        if (args[1] || args[2]) {
+
+            if (args[2]) {
+                var _timer = parseInt(args[2])
+                path[0] = `${args.slice(0, -1).join(":")}`
+                return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
+            }
+
+            var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
+            if (_id) local = _window ? _window.value[_id] : window.value[_id]
+
+            var _once = path[1] === "once()"
+            if (_once) path = path.slice(1)
+            
+            path[0] = path0 = "()"
         }
-
-        var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
-        if (_id) local = _window ? _window.value[_id] : window.value[_id]
-
-        var _once = path[1] === "once()"
-        if (_once) path = path.slice(1)
-        // else if (_id) id = _id
-        
-        // path = path.slice(1)
-        path[0] = path0 = "()"
     }
     
     if (path && (path.includes("equal()") || path.includes("equals()") || path.includes("eq()") || path.includes("=()"))) {
@@ -5077,6 +5038,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
         return setInterval(myFn, _timer)
     }
+
+    // initialize by methods
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" ||path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()")) {
+        path.unshift("()")
+        path0 = "()"
+    }
     
     object = path0 === "()" ? local
     : path0 === "index()" ? index
@@ -5118,7 +5085,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 })
             }
 
-            else if (path0.includes("coded()")) {
+            else if (path0.slice(0, 7) === "coded()") {
 
                 coded = true
                 object = toValue({ req, res, _window, object, id, value: global.codes[path0], params, _, e })
@@ -5279,27 +5246,27 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
         }
 
-        if (k0 === "_quotation" || k0 === "'") {
+        // if (k0 === "_quotation" || k0 === "'") {
             
-            answer = "'"
+        //     answer = "'"
 
-        } else if (k0 === "_quotations" || k0 === `"`) {
+        // } else if (k0 === "_quotations" || k0 === `"`) {
             
-            answer = `"`
+        //     answer = `"`
 
-        } else if (k0 === "_string" || k0 === "''") {
+        // } else if (k0 === "_string" || k0 === "''") {
             
-            answer = ""
+        //     answer = ""
 
-        } else if (k0 === "_dots" || k0 === "...") {
+        // } else if (k0 === "_dots" || k0 === "...") {
             
-            answer = "..."
+        //     answer = "..."
 
-        } else if (k0 === "_dot") {
+        // } else if (k0 === "_dot") {
             
-            answer = "."
+        //     answer = "."
 
-        }
+        // }
         
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
         
@@ -5326,7 +5293,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         if (o === undefined) return o
 
-        else if (k !== "data()" && k !== "Data()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
+        else if (k0 !== "data()" && k0 !== "Data()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
             
             var el = k
             breakRequest = i + 1
@@ -5335,7 +5302,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else delete o[el]
             return
             
-        } else if (k === "while()") {
+        } else if (k0 === "while()") {
             
             var args = k.split(":")
             while (toValue({ req, res, _window, id, value: args[1], params, _, e })) {
@@ -5351,7 +5318,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "_") {
 
-            answer = _
+            if (typeof o === "object") answer = o[_]
+            else answer = _
 
         } else if (k0 === "global()") {
 
@@ -5361,13 +5329,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             breakRequest = true
             var newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _ })
-            newValue = newValue !== undefined ? [ newValue.toString(), ...path.slice(i + 1)] : path.slice(i + 1)
+            newValue = newValue !== undefined ? [ ...toArray(newValue), ...path.slice(i + 1)] : path.slice(i + 1)
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
             
         } else if (k0 === "data()") {
             
             breakRequest = true
-            answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...path.slice(i + 1)], object: global[o.Data], params, _ })
+            var args = k.split(":").slice(1)
+            args = args.map(arg => toValue({ req, res, _window, id, e, value: arg, params, _ }))
+            if (args.length > 0) args = args.flat()
+            answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
 
             delete local["data()"]
 
@@ -5565,8 +5536,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "style()") {
             
-            if (o.nodeType === Node.ELEMENT_NODE) answer = o.style
-            else if (typeof o === "object") answer = o.element.style
+            if (o.nodeType && o.nodeType === Node.ELEMENT_NODE) answer = o.style
+            else if (typeof o === "object") {
+                if (o.element) answer = o.element.style
+                else answer = o.style
+            }
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
             
@@ -5605,7 +5579,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else answer = o.element && o.element.getElementsByTagName(_tag_name)[0]
             answer = window.value[answer.id]
 
-        } else if (k0 === "getInputs()") {
+        } else if (k0 === "getInputs()" || k0 === "inputs()") {
             
             var _input, _textarea
             if (o.nodeType === Node.ELEMENT_NODE) {
@@ -5615,7 +5589,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 _input = o.element && o.element.getElementsByTagName("INPUT")
                 _textarea = o.element && o.element.getElementsByTagName("TEXTAREA")
             }
-            
             answer = [..._input, ..._textarea].map(o => window.value[o.id])
 
         } else if (k0 === "getInput()") {
@@ -5770,6 +5743,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_end !== undefined) answer = o.slice(_start, _end)
             else answer = o.slice(_start)
             
+        } else if (k0 === "derivations()") {
+
+            answer = o.derivations
+
         } else if (k0 === "replaceState()") {
 
             // replaceState():url:title
@@ -5790,6 +5767,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = index
 
+        } else if (k0 === "format()") {
+            
+            var args = k.split(":")
+            answer = global.codes[args[1]]
+           
         } else if (k0 === "_array" || k0 === "_list") {
             
             answer = []
@@ -5879,21 +5861,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = _next.isSameNode(o)
+            answer = _next === o
             
         } else if (k0 === "isnotSameNode()" || k0 === "isnotSame()") {
 
             var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e }) || {}
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = !_next.isSameNode(o)
+            answer = _next !== o
             
         } else if (k0 === "inOrSame()" || k0 === "insideOrSame()") {
 
             var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = _next.contains(o) || _next.isSameNode(o)
+            answer = _next.contains(o) || _next === o
             
         } else if (k0 === "contains()") {
 
@@ -5903,18 +5885,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = o.contains(_next)
             
         } else if (k0 === "in()" || k0 === "inside()") {
-
+            
             var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e })
-            if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = _next.contains(o)
-            
+            if (typeof o === "string") return answer = o.includes(_next)
+            else if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) return answer = _next.contains(o)
+
         } else if (k0 === "out()" || k0 === "outside()" || k0 === "isout()" || k0 === "isoutside()") {
 
             var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = !_next.contains(o) && !_next.isSameNode(o)
+            answer = !_next.contains(o) && _next !== o
             
         } else if (k0 === "doesnotContain()") {
 
@@ -6167,6 +6149,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o.nodeType === Node.ELEMENT_NODE) el = o
             else if (o.element) el = o.element
             
+            if (el)
             if (window.value[el.id].type === "Input") {
 
                 answer = el.value
@@ -6244,7 +6227,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             o.splice(_index, 0, _value)
             answer = o
             
-        } else if (k0 === "remove()") {
+        } else if (k0 === "remove()" || k0 === "rem()") {
 
             var _id = typeof o === "string" ? o : o.id
             var _value = _window ? _window.value : window.value
@@ -6311,6 +6294,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "capitalize()") {
             
             answer = capitalize(o)
+            
+        } else if (k0 === "capitalizeFirst()") {
+            
+            answer = capitalizeFirst(o)
             
         } else if (k0 === "uncapitalize()") {
             
@@ -6573,18 +6560,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0.includes("filter()")) {
             
             var args = k.split(":").slice(1)
+            if (!args[0]) args[0] = null
             args.map(arg => {
-
-                if (k[0] === "_") {
-
-                    var _path = global.codes[arg] ? global.codes[arg].split(".") : [arg]
-                    answer = toArray(o).filter((o, index) => reducer({ req, res, _window, id, path: _path, value, key, object: o, params, index, _: o, e }) )
-            
-                } else {
-
-                    var _path = global.codes[arg] ? global.codes[arg].split(".") : [arg]
-                    answer = toArray(o).filter((o, index) => reducer({ req, res, _window, id, path: _path, object: o, value, key, params, index, _, e }) )
-                }
+                
+                if (k[0] === "_") answer = toArray(o).filter(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
+                else answer = toArray(o).filter(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
             })
             
         } else if (k0.includes("filterById()")) {
@@ -6599,31 +6579,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0.includes("find()")) {
             
-            var args = k.split(":")
-            if (k[0] === "_") answer = o.find(o => toValue({ req, res, _window, id, e,  _: o, value: args[1], params }))
-            else answer = o.find(o => reducer({ req, res, _window, id, path: [args[1]], value, key, params, index, _, e, object: o }))
+            var arg = k.split(":")[1]
+            
+            if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
+            else answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
             
         } else if (k0.includes("findIndex()")) {
-
-            var args = k.split(":")
-            if (k[0] === "_") answer = o.findIndex(o => toValue({ req, res, _window, id, e,  _: o, value: args[1], params }))
-            else answer = o.findIndex(o => reducer({ req, res, _window, id, path: [args[1]], value, key, params, index, _, e, object: o }))
+            
+            var arg = k.split(":")[1]
+            if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
+            else answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
             
         } else if (k0.includes("map()")) {
             
             var args = k.split(":").slice(1)
             args.map(arg => {
 
-                if (k[0] === "_") {
-
-                    var _path = global.codes[arg] ? global.codes[arg].split(".") : [arg]
-                    answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: _path, value, key, object: o, params, index, _: o, e }) )
-            
-                } else {
-
-                    var _path = global.codes[arg] ? global.codes[arg].split(".") : [arg]
-                    answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: _path, object: o, value, key, params, index, _, e }) )
-                }
+                if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, value, key, params, index, _: o, e }) )
+                else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, object: o, value, key, params, index, _, e }) )
             })
 
         } else if (k0 === "index()") {
@@ -6641,6 +6614,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = getType(o)
 
+        } else if (k0 === "action()") {
+            
+            answer = o.derivations
+            
         } else if (k0 === "action()") {
             
             answer = execute({ _window, id, actions: path[i - 1], params, e })
@@ -6661,36 +6638,53 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = o + ""
             
-        } else if (k0 === "1stIndex()" || k0 === "firstIndex()" || k0 === "1stElement()" || k0 === "1stEl()") {
+        } else if (k0 === "1stElement()" || k0 === "1stEl()") {
             
             if (value !== undefined && key) answer = o[0] = value
             answer = o[0]
             
-        } else if (k0 === "2ndIndex()" || k0 === "secondIndex()" || k0 === "2ndElement()" || k0 === "2ndEl()") {
+        } else if (k0 === "2ndElement()" || k0 === "2ndEl()") {
             
             if (value !== undefined && key) answer = o[1] = value
             answer = o[1]
 
-        } else if (k0 === "3rdIndex()" || k0 === "thirdIndex()" || k0 === "3rdElement()" || k0 === "3rdEl()") {
+        } else if (k0 === "3rdElement()" || k0 === "3rdEl()") {
             
             if (value !== undefined && key) answer = o[2] = value
             answer = o[2]
 
-        } else if (k0 === "3rdLastIndex()" || k0 === "3rdlastIndex()" || k0 === "3rdLastElement()" || k0 === "3rdLastEl()") {
+        } else if (k0 === "3rdLastElement()" || k0 === "3rdLastEl()") {
 
             if (value !== undefined && key) answer = o[o.length - 3] = value
             answer = o[o.length - 3]
             
-        } else if (k0 === "2ndLastIndex()" || k0 === "2ndlastIndex()" || k0 === "2ndLastElement()" || k0 === "2ndLastEl()") {
+        } else if (k0 === "2ndLastElement()" || k0 === "2ndLastEl()") {
 
             if (value !== undefined && key) answer = o[o.length - 2] = value
             answer = o[o.length - 2]
             
-        } else if (k0 === "lastIndex()" || k0 === "lastElement()" || k0 === "lastEl()") {
+        } else if (k0 === "lastElement()" || k0 === "lastEl()") {
 
             if (value !== undefined && key) answer = o[o.length - 1] = value
             answer = o[o.length - 1]
             
+        } else if (k0 === "lastIndex()") {
+
+            answer = o.length ? o.length - 1 : 0
+
+        } else if (k0 === "2ndLastIndex()") {
+
+            answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
+
+        } else if (k0 === "element()" || k0 === "el()") {
+          
+            answer = o.element
+
+        } else if (k0 === "()") { // map method
+            
+            var args = k.split(":").slice(1)
+            args.map(arg => answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, object: o, value, key, params, index, _, e }) ))
+
         } else if (k0 === "parseFloat()") {
             
             answer = parseFloat(o)
@@ -6790,7 +6784,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var args = k.split(":")
             var _class = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
             if (o.element) answer = o.element.classList.remove(_class)
-            else answer = o.classList.remove(_class)
+            else if(o.nodeType) answer = o.classList.remove(_class)
 
         } else if (k0 === "element" && local && local.status === "Loading") {
 
@@ -6947,13 +6941,13 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./capitalize":37,"./clone":39,"./cookie":43,"./decode":51,"./execute":56,"./exportJson":57,"./focus":60,"./generate":62,"./getDateTime":63,"./getDaysInMonth":64,"./getType":67,"./importJson":68,"./isEqual":71,"./merge":76,"./position":80,"./remove":84,"./toApproval":99,"./toArray":100,"./toClock":103,"./toId":108,"./toNumber":109,"./toParam":111,"./toPrice":112,"./toSimplifiedDate":113,"./toValue":116}],83:[function(require,module,exports){
+},{"./capitalize":37,"./clone":39,"./cookie":43,"./decode":51,"./execute":56,"./exportJson":57,"./focus":60,"./generate":62,"./getDateTime":63,"./getDaysInMonth":64,"./getType":66,"./importJson":67,"./isEqual":70,"./merge":75,"./position":79,"./remove":83,"./toApproval":98,"./toArray":99,"./toClock":102,"./toId":107,"./toNumber":108,"./toParam":110,"./toPrice":111,"./toSimplifiedDate":112,"./toValue":115}],82:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],84:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -7024,7 +7018,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":39,"./reducer":82,"./update":118}],85:[function(require,module,exports){
+},{"./clone":39,"./reducer":81,"./update":117}],84:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var local = window.value[id]
@@ -7117,7 +7111,7 @@ var converter = (dimension) => {
 
 module.exports = {resize, dimensions, converter}
 
-},{}],86:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 const { update } = require("./update")
 
 module.exports = {
@@ -7131,7 +7125,7 @@ module.exports = {
         if (!global.data.page[currentPage]) return
         global.data.page[currentPage]["view-id"] = global.data.page[currentPage]["view-id"] || []
         global.currentPage = currentPage
-        global.path = path = path ? `${global.projectId}/${path}` : `/${global.projectId}`
+        global.path = path
         
         history.pushState(null, title, global.path)
         document.title = title
@@ -7140,25 +7134,24 @@ module.exports = {
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
 }
-},{"./update":118}],87:[function(require,module,exports){
+},{"./update":117}],86:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { toAwait } = require("./toAwait")
 
-const save = async ({ id, e, save = {}, ...params }) => {
+const save = async ({ id, e, ...params }) => {
         
+  var save = params.save || {}
   var local = window.value[id]
   var collection = save.collection = save.collection || save.path
   var _data = clone(save.data)
-  delete save.data
 
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
 
-  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}`, { data:_data, save })
+  var { data } = await axios.post(`/api/${collection}`, { save, data:_data })
 
   local.save = data
-
   console.log(data)
 
   // await params
@@ -7166,75 +7159,29 @@ const save = async ({ id, e, save = {}, ...params }) => {
 }
 
 module.exports = { save }
-/*
-const { capitalize } = require("./capitalize")
-const { toAwait } = require("./toAwait")
-const { toArray } = require("./toArray")
-const { clone } = require("./clone")
-
-module.exports = {
-  save: async ({ save = {}, id, e, ...params }) => {
-        
-    var local = window.value[id]
-    var global = window.global
-
-    if (!save.id && (!save.data || (save.data && !save.data.id))) return
-    
-    var collection = save.path
-    var ref = global.db.collection(collection)
-    
-    toArray(save.data).map(data => {
-
-      ref.doc(save.id || data.id).set(data).then(() => {
-        var _params = clone(params)
-
-        local.save = {
-          data,
-          success: true,
-          message: `${capitalize(collection)} saved successfuly!`,
-        }
-              
-        console.log(local.save)
-                    
-        // await params
-        toAwait({ id, e, params: _params })
-      })
-      .catch(error => {
-
-        local.save = {
-            success: false,
-            message: error,
-        }
-        
-        console.log(local.save)
-      })
-    })
-  }
-}
-*/
-},{"./clone":39,"./toAwait":101,"axios":121}],88:[function(require,module,exports){
+},{"./clone":39,"./toAwait":100,"axios":120}],87:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { toAwait } = require('./toAwait')
 const { clone } = require('./clone')
 
 module.exports = {
-    search: async ({ id, e, search, ...params }) => {
+    search: async ({ id, e, ...params }) => {
         
+        var search = params.search || {}
         var local = window.value[id]
-        var collection = search.collection = search.collection || search.path
+        var collection = search.collection || search.path || ""
+        var _params = encodeURI(toString({ search }))
         
-        var { data } = await axios.get(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${toString({ search })}`)
-
+        var { data } = await axios.get(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${_params}`)
         local.search = clone(data)
-        
         console.log(data)
         
         // await params
         toAwait({ id, e, params })
     }
 }
-},{"./clone":39,"./toAwait":101,"./toString":114,"axios":121}],89:[function(require,module,exports){
+},{"./clone":39,"./toAwait":100,"./toString":113,"axios":120}],88:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -7257,7 +7204,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":70}],90:[function(require,module,exports){
+},{"./isArabic":69}],89:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 const {setContent} = require("./setContent")
@@ -7301,7 +7248,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":39,"./reducer":82,"./setContent":89}],91:[function(require,module,exports){
+},{"./clone":39,"./reducer":81,"./setContent":88}],90:[function(require,module,exports){
 const { controls } = require("./controls")
 // const { starter } = require("./starter")
 const { toArray } = require("./toArray")
@@ -7336,7 +7283,7 @@ const setElement = ({ id }) => {
 }
     
 module.exports = { setElement }
-},{"./controls":42,"./toArray":100}],92:[function(require,module,exports){
+},{"./controls":42,"./toArray":99}],91:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
 
   var value = window.value
@@ -7509,7 +7456,7 @@ const setPosition = ({ position, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],93:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 const { reducer } = require("./reducer")
 const { toNumber } = require("./toNumber")
 
@@ -7624,7 +7571,7 @@ const sort = ({ sort = {}, id, e }) => {
 }
 
 module.exports = {sort}
-},{"./reducer":82,"./toNumber":109}],94:[function(require,module,exports){
+},{"./reducer":81,"./toNumber":108}],93:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -7696,12 +7643,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":20,"./controls":42,"./defaultInputHandler":52,"./event":55,"./isArabic":70,"./resize":85,"./toArray":100,"./toParam":111}],95:[function(require,module,exports){
+},{"../control/control":20,"./controls":42,"./defaultInputHandler":52,"./event":55,"./isArabic":69,"./resize":84,"./toArray":99,"./toParam":110}],94:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],96:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -7826,7 +7773,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":85,"./toArray":100}],97:[function(require,module,exports){
+},{"./resize":84,"./toArray":99}],96:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -7890,7 +7837,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":37,"./clone":39,"./style":96}],98:[function(require,module,exports){
+},{"./capitalize":37,"./clone":39,"./style":95}],97:[function(require,module,exports){
 const { capitalize } = require("./capitalize")
 
 const formats = [
@@ -7957,14 +7904,19 @@ const textFormating = ({ _window, text, id }) => {
 }
 
 module.exports = { textFormating }
-},{"./capitalize":37}],99:[function(require,module,exports){
+},{"./capitalize":37}],98:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 
-const toApproval = ({ _window, e, string, id, _, req, res }) => {
+const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
+
+  // no string but object exists
+  if (!string) 
+    if (object) return true
+    else if (object !== undefined) return false
 
   // no string
   if (!string || typeof string !== "string") return true
@@ -7982,17 +7934,34 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
     if (!approval) return false
 
     id = mainId
-    var local = _window ? _window.value[id] : window.value[id]
+    var local = _window ? _window.value[id] : window.value[id] || {}
 
     if (condition.includes("#()")) {
       local["#"] = toArray(local["#"])
       return local["#"].push(condition.slice(4))
     }
 
+    // or
+    if (condition.includes("||")) {
+      var conditions = condition.split("||"), _i = 0
+      approval = false
+      while (!approval && conditions[_i] !== undefined) {
+        approval = toApproval({ _window, e, string: conditions[_i], id, _, req, res, object })
+        _i += 1
+      }
+      return approval
+    }
+
     condition = condition.split("=")
     var key = condition[0]
     var value = condition[1]
     var notEqual
+
+    // /////////////////// value /////////////////////
+
+    if (value && value !== "undefined" && value !== "false") value = toValue({ _window, id: mainId, value, e, _, req, res })
+
+    // /////////////////// key /////////////////////
 
     if (key && key.includes('coded()') && key.length === 12) key = global.codes[key]
 
@@ -8005,36 +7974,24 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
 
       } else {
 
-        // !key => study key without value
-        value = undefined
         key = key.split("!")[1]
         notEqual = true
       }
     }
-
-    // /////////////////// value /////////////////////
-
-    if (value && value !== "undefined" && value !== "false") value = toValue({ _window, id: mainId, value, e, _, req, res })
-
-    // /////////////////// key /////////////////////
-
-    id = mainId
-
-    var keygen = generate()
-    var local = _window ? _window.value[id] : window.value[id]
-
-    if (!local) return approval = false
     
     // to path
+    var keygen = generate()
     var path = typeof key === "string" ? key.split(".") : []
     
     // const
-    if (key === "false" || key === "undefined") local[keygen] = false
+
+    if (!key && object !== undefined) local[keygen] = object
+    else if (key === "false" || key === "undefined") local[keygen] = false
     else if (key === "true") local[keygen] = true
     else if (key === "mobile()" || key === "phone()") local[keygen] = global.device.type === "phone"
     else if (key === "desktop()") local[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") local[keygen] = global.device.type === "tablet"
-    else if (path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, value, e, _, req, res })
+    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, value, e, _, req, res, object })
     else local[keygen] = key
     
     if (value === undefined) {
@@ -8057,14 +8014,14 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
 
 module.exports = { toApproval }
 
-},{"./generate":62,"./isEqual":71,"./reducer":82,"./toValue":116}],100:[function(require,module,exports){
+},{"./generate":62,"./isEqual":70,"./reducer":81,"./toValue":115}],99:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? [...data] : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],101:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 module.exports = {
   toAwait: ({ id, e, params = {} }) => {
 
@@ -8089,7 +8046,7 @@ module.exports = {
   }
 }
 
-},{"./execute":56,"./toParam":111}],102:[function(require,module,exports){
+},{"./execute":56,"./toParam":110}],101:[function(require,module,exports){
 module.exports = {
     toCSV: ({ file = {} }) => {
 
@@ -8163,7 +8120,7 @@ module.exports = {
         }
     }
 }
-},{}],103:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp }) => {
 
@@ -8184,13 +8141,13 @@ module.exports = {
         return days + " : " + hrs + " : " + mins + " : " + secs
     }
 }
-},{}],104:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   if (typeof string !== "string") return string
-  if (string.includes(`"`)) string = toCode({ _window, string, e, codes, start: `"`, end: `"` })
+  //if (string.includes(`"`)) string = toCode({ _window, string, e, codes, start: `"`, end: `"` })
 
   var global = {}
   if (!codes) global = _window ? _window.global : window.global
@@ -8235,7 +8192,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
 module.exports = { toCode }
 
-},{"./generate":62}],105:[function(require,module,exports){
+},{"./generate":62}],104:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -8268,12 +8225,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":62,"./toArray":100}],106:[function(require,module,exports){
+},{"./generate":62,"./toArray":99}],105:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],107:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
@@ -8392,7 +8349,7 @@ module.exports = {
     return tag
   }
 }
-},{"./clone":39,"./createElement":47,"./generate":62,"./textFormating":98,"./toArray":100,"./toStyle":115}],108:[function(require,module,exports){
+},{"./clone":39,"./createElement":47,"./generate":62,"./textFormating":97,"./toArray":99,"./toStyle":114}],107:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -8421,7 +8378,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":62}],109:[function(require,module,exports){
+},{"./generate":62}],108:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -8439,7 +8396,7 @@ module.exports = {
   },
 };
 
-},{}],110:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -8455,7 +8412,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],111:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -8557,12 +8514,15 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
       params.break = true
       return params
     }
+    
+    // reload
+    if (key === "reload()") document.location.reload(true)
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
       
       // mount state & value
-      if (path[0].includes("()") || path[0].includes(")(") || object) {
+      if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
         
         var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object })
         if (timer) {
@@ -8606,19 +8566,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
       
     } else {
 
-      // map
-      if (key.includes(":") && key.split(":")[1].slice(0, 7) === "coded()") {
-
-        var args = key.split(":")
-        key = args[0]
-
-        args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: (id && local && mount) ? local[key] : params[key], e, req, res, _ }))
-      
-      } else {
-
-        if (id && local && mount) local[key] = value
-        params[key] = value
-      }
+      if (mount) local[key] = value
+      params[key] = value
     }
   })
 
@@ -8627,14 +8576,14 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
 
 module.exports = { toParam }
 
-},{"./generate":62,"./reducer":82,"./toApproval":99,"./toArray":100,"./toValue":116}],112:[function(require,module,exports){
+},{"./generate":62,"./reducer":81,"./toApproval":98,"./toArray":99,"./toValue":115}],111:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 };
 
-},{}],113:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -8678,7 +8627,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],114:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -8692,7 +8641,7 @@ const toString = (object, field) => {
     if (Array.isArray(value)) {
 
       if (value.length === 0) string += `${key}=_array`
-      else string += `${key}=_array.push():${value.join(".push():")}`
+      else string += `${key}=_array:${value.join(":")}`
 
     } else if (typeof value === "object") {
 
@@ -8712,7 +8661,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],115:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -8784,7 +8733,7 @@ module.exports = {
   }
 }
 
-},{}],116:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 const { generate } = require("./generate")
 const { reducer } = require("./reducer")
 
@@ -8804,35 +8753,6 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
 
-  // string value
-  if (value[0] === `"` && value[value.length - 1] === `"`) return value.slice(1, -1)
-  
-  // return const value
-  if (value.split("const.")[1] !== undefined && !value.split("const.")[0])
-  return value.split("const.")[1]
-
-  // return await value
-  if (value.split("await().")[1] !== undefined && !value.split("await().")[0])
-  return value.split("await().")[1]
-    
-  // auto question
-  if (value.includes("_question")) value = value.split("_question").join("?")
-  
-  // auto question
-  if (value.includes("_quest")) value = value.split("_quest").join("?")
-
-  // auto equal
-  if (value.includes("_equal")) value = value.split("_equal").join("=")
-
-  // auto semicolon
-  if (value.includes("_semi")) value = value.split("_semi").join(";")
-  
-  // auto comma
-  if (value.includes("_comma")) value = value.split("_comma").join(",")
-  
-  // auto currency
-  if (value.includes("_currency")) value = value.split("_currency").join(global.currency || "$")
-
   // conditions
   if (value.includes("<<")) {
 
@@ -8842,6 +8762,39 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
     value = value.split("<<")[0]
   }
 
+  // addition
+  if (value.includes("+")) {
+
+    var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object }))
+    var newVal = values[0]
+    values.slice(1).map(val => newVal += val)
+    return value = newVal
+    
+  } else if (value.includes("-")) {
+
+    var allAreNumbers = true
+      var values = value.split("-").map(value => {
+
+        if (allAreNumbers) {
+          var num = toValue({ _window, value, params, _, id, e, req, res, object })
+          if (isNaN(num) || num === "") allAreNumbers = false
+        }
+      })
+      
+      if (allAreNumbers) {
+        value = values[0]
+        values.slice(1).map(val => value -= val)
+        console.log(value);
+        return value
+      }
+
+  }
+  
+  if (value.split("const.")[1] !== undefined && !value.split("const.")[0]) return value.split("const.")[1]
+
+  // return await value
+  if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]
+  
   var path = typeof value === "string" ? value.split(".") : []
   
   /* value */
@@ -8850,21 +8803,21 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
   else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
   else if ((path[0].includes("()")) && path.length === 1) {
 
-    if (value.includes('coded()')) {
+    var val0 = value.split("coded()")[0]
+    if (value.includes('coded()') && !val0.includes("()") && !val0.includes("_map") && !val0.includes("_array") && !val0.includes("_arr")) {
     
-      var newVal = value.split("coded()")[0]
       value.split("coded()").slice(1).map(val => {
-        newVal += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, id, e, req, res, object })
-        newVal += val.slice(5)
+        val0 += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, id, e, req, res, object })
+        val0 += val.slice(5)
       })
-      value = newVal
+      value = val0
       
-    } else value = reducer({ _window, id, e, path, params, object: object || (_window ? _window.value : window.value), _, req, res })
+    } else value = reducer({ _window, id, e, path, params, object, _, req, res })
   } else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
   else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res })
   else if (value === "()") value = local
   else if (typeof value === "boolean") {}
-  else if (!isNaN(value)) value = parseFloat(value)
+  else if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === undefined || value === "generate") value = generate()
   else if (value === "e()" || value === "event()") value = e
   else if (value === "today()") value = new Date()
@@ -8883,9 +8836,9 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
 
   }
 
-  // _
-  if (value === "_") return _
-
+  // _string
+  else if (value === "_string") return ""
+/*
   // auto space
   if (value === "") return ""
 
@@ -8933,13 +8886,13 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
 
   // auto space
   if (value === "&nbsp") return "&nbsp;"
-
+*/
   return value
 }
 
 module.exports = { toValue }
 
-},{"./generate":62,"./reducer":82,"./toApproval":99,"./toParam":111}],117:[function(require,module,exports){
+},{"./generate":62,"./reducer":81,"./toApproval":98,"./toParam":110}],116:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -8975,7 +8928,7 @@ const toggleView = ({ toggle, id }) => {
 
     global.currentPage = togglePage.split("/")[0]
     var title = global.data.page[global.currentPage].title
-    togglePage = togglePage === "main" ? "" : togglePage
+    plobal.path = togglePage = togglePage === "main" ? "" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title
@@ -9046,7 +8999,7 @@ const toggleView = ({ toggle, id }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":39,"./createElement":47,"./generate":62,"./setElement":91,"./starter":94,"./toArray":100,"./update":118}],118:[function(require,module,exports){
+},{"./clone":39,"./createElement":47,"./generate":62,"./setElement":90,"./starter":93,"./toArray":99,"./update":117}],117:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -9143,7 +9096,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":39,"./controls":42,"./createElement":47,"./generate":62,"./setElement":91,"./starter":94,"./toArray":100}],119:[function(require,module,exports){
+},{"./clone":39,"./controls":42,"./createElement":47,"./generate":62,"./setElement":90,"./starter":93,"./toArray":99}],118:[function(require,module,exports){
 const axios = require("axios")
 const { toAwait } = require("./toAwait")
 
@@ -9218,7 +9171,7 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./toAwait":101,"axios":121}],120:[function(require,module,exports){
+},{"./toAwait":100,"axios":120}],119:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -9253,10 +9206,10 @@ const watch = ({ controls, id }) => {
             local[`${_watch}-watch`] = clone(value)
             
             // params
-            /*params = */toParam({ id, string: watch.split('?')[1], mount: true })
-            if (local["once()"]) {
+            toParam({ id, string: watch.split('?')[1], mount: true })
+            if (local["once"] || local["once()"]) {
 
-                delete local["once()"]
+                delete local["once"]
                 clearInterval(local[`${_watch}-timer`])
             }
             
@@ -9278,9 +9231,9 @@ const watch = ({ controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":39,"./execute":56,"./isEqual":71,"./toApproval":99,"./toCode":104,"./toParam":111,"./toValue":116}],121:[function(require,module,exports){
+},{"./clone":39,"./execute":56,"./isEqual":70,"./toApproval":98,"./toCode":103,"./toParam":110,"./toValue":115}],120:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":123}],122:[function(require,module,exports){
+},{"./lib/axios":122}],121:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9471,7 +9424,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":129,"../core/createError":130,"./../core/settle":134,"./../helpers/buildURL":138,"./../helpers/cookies":140,"./../helpers/isURLSameOrigin":143,"./../helpers/parseHeaders":145,"./../utils":148}],123:[function(require,module,exports){
+},{"../core/buildFullPath":128,"../core/createError":129,"./../core/settle":133,"./../helpers/buildURL":137,"./../helpers/cookies":139,"./../helpers/isURLSameOrigin":142,"./../helpers/parseHeaders":144,"./../utils":147}],122:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -9529,7 +9482,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":124,"./cancel/CancelToken":125,"./cancel/isCancel":126,"./core/Axios":127,"./core/mergeConfig":133,"./defaults":136,"./helpers/bind":137,"./helpers/isAxiosError":142,"./helpers/spread":146,"./utils":148}],124:[function(require,module,exports){
+},{"./cancel/Cancel":123,"./cancel/CancelToken":124,"./cancel/isCancel":125,"./core/Axios":126,"./core/mergeConfig":132,"./defaults":135,"./helpers/bind":136,"./helpers/isAxiosError":141,"./helpers/spread":145,"./utils":147}],123:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9550,7 +9503,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],125:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -9609,14 +9562,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":124}],126:[function(require,module,exports){
+},{"./Cancel":123}],125:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],127:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9766,7 +9719,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":138,"../helpers/validator":147,"./../utils":148,"./InterceptorManager":128,"./dispatchRequest":131,"./mergeConfig":133}],128:[function(require,module,exports){
+},{"../helpers/buildURL":137,"../helpers/validator":146,"./../utils":147,"./InterceptorManager":127,"./dispatchRequest":130,"./mergeConfig":132}],127:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9822,7 +9775,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":148}],129:[function(require,module,exports){
+},{"./../utils":147}],128:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -9844,7 +9797,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":139,"../helpers/isAbsoluteURL":141}],130:[function(require,module,exports){
+},{"../helpers/combineURLs":138,"../helpers/isAbsoluteURL":140}],129:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -9864,7 +9817,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":132}],131:[function(require,module,exports){
+},{"./enhanceError":131}],130:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9948,7 +9901,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":126,"../defaults":136,"./../utils":148,"./transformData":135}],132:[function(require,module,exports){
+},{"../cancel/isCancel":125,"../defaults":135,"./../utils":147,"./transformData":134}],131:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9992,7 +9945,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],133:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10081,7 +10034,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":148}],134:[function(require,module,exports){
+},{"../utils":147}],133:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -10108,7 +10061,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":130}],135:[function(require,module,exports){
+},{"./createError":129}],134:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10132,7 +10085,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":136,"./../utils":148}],136:[function(require,module,exports){
+},{"./../defaults":135,"./../utils":147}],135:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -10270,7 +10223,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":122,"./adapters/xhr":122,"./core/enhanceError":132,"./helpers/normalizeHeaderName":144,"./utils":148,"_process":4}],137:[function(require,module,exports){
+},{"./adapters/http":121,"./adapters/xhr":121,"./core/enhanceError":131,"./helpers/normalizeHeaderName":143,"./utils":147,"_process":4}],136:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -10283,7 +10236,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],138:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10355,7 +10308,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":148}],139:[function(require,module,exports){
+},{"./../utils":147}],138:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10371,7 +10324,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],140:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10426,7 +10379,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":148}],141:[function(require,module,exports){
+},{"./../utils":147}],140:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10442,7 +10395,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],142:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10455,7 +10408,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],143:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10525,7 +10478,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":148}],144:[function(require,module,exports){
+},{"./../utils":147}],143:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10539,7 +10492,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":148}],145:[function(require,module,exports){
+},{"../utils":147}],144:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10594,7 +10547,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":148}],146:[function(require,module,exports){
+},{"./../utils":147}],145:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10623,7 +10576,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],147:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -10730,7 +10683,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":149}],148:[function(require,module,exports){
+},{"./../../package.json":148}],147:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -11081,7 +11034,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":137}],149:[function(require,module,exports){
+},{"./helpers/bind":136}],148:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -11197,7 +11150,7 @@ module.exports={
   "version": "0.21.4"
 }
 
-},{}],150:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 (function (process){(function (){
 /* @flow */
 /*::
