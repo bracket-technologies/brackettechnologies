@@ -1,0 +1,24 @@
+{
+  "id": "i3taPLFDcMIohSKiY96t",
+  "active": true,
+  "creation-date": 1649922346050,
+  "note": "",
+  "status": "في دورة تدريبية",
+  "job-title": "فني صيانة",
+  "job-description": "",
+  "marital-status": "أعزب",
+  "description": "",
+  "contacts": [
+    {
+      "name": "مكتب",
+      "phone-number": "103"
+    }
+  ],
+  "work-time-type": "خدمة إجازة إداري",
+  "name": "علي",
+  "fixed-schedule-day-start": "الإثنين",
+  "fixed-schedule-time-start": "12:00",
+  "fixed-schedule-day-end": "الجمعة",
+  "fixed-schedule-time-end": "12:00",
+  "center": "الشبكات"
+}

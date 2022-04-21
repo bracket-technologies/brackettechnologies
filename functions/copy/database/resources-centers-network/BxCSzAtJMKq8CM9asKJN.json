@@ -1,0 +1,22 @@
+{
+  "id": "BxCSzAtJMKq8CM9asKJN",
+  "active": true,
+  "creation-date": 1650457454275,
+  "note": "",
+  "status": "متصل",
+  "type": "مكان عمل",
+  "case-sensitive": false,
+  "visit-permission-needed": false,
+  "description": "السلكي، المستودع، المالية ١٦",
+  "contacts": [
+    {
+      "name": "داخلي",
+      "phone-number": "31412 - 85949"
+    }
+  ],
+  "networks": [],
+  "devices": [],
+  "members": [],
+  "name": "السلكي",
+  "address": "حرقوص، بناية مستوصف الهادي، طابق ٤، جهة اليسار"
+}

@@ -3,7 +3,7 @@ const { generate } = require("./generate")
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   if (typeof string !== "string") return string
-  if (string.includes(`"`)) string = toCode({ _window, string, e, codes, start: `"`, end: `"` })
+  //if (string.includes(`"`)) string = toCode({ _window, string, e, codes, start: `"`, end: `"` })
 
   var global = {}
   if (!codes) global = _window ? _window.global : window.global

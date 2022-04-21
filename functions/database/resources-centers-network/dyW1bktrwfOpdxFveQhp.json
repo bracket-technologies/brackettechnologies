@@ -1,0 +1,26 @@
+{
+  "id": "dyW1bktrwfOpdxFveQhp",
+  "active": true,
+  "creation-date": 1650457967571,
+  "note": "الإتصال بالمركز للإعلام قبل الذهاب والزيارة",
+  "status": "متصل",
+  "type": "مكان عمل",
+  "case-sensitive": false,
+  "visit-permission-needed": false,
+  "description": "النظم والتجهيزات الفنية",
+  "contacts": [
+    {
+      "name": "داخلي",
+      "phone-number": "85836"
+    }
+  ],
+  "networks": [
+    "4SgADA3lTafLM3eWBhpn"
+  ],
+  "devices": [],
+  "members": [],
+  "name": "فداء",
+  "address": "حارة حريك، ",
+  "section": "الإتصالات",
+  "branch": "النظم والتجهيزات الفنية"
+}

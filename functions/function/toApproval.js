@@ -1,10 +1,15 @@
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 
-const toApproval = ({ _window, e, string, id, _, req, res }) => {
+const toApproval = ({ _window, e, string, id, _, req, res, object, filter }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
+
+  // no string but object exists
+  if (!string)
+    if (object) return true
+    else if (object !== undefined) return false
 
   // no string
   if (!string || typeof string !== "string") return true
@@ -22,17 +27,34 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
     if (!approval) return false
 
     id = mainId
-    var local = _window ? _window.value[id] : window.value[id]
+    var local = _window ? _window.value[id] : window.value[id] || {}
 
     if (condition.includes("#()")) {
       local["#"] = toArray(local["#"])
       return local["#"].push(condition.slice(4))
     }
 
+    // or
+    if (condition.includes("||")) {
+      var conditions = condition.split("||"), _i = 0
+      approval = false
+      while (!approval && conditions[_i] !== undefined) {
+        approval = toApproval({ _window, e, string: conditions[_i], id, _, req, res, object })
+        _i += 1
+      }
+      return approval
+    }
+
     condition = condition.split("=")
     var key = condition[0]
     var value = condition[1]
     var notEqual
+
+    // /////////////////// value /////////////////////
+
+    if (value) value = toValue({ _window, id: mainId, value, e, _, req, res })
+
+    // /////////////////// key /////////////////////
 
     if (key && key.includes('coded()') && key.length === 12) key = global.codes[key]
 
@@ -45,51 +67,28 @@ const toApproval = ({ _window, e, string, id, _, req, res }) => {
 
       } else {
 
-        // !key => study key without value
-        value = undefined
         key = key.split("!")[1]
         notEqual = true
       }
     }
-
-    // /////////////////// value /////////////////////
-
-    if (value && value !== "undefined" && value !== "false") value = toValue({ _window, id: mainId, value, e, _, req, res })
-
-    // /////////////////// key /////////////////////
-
-    id = mainId
-
-    var keygen = generate()
-    var local = _window ? _window.value[id] : window.value[id]
-
-    if (!local) return approval = false
     
     // to path
+    var keygen = generate()
     var path = typeof key === "string" ? key.split(".") : []
-    
-    // const
-    if (key === "false" || key === "undefined") local[keygen] = false
+
+    if (!key && object !== undefined) local[keygen] = object
+    else if (key === "false" || key === "undefined") local[keygen] = false
     else if (key === "true") local[keygen] = true
     else if (key === "mobile()" || key === "phone()") local[keygen] = global.device.type === "phone"
     else if (key === "desktop()") local[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") local[keygen] = global.device.type === "tablet"
-    else if (path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, value, e, _, req, res })
+    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, value, e, _, req, res, object })
     else local[keygen] = key
     
-    if (value === undefined) {
-      approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
-
-    } else {
-
-      if (value === "undefined") value = undefined
-      if (value === "false") value = false
-      if (value === "true") value = true
-      approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)
-    }
+    if (value === undefined) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
+    else approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)
 
     delete local[keygen]
-
   })
 
   return approval

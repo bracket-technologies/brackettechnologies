@@ -82,7 +82,7 @@ const Input = (component) => {
         label.text = label.text.split("=").join("_equal")
 
         return {
-            id, path, Data, parent, derivations,
+            id, path, Data, parent, derivations, tooltip: component.tooltip,
             "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
@@ -122,14 +122,17 @@ const Input = (component) => {
         var path = component.path
         var parent = component.parent
         var Data = component.Data
+        var tooltip = component.tooltip
         var clicked = component.clicked || { style: {} }
         
         delete component.label
         delete component.path
         delete component.id
+        delete component.tooltip
         
         label.text = label.text.split("?").join("_quest")
         label.text = label.text.split("=").join("_equal")
+        label.tooltip = tooltip
 
         return {
             id, Data, parent, derivations, required, path,
@@ -389,6 +392,7 @@ const Input = (component) => {
         return {
             ...component,
             style: {
+                cursor: readonly ? "pointer" : "auto",
                 border: "0",
                 width: "fit-content",
                 padding: '0.5rem',

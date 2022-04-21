@@ -1,0 +1,27 @@
+{
+  "id": "bRFDDz0H8kthPoGAPE9r",
+  "active": true,
+  "creation-date": 1649847130503,
+  "note": "",
+  "status": "يداوم",
+  "job-title": "مراقب",
+  "job-description": "",
+  "marital-status": "أعزب",
+  "description": "",
+  "contacts": [
+    {
+      "name": "بايجر",
+      "phone-number": "210497"
+    },
+    {
+      "name": "مكتب",
+      "phone-number": "111 - 112 - 113"
+    }
+  ],
+  "work-time-type": "خدمة إجازة",
+  "name": "كيان",
+  "rotating-schedule-days-number": "4",
+  "rotating-schedule-time-start": "12:00",
+  "rotating-schedule-time-end": "12:00",
+  "center": "الشبكات"
+}

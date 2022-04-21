@@ -1,0 +1,178 @@
+{
+    "type": "View?style.overflowX=hidden;style.minHeight=100vh;mode.dark.style.backgroundColor=#131313",
+    "controls": [
+        {
+            "actions": [
+                "async():search?search.collection=user;search.field.project-id.contains=)(:project-id;await().)(:data.editor.user=().search.data.0",
+                "async():search:[update:sidebar-items;?search.collection=project;search.doc=)(:project-id;await().)(:data.editor.project=().search.data;await().().refresh-sidebare-items",
+                "async():search:[update:collection-list]?search.collection=collection-+)(:project-id;await().)(:data.editor.collection=().search.data",
+                "async():search:[update:page-list]?search.collection=page-+)(:project-id;await().)(:data.editor.page=().search.data",
+                "async():search:[update:view-list]?search.collection=view-+)(:project-id;await().)(:data.editor.view=().search.data",
+                "async():search:[update:hotel-list]?search.collection=hotel-+)(:project-id;search.limit=25;await().)(:data.editor.hotel=().search.data",
+                "async():search:[update:product-list]?search.collection=product-+)(:project-id;search.limit=25;await().)(:data.editor.product=().search.data",
+                "async():search:[update:gallery-view]?search.collection=storage-+)(:project-id;search.field.title.equals=image;search.limit=25;await().)(:gallery-images=().search.data",
+                "async():search:[update:storage-list]?search.collection=storage-+)(:project-id;await().)(:data.editor.storage=().search.data"
+            ],
+            "event": "loaded?)(:project-id=)(:path.split():/.3"
+        }
+    ],
+    "creation-date": 1637494484000,
+    "children": [
+        {
+            "children": [
+                {
+                    "controls": [
+                        {
+                            "event": "mouseenter:[2ndChild().children().map():id]?lastChild().style().width=e().target.clientWidth+px;lastChild().style().transform=translateX(+e().target.relativePosition():[().element].left+px)"
+                        }
+                    ],
+                    "type": "View?style.display=inline-flex<<mobile();style.display=flex<<desktop();style.alignItems=center;style.height=100%;style.width=100%<<desktop();style.position=relative",
+                    "children": [
+                        {
+                            "type": "Text?link.path=/;text=Bracket;class=flexbox;style.margin=0 1rem;style.fontSize=2rem;style.width=fit-content;style.color=#ee384e;style.fontWeight=900"
+                        },
+                        {
+                            "type": "View?class=flex-start;style.height=100%;style.flex=1;style.position=relative"
+                        },
+                        {
+                            "type": "View?class=flex-box;style.justifyContent=flex-end;style.height=100%",
+                            "children": [
+                                {
+                                    "type": "Switch?icon.off.name=bi-brightness-low;icon.on.name=bi-moon;style.margin=0 2rem;mode.dark.style.backgroundColor=#646464",
+                                    "controls": [
+                                        {
+                                            "actions": "switchMode?mode=if():[el().checked]:dark.else():light",
+                                            "event": "click"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #eee;style.borderLeft=1px solid #eee;droplist.items=)(:data.editor.user.project-id;droplist.disabled",
+                                    "children": [
+                                        {
+                                            "type": "Text?text=project;style.fontSize=1.5rem;style.marginRight=.5rem;style.color=#888"
+                                        },
+                                        {
+                                            "type": "Text?text=:;style.marginRight=1rem;style.fontSize=1.5rem"
+                                        },
+                                        {
+                                            "type": "Text?text=)(:path.split():/.3.capitalize();style.fontSize=1.5rem;style.marginRight=.75rem"
+                                        },
+                                        {
+                                            "type": "Icon?name=bi-caret-down-fill;style.fontSize=1.1rem;style.transition=transform .2s;style.transform=rotate(0deg)"
+                                        }
+                                    ],
+                                    "controls": [
+                                        {
+                                            "event": "click?droplist()?)(:data.editor.project.id!=text()",
+                                            "actions": "route?route.project=/developer-editor/+text()"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Icon?name=bi-check2;tooltip.text=save;class=flex-box pointer;style.fontSize=2.3rem;style.padding=0 1rem;hover.style.color=blue;style.height=100%",
+                                    "controls": [
+                                        {
+                                            "event": "click??!)(:open-map.hasNestedArray();!)(:open-map.hasEmptyField()",
+                                            "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].data();)(:data.editor.[)(:open-collection.split():-.0].[)(:open-doc]=)(:open-map"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "type": "View?id=navbar;class=flex-start;style.position=fixed;style.zIndex=9;style.backgroundColor=#fff;mode.dark.style.backgroundColor=#3c3c3c;style.top=0;style.overflow=auto<<mobile();style.whiteSpace=nowrap;style.width=100%;style.height=4rem;style.borderBottom=1px solid #ddd"
+        },
+        {
+            "type": "View?class=flex;style.minHeight=100%;style.maxWidth=100%;style.marginTop=4rem;style.padding=1rem 0<<mobile()",
+            "children": [
+                {
+                    "type": "View?view=sidebar"
+                },
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "type": "View?style.height=100%;style.width=fit-content;class=flexbox pointer;style.position=relative;hover.style.backgroundColor=#f9f9f9?().data",
+                                    "children": [
+                                        {
+                                            "type": "View?style.width=1px;style.position=absolute;style.height=50%;style.left=-1px;style.backgroundColor=#ddd"
+                                        },
+                                        {
+                                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.padding=0 1rem"
+                                        },
+                                        {
+                                            "type": "Text?text=data();style.fontSize=1.3rem;style.paddingRight=3.5rem"
+                                        },
+                                        {
+                                            "type": "Icon?class=pointer;name=bi-x;style.fontSize=2rem;style.position=absolute;style.right=.5rem;hover.style.backgroundColor=#e9e9e9;style.borderRadius=.5rem;style.height=2.5rem;style.width=2.5rem",
+                                            "controls": [
+                                                {
+                                                    "event": "click?)(:open-docs=)(:open-docs.filter():[!=parent().open-collection.split():-.0+/+parent().open-doc];log():[)(:open-docs]:[parent().open-collection.split():-.0+/+parent().open-doc];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=parent().open-doc].rem();if():[)(:open-doc=parent().open-doc;parent().next();!parent().prev()]:[parent().next().style().backgroundColor=#fff;parent().next().hover.disable=true;():open-view.getChildrenByClassName():data-viewer.find():[open-doc=parent().next().open-doc]._map():[style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data]].elif():[)(:open-doc=parent().open-doc;parent().prev()]:[parent().prev().style().backgroundColor=#fff;parent().prev().hover.disable=true;():open-view.getChildrenByClassName():data-viewer.find():[open-doc=parent().prev().open-doc]._():[_.style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data]];():data-viewer-bar.children().find():[open-doc=parent().open-doc].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "controls": [
+                                        {
+                                            "event": "click?parent().children().map():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=().open-doc]._():[_.style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data]?)(:clickedElement().id!=lastChild().id"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "type": "View?id=data-viewer-bar;class=flex;style.height=3.5rem;style.width=inherit;style.marginLeft=inherit;style.position=fixed;style.right=0;style.backgroundColor=#f0f0f0;style.zIndex=1;style.display=if():[)(:open-docs.len()=0]:none.else():flex"
+                        },
+                        {
+                            "type": "View?class=data-viewer;data=)(:open-map.clone();style.width=100%;style.position=absolute;style.top=3.5rem;style.left=0;style.right=0;style.overflowY=auto?)(:open-map",
+                            "children": [
+                                {
+                                    "type": "Map?arrange=_array:creation-date:id:name:title:path:description:type:children:controls:event:watch:actions"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "View?view=gallery-view"
+                        }
+                    ],
+                    "type": "View?id=open-view;class=flex column;style.width=100%;style.position=relative;)(:open-docs=)(:open-docs.else():_array"
+                }
+            ]
+        },
+        {
+            "type": "View?class=box-shadow;id=file-action-popup;style():[transition=opacity .2s, transform .2s;width=fit-content;height=fit-content;overflowY=auto;transform=scale(0);opacity=0;pointerEvents=none;position=fixed;overflowY=auto;borderRadius=.5rem;backgroundColor=#fff]",
+            "controls": [
+                {
+                    "event": "mouseleave?style():[opacity=0;pointerEvents=none;transform=scale(0)]"
+                }
+            ],
+            "children": [
+                {
+                    "controls": [
+                        {
+                            "event": "click?():[parent().caller].prev().prev().style().display=none;():[parent().caller].prev().style().display=flex;():[parent().caller].prev().focus();parent().style():[opacity=0;pointerEvents=none;transform=scale(0)]"
+                        },
+                        {
+                            "event": "click:body?once();():[parent().caller].prev().text()=)(:open-doc;():[parent().caller].prev().style().display=none;():[parent().caller].prev().prev().style().display=flex?)(:clickedElement!=el();)(:clickedElement.id!=[():[parent().caller].prev().id];():[parent().caller].prev().style().display=flex"
+                        }
+                    ],
+                    "type": "Icon?class=pointer;tooltip.text=rename;name=bi-input-cursor-text;style.fontSize=1.5rem;style.width=3rem;style.height=3.5rem;hover.style.backgroundColor=#f0f0f0"
+                },
+                {
+                    "controls": [
+                        {
+                            "actions": "async():erase:[update:[().open-collection.split():-.0+-list]]?().open-doc=():[)(:action-popup-caller].open-doc;().open-collection=():[)(:action-popup-caller].open-collection;erase.collection=().open-collection;erase.doc=().open-doc;async()::[)(:data.editor.[().open-collection.split():-.0].[().open-doc].del();)(:open-docs=)(:open-docs.filter():[!=().open-collection.split():-.0+/+().open-doc];():open-view.children().find():[open-doc=().open-doc].rem();():data-viewer-bar.children().find():[open-doc=().open-doc].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]]",
+                            "event": "click?popup()"
+                        }
+                    ],
+                    "type": "Icon?class=pointer;tooltip.text=remove;popup;name=bi-trash;style.fontSize=1.5rem;style.width=3rem;style.height=3.5rem;hover.style.backgroundColor=#f0f0f0"
+                }
+            ]
+        },
+        {
+            "type": "View?view=image-window"
+        }
+    ]
+}

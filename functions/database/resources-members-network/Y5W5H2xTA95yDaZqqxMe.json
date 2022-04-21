@@ -1,0 +1,31 @@
+{
+  "id": "Y5W5H2xTA95yDaZqqxMe",
+  "active": true,
+  "creation-date": 1649847030654,
+  "note": "",
+  "status": "خارج الدوام",
+  "job-title": "إداري",
+  "job-description": "",
+  "description": "",
+  "contacts": [
+    {
+      "name": "محمول سبيل",
+      "phone-number": "85550"
+    },
+    {
+      "name": "بايجر",
+      "phone-number": "107104"
+    },
+    {
+      "name": "مكتب",
+      "phone-number": "102"
+    },
+    {
+      "name": "مركز خاص",
+      "phone-number": "85846"
+    }
+  ],
+  "work-time-type": "حر",
+  "name": "باقر",
+  "center": "fNcTYrcUZ8HFAq12ivRA"
+}

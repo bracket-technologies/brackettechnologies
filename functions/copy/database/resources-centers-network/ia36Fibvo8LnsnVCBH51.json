@@ -1,0 +1,22 @@
+{
+  "id": "ia36Fibvo8LnsnVCBH51",
+  "active": true,
+  "creation-date": 1650457727869,
+  "note": "الإتصال بحيدر أمين المستودع قبل الذهاب للتأكد من وجوده",
+  "status": "متصل",
+  "type": "مكان عمل",
+  "case-sensitive": false,
+  "visit-permission-needed": false,
+  "description": "مستودع التجهيزات الفنية",
+  "contacts": [
+    {
+      "name": "داخلي",
+      "phone-number": "85636"
+    }
+  ],
+  "networks": [],
+  "devices": [],
+  "members": [],
+  "name": "المستودع",
+  "address": "جانب مدرسة المهدي الحدث، مقابل سكاكر شعيب، كاراج تحت الأرض"
+}

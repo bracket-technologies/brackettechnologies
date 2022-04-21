@@ -17,35 +17,6 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
 
-  // string value
-  if (value[0] === `"` && value[value.length - 1] === `"`) return value.slice(1, -1)
-  
-  // return const value
-  if (value.split("const.")[1] !== undefined && !value.split("const.")[0])
-  return value.split("const.")[1]
-
-  // return await value
-  if (value.split("await().")[1] !== undefined && !value.split("await().")[0])
-  return value.split("await().")[1]
-    
-  // auto question
-  if (value.includes("_question")) value = value.split("_question").join("?")
-  
-  // auto question
-  if (value.includes("_quest")) value = value.split("_quest").join("?")
-
-  // auto equal
-  if (value.includes("_equal")) value = value.split("_equal").join("=")
-
-  // auto semicolon
-  if (value.includes("_semi")) value = value.split("_semi").join(";")
-  
-  // auto comma
-  if (value.includes("_comma")) value = value.split("_comma").join(",")
-  
-  // auto currency
-  if (value.includes("_currency")) value = value.split("_currency").join(global.currency || "$")
-
   // conditions
   if (value.includes("<<")) {
 
@@ -55,6 +26,40 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
     value = value.split("<<")[0]
   }
 
+  // addition
+  if (value.includes("+")) {
+
+    var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object }))
+    var newVal = values[0]
+    values.slice(1).map(val => newVal += val)
+    return value = newVal
+    
+  } else if (value.includes("-")) {
+
+    var allAreNumbers = true
+      var values = value.split("-").map(value => {
+
+        if (allAreNumbers) {
+          var num = toValue({ _window, value, params, _, id, e, req, res, object })
+          if (isNaN(num) || num === "") allAreNumbers = false
+          return num
+        }
+      })
+      
+      if (allAreNumbers) {
+        value = values[0]
+        values.slice(1).map(val => value -= val)
+        console.log(value);
+        return value
+      }
+
+  }
+  
+  if (value.split("const.")[1] !== undefined && !value.split("const.")[0]) return value.split("const.")[1]
+
+  // return await value
+  if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]
+  
   var path = typeof value === "string" ? value.split(".") : []
   
   /* value */
@@ -63,21 +68,21 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
   else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
   else if ((path[0].includes("()")) && path.length === 1) {
 
-    if (value.includes('coded()')) {
+    var val0 = value.split("coded()")[0]
+    if (value.includes('coded()') && !val0.includes("()") && !val0.includes("_map") && !val0.includes("_array") && !val0.includes("_arr")) {
     
-      var newVal = value.split("coded()")[0]
       value.split("coded()").slice(1).map(val => {
-        newVal += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, id, e, req, res, object })
-        newVal += val.slice(5)
+        val0 += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, id, e, req, res, object })
+        val0 += val.slice(5)
       })
-      value = newVal
+      value = val0
       
-    } else value = reducer({ _window, id, e, path, params, object: object || (_window ? _window.value : window.value), _, req, res })
+    } else value = reducer({ _window, id, e, path, params, object, _, req, res })
   } else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
   else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res })
   else if (value === "()") value = local
   else if (typeof value === "boolean") {}
-  else if (!isNaN(value)) value = parseFloat(value)
+  else if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === undefined || value === "generate") value = generate()
   else if (value === "e()" || value === "event()") value = e
   else if (value === "today()") value = new Date()
@@ -96,9 +101,9 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
 
   }
 
-  // _
-  if (value === "_") return _
-
+  // _string
+  else if (value === "_string") return ""
+/*
   // auto space
   if (value === "") return ""
 
@@ -146,7 +151,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
 
   // auto space
   if (value === "&nbsp") return "&nbsp;"
-
+*/
   return value
 }
 

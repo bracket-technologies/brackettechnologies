@@ -17,8 +17,15 @@ module.exports = {
     if (component || replace) {
 
       var _local = clone(component || replace)
+      
+      // remove mapping
+      if (_local.type.slice(0, 1) === "[") {
+        var _type = _local.type.slice(1).split("]")[0]
+        _local.type = _type + _local.type.split("]").slice(1).join("]")
+      }
+
       if (data) _local.data = clone(data)
-      if (path) _local.derivations = (Array.isArray(path) ? path : path.split(".")) || []
+      if (path) _local.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       
       var innerHTML = toArray(_local)
       .map((child, index) => {
@@ -65,6 +72,7 @@ module.exports = {
     window.value[el.id].style.transition = window.value[el.id].element.style.transition = window.value[el.id].reservedStyles.transition || null
     window.value[el.id].style.opacity = window.value[el.id].element.style.opacity = window.value[el.id].reservedStyles.opacity || "1"
     delete window.value[el.id].reservedStyles
+    local.insert = { child: window.value[el.id], message: "Child inserted succefully", success: true }
     
     if (lDiv) {
       document.body.removeChild(lDiv)

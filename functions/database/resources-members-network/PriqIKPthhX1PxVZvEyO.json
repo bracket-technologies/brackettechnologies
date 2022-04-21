@@ -1,0 +1,27 @@
+{
+  "id": "PriqIKPthhX1PxVZvEyO",
+  "active": true,
+  "creation-date": 1649846907326,
+  "note": "",
+  "status": "يداوم",
+  "job-title": "فني صيانة",
+  "job-description": "",
+  "description": "",
+  "contacts": [
+    {
+      "name": "بايجر",
+      "phone-number": "210478"
+    },
+    {
+      "name": "مكتب",
+      "phone-number": "106"
+    }
+  ],
+  "work-time-type": "خدمة إجازة إداري",
+  "name": "جواد",
+  "fixed-schedule-day-start": "الإثنين",
+  "fixed-schedule-time-start": "12:00",
+  "fixed-schedule-day-end": "الجمعة",
+  "fixed-schedule-time-end": "12:00",
+  "center": "fNcTYrcUZ8HFAq12ivRA"
+}

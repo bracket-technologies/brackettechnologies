@@ -1,0 +1,22 @@
+{
+  "id": "dyW1bktrwfOpdxFveQhp",
+  "active": true,
+  "creation-date": 1650457967571,
+  "note": "الإتصال بالمركز للإعلام قبل الذهاب والزيارة",
+  "status": "متصل",
+  "type": "مكان عمل",
+  "case-sensitive": false,
+  "visit-permission-needed": false,
+  "description": "نظم وتجهيزات فنية",
+  "contacts": [
+    {
+      "name": "داخلي",
+      "phone-number": "85836"
+    }
+  ],
+  "networks": [],
+  "devices": [],
+  "members": [],
+  "name": "النظم والتجهيزات الفنية",
+  "address": "حارة حريك، "
+}

@@ -1,0 +1,10 @@
+{
+    "type": "View?class=box-shadow flex column;id=droplist;style.width=fit-content;style.transition=opacity .1s, transform .1s;style.height=fit-content;style.overflowY=auto;style.maxWidth=40rem;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=fixed;style.padding=.2rem;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.zIndex=10",
+    "controls": [{
+        "event": "mouseleave??global().droplist-positioner;!e().target.id.isChildOfId():[global().droplist-positioner]",
+        "actions": "blur::200?()::400.if():[e().target.id.isnotChildOfId():[global().droplist-caller].and():[().mouseenter.isfalse()]]:[().style().opacity.eq():0.then():[().style().transform.eq():[scale(0.5)]]:[().style().pointerEvents.eq():none]:[().children().map():[style().pointerEvents.eq():none]]:[global().droplist-caller.delete()]:[global().droplist-positioner.delete()]]?!().mouseenter;!e().target.id.isChildOfId():[global().droplist-positioner]"
+    }, {
+        "event": "click:body??global().droplist-positioner;!global().clickedElement.id.isChildOfId():[global().droplist-positioner]",
+        "actions": "blur::200?()::400.if():[e().target.id.isnotChildOfId():[global().droplist-caller].and():[().mouseenter.isfalse()]]:[().style().opacity.eq():0.then():[().style().transform.eq():[scale(0.5)]]:[().style().pointerEvents.eq():none]:[().children().map():[style().pointerEvents.eq():none]]:[global().droplist-caller.delete()]:[global().droplist-positioner.delete()]]?!().mouseenter;!global().clickedElement.id.isChildOfId():[global().droplist-positioner]"
+    }]
+}

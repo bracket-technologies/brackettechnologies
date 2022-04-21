@@ -40,7 +40,7 @@ const createTags = ({ _window, id, req, res }) => {
         var conditions = value[local.parent].children[local.index]
         var approved = toApproval({ _window, string: conditions, id, req, res })
         if (!approved) return
-
+        
         return createTag({ _window, id, req, res })
 
       }).join("")
@@ -59,87 +59,7 @@ const createTags = ({ _window, id, req, res }) => {
       return createTag({ _window, id, req, res })
     }
   }
-/*
-  if (local.originalKeys) {
 
-    var keys = Object.keys(clone(local.data || {})).filter(key => !local.originalKeys.includes(key))
-
-    if (keys.length > 0) {
-
-      local.length = keys.length
-      delete value[id]
-
-      return keys
-      .map((key, index) => {
-
-        var id = langs.length === 1 ? local.id : generate()
-        var _local = clone(local)
-
-        _local.id = id
-        _local.key = key
-        _local.mapIndex = index
-        value[id] = _local
-
-        return createTag({ _window, id, req, res })
-
-      }).join("")
-    }
-  }
-
-  if (local.lang && !local.templated && !local.duplicated) {
-
-    var langs = Object.keys(clone(local.data || {}))
-
-    if (langs.length > 0) {
-
-      local.length = langs.length
-      delete value[id]
-
-      return langs
-      .map((lang, index) => {
-
-        var id = langs.length === 1 ? local.id : generate()
-        var _local = clone(local)
-
-        _local.id = id
-        _local.lang = lang
-        _local.mapIndex = index
-
-        value[id] = _local
-
-        return createTag({ _window, id, req, res })
-        
-      }).join("")
-    }
-  }
-
-  if (local.currency && !local.templated && !local.duplicated) {
-    
-    var currencies = Object.keys(clone(local.data || {}))
-
-    if (currencies.length > 0) {
-
-      local.length = currencies.length
-      delete value[id]
-
-      return currencies
-      .map((currency, index) => {
-
-        var id = currencies.length === 1 ? local.id : generate()
-        var _local = clone(local)
-
-        _local.id = id
-        _local.currency = currency
-        _local.mapIndex = index
-
-        value[id] = _local
-
-        return createTag({ _window, id, req, res })
-
-      }).join("")
-    }
-  }
-*/
   return createTag({ _window, id, req, res })
 }
 
@@ -152,13 +72,6 @@ const createTag = ({ _window, id, req, res }) => {
   // components
   componentModifier({ _window, id })
   createComponent({ _window, id, req, res })
-
-  // flicker for inputs
-  if (local.flicker) {
-    
-    local.flicker = { opacity: local.style.opacity || "1" }
-    local.style.opacity = "0"
-  }
 
   if (local.actions) execute({ _window, actions: local.actions, id, req, res })
   return toHtml({ _window, id, req, res })
@@ -173,18 +86,14 @@ const componentModifier = ({ _window, id }) => {
 
     local.icon = local.icon || {}
     local.icon.name = local.name || local.icon.name || ""
-    if (local.icon.google) local.google = true
-
-    if (local.icon.outlined || local.icon.type === "outlined") {
-      local.outlined = true
-    } else if (local.icon.filled || local.icon.type === "filled") {
-      local.filled = true
-    } else if (local.icon.rounded || local.icon.type === "rounded") {
-      local.rounded = true
-    } else if (local.icon.sharp || local.icon.type === "sharp") {
-      local.sharp = true
-    } else if (local.icon.twoTone || local.icon.type === "twoTone") {
-      local.twoTone = true
+    if (local.icon.google || local.google) {
+      
+      if (local.google.outlined) local.outlined = true
+      else if (local.google.filled) local.filled = true
+      else if (local.google.rounded) local.rounded = true
+      else if (local.google.sharp) local.sharp = true
+      else if (local.google.twoTone) local.twoTone = true
+      else local.google = true
     }
   }
 

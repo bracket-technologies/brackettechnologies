@@ -40,7 +40,7 @@ const droplist = ({ id, e }) => {
         controls: [...(local.droplist.controls || []), {
           event: `click??!():${id}.droplist.readonly;global().droplist-positioner=${id}`,
           actions: [
-            `resize:${id}?():${input_id}.data()=${item};():${input_id}.text()=${item}?!${local.droplist.isMap}`,
+            `resize:${id};isArabic:${input_id}?():${input_id}.data()=${item};():${input_id}.text()=${item}?!${local.droplist.isMap}`,
             `update:[():${id}.parent().parent().id]?global().opened-maps.push():[():${id}.derivations.join():-]<<${item}.is():array.or():[${item}.is():map];():${id}.data()=if():[${item}.is():controls.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:event:_string]].elif():[${item}.is():controls]:[_map:event:_string].elif():[${item}.is():children.and():[():${id}.parent().parent().parent().data().type().is():map]]:[_array:[_map:type:_string]].elif():[${item}.is():children]:[_map:type:_string].elif():[${item}.is():string]:_string.elif():[${item}.is():timestamp]:[today().getTime().num()].elif():[${item}.is():number]:0.elif():[${item}.is():boolean]:[true.bool()].elif():[${item}.is():array]:_array.elif():[${item}.is():map]:[_map:_string:_string];():droplist.style().opacity=0;():droplist.style().transform=[scale(0.5)];():droplist.style().pointerEvents=none;():droplist.children().map():[style().pointerEvents=none];global().droplist-positioner.delete();timer():[():droplist.val()=_string]:200?${item}.isnot():[():${id}.data().type()];${local.droplist.isMap}`
           ]
         }]

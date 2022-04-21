@@ -1,0 +1,109 @@
+{
+    "type": "View?class=flex;style.position=fixed;style.bottom=0;style.top=4rem",
+    "creation-date": 1640440075917,
+    "children": [
+        {
+            "children": [
+                {
+                    "type": "Icon?id=view-page-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-code-slash;tooltip.text=pages & views;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "controls": [
+                        {
+                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];style():[borderRight=2px solid #000;color=#000]<<().open;)(:sidebar-item-open=().id<<().open;parent().parent().children().slice():1.map():[style().width=0px];parent().next().style().width=if():[().open]:18rem.else():0px;():open-view.style().marginLeft=if():[().open]:[22.5rem].else():[4.5rem];():open-view.1stChild().style().width=if():[().open]:[calc(100% - 22.5rem)].else():[calc(100% - 4.5rem)];getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                        }
+                    ]
+                },
+                {
+                    "type": "Icon?id=view-product-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-boxes;tooltip.text=products;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem?)(:data.editor.project.which-industry-will-you-be-operating-in.is():Food & Beverages",
+                    "controls": [
+                        {
+                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];style():[borderRight=2px solid #000;color=#000]<<().open;)(:sidebar-item-open=().id<<().open;parent().parent().children().slice():1.map():[style().width=0px];():product-sidebar.style().width=if():[().open]:18rem.else():0px;():open-view.style().marginLeft=if():[().open]:[22.5rem].else():[4.5rem];():open-view.1stChild().style().width=if():[().open]:[calc(100% - 22.5rem)].else():[calc(100% - 4.5rem)];getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                        }
+                    ]
+                },
+                {
+                    "type": "Icon?id=view-collection-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-collection;tooltip.text=collection;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "controls": [
+                        {
+                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];style():[borderRight=2px solid #000;color=#000]<<().open;)(:sidebar-item-open=().id<<().open;parent().parent().children().slice():1.map():[style().width=0px];():collection-sidebar.style().width=if():[().open]:18rem.else():0px;():open-view.style().marginLeft=if():[().open]:[22.5rem].else():[4.5rem];():open-view.1stChild().style().width=if():[().open]:[calc(100% - 22.5rem)].else():[calc(100% - 4.5rem)];getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                        }
+                    ]
+                },
+                {
+                    "controls": [
+                        {
+                            "event": "click?():gallery-view.style().display=none;().parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];if():[().open]:[():hotels-btn.deepChildren().map():[style().color=#888];().style().borderRight=2px solid #000;deepChildren().map():[style().color=#000];)(:sidebar-item-open=().id];parent().parent().children().slice():1.map():[style().width=0px];():hotel-sidebar.style().width=if():[().open]:18rem.else():0px;().open-view.style().marginLeft=if():[().open]:[22.5rem].else():[4.5rem];():open-view.1stChild().style().width=if():[().open]:[calc(100% - 22.5rem)].else():[calc(100% - 4.5rem)];getChildrenByClassName():data-viewer.map().[style().display=flex]"
+                        }
+                    ],
+                    "type": "View?id=hotels-btn;open=if():[)(:sidebar-item-open=().id]:true.else():false;class=flexbox;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00",
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "type": "Icon?name=bi-star-fill;style.color=#999;style.fontSize=.5rem;style.transition=.3s"
+                                        },
+                                        {
+                                            "type": "Icon?name=bi-star-fill;style.color=#999;style.fontSize=.5rem;style.transition=.3s"
+                                        },
+                                        {
+                                            "type": "Icon?name=bi-star-fill;style.color=#999;style.fontSize=.5rem;style.transition=.3s"
+                                        }
+                                    ],
+                                    "type": "View?class=flexbox;style.gap=.1rem"
+                                },
+                                {
+                                    "type": "Icon?name=apartment;google;outlined;style.color=#999;style.fontSize=2.7rem;style.transition=.3s"
+                                }
+                            ],
+                            "type": "View?class=flexbox pointer column;tooltip.text=hotels;style.fontSize=2rem;style.height=4.5rem;style.width=100%;style.position=relative?)(:data.editor.project.which-industry-will-you-be-operating-in=Travel & Tourism"
+                        }
+                    ]
+                },
+                {
+                    "type": "Icon?id=view-storage-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-menu-button-wide-fill;tooltip.text=storage;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "controls": [
+                        {
+                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];style():[borderRight=2px solid #000;color=#000]<<().open;)(:sidebar-item-open=().id<<().open;parent().parent().children().slice():1.map():[style().width=0px];():storage-sidebar.style().width=if():[().open]:18rem.else():0px;():open-view.style().marginLeft=if():[().open]:[22.5rem].else():[4.5rem];():open-view.1stChild().style().width=if():[().open]:[calc(100% - 22.5rem)].else():[calc(100% - 4.5rem)];getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                        }
+                    ]
+                },
+                {
+                    "type": "Icon?id=gallery-icon;class=flexbox;open=)(:sidebar-item-open.is():[().id];name=bi-images;tooltip.text=gallery;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];if():[().open]:[style().borderRight=2px solid #000;style().color=#000;)(:sidebar-item-open=().id];parent().parent().children().slice():1.map():[style().width=0px];():open-view.style().marginLeft=4.5rem;():gallery-view.style().display=if():[().open]:grid.else():none;():data-viewer-bar.style().display=none;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():gallery-view.style().display=grid;style():[borderRight=2px solid #000;color=#000];().open=true"
+                        }
+                    ]
+                },
+                {
+                    "type": "Icon?id=review-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-chat-left-text;tooltip.text=reviews;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "controls": [
+                        {
+                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];style():[borderRight=2px solid #000;color=#000]<<().open;)(:sidebar-item-open=().id<<().open;parent().parent().children().slice():1.map():[style().width=0px];():review-sidebar.style().width=if():[().open]:18rem.else():0px;():open-view.style().marginLeft=if():[().open]:[22.5rem].else():[4.5rem];():open-view.1stChild().style().width=if():[().open]:[calc(100% - 22.5rem)].else():[calc(100% - 4.5rem)];getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                        }
+                    ]
+                }
+            ],
+            "type": "View?id=sidebar-items;class=flex column;style.width=4.5rem;style.backgroundColor=#f9f9f9;)(:sidebar-item-open=false"
+        },
+        {
+            "type": "View?view=page-view-sidebar"
+        },
+        {
+            "type": "View?view=collection-sidebar"
+        },
+        {
+            "type": "View?view=hotel-sidebar"
+        },
+        {
+            "type": "View?view=storage-sidebar"
+        },
+        {
+            "type": "View?view=review-sidebar"
+        },
+        {
+            "type": "View?view=product-sidebar"
+        }
+    ]
+}

@@ -1,4 +1,5 @@
 const { reducer } = require("./reducer")
+const { toArray } = require("./toArray")
 const { toNumber } = require("./toNumber")
 
 const sort = ({ sort = {}, id, e }) => {
@@ -12,7 +13,7 @@ const sort = ({ sort = {}, id, e }) => {
   var data = sort.data || global[Data]
 
   options.sort = options.sort === "ascending" ? "descending" : "ascending"
-  var path = (sort.path || "").split(".")
+  var path = typeof sort.path === "string" ? (sort.path || "").split(".") : typeof sort.path !== undefined ? toArray(sort.path) : [""]
   var isDate = false
   
   if (!Array.isArray(data) && typeof data === "object") data = Object.values(data)

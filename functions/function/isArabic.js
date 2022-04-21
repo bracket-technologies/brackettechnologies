@@ -15,6 +15,8 @@ const isArabic = ({ id, value }) => {
 
     local.element.classList.add("arabic")
     local.element.style.textAlign = "right"
+    if (local.type !== "Input") local.element.innerHTML = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+    else local.element.value = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
     if (local["placeholder-ar"]) local.element.placeholder = local["placeholder-ar"]
 
   } else {
