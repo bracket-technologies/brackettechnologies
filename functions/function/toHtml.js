@@ -25,8 +25,6 @@ module.exports = {
     
     innerHTML = toArray(local.children).map((child, index) => {
 
-      if (!child || !child.type) return ""
-
       var id = child.id || generate()
       value[id] = clone(child)
       value[id].id = id

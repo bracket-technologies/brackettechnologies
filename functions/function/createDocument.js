@@ -71,7 +71,7 @@ const createDocument = async ({ req, res, db }) => {
     if (isBracket) {
 
         project = getJsonFiles({ search: { collection: "project", fields: { domains: { "array-contains": host } } } })
-        if (project) global.data.project = project = project[0]
+        if (Object.keys(project)[0]) global.data.project = project = Object.values(project)[0]
 
     } else {
 
@@ -80,10 +80,8 @@ const createDocument = async ({ req, res, db }) => {
         .collection("project").where("domains", "array-contains", host)
         .get().then(doc => {
 
-            if (doc.docs[0] && doc.docs[0].exists) {
-                global.data.project = doc.docs[0].data()
-                global.data.project.id = doc.docs[0].id
-            }
+            if (doc.docs[0] && doc.docs[0].exists)
+            global.data.project = project = doc.docs[0].data()
         })
     }
 
@@ -91,19 +89,18 @@ const createDocument = async ({ req, res, db }) => {
     await Promise.all(promises)
 
     // project not found
-    if (Object.keys(global.data.project).length === 0) return res.send("Project not found!")
-    project = global.data.project
+    if (!project) return res.send("Project not found!")
     global.projectId = project.id
     
     if (isBracket) {
-
+        
         // get user
         user = getJsonFiles({ search: { collection: "user", fields: { "project-id": { "array-contains": project.id } } } })
-        if (user) global.data.user = user = user[0]
-
+        if (Object.keys(user)[0]) global.data.user = user = Object.values(user)[0]
+    
         // get page
         global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
-
+        
         // get view
         global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
 
@@ -114,10 +111,8 @@ const createDocument = async ({ req, res, db }) => {
         .collection("user").where("project-id", "array-contains", project.id)
         .get().then(doc => {
             
-            if (doc.docs[0].exists) {
-                global.data.user = doc.docs[0].data()
-                global.data.user.id = doc.docs[0].id
-            }
+            if (doc.docs[0].exists)
+            global.data.user = user = doc.docs[0].data()
         })
 
         // get page

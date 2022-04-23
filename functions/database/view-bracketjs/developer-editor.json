@@ -1,5 +1,5 @@
 {
-    "type": "View?style.overflowX=hidden;style.minHeight=100vh;mode.dark.style.backgroundColor=#131313",
+    "type": "View?if():[)(:projectId=bracketjs]:[)(:data.editor=)(:data.clone()];style.overflowX=hidden;style.minHeight=100vh;mode.dark.style.backgroundColor=#131313",
     "controls": [
         {
             "actions": [
@@ -13,7 +13,7 @@
                 "async():search:[update:gallery-view]?search.collection=storage-+)(:project-id;search.field.title.equals=image;search.limit=25;await().)(:gallery-images=().search.data",
                 "async():search:[update:storage-list]?search.collection=storage-+)(:project-id;await().)(:data.editor.storage=().search.data"
             ],
-            "event": "loaded?)(:project-id=)(:path.split():/.2"
+            "event": "loaded?)(:project-id=)(:path.split():/.2?)(:projectId!=bracketjs"
         }
     ],
     "creation-date": 1637494484000,

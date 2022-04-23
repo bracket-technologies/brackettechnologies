@@ -40,7 +40,7 @@ const createTags = ({ _window, id, req, res }) => {
         var conditions = value[local.parent].children[local.index]
         var approved = toApproval({ _window, string: conditions, id, req, res })
         if (!approved) return
-
+        
         return createTag({ _window, id, req, res })
 
       }).join("")

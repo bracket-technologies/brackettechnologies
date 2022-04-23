@@ -95,7 +95,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
         // case condition approval
         if (caseCondition) approved = toApproval({ _window, string: caseCondition, params, id: localId, e })
-        if (!approved) return
+        if (!approved) return toAwait({ id, e, params })
         
         if (_method[name]) toArray(actionid ? actionid : idList).map(async id => {
           

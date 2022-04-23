@@ -1,0 +1,26 @@
+{
+  "id": "crsTzIN78tXWSjyLa0p0",
+  "active": true,
+  "creation-date": 1650456773578,
+  "note": "",
+  "status": "متصل",
+  "type": "مركز ربط",
+  "case-sensitive": true,
+  "visit-permission-needed": true,
+  "description": "",
+  "contacts": [
+    {
+      "name": "داخلي",
+      "phone-number": "85648"
+    }
+  ],
+  "networks": [
+    "4SgADA3lTafLM3eWBhpn"
+  ],
+  "devices": [],
+  "members": [],
+  "name": "المكتب",
+  "address": "سنتر صولي، الطابف الخامس، جانب معهد الصادق",
+  "branch": " الشبكات",
+  "section": "الإتصالات"
+}

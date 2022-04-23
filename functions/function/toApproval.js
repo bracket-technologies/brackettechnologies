@@ -1,13 +1,13 @@
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 
-const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
+const toApproval = ({ _window, e, string, id, _, req, res, object, filter }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
 
   // no string but object exists
-  if (!string) 
+  if (!string)
     if (object) return true
     else if (object !== undefined) return false
 
@@ -52,7 +52,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
 
     // /////////////////// value /////////////////////
 
-    if (value && value !== "undefined" && value !== "false") value = toValue({ _window, id: mainId, value, e, _, req, res })
+    if (value) value = toValue({ _window, id: mainId, value, e, _, req, res })
 
     // /////////////////// key /////////////////////
 
@@ -75,8 +75,6 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     // to path
     var keygen = generate()
     var path = typeof key === "string" ? key.split(".") : []
-    
-    // const
 
     if (!key && object !== undefined) local[keygen] = object
     else if (key === "false" || key === "undefined") local[keygen] = false
@@ -87,19 +85,10 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, value, e, _, req, res, object })
     else local[keygen] = key
     
-    if (value === undefined) {
-      approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
-
-    } else {
-
-      if (value === "undefined") value = undefined
-      if (value === "false") value = false
-      if (value === "true") value = true
-      approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)
-    }
+    if (value === undefined) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
+    else approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)
 
     delete local[keygen]
-
   })
 
   return approval

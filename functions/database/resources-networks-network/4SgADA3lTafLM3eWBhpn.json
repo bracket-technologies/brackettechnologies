@@ -1,0 +1,25 @@
+{
+  "id": "4SgADA3lTafLM3eWBhpn",
+  "active": true,
+  "creation-date": 1650526901542,
+  "note": "",
+  "status": "متصلة",
+  "type": "سلكي",
+  "case-sensitive": false,
+  "visit-permission-needed": false,
+  "description": "شبكة إتصالات داخلية خاصة بالوحدة",
+  "devices": [],
+  "managers": [
+    "PriqIKPthhX1PxVZvEyO"
+  ],
+  "stations": [],
+  "centers": [
+    "BxCSzAtJMKq8CM9asKJN",
+    "crsTzIN78tXWSjyLa0p0",
+    "dyW1bktrwfOpdxFveQhp",
+    "fNcTYrcUZ8HFAq12ivRA",
+    "ia36Fibvo8LnsnVCBH51"
+  ],
+  "name": "سبيل",
+  "service": "إتصالات"
+}

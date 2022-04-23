@@ -1,0 +1,771 @@
+{
+  "creation-date": 1650292186204,
+  "id": "centers-manager",
+  "type": "View?id=centers-manager;class=flex column;)(:centers-list-view-type=list",
+  "children": [
+    {
+      "type": "View?id=centers-manager-list;class=flex column;style.gap=2rem",
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "type": "View?id=all-centers;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=all-centers]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0",
+                  "children": [
+                    {
+                      "type": "Icon?id=test;class=flexbox;name=bi-list-ul;style.fontSize=1.8rem;style.color=if():[parent().parent().open-folder=all-centers]:blue.else():#888"
+                    },
+                    {
+                      "type": "Text?id=test1;class=ar;text=جميع المراكز;style.fontSize=1.3rem;style.color=if():[parent().parent().open-folder=all-centers]:blue.else():#888;style.fontWeight=bold"
+                    },
+                    {
+                      "type": "Text?class=ar;text=)(:centers-list.len();style.display=if():[parent().parent().open-folder=all-centers]:flex.else():none;style.fontSize=1.2rem;style.color=if():[parent().parent().open-folder=all-centers]:#fff.else():#888;style.backgroundColor=if():[parent().parent().open-folder=all-centers]:blue.else():#ddd;style.padding=0 .55rem;style.height=1.75rem;style.borderRadius=1.5rem"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "actions": "async():search:[update:[parent().id]]:[update:centers-views]?async():[search.collection=resources-centers-network;search.limit=25]:[)(:centers-list=().search.data]:[lastChild().text()=().search.data.len()]",
+                      "event": "click?parent().open-folder=all-centers?parent().open-folder!=all-centers"
+                    }
+                  ]
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Icon?class=flexbox;name=bi-activity;style.fontSize=1.8rem;style.color=if():[parent().parent().open-folder=active-centers]:blue.else():#888"
+                    },
+                    {
+                      "type": "Text?class=ar;text=المراكز الفعّالة;style.fontSize=1.3rem;style.color=if():[parent().parent().open-folder=active-centers]:blue.else():#888;style.fontWeight=bold"
+                    },
+                    {
+                      "type": "Text?class=ar;text=)(:centers-list.len();style.display=if():[parent().parent().open-folder=active-centers]:flex.else():none;style.fontSize=1.2rem;style.color=if():[parent().parent().open-folder=active-centers]:#fff.else():#888;style.backgroundColor=if():[parent().parent().open-folder=active-centers]:blue.else():#ddd;style.padding=0 .55rem;style.height=1.75rem;style.borderRadius=1.5rem"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?parent().open-folder=active-centers?parent().open-folder!=active-centers",
+                      "actions": "async():search:[update:[parent().id]]:[update:centers-views]?async():[search.collection=resources-centers-network;search.limit=25;search.field.active.equal=true]:[)(:centers-list=().search.data]:[lastChild().text()=().search.data.len()]"
+                    }
+                  ],
+                  "type": "View?id=active-centers;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=active-centers]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0"
+                }
+              ],
+              "type": "View?id=centers-file-ear;class=flex;style.gap=0.1rem;().open-folder=all-centers;style.width=100%;style.marginBottom=-0.1rem;style.zIndex=1"
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "type": "View?class=flexbox;style.border=1px solid #ddd;style.borderRadius=2rem;style.padding=.1rem;style.width=40rem;style.height=4rem",
+                      "children": [
+                        {
+                          "type": "Icon?class=flexbox;style.color=#888;style.fontSize=2rem;style.minWidth=3rem;name=bi-funnel"
+                        },
+                        {
+                          "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، شبكة، نوع، وصف ...",
+                          "controls": [
+                            {
+                              "event": "input",
+                              "actions": "async():search:[update:centers-views]?search.collection=resources-centers-network;search.field.id.in=val();search.field.networks.in=val();search.field.name.in=val();search.field.type.in=val();search.field.address.in=val();search.field.note.in=val();search.field.status.in=val();search.operator=or;async()::[)(:centers-list=().search.data]"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Icon?class=flexbox pointer;style.color=blue;style.fontSize=2rem;style.minWidth=5rem;name=bi-sliders;style.borderRadius=2rem;style.backgroundColor=#f9f9f9;style.height=100%;style.transition=.2s;hover.style.backgroundColor=#eee"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=flexbox;style.gap=2rem",
+                      "children": [
+                        {
+                          "type": "View?id=centers-view-type;class=flexbox;style.height=4rem;style.border=1px solid #ddd;style.borderRadius=.5rem",
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox pointer;style.height=100%;style.width=4rem;style.borderLeft=1px solid #ddd;name=bi-list-task;style.color=if():[)(:centers-list-view-type=list]:blue.else():#888;style.fontSize=2.2rem;hover.style.backgroundColor=#f8f8f8;style.transition=.2s",
+                              "controls": [
+                                {
+                                  "actions": "update:[parent().id];update:centers-views",
+                                  "event": "click?)(:centers-list-view-type=list?)(:centers-list-view-type=grid"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Icon?class=flexbox pointer;style.height=100%;style.width=4rem;style.borderRight=1px solid #ddd;name=bi-grid-3x3-gap;style.color=if():[)(:centers-list-view-type=grid]:blue.else():#888;style.fontSize=1.8rem;hover.style.backgroundColor=#f8f8f8;style.transition=.2s",
+                              "controls": [
+                                {
+                                  "event": "click?)(:centers-list-view-type=grid?)(:centers-list-view-type=list",
+                                  "actions": "update:[parent().id];update:centers-views"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "children": [
+                            {
+                              "type": "Text?class=flexbox ar;style.color=#fff;style.fontSize=1.2rem;text=إضافة مركز جديد"
+                            }
+                          ],
+                          "type": "View?class=flexbox pointer;style.gap=1rem;style.backgroundColor=blue;style.transition=.3s;style.borderRadius=2rem;style.padding=0 1rem;style.height=3.25rem;hover.style.backgroundColor=#0000bf",
+                          "controls": [
+                            {
+                              "event": "click?():centers-mini-window.style():[opacity=1;pointerEvents=auto];)(:new-centers=true;)(:centers-data=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:note:_string:status:متصل:type:مكان عمل:case-sensitive:false:visit-permission-needed:false:description:_string:contacts:_array:networks:_array:devices:_array:members:_array;)(:centers-copied.del();)(:centers-edit-readonly=false",
+                              "actions": "update:centers-mini-window"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style.width=100%;style.justifyContent=space-between;style.height=8rem;style.padding=0 2rem"
+                },
+                {
+                  "type": "View?id=centers-views;class=flex column;style.gap=.2rem",
+                  "children": [
+                    {
+                      "type": "View?id=centers-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:centers-list-view-type=list]:flex.else():none?)(:centers-list-view-type=list",
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "controls": [
+                                    {
+                                      "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():centers-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():centers-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                                    }
+                                  ],
+                                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                                  "children": [
+                                    {
+                                      "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "type": "View?class=flexbox;style.height=100%;style.width=100%"
+                            },
+                            {
+                              "type": "View?class=flex align-center",
+                              "children": [
+                                {
+                                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                  "controls": [
+                                    {
+                                      "event": "click",
+                                      "actions": "sort;update:centers-list-view?sort.Data=centers-list;sort.path=active"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=flex align-center",
+                              "children": [
+                                {
+                                  "type": "Text?class=ar pointer;text=رقم الهوية;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                                }
+                              ]
+                            },
+                            {
+                              "children": [
+                                {
+                                  "type": "Text?class=ar pointer;text=إسم المركز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                  "controls": [
+                                    {
+                                      "event": "click",
+                                      "actions": "sort;update:centers-list-view?sort.Data=centers-list;sort.path=name"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "type": "View?class=flex align-center"
+                            },
+                            {
+                              "children": [
+                                {
+                                  "type": "Text?class=ar pointer;text=الفروع;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                  "controls": [
+                                    {
+                                      "event": "click",
+                                      "actions": "sort;update:centers-list-view?sort.Data=centers-list;sort.path=branch"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "type": "View?class=flex align-center"
+                            },
+                            {
+                              "type": "View?class=flex align-center",
+                              "children": [
+                                {
+                                  "type": "Text?class=flexbox pointer;style.color=#888;style.fontWeight=bold;style.fontSize=1.3rem;text=الحالة",
+                                  "controls": [
+                                    {
+                                      "event": "click",
+                                      "actions": "sort;update:centers-list-view?sort.Data=centers-list;sort.path=status"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=flex align-center",
+                              "children": [
+                                {
+                                  "type": "Text?class=ar pointer;text=نوع المركز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                  "controls": [
+                                    {
+                                      "event": "click",
+                                      "actions": "async():sort:[update:centers-list-view]?async():[sort.Data=centers-list;sort.path=type]"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=flex align-center",
+                              "children": [
+                                {
+                                  "type": "Text?class=ar pointer;text=الشبكات;tooltip.text=الشبكات المتصل عليها;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                  "controls": [
+                                    {
+                                      "event": "click",
+                                      "actions": "async():sort:[update:centers-list-view]?async():[sort.Data=centers-list;sort.path=)(:networks.find():[id=)(:centers-list.network]]"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=grid align-center;style.gridTemplateColumns=1fr 1fr",
+                              "children": [
+                                {
+                                  "type": "Text?class=ar pointer;text=حسّاس جداً;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                  "controls": [
+                                    {
+                                      "event": "click",
+                                      "actions": "async():sort:[update:centers-list-view]?async():[sort.Data=centers-list;sort.path=case-sensitive]"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "Text?class=ar pointer;text=الإذن ضروري;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                  "controls": [
+                                    {
+                                      "event": "click",
+                                      "actions": "async():sort:[update:centers-list-view]?async():[sort.Data=centers-list;sort.path=visit-permission-needed]"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=flex align-center",
+                              "children": [
+                                {
+                                  "type": "Text?class=ar pointer;text=جهات الإتصال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
+                              "children": [
+                                {
+                                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
+                                  "controls": [
+                                    {
+                                      "event": "click?if():[():centers-remove-all-popup.style().pointerEvents=none]:[():centers-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():centers-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                                      "actions": "setPosition:centers-remove-all-popup?position.placement=right;position.positioner=().id"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 12rem .5fr 1fr 1fr 2fr 6rem;style.overflow=hidden"
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "type": "View?class=flexbox;style.width=100%;style.height=100%",
+                                  "children": [
+                                    {
+                                      "controls": [
+                                        {
+                                          "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():main-checker.map():[checked=false;1stChild().style().opacity=0]<<():main-checker.checked;():delete-all.style().display=if():[():centers-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                                        }
+                                      ],
+                                      "children": [
+                                        {
+                                          "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                                        }
+                                      ],
+                                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
+                                      "controls": [
+                                        {
+                                          "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50",
+                                          "actions": "save?save.collection=resources-centers-network;save.doc=data().id;save.data=data()"
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "type": "View?class=flex align-center"
+                                },
+                                {
+                                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
+                                  "children": [
+                                    {
+                                      "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
+                                    },
+                                    {
+                                      "type": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0",
+                                      "controls": [
+                                        {
+                                          "event": "click?copyToClipBoard():[data().id]"
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "controls": [
+                                    {
+                                      "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
+                                    },
+                                    {
+                                      "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
+                                    },
+                                    {
+                                      "event": "click?)(:centers-data=data().clone();)(:centers-edit-readonly=true;)(:new-centers.del();)(:centers-copied.del()?!2ndChild().mouseenter",
+                                      "actions": "update:centers-mini-window?():centers-mini-window.style().opacity=1;():centers-mini-window.style().pointerEvents=auto"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                  "children": [
+                                    {
+                                      "type": "Text?style.fontSize=1.4rem;text=data().name"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                  "children": [
+                                    {
+                                      "type": "Text?style.fontSize=1.4rem;text=data().branch"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "type": "View?class=flexbox;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206.else():#444;style.height=1rem;style.width=1rem;style.borderRadius=1rem"
+                                        },
+                                        {
+                                          "type": "Text?style.color=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206;style.fontSize=1.2rem;style.fontWeight=bold;text=data()"
+                                        }
+                                      ],
+                                      "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:#ffdbdb.elif():[data()=متصل]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                  "children": [
+                                    {
+                                      "type": "Text?style.fontSize=1.4rem;text=data().type"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                  "children": [
+                                    {
+                                      "type": "Text?style.fontSize=1.4rem;text=)(:networks.find():[id=data().center].name"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "View?class=grid align-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gridTemplateColumns=1fr 1fr",
+                                  "children": [
+                                    {
+                                      "type": "View?class=flex align-center;style.marginRight=1rem",
+                                      "children": [
+                                        {
+                                          "type": "View?class=flexbox;style.backgroundColor=if():[data().case-sensitive]:red.else():#ddd;style.height=1.25rem;style.width=1.25rem;style.borderRadius=1rem;style.marginRight=-.5rem;style.opacity=0.7;style.transition=.3s"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "View?class=flex align-center;style.marginRight=1rem",
+                                      "children": [
+                                        {
+                                          "type": "View?class=flexbox;style.backgroundColor=if():[data().visit-permission-needed]:green.else():#ddd;style.height=1.25rem;style.width=1.25rem;style.borderRadius=1rem;style.marginRight=-.5rem;style.opacity=0.7;style.transition=.3s"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                  "children": [
+                                    {
+                                      "type": "Text?style.fontSize=1.4rem;text=data().contacts._map():[if():[_.name;_.phone-number]:[_.name+ +_.phone-number].else():_string].filter().join(): | .ar()"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
+                                  "children": [
+                                    {
+                                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
+                                      "controls": [
+                                        {
+                                          "event": "click?if():[)(:centers-data=data();():centers-actions.style().pointerEvents=auto]:[():centers-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:centers-data.del()]].else():[():centers-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:centers-data=data().clone()]];)(:new-centers.del();)(:centers-copied.del();():centers-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+                                          "actions": "setPosition:centers-actions?position.placement=right;position.positioner=().id"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "type": "[View]?data=)(:centers-list;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:centers-list-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 12rem .5fr 1fr 1fr 2fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa"
+                            }
+                          ],
+                          "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 27rem);style.width=100%;style.gap=.2rem?)(:centers-list.len().greater():0"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?id=centers-grid-view;class=flex column;style.gap=1rem;style.display=if():[)(:centers-list-view-type=grid]:flex.else():none?)(:centers-list-view-type=grid",
+                      "children": [
+                        {
+                          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;class=flex align-center;style.borderRadius=1rem;style.overflow=hidden",
+                          "children": [
+                            {
+                              "type": "View?class=flexbox;style.height=100%;style.width=6rem",
+                              "children": [
+                                {
+                                  "controls": [
+                                    {
+                                      "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():centers-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():centers-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                                    }
+                                  ],
+                                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                                  "children": [
+                                    {
+                                      "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=flexbox;style.padding=0 .5rem;style.marginRight=auto",
+                              "children": [
+                                {
+                                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
+                                  "controls": [
+                                    {
+                                      "event": "click?if():[():centers-remove-all-popup.style().pointerEvents=none]:[():centers-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():centers-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                                      "actions": "setPosition:centers-remove-all-popup?position.placement=right;position.positioner=().id"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "View?style.overflow=auto;style.height=calc(100vh - 27.8rem)",
+                          "children": [
+                            {
+                              "type": "View?style.padding=1rem;style.gap=1rem;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr?)(:centers-list.len().greater():0",
+                              "children": [
+                                {
+                                  "type": "[View]?data=)(:centers-list;class=flex;style.borderRadius=1.5rem;style.border=1px solid #e5e5e5;style.padding=1rem;hover.style.border=1px solid #ddd",
+                                  "children": [
+                                    {
+                                      "type": "View?class=flex align-center column;style.gap=1rem;style.width=fit-content",
+                                      "children": [
+                                        {
+                                          "controls": [
+                                            {
+                                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():main-checker.map():[checked=false;1stChild().style().opacity=0]<<():main-checker.checked;():delete-all.style().display=if():[():centers-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                                            }
+                                          ],
+                                          "children": [
+                                            {
+                                              "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                                            }
+                                          ],
+                                          "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                                        },
+                                        {
+                                          "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
+                                          "controls": [
+                                            {
+                                              "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50",
+                                              "actions": "save?save.collection=resources-centers-network;save.doc=data().id;save.data=data()"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "View?class=flexbox;tooltip.text=مركز حسّاس جدا;style.backgroundColor=if():[data().case-sensitive]:red.else():#ddd;style.height=1.25rem;style.width=1.25rem;style.borderRadius=1rem;style.opacity=0.7"
+                                        },
+                                        {
+                                          "type": "View?class=flexbox;tooltip.text=طلب إذن قبل القيام الزيارة;style.backgroundColor=if():[data().visit-permission-needed]:green.else():#ddd;style.height=1.25rem;style.width=1.25rem;style.borderRadius=1rem;style.display=0.7"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "View?style.flex=1;class=flex column;style.gap=1rem;style.padding=0 2rem",
+                                      "children": [
+                                        {
+                                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                          "children": [
+                                            {
+                                              "type": "Text?style.fontSize=1.4rem;text=data().name"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
+                                          "children": [
+                                            {
+                                              "children": [
+                                                {
+                                                  "type": "View?class=flexbox;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206.else():#444;style.height=1rem;style.width=1rem;style.borderRadius=1rem"
+                                                },
+                                                {
+                                                  "type": "Text?style.color=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206;style.fontSize=1.2rem;style.fontWeight=bold;text=data()"
+                                                }
+                                              ],
+                                              "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:#ffdbdb.elif():[data()=متصل]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                          "children": [
+                                            {
+                                              "type": "Text?style.fontSize=1.4rem;text=data().branch"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                          "children": [
+                                            {
+                                              "type": "Text?style.fontSize=1.4rem;text=data().type"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                          "children": [
+                                            {
+                                              "type": "Text?style.fontSize=1.4rem;text=data().contacts._map():[if():[_.name;_.phone-number]:[_.name+ +_.phone-number].else():_string].filter().join(): | .ar()"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem;style.height=fit-content",
+                                      "children": [
+                                        {
+                                          "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3rem;style.borderRadius=3rem;style.width=3rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
+                                          "controls": [
+                                            {
+                                              "event": "click?if():[)(:centers-data=data();():centers-actions.style().pointerEvents=auto]:[():centers-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:centers-data.del()]].else():[():centers-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:centers-data=data().clone()]];)(:new-centers.del();)(:centers-copied.del();():centers-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+                                              "actions": "setPosition:centers-actions?position.placement=right;position.positioner=().id"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "type": "View?class=flex column;style.backgroundColor=#fff;style.minWidth=100%;style.padding=.5rem;style.borderRadius=1rem 0 1rem 1rem;style.border=1px solid #ddd"
+            }
+          ],
+          "type": "View?class=flex column;style.borderRadius=1rem;style.width=100%"
+        }
+      ]
+    },
+    {
+      "type": "View?id=centers-actions;class=flexbox column box-shadow-1;style.padding=.2rem;style.backgroundColor=#fff;style.borderRadius=.5rem;style.position=absolute;style.opacity=0;style.pointerEvents=none;style.transition=opacity .2s, transform .2s;style.transform=scale(0.8);style.zIndex=1",
+      "children": [
+        {
+          "type": "View?tooltip.text=عرض;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
+          "children": [
+            {
+              "type": "Icon?name=bi-eye;style.fontSize=1.6rem;style.color=#666"
+            }
+          ],
+          "controls": [
+            {
+              "event": "click?)(:centers-edit-readonly=true",
+              "actions": "update:centers-mini-window?():centers-mini-window.style():[opacity=1;pointerEvents=auto]"
+            }
+          ]
+        },
+        {
+          "type": "View?tooltip.text=تعديل;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
+          "children": [
+            {
+              "type": "Icon?name=bi-pencil-square;style.fontSize=1.6rem;style.color=#666"
+            }
+          ],
+          "controls": [
+            {
+              "event": "click?)(:centers-edit-readonly=false",
+              "actions": "update:centers-mini-window?():centers-mini-window.style():[opacity=1;pointerEvents=auto]"
+            }
+          ]
+        },
+        {
+          "type": "View?tooltip.text=نسخ;class=flexbox pointer;style.height=4rem;style.width=3.5rem;hover.style.backgroundColor=#eee",
+          "children": [
+            {
+              "type": "Icon?name=bi-files;style.fontSize=1.6rem;style.color=#666"
+            }
+          ],
+          "controls": [
+            {
+              "event": "click?)(:centers-edit-readonly=false;)(:centers-data.id=generate():20;)(:centers-data.creation-date=today().timestamp();)(:centers-copied",
+              "actions": "update:centers-mini-window?():centers-mini-window.style():[opacity=1;pointerEvents=auto]"
+            }
+          ]
+        },
+        {
+          "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee",
+          "children": [
+            {
+              "type": "Icon?name=bi-trash;style.fontSize=1.6rem;style.color=#666"
+            }
+          ],
+          "controls": [
+            {
+              "event": "click?if():[():centers-remove-popup.style().pointerEvents=none]:[():centers-remove-popup.style():[opacity=1;transform=scale(1);pointerEvents=auto]].else():[():centers-remove-popup.style():[opacity=0;transform=scale(0.5);pointerEvents=none]]",
+              "actions": "setPosition:centers-remove-popup?position.positioner=().id;position.placement=right"
+            }
+          ]
+        }
+      ],
+      "controls": [
+        {
+          "event": "mouseleave?timer():[if():[!().mouseenter]:[().style():[opacity=0;pointerEvents=none;transform=scale(0.8)]]]:200"
+        }
+      ]
+    },
+    {
+      "type": "View?class=box-shadow;id=centers-remove-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
+      "children": [
+        {
+          "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
+          "controls": [
+            {
+              "event": "click?parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)];)(:centers-list.[)(:centers-data.id].del()",
+              "actions": "async():erase:[update:centers-manager-list]?erase.collection=resources-centers-network;erase.doc=)(:centers-data.id;async()::[():centers-mini-window.style():[opacity=0;pointerEvents=none];)(:new-centers.del()]"
+            }
+          ]
+        },
+        {
+          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
+          "controls": [
+            {
+              "event": "click?parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+            }
+          ]
+        }
+      ],
+      "controls": [
+        {
+          "event": "mouseleave::200?style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
+        }
+      ]
+    },
+    {
+      "type": "View?class=box-shadow;id=centers-remove-all-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
+      "children": [
+        {
+          "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
+          "controls": [
+            {
+              "event": "click?().clicked-centers-id=():centers-views.getChildrenByClassName():checker.slice():1.filter():checked.map():[data().id];().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+              "actions": "async():erase:[update:centers-manager-list]?erase.collection=resources-centers-network;erase.docs=().clicked-centers-id;async()::[().clicked-centers-id._map():[)(:centers-list._.del()];().clicked-centers-id.del()]"
+            }
+          ]
+        },
+        {
+          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
+          "controls": [
+            {
+              "event": "click?parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+            }
+          ]
+        }
+      ],
+      "controls": [
+        {
+          "event": "mouseleave::200?style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
+        }
+      ]
+    },
+    {
+      "type": "View?id=submini-center-window;Data=submini-center-window-data;class=box-shadow flex column;style():[opacity=0;pointerEvents=none;transform=scale(0.5);padding=1rem;gap=.25rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999;position=absolute;transition=opacity .2s, transform .2s]",
+      "children": [
+        {
+          "type": "[View]?class=flex align-center;style():[gap=.5rem]",
+          "children": [
+            {
+              "type": "Text?text=data().0;style():[fontSize=1.4rem;color=blue]"
+            },
+            {
+              "type": "Text?text=:;style():[fontSize=1.4rem]"
+            },
+            {
+              "type": "Text?text=data().1;style():[fontSize=1.4rem;color=red]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "event": "loaded",
+      "actions": "async():search:search:search:[update:centers-manager-list]?async():[search.collection=resources-centers-network;search.limit=25]:[)(:centers-list=().search.data;search.collection=resources-members-network;search.docs=)(:centers-list.values().map():members.flat().removeDuplicates().filter()]:[)(:members=().search.data;search.collection=resources-networks-network;search.docs=)(:centers-list.values().map():networks.flat().removeDuplicates().filter()]:[)(:networks=().search.data;():all-centers.lastChild().text()=().search.data.len()]"
+    },
+    {
+      "event": "loaded??!)(:resources",
+      "actions": "async():search?async():[search.collection=resources-network]:[)(:resources=().search.data]"
+    }
+  ]
+}

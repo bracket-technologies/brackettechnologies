@@ -25,7 +25,7 @@ module.exports = {
       }
 
       if (data) _local.data = clone(data)
-      if (path) _local.derivations = (Array.isArray(path) ? path : path.split(".")) || []
+      if (path) _local.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       
       var innerHTML = toArray(_local)
       .map((child, index) => {

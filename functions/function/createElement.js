@@ -1,7 +1,6 @@
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
-const { override } = require("./merge")
 const { clone } = require("./clone")
 const { createTags } = require("./createTags")
 const { reducer } = require("./reducer")
@@ -91,14 +90,14 @@ var createElement = ({ _window, id, req, res }) => {
 
     // view
     if (params.view) {
-
+      
       var _local = clone(global.data.view[local.view])
       if (_local) {
 
         delete local.type
         delete local.view
         
-        value[id] = override(_local, local)
+        value[id] = { ...local, ..._local}
         return createElement({ _window, id, req, res })
       }
     }

@@ -1,0 +1,69 @@
+{
+  "type": "View?class=flexbox;style.gap=3rem;style.backgroundColor=#f9f9f9;style.height=100vh;style.width=100vw",
+  "children": [
+    {
+      "type": "View?class=flexbox column box-shadow-1;style.width=20rem;style.height=30rem;style.backgroundColor=#fff;style.borderRadius=2.5rem;style.gap=2rem;tooltip.text=Temperature",
+      "children": [
+        {
+          "type": "Icon?name=bi-thermometer;style.fontSize=8rem"
+        },
+        {
+          "type": "Text?style.fontSize=4rem;text=)(:sensors-data.temperature.add():°C"
+        }
+      ]
+    },
+    {
+      "type": "View?class=flexbox column box-shadow-1;style.width=20rem;style.height=30rem;style.backgroundColor=#fff;style.borderRadius=2.5rem;style.gap=2rem",
+      "children": [
+        {
+          "type": "Icon?name=bi-moisture;style.fontSize=8rem"
+        },
+        {
+          "type": "Text?style.fontSize=4rem;text=)(:sensors-data.humidity.add():H"
+        }
+      ]
+    },
+    {
+      "type": "View?class=flexbox column box-shadow-1;style.width=20rem;style.height=30rem;style.backgroundColor=#fff;style.borderRadius=2.5rem;style.gap=2rem",
+      "children": [
+        {
+          "type": "Icon?name=if():[)(:sensors-data.door-closed]:bi-door-closed.else():bi-door-open;style.fontSize=8rem;style.color=if():[)(:sensors-data.door-closed]:#444.else():red"
+        },
+        {
+          "type": "Text?style.fontSize=3rem;text=if():[)(:sensors-data.door-closed]:Closed.else():Open;style.color=if():[)(:sensors-data.door-closed]:#444.else():red"
+        }
+      ]
+    },
+    {
+      "type": "View?class=flexbox column box-shadow-1;style.width=20rem;style.height=30rem;style.backgroundColor=#fff;style.borderRadius=2.5rem;style.gap=2rem",
+      "children": [
+        {
+          "type": "Icon?name=bi-water;style.fontSize=8rem;style.color=if():[)(:sensors-data.water_exists]:red.else():#444"
+        },
+        {
+          "type": "Text?style.fontSize=3rem;text=if():[)(:sensors-data.water_exists]:Wet.else():Dry;style.color=if():[)(:sensors-data.water_exists]:red.else():#444"
+        }
+      ]
+    },
+    {
+      "type": "View?class=flexbox column box-shadow-1;style.width=20rem;style.height=30rem;style.backgroundColor=#fff;style.borderRadius=2.5rem;style.gap=2rem",
+      "children": [
+        {
+          "type": "View?class=pointer;)(:color=#ddd<<!)(:color;style.backgroundColor=)(.color;style.height=4rem;style.width=4rem;style.borderRadius=3rem",
+          "controls": [
+            {
+              "event": "click?)(:color=if():[)(:color=red]:[#ddd].else():red;style().backgroundColor=)(:color",
+              "actions": "search?search.url=if():[)(:color=#ddd]:[http://192.168.25.161/relay1off].else():[http://192.168.25.161/relay1on]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "event": "loaded",
+      "actions": "async():[search::1000i]:update?async():[search.url=http://192.168.25.161]:[)(:sensors-data=().search.data]"
+    }
+  ]
+}

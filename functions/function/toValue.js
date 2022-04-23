@@ -42,6 +42,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, id, e, req, res, object })
           if (isNaN(num) || num === "") allAreNumbers = false
+          return num
         }
       })
       
