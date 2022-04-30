@@ -92,11 +92,11 @@
                         },
                         {
                             "actions": [
-                                "async():save:route?save.doc=Data().id;save.collection=user;save.data=Data();route.path=/login/+Data().id",
+                                "async():save:route?save.doc=Data().id;save.collection=_user_;save.data=Data();route.path=/login/+Data().id",
                                 "save?)(:list.user.user-id.push():[Data().id];)(:list.user.email.push():[Data().email];save.doc=user;save.collection=list;save.data=)(:list.user",
-                                "save?save.doc=Data().id;save.collection=password;save.data=_map:creation-date:[today().timestamp()]:user-id:[Data().id]:password:[)(:user-password]"
+                                "save?save.doc=Data().id;save.collection=_password_;save.data=_map:creation-date:[today().timestamp()]:user-id:[Data().id]:password:[)(:user-password]"
                             ],
-                            "event": "click?)(:user-password=Data().password;Data().password.del();Data().confirm-password.del();Data().id=[Data().first-name+ +Data().last-name].toId();Data().project-id=_array;Data()?)(:create-user;)(:list.user.email.find():[Data().email]"
+                            "event": "click?)(:user-password=Data().password;Data().password.del();Data().confirm-password.del();Data().id=[Data().first-name+ +Data().last-name].toId();Data().project=_array;Data()?)(:create-user;)(:list.user.email.find():[Data().email]"
                         }
                     ],
                     "type": "Text?id=create-id-btn;style.transition=.2s;text=Create Bracket ID;style.color=#8C9196;style.padding=1.75rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#f1f1f1;class=flex-box;#style.cursor=pointer;hover.style.backgroundColor=#084C3F;hover.disable"

@@ -1,19 +1,19 @@
 {
-    "type": "View?if():[)(:projectId=bracketjs]:[)(:data.editor=)(:data.clone()];style.overflowX=hidden;style.minHeight=100vh;mode.dark.style.backgroundColor=#131313",
+    "type": "View?style.overflowX=hidden;style.minHeight=100vh;mode.dark.style.backgroundColor=#131313",
     "controls": [
         {
             "actions": [
-                "async():search?search.collection=user;search.field.project-id.contains=)(:project-id;await().)(:data.editor.user=().search.data.0",
-                "async():search:[update:sidebar-items;?search.collection=project;search.doc=)(:project-id;await().)(:data.editor.project=().search.data;await().().refresh-sidebare-items",
-                "async():search:[update:collection-list]?search.collection=collection-+)(:project-id;await().)(:data.editor.collection=().search.data",
-                "async():search:[update:page-list]?search.collection=page-+)(:project-id;await().)(:data.editor.page=().search.data",
-                "async():search:[update:view-list]?search.collection=view-+)(:project-id;await().)(:data.editor.view=().search.data",
-                "async():search:[update:hotel-list]?search.collection=hotel-+)(:project-id;search.limit=25;await().)(:data.editor.hotel=().search.data",
-                "async():search:[update:product-list]?search.collection=product-+)(:project-id;search.limit=25;await().)(:data.editor.product=().search.data",
-                "async():search:[update:gallery-view]?search.collection=storage-+)(:project-id;search.field.title.equals=image;search.limit=25;await().)(:gallery-images=().search.data",
-                "async():search:[update:storage-list]?search.collection=storage-+)(:project-id;await().)(:data.editor.storage=().search.data"
+                "async():search?search.collection=_user_;search.field.projects.contains=)(:project;await().)(:data.editor.user=().search.data.value()",
+                "async():search:[update:sidebar-items;?search.collection=_project_;search.doc=)(:project;await().)(:data.editor.project=().search.data.value()",
+                "async():search:[update:collection-list]?search.collection=collection;search.headers=_map:project:[)(:project];await().)(:data.editor.collection=().search.data",
+                "async():search:[update:page-list]?search.collection=page;search.headers=_map:project:[)(:project];await().)(:data.editor.page=().search.data",
+                "async():search:[update:view-list]?search.collection=view;search.headers=_map:project:[)(:project];await().)(:data.editor.view=().search.data",
+                "async():search:[update:hotel-list]?search.collection=hotel;search.headers=_map:project:[)(:project];search.limit=25;await().)(:data.editor.hotel=().search.data",
+                "async():search:[update:product-list]?search.collection=product;search.headers=_map:project:[)(:project];search.limit=25;await().)(:data.editor.product=().search.data",
+                "async():search:[update:gallery-view]?search.collection=storage;search.headers=_map:project:[)(:project];search.field.title.equals=image;search.limit=25;await().)(:gallery-images=().search.data",
+                "async():search:[update:storage-list]?search.collection=storage;search.headers=_map:project:[)(:project];await().)(:data.editor.storage=().search.data"
             ],
-            "event": "loaded?)(:project-id=)(:path.split():/.2?)(:projectId!=bracketjs"
+            "event": "loaded?)(:project=)(:path.split():/.2"
         }
     ],
     "creation-date": 1637494484000,
@@ -47,7 +47,7 @@
                                     ]
                                 },
                                 {
-                                    "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #eee;style.borderLeft=1px solid #eee;droplist.items=)(:data.editor.user.project-id;droplist.disabled",
+                                    "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #eee;style.borderLeft=1px solid #eee;droplist.items=)(:data.editor.user.project;droplist.disabled",
                                     "children": [
                                         {
                                             "type": "Text?text=project;style.fontSize=1.5rem;style.marginRight=.5rem;style.color=#888"
@@ -74,7 +74,7 @@
                                     "controls": [
                                         {
                                             "event": "click??!)(:open-map.hasNestedArray();!)(:open-map.hasEmptyField()",
-                                            "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].data();)(:data.editor.[)(:open-collection.split():-.0].[)(:open-doc]=)(:open-map"
+                                            "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.headers=_map:project:[)(:data.editor.project.id];save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].data();)(:data.editor.[)(:open-collection.split():-.0].[)(:open-doc]=)(:open-map"
                                         }
                                     ]
                                 }
@@ -163,7 +163,7 @@
                 {
                     "controls": [
                         {
-                            "actions": "async():erase?().open-doc=():[)(:action-popup-caller].open-doc;().open-collection=():[)(:action-popup-caller].open-collection;erase.collection=().open-collection;erase.doc=().open-doc;async()::[)(:data.editor.[().open-collection.split():-.0].[().open-doc].del();)(:open-docs=)(:open-docs.filter():[!=().open-collection.split():-.0+/+().open-doc];():open-view.children().find():[open-doc=().open-doc].rem();():data-viewer-bar.children().find():[open-doc=().open-doc].rem();():[().open-collection.split():-.0+-list].children().find():[open-doc=().open-doc].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]]",
+                            "actions": "async():erase:[update:[().open-collection.split():-.0+-list]]?().open-doc=():[)(:action-popup-caller].open-doc;().open-collection=():[)(:action-popup-caller].open-collection;erase.collection=().open-collection;erase.doc=().open-doc;async()::[)(:data.editor.[().open-collection.split():-.0].[().open-doc].del();)(:open-docs=)(:open-docs.filter():[!=().open-collection.split():-.0+/+().open-doc];():open-view.children().find():[open-doc=().open-doc].rem();():data-viewer-bar.children().find():[open-doc=().open-doc].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]]",
                             "event": "click?popup()"
                         }
                     ],

@@ -3,10 +3,10 @@ const { reducer } = require("./reducer")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement }) => {
   const { toApproval } = require("./toApproval")
 
-  var localId = id
+  var localId = id, mountDataUsed = false, mountPathUsed = false
   var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
@@ -40,7 +40,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
 
       var awaiter = param.split(":").slice(1)
       if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
-      var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount })
+      var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, createElement })
       params = { ...params, ..._params }
       params.await = params.await || ""
       if (awaiter.slice(1)[0]) return params.await += `async():${awaiter.slice(1).join(":")};`
@@ -154,6 +154,44 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _ }) =>
       if (mount) local[key] = value
       params[key] = value
     }
+
+    /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
+
+    // mount data directly when found
+    if (createElement && mount && !mountDataUsed && ((params.data !== undefined && !local.Data) || params.Data || (local.data !== undefined && !local.Data))) {
+
+      mountDataUsed = true
+      local.Data = local.Data || generate()
+      global[local.Data] = local.data = local.data !== undefined ? local.data : (global[local.Data] !== undefined ? global[local.Data] : {})
+
+      // duplicated element
+      if (local.duplicatedElement) {
+
+        delete local.path
+        delete local.data
+      }
+    }
+  
+    // mount path directly when found
+    if (createElement && mount && !mountPathUsed && params.path) {
+
+      mountPathUsed = true
+
+      // path & derivations
+      var path = (typeof local.path === "string" || typeof local.path === "number") ? local.path.toString().split(".") : []
+          
+      if (path.length > 0) {
+        if (!local.Data) {
+
+          local.Data = generate()
+          global[local.Data] = local.data || {}
+        }
+
+        local.derivations.push(...path)
+      }
+    }
+  
+    //////////////////////////////////////////////////////// End /////////////////////////////////////////////////////////
   })
 
   return params

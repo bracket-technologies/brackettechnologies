@@ -66,15 +66,18 @@ app.delete("*", (req, res) => {
 // get
 app.get("*", (req, res) => {
   var path = req.url.split("/")
-
+  
   // متابعتها لاحقا
   if (path.includes("_string") || path.includes("undefined")) return res.send("Wrong")
 
-  // api
-  if (path[1] === "api") return getApi({ req, res, db })
-
   // favicon
   if (req.url === "/favicon.ico") return res.sendStatus(204)
+
+  // api: bracketjs
+  if (req.headers.project === "bracketjs") return require("./function/apiLocal").getApi({ req, res, db })
+
+  // api
+  if (path[1] === "api") return getApi({ req, res, db })
   
   // respond
   return createDocument({ req, res, db })

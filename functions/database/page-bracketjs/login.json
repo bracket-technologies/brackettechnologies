@@ -7,7 +7,7 @@
         "title": "Login To Bracket",
         "description": "Login To Bracket Builder"
     },
-    "view-id": [
+    "views": [
         "login"
     ]
 }

@@ -126,12 +126,12 @@
                                     "controls": [
                                         {
                                             "actions": [
-                                                "await().update:gallery-view;await().update:storage-sidebar;await().note;async().upload?note.text=Image saved succefully!;upload=global().new-image-data;upload.collection=storage-.add():[global().project-id];upload.doc=global().new-image-data.name.split():_space.join():-.split():_dot.join():-.add():-:[today().timestamp()];upload.file=global().upload.file;await().global().data.editor.storage.[().uplaod.data.id]=().uplaod.data;await().global().gallery-images.push:[().uplaod.data]<<!global().gallery-images.find():[id.is():[().uplaod.data.id]];await().():image-window-background.click()"
+                                                "await().update:gallery-view;await().update:storage-sidebar;await().note;async().upload?note.text=Image saved succefully!;upload=global().new-image-data;upload.collection=storage;upload.doc=global().new-image-data.name.split():_space.join():-.split():_dot.join():-.add():-:[today().timestamp()];upload.file=global().upload.file;await().global().data.editor.storage.[().uplaod.data.id]=().uplaod.data;await().global().gallery-images.push:[().uplaod.data]<<!global().gallery-images.find():[id.is():[().uplaod.data.id]];await().():image-window-background.click()"
                                             ],
                                             "event": "click??global().new-image"
                                         },
                                         {
-                                            "actions": "await().update:gallery-view;await().update:storage-sidebar;await().note;async().save?note.text=File updated successfuly!;save.collection=storage-.add():[global().project-id];save.doc=global().new-image-data.id;save.data=global().new-image-data;await().():image-window-background.click()",
+                                            "actions": "await().update:gallery-view;await().update:storage-sidebar;await().note;async().save?note.text=File updated successfuly!;save.collection=storage;save.doc=global().new-image-data.id;save.data=global().new-image-data;await().():image-window-background.click()",
                                             "event": "click??!global().new-image"
                                         }
                                     ],

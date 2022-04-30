@@ -1,11 +1,11 @@
 {
     "controls": [
         {
-            "actions": "route?route.path=/developer-editor/+)(:data.editor.project.id<<)(:route-to-editor;route.path=/account_setup/+)(:new-project-id<<)(:route-to-account-setup",
+            "actions": "route?route.path=/developer-editor/+)(:data.editor.project.id<<)(:route-to-editor;route.path=/account_setup/+)(:new-project<<)(:route-to-account-setup",
             "watch": ")(:data.editor.user.and():[)(:data.editor.project]:[)(:data.editor.view]:[)(:data.editor.page]"
         },
         {
-            "actions": "async():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=user;search.doc=)(:path.split():/.2;async()::[)(:data.editor.user=().search.data]?)(:path.split():/.2",
+            "actions": "async():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_user_;search.doc=)(:path.split():/.2;async()::[)(:data.editor.user=().search.data]?)(:path.split():/.2",
             "event": "loaded??!)(:data.editor.user"
         }
     ],
@@ -70,21 +70,21 @@
                             ]
                         },
                         {
-                            "type": "[Text]?data=)(:data.editor.user.project-id;hover.style.backgroundColor=#eee;style.padding=1rem;style.cursor=pointer;style.borderRadius=.5rem;style.borderBottom=1px solid #f9f9f9;style.height=4.5rem;class=flexbox;style.justifyContent=flex-start;style.fontSize=1.5rem;style.color=#000;await().text()=text().capitalize()?)(:data.editor.user.project-id.length().greater():0",
+                            "type": "[Text]?data=)(:data.editor.user.project;hover.style.backgroundColor=#eee;style.padding=1rem;style.cursor=pointer;style.borderRadius=.5rem;style.borderBottom=1px solid #f9f9f9;style.height=4.5rem;class=flexbox;style.justifyContent=flex-start;style.fontSize=1.5rem;style.color=#000;await().text()=text().capitalize()?)(:data.editor.user.project.length().greater():0",
                             "controls": [
                                 {
                                     "actions": [
-                                        "async():search?search.collection=page-+text().uncapitalize();async()::[)(:data.editor.page=().search.data]",
-                                        "async():search?search.collection=view-+text().uncapitalize();async()::[)(:data.editor.view=().search.data]",
-                                        "async():search?search.collection=user;search.field.project-id.contains=text().uncapitalize();async()::[)(:data.editor.user=().search.data.0]",
-                                        "async():search?search.collection=project;search.field.id.equal=text().uncapitalize();async()::[)(:data.editor.project=().search.data.0]"
+                                        "async():search?search.collection=page;search.headers=_map:project:[text().uncapitalize()];async()::[)(:data.editor.page=().search.data]",
+                                        "async():search?search.collection=view;search.headers=_map:project:[text().uncapitalize()];async()::[)(:data.editor.view=().search.data]",
+                                        "async():search?search.collection=_user_;search.field.project.contains=text().uncapitalize();async()::[)(:data.editor.user=().search.data.0]",
+                                        "async():search?search.collection=_project_;search.field.id.equal=text().uncapitalize();async()::[)(:data.editor.project=().search.data.0]"
                                     ],
                                     "event": "click?)(:route-to-editor=true"
                                 }
                             ]
                         },
                         {
-                            "type": "View?style.borderRadius=.75rem;style.border=1px solid #E1B878;style.backgroundColor=#FFF5EA;class=flexbox;style.gap=1.5rem;style.padding=2rem 2.1rem;style.display=none<<)(:data.editor.user.project-id.length().isgreater():0",
+                            "type": "View?style.borderRadius=.75rem;style.border=1px solid #E1B878;style.backgroundColor=#FFF5EA;class=flexbox;style.gap=1.5rem;style.padding=2rem 2.1rem;style.display=none<<)(:data.editor.user.project.length().isgreater():0",
                             "children": [
                                 {
                                     "type": "Icon?name=bi-exclamation-circle-fill;style.color=#B98900;style.fontSize=1.8rem"
@@ -132,10 +132,10 @@
                             "type": "Input?id=project-name;style.width=100%;style.height=5rem;clicked.style.border=2px solid #00A0AC;style.borderRadius=.5rem;style.padding=0 1.5rem;style.border=1px solid #eee;style.marginBottom=3rem",
                             "controls": [
                                 {
-                                    "event": "input?)(:new-project-name=val();)(:new-project-id=)(:new-project-name.toId()?val().length().greater():2"
+                                    "event": "input?)(:new-project-name=val();)(:new-project=)(:new-project-name.toId()?val().length().greater():2"
                                 },
                                 {
-                                    "event": "input?)(:new-project-name.delete();)(:new-project-id.delete()?val().length().less():3"
+                                    "event": "input?)(:new-project-name.delete();)(:new-project.delete()?val().length().less():3"
                                 },
                                 {
                                     "event": "click?().next().click()?e().key=Enter"
@@ -147,16 +147,16 @@
                             "controls": [
                                 {
                                     "actions": [
-                                        "async():save?save.collection=project;save.doc=)(:new-project-id;)(:data.editor.project=_map:creation-date:[today().timestamp()]:name:[)(:new-project-name]:id:[)(:new-project-id]:domains:[_array:[)(:new-project-id+.bracketjs.com]];save.data=)(:data.editor.project",
-                                        "async():save?)(:data.editor.user.project-id.push():[)(:new-project-id];save.collection=user;save.doc=)(:data.editor.user.id;save.data=)(:data.editor.user",
-                                        "async():save?save.collection=page-+)(:new-project-id;save.doc=main;)(:data.editor.page.main=_map:title:[)(:new-project-name]:creation-date:[today().timestamp()]:name:main:path:/:view-id:[_array:main];save.data=)(:data.editor.page.main",
-                                        "async():save?save.collection=view-+)(:new-project-id;save.doc=main;)(:data.editor.view.main=_map:creation-date:[today().timestamp()]:type:View;save.data=)(:data.editor.view.main"
+                                        "async():save?save.collection=_project_;save.doc=)(:new-project;)(:data.editor.project=_map:creation-date:[today().timestamp()]:name:[)(:new-project-name]:id:[)(:new-project]:domains:[_array:[)(:new-project+.bracketjs.com]];save.data=)(:data.editor.project",
+                                        "async():save?)(:data.editor.user.project.push():[)(:new-project];save.collection=_user_;save.doc=)(:data.editor.user.id;save.data=)(:data.editor.user",
+                                        "async():save?save.collection=page;save.headers=_map:project:[)(:new-project];save.doc=main;)(:data.editor.page.main=_map:title:[)(:new-project-name]:creation-date:[today().timestamp()]:name:main:path:/:views:[_array:main];save.data=)(:data.editor.page.main",
+                                        "async():save?save.collection=view;save.headers=_map:project:[)(:new-project];save.doc=main;)(:data.editor.view.main=_map:creation-date:[today().timestamp()]:type:View;save.data=)(:data.editor.view.main"
                                     ],
-                                    "event": "click?)(:route-to-account-setup=true?)(:new-project-name;)(:new-project-id"
+                                    "event": "click?)(:route-to-account-setup=true?)(:new-project-name;)(:new-project"
                                 },
                                 {
                                     "actions": "note?note.text=Enter a valid project name and id!;note.type=danger",
-                                    "event": "click??!)(:new-project-name||!)(:new-project-id"
+                                    "event": "click??!)(:new-project-name||!)(:new-project"
                                 }
                             ]
                         }

@@ -35,7 +35,7 @@ const createDocument = async ({ req, res, db }) => {
         cookies: req.cookies,
         device: req.device,
         headers: req.headers,
-        public: getJsonFiles({ search: { collection: "public" } }),
+        public: getJsonFiles({ search: { collection: "_public_" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
         country: req.headers["x-country-code"]
@@ -70,14 +70,14 @@ const createDocument = async ({ req, res, db }) => {
     
     if (isBracket) {
 
-        project = getJsonFiles({ search: { collection: "project", fields: { domains: { "array-contains": host } } } })
+        project = getJsonFiles({ search: { collection: "_project_", fields: { domains: { "array-contains": host } } } })
         if (Object.keys(project)[0]) global.data.project = project = Object.values(project)[0]
-
+        
     } else {
 
         // get project data
         project = db
-        .collection("project").where("domains", "array-contains", host)
+        .collection("_project_").where("domains", "array-contains", host)
         .get().then(doc => {
 
             if (doc.docs[0] && doc.docs[0].exists)
@@ -95,20 +95,20 @@ const createDocument = async ({ req, res, db }) => {
     if (isBracket) {
         
         // get user
-        user = getJsonFiles({ search: { collection: "user", fields: { "project-id": { "array-contains": project.id } } } })
+        user = getJsonFiles({ search: { collection: "_user_", fields: { "projects": { "array-contains": project.id } } } })
         if (Object.keys(user)[0]) global.data.user = user = Object.values(user)[0]
-    
+        
         // get page
         global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
         
         // get view
         global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
-
+        
     } else {
 
         // get user
         user = db
-        .collection("user").where("project-id", "array-contains", project.id)
+        .collection("_user_").where("projects", "array-contains", project.id)
         .get().then(doc => {
             
             if (doc.docs[0].exists)
@@ -146,7 +146,7 @@ const createDocument = async ({ req, res, db }) => {
     
     // controls & children
     value.root.controls = global.data.page[currentPage].controls
-    value.root.children = global.data.page[currentPage]["view-id"].map(view => global.data.view[view])
+    value.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
 
     // forward
     if (global.data.page[currentPage].forward) {

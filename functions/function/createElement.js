@@ -72,7 +72,7 @@ var createElement = ({ _window, id, req, res }) => {
   // push destructured params from type to local
   if (params) {
     
-    params = toParam({ _window, string: params, id, req, res, mount: true })
+    params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
     // value[id] = local = override(local, params)
     
     if (params.id && params.id !== id) {
@@ -81,16 +81,9 @@ var createElement = ({ _window, id, req, res }) => {
       id = params.id
     }
 
-    if (params.data !== undefined || params.Data || (local.data !== undefined && !local.Data)) {
-      
-      local.Data = local.Data || generate()
-      global[local.Data] = local.data !== undefined ? local.data : (global[local.Data] !== undefined ? global[local.Data] : {})
-      local.data = global[local.Data]
-    }
-
     // view
     if (params.view) {
-      
+
       var _local = clone(global.data.view[local.view])
       if (_local) {
 
@@ -101,26 +94,6 @@ var createElement = ({ _window, id, req, res }) => {
         return createElement({ _window, id, req, res })
       }
     }
-  }
-
-  // duplicated element
-  if (local.duplicatedElement) {
-
-    delete local.path
-    delete local.data
-  }
-  
-  // path & derivations
-  var path = (typeof local.path === "string" || typeof local.path === "number") ? local.path.toString().split(".") : []
-      
-  if (path.length > 0) {
-    if (!local.Data) {
-
-      local.Data = generate()
-      global[local.Data] = local.data || {}
-    }
-
-    local.derivations.push(...path)
   }
 
   // data

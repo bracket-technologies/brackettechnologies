@@ -1,7 +1,7 @@
 {
     "name": "BracketJs developer editor",
     "title": "Developer Editor | Bracket",
-    "view-id": [
+    "views": [
         "developer-editor"
     ],
     "creation-date": 1637494484000,

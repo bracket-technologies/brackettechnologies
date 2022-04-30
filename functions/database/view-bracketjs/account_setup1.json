@@ -117,7 +117,7 @@
                     "controls": [
                         {
                             "event": "click?)(:data.editor.project.override():[)(:account-setup-data]?)(:data.editor.project.id;)(:account-setup-data.keys().length().isgreater():0",
-                            "actions": "async():save:[toggleView:[parent().parent().id]]?toggle.view=account_setup2;save.collection=project;save.doc=)(:data.editor.project.id;save.data=)(:data.editor.project"
+                            "actions": "async():save:[toggleView:[parent().parent().id]]?toggle.view=account_setup2;save.collection=_project_;save.doc=)(:data.editor.project.id;save.data=)(:data.editor.project"
                         }
                     ]
                 }

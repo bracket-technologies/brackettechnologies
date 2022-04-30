@@ -129,11 +129,11 @@
                     "controls": [
                         {
                             "event": "click;keyup:[().prev().prev().getInput().id]??if():[e().type=keyup]:[e().key.is():Enter].else():false;().prev().style().display=none;().prev().prev().getInput().val()",
-                            "actions": "async():search:[note<<!().search.data.0;update:[():login.1stChild().id]<<().search.data.0]?search.collection=user;search.field.email.equal=().prev().prev().getInput().val();note.text=User email does not exist!;note.type=danger;async()::[)(:data.editor.user=().search.data.0]"
+                            "actions": "async():search:[note<<!().search.data.0;update:[():login.1stChild().id]<<().search.data.0]?search.collection=_user_;search.field.email.equal=().prev().prev().getInput().val();note.text=User email does not exist!;note.type=danger;async()::[)(:data.editor.user=().search.data.0]"
                         },
                         {
                             "event": "click;keyup:().prev().getInput().id??if():[e().type=keyup]:[e().key.is():Enter].else():false;().prev().style().display.isnot():none;().prev().getInput().val()",
-                            "actions": "async():search:[note<<!)(:data.editor.password;route<<)(:data.editor.password]?search.collection=password;search.field.user-id.equal=)(:data.editor.user.id;search.field.password.equal=().prev().getInput().val();async()::[)(:data.editor.password=().search.data.0;setCookie():[)(:data.editor.user.id]:user-id<<)(:data.editor.password;setCookie():[)(:data.editor.password.password]:user-password<<)(:data.editor.password];route.path=/store-login/+)(:data.editor.user.id;note.text=Password is incorrect!;note.type=danger"
+                            "actions": "async():search:[note<<!)(:data.editor.password;route<<)(:data.editor.password]?search.collection=_password_;search.field.user-id.equal=)(:data.editor.user.id;search.field.password.equal=().prev().getInput().val();async()::[)(:data.editor.password=().search.data.0;setCookie():[)(:data.editor.user.id]:user-id<<)(:data.editor.password;setCookie():[)(:data.editor.password.password]:user-password<<)(:data.editor.password];route.path=/store-login/+)(:data.editor.user.id;note.text=Password is incorrect!;note.type=danger"
                         }
                     ],
                     "type": "Text?style.display=if():[)(:data.editor.user]:none.else().flex;text=Next;style.fontWeigt=bold;style.color=#fff;style.padding=2rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#008060;class=flex-box pointer;hover.style.backgroundColor=#084C3F"
@@ -222,12 +222,12 @@
     "controls": [
         {
             "event": "loaded??getCookie():user-id;!getCookie():user-password",
-            "actions": "await().update:[().1stChild().id];async().search?search.collection=user;search.doc=getCookie():user-id;await().)(:data.editor.user=().search.data"
+            "actions": "await().update:[().1stChild().id];async().search?search.collection=_user_;search.doc=getCookie():user-id;await().)(:data.editor.user=().search.data"
         },
         {
             "actions": [
-                "await().update:[().1stChild().id]<<)(:data.editor.password;async().search?search.collection=user;search.doc=getCookie():user-id;await().)(:data.editor.user=().search.data",
-                "await().update:[().1stChild().id]<<)(:data.editor.user;async().search?search.collection=password;search.doc=getCookie():user-id;await().)(:data.editor.password=().search.data"
+                "await().update:[().1stChild().id]<<)(:data.editor.password;async().search?search.collection=_user_;search.doc=getCookie():user-id;await().)(:data.editor.user=().search.data",
+                "await().update:[().1stChild().id]<<)(:data.editor.user;async().search?search.collection=_password_;search.doc=getCookie():user-id;await().)(:data.editor.password=().search.data"
             ],
             "event": "loaded??getCookie():user-password;getCookie():user-id"
         }

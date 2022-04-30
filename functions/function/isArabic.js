@@ -1,11 +1,11 @@
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
-const isArabic = ({ id, value }) => {
+const isArabic = ({ id, value, text }) => {
 
   var local = window.value[id]
   if (!local || !local.element) return
-  var text = value || local.element.value || local.element.innerHTML
+  text = text || value || local.element.value || local.element.innerHTML
   if (!text) return
 
   var isarabic = arabic.test(text)

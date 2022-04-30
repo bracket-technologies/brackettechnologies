@@ -377,7 +377,7 @@
                         {
                             "children": [
                                 {
-                                    "type": "Icon?name=bi-people;style.color=#C1F0D0;style.fontSize=3.2rem;style.justifySelf=flex-start;style.width=fit-content"
+                                    "type": "Icon?name=bi-members;style.color=#C1F0D0;style.fontSize=3.2rem;style.justifySelf=flex-start;style.width=fit-content"
                                 },
                                 {
                                     "type": "Text?text=Hire a Shopify expert;style.color=#fff;style.fontSize=1.7rem;style.fontWeight=bold;style.marginTop=1rem"

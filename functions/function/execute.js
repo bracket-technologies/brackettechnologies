@@ -1,10 +1,10 @@
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
-const { toValue } = require("./toValue")
 const _method = require("./function")
 const { toCode } = require("./toCode")
 const { toAwait } = require("./toAwait")
+const { toValue } = require("./toValue")
 
 const execute = ({ _window, controls, actions, e, id, params }) => {
 

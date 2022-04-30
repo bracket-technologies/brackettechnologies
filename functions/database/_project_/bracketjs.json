@@ -2,7 +2,6 @@
     "id": "bracketjs",
     "domains": [
         "bracketjs.com",
-        "bracketjs.localhost",
         "localhost"
     ],
     "creation-date": 1637494484000,

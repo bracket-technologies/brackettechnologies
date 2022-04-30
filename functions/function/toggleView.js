@@ -38,7 +38,7 @@ const toggleView = ({ toggle, id }) => {
     history.pushState({}, title, togglePage)
     document.title = title
     local = value.root
-    children = global.data.page[global.currentPage]["view-id"].map(view => global.data.view[view])
+    children = global.data.page[global.currentPage]["views"].map(view => global.data.view[view])
 
   } else {
 

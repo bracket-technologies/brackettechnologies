@@ -9,7 +9,7 @@ module.exports = {
         var title = route.title || global.data.page[currentPage].title
         
         if (!global.data.page[currentPage]) return
-        global.data.page[currentPage]["view-id"] = global.data.page[currentPage]["view-id"] || []
+        global.data.page[currentPage]["views"] = global.data.page[currentPage]["views"] || []
         global.currentPage = currentPage
         global.path = path
         

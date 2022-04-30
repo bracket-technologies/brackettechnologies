@@ -7,7 +7,7 @@
         "description": "",
         "title": ""
     },
-    "view-id": [
+    "views": [
         "account_setup"
     ],
     "title": "Account setup - Bracket",
