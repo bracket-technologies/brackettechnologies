@@ -87,6 +87,12 @@ app.get("*", (req, res) => {
 
   // favicon
   if (req.url === "/favicon.ico") return res.sendStatus(204)
+
+  // api: bracketjs
+  if (req.headers.project === "bracketjs") return require("./function/apiLocal").getApi({ req, res, db })
+
+  // api
+  if (path[1] === "api") return getApi({ req, res, db })
   
   // api: bracketjs
   if (req.headers.project === "bracketjs") return require("./function/apiLocal").getApi({ req, res })
