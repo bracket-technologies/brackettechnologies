@@ -28,8 +28,8 @@
     "firebase-functions": "*"
   },
   "devDependencies": {
-    "npm-run-all": "*",
-    "browserify": "*"
+    "browserify": "*",
+    "npm-run-all": "*"
   },
   "private": true
 }

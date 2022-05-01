@@ -2,7 +2,7 @@ var functions = require("firebase-functions")
 var express = require("express")
 var device = require('express-device')
 var cookieParser = require('cookie-parser')
-var firebase = require("firebase")
+var firebase = require("firebase-admin")
 require("firebase/firestore")
 
 // config

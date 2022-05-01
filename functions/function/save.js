@@ -13,7 +13,7 @@ const save = async ({ id, e, ...params }) => {
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
 
-  var { data } = await axios.post(`/api/${collection}`, { save, data: _data }, {
+  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}`, { save, data: _data }, {
     headers: {
       "project": window.global.data.project.id,
       ...save.headers

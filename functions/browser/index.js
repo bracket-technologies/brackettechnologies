@@ -2214,7 +2214,7 @@ const erase = async ({ id, e, ...params }) => {
   erase.doc = erase.doc || erase.id
   if (erase.doc === undefined) delete erase.doc
 
-  var { data } = await axios.delete(`/api/${collection}?${encodeURI(toString({ erase }))}`, {
+  var { data } = await axios.delete(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${encodeURI(toString({ erase }))}`, {
     headers: {
       "project": window.global.data.project.id,
       ...erase.headers
@@ -6154,7 +6154,7 @@ const save = async ({ id, e, ...params }) => {
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
 
-  var { data } = await axios.post(`/api/${collection}`, { save, data: _data }, {
+  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}`, { save, data: _data }, {
     headers: {
       "project": window.global.data.project.id,
       ...save.headers
@@ -6184,7 +6184,7 @@ module.exports = {
         var _params = encodeURI(toString({ search }))
         search.headers = search.headers || {}
         
-        var { data } = await axios.get(`/api/${collection}?${_params}`, {
+        var { data } = await axios.get(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${_params}`, {
             headers: {
                 "project": window.global.data.project.id,
                 ...search.headers
@@ -8317,7 +8317,7 @@ const upload = async ({ id, e, ...params }) => {
   var regex = new RegExp(`^data:${type};base64,`, "gi")
   file = file.replace(regex, "")
   
-  var { data } = await axios.post(`/app/api/file/${collection}`, { upload, file }, {
+  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/file/${collection}`, { upload, file }, {
     headers: {
       "project": window.global.data.project.id,
       ...upload.headers

@@ -23,7 +23,7 @@ const upload = async ({ id, e, ...params }) => {
   var regex = new RegExp(`^data:${type};base64,`, "gi")
   file = file.replace(regex, "")
   
-  var { data } = await axios.post(`/app/api/file/${collection}`, { upload, file }, {
+  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/file/${collection}`, { upload, file }, {
     headers: {
       "project": window.global.data.project.id,
       ...upload.headers
