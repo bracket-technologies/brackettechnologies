@@ -12,9 +12,9 @@ module.exports = {
         var _params = encodeURI(toString({ search }))
         search.headers = search.headers || {}
         
-        var { data } = await axios.get(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${_params}`, {
+        var { data } = await axios.get(`/api/${collection}?${_params}`, {
             headers: {
-                "project": window.global.data.project.id,
+                "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
                 ...search.headers
             }
         })

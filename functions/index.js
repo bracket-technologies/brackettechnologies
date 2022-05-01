@@ -3,13 +3,13 @@ var express = require("express")
 var device = require('express-device')
 var cookieParser = require('cookie-parser')
 var firebase = require("firebase-admin")
-require("firebase/firestore")
+// require("firebase/firestore")
 
 // config
-require('dotenv').config()
+require('dotenv').config({ path: '.env' })
 
 // firebase
-firebase.initializeApp({"apiKey": "AIzaSyB6fGcnoqzRjUUytNv6R05euQ6RYsBJK3o", "authDomain": "bracketjs.firebaseapp.com", "projectId": "bracketjs", "storageBucket": "bracketjs.appspot.com", "messagingSenderId": "869789439383", "appId": "1:869789439383:web:09ed5cda97e32200bba0d2"})
+firebase.initializeApp({ credential: firebase.credential.cert(JSON.parse(process.env.FB_CONFIG)) })
 var db = firebase.firestore()
 var storage = firebase.storage()
 
@@ -27,16 +27,16 @@ app.use(express.urlencoded({ extended: false, limit: "50mb" }))
 app.use((req, res, next) => {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', '*')
-
+  res.setHeader("Access-Control-Allow-Origin", "*")
+/*
   // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
 
   // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, project")
 
-  res.setHeader('Access-Control-Allow-Credentials', true)
-
+  res.setHeader("Access-Control-Allow-Credentials", "true")
+*/
   // Pass to next layer of middleware
   next()
 })
@@ -87,16 +87,10 @@ app.get("*", (req, res) => {
 
   // favicon
   if (req.url === "/favicon.ico") return res.sendStatus(204)
-
-  // api: bracketjs
-  if (req.headers.project === "bracketjs") return require("./function/apiLocal").getApi({ req, res, db })
-
-  // api
-  if (path[1] === "api") return getApi({ req, res, db })
   
   // api: bracketjs
   if (req.headers.project === "bracketjs") return require("./function/apiLocal").getApi({ req, res })
-
+  
   // api
   if (path[1] === "api") return getApi({ req, res, db })
   

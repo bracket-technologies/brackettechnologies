@@ -23,7 +23,6 @@
     "dotenv": "*",
     "express": "*",
     "express-device": "*",
-    "firebase": "*",
     "firebase-admin": "*",
     "firebase-functions": "*"
   },

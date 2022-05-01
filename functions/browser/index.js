@@ -682,8 +682,8 @@ module.exports = (component) => {
                         children: [{
                             type: "Input?mode.dark.style.color=#c39178;input.readonly<<derivations().lastElement()=id;style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#ce743a",
                             controls: [{
-                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().field():_string:_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._map():[_.1stChild().2ndChild().text()=_.1stChild().2ndChild().text().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().map():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
-                                actions: "insert:[parent().parent().parent().parent().parent().id]?insert.component=parent().parent().parent().parent().parent().children.1.clone().removeMapping();insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index"
+                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._map():[_.1stChild().2ndChild().text()=_.1stChild().2ndChild().text().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().map():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
+                                actions: "insert:[parent().parent().parent().parent().parent().id]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index"
                             }]
                         }]
                     }]
@@ -691,7 +691,7 @@ module.exports = (component) => {
                     type: "Input?style.height=3.2rem;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.type=number;input.style.color=olive;style.width=fit-content;style.borderRadius=.5rem?data().type().is():number",
                     controls: [{
                         event: "keyup?if():[parent().parent().parent().data().type()=map]:[)(:insert-index=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;parent().parent().parent().data().field():_string:_string];if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().data().len()+1];parent().parent().parent().data().type()=array]:[parent().parent().parent().children().slice():[)(:insert-index]._map():[_.1stChild().2ndChild().text()=_.1stChild().2ndChild().text().num()+1;)(:last-index=_.derivations.len()-1;#;)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().map():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
-                        actions: "insert:[parent().parent().parent().id]?insert.component=parent().parent().parent().children.1.clone().removeMapping();insert.path=if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index"
+                        actions: "insert:[parent().parent().parent().id]?insert.component=parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index"
                     }]
                 }, {
                     type: "Input?style.height=3.2rem;readonly;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.color=purple;style.width=fit-content;style.borderRadius=.5rem;droplist.items=_array:true:false?data().type()=boolean"
@@ -2214,9 +2214,9 @@ const erase = async ({ id, e, ...params }) => {
   erase.doc = erase.doc || erase.id
   if (erase.doc === undefined) delete erase.doc
 
-  var { data } = await axios.delete(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${encodeURI(toString({ erase }))}`, {
+  var { data } = await axios.delete(`/api/${collection}?${encodeURI(toString({ erase }))}`, {
     headers: {
-      "project": window.global.data.project.id,
+      "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...erase.headers
     }
   })
@@ -3026,7 +3026,7 @@ module.exports = {
         var _type = _local.type.slice(1).split("]")[0]
         _local.type = _type + _local.type.split("]").slice(1).join("]")
       }
-
+      
       if (data) _local.data = clone(data)
       if (path) _local.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       
@@ -5089,7 +5089,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var args = k.split(":")
             var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
             var _index = toValue({ req, res, _window, id, value: args[2], params, _ ,e })
-            if (_index === undefined) _index = o.length - 1
+            if (_index === undefined) _index = o.length
             o.splice(_index, 0, _item)
             answer = o
             
@@ -6154,9 +6154,9 @@ const save = async ({ id, e, ...params }) => {
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
 
-  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}`, { save, data: _data }, {
+  var { data } = await axios.post(`/api/${collection}`, { save, data: _data }, {
     headers: {
-      "project": window.global.data.project.id,
+      "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...save.headers
     }
   })
@@ -6184,9 +6184,9 @@ module.exports = {
         var _params = encodeURI(toString({ search }))
         search.headers = search.headers || {}
         
-        var { data } = await axios.get(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${_params}`, {
+        var { data } = await axios.get(`/api/${collection}?${_params}`, {
             headers: {
-                "project": window.global.data.project.id,
+                "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
                 ...search.headers
             }
         })
@@ -8317,9 +8317,9 @@ const upload = async ({ id, e, ...params }) => {
   var regex = new RegExp(`^data:${type};base64,`, "gi")
   file = file.replace(regex, "")
   
-  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/file/${collection}`, { upload, file }, {
+  var { data } = await axios.post(`/api/file/${collection}`, { upload, file }, {
     headers: {
-      "project": window.global.data.project.id,
+      "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...upload.headers
     }
   })

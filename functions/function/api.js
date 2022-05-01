@@ -4,22 +4,24 @@ const { capitalize } = require("./capitalize")
 const { toCode } = require("./toCode")
 
 var getApi = async ({ req, res, db }) => {
-
+  
   // api/collection?params?conditions
   var collection = req.url.split("?")[0].split("/")[2]
   if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var string = decodeURI(req.url.split("?")[1]), params = {}, _window = { global: {}, value: {} }
   string = toCode({ _window, string })
-
+  
   if (string) params = toParam({ _window, string, id: "" })
-  var search = params.search,
+  var search = params.search || {},
     doc = search.document || search.doc,
     docs = search.documents || search.docs,
     field = search.field || search.fields,
     limit = search.limit || 25,
-    success, message, data
-  if (search) search.collection = collection
+    data = {}, success, message,
+    ref = db.collection(collection)
 
+  if (search) search.collection = collection
+  
   if (search.url) {
 
     var url = search.url
@@ -40,9 +42,6 @@ var getApi = async ({ req, res, db }) => {
     return res.send({ data, success, message })
   }
 
-  var data = [], success, message
-  var ref = db.collection(collection)
-
   if (docs) {
 
     var _docs = [], index = 1, length = Math.floor(search.docs.length / 10) + (search.docs.length % 10 > 0 ? 1 : 0)
@@ -51,7 +50,6 @@ var getApi = async ({ req, res, db }) => {
       index += 1
     }
 
-    data = {}
     await Promise.all(
       _docs.map(async docList => {
         await ref.where("id", "in", docList).get().then(docs => {
@@ -63,8 +61,7 @@ var getApi = async ({ req, res, db }) => {
         }).catch(error => {
 
           success = false
-          message = error
-          console.log(error);
+          message = `An error Occured!`
         })
       })
     )
@@ -83,7 +80,7 @@ var getApi = async ({ req, res, db }) => {
     }).catch(error => {
 
       success = false
-      message = error
+      message = `An error Occured!`
     })
 
     return res.send({ data, success, message })
@@ -92,19 +89,18 @@ var getApi = async ({ req, res, db }) => {
   if (!doc && !field) {
 
     if (limit) ref = ref.limit(limit)
-    var data = {}
-
+    
     await ref.get().then(q => {
-
+      
       q.forEach(doc => data[doc.id] = doc.data())
 
       success = true
       message = `Documents mounted successfuly!`
 
     }).catch(error => {
-
+console.log(error);
       success = false
-      message = error
+      message = `An error Occured!`
     })
 
     return res.send({ data, success, message })
@@ -132,13 +128,13 @@ var getApi = async ({ req, res, db }) => {
   await ref.get().then(query => {
 
     success = true
-    query.docs.forEach(doc => data.push(doc.data()))
+    query.docs.forEach(doc => data[doc.id] = doc.data())
     message = `Documents mounted successfuly!`
 
   }).catch(error => {
-
+    
     success = false
-    message = error
+    message = `An error Occured!`
   })
 
   return res.send({ data, success, message })

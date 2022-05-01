@@ -23,7 +23,7 @@ module.exports = {
         var _type = _local.type.slice(1).split("]")[0]
         _local.type = _type + _local.type.split("]").slice(1).join("]")
       }
-
+      
       if (data) _local.data = clone(data)
       if (path) _local.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       

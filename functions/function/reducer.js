@@ -1417,7 +1417,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var args = k.split(":")
             var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
             var _index = toValue({ req, res, _window, id, value: args[2], params, _ ,e })
-            if (_index === undefined) _index = o.length - 1
+            if (_index === undefined) _index = o.length
             o.splice(_index, 0, _item)
             answer = o
             

@@ -14,9 +14,9 @@ const erase = async ({ id, e, ...params }) => {
   erase.doc = erase.doc || erase.id
   if (erase.doc === undefined) delete erase.doc
 
-  var { data } = await axios.delete(`https://us-central1-bracketjs.cloudfunctions.net/app/api/${collection}?${encodeURI(toString({ erase }))}`, {
+  var { data } = await axios.delete(`/api/${collection}?${encodeURI(toString({ erase }))}`, {
     headers: {
-      "project": window.global.data.project.id,
+      "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...erase.headers
     }
   })
