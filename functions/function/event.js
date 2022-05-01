@@ -22,7 +22,12 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   var local = _window ? _window.value[id] : window.value[id]
   var mainID = id
 
-  var events = toCode({ _window, id, string: controls.event }).split("?")
+  var events = toCode({ _window, id, string: controls.event })
+
+  // 'string'
+  if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
+  
+  events = events.split("?")
   var _idList = toValue({ id, value: events[3] || id })
 
   // droplist

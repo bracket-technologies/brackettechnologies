@@ -13,6 +13,10 @@ const watch = ({ controls, id }) => {
     if (!local) return
 
     var watch = toCode({ id, string: controls.watch })
+
+    // 'string'
+    if (watch.split("'").length > 2) watch = toCode({ _window, string: watch, start: "'", end: "'" })
+
     var approved = toApproval({ id, string: watch.split('?')[2] })
     if (!approved || !watch) return
 

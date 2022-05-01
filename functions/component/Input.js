@@ -78,16 +78,13 @@ const Input = (component) => {
         delete component.password
         delete component.derivations
 
-        label.text = label.text.split("?").join("_quest")
-        label.text = label.text.split("=").join("_equal")
-
         return {
             id, path, Data, parent, derivations, tooltip: component.tooltip,
             "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
                 "children": [{
-                    "type": `Text?text=${label.text || "Label"};style.color=#888;style.fontSize=1.1rem;${toString(label)}`,
+                    "type": `Text?text=${label.text || "Label"};style.color=#888;style.fontSize=1.1rem;style.width=fit-content;${toString(label)}`,
                     "controls": [{
                         "event": "click?().next().getInput().focus()"
                     }]
@@ -129,9 +126,6 @@ const Input = (component) => {
         delete component.path
         delete component.id
         delete component.tooltip
-        
-        label.text = label.text.split("?").join("_quest")
-        label.text = label.text.split("=").join("_equal")
         label.tooltip = tooltip
 
         return {

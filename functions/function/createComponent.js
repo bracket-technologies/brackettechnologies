@@ -19,6 +19,10 @@ module.exports = {
 
     // destructure type, params, & conditions from type
     local.type = toCode({ _window, id, string: local.type })
+
+    // 'string'
+    if (local.type.split("'").length > 2) local.type = toCode({ _window, string: local.type, start: "'", end: "'" })
+    
     var type = local.type.split("?")[0]
     var params = local.type.split("?")[1]
     var conditions = local.type.split("?")[2]

@@ -1,10 +1,10 @@
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
-const { toValue } = require("./toValue")
 const _method = require("./function")
 const { toCode } = require("./toCode")
 const { toAwait } = require("./toAwait")
+const { toValue } = require("./toValue")
 
 const execute = ({ _window, controls, actions, e, id, params }) => {
 
@@ -17,6 +17,9 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
   // execute actions
   toArray(actions).map(_action => {
     _action = toCode({ _window, string: _action, e })
+
+    // 'string'
+    if (_action.split("'").length > 2) _action = toCode({ _window, string: _action, start: "'", end: "'" })
     
     var awaiter = ""
     
@@ -95,7 +98,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
         // case condition approval
         if (caseCondition) approved = toApproval({ _window, string: caseCondition, params, id: localId, e })
-        if (!approved) return
+        if (!approved) return toAwait({ id, e, params })
         
         if (_method[name]) toArray(actionid ? actionid : idList).map(async id => {
           

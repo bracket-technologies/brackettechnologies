@@ -1,3 +1,5 @@
+const { isArabic } = require("./isArabic")
+
 const note = ({ note: _note }) => {
 
   var value = window.value
@@ -15,6 +17,7 @@ const note = ({ note: _note }) => {
   clearTimeout(note["note-timer"])
 
   noteText.element.innerHTML = _note.text
+  isArabic({ id: "action-note-text" })
 
   var width = note.element.offsetWidth
   note.element.style.backgroundColor = backgroundColor

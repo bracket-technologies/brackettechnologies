@@ -1,12 +1,14 @@
 const axios = require("axios")
 const { toAwait } = require("./toAwait")
 
-const upload = async ({ id, e, upload = {}, ...params }) => {
+const upload = async ({ id, e, ...params }) => {
         
+  var upload = params.upload
   var local = window.value[id]
   var global = window.global
   var collection = upload.collection = upload.collection || upload.path
 
+  upload.headers = upload.headers || {}
   upload.doc = upload.doc || upload.id
   upload.name = upload.name || global.upload[0].name
 
@@ -20,14 +22,15 @@ const upload = async ({ id, e, upload = {}, ...params }) => {
   // get regex exp
   var regex = new RegExp(`^data:${type};base64,`, "gi")
   file = file.replace(regex, "")
-
-  // decrease upload length
-  delete upload.file
   
-  var { data } = await axios.post(`https://us-central1-bracketjs.cloudfunctions.net/app/api/file/${collection}`, { file, upload })
+  var { data } = await axios.post(`/app/api/file/${collection}`, { upload, file }, {
+    headers: {
+      "project": window.global.data.project.id,
+      ...upload.headers
+    }
+  })
 
   local.upload = data
-
   console.log(data)
 
   // await params

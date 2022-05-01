@@ -1,7 +1,7 @@
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 
-const toApproval = ({ _window, e, string, id, _, req, res, object, filter }) => {
+const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")

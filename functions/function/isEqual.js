@@ -83,6 +83,6 @@ const isEqual = function(value, other) {
 
   // If nothing failed, return true
   return true;
-};
+}
 
-module.exports = {isEqual};
+module.exports = {isEqual}

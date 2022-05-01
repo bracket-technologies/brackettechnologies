@@ -48,7 +48,6 @@ const createTags = ({ _window, id, req, res }) => {
     } else {
 
       local.mapIndex = 0
-      local.data = null
       local.derivations = isObject ? [...local.derivations, ""] : [...local.derivations, 0]
       
       // check approval again for last time

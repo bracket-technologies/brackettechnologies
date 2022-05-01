@@ -33,12 +33,12 @@ const toggleView = ({ toggle, id }) => {
 
     global.currentPage = togglePage.split("/")[0]
     var title = global.data.page[global.currentPage].title
-    togglePage = togglePage === "main" ? "" : togglePage
+    plobal.path = togglePage = togglePage === "main" ? "" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title
     local = value.root
-    children = global.data.page[global.currentPage]["view-id"].map(view => global.data.view[view])
+    children = global.data.page[global.currentPage]["views"].map(view => global.data.view[view])
 
   } else {
 

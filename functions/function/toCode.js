@@ -3,7 +3,6 @@ const { generate } = require("./generate")
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   if (typeof string !== "string") return string
-  //if (string.includes(`"`)) string = toCode({ _window, string, e, codes, start: `"`, end: `"` })
 
   var global = {}
   if (!codes) global = _window ? _window.global : window.global
@@ -19,7 +18,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
     // ex. [ [ [] [] ] ]
     while (subKey[0] === keys[1] && keys[2] !== undefined) {
       keys[1] += `${start}${keys[2]}`
-      if (keys[1].includes(end) && keys[2]) keys[1] = toCode({ _window, string: keys[1], e })
+      if (keys[1].includes(end) && keys[2]) keys[1] = toCode({ _window, string: keys[1], e, start, end })
       keys.splice(2, 1)
       subKey = keys[1].split(end)
     }
@@ -41,7 +40,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
   }
 
   if (string.split(start)[1] !== undefined && string.split("[").slice(1).join("[").length > 0)
-  string = toCode({ _window, string, e })
+  string = toCode({ _window, string, e, start, end })
 
   return string
 }

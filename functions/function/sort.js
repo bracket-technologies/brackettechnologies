@@ -19,7 +19,7 @@ const sort = ({ sort = {}, id, e }) => {
   if (!Array.isArray(data) && typeof data === "object") data = Object.values(data)
 
   data.sort((a, b) => {
-
+    
     a = reducer({ id, path, object: a, e }) || "!"
     if (a !== undefined) {
       a = a.toString()

@@ -26,6 +26,11 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
     value = value.split("<<")[0]
   }
 
+  // string
+  if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") {
+    return value = value.slice(1, -1)
+  }
+
   // addition
   if (value.includes("+")) {
 
@@ -33,55 +38,40 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
     var newVal = values[0]
     values.slice(1).map(val => newVal += val)
     return value = newVal
-    
+
   } else if (value.includes("-")) {
 
-    var allAreNumbers = true
-      var values = value.split("-").map(value => {
-
-        if (allAreNumbers) {
-          var num = toValue({ _window, value, params, _, id, e, req, res, object })
-          if (isNaN(num) || num === "") allAreNumbers = false
-          return num
-        }
-      })
-      
-      if (allAreNumbers) {
-        value = values[0]
-        values.slice(1).map(val => value -= val)
-        console.log(value);
-        return value
-      }
-
+    var _value = calcSubs({ _window, value, params, _, id, e, req, res, object })
+    if (_value !== value) return _value
   }
-  
+
   if (value.split("const.")[1] !== undefined && !value.split("const.")[0]) return value.split("const.")[1]
 
   // return await value
   if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]
-  
+
   var path = typeof value === "string" ? value.split(".") : []
-  
+
   /* value */
   if (value === "global()" || value === ")(") value = _window ? _window.global : window.global
   else if (object) value = reducer({ _window, id, object, path, value, params, _, e, req, res })
-  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
+  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res })
   else if ((path[0].includes("()")) && path.length === 1) {
 
     var val0 = value.split("coded()")[0]
     if (value.includes('coded()') && !val0.includes("()") && !val0.includes("_map") && !val0.includes("_array") && !val0.includes("_arr")) {
-    
+
       value.split("coded()").slice(1).map(val => {
         val0 += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, id, e, req, res, object })
         val0 += val.slice(5)
       })
       value = val0
-      
+
     } else value = reducer({ _window, id, e, path, params, object, _, req, res })
-  } else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res  })
+  } else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res })
   else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res })
   else if (value === "()") value = local
-  else if (typeof value === "boolean") {}
+  else if (typeof value === "boolean") { }
   else if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === undefined || value === "generate") value = generate()
   else if (value === "e()" || value === "event()") value = e
@@ -93,7 +83,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
   else if (value === "true") value = true
   else if (value === "_") value = _
   else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
-        
+
     var args = value.split(":")
     var key = args[0]
 
@@ -103,56 +93,132 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object }) => {
 
   // _string
   else if (value === "_string") return ""
-/*
-  // auto space
-  if (value === "") return ""
-
-  // auto comma
-  if (value === "_comma") return ","
-
-  // _quotation
-  if (value === "_quotation") return `'`
-
-  // _quotations
-  if (value === "_quotations") return `"`
-
-  // _array
-  if (value === "_array") return []
-
-  // _map
-  if (value === "_map" || value === "_object") return {}
-
-  // _string
-  if (value === "_string") return ""
-
-  // _quest
-  if (value === "_quest") return "?"
-
-  // _space
-  if (value === "_space" || value === " ") return " "
-
-  // _semi
-  if (value === "_semi") return ";"
-
-  // _dot
-  if (value === "_dot") return "."
-
-  // _dots
-  if (value === "_dots") return "..."
-
-  // _equal
-  if (value === "_equal") return "="
-
-  // _equals
-  if (value === "_equals") return "=="
-
-  // _equal_equal
-  if (value === "_equal_equal") return "=="
-
-  // auto space
-  if (value === "&nbsp") return "&nbsp;"
-*/
+  /*
+    // auto space
+    if (value === "") return ""
+  
+    // auto comma
+    if (value === "_comma") return ","
+  
+    // _quotation
+    if (value === "_quotation") return `'`
+  
+    // _quotations
+    if (value === "_quotations") return `"`
+  
+    // _array
+    if (value === "_array") return []
+  
+    // _map
+    if (value === "_map" || value === "_object") return {}
+  
+    // _string
+    if (value === "_string") return ""
+  
+    // _quest
+    if (value === "_quest") return "?"
+  
+    // _space
+    if (value === "_space" || value === " ") return " "
+  
+    // _semi
+    if (value === "_semi") return ";"
+  
+    // _dot
+    if (value === "_dot") return "."
+  
+    // _dots
+    if (value === "_dots") return "..."
+  
+    // _equal
+    if (value === "_equal") return "="
+  
+    // _equals
+    if (value === "_equals") return "=="
+  
+    // _equal_equal
+    if (value === "_equal_equal") return "=="
+  
+    // auto space
+    if (value === "&nbsp") return "&nbsp;"
+  */
   return value
 }
 
-module.exports = { toValue }
+const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
+  
+  if (value.split("-").length > 1) {
+
+    var allAreNumbers = true
+    var values = value.split("-").map(value => {
+      if (value.includes(":")) return allAreNumbers = false
+
+      if (allAreNumbers) {
+        var num = toValue({ _window, value, params, _, id, e, req, res, object })
+        if (typeof num !== "number") allAreNumbers = false
+        return num
+      }
+    })
+    
+    if (allAreNumbers) {
+
+      value = values[0]
+      values.slice(1).map(val => value -= val)
+      console.log(value);
+      return value
+
+    } else if (value.split("-").length > 2) {
+
+      var allAreNumbers = true
+      var _value = value.split("-").slice(0, 2).join("-")
+      var _values = value.split("-").slice(2)
+      _values.unshift(_value)
+      
+      var values = _values.map(value => {
+        if (value.includes(":")) return allAreNumbers = false
+
+        if (allAreNumbers) {
+          var num = toValue({ _window, value, params, _, id, e, req, res, object })
+          if (typeof num !== "number") allAreNumbers = false
+          return num
+        }
+      })
+
+      if (allAreNumbers) {
+
+        value = values[0]
+        values.slice(1).map(val => value -= val)
+        console.log(value);
+        return value
+  
+      } else if (value.split("-").length > 3) {
+  
+        var allAreNumbers = true
+        var _value = value.split("-").slice(0, 3).join("-")
+        var _values = value.split("-").slice(3)
+        _values.unshift(_value)
+        var values = _values.map(value => {
+          if (value.includes(":")) return allAreNumbers = false
+  
+          if (allAreNumbers) {
+            var num = toValue({ _window, value, params, _, id, e, req, res, object })
+            if (typeof num !== "number") allAreNumbers = false
+            return num
+          }
+        })
+
+        if (allAreNumbers) {
+
+          value = values[0]
+          values.slice(1).map(val => value -= val)
+          console.log(value);
+          return value
+    
+        }
+      }
+    }
+  }
+  return value
+}
+
+module.exports = { toValue, calcSubs }

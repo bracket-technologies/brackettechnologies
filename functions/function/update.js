@@ -16,13 +16,13 @@ const update = ({ id, update = {} }) => {
   if (!local || !local.element) return
 
   // children
-  var children = toArray(local.children)
-
+  var children = clone(toArray(local.children))
+  
   // remove id from VALUE
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") children = global.data.page[global.currentPage]["view-id"].map(view => global.data.view[view])
+  if (id === "root") children = clone(global.data.page[global.currentPage]["views"].map(view => global.data.view[view]))
 
   // onloading
   if (id === "root" && global.data.page[global.currentPage].controls) {
@@ -31,23 +31,23 @@ const update = ({ id, update = {} }) => {
       .find(controls => controls.event.split("?")[0].includes("loading"))
     if (loadingEventControls) controls({ id: "root", controls: loadingEventControls })
   }
-  
+
   var innerHTML = children
-    .map((child, index) => {
+  .map((child, index) => {
 
-      var id = child.id || generate()
-      value[id] = clone(child)
-      value[id].id = id
-      value[id].index = index
-      value[id].parent = local.id
-      value[id].style = value[id].style || {}
-      value[id].style.opacity = "0"
-      if (timer) value[id].style.transition = `opacity ${timer}ms`
-      
-      return createElement({ id })
+    var id = child.id || generate()
+    value[id] = child
+    value[id].id = id
+    value[id].index = index
+    value[id].parent = local.id
+    value[id].style = value[id].style || {}
+    value[id].style.opacity = "0"
+    if (timer) value[id].style.transition = `opacity ${timer}ms`
+    
+    return createElement({ id })
 
-    }).join("")
-      
+  }).join("")
+  
   local.element.innerHTML = ""
   local.element.innerHTML = innerHTML
 

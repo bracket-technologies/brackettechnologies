@@ -8,13 +8,11 @@ const { toPrice } = require("./toPrice")
 const { getDateTime } = require("./getDateTime")
 const { getDaysInMonth } = require("./getDaysInMonth")
 const { getType } = require("./getType")
-const { position } = require("./position")
 const { decode } = require("./decode")
 const { exportJson } = require("./exportJson")
 const { importJson } = require("./importJson")
 const { toId } = require("./toId")
 const { setCookie, getCookie, eraseCookie } = require("./cookie")
-const { override } = require("./merge")
 const { focus } = require("./focus")
 const { toSimplifiedDate } = require("./toSimplifiedDate")
 const { toClock } = require("./toClock")
@@ -24,7 +22,7 @@ const { toCode } = require("./toCode")
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res }) => {
     
     const { remove } = require("./remove")
-    const { toValue } = require("./toValue")
+    const { toValue, calcSubs } = require("./toValue")
     const { execute } = require("./execute")
     const { toParam } = require("./toParam")
 
@@ -53,22 +51,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // subtraction
     if (path.join(".").includes("-")) {
   
-      var allAreNumbers = true
-      var values = path.join(".").split("-").map(value => {
-
-        if (allAreNumbers) {
-          var num = toValue({ _window, value, params, _, id, e, req, res, object })
-          if (isNaN(num) || num === "") allAreNumbers = false
-          return num
-        }
-      })
-      
-      if (allAreNumbers) {
-        var answer = values[0]
-        values.slice(1).map(val => answer -= val)
-        console.log(answer);
-        return answer
-      }
+        var _value = calcSubs({ _window, value: path.join("."), params, _, id, e, req, res, object })
+        if (_value !== path.join(".")) return _value
     }
 
     // codeds
@@ -86,6 +70,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         if (!approved) {
             
+            if (args[3]) return toValue({ req, res, _window, id, value: args[3], params, index, _, e, object })
+
             if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e, object })
 
             if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
@@ -183,17 +169,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path0 === "setInterval()") {
             
         var args = path[0].split(":")
-        // var _actions = toValue({ req, res, _window, id, value: args[1], params, _, e })
         var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
-        // var myFn = () => execute({ id, actions: _actions, e })
         var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
         return setInterval(myFn, _timer)
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" ||path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()")) {
-        path.unshift("()")
-        path0 = "()"
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" ||path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "updateSelf()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()")) {
+        if (path0 === "getChildrenByClassName()") {
+
+            path.unshift("doc()")
+            path0 = "doc()"
+
+        } else {
+            path.unshift("()")
+            path0 = "()"
+        }
     }
     
     object = path0 === "()" ? local
@@ -293,7 +284,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 object = []
                 var args = path[0].split(":").slice(1)
-                args.map((el, i) => {
+                args.map(el => {
                     el = toValue({ req, res, _window, id, _, e, value: el, params })
                     object.push(el)
                 })
@@ -311,7 +302,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 })
                 
-            } else if (path0 === "[{}]") object = [{}]
+            } //else if (path0 === "str()") return global.codes[path[0].split(":")[1]]
         }
 
         if (object || object === "" || object === 0 || coded) path = path.slice(1)
@@ -328,7 +319,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     
     var lastIndex = path.length - 1, k0
     
-    var answer = path.length === 0 ? object : path.reduce((o, k, i) => {
+    var answer = path.reduce((o, k, i) => {
         
         if (k === undefined) console.log(path);
 
@@ -376,10 +367,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
             if (!approved) {
                 
-                if (path[i + 1] && path[i + 1].includes("else()")) 
+                if (args[3]) return answer = toValue({ req, res, _window, id, value: args[3], params, index, _, e })
+
+                else if (path[i + 1] && path[i + 1].includes("else()")) 
                     return answer = toValue({ req, res, _window, id, value: path[i + 1].split(":")[1], index, params, _, e })
     
-                if (path[i + 1] && (path[i + 1].includes("elseif()") || path[i + 1].includes("elif()"))) {
+                else if (path[i + 1] && (path[i + 1].includes("elseif()") || path[i + 1].includes("elif()"))) {
     
                     breakRequest = i + 1
                     var _path = path.slice(i + 2)
@@ -464,18 +457,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "_()") {
 
             var args = k.split(":").slice(1)
+            if (args.length > 0)
             args.map(arg => {
                 answer = toValue({ req, res, _window, id, e, value: arg, params, _: o })
             })
+            else _ = o
+            return answer = o
             
         } else if (k0 === "_") {
 
             if (typeof o === "object") answer = o[_]
             else answer = _
 
-        } else if (k0 === "global()") {
+        } else if (k0 === ")(") {
 
-            answer = global
+            var _state = k.split(":").slice(1)
+            toValue({ req, res, _window, id, value: _state, params, _, e })
+            answer = global[_state]
 
         } else if (k0.slice(0, 7) === "coded()") {
             
@@ -513,12 +511,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             _parent = _window ? _window.value[_parent] : window.value[_parent]
 
             if (o.templated || o.link) {
+                
                 _parent = _parent.element.parentNode.id
                 _parent = _window ? _window.value[_parent] : window.value[_parent]
                 _parent = _window ? _window.value[_parent] : window.value[_parent]
             }
             
             answer = _parent
+            
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
             
         } else if (k0 === "siblings()") {
             
@@ -546,6 +548,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = nextSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
 
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+
         } else if (k0 === "nextSiblings()") {
 
             var nextSiblings = [], nextSibling
@@ -569,6 +574,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = lastSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
 
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+
         } else if (k0 === "2ndlast()" || k0 === "2ndLast()" || k0 === "2ndLastSibling()") {
 
             var element = o.element
@@ -576,6 +584,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var seclastSibling = element.parentNode.children[element.parentNode.children.length - 2]
             var _id = seclastSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
+            
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
 
         } else if (k0 === "3rdlast()" || k0 === "3rdLast()" || k0 === "3rdLastSibling()") {
 
@@ -585,6 +596,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = thirdlastSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
 
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+
         } else if (k0 === "1st()" || k0 === "first()" || k0 === "firstSibling()") {
 
             var element = o.element
@@ -593,6 +607,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = firstSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
 
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+
         } else if (k0 === "2nd()" || k0 === "second()" || k0 === "secondSibling()") {
 
             var element = o.element
@@ -600,6 +617,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var secondSibling = element.parentNode.children[1]
             var _id = secondSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
+
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
 
         } else if (k0 === "prev()" || k0 === "prevSibling()") {
 
@@ -615,6 +635,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!previousSibling) return
             var _id = previousSibling.id
             answer = _window ? _window.value[_id] : window.value[_id]
+            
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
 
         } else if (k0 === "1stChild()") {
             
@@ -626,6 +649,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = _window ? _window.value[_id] : window.value[_id]
             
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+
         } else if (k0 === "2ndChild()") {
             
             if (!o.element.children[0]) return undefined
@@ -634,6 +660,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             _id = (_window ? _window.value[_id] : window.value[_id]).element.getElementsByTagName("INPUT")[0].id
             answer = _window ? _window.value[_id] : window.value[_id]
 
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+
         } else if (k0 === "3rdChild()") {
 
             if (!o.element.children[0]) return undefined
@@ -641,6 +670,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if ((_window ? _window.value[_id] : window.value[_id]).component === "Input")
             _id = (_window ? _window.value[_id] : window.value[_id]).element.getElementsByTagName("INPUT")[0].id
             answer = _window ? _window.value[_id] : window.value[_id]
+
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
 
         } else if (k0 === "3rdlastChild()") {
 
@@ -651,6 +683,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = _window ? _window.value[_id] : window.value[_id]
 
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+
         } else if (k0 === "2ndlastChild()" || k0 === "2ndLastChild()") {
 
             if (!o.element.children[0]) return undefined
@@ -659,6 +694,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             _id = (_window ? _window.value[_id] : window.value[_id]).element.getElementsByTagName("INPUT")[0].id
             
             answer = _window ? _window.value[_id] : window.value[_id]
+
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
 
         } else if (k0 === "lastChild()") {
 
@@ -669,6 +707,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             _id = (_window ? _window.value[_id] : window.value[_id]).element.getElementsByTagName("INPUT")[0].id
             
             answer = _window ? _window.value[_id] : window.value[_id]
+
+            var args = k.split(":").slice(1)
+            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
 
         } else if (k0 === "children()") {
             
@@ -1040,7 +1081,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e })
-            if (typeof o === "string") return answer = o.includes(_next)
+            if (typeof o === "string" || Array.isArray(o)) return answer = _next.includes(o)
+            else if (typeof o === "object") answer = _next[o] !== undefined
             else if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) return answer = _next.contains(o)
 
         } else if (k0 === "out()" || k0 === "outside()" || k0 === "isout()" || k0 === "isoutside()") {
@@ -1291,9 +1333,32 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "override()") {
             
-            var args = k.split(":")
-            var _override = toValue({ req, res, _window, id, value: args[1], params, _, e })
-            answer = override(o, _override)
+            var args = k.split(":"), _obj, _o
+            if (args[2]) {
+
+                _o = toValue({ req, res, _window, id, value: args[1], params, _, e })
+                _obj = toValue({ req, res, _window, id, value: args[2], params, _, e })
+
+            } else {
+
+                _o = o
+                _obj = toValue({ req, res, _window, id, value: args[1], params, _, e })
+            }
+
+            if (Array.isArray(_o)) {
+
+                if (Array.isArray(_obj)) answer = _o = [..._o, ..._obj]
+                else if (typeof _obj === "object") answer = _o = [..._o, ...Object.values(_obj)]
+
+            } else if (typeof _o === "object") {
+                
+                if (typeof _obj === "object") answer = _o = {..._o, ..._obj}
+                else if (Array.isArray(_obj)) {
+                    var __obj = {}
+                    _obj.map(obj => __obj[obj.id] = obj)
+                    answer = _o = {..._o, ...__obj}
+                }
+            } else answer = _o = _obj
 
         } else if (k0 === "text()" || k0 === "val()") {
             
@@ -1350,8 +1415,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "push()") {
             
             var args = k.split(":")
-            var _push = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
-            o.push(_push)
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            var _index = toValue({ req, res, _window, id, value: args[2], params, _ ,e })
+            if (_index === undefined) _index = o.length - 1
+            o.splice(_index, 0, _item)
             answer = o
             
         } else if (k0 === "pull()") {
@@ -1361,6 +1428,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _pull = args[1] !== undefined ? toValue({ req, res, _window, id, value: args[1], params, _ ,e }) : o.length - 1
             if (_pull === undefined) return undefined
             o.splice(_pull,1)
+            answer = o
+            
+        } else if (k0 === "pullItems()") {
+
+            var args = k.split(":")
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            answer = o = o.filter(item => item !== _item)
+            
+        } else if (k0 === "pullItem()") {
+
+            var args = k.split(":")
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            var _index = o.findIndex(item => item === _item)
+            o.splice(_index,1)
             answer = o
             
         } else if (k0 === "pullLastElement()" || k0 === "pullLast()") {
@@ -1431,7 +1512,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var length = toValue({ req, res, _window, id, e, _, value: args[1], params }) || 5
             answer = generate(length)
 
-        } else if (k0 === "includes()") {
+        } else if (k0 === "includes()" || k0 === "inc()") {
             
             var args = k.split(":")
             var _include = toValue({ req, res, _window, id, e, value: args[1], params, _ })
@@ -1734,7 +1815,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0.includes("find()")) {
             
             var arg = k.split(":")[1]
-            
             if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
             else answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
             
@@ -1903,6 +1983,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!_array) _array = o
             answer = [...new Set(_array)]
             
+        } else if (k0 === "route()") {
+
+            // route():page:path
+            var args = k.split(":")
+            var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
+            var _path = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
+            require("./route")({ route: { page: _page, path: _path } })
+
         } else if (k0 === "preventDefault()") {
             
             answer = o.preventDefault()
@@ -1950,6 +2038,56 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "mouseenter()") {
           
             answer = o.mouseenter
+
+        } else if (k0 === "range()") {
+          
+            var args = k.split(":").slice(1)
+            var _index = 0, _range = []
+            var _startIndex = toValue({ req, res, _window, id, e, _, value: args[0], params }) || 0
+            var _endIndex = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            var _steps = toValue({ req, res, _window, id, e, _, value: args[2], params }) || 1
+            _index = _startIndex
+            while (_index < _endIndex) {
+                if ((_index - _startIndex) % _steps === 0) {
+                    _range.push(_index)
+                    _index += 1
+                }
+            }
+            answer = _range
+            console.log(_range);
+
+        } else if (k0 === "update()") {
+          
+            var args = k.split(":")
+            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
+            return require("./update").update({ id: _id })
+
+        } else if (k0 === "save()") {
+          
+            var args = k.split(":")
+            var _collection = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            var _doc = toValue({ req, res, _window, id, e, _, value: args[2], params })
+            var _data = toValue({ req, res, _window, id, e, _, value: args[3], params })
+            var _save = { collection: _collection, doc: _doc, data: _data }
+
+            return require("./save").save({ id, e, save: _save })
+
+        } else if (k0 === "setPosition()") {
+          
+            var args = k.split(":")
+            var toBePositioned = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            var positioner = toValue({ req, res, _window, id, e, _, value: args[2], params })
+            var placement = toValue({ req, res, _window, id, e, _, value: args[3], params })
+            var align = toValue({ req, res, _window, id, e, _, value: args[4], params })
+            var position = { positioner, placement, align }
+
+            return require("./setPosition").setPosition({ position, id: toBePositioned, e })
+
+        } else if (k0 === "updateSelf()") {
+          
+            var args = k.split(":")
+            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
+            return require("./updateSelf").updateSelf({ id: _id })
 
         } else if (k0 === "copyToClipBoard()") {
           

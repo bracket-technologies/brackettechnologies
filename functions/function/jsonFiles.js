@@ -17,14 +17,12 @@ var getJsonFiles = ({ search = {} }) => {
 
   if (doc) {
     
-    data = []
     data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
 
   } else if (docs && docs.length > 0) {
     
-    data = []
     toArray(docs).map(doc => {
-      data.push(JSON.parse(fs.readFileSync(`${path}/${doc}.json`)))
+      data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
     })
     
   } else if (!fields) {
@@ -41,11 +39,10 @@ var getJsonFiles = ({ search = {} }) => {
     
   } else if (fields) {
 
-    data = []
     var docs = fs.readdirSync(path), i = 0
     var _operator = search.operator || "and"
     
-    while ((data.length <= limit) && (i <= docs.length - 1)) {
+    while ((Object.keys(data).length <= limit) && (i <= docs.length - 1)) {
 
       var doc = docs[i]
       var _document = JSON.parse(fs.readFileSync(`${path}/${doc}`))
@@ -116,12 +113,12 @@ var getJsonFiles = ({ search = {} }) => {
           }
 
           if (_push && _operator === "or") {
-            data.push(_data)
+            data[_data.id] = _data
             pushed = true
           }
         })
       })
-      if (_push && _operator === "and") data.push(_data)
+      if (_push && _operator === "and") data[_data.id] = _data
       i += 1
     }
   }

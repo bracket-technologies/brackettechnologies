@@ -6,7 +6,7 @@
             "type": "View?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
             "controls": [
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none]:flex.else():none;1stChild().style().transform=if():[1stChild().style().transform=rotate(0deg)]:rotate(90deg).else():rotate(0deg)?)(:data.editor.project"
+                    "event": "click?next().style().display=if():[next().style().display=none]:flex:none;1stChild().style().transform=if():[1stChild().style().transform=rotate(0deg)]:rotate(90deg):rotate(0deg)?)(:data.editor.project"
                 }
             ],
             "children": [
@@ -14,7 +14,7 @@
                     "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s;style.transform=rotate(0deg)"
                 },
                 {
-                    "type": "Text?text=)(:path.split():/.3.capitalize();style.fontSize=1.3rem"
+                    "type": "Text?text=)(:path.split():/.2;style.fontSize=1.3rem"
                 }
             ]
         },
@@ -33,14 +33,14 @@
                     ],
                     "controls": [
                         {
-                            "event": "click?)(:open-doc=)(:data.editor.user.id;)(:open-map=)(:data.editor.user;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].style().display=flex?)(:open-doc=user;)(:open-docs.find():[=)(:open-doc]"
+                            "event": "click?)(:open-doc=)(:data.editor.user.id;)(:open-collection=_user_;)(:open-map=)(:data.editor.user;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].style().display=flex?)(:open-docs.inc():[)(:data.editor.user.id]"
                         },
                         {
                             "actions": [
-                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;await().().insert.child.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]",
-                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1;await().().insert.child.():[open-doc=)(:open-doc;open-collection=)(:open-collection]"
+                                "async():[insert:data-viewer-bar]?async():[insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc]:[().insert.child.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                "async():[insert:open-view]?async():[insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1]:[().insert.child.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                             ],
-                            "event": "click?():data-viewer-bar.style().display=flex;)(:open-doc=)(:data.editor.user.id;)(:open-docs.push():[)(:open-doc];)(:open-collection=)(:open-doc;)(:open-map=)(:data.editor.user;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none]?!)(:open-docs.find():[=)(:open-doc]"
+                            "event": "click?)(:open-doc=)(:data.editor.user.id;)(:open-docs.push():[)(:open-doc];)(:open-collection=_user_;)(:open-map=)(:data.editor.user;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none]?!)(:open-docs.inc():[)(:data.editor.user.id]"
                         }
                     ]
                 },
@@ -56,13 +56,13 @@
                     "type": "View?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
                     "controls": [
                         {
-                            "event": "click?)(:open-doc=)(:data.editor.project.id;)(:open-map=)(:data.editor.project;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].style().display=flex?)(:open-doc=project;)(:open-docs.find():[=)(:open-doc]"
+                            "event": "click?)(:open-doc=)(:project;)(:open-collection=_project_;)(:open-map=)(:data.editor.project;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].style().display=flex?)(:open-docs.inc():[)(:project]"
                         },
                         {
-                            "event": "click?():data-viewer-bar.style().display=flex;)(:open-doc=)(:data.editor.project.id;)(:open-docs.push():[)(:open-doc];)(:open-collection=project;)(:open-map=)(:data.editor.project;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none]?!)(:open-docs.find():[=)(:open-doc]",
+                            "event": "click?)(:open-doc=)(:project;)(:open-docs.push():[)(:open-doc];)(:open-collection=_project_;)(:open-map=)(:data.editor.project;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none]?!)(:open-docs.inc():[)(:project]",
                             "actions": [
-                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;await().().insert.child.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]",
-                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1;await().().insert.child.():[open-doc=)(:open-doc;open-collection=)(:open-collection]"
+                                "async():[insert:data-viewer-bar]?async():[insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc]:[().insert.child.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                "async():[insert:open-view]?async():[insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1]:[().insert.child.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                             ]
                         }
                     ]
@@ -80,7 +80,7 @@
                             "type": "Icon?style.display=none;tooltip.text=create new page;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                             "controls": [
                                 {
-                                    "event": "click?parent().style().display=flex;)(:open-doc.del();)(:open-collection=page-+)(:data.editor.project.id",
+                                    "event": "click?parent().style().display=flex;)(:open-doc.del();)(:open-collection=page",
                                     "actions": "insert:[parent().next().id]?insert.component=parent().next().children.0;timer():[parent().next().lastChild().():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()]]:50;timer():[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:100"
                                 }
                             ]
@@ -94,7 +94,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=().lastChild().id]:flex.else():none;1stChild().style().transform=if():[next().style().display=none]:rotate(0).else():rotate(90deg)"
+                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=().lastChild().id]:flex:none;1stChild().style().transform=if():[next().style().display=none]:rotate(0):rotate(90deg)"
                         }
                     ]
                 },
@@ -116,15 +116,15 @@
                                             "event": "keyup?text()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.page.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
                                         },
                                         {
-                                            "actions": "note?note.text=File name could not be empty!<<!text();note.text=File name should be unique!<<)(:data.editor.page.keys().includes():text()",
-                                            "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.page.keys().includes():text()||!text()"
+                                            "actions": "note?note.text=if():[!text()]:[File name could not be empty!].elif():[)(:data.editor.page.keys().inc():text()]:[File name should be unique!].elif():[text().inc(): ]:[File name should not contain any spaces!]",
+                                            "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.page.keys().inc():text()||!text()||text().inc(): "
                                         },
                                         {
                                             "actions": [
                                                 "async():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
-                                                "async():save:note:[update:page-list]?save.collection=page-+)(:data.editor.project.id;save.doc=text();save.data=)(:data.editor.page.[text()];note.text=if():[)(:open-doc]:File name has been changed!.else():File has been created!"
+                                                "async():save:note:[update:page-list]?save.collection=page;save.doc=text();save.data=)(:data.editor.page.[text()];save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
                                             ],
-                                            "event": "keyup?)(:data.editor.page.[text()]=if():[)(:open-doc]:[)(:data.editor.page.[)(:open-doc].clone()].else():[_map:creation-date:[today().timestamp()]:id:[text()]:title:[().text().capitalize()]:name:[().text().capitalize()]:view-id:_array:path:[/+text()]];)(:open-collection=page-+)(:data.editor.project.id?text();text()!=)(:open-doc;e().key=Enter||e().key=Tab;)(:data.editor.page.keys().doesnotInclude():text()"
+                                            "event": "keyup?)(:data.editor.page.[text()]=if():[)(:open-doc]:[)(:data.editor.page.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:[text()]:title:[text().split():-.join(): .capitalize()]:name:[text().split():-.join(): .capitalize()]:views:_array:path:[/+text()]]?text();text()!=)(:open-doc;e().key=Enter||e().key=Tab;!)(:data.editor.page.keys().inc():text();!text().inc(): "
                                         }
                                     ],
                                     "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;flex=1]"
@@ -132,28 +132,27 @@
                                 {
                                     "controls": [
                                         {
-                                            "actions": "setPosition:file-action-popup?position.placement=right;position.positioner=().id;():file-action-popup.caller=().id",
-                                            "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]].else():[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];parent().open-doc=data();parent().open-collection=page-+data()"
+                                            "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];)(:open-doc=().data;)(:open-collection=page;():file-action-popup.caller=().id;setPosition():file-action-popup:[().id]:right"
                                         }
                                     ],
-                                    "type": "Icon?open-doc=data();open-collection=page-+)(:data.editor.project.id;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                                    "type": "Icon?open-doc=data();open-collection=page;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
                                 }
                             ],
                             "controls": [
                                 {
-                                    "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex"
+                                    "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
                                 },
                                 {
                                     "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                                 },
                                 {
-                                    "event": "click?)(:open-doc=().data;)(:open-collection=page-+)(:data.editor.project.id;)(:open-map=)(:data.editor.page.[().data];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.find():[=page/+().data]"
+                                    "event": "click?)(:open-doc=().data;)(:open-collection=page;)(:open-map=)(:data.editor.page.[)(:open-doc];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[page/+)(:open-doc]"
                                 },
                                 {
-                                    "event": "click?():data-viewer-bar.style().display=flex;)(:open-docs.push():[page/+().data];)(:open-doc=().data;)(:open-collection=view-+)(:data.editor.project.id;)(:open-map=)(:data.editor.page.[().data];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false]?)(:clickedElement().id!=2ndLastChild().id;)(:clickedElement().id!=lastChild().id;!)(:open-docs.find():[=page/+().data]",
+                                    "event": "click?)(:open-doc=().data;)(:open-docs.push():[page/+)(:open-doc];)(:open-collection=view;)(:open-map=)(:data.editor.page.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false]?)(:clickedElement().id!=2ndLastChild().id;)(:clickedElement().id!=lastChild().id;!)(:open-docs.inc():[page/+)(:open-doc]",
                                     "actions": [
-                                        "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;await().().insert.child.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]",
-                                        "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1;await().().insert.child.():[open-doc=)(:open-doc;open-collection=)(:open-collection]"
+                                        "async():[insert:data-viewer-bar]?async():[insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc]:[().insert.child.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                        "async():[insert:open-view]?async():[insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1]:[().insert.child.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                                     ]
                                 }
                             ]
@@ -172,7 +171,7 @@
                             "type": "Icon?style.display=none;tooltip.text=create new view;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                             "controls": [
                                 {
-                                    "event": "click?parent().style().display=flex;)(:open-doc.del();)(:open-collection=view-+)(:data.editor.project.id",
+                                    "event": "click?parent().style().display=flex;)(:open-doc.del();)(:open-collection=view",
                                     "actions": "insert:[parent().next().id]?insert.component=parent().next().children.0;timer():[parent().next().lastChild().():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()]]:50;timer():[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:100"
                                 }
                             ]
@@ -187,7 +186,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=lastChild().id]:flex.else():none;1stChild().style().transform=if():[next().style().display=none]:rotate(0).else():rotate(90deg)"
+                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=lastChild().id]:flex:none;1stChild().style().transform=if():[next().style().display=none]:rotate(0):rotate(90deg)"
                         }
                     ]
                 },
@@ -209,15 +208,15 @@
                                             "event": "keyup?text()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.view.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
                                         },
                                         {
-                                            "actions": "note?note.text=File name could not be empty!<<!text();note.text=File name should be unique!<<)(:data.editor.view.keys().includes():text()",
-                                            "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.view.keys().includes():text()||!text()"
+                                            "actions": "note?note.text=if():[!text()]:[File name could not be empty!].elif():[)(:data.editor.view.keys().inc():text()]:[File name should be unique!].elif():[text().inc(): ]:[File name should not contain any spaces!]",
+                                            "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.view.keys().inc():text()||!text()||text().inc(): "
                                         },
                                         {
                                             "actions": [
                                                 "async():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
-                                                "async():save:note:[update:view-list]?save.collection=view-+)(:data.editor.project.id;save.doc=text();save.data=)(:data.editor.view.[text()];note.text=if():[)(:open-doc]:File name has been changed!.else():File has been created!"
+                                                "async():save:note:[update:view-list]?save.collection=view;save.doc=text();save.data=)(:data.editor.view.[text()];save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
                                             ],
-                                            "event": "keyup?)(:data.editor.view.[text()]=if():[)(:open-doc]:[)(:data.editor.view.[)(:open-doc].clone()].else():[_map:creation-date:[today().timestamp()]:id:[text()]:type:[format():[View?id=]+text()]];)(:open-collection=view-+)(:data.editor.project.id?text();text()!=)(:open-doc;e().key=Enter||e().key=Tab;)(:data.editor.view.keys().doesnotInclude():text()"
+                                            "event": "keyup?)(:data.editor.view.[text()]=if():[)(:open-doc]:[)(:data.editor.view.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:[text()]:type:['View?id='+text()]]?text();text()!=)(:open-doc;e().key=Enter||e().key=Tab;!)(:data.editor.view.keys().inc():text();!text().inc(): "
                                         }
                                     ],
                                     "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;flex=1]"
@@ -225,28 +224,27 @@
                                 {
                                     "controls": [
                                         {
-                                            "actions": "setPosition:file-action-popup?position.placement=right;position.positioner=().id;():file-action-popup.caller=().id",
-                                            "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]].else():[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];parent().open-doc=data();parent().open-collection=view-+data()"
+                                            "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];)(:open-doc=().data;)(:open-collection=view;():file-action-popup.caller=().id;setPosition():file-action-popup:[().id]:right"
                                         }
                                     ],
-                                    "type": "Icon?open-doc=data();open-collection=view-+)(:data.editor.project.id;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                                    "type": "Icon?open-doc=data();open-collection=view;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
                                 }
                             ],
                             "controls": [
                                 {
-                                    "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex"
+                                    "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
                                 },
                                 {
                                     "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                                 },
                                 {
-                                    "event": "click?)(:open-doc=().data;)(:open-collection=view-+)(:data.editor.project.id;)(:open-map=)(:data.editor.view.[().data];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.find():[=view/+().data]"
+                                    "event": "click?)(:open-doc=().data;)(:open-collection=view;)(:open-map=)(:data.editor.view.[)(:open-doc];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[view/+)(:open-doc]"
                                 },
                                 {
-                                    "event": "click?():data-viewer-bar.style().display=flex;)(:open-docs.push():[view/+().data];)(:open-doc=().data;)(:open-collection=view-+)(:data.editor.project.id;)(:open-map=)(:data.editor.view.[().data];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false]?)(:clickedElement().id!=2ndLastChild().id;)(:clickedElement().id!=lastChild().id;!)(:open-docs.find():[=view/+().data]",
+                                    "event": "click?)(:open-doc=().data;)(:open-docs.push():[view/+)(:open-doc];)(:open-collection=view;)(:open-map=)(:data.editor.view.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false]?)(:clickedElement().id!=2ndLastChild().id;)(:clickedElement().id!=lastChild().id;!)(:open-docs.inc():[view/+)(:open-doc]",
                                     "actions": [
-                                        "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;await().().insert.child.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]",
-                                        "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1;await().().insert.child.():[open-doc=)(:open-doc;open-collection=)(:open-collection]"
+                                        "async():[insert:data-viewer-bar]?async():[insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc]:[().insert.child.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                        "async():[insert:open-view]?async():[insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1]:[().insert.child.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                                     ]
                                 }
                             ]

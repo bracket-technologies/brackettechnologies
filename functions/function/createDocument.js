@@ -1,10 +1,8 @@
 const { createElement } = require("./createElement")
-// const { toParam } = require("./toParam")
 const { toArray } = require("./toArray")
 const { controls } = require("./controls")
-const { getJsonFiles } = require("./getJsonFiles")
+const { getJsonFiles } = require("./jsonFiles")
 const { toApproval } = require("./toApproval")
-const { capitalize } = require("./capitalize")
 const { toCode } = require("./toCode")
 //
 require('dotenv').config()
@@ -12,14 +10,13 @@ require('dotenv').config()
 const createDocument = async ({ req, res, db }) => {
 
     // Create a cookies object
-    var domain = req.headers["x-forwarded-host"]
-    var host = req.headers["host"]
+    var host = req.headers["x-forwarded-host"] || req.headers["host"]
     
     // current page
     var currentPage = req.url.split("/")[1] || ""
     currentPage = currentPage || "main"
     
-    var promises = [], user, page, view, css, js, project, editorAuth
+    var promises = [], user, page, view, project
     
     // get assets & views
     var global = {
@@ -32,13 +29,13 @@ const createDocument = async ({ req, res, db }) => {
         },
         codes: {},
         host,
-        domain: domain || host,
+        domain: host,
         currentPage,
         path: req.url,
         cookies: req.cookies,
         device: req.device,
         headers: req.headers,
-        public: getJsonFiles("public"),
+        public: getJsonFiles({ search: { collection: "_public_" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
         country: req.headers["x-country-code"]
@@ -62,60 +59,74 @@ const createDocument = async ({ req, res, db }) => {
         }
     }
 
-    // get project data
-    project = db
-        .collection("project").where("domains", "array-contains", domain || host)
+    var bracketDomains = [
+        "bracketjs.com",
+        "localhost",
+        "bracketjs.localhost"
+    ]
+
+    // is brakcet domain
+    var isBracket = bracketDomains.includes(host)
+    
+    if (isBracket) {
+
+        project = getJsonFiles({ search: { collection: "_project_", fields: { domains: { "array-contains": host } } } })
+        if (Object.keys(project)[0]) global.data.project = project = Object.values(project)[0]
+        
+    } else {
+
+        // get project data
+        project = db
+        .collection("_project_").where("domains", "array-contains", host)
         .get().then(doc => {
 
-            if (doc.docs[0] && doc.docs[0].exists) {
-                global.data.project = doc.docs[0].data()
-                global.data.project.id = doc.docs[0].id
-            }
+            if (doc.docs[0] && doc.docs[0].exists)
+            global.data.project = project = doc.docs[0].data()
         })
-
-    // get editor project data
-    if (currentPage === "developer-editor") {
-
-        var projectID = req.url.split("/")[2]
-        
-        editorAuth = db
-            .collection("authentication").doc(projectID)
-            .get().then(doc => {
-
-                if (doc.exists) global.auth = doc.data().code
-            })
     }
 
     promises.push(project)
-    promises.push(editorAuth)
     await Promise.all(promises)
 
     // project not found
-    if (Object.keys(global.data.project).length === 0) return res.send("Project not found!")
+    if (!project) return res.send("Project not found!")
+    global.projectId = project.id
+    
+    if (isBracket) {
+        
+        // get user
+        user = getJsonFiles({ search: { collection: "_user_", fields: { "projects": { "array-contains": project.id } } } })
+        if (Object.keys(user)[0]) global.data.user = user = Object.values(user)[0]
+        
+        // get page
+        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
+        
+        // get view
+        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
+        
+    } else {
 
-    // get user
-    user = db
-        .collection("user").where("project-id", "array-contains", global.data.project.id)
-        .get().then(doc => { 
+        // get user
+        user = db
+        .collection("_user_").where("projects", "array-contains", project.id)
+        .get().then(doc => {
             
-            if (doc.docs[0].exists) {
-                global.data.user = doc.docs[0].data()
-                global.data.user.id = doc.docs[0].id
-            }
+            if (doc.docs[0].exists)
+            global.data.user = user = doc.docs[0].data()
         })
 
-    // get page
-    page = db
-        .collection(`page-${global.data.project.id}`)
-        .get().then(q => q.forEach(doc => global.data.page[doc.id] = doc.data() ))
+        // get page
+        page = db
+            .collection(`page-${project.id}`)
+            .get().then(q => q.forEach(doc => global.data.page[doc.id] = doc.data() ))
 
-    // get view
-    view = db
-        .collection(`view-${global.data.project.id}`)
-        .get().then(q => q.forEach(doc => global.data.view[doc.id] = doc.data()))
+        // get view
+        view = db
+            .collection(`view-${project.id}`)
+            .get().then(q => q.forEach(doc => global.data.view[doc.id] = doc.data()))
 
-    promises.push(js)
-    promises.push(css)
+    }
+
     promises.push(page)
     promises.push(view)
     promises.push(user)
@@ -124,9 +135,10 @@ const createDocument = async ({ req, res, db }) => {
     
     // user not found
     if (!global.data.user) return res.send("User not found")
-
+    global.data.user = user = global.data.user
+    
     // page doesnot exist
-    if (!global.data.page[currentPage]) return res.send(`${capitalize(currentPage)} page does not exist!`)
+    if (!global.data.page[currentPage]) return res.send("Page not found!")
 
     // mount globals
     if (global.data.page[currentPage].global)
@@ -134,7 +146,7 @@ const createDocument = async ({ req, res, db }) => {
     
     // controls & children
     value.root.controls = global.data.page[currentPage].controls
-    value.root.children = global.data.page[currentPage]["view-id"].map(view => global.data.view[view])
+    value.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
 
     // forward
     if (global.data.page[currentPage].forward) {
@@ -187,9 +199,14 @@ const createDocument = async ({ req, res, db }) => {
             <meta name="description" content="${global.data.page[currentPage].meta.description || ""}">
             <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
             <title>${global.data.page[currentPage].title}</title>
+            <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
             <link rel="stylesheet" href="/index.css"/>
             <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-            <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
+            <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
             <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
         </head>
         <body>

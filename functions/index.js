@@ -1,9 +1,17 @@
+var functions = require("firebase-functions")
 var express = require("express")
 var device = require('express-device')
 var cookieParser = require('cookie-parser')
+var firebase = require("firebase")
+require("firebase/firestore")
 
 // config
 require('dotenv').config()
+
+// firebase
+firebase.initializeApp({"apiKey": "AIzaSyB6fGcnoqzRjUUytNv6R05euQ6RYsBJK3o", "authDomain": "bracketjs.firebaseapp.com", "projectId": "bracketjs", "storageBucket": "bracketjs.appspot.com", "messagingSenderId": "869789439383", "appId": "1:869789439383:web:09ed5cda97e32200bba0d2"})
+var db = firebase.firestore()
+var storage = firebase.storage()
 
 var { getApi, postApi, deleteApi, uploadApi } = require("./function/api")
 var { createDocument } = require("./function/createDocument")
@@ -27,13 +35,15 @@ app.use((req, res, next) => {
   // Request headers you wish to allow
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', true)
 
   // Pass to next layer of middleware
   next()
 })
+
+app.listen(80, () => console.log("Server Listening to Port 80"))
+
+exports.app = functions.https.onRequest(app)
 
 // post
 app.post("*", (req, res) => {
@@ -41,30 +51,49 @@ app.post("*", (req, res) => {
   var path = req.url.split("/")
 
   if (path[1] === "api") {
-    if (path[2] === "file") return uploadApi({ req, res })
-    return postApi({ req, res })
+
+    // upload api
+    if (path[2] === "file") {
+  
+      // api: bracketjs
+      if (req.headers.project === "bracketjs") return require("./function/apiLocal").uploadApi({ req, res })
+      
+      return uploadApi({ req, res, storage, db })
+    }
+  
+    // api: bracketjs
+    if (req.headers.project === "bracketjs") return require("./function/apiLocal").postApi({ req, res })
+
+    return postApi({ req, res, db })
   }
 })
 
 // delete
 app.delete("*", (req, res) => {
   var path = req.url.split("/")
+  
+  // api: bracketjs
+  if (req.headers.project === "bracketjs") return require("./function/apiLocal").deleteApi({ req, res })
 
-  if (path[1] === "api") return deleteApi({ req, res })
+  if (path[1] === "api") return deleteApi({ req, res, db })
 })
 
 // get
 app.get("*", (req, res) => {
   var path = req.url.split("/")
   
-  // api
-  if (path[1] === "api") return getApi({ req, res })
-  
+  // متابعتها لاحقا
+  if (path.includes("_string") || path.includes("undefined")) return res.send("Wrong")
+
   // favicon
   if (req.url === "/favicon.ico") return res.sendStatus(204)
   
-  // respond
-  return createDocument({ req, res })
-})
+  // api: bracketjs
+  if (req.headers.project === "bracketjs") return require("./function/apiLocal").getApi({ req, res })
 
-app.listen(80, () => console.log("Server listening to Port 80"))
+  // api
+  if (path[1] === "api") return getApi({ req, res, db })
+  
+  // respond
+  return createDocument({ req, res, db })
+})
