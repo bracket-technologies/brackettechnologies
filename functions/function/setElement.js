@@ -4,7 +4,7 @@ const { toArray } = require("./toArray")
 
 const setElement = ({ id }) => {
 
-    var local = window.value[id]
+    var local = window.children[id]
     var global = window.global
     if (!local) return console.log("No Element", id)
     
@@ -25,7 +25,7 @@ const setElement = ({ id }) => {
     local.status = "Mounting Element"
     
     local.element = document.getElementById(id)
-    if (!local.element) return delete window.value[id]
+    if (!local.element) return delete window.children[id]
 
     // status
     local.status = "Element Loaded"

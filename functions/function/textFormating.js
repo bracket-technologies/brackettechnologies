@@ -8,7 +8,7 @@ const formats = [
 
 const textFormating = ({ _window, text, id }) => {
 
-    var local = _window ? _window.value[id] : window.value[id]
+    var local = _window ? _window.children[id] : window.children[id]
     var style = local.style || {}
     var global = _window ? _window.global : window.global
     var _text = text, newText = _text

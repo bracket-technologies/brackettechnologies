@@ -1,8 +1,8 @@
 module.exports = ({ id }) => {
 
-  if (window.value[id].element.style.transition) {
-    window.value[id].element.style.transition += ", opacity .2s";
-  } else window.value[id].element.style.transition = "opacity .2s";
+  if (window.children[id].element.style.transition) {
+    window.children[id].element.style.transition += ", opacity .2s";
+  } else window.children[id].element.style.transition = "opacity .2s";
 
   return [{
     event: `mousedown?():body.element.addClass().unselectable`,

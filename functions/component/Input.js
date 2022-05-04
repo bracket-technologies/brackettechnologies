@@ -86,7 +86,7 @@ const Input = (component) => {
                 "children": [{
                     "type": `Text?text=${label.text || "Label"};style.color=#888;style.fontSize=1.1rem;style.width=fit-content;${toString(label)}`,
                     "controls": [{
-                        "event": "click?().next().getInput().focus()"
+                        "event": "click?next().getInput().focus()"
                     }]
                 }, Input({ ...component, component: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
                 ]
@@ -95,19 +95,19 @@ const Input = (component) => {
                 "children": [{
                     "type": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
                     "controls": [{
-                        "event": "click?().parent().prev().getInput().element.type=text;().next().style().display=flex;().style().display=none"
+                        "event": "click?parent().prev().getInput().element.type=text;next().style().display=flex;style().display=none"
                     }]
                 }, {
                     "type": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
                     "controls": [{
-                        "event": "click?().parent().prev().getInput().element.type=password;().prev().style().display=flex;().style().display=none"
+                        "event": "click?parent().prev().getInput().element.type=password;prev().style().display=flex;style().display=none"
                     }]
                 }]
             }],
             "controls": [{
-                "event": "click:body?().style().border.equal():[2px solid #008060]<<global().clickedElement.insideOrSame():[().element];().style().border.equal():[1px solid #ccc]<<global().clickedElement.outside():[().element]"
+                "event": "click:body?style().border=if():[)(:clickedElement.outside():[().element]]:[1px solid #ccc]:[2px solid #008060]"
             }, {
-                "event": "click?().getInput().focus()"
+                "event": "click?getInput().focus()"
             }]
         }
     }
@@ -134,9 +134,9 @@ const Input = (component) => {
             "children": [{
                 "type": `Text?text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
                 "controls": [{
-                    "event": `click:body?().next().style().border.equal():${clicked.style.border || "2px solid #008060"}<<global().clickedElement.insideOrSame():[().element].or():[global().clickedElement.insideOrSame():[().next().element]];().next().style().border.equal():${style.border || "1px solid #ccc"}<<global().clickedElement.outside():[().element].and():[global().clickedElement.outside():[().next().element]]?!().parent().required.mount`
+                    "event": `click:body?next().style().border=if():[)(:clickedElement.insideOrSame():[().element]||)(:clickedElement.insideOrSame():[next().element]]:[${clicked.style.border || "2px solid #008060"}]:[${style.border || "1px solid #ccc"}]?parent().required.mount`
                 }, {
-                    "event": "click?global().clickedElement=().next().getInput().element;().next().getInput().focus()"
+                    "event": "click?)(:clickedElement=next().getInput().element;next().getInput().focus()"
                 }]
             }, 
                 Input({ ...component, component: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
@@ -296,7 +296,7 @@ const Input = (component) => {
                         after: { color: '#0d6efd' }
                     },
                 }, {
-                    type: `Text?id=${id}-currency;currency=${currency};text=${currency};droplist.items<<!${readonly}=await().global().asset.findByName():Currency.options.map():name;hoverable;duplicated=${duplicated}?${currency}`,
+                    type: `Text?id=${id}-currency;currency=${currency};text=${currency};droplist.items<<!${readonly}=await().)(:asset.findByName():Currency.options.map():name;hoverable;duplicated=${duplicated}?${currency}`,
                     style: {
                         fontSize: '1.3rem',
                         color: '#666',
@@ -307,7 +307,7 @@ const Input = (component) => {
                         after: { color: '#0d6efd' }
                     },
                 }, {
-                    type: `Text?path=unit;id=${id}-unit;droplist.items<<!${readonly}=await().global().asset.findByName():Unit.options.map():name;hoverable?${unit}`,
+                    type: `Text?path=unit;id=${id}-unit;droplist.items<<!${readonly}=await().)(:asset.findByName():Unit.options.map():name;hoverable?${unit}`,
                     style: {
                         fontSize: '1.3rem',
                         color: '#666',
@@ -341,7 +341,7 @@ const Input = (component) => {
                         after: { color: '#0d6efd' }
                     }
                 }, {
-                    type: `Text?id=${id}-language;lang=${lang};text=${lang};droplist.items<<!${readonly}=await().global().asset.findByName():Language.options.map():name;droplist.lang;hoverable;duplicated=${duplicated}?${lang}`,
+                    type: `Text?id=${id}-language;lang=${lang};text=${lang};droplist.items<<!${readonly}=await().)(:asset.findByName():Language.options.map():name;droplist.lang;hoverable;duplicated=${duplicated}?${lang}`,
                     style: {
                         fontSize: '1.3rem',
                         color: '#666',
@@ -357,7 +357,7 @@ const Input = (component) => {
                         event: `change;loaded?():${id}-more.style().display=none<<!e().target.checked;():${id}-more.style().display=flex<<e().target.checked`
                     }]
                 }, {
-                    type: `Icon?id=${id}-more;name=bi-three-dots-vertical;path=type;style.width=1.5rem;style.display=none;style.color=#666;style.cursor=pointer;style.fontSize=2rem;global().google-items=_array:outlined:rounded:sharp:twoTone;droplist.items=_array:[any.Enter google icon type]:[global().google-items];hoverable?${google}`,
+                    type: `Icon?id=${id}-more;name=bi-three-dots-vertical;path=type;style.width=1.5rem;style.display=none;style.color=#666;style.cursor=pointer;style.fontSize=2rem;)(:google-items=_array:outlined:rounded:sharp:twoTone;droplist.items=_array:[any.Enter google icon type]:[)(:google-items];hoverable?${google}`,
                 }, {
                     type: `Icon?class=align-center;name=bi-x;id=${id}-x;hoverable?${clearable}.or():${removable}`,
                     style: {

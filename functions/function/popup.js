@@ -3,8 +3,8 @@ const {update} = require("./update")
 
 const popup = ({ id }) => {
   
-  var local = window.value[id]
-  var popup = window.value["popup"]
+  var local = window.children[id]
+  var popup = window.children["popup"]
   var popUp = local.popup
   var _controls = popUp.controls
   popup.positioner = id
@@ -22,7 +22,7 @@ const popup = ({ id }) => {
 
     _controls = {
       event: "click",
-      actions: `resetStyles:popup;await().note;await().setStyle:mini-window;await().remove:[():mini-window-view.element.children.0.id]:220${popUp.update ? `;await().update:${popUp.update}` : ""};async().erase?note.text=${popUp.note || "Data removed successfully"};()::200.style.display=none;style.opacity=0;erase.path=${popUp.path};erase.id=${popUp.id || "().data().id"};await().global().[().Data]=().Data()._filterById().[${popUp.id ? `any.${popUp.id}` : "().data().id"}.not().[_.id]]`,
+      actions: `resetStyles:popup;await().note;await().setStyle:mini-window;await().remove:[():mini-window-view.element.children.0.id]:220${popUp.update ? `;await().update:${popUp.update}` : ""};async().erase?note.text=${popUp.note || "Data removed successfully"};()::200.style.display=none;style.opacity=0;erase.path=${popUp.path};erase.id=${popUp.id || "().data().id"};await().)(:[().Data]=().Data()._filterById().[${popUp.id ? `any.${popUp.id}` : "().data().id"}.not().[_.id]]`,
     }
   }
 
@@ -31,11 +31,11 @@ const popup = ({ id }) => {
 
     // caller
     popup.caller = id
-    // window.value["popup-text"].caller = id
-    window.value["popup-confirm"].caller = id
-    window.value["popup-cancel"].caller = id
+    // window.children["popup-text"].caller = id
+    window.children["popup-confirm"].caller = id
+    window.children["popup-cancel"].caller = id
 
-    if (popUp.text) window.value["popup-text"].element.innerHTML = popUp.text
+    if (popUp.text) window.children["popup-text"].element.innerHTML = popUp.text
     controls({ controls: _controls, id: "popup-confirm" })
 
   }, 50)

@@ -1,7 +1,7 @@
 module.exports = {
   toStyle: ({ _window, id }) => {
 
-    var local = _window ? _window.value[id] : window.value[id]
+    var local = _window ? _window.children[id] : window.children[id]
     var style = ""
 
     if (local.style) {

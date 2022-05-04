@@ -8,7 +8,7 @@ const { controls } = require("./controls")
 
 const update = ({ id, update = {} }) => {
 
-  var value = window.value
+  var value = window.children
   var global = window.global
   var local = value[id]
   var timer = update.timer || 0
@@ -71,7 +71,7 @@ const update = ({ id, update = {} }) => {
 
 const removeChildren = ({ id }) => {
 
-  var value = window.value
+  var value = window.children
   var local = value[id]
 
   //if (!local.element && id !== "root") return delete value[id]

@@ -1,10 +1,10 @@
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
 
-window.value = JSON.parse(document.getElementById("value").textContent)
+window.children = JSON.parse(document.getElementById("value").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
 
-var value = window.value
+var value = window.children
 var global = window.global
 
 value.document = document
@@ -25,7 +25,7 @@ history.pushState(null, global.data.page[global.currentPage].title, global.path)
 // clicked element
 document.addEventListener('click', e => {
 
-    global["clickedElement()"] = window.value[(e || window.event).target.id]
+    global["clickedElement()"] = window.children[(e || window.event).target.id]
     global.clickedElement = (e || window.event).target
     
 }, false)
@@ -35,6 +35,6 @@ global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
 global.idList.map(id => starter({ id }))
 
-Object.entries(window.value).map(([id, value]) => {
-    if (value.status === "Loading") delete window.value[id]
+Object.entries(window.children).map(([id, value]) => {
+    if (value.status === "Loading") delete window.children[id]
 })

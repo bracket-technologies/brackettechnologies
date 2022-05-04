@@ -4,7 +4,7 @@ const {clone} = require("./clone")
 
 const createView = ({ view, id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   var global = window.global
 
   if (!view) return

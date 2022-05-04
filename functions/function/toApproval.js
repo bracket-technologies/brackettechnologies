@@ -20,6 +20,9 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
   // coded
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
+  // ==
+  string = string.replace("==", "=")
+
   string.split(";").map(condition => {
 
     // no condition
@@ -27,7 +30,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     if (!approval) return false
 
     id = mainId
-    var local = _window ? _window.value[id] : window.value[id] || {}
+    var local = _window ? _window.children[id] : window.children[id] || {}
 
     if (condition.includes("#()")) {
       local["#"] = toArray(local["#"])
@@ -46,6 +49,12 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     }
 
     condition = condition.split("=")
+    var equalOp = condition.length > 1
+    var greaterOp = condition.length > 1 ? condition[0].slice(-1) === ">" : condition[0].includes(">") && true
+    if (greaterOp) condition[0] = condition[0].slice(0, -1)
+    var lessOp = condition.length > 1 ? condition[0].slice(-1) === "<" : condition[0].includes("<") && true
+    if (lessOp) condition[0] = condition[0].slice(0, -1)
+
     var key = condition[0]
     var value = condition[1]
     var notEqual
@@ -85,8 +94,12 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, value, e, _, req, res, object })
     else local[keygen] = key
     
-    if (value === undefined) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
-    else approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)
+    if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
+    else {
+      if (equalOp) approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)
+      if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(local[keygen] > value) : (local[keygen] > value)
+      if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(local[keygen] < value) : (local[keygen] < value)
+    }
 
     delete local[keygen]
   })

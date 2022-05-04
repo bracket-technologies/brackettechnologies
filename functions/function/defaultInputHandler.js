@@ -5,7 +5,7 @@ const { isArabic } = require("./isArabic")
 
 const defaultInputHandler = ({ id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   var global = window.global
 
   if (!local) return
@@ -19,7 +19,7 @@ const defaultInputHandler = ({ id }) => {
     var myFn = (e) => {
 
       // local doesnot exist
-      if (!window.value[id]) return e.target.removeEventListener("change", myFn)
+      if (!window.children[id]) return e.target.removeEventListener("change", myFn)
 
       var data = e.target.checked
       local.data = data
@@ -50,7 +50,7 @@ const defaultInputHandler = ({ id }) => {
     var value = e.target.value
 
     // VAR[id] doesnot exist
-    if (!window.value[id]) return e.target.removeEventListener("input", myFn)
+    if (!window.children[id]) return e.target.removeEventListener("input", myFn)
     
     if (!local["preventDefault"]) {
       

@@ -6,7 +6,7 @@ const { clone } = require("./clone")
 
 const filter = ({ filter = {}, id, e, ...params }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   var global = window.global
   if (!local) return
 

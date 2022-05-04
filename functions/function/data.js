@@ -5,7 +5,7 @@ const { setData } = require("./setData")
 
 const createData = ({ data, id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   var global = window.global[id]
 
   local.derivations.reduce((o, k, i) => {
@@ -18,7 +18,7 @@ const createData = ({ data, id }) => {
 
 const clearData = ({ id, e, clear = {} }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   var global = window.global
 
   if (!global[local.Data]) return

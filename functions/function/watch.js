@@ -9,7 +9,7 @@ const watch = ({ controls, id }) => {
 
     const { execute } = require("./execute")
 
-    var local = window.value[id]
+    var local = window.children[id]
     if (!local) return
 
     var watch = toCode({ id, string: controls.watch })
@@ -27,7 +27,7 @@ const watch = ({ controls, id }) => {
         
         const myFn = async () => {
             
-            if (!window.value[id]) return clearInterval(local[`${_watch}-timer`])
+            if (!window.children[id]) return clearInterval(local[`${_watch}-timer`])
             
             var value = toValue({ id, value: _watch })
 

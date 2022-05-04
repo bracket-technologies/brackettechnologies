@@ -6,9 +6,9 @@ module.exports = ({ params }) => {
   var state = generate()
 
   return [{
-    event: "click??!global().mini-window-close",
+    event: "click??!)(:mini-window-close",
     actions: [
-      `createView:mini-window-view?global().${state}=${controls.Data ? window.global[controls.Data] : '().data()'};():mini-window-view.Data.delete();():mini-window-view.Data=${state}<<().data();view=${controls.view}`,
+      `createView:mini-window-view?)(:${state}=${controls.Data ? window.global[controls.Data] : '().data()'};():mini-window-view.Data.delete();if():data():[():mini-window-view.Data=${state}];view=${controls.view}`,
       "setStyle:mini-window?style.display=flex;style.opacity=1>>25",
     ]
   }]

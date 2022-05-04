@@ -1,10 +1,10 @@
 {
     "children": [
         {
-            "type": "Swiper?id=navbar;style.position=fixed;style.transition=.3s;style.top=0;style.width=100%;style.zIndex=9;style.height=8rem;style.backgroundColor=#fbf7ed;innerbox.style.width=100%<<desktop();innerbox.style.display=flex<<desktop();innerbox.style.padding=0 8rem",
+            "type": "Swiper?id=navbar;style.position=fixed;style.transition=.3s;style.top=0;style.width=100%;style.zIndex=9;style.height=8rem;style.backgroundColor=#fbf7ed;innerbox.style.width=100%;innerbox.style.display=flex;innerbox.style.padding=0 8rem",
             "controls": [
                 {
-                    "event": "scroll:document?().style():[boxShadow=0 0 1rem 0 #00000030;backgroundColor=#fff]<<window().scrollY.greater():[window().innerHeight];().style():[boxShadow=none;backgroundColor=#fbf7ed]<<window().scrollY.less():[window().innerHeight]"
+                    "event": "scroll:document?if():[win().scrollY.greater():[win().innerHeight]]:[style():[boxShadow=0 0 1rem 0 #00000030;backgroundColor=#fff]];if():[win().scrollY.less():[win().innerHeight]]:[style():[boxShadow=none;backgroundColor=#fbf7ed]]"
                 }
             ],
             "children": [
@@ -1103,7 +1103,7 @@
                                     "event": "click?().3rdChild().style().transform.equal():rotate(180deg)"
                                 },
                                 {
-                                    "event": "click:body?().3rdChild().style().transform.equal():rotate(0)?global().clickedElement().isnot():()"
+                                    "event": "click:body?().3rdChild().style().transform.equal():rotate(0)?)(:clickedElement().isnot():()"
                                 }
                             ],
                             "type": "View?class=flex-box pointer;style.gap=1rem",

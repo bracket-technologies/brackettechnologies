@@ -19,7 +19,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   
   const { execute } = require("./execute")
 
-  var local = _window ? _window.value[id] : window.value[id]
+  var local = _window ? _window.children[id] : window.children[id]
   var mainID = id
 
   var events = toCode({ _window, id, string: controls.event })
@@ -87,14 +87,14 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     // add event listener
     toArray(idList).map(id => {
 
-      var _local = _window ? _window.value[id] : window.value[id]
+      var _local = _window ? _window.children[id] : window.children[id]
       if (!_local) return
 
       var myFn = async (e) => {
 
         // body
         if (id === "body") id = mainID
-        var __local = _window ? _window.value[id] : window.value[id]
+        var __local = _window ? _window.children[id] : window.children[id]
         
         // VALUE[id] doesnot exist
         if (!__local) return e.target.removeEventListener(event, myFn)
@@ -129,7 +129,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           // body
           if (id === "body") id = mainID
-          var __local = _window ? _window.value[id] : window.value[id]
+          var __local = _window ? _window.children[id] : window.children[id]
 
           if (once) e.target.removeEventListener(event, myFn)
 
@@ -160,7 +160,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
 const defaultEventHandler = ({ id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   var global = window.global
 
   local.touchstart = false
@@ -173,14 +173,14 @@ const defaultEventHandler = ({ id }) => {
 
     var setEventType = (e) => {
 
-      if (!window.value[id]) return e.target.removeEventListener(event, setEventType)
+      if (!window.children[id]) return e.target.removeEventListener(event, setEventType)
 
       if (event === "mouseenter") local.mouseenter = true
       else if (event === "mouseleave") local.mouseenter = false
       else if (event === "mousedown") {
         
         local.mousedown = true
-        window.value["tooltip"].element.style.opacity = "0"
+        window.children["tooltip"].element.style.opacity = "0"
         clearTimeout(global["tooltip-timer"])
         delete global["tooltip-timer"]
 

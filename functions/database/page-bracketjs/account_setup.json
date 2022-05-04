@@ -13,7 +13,7 @@
     "title": "Account setup - Bracket",
     "controls": [
         {
-            "event": "loading?global().currency=LBP"
+            "event": "loading?)(:currency=LBP"
         }
     ]
 }

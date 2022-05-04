@@ -2,7 +2,7 @@ const { toArray } = require("../function/toArray")
 
 module.exports = ({ controls, id }) => {
 
-    var local = window.value[id]
+    var local = window.children[id]
     var idlist = toArray(controls.id || id)
     
     local.touched.freeze = local.touched.freeze ? true : false
@@ -14,9 +14,9 @@ module.exports = ({ controls, id }) => {
 
     return [{
         "event": `loaded:[${idlist}]?().touched.freeze=true?().touched.mount.or():[().touched.freeze]`,
-        "actions": "setStyle?style=().touched.style.if().[global().mode.is():[global().default-mode]].else().[().mode.[global().mode].touched.style].else()._map"
+        "actions": "setStyle?style=().touched.style.if().[)(:mode.is():[)(:default-mode]].else().[().mode.[)(:mode].touched.style].else()._map"
     }, {
         "event": `touch:[${idlist}]??!().touched.disable`,
-        "actions": "setStyle?style=[().touched.style.if().[global().mode.is():[global().default-mode]].else().[().mode.[global().mode].touched.style].else()._map].if().[().touched.freeze.isfalse()].else().[().touched.before];().touched.freeze=[true].if().[().touched.freeze.isfalse()].else().[false]"
+        "actions": "setStyle?style=[().touched.style.if().[)(:mode.is():[)(:default-mode]].else().[().mode.[)(:mode].touched.style].else()._map].if().[().touched.freeze.isfalse()].else().[().touched.before];().touched.freeze=[true].if().[().touched.freeze.isfalse()].else().[false]"
     }]
 }

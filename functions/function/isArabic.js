@@ -3,7 +3,7 @@ const english = /[A-Za-z]/
 
 const isArabic = ({ id, value, text }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   if (!local || !local.element) return
   text = text || value || local.element.value || local.element.innerHTML
   if (!text) return

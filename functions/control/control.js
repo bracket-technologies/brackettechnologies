@@ -15,7 +15,6 @@ module.exports = {
   hover: require("./hover"),
   click: require("./click"),
   clicked: require("./clicked"),
-  touch: require("./touch"),
   loaded: require("./loaded"),
   contentful: require("../function/contentful").contentful
 }

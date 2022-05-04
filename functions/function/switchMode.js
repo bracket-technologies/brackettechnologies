@@ -4,7 +4,7 @@ const { clone } = require("./clone")
 
 const switchMode = ({ mode, _id = "body" }) => {
 
-    var value = window.value
+    var value = window.children
     var children = [...value[_id].element.children]
 
     mode = mode.toLowerCase()

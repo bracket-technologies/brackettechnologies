@@ -18,13 +18,13 @@
             "type": "View?id=mini-window-view" 
         },
         "controls": [{
-            "event": "mouseenter?global().mini-window-view-mouseenter"
+            "event": "mouseenter?)(:mini-window-view-mouseenter"
         }, {
-            "event": "mouseleave?global().mini-window-view-mouseenter=false"
+            "event": "mouseleave?)(:mini-window-view-mouseenter=false"
         }]
     }],
     "controls": [{
         "event": "mousedown",
-        "actions": "setStyle;remove:[():mini-window-view.element.children.0.id]:220?style.display=none>>200;style.opacity=0;().element.scrollTop:[():mini-window-view.parent().id]:200=0?!global().mini-window-view-mouseenter"
+        "actions": "setStyle;remove:[():mini-window-view.element.children.0.id]:220?style.display=none>>200;style.opacity=0;().element.scrollTop:[():mini-window-view.parent().id]:200=0?!)(:mini-window-view-mouseenter"
     }]
 }

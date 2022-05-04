@@ -1,6 +1,6 @@
 module.exports = ({ controls, id }) => {
 
-    var local = window.value[id]
+    var local = window.children[id]
     var _id = controls.id || controls.controllerId || id
     
     local.hover.before = local.hover.before || {}
@@ -10,11 +10,11 @@ module.exports = ({ controls, id }) => {
     )
     
     return [{
-        "event": `loaded:${_id}?global().[().state]<<().state.is():[().hover.id]?().hover.mount`,
-        "actions": "setStyle?style=if():[global().mode.is():[global().default-mode]]:[().hover.style].else():[().mode.[global().mode].hover.style].else():_map"
+        "event": `loaded:${_id}?if():[().state=().hover.id]:[)(:[().state]=generate()]?().hover.mount`,
+        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style].else():[().mode.[)(:mode].hover.style].else():_map"
     }, {
         "event": `mouseenter:${_id}??!().click.mount;!().hover.disable`,
-        "actions": "setStyle?style=if():[global().mode.is():[global().default-mode]]:[().hover.style].else():[().mode.[global().mode].hover.style].else():_map"
+        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style].else():[().mode.[)(:mode].hover.style].else():_map"
     }, {
         "event": `mouseleave:${_id}??!().click.mount;!().hover.disable`,
         "actions": "setStyle?style=().hover.before"

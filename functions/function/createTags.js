@@ -7,7 +7,7 @@ const { toArray } = require("./toArray")
 
 const createTags = ({ _window, id, req, res }) => {
 
-  var value = _window ? _window.value : window.value
+  var value = _window ? _window.children : window.children
   var local = value[id]
   if (!local) return
 
@@ -66,7 +66,7 @@ const createTag = ({ _window, id, req, res }) => {
 
   const {execute} = require("./execute")
 
-  var local = _window ? _window.value[id] : window.value[id]
+  var local = _window ? _window.children[id] : window.children[id]
   
   // components
   componentModifier({ _window, id })
@@ -78,7 +78,7 @@ const createTag = ({ _window, id, req, res }) => {
 
 const componentModifier = ({ _window, id }) => {
 
-  var local = _window ? _window.value[id] : window.value[id]
+  var local = _window ? _window.children[id] : window.children[id]
 
   // icon
   if (local.type === "Icon") {
@@ -118,7 +118,7 @@ const componentModifier = ({ _window, id }) => {
     
   } else if (local.type === "Item") {
 
-    var parent = _window ? _window.value[local.parent] : window.value[local.parent]
+    var parent = _window ? _window.children[local.parent] : window.children[local.parent]
 
     if (local.index === 0) {
 
@@ -131,7 +131,7 @@ const componentModifier = ({ _window, id }) => {
 
 const arrange = ({ data, arrange, id, _window }) => {
 
-  var value = _window ? _window.value : window.value
+  var value = _window ? _window.children : window.children
   var local = value[id], index = 0
 
   if (local) {

@@ -9,7 +9,7 @@ const { toValue } = require("./toValue")
 
 var createElement = ({ _window, id, req, res }) => {
 
-  var value = _window ? _window.value : window.value
+  var value = _window ? _window.children : window.children
   var local = value[id]
   var global = _window ? _window.global : window.global
   var parent = value[local.parent]

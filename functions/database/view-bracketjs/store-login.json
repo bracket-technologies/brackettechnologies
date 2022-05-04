@@ -1,11 +1,11 @@
 {
     "controls": [
         {
-            "actions": "route?route.path=/developer-editor/+)(:data.editor.project.id<<)(:route-to-editor;route.path=/account_setup/+)(:new-project<<)(:route-to-account-setup",
+            "actions": "route?route.path=if():[)(:route-to-editor]:[/developer-editor/+)(:data.editor.project.id].elif():[)(:route-to-account-setup]:[/account_setup/+)(:new-project]",
             "watch": ")(:data.editor.user.and():[)(:data.editor.project]:[)(:data.editor.view]:[)(:data.editor.page]"
         },
         {
-            "actions": "async():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_user_;search.doc=)(:path.split():/.2;async()::[)(:data.editor.user=().search.data]?)(:path.split():/.2",
+            "actions": "async():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_user_;search.doc=)(:path.split():/.3;async()::[)(:data.editor.user=().search.data]?)(:path.split():/.3",
             "event": "loaded??!)(:data.editor.user"
         }
     ],
@@ -84,7 +84,7 @@
                             ]
                         },
                         {
-                            "type": "View?style.borderRadius=.75rem;style.border=1px solid #E1B878;style.backgroundColor=#FFF5EA;class=flexbox;style.gap=1.5rem;style.padding=2rem 2.1rem;style.display=none<<)(:data.editor.user.project.length().isgreater():0",
+                            "type": "View?style.borderRadius=.75rem;style.border=1px solid #E1B878;style.backgroundColor=#FFF5EA;class=flexbox;style.gap=1.5rem;style.padding=2rem 2.1rem;if():[)(:data.editor.user.project.len().isgreater():0]:[style.display=none]",
                             "children": [
                                 {
                                     "type": "Icon?name=bi-exclamation-circle-fill;style.color=#B98900;style.fontSize=1.8rem"

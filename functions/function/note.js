@@ -2,7 +2,7 @@ const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
 
-  var value = window.value
+  var value = window.children
   var note = value["action-note"]
   var type = _note.type || "success"
   var noteText = value["action-note-text"]

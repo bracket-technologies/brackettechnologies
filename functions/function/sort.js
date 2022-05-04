@@ -5,7 +5,7 @@ const { toNumber } = require("./toNumber")
 const sort = ({ sort = {}, id, e }) => {
 
   var global = window.global
-  var local = window.value[id]
+  var local = window.children[id]
   if (!local) return
 
   var Data = sort.Data || local.Data

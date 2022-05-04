@@ -1,6 +1,6 @@
 module.exports = ({ controls, id }) => {
 
-    var local = window.value[id]
+    var local = window.children[id]
     var _id = controls.id || id
     
     local.click.sticky = local.click.sticky ? true : false
@@ -11,11 +11,11 @@ module.exports = ({ controls, id }) => {
     )
 
     return [{
-        "event": `loaded:${_id}?global().[().state]<<().state=().click.id?().click.mount`,
-        "actions": "setStyle?style=if():[global().mode.is():[global().default-mode]]:[().click.style].else():[().mode.[global().mode].click.style].else():_map"
+        "event": `loaded:${_id}?if():[().state=().click.id]:[)(:[().state]=gen()]?().click.mount`,
+        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().click.style].else():[().mode.[)(:mode].click.style].else():_map"
     }, {
         "event": `mousedown:${_id}??!().click.disable;!().click.sticky`,
-        "actions": "setStyle?style=if():[global().mode.is():[global().default-mode]]:[().click.style].else():[().mode.[global().mode].click.style].else():_map"
+        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().click.style].else():[().mode.[)(:mode].click.style].else():_map"
     }, {
         "event": `mouseup:${_id}??!().click.freeze;!().click.disable;!().click.sticky`,
         "actions": "setStyle?style=().click.before?().click.freeze.not()"

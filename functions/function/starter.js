@@ -10,7 +10,7 @@ const starter = ({ id }) => {
   const { controls } = require("./controls")
   const { defaultInputHandler } = require("./defaultInputHandler")
 
-  var local = window.value[id]
+  var local = window.children[id]
   if (!local) return
   
   // status
@@ -39,9 +39,9 @@ const starter = ({ id }) => {
     
     if (params.id) {
 
-      delete Object.assign(window.value, {[params.id]: window.value[id]})[id]
+      delete Object.assign(window.children, {[params.id]: window.children[id]})[id]
       id = params.id
-      local = window.value[id]
+      local = window.children[id]
     }
 
     delete local.await

@@ -1,6 +1,6 @@
 module.exports = ({ controls, id }) => {
 
-    var local = window.value[id]
+    var local = window.children[id]
     var _id = controls.id || id
     
     local.clicked.freeze = local.clicked.freeze ? true : false
@@ -12,12 +12,12 @@ module.exports = ({ controls, id }) => {
 
     return [{
         "event": `loaded:${_id}?().clicked.freeze=true?().clicked.mount.or():[().clicked.freeze]`,
-        "actions": "setStyle?style=if().[global().mode.is():[global().default-mode]]:[().clicked.style].else():[().mode.[global().mode].clicked.style].else():_map"
+        "actions": "setStyle?style=if().[)(:mode.is():[)(:default-mode]]:[().clicked.style].else():[().mode.[)(:mode].clicked.style].else():_map"
     }, {
         "event": `click??!().required.mount;!().parent().required.mount;!().clicked.disable`,
-        "actions": "setStyle?style=if().[global().mode.is():[global().default-mode]]:[().clicked.style].else():[().mode.[global().mode].clicked.style].else():_map;().clicked.freeze=true"
+        "actions": "setStyle?style=if().[)(:mode.is():[)(:default-mode]]:[().clicked.style].else():[().mode.[)(:mode].clicked.style].else():_map;().clicked.freeze=true"
     }, {
-        "event": `click:body??!().required.mount;!().parent().required.mount;().clicked.freeze;global().clickedElement.outside():[().element];!().clicked.disable`,
+        "event": `click:body??!().required.mount;!().parent().required.mount;().clicked.freeze;)(:clickedElement.outside():[().element];!().clicked.disable`,
         "actions": "setStyle?style=().clicked.before;().clicked.freeze=false"
     }]
 }

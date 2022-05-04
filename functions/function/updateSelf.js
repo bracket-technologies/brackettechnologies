@@ -8,7 +8,7 @@ const { removeChildren } = require("./update")
 
 const updateSelf = ({ id, update = {} }) => {
 
-  var value = window.value
+  var value = window.children
   var local = value[id]
   var timer = update.timer || 0
   

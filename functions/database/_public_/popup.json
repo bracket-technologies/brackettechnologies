@@ -12,7 +12,7 @@
         }]
     }],
     "controls": [{
-        "event": "mouseleave;click:body??global().popup-positioner;!e().target.id.isChildOfId():[global().popup-positioner]",
-        "actions": "blur::200?().style().opacity=0;().style().pointerEvents=none;().style().transform=scale(0.5);global().popup-positioner.delete()?().mouseenter.isfalse();!e().target.id.isChildOfId():[global().popup-positioner]"
+        "event": "mouseleave;click:body??)(:popup-positioner;!e().target.id.isChildOfId():[)(:popup-positioner]",
+        "actions": "blur::200?().style().opacity=0;().style().pointerEvents=none;().style().transform=scale(0.5);)(:popup-positioner.delete()?().mouseenter.isfalse();!e().target.id.isChildOfId():[)(:popup-positioner]"
     }]
 }

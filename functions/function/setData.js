@@ -4,7 +4,7 @@ const {setContent} = require("./setContent")
 
 const setData = ({ id, data }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   var global = window.global
 
   if (!global[local.Data]) return

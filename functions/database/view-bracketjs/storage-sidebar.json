@@ -51,8 +51,8 @@
                                     "event": "keyup?text()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.storage.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                    "actions": "note?note.text=File name could not be empty!<<!text();note.text=File name should be unique!<<)(:data.editor.storage.keys().includes():text()",
-                                    "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.storage.keys().includes():text()||!text()"
+                                    "actions": "note?note.text=if():[!text()]:[File name could not be empty!].elif():[)(:data.editor.storage.keys().inc():text()]:[File name should be unique!]",
+                                    "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.storage.keys().inc():text()||!text()"
                                 },
                                 {
                                     "actions": [

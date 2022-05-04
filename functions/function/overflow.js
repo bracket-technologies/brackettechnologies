@@ -1,6 +1,6 @@
 const overflow = ({ id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
 
   var width = local.element.clientWidth
   var height = local.element.clientHeight

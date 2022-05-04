@@ -2,7 +2,9 @@
     "id": "bracketjs",
     "domains": [
         "bracketjs.com",
-        "localhost"
+        "localhost/bracketjs",
+        "192.168.25.150",
+        "192.168.25.150/bracketjs"
     ],
     "creation-date": 1637494484000,
     "description": "Website Builder",

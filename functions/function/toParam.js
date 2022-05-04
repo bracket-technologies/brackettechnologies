@@ -14,10 +14,13 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
+  // condition not approval
+  if (string.includes("==")) return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _ })
+
   string.split(";").map(param => {
     
     var key, value, id = localId
-    var local = _window ? _window.value[id] : window.value[id]
+    var local = _window ? _window.children[id] : window.children[id]
 
     // break
     if (params.break || local && local.break) return
@@ -109,7 +112,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       // mount state & value
       if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
         
-        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object })
+        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object, mount })
         if (timer) {
           
           timer = parseInt(timer)
@@ -120,7 +123,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       } else {
         
-        if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _ })
+        if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
 
         path.reduce((obj, key, index) => {
 
@@ -133,7 +136,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
                 if (i === path.length - 1) return o[k] = value
                 return o[k] || {}
 
-              }, _window ? _window.value[id] : window.value[id])
+              }, _window ? _window.children[id] : window.children[id])
 
               return obj[key] = value
             }

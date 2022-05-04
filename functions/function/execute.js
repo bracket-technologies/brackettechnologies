@@ -8,7 +8,7 @@ const { toValue } = require("./toValue")
 
 const execute = ({ _window, controls, actions, e, id, params }) => {
 
-  var local = (_window ? _window.value[id] : window.value[id]) || {}
+  var local = (_window ? _window.children[id] : window.children[id]) || {}
   var _params = params, localId = id
 
   if (controls) actions = controls.actions
@@ -21,11 +21,10 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     // 'string'
     if (_action.split("'").length > 2) _action = toCode({ _window, string: _action, start: "'", end: "'" })
     
-    var awaiter = ""
-    
     // stop after actions
     if (local && local.break) return
 
+    var awaiter = ""
     var approved = true
     var actions = _action.split("?")
     var params = actions[1]
@@ -64,12 +63,11 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       // action is coded
       if (action.slice(0, 7) === "coded()") return execute({ _window, actions: global.codes[action], e, id, params })
       
-      // action === name:id:timer<<condition
-      var caseCondition = action.split('<<')[1]
-      var name = action.split('<<')[0]
-      var actionid = name.split(":")[1]
-      var timer = name.split(":")[2] || ""
-      name = name.split(':')[0]
+      // action === name:id:timer:condition
+      var actionid = action.split(":")[1]
+      var timer = action.split(":")[2] || ""
+      var caseCondition = action.split(":")[3]
+      var name = action.split(':')[0]
       
       // timer
       var isInterval = false
@@ -108,7 +106,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
           if (id.indexOf(".") > -1) id = toValue({ _window, value: id, e, id: localId })
           
           // component does not exist
-          if (!id || !window.value[id]) return
+          if (!id || !window.children[id]) return
 
           if (isAsyncer) {
             params.awaiter = awaiter

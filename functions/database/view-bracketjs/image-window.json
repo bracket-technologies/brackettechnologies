@@ -4,7 +4,7 @@
             "type": "View?id=image-window-background;style.position=absolute;style.top=0;style.left=0;style.height=100%;style.width=100%;style.backgroundColor=#00000030;style.zIndex=-1",
             "controls": [
                 {
-                    "event": "click?global().new-image=false;():image-window.style().pointerEvents=none;():image-window.style().opacity=0;():gallery-view-input.val()=_string"
+                    "event": "click?)(:new-image=false;():image-window.style().pointerEvents=none;():image-window.style().opacity=0;():gallery-view-input.val()=_string"
                 }
             ]
         },
@@ -20,7 +20,7 @@
                     "type": "Icon?class=flexbox pointer;name=bi-x-lg;style.height=3rem;style.width=3rem;style.fontSize=2rem;style.borderRadius=.5rem;hover.style.backgroundColor=#f6f6f6;style.position=absolute;style.right=.5rem;style.top=.5rem"
                 },
                 {
-                    "type": "View?class=flex column;Data=new-image-data;style.overflowY=auto;style.width=30%;style.maxWidth=30%;style.maxHeight=100%;style.borderRadius=.5rem;style.gap=2rem;global().new-image-data.title=image;global().new-image-data.tags=_array<<!global().new-image-data.tags;global().new-image-data.type=",
+                    "type": "View?class=flex column;Data=new-image-data;style.overflowY=auto;style.width=30%;style.maxWidth=30%;style.maxHeight=100%;style.borderRadius=.5rem;style.gap=2rem;)(:new-image-data.title=image;if():[!)(:new-image-data.tags]:[)(:new-image-data.tags=_array];)(:new-image-data.type=",
                     "children": [
                         {
                             "children": [
@@ -65,22 +65,22 @@
                                                             "event": "keyup?().data().delete()?!().val()"
                                                         }
                                                     ],
-                                                    "type": "Input?style.height=3.5rem;style.borderRadius=.5rem;style.border=1px solid #ddd;style.width=fit-content;style.padding=.5rem;style.paddingRight=1.5rem;style.minWidth=8rem<<global().new-image-data.tags.length().is():0;style.minWidth=5rem<<global().new-image-data.tags.length().greater():0"
+                                                    "type": "Input?style.height=3.5rem;style.borderRadius=.5rem;style.border=1px solid #ddd;style.width=fit-content;style.padding=.5rem;style.paddingRight=1.5rem;if():[)(:new-image-data.tags.len()=0]:[style.minWidth=8rem]:[style.minWidth=5rem]"
                                                 },
                                                 {
                                                     "type": "Icon?class=flexbox pointer;name=bi-x;style.position=absolute;style.right=0;style.fontSize=2rem;style.width=fit-content;style.opacity=0;style.borderRadius=.5rem;style.transition=.2s;style.backgroundColor=inherit",
                                                     "controls": [
                                                         {
-                                                            "event": "click??().Data().tags.length().greater():1",
+                                                            "event": "click??().Data().tags.len().greater():1",
                                                             "actions": "remove:[().parent().id]"
                                                         },
                                                         {
-                                                            "event": "click?().data().delete();().prev().val()=_string?().Data().tags.length().is():1"
+                                                            "event": "click?().data().delete();().prev().val()=_string?().Data().tags.len().is():1"
                                                         }
                                                     ]
                                                 }
                                             ],
-                                            "type": "View?path=global().new-image-data.tags.length();class=flexbox;style.position=relative",
+                                            "type": "View?path=)(:new-image-data.tags.len();class=flexbox;style.position=relative",
                                             "controls": [
                                                 {
                                                     "event": "mouseenter?().2ndChild().style().opacity=1"
@@ -113,7 +113,7 @@
                                     "type": "View?class=flexbox pointer;style.gap=1rem;style.height=3.5rem;style.width=10rem;style.borderRadius=.5rem;style.border=1px solid #ccc;hover.style.border=1px solid #aaa;style.transition=.3s",
                                     "controls": [
                                         {
-                                            "event": "click?global().new-image=false;():image-window.style().pointerEvents=none;():image-window.style().opacity=0;():gallery-view-input.val()=_string"
+                                            "event": "click?)(:new-image=false;():image-window.style().pointerEvents=none;():image-window.style().opacity=0;():gallery-view-input.val()=_string"
                                         }
                                     ],
                                     "children": [
@@ -126,13 +126,13 @@
                                     "controls": [
                                         {
                                             "actions": [
-                                                "await().update:gallery-view;await().update:storage-sidebar;await().note;async().upload?note.text=Image saved succefully!;upload=global().new-image-data;upload.collection=storage;upload.doc=global().new-image-data.name.split():_space.join():-.split():_dot.join():-.add():-:[today().timestamp()];upload.file=global().upload.file;await().global().data.editor.storage.[().uplaod.data.id]=().uplaod.data;await().global().gallery-images.push:[().uplaod.data]<<!global().gallery-images.find():[id.is():[().uplaod.data.id]];await().():image-window-background.click()"
+                                                "await().update:gallery-view;await().update:storage-sidebar;await().note;async().upload?note.text=Image saved succefully!;upload=)(:new-image-data;upload.collection=storage;upload.doc=)(:new-image-data.name.split():_space.join():-.split():_dot.join():-.add():-:[today().timestamp()];upload.file=)(:upload.file;await().)(:data.editor.storage.[().uplaod.data.id]=().uplaod.data;await().if():[!)(:gallery-images.find():[id=().uplaod.data.id]]:[)(:gallery-images.push:[().uplaod.data]];await().():image-window-background.click()"
                                             ],
-                                            "event": "click??global().new-image"
+                                            "event": "click??)(:new-image"
                                         },
                                         {
-                                            "actions": "await().update:gallery-view;await().update:storage-sidebar;await().note;async().save?note.text=File updated successfuly!;save.collection=storage;save.doc=global().new-image-data.id;save.data=global().new-image-data;await().():image-window-background.click()",
-                                            "event": "click??!global().new-image"
+                                            "actions": "await().update:gallery-view;await().update:storage-sidebar;await().note;async().save?note.text=File updated successfuly!;save.collection=storage;save.doc=)(:new-image-data.id;save.data=)(:new-image-data;await().():image-window-background.click()",
+                                            "event": "click??!)(:new-image"
                                         }
                                     ],
                                     "type": "View?class=flexbox pointer;style.gap=1rem;style.height=3.5rem;style.width=10rem;style.borderRadius=.5rem;style.border=1px solid #32c74d;style.backgroundColor=#32c74d;hover.style.backgroundColor=#2ca842;hover.style.border=1px solid #2ca842;style.transition=.3s",

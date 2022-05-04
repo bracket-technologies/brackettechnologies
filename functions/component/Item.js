@@ -127,10 +127,10 @@ module.exports = (component) => {
       }],
       controls: [...controls,
       {
-        event: `click?():[global().${state}].hover.freeze=false?global().${state}.undefined().or():[global().${state}.0.not():${id}]`,
+        event: `click?():[)(:${state}].hover.freeze=false?)(:${state}.undefined().or():[)(:${state}.0.not():${id}]`,
         actions: [
-          `resetStyles:global().${state}`,
-          `mountAfterStyles:[global().${state}]?global().${state}=_array:${id}:${id}-icon:${id}-text;():[global().${state}].hover.freeze`,
+          `resetStyles:)(:${state}`,
+          `mountAfterStyles:[)(:${state}]?)(:${state}=_array:${id}:${id}-icon:${id}-text;():[)(:${state}].hover.freeze`,
         ]
       }]
     }

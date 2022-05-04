@@ -3,7 +3,7 @@ const { toArray } = require("./toArray")
 
 const setStyle = ({ id, style = {} }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   local.style = local.style || {}
   
   Object.entries(style).map(([key, value]) => {
@@ -50,7 +50,7 @@ const setStyle = ({ id, style = {} }) => {
         } else if (key === "left" && value === "center") {
 
           var width = local.element.offsetWidth
-          var parentWidth = window.value[local.parent].element.clientWidth
+          var parentWidth = window.children[local.parent].element.clientWidth
 
           value = parentWidth / 2 - width / 2 + "px"
         }
@@ -70,7 +70,7 @@ const setStyle = ({ id, style = {} }) => {
 
 const resetStyles = ({ id, style = {} }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   local.afterStylesMounted = false
 
   Object.entries({...local.style.after, ...(local.hover && local.hover.style || {})}).map(([key]) => {
@@ -83,14 +83,14 @@ const resetStyles = ({ id, style = {} }) => {
 
 const toggleStyles = ({ id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   if (local.afterStylesMounted) resetStyles({ id, style })
   else mountAfterStyles({ id })
 }
 
 const mountAfterStyles = ({ id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   if (!local.style || !local.style.after) return
 
   local.afterStylesMounted = true

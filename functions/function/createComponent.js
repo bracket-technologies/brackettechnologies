@@ -10,7 +10,7 @@ const { toCode } = require("./toCode")
 module.exports = {
   createComponent: ({ _window, id, req, res }) => {
     
-    var value = _window ? _window.value : window.value
+    var value = _window ? _window.children : window.children
     var global = _window ? _window.global : window.global
     var local = value[id], parent = local.parent
 

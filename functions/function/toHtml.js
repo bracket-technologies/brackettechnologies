@@ -9,7 +9,7 @@ module.exports = {
 
     var { createElement } = require("./createElement")
 
-    var local = _window ? _window.value[id] : window.value[id]
+    var local = _window ? _window.children[id] : window.children[id]
     var global = _window ? _window.global : window.global
     
     // innerHTML
@@ -18,7 +18,7 @@ module.exports = {
     var checked = local.input && local.input.type === "radio" && parseFloat(local.data) === parseFloat(local.input.defaultValue)
     
     // value
-    var value = _window ? _window.value : window.value
+    var value = _window ? _window.children : window.children
 
     // format
     // if (text && typeof text === "string") text = textFormating({ _window, text, id })
@@ -99,10 +99,10 @@ module.exports = {
     if (local.link) {
 
       var id = generate(), style = ''
-      if (_window) _window.value[id] = {}
-      else window.value[id] = {}
+      if (_window) _window.children[id] = {}
+      else window.children[id] = {}
 
-      var _local = _window ? _window.value[id] : window.value[id]
+      var _local = _window ? _window.children[id] : window.children[id]
 
       _local = { id, parent: local.id }
       _local.style = local.link.style

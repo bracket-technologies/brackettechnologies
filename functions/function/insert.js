@@ -10,7 +10,7 @@ module.exports = {
   insert: ({ id, insert }) => {
     
     var { index, value = {}, el, elementId, component, replace, path, data } = insert
-    var local = window.value[id], lDiv
+    var local = window.children[id], lDiv
     
     if (index === undefined) index = local.element.children.length
     
@@ -31,14 +31,14 @@ module.exports = {
       .map((child, index) => {
 
         var id = child.id || generate()
-        window.value[id] = child
-        window.value[id].id = id
-        window.value[id].index = index
-        window.value[id].parent = local.id
-        window.value[id].style = window.value[id].style || {}
-        window.value[id].reservedStyles = toParam({ id, string: window.value[id].type.split("?")[1] || "" }).style || {}
-        window.value[id].style.transition = null
-        window.value[id].style.opacity = "0"
+        window.children[id] = child
+        window.children[id].id = id
+        window.children[id].index = index
+        window.children[id].parent = local.id
+        window.children[id].style = window.children[id].style || {}
+        window.children[id].reservedStyles = toParam({ id, string: window.children[id].type.split("?")[1] || "" }).style || {}
+        window.children[id].style.transition = null
+        window.children[id].style.opacity = "0"
         
         return createElement({ id })
 
@@ -53,12 +53,12 @@ module.exports = {
       lDiv.innerHTML = innerHTML
 
       el = lDiv.children[0]
-      window.value[el.id].parent = local.id
+      window.children[el.id].parent = local.id
 
     } else {
       
       elementId = elementId || value.id || el && el.id
-      el = el || value.el || window.value[elementId].el
+      el = el || value.el || window.children[elementId].el
     }
 
     if (index >= local.element.children.length) local.element.appendChild(el)
@@ -69,10 +69,10 @@ module.exports = {
     idList.map(id => setElement({ id }))
     idList.map(id => starter({ id }))
 
-    window.value[el.id].style.transition = window.value[el.id].element.style.transition = window.value[el.id].reservedStyles.transition || null
-    window.value[el.id].style.opacity = window.value[el.id].element.style.opacity = window.value[el.id].reservedStyles.opacity || "1"
-    delete window.value[el.id].reservedStyles
-    local.insert = { child: window.value[el.id], message: "Child inserted succefully", success: true }
+    window.children[el.id].style.transition = window.children[el.id].element.style.transition = window.children[el.id].reservedStyles.transition || null
+    window.children[el.id].style.opacity = window.children[el.id].element.style.opacity = window.children[el.id].reservedStyles.opacity || "1"
+    delete window.children[el.id].reservedStyles
+    local.insert = { child: window.children[el.id], message: "Child inserted succefully", success: true }
     
     if (lDiv) {
       document.body.removeChild(lDiv)

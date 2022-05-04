@@ -1,6 +1,6 @@
 const focus = ({ id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   if (!local) return
 
   var isInput = local.type === "Input" || local.type === "Textarea"
@@ -14,7 +14,7 @@ const focus = ({ id }) => {
       if (childElements.length > 0) {
         childElements[0].focus()
 
-        var _local = window.value[childElements[0].id]
+        var _local = window.children[childElements[0].id]
         // focus to the end of input
         var value = _local.element.value
         _local.element.value = ""

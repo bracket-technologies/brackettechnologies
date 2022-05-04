@@ -4,11 +4,11 @@ const { toAwait } = require("./toAwait")
 const upload = async ({ id, e, ...params }) => {
         
   var upload = params.upload
-  var local = window.value[id]
-  var global = window.global
+  var local = window.children[id]
   var collection = upload.collection = upload.collection || upload.path
 
   upload.headers = upload.headers || {}
+  upload.headers.project = upload.headers.project || global.data.project.id
   upload.doc = upload.doc || upload.id
   upload.name = upload.name || global.upload[0].name
 
@@ -56,7 +56,7 @@ module.exports = {
     upload: async ({ id, e, upload = {}, ...params }) => {
 
         var global = window.global
-        var value = window.value
+        var value = window.children
         var local = value[id]
         var storage = global.storage
         

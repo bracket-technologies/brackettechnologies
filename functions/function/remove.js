@@ -4,7 +4,7 @@ const { reducer } = require("./reducer")
 
 const remove = ({ remove: _remove, id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   var global = window.global
 
   _remove = _remove || {}
@@ -27,19 +27,19 @@ const remove = ({ remove: _remove, id }) => {
   if (keys.length === 0) {
 
     local.element.remove()
-    delete window.value[id]
+    delete window.children[id]
     return
   }
 
   // reset length and derivations
   var nextSibling = false
-  var children = [...window.value[local.parent].element.children]
+  var children = [...window.children[local.parent].element.children]
   var index = local.derivations.length - 1
 
   children.map((child) => {
 
     var id = child.id
-    window.value[id].length -= 1
+    window.children[id].length -= 1
 
     // derivation in array of next siblings must decrease by 1
     if (nextSibling) resetDerivations({ id, index })
@@ -47,14 +47,14 @@ const remove = ({ remove: _remove, id }) => {
     if (id === local.id) {
       nextSibling = true
       local.element.remove()
-      delete window.value[id]
+      delete window.children[id]
     }
   })
 }
 
 const resetDerivations = ({ id, index }) => {
 
-  var value = window.value
+  var value = window.children
   var local = value[id]
 
   if (!local) return

@@ -1,6 +1,6 @@
 const resize = ({ id }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   if (!local) return
   
   if (local.type !== "Input") return
@@ -27,7 +27,7 @@ const english = /[a-zA-Z]/
 
 const dimensions = ({ id, text }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   if (!local) return
 
   var lDiv = document.createElement("div")

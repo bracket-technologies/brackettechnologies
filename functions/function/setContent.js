@@ -2,7 +2,7 @@ const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
 
-  var local = window.value[id]
+  var local = window.children[id]
   var value = content.value || ""
 
   if (typeof value !== "string" && typeof value !== "number") return
