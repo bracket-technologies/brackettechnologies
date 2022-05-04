@@ -1451,12 +1451,13 @@ const { toCode } = require("./toCode")
 //
 require('dotenv').config()
 
-const createDocument = async ({ req, res }) => {
+const createDocument = async ({ req, res, db }) => {
 
-    var host = req.headers["host"]
-    var projectId = req.url.split("/")[1]
-    if (projectId) host += `/${projectId}`
-    var currentPage = req.url.split("/")[2] || ""
+    // Create a cookies object
+    var host = req.headers["x-forwarded-host"] || req.headers["host"]
+    
+    // current page
+    var currentPage = req.url.split("/")[1] || ""
     currentPage = currentPage || "main"
     
     var promises = [], user, page, view, project
@@ -1472,7 +1473,7 @@ const createDocument = async ({ req, res }) => {
         },
         codes: {},
         host,
-        projectId,
+        domain: host,
         currentPage,
         path: req.url,
         cookies: req.cookies,
@@ -1484,46 +1485,92 @@ const createDocument = async ({ req, res }) => {
         country: req.headers["x-country-code"]
     }
     
-    var children = {
+    var value = {
         body: { 
             id: "body" 
         },
         root: {
             id: "root",
-            index: 0,
             type: "View",
             parent: "body",
             style: { backgroundColor: "#fff" }
         },
         public: {
             id: "public",
-            index: 0,
             type: "View",
             parent: "body",
             children: Object.values(global.public)
         }
     }
+
+    var bracketDomains = [
+        "bracketjs.com",
+        "localhost",
+        "bracketjs.localhost"
+    ]
+
+    // is brakcet domain
+    var isBracket = bracketDomains.includes(host)
     
-    // get project data
-    project = getJsonFiles({ search: { collection: "_project_", field: { domains: { "array-contains": host } } } })
-    if (Object.keys(project)[0]) global.data.project = project = Object.values(project)[0]
+    if (isBracket) {
+
+        project = getJsonFiles({ search: { collection: "_project_", fields: { domains: { "array-contains": host } } } })
+        if (Object.keys(project)[0]) global.data.project = project = Object.values(project)[0]
+        
+    } else {
+
+        // get project data
+        project = db
+        .collection("_project_").where("domains", "array-contains", host)
+        .get().then(doc => {
+
+            if (doc.docs[0] && doc.docs[0].exists)
+            global.data.project = project = doc.docs[0].data()
+        })
+    }
 
     promises.push(project)
     await Promise.all(promises)
 
     // project not found
     if (!project) return res.send("Project not found!")
+    global.projectId = project.id
     
-    // get user
-    user = getJsonFiles({ search: { collection: "_user_", fields: { "projects": { "array-contains": project.id } } } })
-    if (Object.keys(user)[0]) global.data.user = user = Object.values(user)[0]
-    
-    // get page
-    global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
+    if (isBracket) {
+        
+        // get user
+        user = getJsonFiles({ search: { collection: "_user_", fields: { "projects": { "array-contains": project.id } } } })
+        if (Object.keys(user)[0]) global.data.user = user = Object.values(user)[0]
+        
+        // get page
+        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
+        
+        // get view
+        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
+        
+    } else {
 
-    // get view
-    global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
-    
+        // get user
+        user = db
+        .collection("_user_").where("projects", "array-contains", project.id)
+        .get().then(doc => {
+            
+            if (doc.docs[0].exists)
+            global.data.user = user = doc.docs[0].data()
+        })
+
+        // get page
+        page = db
+            .collection(`page-${project.id}`)
+            .get().then(q => q.forEach(doc => global.data.page[doc.id] = doc.data() ))
+
+        // get view
+        view = db
+            .collection(`view-${project.id}`)
+            .get().then(q => q.forEach(doc => global.data.view[doc.id] = doc.data()))
+
+    }
+
     promises.push(page)
     promises.push(view)
     promises.push(user)
@@ -1531,18 +1578,19 @@ const createDocument = async ({ req, res }) => {
     await Promise.all(promises)
     
     // user not found
-    if (!user) return res.send("User not found")
-
+    if (!global.data.user) return res.send("User not found")
+    global.data.user = user = global.data.user
+    
     // page doesnot exist
-    if (!global.data.page[currentPage]) return res.send(`${currentPage} page does not exist!`)
+    if (!global.data.page[currentPage]) return res.send("Page not found!")
 
     // mount globals
     if (global.data.page[currentPage].global)
     Object.entries(global.data.page[currentPage].global).map(([key, value]) => global[key] = value)
     
     // controls & children
-    children.root.controls = global.data.page[currentPage].controls
-    children.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
+    value.root.controls = global.data.page[currentPage].controls
+    value.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
 
     // forward
     if (global.data.page[currentPage].forward) {
@@ -1553,9 +1601,9 @@ const createDocument = async ({ req, res }) => {
         var conditions = forward[2]
         forward = forward[0]
 
-        var approved = toApproval({ _window: { global, children }, string: conditions, id: "root", req, res })
+        var approved = toApproval({ _window: { global, value }, string: conditions, id: "root", req, res })
         if (approved) {
-            global.path = forward ? `${global.projectId}/${forward}` : `/${global.projectId}`
+            global.path = forward
             global.currentPage = currentPage = global.path.split("/")[1]
         }
     }
@@ -1563,14 +1611,14 @@ const createDocument = async ({ req, res }) => {
     // onloading
     if (global.data.page[currentPage].controls) {
         global.data.page[currentPage].controls = toArray(global.data.page[currentPage].controls)
-        var loadingEventControls = global.data.page[currentPage].controls.filter(controls => controls.event.split("?")[0].includes("loading"))
-        if (loadingEventControls) controls({ _window: { global, children }, id: "root", req, res, controls: loadingEventControls })
+        var loadingEventControls = global.data.page[currentPage].controls.find(controls => controls.event.split("?")[0].includes("loading"))
+        if (loadingEventControls) controls({ _window: { global, value }, id: "root", req, res, controls: loadingEventControls })
     }
 
     // create html
     var innerHTML = ""
-    innerHTML = createElement({ _window: { global, children }, id: "root", req, res })
-    innerHTML += createElement({ _window: { global, children }, id: "public", req, res })
+    innerHTML = createElement({ _window: { global, value }, id: "root", req, res })
+    innerHTML += createElement({ _window: { global, value }, id: "public", req, res })
     global.idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 
     // meta
@@ -1607,7 +1655,7 @@ const createDocument = async ({ req, res }) => {
         </head>
         <body>
             ${innerHTML}
-            <script id="value" type="application/json">${JSON.stringify(children)}</script>
+            <script id="value" type="application/json">${JSON.stringify(value)}</script>
             <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>
         </body>
@@ -1615,7 +1663,6 @@ const createDocument = async ({ req, res }) => {
 }
 
 module.exports = { createDocument }
-
 },{"./controls":33,"./createElement":38,"./jsonFiles":63,"./toApproval":89,"./toArray":90,"./toCode":94,"dotenv":142}],38:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
@@ -5049,9 +5096,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             // push at a specific index / splice():value:index
             var args = k.split(":")
             var _value = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
-            var _index = parseInt(toValue({ req, res, _window, id, value: args[2], params,_ ,e }))
+            var _index = toValue({ req, res, _window, id, value: args[2], params,_ ,e })
             if (_index === undefined) _index = o.length - 1
-            o.splice(_index, 0, _value)
+            o.splice(parseInt(_index), 0, _value)
             answer = o
             
         } else if (k0 === "remove()" || k0 === "rem()") {
@@ -6872,6 +6919,9 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
   // coded
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
+  // ==
+  string = string.replace("==", "=")
+
   string.split(";").map(condition => {
 
     // no condition
@@ -7369,6 +7419,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
   var params = {}
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
+
+  // condition not approval
+  if (string.includes("==")) return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _ })
 
   string.split(";").map(param => {
     
@@ -7949,7 +8002,7 @@ const { toArray } = require("./toArray")
 
 const toggleView = ({ toggle, id }) => {
 
-  var value = window.children
+  var value = window.value
   var global = window.global
   var togglePage = toggle.page 
   var toggleId = toggle.id
@@ -7974,8 +8027,7 @@ const toggleView = ({ toggle, id }) => {
 
     global.currentPage = togglePage.split("/")[0]
     var title = global.data.page[global.currentPage].title
-    togglePage = togglePage === "main" ? "" : togglePage
-    global.path = togglePage = togglePage ? `${global.projectId}/${togglePage}` : `/${global.projectId}`
+    plobal.path = togglePage = togglePage === "main" ? "" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title
@@ -10179,50 +10231,38 @@ module.exports = {
 
 },{"./helpers/bind":128}],140:[function(require,module,exports){
 module.exports={
-  "_from": "axios@^0.21.1",
-  "_id": "axios@0.21.4",
-  "_inBundle": false,
-  "_integrity": "sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==",
-  "_location": "/axios",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "range",
-    "registry": true,
-    "raw": "axios@^0.21.1",
-    "name": "axios",
-    "escapedName": "axios",
-    "rawSpec": "^0.21.1",
-    "saveSpec": null,
-    "fetchSpec": "^0.21.1"
+  "name": "axios",
+  "version": "0.21.4",
+  "description": "Promise based HTTP client for the browser and node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test",
+    "start": "node ./sandbox/server.js",
+    "build": "NODE_ENV=production grunt build",
+    "preversion": "npm test",
+    "version": "npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json",
+    "postversion": "git push && git push --tags",
+    "examples": "node ./examples/server.js",
+    "coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "fix": "eslint --fix lib/**/*.js"
   },
-  "_requiredBy": [
-    "/"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axios/axios.git"
+  },
+  "keywords": [
+    "xhr",
+    "http",
+    "ajax",
+    "promise",
+    "node"
   ],
-  "_resolved": "https://registry.npmjs.org/axios/-/axios-0.21.4.tgz",
-  "_shasum": "c67b90dc0568e5c1cf2b0b858c43ba28e2eda575",
-  "_spec": "axios@^0.21.1",
-  "_where": "C:\\Users\\Maliks\\Desktop\\Bracket",
-  "author": {
-    "name": "Matt Zabriskie"
-  },
-  "browser": {
-    "./lib/adapters/http.js": "./lib/adapters/xhr.js"
-  },
+  "author": "Matt Zabriskie",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/axios/axios/issues"
   },
-  "bundleDependencies": false,
-  "bundlesize": [
-    {
-      "path": "./dist/axios.min.js",
-      "threshold": "5kB"
-    }
-  ],
-  "dependencies": {
-    "follow-redirects": "^1.14.0"
-  },
-  "deprecated": false,
-  "description": "Promise based HTTP client for the browser and node.js",
+  "homepage": "https://axios-http.com",
   "devDependencies": {
     "coveralls": "^3.0.0",
     "es6-promise": "^4.2.4",
@@ -10258,36 +10298,21 @@ module.exports={
     "webpack": "^4.44.2",
     "webpack-dev-server": "^3.11.0"
   },
-  "homepage": "https://axios-http.com",
+  "browser": {
+    "./lib/adapters/http.js": "./lib/adapters/xhr.js"
+  },
   "jsdelivr": "dist/axios.min.js",
-  "keywords": [
-    "xhr",
-    "http",
-    "ajax",
-    "promise",
-    "node"
-  ],
-  "license": "MIT",
-  "main": "index.js",
-  "name": "axios",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/axios/axios.git"
-  },
-  "scripts": {
-    "build": "NODE_ENV=production grunt build",
-    "coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "examples": "node ./examples/server.js",
-    "fix": "eslint --fix lib/**/*.js",
-    "postversion": "git push && git push --tags",
-    "preversion": "npm test",
-    "start": "node ./sandbox/server.js",
-    "test": "grunt test",
-    "version": "npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"
-  },
-  "typings": "./index.d.ts",
   "unpkg": "dist/axios.min.js",
-  "version": "0.21.4"
+  "typings": "./index.d.ts",
+  "dependencies": {
+    "follow-redirects": "^1.14.0"
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/axios.min.js",
+      "threshold": "5kB"
+    }
+  ]
 }
 
 },{}],141:[function(require,module,exports){
