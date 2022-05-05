@@ -4,7 +4,7 @@
         {
             "actions": [
                 "async():search?search.collection=_user_;search.field.projects.contains=)(:project;await().)(:data.editor.user=().search.data.value()",
-                "async():search:[update:sidebar-items;?search.collection=_project_;search.doc=)(:project;await().)(:data.editor.project=().search.data",
+                "async():search:[update:sidebar-items]?search.collection=_project_;search.doc=)(:project;await().)(:data.editor.project=().search.data;await().log():[)(:data.editor]",
                 "async():search:[update:collection-list]?search.collection=collection;search.headers.project=)(:project;await().)(:data.editor.collection=().search.data",
                 "async():search:[update:page-list]?search.collection=page;search.headers.project=)(:project;await().)(:data.editor.page=().search.data",
                 "async():search:[update:view-list]?search.collection=view;search.headers.project=)(:project;await().)(:data.editor.view=().search.data",
@@ -13,7 +13,7 @@
                 "async():search:[update:gallery-view]?search.collection=storage;search.headers.project=)(:project;search.field.title.equals=image;search.limit=25;await().)(:gallery-images=().search.data",
                 "async():search:[update:storage-list]?search.collection=storage;search.headers.project=)(:project;await().)(:data.editor.storage=().search.data"
             ],
-            "event": "loaded?)(:project=)(:path.split():/.3"
+            "event": "loaded?)(:project=)(:path.split():/.2"
         }
     ],
     "creation-date": 1637494484000,
@@ -56,7 +56,7 @@
                                             "type": "Text?text=:;style.marginRight=1rem;style.fontSize=1.5rem"
                                         },
                                         {
-                                            "type": "Text?text=)(:path.split():/.3.capitalize();style.fontSize=1.5rem;style.marginRight=.75rem"
+                                            "type": "Text?text=)(:path.split():/.2.capitalize();style.fontSize=1.5rem;style.marginRight=.75rem"
                                         },
                                         {
                                             "type": "Icon?name=bi-caret-down-fill;style.fontSize=1.1rem;style.transition=transform .2s;style.transform=rotate(0deg)"

@@ -7,8 +7,9 @@ const upload = async ({ id, e, ...params }) => {
   var local = window.children[id]
   var collection = upload.collection = upload.collection || upload.path
 
-  upload.headers = upload.headers || {}
-  upload.headers.project = upload.headers.project || global.data.project.id
+  var headers = clone(upload.headers) || {}
+  headers.project = headers.project || global.data.project.id
+  delete upload.headers
   upload.doc = upload.doc || upload.id
   upload.name = upload.name || global.upload[0].name
 
@@ -26,7 +27,7 @@ const upload = async ({ id, e, ...params }) => {
   var { data } = await axios.post(`/api/file/${collection}`, { upload, file }, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...upload.headers
+      ...headers
     }
   })
 

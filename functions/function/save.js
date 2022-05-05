@@ -8,8 +8,9 @@ const save = async ({ id, e, ...params }) => {
   var local = window.children[id]
   var collection = save.collection = save.collection || save.path
   var _data = clone(save.data)
-  save.headers = save.headers || {}
-  save.headers.project = save.headers.project || global.data.project.id
+  var headers = clone(save.headers) || {}
+  headers.project = headers.project || global.data.project.id
+  delete save.headers
 
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
@@ -17,7 +18,7 @@ const save = async ({ id, e, ...params }) => {
   var { data } = await axios.post(`/api/${collection}`, { save, data: _data }, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...save.headers
+      ...headers
     }
   })
 

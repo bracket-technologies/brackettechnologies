@@ -5,7 +5,7 @@
             "watch": ")(:data.editor.user.and():[)(:data.editor.project]:[)(:data.editor.view]:[)(:data.editor.page]"
         },
         {
-            "actions": "async():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_user_;search.doc=)(:path.split():/.3;async()::[)(:data.editor.user=().search.data]?)(:path.split():/.3",
+            "actions": "async():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_user_;search.doc=)(:path.split():/.2;async()::[)(:data.editor.user=().search.data]?)(:path.split():/.2",
             "event": "loaded??!)(:data.editor.user"
         }
     ],

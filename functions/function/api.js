@@ -2,13 +2,14 @@ const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { capitalize } = require("./capitalize")
 const { toCode } = require("./toCode")
+var _window = { global: {}, children: {} }
 
 var getApi = async ({ req, res, db }) => {
   
   // api/collection?params?conditions
   var collection = req.url.split("?")[0].split("/")[2]
   if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  var string = decodeURI(req.url.split("?")[1]), params = {}, _window = { global: {}, value: {} }
+  var string = decodeURI(req.url.split("?")[1]), params = {}
   string = toCode({ _window, string })
   
   if (string) params = toParam({ _window, string, id: "" })
@@ -98,7 +99,7 @@ var getApi = async ({ req, res, db }) => {
       message = `Documents mounted successfuly!`
 
     }).catch(error => {
-console.log(error);
+      
       success = false
       message = `An error Occured!`
     })
@@ -170,7 +171,7 @@ var deleteApi = async ({ req, res, db }) => {
   var collection = req.url.split("?")[0].split("/")[2]
   if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var string = path[1], params = {}
-  if (string) params = toParam({ _window: { value: {} }, string, id: "" })
+  if (string) params = toParam({ _window, string, id: "" })
 
   var erase = params.erase
   var ref = db.collection(collection)
@@ -196,7 +197,6 @@ const uploadApi = async ({ req, res, db, storage }) => {
 
   var collection = req.url.split("?")[0].split("/")[2]
   if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  search.collection = collection
   var file = req.body.file, url
   var upload = req.body.upload
   var ref = db.collection(collection)

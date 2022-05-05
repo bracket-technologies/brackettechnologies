@@ -2,7 +2,7 @@
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
 
-window.children = JSON.parse(document.getElementById("value").textContent)
+window.children = JSON.parse(document.getElementById("children").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
 
 var value = window.children
@@ -1473,19 +1473,16 @@ const createDocument = async ({ req, res, db }) => {
         },
         codes: {},
         host,
-        domain: host,
         currentPage,
         path: req.url,
-        cookies: req.cookies,
         device: req.device,
-        headers: req.headers,
         public: getJsonFiles({ search: { collection: "_public_" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
         country: req.headers["x-country-code"]
     }
     
-    var value = {
+    var children = {
         body: { 
             id: "body" 
         },
@@ -1512,35 +1509,32 @@ const createDocument = async ({ req, res, db }) => {
     // is brakcet domain
     var isBracket = bracketDomains.includes(host)
     
-    if (isBracket) {
+    // get project data
+    project = db
+    .collection("_project_").where("domains", "array-contains", host)
+    .get().then(doc => {
 
-        project = getJsonFiles({ search: { collection: "_project_", fields: { domains: { "array-contains": host } } } })
-        if (Object.keys(project)[0]) global.data.project = project = Object.values(project)[0]
-        
-    } else {
-
-        // get project data
-        project = db
-        .collection("_project_").where("domains", "array-contains", host)
-        .get().then(doc => {
-
-            if (doc.docs[0] && doc.docs[0].exists)
-            global.data.project = project = doc.docs[0].data()
-        })
-    }
+        if (doc.docs[0] && doc.docs[0].exists)
+        global.data.project = project = doc.docs[0].data()
+    })
 
     promises.push(project)
     await Promise.all(promises)
-
+    
     // project not found
     if (!project) return res.send("Project not found!")
     global.projectId = project.id
+
+    // get user
+    user = db
+    .collection("_user_").where("projects", "array-contains", project.id)
+    .get().then(doc => {
+        
+        if (doc.docs[0].exists)
+        global.data.user = user = doc.docs[0].data()
+    })
     
     if (isBracket) {
-        
-        // get user
-        user = getJsonFiles({ search: { collection: "_user_", fields: { "projects": { "array-contains": project.id } } } })
-        if (Object.keys(user)[0]) global.data.user = user = Object.values(user)[0]
         
         // get page
         global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
@@ -1549,15 +1543,6 @@ const createDocument = async ({ req, res, db }) => {
         global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
         
     } else {
-
-        // get user
-        user = db
-        .collection("_user_").where("projects", "array-contains", project.id)
-        .get().then(doc => {
-            
-            if (doc.docs[0].exists)
-            global.data.user = user = doc.docs[0].data()
-        })
 
         // get page
         page = db
@@ -1568,7 +1553,6 @@ const createDocument = async ({ req, res, db }) => {
         view = db
             .collection(`view-${project.id}`)
             .get().then(q => q.forEach(doc => global.data.view[doc.id] = doc.data()))
-
     }
 
     promises.push(page)
@@ -1589,8 +1573,10 @@ const createDocument = async ({ req, res, db }) => {
     Object.entries(global.data.page[currentPage].global).map(([key, value]) => global[key] = value)
     
     // controls & children
-    value.root.controls = global.data.page[currentPage].controls
-    value.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
+    children.root.controls = global.data.page[currentPage].controls
+    children.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
+
+    var _window = { global, children }
 
     // forward
     if (global.data.page[currentPage].forward) {
@@ -1601,7 +1587,7 @@ const createDocument = async ({ req, res, db }) => {
         var conditions = forward[2]
         forward = forward[0]
 
-        var approved = toApproval({ _window: { global, value }, string: conditions, id: "root", req, res })
+        var approved = toApproval({ _window, string: conditions, id: "root", req, res })
         if (approved) {
             global.path = forward
             global.currentPage = currentPage = global.path.split("/")[1]
@@ -1612,13 +1598,13 @@ const createDocument = async ({ req, res, db }) => {
     if (global.data.page[currentPage].controls) {
         global.data.page[currentPage].controls = toArray(global.data.page[currentPage].controls)
         var loadingEventControls = global.data.page[currentPage].controls.find(controls => controls.event.split("?")[0].includes("loading"))
-        if (loadingEventControls) controls({ _window: { global, value }, id: "root", req, res, controls: loadingEventControls })
+        if (loadingEventControls) controls({ _window, id: "root", req, res, controls: loadingEventControls })
     }
 
     // create html
     var innerHTML = ""
-    innerHTML = createElement({ _window: { global, value }, id: "root", req, res })
-    innerHTML += createElement({ _window: { global, value }, id: "public", req, res })
+    innerHTML = createElement({ _window, id: "root", req, res })
+    innerHTML += createElement({ _window, id: "public", req, res })
     global.idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 
     // meta
@@ -1655,7 +1641,7 @@ const createDocument = async ({ req, res, db }) => {
         </head>
         <body>
             ${innerHTML}
-            <script id="value" type="application/json">${JSON.stringify(value)}</script>
+            <script id="children" type="application/json">${JSON.stringify(children)}</script>
             <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>
         </body>
@@ -2182,8 +2168,9 @@ const erase = async ({ id, e, ...params }) => {
   var erase = params.erase || {}
   var local = window.children[id]
   var collection = erase.collection = erase.collection || erase.path
-  erase.headers = erase.headers || {}
-  erase.headers.project = erase.headers.project || global.data.project.id
+  var headers = clone(erase.headers) || {}
+  headers.project = headers.project || global.data.project.id
+  delete erase.headers
 
   // no id
   if (!erase.id && !erase.doc && !erase.docs) return
@@ -2193,7 +2180,7 @@ const erase = async ({ id, e, ...params }) => {
   var { data } = await axios.delete(`/api/${collection}?${encodeURI(toString({ erase }))}`, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...erase.headers
+      ...headers
     }
   })
 
@@ -6119,8 +6106,9 @@ const save = async ({ id, e, ...params }) => {
   var local = window.children[id]
   var collection = save.collection = save.collection || save.path
   var _data = clone(save.data)
-  save.headers = save.headers || {}
-  save.headers.project = save.headers.project || global.data.project.id
+  var headers = clone(save.headers) || {}
+  headers.project = headers.project || global.data.project.id
+  delete save.headers
 
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
@@ -6128,7 +6116,7 @@ const save = async ({ id, e, ...params }) => {
   var { data } = await axios.post(`/api/${collection}`, { save, data: _data }, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...save.headers
+      ...headers
     }
   })
 
@@ -6154,14 +6142,14 @@ module.exports = {
         var search = params.search || {}
         var local = window.children[id]
         var collection = search.collection || search.path || ""
-        var _params = encodeURI(toString({ search }))
-        search.headers = search.headers || {}
-        search.headers.project = search.headers.project || global.data.project.id
+        var headers = clone(search.headers) || {}
+        headers.project = headers.project || global.data.project.id
+        delete search.headers
         
-        var { data } = await axios.get(`/api/${collection}?${_params}`, {
+        var { data } = await axios.get(`/api/${collection}?${encodeURI(toString({ search }))}`, {
             headers: {
                 "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-                ...search.headers
+                ...headers
             }
         })
         local.search = clone(data)
@@ -8293,8 +8281,9 @@ const upload = async ({ id, e, ...params }) => {
   var local = window.children[id]
   var collection = upload.collection = upload.collection || upload.path
 
-  upload.headers = upload.headers || {}
-  upload.headers.project = upload.headers.project || global.data.project.id
+  var headers = clone(upload.headers) || {}
+  headers.project = headers.project || global.data.project.id
+  delete upload.headers
   upload.doc = upload.doc || upload.id
   upload.name = upload.name || global.upload[0].name
 
@@ -8312,7 +8301,7 @@ const upload = async ({ id, e, ...params }) => {
   var { data } = await axios.post(`/api/file/${collection}`, { upload, file }, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...upload.headers
+      ...headers
     }
   })
 

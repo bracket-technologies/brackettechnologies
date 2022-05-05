@@ -1,7 +1,7 @@
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
 
-window.children = JSON.parse(document.getElementById("value").textContent)
+window.children = JSON.parse(document.getElementById("children").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
 
 var value = window.children
