@@ -132,12 +132,7 @@ const Input = (component) => {
             id, Data, parent, derivations, required, path,
             "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
             "children": [{
-                "type": `Text?text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
-                "controls": [{
-                    "event": `click:body?next().style().border=if():[)(:clickedElement.insideOrSame():[().element]||)(:clickedElement.insideOrSame():[next().element]]:[${clicked.style.border || "2px solid #008060"}]:[${style.border || "1px solid #ccc"}]?parent().required.mount`
-                }, {
-                    "event": "click?)(:clickedElement=next().getInput().element;next().getInput().focus()"
-                }]
+                "type": `Text?text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
                 Input({ ...component, component: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
@@ -149,7 +144,9 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": "click?().lastChild().style().display=if():[().required.mount]:flex.else():none;().2ndChild().style().backgroundColor=if():[().required.mount]:#FFF4F4.else():[().2ndChild().style.backgroundColor.else():[().2ndChild().style.backgroundColor].else():inherit];().2ndChild().style().border=if():[().required.mount]:[1px solid #d72c0d].else():[().2ndChild().clicked.style.border.else():[().2ndChild().style.border].else():1px solid #ccc]"
+                "event": `click:[1stChild().id];click:[2ndChild().id]?getInput().focus();2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
+            }, {
+                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?)(:clickedElement.outside():[().element]`
             }]
         }
     }

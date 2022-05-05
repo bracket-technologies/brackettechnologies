@@ -74,7 +74,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     var eventid = event.split(":")[1]
     if (eventid) idList = toValue({ _window, req, res, id, value: eventid })
     else idList = clone(_idList)
-
+    
     // timer
     timer = event.split(":")[2] || 0
     
@@ -151,7 +151,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
         }, timer)
       }
-
+      
       // elements
       _local.element.addEventListener(event, myFn1)
     })

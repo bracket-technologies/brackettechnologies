@@ -152,8 +152,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       }
       
-    } else {
-
+    } else if (key) {
+      
       if (mount) local[key] = value
       params[key] = value
     }

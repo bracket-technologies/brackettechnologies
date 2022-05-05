@@ -8,13 +8,13 @@ const { toArray } = require("./toArray")
 
 const toggleView = ({ toggle, id }) => {
 
-  var value = window.value
+  var value = window.children
   var global = window.global
   var togglePage = toggle.page 
-  var toggleId = toggle.id
-    || togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id 
+  var toggleId = togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id 
+    || toggle.id
     || value[id] && value[id].element.children[0] && value[id].element.children[0].id
-  var parentId = toggleId ? value[toggleId].parent : id
+  var parentId = toggleId ? (toggleId !== "root" ? value[toggleId].parent : toggleId) : id
   var local = {}
   var viewId = toggle.viewId || toggle.view
 
@@ -33,7 +33,7 @@ const toggleView = ({ toggle, id }) => {
 
     global.currentPage = togglePage.split("/")[0]
     var title = global.data.page[global.currentPage].title
-    plobal.path = togglePage = togglePage === "main" ? "" : togglePage
+    global.path = togglePage = togglePage === "main" ? "/" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title

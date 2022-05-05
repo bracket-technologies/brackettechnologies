@@ -195,12 +195,7 @@ const Input = (component) => {
             id, Data, parent, derivations, required, path,
             "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
             "children": [{
-                "type": `Text?text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
-                "controls": [{
-                    "event": `click:body?next().style().border=if():[)(:clickedElement.insideOrSame():[().element]||)(:clickedElement.insideOrSame():[next().element]]:[${clicked.style.border || "2px solid #008060"}]:[${style.border || "1px solid #ccc"}]?parent().required.mount`
-                }, {
-                    "event": "click?)(:clickedElement=next().getInput().element;next().getInput().focus()"
-                }]
+                "type": `Text?text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
                 Input({ ...component, component: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
@@ -212,7 +207,9 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": "click?().lastChild().style().display=if():[().required.mount]:flex.else():none;().2ndChild().style().backgroundColor=if():[().required.mount]:#FFF4F4.else():[().2ndChild().style.backgroundColor.else():[().2ndChild().style.backgroundColor].else():inherit];().2ndChild().style().border=if():[().required.mount]:[1px solid #d72c0d].else():[().2ndChild().clicked.style.border.else():[().2ndChild().style.border].else():1px solid #ccc]"
+                "event": `click:[1stChild().id];click:[2ndChild().id]?getInput().focus();2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
+            }, {
+                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?)(:clickedElement.outside():[().element]`
             }]
         }
     }
@@ -1079,7 +1076,7 @@ module.exports = ({ controls, id }) => {
     event: `mousemove?if():[!)(:tooltip-timer]:[)(:tooltip-timer=timer():[():tooltip.style().opacity=1]:500];():tooltip-text.text()=${text};():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar]`,
     actions: `setPosition:tooltip?position.positioner=mouse;position.placement=${controls.placement || "left"};position.distance=${controls.distance}`
   }, {
-    event: "mouseleave?)(:tooltip-timer.clearTimeout();)(:tooltip-timer.delete();():tooltip.style().opacity=0"
+    event: "mouseleave?clearTimer():[)(:tooltip-timer];)(:tooltip-timer.del();():tooltip.style().opacity=0"
   }]
 }
 },{}],26:[function(require,module,exports){
@@ -2269,7 +2266,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     var eventid = event.split(":")[1]
     if (eventid) idList = toValue({ _window, req, res, id, value: eventid })
     else idList = clone(_idList)
-
+    
     // timer
     timer = event.split(":")[2] || 0
     
@@ -2346,7 +2343,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
         }, timer)
       }
-
+      
       // elements
       _local.element.addEventListener(event, myFn1)
     })
@@ -3792,14 +3789,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         path = path.slice(1)
     }
 
-    if (path0 === "timer()") {
-            
-        var args = path[0].split(":")
-        var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e, mount })
-        var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
-        return object = setTimeout(myFn, _timer)
-    }
-
     if (path0 === "setInterval()") {
             
         var args = path[0].split(":")
@@ -3809,7 +3798,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "updateSelf()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "updateSelf()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()")) {
         if (path0 === "getChildrenByClassName()") {
 
             path.unshift("doc()")
@@ -4518,7 +4507,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
             
-            answer = clearTimeout(o)
+            var args = k.split(":")
+            var _timer = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            answer = clearTimeout(_timer)
             
         } else if (k0 === "clearInterval()") {
             
@@ -5616,8 +5607,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             // route():page:path
             var args = k.split(":")
             var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
-            var _path = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
-            require("./route")({ route: { page: _page, path: _path } })
+            var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
+            require("./route").route({ route: { page: _page, path: _path } })
+
+        } else if (k0 === "toggleView()") {
+          
+            var args = k.split(":")
+            var _id = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
+            var _view = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
+            var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _ })
+            require("./toggleView").toggleView({ _window, toggle: { id: _id, view: _view, page: _page }, id })
 
         } else if (k0 === "preventDefault()") {
             
@@ -5702,9 +5701,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "setPosition()") {
           
-            var args = k.split(":")
+            // setPosition():toBePositioned:positioner:placement:align
+            var args = k.split(":") 
             var toBePositioned = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            var positioner = toValue({ req, res, _window, id, e, _, value: args[2], params })
+            var positioner = toValue({ req, res, _window, id, e, _, value: args[2], params }) || id
             var placement = toValue({ req, res, _window, id, e, _, value: args[3], params })
             var align = toValue({ req, res, _window, id, e, _, value: args[4], params })
             var position = { positioner, placement, align }
@@ -5901,7 +5901,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./capitalize":28,"./clone":30,"./cookie":34,"./decode":42,"./execute":47,"./exportJson":48,"./focus":51,"./generate":53,"./getDateTime":54,"./getDaysInMonth":55,"./getType":57,"./importJson":58,"./isEqual":61,"./remove":74,"./route":76,"./save":77,"./setPosition":82,"./toApproval":89,"./toArray":90,"./toClock":93,"./toCode":94,"./toId":98,"./toNumber":99,"./toParam":101,"./toPrice":102,"./toSimplifiedDate":103,"./toValue":106,"./update":108,"./updateSelf":109}],73:[function(require,module,exports){
+},{"./capitalize":28,"./clone":30,"./cookie":34,"./decode":42,"./execute":47,"./exportJson":48,"./focus":51,"./generate":53,"./getDateTime":54,"./getDaysInMonth":55,"./getType":57,"./importJson":58,"./isEqual":61,"./remove":74,"./route":76,"./save":77,"./setPosition":82,"./toApproval":89,"./toArray":90,"./toClock":93,"./toCode":94,"./toId":98,"./toNumber":99,"./toParam":101,"./toPrice":102,"./toSimplifiedDate":103,"./toValue":106,"./toggleView":107,"./update":108,"./updateSelf":109}],73:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
@@ -6085,8 +6085,8 @@ module.exports = {
         if (!global.data.page[currentPage]) return
         global.data.page[currentPage]["views"] = global.data.page[currentPage]["views"] || []
         global.currentPage = currentPage
-        global.path = path
-        
+        global.path = route.path ? path : currentPage === "main" ? "/" : currentPage
+
         history.pushState(null, title, global.path)
         document.title = title
         
@@ -7320,8 +7320,10 @@ module.exports = {
 
       _local = { id, parent: local.id }
       _local.style = local.link.style
+      if (_window) _window.children[id] = _local
+      else window.children[id] = _local
       if (_local.style) style = toStyle({ _window, id })
-
+      
       tag = `<a id='${id}' href=${local.link.path || global.host} style='${style}' index='${local.index}'>${tag}</a>`
     }
 
@@ -7546,8 +7548,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       }
       
-    } else {
-
+    } else if (key) {
+      
       if (mount) local[key] = value
       params[key] = value
     }
@@ -7990,13 +7992,13 @@ const { toArray } = require("./toArray")
 
 const toggleView = ({ toggle, id }) => {
 
-  var value = window.value
+  var value = window.children
   var global = window.global
   var togglePage = toggle.page 
-  var toggleId = toggle.id
-    || togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id 
+  var toggleId = togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id 
+    || toggle.id
     || value[id] && value[id].element.children[0] && value[id].element.children[0].id
-  var parentId = toggleId ? value[toggleId].parent : id
+  var parentId = toggleId ? (toggleId !== "root" ? value[toggleId].parent : toggleId) : id
   var local = {}
   var viewId = toggle.viewId || toggle.view
 
@@ -8015,7 +8017,7 @@ const toggleView = ({ toggle, id }) => {
 
     global.currentPage = togglePage.split("/")[0]
     var title = global.data.page[global.currentPage].title
-    plobal.path = togglePage = togglePage === "main" ? "" : togglePage
+    global.path = togglePage = togglePage === "main" ? "/" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title

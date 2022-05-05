@@ -158,14 +158,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         path = path.slice(1)
     }
 
-    if (path0 === "timer()") {
-            
-        var args = path[0].split(":")
-        var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e, mount })
-        var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
-        return object = setTimeout(myFn, _timer)
-    }
-
     if (path0 === "setInterval()") {
             
         var args = path[0].split(":")
@@ -175,7 +167,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "updateSelf()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "updateSelf()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()")) {
         if (path0 === "getChildrenByClassName()") {
 
             path.unshift("doc()")
@@ -884,7 +876,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
             
-            answer = clearTimeout(o)
+            var args = k.split(":")
+            var _timer = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            answer = clearTimeout(_timer)
             
         } else if (k0 === "clearInterval()") {
             
@@ -1982,8 +1976,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             // route():page:path
             var args = k.split(":")
             var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
-            var _path = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
-            require("./route")({ route: { page: _page, path: _path } })
+            var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
+            require("./route").route({ route: { page: _page, path: _path } })
+
+        } else if (k0 === "toggleView()") {
+          
+            var args = k.split(":")
+            var _id = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
+            var _view = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
+            var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _ })
+            require("./toggleView").toggleView({ _window, toggle: { id: _id, view: _view, page: _page }, id })
 
         } else if (k0 === "preventDefault()") {
             
@@ -2068,9 +2070,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "setPosition()") {
           
-            var args = k.split(":")
+            // setPosition():toBePositioned:positioner:placement:align
+            var args = k.split(":") 
             var toBePositioned = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            var positioner = toValue({ req, res, _window, id, e, _, value: args[2], params })
+            var positioner = toValue({ req, res, _window, id, e, _, value: args[2], params }) || id
             var placement = toValue({ req, res, _window, id, e, _, value: args[3], params })
             var align = toValue({ req, res, _window, id, e, _, value: args[4], params })
             var position = { positioner, placement, align }

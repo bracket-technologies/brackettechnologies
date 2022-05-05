@@ -106,8 +106,10 @@ module.exports = {
 
       _local = { id, parent: local.id }
       _local.style = local.link.style
+      if (_window) _window.children[id] = _local
+      else window.children[id] = _local
       if (_local.style) style = toStyle({ _window, id })
-
+      
       tag = `<a id='${id}' href=${local.link.path || global.host} style='${style}' index='${local.index}'>${tag}</a>`
     }
 
