@@ -474,6 +474,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var args = k.split(":").slice(1)
             args = args.map(arg => toValue({ req, res, _window, id, e, value: arg, params, _ }))
             if (args.length > 0) args = args.flat()
+            if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
             answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
 
             delete local["data()"]
@@ -1985,7 +1986,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
             var _view = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
             var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _ })
-            require("./toggleView").toggleView({ _window, toggle: { id: _id, view: _view, page: _page }, id })
+            var _timer = toValue({ req, res, _window, id, e, value: args[4] || "", params, _ })
+            require("./toggleView").toggleView({ _window, toggle: { id: _id, view: _view, page: _page, timer: _timer }, id })
 
         } else if (k0 === "preventDefault()") {
             

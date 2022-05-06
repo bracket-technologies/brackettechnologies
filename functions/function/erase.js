@@ -9,6 +9,7 @@ const erase = async ({ id, e, ...params }) => {
   var collection = erase.collection = erase.collection || erase.path
   var headers = clone(erase.headers) || {}
   headers.project = headers.project || global.data.project.id
+  headers.erase = toString({ erase })
   delete erase.headers
 
   // no id
@@ -16,7 +17,7 @@ const erase = async ({ id, e, ...params }) => {
   erase.doc = erase.doc || erase.id
   if (erase.doc === undefined) delete erase.doc
 
-  var { data } = await axios.delete(`/api/${collection}?${encodeURI(toString({ erase }))}`, {
+  var { data } = await axios.delete(`/api/${collection}`, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...headers

@@ -7,9 +7,9 @@ var _window = { global: {}, children: {} }
 var getApi = async ({ req, res, db }) => {
   
   // api/collection?params?conditions
-  var collection = req.url.split("?")[0].split("/")[2]
+  var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  var string = decodeURI(req.url.split("?")[1]), params = {}
+  var string = req.headers.search, params = {}
   string = toCode({ _window, string })
   
   if (string) params = toParam({ _window, string, id: "" })
@@ -111,7 +111,7 @@ var getApi = async ({ req, res, db }) => {
   if (field) Object.entries(field).map(([key, value]) => {
 
     var operator = Object.keys(value)[0]
-    ref = ref.where(decodeURI(key), toFirebaseOperator(operator), decodeURI(value[operator]))
+    ref = ref.where(key, toFirebaseOperator(operator), value[operator])
   })
 
   if (search.orderBy) ref = ref.orderBy(search.orderBy)
@@ -144,7 +144,7 @@ var getApi = async ({ req, res, db }) => {
 var postApi = async ({ req, res, db }) => {
   // api/collection?params?conditions
 
-  var collection = req.url.split("?")[0].split("/")[2]
+  var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var data = req.body.data
   var save = req.body.save
@@ -168,9 +168,9 @@ var postApi = async ({ req, res, db }) => {
 var deleteApi = async ({ req, res, db }) => {
   // api/collection?params?conditions
 
-  var collection = req.url.split("?")[0].split("/")[2]
+  var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  var string = path[1], params = {}
+  var string = req.header.erase, params = {}
   if (string) params = toParam({ _window, string, id: "" })
 
   var erase = params.erase
@@ -195,7 +195,7 @@ var deleteApi = async ({ req, res, db }) => {
 
 const uploadApi = async ({ req, res, db, storage }) => {
 
-  var collection = req.url.split("?")[0].split("/")[2]
+  var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var file = req.body.file, url
   var upload = req.body.upload

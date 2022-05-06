@@ -11,13 +11,13 @@ const toggleView = ({ toggle, id }) => {
   var value = window.children
   var global = window.global
   var togglePage = toggle.page 
-  var toggleId = togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id 
-    || toggle.id
+  var toggleId = toggle.id
+    || togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id
     || value[id] && value[id].element.children[0] && value[id].element.children[0].id
   var parentId = toggleId ? (toggleId !== "root" ? value[toggleId].parent : toggleId) : id
   var local = {}
   var viewId = toggle.viewId || toggle.view
-
+  
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
 

@@ -12,8 +12,11 @@ module.exports = {
         var headers = clone(search.headers) || {}
         headers.project = headers.project || global.data.project.id
         delete search.headers
+
+        // search
+        headers.search = toString({ search })
         
-        var { data } = await axios.get(`/api/${collection}?${encodeURI(toString({ search }))}`, {
+        var { data } = await axios.get(`/api/${collection}`, {
             headers: {
                 "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
                 ...headers

@@ -48,13 +48,13 @@ exports.app = functions.https.onRequest(app)
 // post
 app.post("*", (req, res) => {
   var path = req.url.split("/")
-  var collection = path[2] ? path[2].split("?")[0] : ""
+  var collection = path[2] || ""
 
   if (path[1] === "api") {
 
     // upload api
     if (path[2] === "file") {
-      var collection = path[3] ? path[3].split("?")[0] : ""
+      var collection = path[3] || ""
 
       // api: bracketjs
       if (req.headers.project === "bracketjs" && collection !== "_user_" && collection !== "_password_" && collection !== "_project_") return require("./function/apiLocal").uploadApi({ req, res })
@@ -72,7 +72,7 @@ app.post("*", (req, res) => {
 // delete
 app.delete("*", (req, res) => {
   var path = req.url.split("/")
-  var collection = path[2] ? path[2].split("?")[0] : ""
+  var collection = path[2] || ""
   
   // api: bracketjs
   if (req.headers.project === "bracketjs" && collection !== "_user_" && collection !== "_password_" && collection !== "_project_") return require("./function/apiLocal").deleteApi({ req, res })
@@ -83,7 +83,7 @@ app.delete("*", (req, res) => {
 // get
 app.get("*", (req, res) => {
   var path = req.url.split("/")
-  var collection = path[2] ? path[2].split("?")[0] : ""
+  var collection = path[2] || ""
   
   // متابعتها لاحقا
   if (path.includes("_string") || path.includes("undefined")) return res.send("Wrong")

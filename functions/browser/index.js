@@ -2167,6 +2167,7 @@ const erase = async ({ id, e, ...params }) => {
   var collection = erase.collection = erase.collection || erase.path
   var headers = clone(erase.headers) || {}
   headers.project = headers.project || global.data.project.id
+  headers.erase = toString({ erase })
   delete erase.headers
 
   // no id
@@ -2174,7 +2175,7 @@ const erase = async ({ id, e, ...params }) => {
   erase.doc = erase.doc || erase.id
   if (erase.doc === undefined) delete erase.doc
 
-  var { data } = await axios.delete(`/api/${collection}?${encodeURI(toString({ erase }))}`, {
+  var { data } = await axios.delete(`/api/${collection}`, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...headers
@@ -4105,6 +4106,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var args = k.split(":").slice(1)
             args = args.map(arg => toValue({ req, res, _window, id, e, value: arg, params, _ }))
             if (args.length > 0) args = args.flat()
+            if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
             answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
 
             delete local["data()"]
@@ -5616,7 +5618,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
             var _view = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
             var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _ })
-            require("./toggleView").toggleView({ _window, toggle: { id: _id, view: _view, page: _page }, id })
+            var _timer = toValue({ req, res, _window, id, e, value: args[4] || "", params, _ })
+            console.log({ id: _id, view: _view, page: _page, timer: _timer });
+            require("./toggleView").toggleView({ _window, toggle: { id: _id, view: _view, page: _page, timer: _timer }, id })
 
         } else if (k0 === "preventDefault()") {
             
@@ -6145,8 +6149,11 @@ module.exports = {
         var headers = clone(search.headers) || {}
         headers.project = headers.project || global.data.project.id
         delete search.headers
+
+        // search
+        headers.search = toString({ search })
         
-        var { data } = await axios.get(`/api/${collection}?${encodeURI(toString({ search }))}`, {
+        var { data } = await axios.get(`/api/${collection}`, {
             headers: {
                 "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
                 ...headers
@@ -7995,13 +8002,13 @@ const toggleView = ({ toggle, id }) => {
   var value = window.children
   var global = window.global
   var togglePage = toggle.page 
-  var toggleId = togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id 
-    || toggle.id
+  var toggleId = toggle.id
+    || togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id
     || value[id] && value[id].element.children[0] && value[id].element.children[0].id
   var parentId = toggleId ? (toggleId !== "root" ? value[toggleId].parent : toggleId) : id
   var local = {}
   var viewId = toggle.viewId || toggle.view
-
+  
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
 
