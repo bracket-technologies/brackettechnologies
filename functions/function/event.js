@@ -169,6 +169,27 @@ const defaultEventHandler = ({ id }) => {
 
   if (local.link) local.element.addEventListener("click", (e) => e.preventDefault())
 
+  if (local.type === "Input") {
+
+    // focus
+    var setEventType = (e) => {
+
+      if (!window.children[id]) return e.target.removeEventListener("focus", setEventType)
+      local.focus = true
+    }
+
+    local.element.addEventListener("focus", setEventType)
+
+    // blur
+    var setEventType = (e) => {
+
+      if (!window.children[id]) return e.target.removeEventListener("blur", setEventType)
+      local.focus = false
+    }
+
+    local.element.addEventListener("blur", setEventType)
+  }
+
   events.map((event) => {
 
     var setEventType = (e) => {

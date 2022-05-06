@@ -74,7 +74,7 @@
                                     "controls": [
                                         {
                                             "event": "click??!)(:open-map.hasNestedArray();!)(:open-map.hasEmptyField()",
-                                            "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=)(:open-map"
+                                            "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].data()"
                                         }
                                     ]
                                 }
