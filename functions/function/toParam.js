@@ -24,12 +24,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
     // break
     if (params.break || local && local.break) return
-
-    if (param.slice(0, 2) === "#:") {
-      local["#"] = toArray(local["#"])
-      return local["#"].push(param.slice(2))
-    }
     
+    // split
     if (param.includes("=")) {
 
       var keys = param.split("=")
@@ -56,7 +52,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       params.await = params.await || ""
       return params.await += `${awaiter};`
     }
-
+/*
     if (local && local.status === "Loading") {
       if (key.includes("parent()") || key.includes("children()") || key.includes("next()")) {
 
@@ -74,7 +70,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         "event": `${event}?${_params}`
       })
     }
-    
+  */
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _ })
 
@@ -84,7 +80,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     id = localId
 
     var keys = typeof key === "string" ? key.split(".") : [], timer
-
+/*
     // conditions
     if (key && key.includes("<<")) {
       
@@ -93,7 +89,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       if (!approved) return
       key = key.split("<<")[0]
     }
-
+*/
     var path = typeof key === "string" ? key.split(".") : []
     
     // break
@@ -102,9 +98,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       params.break = true
       return params
     }
-    
-    // reload
-    if (key === "reload()") document.location.reload(true)
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -154,8 +147,16 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       
     } else if (key) {
       
-      if (mount) local[key] = value
-      params[key] = value
+      var args = key.split(":")
+      
+      if (args[1]) {
+        if (mount) local[args[0]] = local[args[0]] || {}
+        var _param = reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: mount ? local[args[0]] : {}, params, _ })
+        params[args[0]] = _param
+      } else {
+        if (mount) local[key] = value
+        params[key] = value
+      }
     }
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////

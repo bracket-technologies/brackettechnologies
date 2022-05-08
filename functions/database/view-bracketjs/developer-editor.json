@@ -13,7 +13,7 @@
                 "async():search:[update:gallery-view]?search.collection=storage;search.headers.project=)(:project;search.field.title.equals=image;search.limit=25;await().)(:gallery-images=().search.data",
                 "async():search:[update:storage-list]?search.collection=storage;search.headers.project=)(:project;await().)(:data.editor.storage=().search.data"
             ],
-            "event": "loaded?)(:project=)(:path.split():/.2"
+            "event": "loaded?)(:project=)(:path.split():/.3"
         }
     ],
     "creation-date": 1637494484000,
@@ -56,7 +56,7 @@
                                             "type": "Text?text=:;style.marginRight=1rem;style.fontSize=1.5rem"
                                         },
                                         {
-                                            "type": "Text?text=)(:path.split():/.2.capitalize();style.fontSize=1.5rem;style.marginRight=.75rem"
+                                            "type": "Text?text=)(:path.split():/.3.capitalize();style.fontSize=1.5rem;style.marginRight=.75rem"
                                         },
                                         {
                                             "type": "Icon?name=bi-caret-down-fill;style.fontSize=1.1rem;style.transition=transform .2s;style.transform=rotate(0deg)"
@@ -74,7 +74,7 @@
                                     "controls": [
                                         {
                                             "event": "click??!)(:open-map.hasNestedArray();!)(:open-map.hasEmptyField()",
-                                            "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=)(:open-map"
+                                            "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=)(:open-map"
                                         }
                                     ]
                                 }
@@ -118,7 +118,7 @@
                                     ],
                                     "controls": [
                                         {
-                                            "event": "click?parent().children().map():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=().open-doc]._():[_.style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data]?)(:clickedElement().id!=lastChild().id"
+                                            "event": "click?parent().children().map():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=().open-doc;open-collection=().open-collection]._():[_.style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data]?)(:clickedElement().id!=lastChild().id"
                                         }
                                     ]
                                 }
@@ -163,7 +163,7 @@
                 {
                     "controls": [
                         {
-                            "actions": "async():erase:[update:[)(:open-collection+-list]]?erase.collection=)(:open-collection;erase.doc=)(:open-doc;erase.headers.project=)(:project;async()::[)(:data.editor.[)(:open-collection].[)(:open-doc].del();)(:open-docs.pullItem():[)(:open-collection+/+().open-doc];():open-view.children().find():[open-doc=)(:open-doc].rem();():data-viewer-bar.children().find():[open-doc=)(:open-doc].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]]",
+                            "actions": "async():erase:note:[update:[)(:open-collection+-list]]?note.text=File has been erased!;erase.collection=)(:open-collection;erase.doc=)(:open-doc;erase.headers.project=)(:project;async()::[)(:data.editor.[)(:open-collection].[)(:open-doc].del();)(:open-docs.pullItem():[)(:open-collection+/+().open-doc];():open-view.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].rem();():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]]",
                             "event": "click?popup()"
                         }
                     ],

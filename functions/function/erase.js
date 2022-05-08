@@ -7,10 +7,12 @@ const erase = async ({ id, e, ...params }) => {
   var erase = params.erase || {}
   var local = window.children[id]
   var collection = erase.collection = erase.collection || erase.path
-  var headers = clone(erase.headers) || {}
+  var headers = erase.headers || {}
   headers.project = headers.project || global.data.project.id
-  headers.erase = toString({ erase })
   delete erase.headers
+
+  // erase
+  headers.erase = encodeURI(toString({ erase }))
 
   // no id
   if (!erase.id && !erase.doc && !erase.docs) return

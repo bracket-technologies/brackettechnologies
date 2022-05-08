@@ -34,6 +34,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // path is a number
     if (typeof path === "number") path = [path]
 
+    // ||
+    if (path.join(".").includes("||")) {
+        var args = path.join(".").split("||")
+        var answer
+        args.map(value => {
+            if (answer === undefined || answer === "") answer = toValue({ _window, value, params, _, id, e, req, res })
+        })
+        return answer
+    }
+
     if (path.join(".").includes("=") || path.join(".").includes(";")) return toParam({ req, res, _window, id, e, string: path.join("."), _, object, mount })
 
     // path[0] = path0:args
@@ -110,29 +120,35 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         path[0] = ")("
     }
     
-    // ():id || ():id.once()
+    // ():id:timer:conditions
     if (path0.slice(0, 2) === "()") {
 
         var args = path[0].split(":")
 
-        if (args[1] || args[2]) {
+        if (args[1] || args[2] || args[3]) {
 
+            // timer
             if (args[2]) {
                 var _timer = parseInt(args[2])
-                path[0] = `${args.slice(0, -1).join(":")}`
+                args[2] = ""
+                path[0] = args.join(":")
                 return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
             }
 
+            // conditions
+            if (args[3]) {
+                var approved = toApproval({ _window, e, string: args[3], id, _, req, res })
+                if (!approved) return
+            }
+
+            // id
             var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
             if (_id) local = _window ? _window.children[_id] : window.children[_id]
-
-            var _once = path[1] === "once()"
-            if (_once) path = path.slice(1)
             
             path[0] = path0 = "()"
         }
     }
-    
+/*   
     if (path && (path.includes("equal()") || path.includes("equals()") || path.includes("eq()") || path.includes("=()"))) {
         
         var _index = path.findIndex(k => k && (k.includes("equal()") || k.includes("equals()") || k.includes("eq()") || path.includes("=()")))
@@ -148,7 +164,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             path = path.slice(0, _index)
         }
     }
-
+*/
     if (path0 === "while()") {
             
         var args = path[0].split(":")
@@ -158,16 +174,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         path = path.slice(1)
     }
 
-    if (path0 === "setInterval()") {
-            
-        var args = path[0].split(":")
-        var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e, mount }))
-        var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
-        return setInterval(myFn, _timer)
-    }
-
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "updateSelf()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()")) {
         if (path0 === "getChildrenByClassName()") {
 
             path.unshift("doc()")
@@ -287,8 +295,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 })
                 
-            } //else if (path0 === "str()") return global.codes[path[0].split(":")[1]]
-            else if (mount) object = local
+            } else if (mount) {
+                object = local
+                path.unshift("()")
+            }
         }
 
         if (object || object === "" || object === 0 || coded) path = path.slice(1)
@@ -307,10 +317,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     
     var answer = path.reduce((o, k, i) => {
         
-        if (k === undefined) console.log(path);
+        if (k === undefined) console.log(path)
 
         k = k.toString()
         k0 = k.split(":")[0]
+        var args = k.split(":")
         
         // fake lastIndex
         if (lastIndex !== path.length - 1) {
@@ -376,28 +387,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 }
             }
         }
-
-        // if (k0 === "_quotation" || k0 === "'") {
-            
-        //     answer = "'"
-
-        // } else if (k0 === "_quotations" || k0 === `"`) {
-            
-        //     answer = `"`
-
-        // } else if (k0 === "_string" || k0 === "''") {
-            
-        //     answer = ""
-
-        // } else if (k0 === "_dots" || k0 === "...") {
-            
-        //     answer = "..."
-
-        // } else if (k0 === "_dot") {
-            
-        //     answer = "."
-
-        // }
         
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
         
@@ -481,7 +470,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "Data()") {
 
-            answer = global[local.Data]
+            breakRequest = true
+            var args = k.split(":").slice(1)
+            args = args.map(arg => toValue({ req, res, _window, id, e, value: arg, params, _ }))
+            if (args.length > 0) args = args.flat()
+            if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
+            answer = reducer({ req, res, _window, id, e, value, key, path: [...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
 
         } else if (k0 === "removeAttribute()") {
 
@@ -492,7 +486,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "parent()") {
 
             var _parent, _o
-
+            
             if (o.status === "Mounted") _parent = o.element.parentNode.id
             else _parent = o.parent
             _parent = _window ? _window.children[_parent] : window.children[_parent]
@@ -1583,7 +1577,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "getTime()" || k0 === "timestamp()") {
             
-            answer = o.getTime()
+            if (o instanceof Date) answer = o.getTime()
+            else {
+                o = new Date(o)
+                answer = o.getTime()
+            }
             
         } else if (k0 === "getDateTime()") {
             
@@ -2082,11 +2080,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             return require("./setPosition").setPosition({ position, id: toBePositioned, e })
 
-        } else if (k0 === "updateSelf()") {
+        } else if (k0 === "refresh()") {
           
             var args = k.split(":")
             var _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
-            return require("./updateSelf").updateSelf({ id: _id })
+            return require("./refresh").refresh({ id: _id })
 
         } else if (k0 === "copyToClipBoard()") {
           
@@ -2099,7 +2097,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 document.body.appendChild(textArea)
                 textArea.focus()
                 textArea.select()
-                var succ = document.execCommand("copy")
                 document.body.removeChild(textArea)
             }
 
@@ -2117,18 +2114,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o.element) answer = o.element.classList.remove(_class)
             else if(o.nodeType) answer = o.classList.remove(_class)
 
-        } else if (k0 === "element" && local && local.status === "Loading") {
-
+        } else if (k.includes(":coded()")) {
+            
             breakRequest = true
-            local.controls = toArray(local.controls) || []
-            if (value !== undefined) return local.controls.push({
-                event: `loaded?${key}=${value}`
-            })
-            
-        } else if (k0 === "length" && !local.length && i === 0) {
-            
-            var _parent = _window ? _window.children[local.parent] : window.children[local.parent]
-            answer = _parent.element.children.length
+            o[k0] = o[k0] || {}
+            answer = reducer({ req, res, _window, id, e, value, key, path: [...args.slice(1), ...path.slice(i + 1)], object: o[k0], params, _ })
 
         } else if (key && value !== undefined && i === lastIndex) {
 

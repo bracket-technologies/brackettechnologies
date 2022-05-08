@@ -317,19 +317,19 @@ const Input = (component) => {
                 }, {
                     event: "select;mousedown?e().preventDefault()"
                 }, {
-                    event: "input?().parent().parent().required.mount=false;().parent().parent().click()?().parent().parent().required.mount;e().target.value.exist()"
+                    event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value.exist()"
                 }]
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?[${password}]`,
                 children: [{
                     type: `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
                     controls: [{
-                        event: "click?().parent().prev().element.type=text;().next().style().display=flex;().style().display=none"
+                        event: "click?parent().prev().element.type=text;next().style().display=flex;style().display=none"
                     }]
                 }, {
                     type: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
                     controls: [{
-                        event: "click?().parent().prev().element.type=password;().prev().style().display=flex;().style().display=none"
+                        event: "click?parent().prev().element.type=password;prev().style().display=flex;style().display=none"
                     }]
                 }]
             }, {
@@ -459,14 +459,14 @@ const Input = (component) => {
                 ...style,
             },
             controls: [...controls, {
-                event: "input?().parent().required.mount=false;().parent().click()?().parent().required.mount;e().target.value.exist()"
+                event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
             }]
         }
     }
 }
 
 module.exports = Input
-},{"../function/clone":30,"../function/merge":66,"../function/toComponent":95,"../function/toString":104}],4:[function(require,module,exports){
+},{"../function/clone":29,"../function/merge":65,"../function/toComponent":95,"../function/toString":104}],4:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -839,30 +839,6 @@ module.exports = ({ controls, id }) => {
     }]
 }
 },{}],11:[function(require,module,exports){
-module.exports = ({ controls, id }) => {
-
-    var local = window.children[id]
-    var _id = controls.id || id
-    
-    local.clicked.freeze = local.clicked.freeze ? true : false
-    local.clicked.before = local.clicked.before || {}
-    local.clicked.style &&
-    Object.keys(local.clicked.style).map(key => 
-        local.clicked.before[key] = local.style[key] !== undefined ? local.style[key] : null 
-    )
-
-    return [{
-        "event": `loaded:${_id}?().clicked.freeze=true?().clicked.mount.or():[().clicked.freeze]`,
-        "actions": "setStyle?style=if().[)(:mode.is():[)(:default-mode]]:[().clicked.style].else():[().mode.[)(:mode].clicked.style].else():_map"
-    }, {
-        "event": `click??!().required.mount;!().parent().required.mount;!().clicked.disable`,
-        "actions": "setStyle?style=if().[)(:mode.is():[)(:default-mode]]:[().clicked.style].else():[().mode.[)(:mode].clicked.style].else():_map;().clicked.freeze=true"
-    }, {
-        "event": `click:body??!().required.mount;!().parent().required.mount;().clicked.freeze;)(:clickedElement.outside():[().element];!().clicked.disable`,
-        "actions": "setStyle?style=().clicked.before;().clicked.freeze=false"
-    }]
-}
-},{}],12:[function(require,module,exports){
 module.exports = {
   item: require("./item"),
   list: require("./list"),
@@ -879,11 +855,10 @@ module.exports = {
   pricable: require("./pricable"),
   hover: require("./hover"),
   click: require("./click"),
-  clicked: require("./clicked"),
   loaded: require("./loaded"),
   contentful: require("../function/contentful").contentful
 }
-},{"../function/contentful":32,"./actionlist":9,"./click":10,"./clicked":11,"./droplist":13,"./hover":14,"./hoverable":15,"./item":16,"./list":17,"./loaded":18,"./miniWindow":19,"./mininote":20,"./popup":21,"./pricable":22,"./sorter":23,"./toggler":24,"./tooltip":25,"./touchableOpacity":26}],13:[function(require,module,exports){
+},{"../function/contentful":31,"./actionlist":9,"./click":10,"./droplist":12,"./hover":13,"./hoverable":14,"./item":15,"./list":16,"./loaded":17,"./miniWindow":18,"./mininote":19,"./popup":20,"./pricable":21,"./sorter":22,"./toggler":23,"./tooltip":24,"./touchableOpacity":25}],12:[function(require,module,exports){
 const { toString } = require("../function/toString")
 
 module.exports = ({ controls, id }) => {
@@ -901,7 +876,7 @@ module.exports = ({ controls, id }) => {
     ]
   }]
 }
-},{"../function/toString":104}],14:[function(require,module,exports){
+},{"../function/toString":104}],13:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var local = window.children[id]
@@ -924,7 +899,7 @@ module.exports = ({ controls, id }) => {
         "actions": "setStyle?style=().hover.before"
     }]
 }
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 const {toArray} = require("../function/toArray")
 
 module.exports = ({ id, controls }) => {
@@ -940,7 +915,7 @@ module.exports = ({ id, controls }) => {
     }]
 }
 
-},{"../function/toArray":90}],16:[function(require,module,exports){
+},{"../function/toArray":90}],15:[function(require,module,exports){
 module.exports = ({params}) => [
   "setData?data.value=().text",
   `resetStyles?():[)(:${params.state}.0].mountonload=false??)(:${params.state}`,
@@ -952,7 +927,7 @@ module.exports = ({params}) => [
   `mountAfterStyles?().mountonload:)(:${params.state}.0??)(:${params.state}`,
 ];
 
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = ({ controls }) => {
 
   return [{
@@ -971,7 +946,7 @@ module.exports = ({ controls }) => {
   }]
 }
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 const { toArray } = require("../function/toArray")
 
 module.exports = ({ controls, id }) => {
@@ -984,7 +959,7 @@ module.exports = ({ controls, id }) => {
         "actions": id.map(id => `${actions}:${id}`)
     }]
 }
-},{"../function/toArray":90}],19:[function(require,module,exports){
+},{"../function/toArray":90}],18:[function(require,module,exports){
 const { generate } = require("../function/generate");
 
 module.exports = ({ params }) => {
@@ -1001,7 +976,7 @@ module.exports = ({ params }) => {
   }]
 }
 
-},{"../function/generate":53}],20:[function(require,module,exports){
+},{"../function/generate":52}],19:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   id = controls.id || id
@@ -1012,7 +987,7 @@ module.exports = ({ controls, id }) => {
     actions: "setPosition:mininote?position.positioner=mouse;position.placement=right"
   }]
 }
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   id = controls.id || id
@@ -1029,7 +1004,7 @@ module.exports = ({ controls, id }) => {
   }]
 }
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = ({ id }) => {
     
     var input_id = window.children[id].type === 'Input' ? id : `${id}-input`
@@ -1037,7 +1012,7 @@ module.exports = ({ id }) => {
         "event": `input:${input_id}?():${input_id}.data()=():${input_id}.element.value().toPrice().else().0;():${input_id}.element.value=():${input_id}.data().else().0`
     }]
 }
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 const { toArray } = require("../function/toArray");
 
 module.exports = ({ id, controls }) => {
@@ -1050,7 +1025,7 @@ module.exports = ({ id, controls }) => {
   }]
 }
 
-},{"../function/toArray":90}],24:[function(require,module,exports){
+},{"../function/toArray":90}],23:[function(require,module,exports){
 module.exports = ({ controls }) => {
 
   return [{
@@ -1063,7 +1038,7 @@ module.exports = ({ controls }) => {
   }]
 }
 
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -1079,7 +1054,7 @@ module.exports = ({ controls, id }) => {
     event: "mouseleave?clearTimer():[)(:tooltip-timer];)(:tooltip-timer.del();():tooltip.style().opacity=0"
   }]
 }
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = ({ id }) => {
 
   if (window.children[id].element.style.transition) {
@@ -1101,7 +1076,7 @@ module.exports = ({ id }) => {
   }]
 }
 
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.children[id]
@@ -1124,7 +1099,7 @@ const blur = ({ id }) => {
 
 module.exports = {blur}
 
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 const capitalize = (string, minimize) => {
   if (typeof string !== "string") return string
 
@@ -1149,7 +1124,7 @@ const capitalizeFirst = (string, minimize) => {
 
 module.exports = {capitalize, capitalizeFirst}
 
-},{}],29:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 const {clone} = require("./clone");
 
 const clearValues = (obj) => {
@@ -1191,7 +1166,7 @@ const clearValues = (obj) => {
 
 module.exports = {clearValues};
 
-},{"./clone":30}],30:[function(require,module,exports){
+},{"./clone":29}],29:[function(require,module,exports){
 const clone = (obj) => {
 
   /*if (typeof obj !== "object") return obj
@@ -1236,7 +1211,7 @@ const isElement = (obj) => {
 
 module.exports = {clone}
 
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = {
     compare: (value1, operator, value2) => {
         if (operator === "==") return value1 === value2
@@ -1247,7 +1222,7 @@ module.exports = {
         else if (operator === "in") return value1.includes(value2)
     }
 }
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports = {
     contentful: ({ id }) => {
         var local = window.children[id]
@@ -1293,7 +1268,7 @@ module.exports = {
         }))
     }
 }
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 const controls = ({ _window, controls, id, req, res }) => {
@@ -1325,7 +1300,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":46,"./toArray":90,"./watch":111}],34:[function(require,module,exports){
+},{"./event":45,"./toArray":90,"./watch":110}],33:[function(require,module,exports){
 const setCookie = ({ name = "", value, expiry = 360 }) => {
 
   var d = new Date()
@@ -1360,7 +1335,7 @@ const eraseCookie = ({ name }) => {
 }
 
 module.exports = {setCookie, getCookie, eraseCookie}
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 const control = require("../control/control")
 
 const createActions = ({ params, id }) => {
@@ -1375,7 +1350,7 @@ const createActions = ({ params, id }) => {
 
 module.exports = {createActions}
 
-},{"../control/control":12,"./execute":47}],36:[function(require,module,exports){
+},{"../control/control":11,"./execute":46}],35:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
@@ -1438,7 +1413,7 @@ module.exports = {
   }
 }
 
-},{"../component/component":8,"./clone":30,"./generate":53,"./toApproval":89,"./toCode":94,"./toParam":101}],37:[function(require,module,exports){
+},{"../component/component":8,"./clone":29,"./generate":52,"./toApproval":89,"./toCode":94,"./toParam":101}],36:[function(require,module,exports){
 const { createElement } = require("./createElement")
 const { toArray } = require("./toArray")
 const { controls } = require("./controls")
@@ -1448,13 +1423,12 @@ const { toCode } = require("./toCode")
 //
 require('dotenv').config()
 
-const createDocument = async ({ req, res, db }) => {
+const createDocument = async ({ req, res }) => {
 
-    // Create a cookies object
-    var host = req.headers["x-forwarded-host"] || req.headers["host"]
-    
-    // current page
-    var currentPage = req.url.split("/")[1] || ""
+    var host = req.headers["host"]
+    var projectId = req.url.split("/")[1]
+    if (projectId) host += `/${projectId}`
+    var currentPage = req.url.split("/")[2] || ""
     currentPage = currentPage || "main"
     
     var promises = [], user, page, view, project
@@ -1470,9 +1444,12 @@ const createDocument = async ({ req, res, db }) => {
         },
         codes: {},
         host,
+        projectId,
         currentPage,
         path: req.url,
+        cookies: req.cookies,
         device: req.device,
+        headers: req.headers,
         public: getJsonFiles({ search: { collection: "_public_" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
@@ -1485,73 +1462,40 @@ const createDocument = async ({ req, res, db }) => {
         },
         root: {
             id: "root",
+            index: 0,
             type: "View",
             parent: "body",
             style: { backgroundColor: "#fff" }
         },
         public: {
             id: "public",
+            index: 0,
             type: "View",
             parent: "body",
             children: Object.values(global.public)
         }
     }
-
-    var bracketDomains = [
-        "bracketjs.com",
-        "localhost",
-        "bracketjs.localhost"
-    ]
-
-    // is brakcet domain
-    var isBracket = bracketDomains.includes(host)
     
     // get project data
-    project = db
-    .collection("_project_").where("domains", "array-contains", host)
-    .get().then(doc => {
-
-        if (doc.docs[0] && doc.docs[0].exists)
-        global.data.project = project = doc.docs[0].data()
-    })
+    project = getJsonFiles({ search: { collection: "_project_", field: { domains: { "array-contains": host } } } })
+    if (Object.keys(project)[0]) global.data.project = project = Object.values(project)[0]
 
     promises.push(project)
     await Promise.all(promises)
-    
+
     // project not found
     if (!project) return res.send("Project not found!")
-    global.projectId = project.id
-
-    // get user
-    user = db
-    .collection("_user_").where("projects", "array-contains", project.id)
-    .get().then(doc => {
-        
-        if (doc.docs[0].exists)
-        global.data.user = user = doc.docs[0].data()
-    })
     
-    if (isBracket) {
-        
-        // get page
-        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
-        
-        // get view
-        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
-        
-    } else {
+    // get user
+    user = getJsonFiles({ search: { collection: "_user_", fields: { "projects": { "array-contains": project.id } } } })
+    if (Object.keys(user)[0]) global.data.user = user = Object.values(user)[0]
+    
+    // get page
+    global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
 
-        // get page
-        page = db
-            .collection(`page-${project.id}`)
-            .get().then(q => q.forEach(doc => global.data.page[doc.id] = doc.data() ))
-
-        // get view
-        view = db
-            .collection(`view-${project.id}`)
-            .get().then(q => q.forEach(doc => global.data.view[doc.id] = doc.data()))
-    }
-
+    // get view
+    global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
+    
     promises.push(page)
     promises.push(view)
     promises.push(user)
@@ -1559,11 +1503,10 @@ const createDocument = async ({ req, res, db }) => {
     await Promise.all(promises)
     
     // user not found
-    if (!global.data.user) return res.send("User not found")
-    global.data.user = user = global.data.user
-    
+    if (!user) return res.send("User not found")
+
     // page doesnot exist
-    if (!global.data.page[currentPage]) return res.send("Page not found!")
+    if (!global.data.page[currentPage]) return res.send(`${currentPage} page does not exist!`)
 
     // mount globals
     if (global.data.page[currentPage].global)
@@ -1572,8 +1515,6 @@ const createDocument = async ({ req, res, db }) => {
     // controls & children
     children.root.controls = global.data.page[currentPage].controls
     children.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
-
-    var _window = { global, children }
 
     // forward
     if (global.data.page[currentPage].forward) {
@@ -1584,9 +1525,9 @@ const createDocument = async ({ req, res, db }) => {
         var conditions = forward[2]
         forward = forward[0]
 
-        var approved = toApproval({ _window, string: conditions, id: "root", req, res })
+        var approved = toApproval({ _window: { global, children }, string: conditions, id: "root", req, res })
         if (approved) {
-            global.path = forward
+            global.path = forward ? `${global.projectId}/${forward}` : `/${global.projectId}`
             global.currentPage = currentPage = global.path.split("/")[1]
         }
     }
@@ -1594,14 +1535,14 @@ const createDocument = async ({ req, res, db }) => {
     // onloading
     if (global.data.page[currentPage].controls) {
         global.data.page[currentPage].controls = toArray(global.data.page[currentPage].controls)
-        var loadingEventControls = global.data.page[currentPage].controls.find(controls => controls.event.split("?")[0].includes("loading"))
-        if (loadingEventControls) controls({ _window, id: "root", req, res, controls: loadingEventControls })
+        var loadingEventControls = global.data.page[currentPage].controls.filter(controls => controls.event.split("?")[0].includes("loading"))
+        if (loadingEventControls) controls({ _window: { global, children }, id: "root", req, res, controls: loadingEventControls })
     }
 
     // create html
     var innerHTML = ""
-    innerHTML = createElement({ _window, id: "root", req, res })
-    innerHTML += createElement({ _window, id: "public", req, res })
+    innerHTML = createElement({ _window: { global, children }, id: "root", req, res })
+    innerHTML += createElement({ _window: { global, children }, id: "public", req, res })
     global.idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 
     // meta
@@ -1646,7 +1587,8 @@ const createDocument = async ({ req, res, db }) => {
 }
 
 module.exports = { createDocument }
-},{"./controls":33,"./createElement":38,"./jsonFiles":63,"./toApproval":89,"./toArray":90,"./toCode":94,"dotenv":142}],38:[function(require,module,exports){
+
+},{"./controls":32,"./createElement":37,"./jsonFiles":62,"./toApproval":89,"./toArray":90,"./toCode":94,"dotenv":141}],37:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -1761,7 +1703,7 @@ var createElement = ({ _window, id, req, res }) => {
 
 module.exports = { createElement }
 
-},{"./clone":30,"./createTags":39,"./generate":53,"./reducer":72,"./toApproval":89,"./toCode":94,"./toParam":101,"./toValue":106}],39:[function(require,module,exports){
+},{"./clone":29,"./createTags":38,"./generate":52,"./reducer":71,"./toApproval":89,"./toCode":94,"./toParam":101,"./toValue":106}],38:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -1923,7 +1865,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":30,"./createComponent":36,"./execute":47,"./generate":53,"./toApproval":89,"./toArray":90,"./toHtml":97}],40:[function(require,module,exports){
+},{"./clone":29,"./createComponent":35,"./execute":46,"./generate":52,"./toApproval":89,"./toArray":90,"./toHtml":97}],39:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -1943,7 +1885,7 @@ const createView = ({ view, id }) => {
 
 module.exports = {createView}
 
-},{"./clone":30,"./toArray":90,"./update":108}],41:[function(require,module,exports){
+},{"./clone":29,"./toArray":90,"./update":108}],40:[function(require,module,exports){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { setContent } = require("./setContent")
@@ -1981,7 +1923,7 @@ const clearData = ({ id, e, clear = {} }) => {
 
 module.exports = { createData, setData, clearData }
 
-},{"./clone":30,"./reducer":72,"./setContent":79,"./setData":80}],42:[function(require,module,exports){
+},{"./clone":29,"./reducer":71,"./setContent":79,"./setData":80}],41:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   if (typeof string !== "string") return string
@@ -2007,7 +1949,7 @@ const decode = ({ _window, string }) => {
 
 module.exports = {decode}
 
-},{}],43:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -2095,7 +2037,7 @@ const defaultInputHandler = ({ id }) => {
 }
 
 module.exports = { defaultInputHandler }
-},{"./data":41,"./isArabic":60,"./resize":75}],44:[function(require,module,exports){
+},{"./data":40,"./isArabic":59,"./resize":75}],43:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -2154,7 +2096,7 @@ const droplist = ({ id, e }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":30,"./toString":104,"./toValue":106,"./update":108}],45:[function(require,module,exports){
+},{"./clone":29,"./toString":104,"./toValue":106,"./update":108}],44:[function(require,module,exports){
 (function (global){(function (){
 const axios = require("axios");
 const { toString } = require("./toString")
@@ -2165,10 +2107,12 @@ const erase = async ({ id, e, ...params }) => {
   var erase = params.erase || {}
   var local = window.children[id]
   var collection = erase.collection = erase.collection || erase.path
-  var headers = clone(erase.headers) || {}
+  var headers = erase.headers || {}
   headers.project = headers.project || global.data.project.id
-  headers.erase = toString({ erase })
   delete erase.headers
+
+  // erase
+  headers.erase = encodeURI(toString({ erase }))
 
   // no id
   if (!erase.id && !erase.doc && !erase.docs) return
@@ -2190,7 +2134,7 @@ const erase = async ({ id, e, ...params }) => {
 
 module.exports = { erase }
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":91,"./toString":104,"axios":112}],46:[function(require,module,exports){
+},{"./toAwait":91,"./toString":104,"axios":111}],45:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -2388,7 +2332,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":30,"./execute":47,"./toApproval":89,"./toArray":90,"./toCode":94,"./toParam":101,"./toValue":106}],47:[function(require,module,exports){
+},{"./clone":29,"./execute":46,"./toApproval":89,"./toArray":90,"./toCode":94,"./toParam":101,"./toValue":106}],46:[function(require,module,exports){
 (function (global){(function (){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
@@ -2534,7 +2478,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 module.exports = { execute }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./function":52,"./toApproval":89,"./toArray":90,"./toAwait":91,"./toCode":94,"./toParam":101,"./toValue":106}],48:[function(require,module,exports){
+},{"./function":51,"./toApproval":89,"./toArray":90,"./toAwait":91,"./toCode":94,"./toParam":101,"./toValue":106}],47:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -2550,7 +2494,7 @@ module.exports = {
         // linkElement.delete()
     }
 }
-},{}],49:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 const { toValue } = require("./function")
 
 module.exports = {
@@ -2561,7 +2505,7 @@ module.exports = {
         reader.readAsDataURL(file)
     }
 }
-},{"./function":52}],50:[function(require,module,exports){
+},{"./function":51}],49:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
 const { compare } = require("./compare")
@@ -2623,7 +2567,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 
 module.exports = {filter}
 
-},{"./clone":30,"./compare":31,"./isEqual":61,"./toArray":90,"./toOperator":100}],51:[function(require,module,exports){
+},{"./clone":29,"./compare":30,"./isEqual":60,"./toArray":90,"./toOperator":100}],50:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var local = window.children[id]
@@ -2659,7 +2603,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],52:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -2677,7 +2621,7 @@ const {createDocument} = require("./createDocument")
 const {toControls} = require("./toControls")
 const {toArray} = require("./toArray")
 const {generate} = require("./generate")
-const {updateSelf} = require("./updateSelf")
+const {refresh} = require("./refresh")
 const {createElement} = require("./createElement")
 const {addEventListener} = require("./event")
 const {execute} = require("./execute")
@@ -2745,7 +2689,7 @@ const {createData, clearData} = require("./data")
 
 module.exports = {
   switchMode,
-  updateSelf,
+  refresh,
   getDaysInMonth,
   importJson,
   converter,
@@ -2831,7 +2775,7 @@ module.exports = {
   toggleView,
   insert
 }
-},{"./blur":27,"./capitalize":28,"./clearValues":29,"./clone":30,"./compare":31,"./contentful":32,"./controls":33,"./cookie":34,"./createActions":35,"./createComponent":36,"./createDocument":37,"./createElement":38,"./createView":40,"./data":41,"./decode":42,"./defaultInputHandler":43,"./droplist":44,"./erase":45,"./event":46,"./execute":47,"./exportJson":48,"./fileReader":49,"./filter":50,"./focus":51,"./generate":53,"./getDateTime":54,"./getDaysInMonth":55,"./getParam":56,"./importJson":58,"./insert":59,"./isArabic":60,"./isEqual":61,"./isPath":62,"./jsonFiles":63,"./keys":64,"./log":65,"./merge":66,"./note":67,"./overflow":68,"./popup":69,"./position":70,"./preventDefault":71,"./reducer":72,"./reload":73,"./remove":74,"./resize":75,"./route":76,"./save":77,"./search":78,"./setContent":79,"./setData":80,"./setElement":81,"./setPosition":82,"./sort":83,"./starter":84,"./state":85,"./style":86,"./switchMode":87,"./toApproval":89,"./toArray":90,"./toAwait":91,"./toCSV":92,"./toCode":94,"./toComponent":95,"./toControls":96,"./toHtml":97,"./toId":98,"./toNumber":99,"./toOperator":100,"./toParam":101,"./toString":104,"./toStyle":105,"./toValue":106,"./toggleView":107,"./update":108,"./updateSelf":109,"./upload":110}],53:[function(require,module,exports){
+},{"./blur":26,"./capitalize":27,"./clearValues":28,"./clone":29,"./compare":30,"./contentful":31,"./controls":32,"./cookie":33,"./createActions":34,"./createComponent":35,"./createDocument":36,"./createElement":37,"./createView":39,"./data":40,"./decode":41,"./defaultInputHandler":42,"./droplist":43,"./erase":44,"./event":45,"./execute":46,"./exportJson":47,"./fileReader":48,"./filter":49,"./focus":50,"./generate":52,"./getDateTime":53,"./getDaysInMonth":54,"./getParam":55,"./importJson":57,"./insert":58,"./isArabic":59,"./isEqual":60,"./isPath":61,"./jsonFiles":62,"./keys":63,"./log":64,"./merge":65,"./note":66,"./overflow":67,"./popup":68,"./position":69,"./preventDefault":70,"./reducer":71,"./refresh":72,"./reload":73,"./remove":74,"./resize":75,"./route":76,"./save":77,"./search":78,"./setContent":79,"./setData":80,"./setElement":81,"./setPosition":82,"./sort":83,"./starter":84,"./state":85,"./style":86,"./switchMode":87,"./toApproval":89,"./toArray":90,"./toAwait":91,"./toCSV":92,"./toCode":94,"./toComponent":95,"./toControls":96,"./toHtml":97,"./toId":98,"./toNumber":99,"./toOperator":100,"./toParam":101,"./toString":104,"./toStyle":105,"./toValue":106,"./toggleView":107,"./update":108,"./upload":109}],52:[function(require,module,exports){
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -2850,7 +2794,7 @@ const generate = (length) => {
 
 module.exports = {generate}
 
-},{}],54:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 module.exports = {
     getDateTime: (time) => {
         
@@ -2871,13 +2815,13 @@ module.exports = {
         return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],55:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 const getParam = ({ string, param, defValue }) => {
@@ -2901,7 +2845,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":101}],57:[function(require,module,exports){
+},{"./toParam":101}],56:[function(require,module,exports){
 module.exports = {
     getType: (value) => {
         if (typeof value === "string") {
@@ -2920,7 +2864,7 @@ module.exports = {
         if (typeof value === "function") return "function"
     }
 }
-},{}],58:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
 
 const getJson = (url) => {
@@ -2960,7 +2904,7 @@ const importJson = ({ id, e, ...params }) => {
 }
 
 module.exports = {importJson, getJson}
-},{"./toAwait":91}],59:[function(require,module,exports){
+},{"./toAwait":91}],58:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
 const { starter } = require("./starter")
@@ -3043,7 +2987,7 @@ module.exports = {
     }
   }
 }
-},{"./clone":30,"./createElement":38,"./generate":53,"./setElement":81,"./starter":84,"./toArray":90,"./toParam":101}],60:[function(require,module,exports){
+},{"./clone":29,"./createElement":37,"./generate":52,"./setElement":81,"./starter":84,"./toArray":90,"./toParam":101}],59:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -3078,9 +3022,11 @@ const isArabic = ({ id, value, text }) => {
 
 module.exports = { isArabic }
 
-},{}],61:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
+
+  if ((value && !other) || (other && !value)) return false
 
   // string || boolean || number
   if (typeof value !== "object" && typeof other !== "object") {
@@ -3117,7 +3063,7 @@ const isEqual = function(value, other) {
   // If items are not an object or array, return false
   if (["[object Array]", "[object Object]"].indexOf(type) < 0) return false;
 
-  // Compare the length of the length of the two items
+  // Compare the length of the two items
   const valueLen =
     type === "[object Array]" ? value.length : Object.keys(value).length;
   const otherLen =
@@ -3168,7 +3114,7 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual}
 
-},{}],62:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
@@ -3185,7 +3131,7 @@ module.exports = {
   },
 };
 
-},{}],63:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -3358,20 +3304,20 @@ const uploadFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadFile }
-},{"./toArray":90,"./toOperator":100,"fs":141}],64:[function(require,module,exports){
+},{"./toArray":90,"./toOperator":100,"fs":140}],63:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],65:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -3436,7 +3382,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":30,"./toArray":90}],67:[function(require,module,exports){
+},{"./clone":29,"./toArray":90}],66:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -3471,7 +3417,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":60}],68:[function(require,module,exports){
+},{"./isArabic":59}],67:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var local = window.children[id]
@@ -3529,7 +3475,7 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],69:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 const {controls} = require("./controls")
 const {update} = require("./update")
 
@@ -3575,7 +3521,7 @@ const popup = ({ id }) => {
 
 module.exports = {popup}
 
-},{"./controls":33,"./update":108}],70:[function(require,module,exports){
+},{"./controls":32,"./update":108}],69:[function(require,module,exports){
 const { converter } = require("./resize")
 
 const getPadding = (el) => {
@@ -3622,14 +3568,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":75}],71:[function(require,module,exports){
+},{"./resize":75}],70:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -3665,6 +3611,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (typeof path === "string") path = path.split(".")
     // path is a number
     if (typeof path === "number") path = [path]
+
+    // ||
+    if (path.join(".").includes("||")) {
+        var args = path.join(".").split("||")
+        var answer
+        args.map(value => {
+            if (answer === undefined || answer === "") answer = toValue({ _window, value, params, _, id, e, req, res })
+        })
+        return answer
+    }
 
     if (path.join(".").includes("=") || path.join(".").includes(";")) return toParam({ req, res, _window, id, e, string: path.join("."), _, object, mount })
 
@@ -3742,29 +3698,35 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         path[0] = ")("
     }
     
-    // ():id || ():id.once()
+    // ():id:timer:conditions
     if (path0.slice(0, 2) === "()") {
 
         var args = path[0].split(":")
 
-        if (args[1] || args[2]) {
+        if (args[1] || args[2] || args[3]) {
 
+            // timer
             if (args[2]) {
                 var _timer = parseInt(args[2])
-                path[0] = `${args.slice(0, -1).join(":")}`
+                args[2] = ""
+                path[0] = args.join(":")
                 return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
             }
 
+            // conditions
+            if (args[3]) {
+                var approved = toApproval({ _window, e, string: args[3], id, _, req, res })
+                if (!approved) return
+            }
+
+            // id
             var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
             if (_id) local = _window ? _window.children[_id] : window.children[_id]
-
-            var _once = path[1] === "once()"
-            if (_once) path = path.slice(1)
             
             path[0] = path0 = "()"
         }
     }
-    
+/*   
     if (path && (path.includes("equal()") || path.includes("equals()") || path.includes("eq()") || path.includes("=()"))) {
         
         var _index = path.findIndex(k => k && (k.includes("equal()") || k.includes("equals()") || k.includes("eq()") || path.includes("=()")))
@@ -3780,7 +3742,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             path = path.slice(0, _index)
         }
     }
-
+*/
     if (path0 === "while()") {
             
         var args = path[0].split(":")
@@ -3790,16 +3752,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         path = path.slice(1)
     }
 
-    if (path0 === "setInterval()") {
-            
-        var args = path[0].split(":")
-        var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e, mount }))
-        var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
-        return setInterval(myFn, _timer)
-    }
-
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "updateSelf()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()")) {
         if (path0 === "getChildrenByClassName()") {
 
             path.unshift("doc()")
@@ -3919,8 +3873,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 })
                 
-            } //else if (path0 === "str()") return global.codes[path[0].split(":")[1]]
-            else if (mount) object = local
+            } else if (mount) {
+                object = local
+                path.unshift("()")
+            }
         }
 
         if (object || object === "" || object === 0 || coded) path = path.slice(1)
@@ -3939,10 +3895,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     
     var answer = path.reduce((o, k, i) => {
         
-        if (k === undefined) console.log(path);
+        if (k === undefined) console.log(path)
 
         k = k.toString()
         k0 = k.split(":")[0]
+        var args = k.split(":")
         
         // fake lastIndex
         if (lastIndex !== path.length - 1) {
@@ -4008,28 +3965,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 }
             }
         }
-
-        // if (k0 === "_quotation" || k0 === "'") {
-            
-        //     answer = "'"
-
-        // } else if (k0 === "_quotations" || k0 === `"`) {
-            
-        //     answer = `"`
-
-        // } else if (k0 === "_string" || k0 === "''") {
-            
-        //     answer = ""
-
-        // } else if (k0 === "_dots" || k0 === "...") {
-            
-        //     answer = "..."
-
-        // } else if (k0 === "_dot") {
-            
-        //     answer = "."
-
-        // }
         
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
         
@@ -4113,7 +4048,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "Data()") {
 
-            answer = global[local.Data]
+            breakRequest = true
+            var args = k.split(":").slice(1)
+            args = args.map(arg => toValue({ req, res, _window, id, e, value: arg, params, _ }))
+            if (args.length > 0) args = args.flat()
+            if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
+            answer = reducer({ req, res, _window, id, e, value, key, path: [...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
 
         } else if (k0 === "removeAttribute()") {
 
@@ -4124,7 +4064,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "parent()") {
 
             var _parent, _o
-
+            
             if (o.status === "Mounted") _parent = o.element.parentNode.id
             else _parent = o.parent
             _parent = _window ? _window.children[_parent] : window.children[_parent]
@@ -5215,7 +5155,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "getTime()" || k0 === "timestamp()") {
             
-            answer = o.getTime()
+            if (o instanceof Date) answer = o.getTime()
+            else {
+                o = new Date(o)
+                answer = o.getTime()
+            }
             
         } else if (k0 === "getDateTime()") {
             
@@ -5619,7 +5563,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _view = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
             var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _ })
             var _timer = toValue({ req, res, _window, id, e, value: args[4] || "", params, _ })
-            console.log({ id: _id, view: _view, page: _page, timer: _timer });
             require("./toggleView").toggleView({ _window, toggle: { id: _id, view: _view, page: _page, timer: _timer }, id })
 
         } else if (k0 === "preventDefault()") {
@@ -5715,11 +5658,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             return require("./setPosition").setPosition({ position, id: toBePositioned, e })
 
-        } else if (k0 === "updateSelf()") {
+        } else if (k0 === "refresh()") {
           
             var args = k.split(":")
             var _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
-            return require("./updateSelf").updateSelf({ id: _id })
+            return require("./refresh").refresh({ id: _id })
 
         } else if (k0 === "copyToClipBoard()") {
           
@@ -5732,7 +5675,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 document.body.appendChild(textArea)
                 textArea.focus()
                 textArea.select()
-                var succ = document.execCommand("copy")
                 document.body.removeChild(textArea)
             }
 
@@ -5750,18 +5692,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o.element) answer = o.element.classList.remove(_class)
             else if(o.nodeType) answer = o.classList.remove(_class)
 
-        } else if (k0 === "element" && local && local.status === "Loading") {
-
+        } else if (k.includes(":coded()")) {
+            
             breakRequest = true
-            local.controls = toArray(local.controls) || []
-            if (value !== undefined) return local.controls.push({
-                event: `loaded?${key}=${value}`
-            })
-            
-        } else if (k0 === "length" && !local.length && i === 0) {
-            
-            var _parent = _window ? _window.children[local.parent] : window.children[local.parent]
-            answer = _parent.element.children.length
+            o[k0] = o[k0] || {}
+            answer = reducer({ req, res, _window, id, e, value, key, path: [...args.slice(1), ...path.slice(i + 1)], object: o[k0], params, _ })
 
         } else if (key && value !== undefined && i === lastIndex) {
 
@@ -5905,7 +5840,94 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./capitalize":28,"./clone":30,"./cookie":34,"./decode":42,"./execute":47,"./exportJson":48,"./focus":51,"./generate":53,"./getDateTime":54,"./getDaysInMonth":55,"./getType":57,"./importJson":58,"./isEqual":61,"./remove":74,"./route":76,"./save":77,"./setPosition":82,"./toApproval":89,"./toArray":90,"./toClock":93,"./toCode":94,"./toId":98,"./toNumber":99,"./toParam":101,"./toPrice":102,"./toSimplifiedDate":103,"./toValue":106,"./toggleView":107,"./update":108,"./updateSelf":109}],73:[function(require,module,exports){
+},{"./capitalize":27,"./clone":29,"./cookie":33,"./decode":41,"./execute":46,"./exportJson":47,"./focus":50,"./generate":52,"./getDateTime":53,"./getDaysInMonth":54,"./getType":56,"./importJson":57,"./isEqual":60,"./refresh":72,"./remove":74,"./route":76,"./save":77,"./setPosition":82,"./toApproval":89,"./toArray":90,"./toClock":93,"./toCode":94,"./toId":98,"./toNumber":99,"./toParam":101,"./toPrice":102,"./toSimplifiedDate":103,"./toValue":106,"./toggleView":107,"./update":108}],72:[function(require,module,exports){
+const { generate } = require("./generate")
+const { starter } = require("./starter")
+const { setElement } = require("./setElement")
+const { toArray } = require("./toArray")
+const { createElement } = require("./createElement")
+const { clone } = require("./clone")
+const { removeChildren } = require("./update")
+
+const refresh = ({ id, update = {} }) => {
+
+  var value = window.children
+  var local = value[id]
+  var timer = update.timer || 0
+  
+  if (!local || !local.element) return
+  var parent = value[local.parent]
+  var index = local.index
+
+  // children
+  var children = clone(toArray(parent.children[index]))
+  
+  // remove children
+  removeChildren({ id })
+
+  ////// remove local
+  Object.entries(value[id]).map(([k, v]) => {
+
+    if (k.includes("-timer")) clearTimeout(v)
+  })
+  delete value[id]
+  ///////
+
+  var innerHTML = children
+  .map(child => {
+
+    var id = child.id || generate()
+    value[id] = child
+    value[id].id = id
+    value[id].index = index
+    value[id].parent = parent.id
+    value[id].style = value[id].style || {}
+    value[id].style.opacity = "0"
+    if (timer) value[id].style.transition = `opacity ${timer}ms`
+    
+    return createElement({ id })
+
+  }).join("")
+  
+  var childrenNodes = [...parent.element.children]
+  childrenNodes.map((childNode, i) => {
+    var _index = parseInt(childNode.getAttribute("index"))
+    if (_index === index) parent.element.removeChild(childrenNodes[i])
+  })
+  
+  var lDiv = document.createElement("div")
+  document.body.appendChild(lDiv)
+  lDiv.style.position = "absolute"
+  lDiv.style.opacity = "0"
+  lDiv.style.left = -1000
+  lDiv.style.top = -1000
+  lDiv.innerHTML = innerHTML
+  var node = lDiv.children[0]
+
+  parent.element.insertBefore(node, parent.element.children[index])
+  var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+  
+  idList.map(id => setElement({ id }))
+  idList.map(id => starter({ id }))
+  
+  var _children = [...parent.element.children]
+  _children.map(childNode => {
+    var _index = childNode.getAttribute("index")
+    if (_index === index) return childNode
+    else return
+  }).filter(child => child)
+  
+  if (timer) setTimeout(() => _children.map(el => value[el.id].style.opacity = value[el.id].element.style.opacity = "1"), 0)
+  else _children.map(el => value[el.id].style.opacity = value[el.id].element.style.opacity = "1")
+  
+  if (lDiv) {
+    document.body.removeChild(lDiv)
+    lDiv = null
+  }
+}
+
+module.exports = {refresh}
+},{"./clone":29,"./createElement":37,"./generate":52,"./setElement":81,"./starter":84,"./toArray":90,"./update":108}],73:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
@@ -5982,7 +6004,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":30,"./reducer":72,"./update":108}],75:[function(require,module,exports){
+},{"./clone":29,"./reducer":71,"./update":108}],75:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var local = window.children[id]
@@ -6133,7 +6155,7 @@ const save = async ({ id, e, ...params }) => {
 
 module.exports = { save }
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":30,"./toAwait":91,"axios":112}],78:[function(require,module,exports){
+},{"./clone":29,"./toAwait":91,"axios":111}],78:[function(require,module,exports){
 (function (global){(function (){
 const axios = require('axios')
 const { toString } = require('./toString')
@@ -6146,12 +6168,12 @@ module.exports = {
         var search = params.search || {}
         var local = window.children[id]
         var collection = search.collection || search.path || ""
-        var headers = clone(search.headers) || {}
+        var headers = search.headers || {}
         headers.project = headers.project || global.data.project.id
         delete search.headers
 
         // search
-        headers.search = toString({ search })
+        headers.search = encodeURI(toString({ search }))
         
         var { data } = await axios.get(`/api/${collection}`, {
             headers: {
@@ -6167,7 +6189,7 @@ module.exports = {
     }
 }
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":30,"./toAwait":91,"./toString":104,"axios":112}],79:[function(require,module,exports){
+},{"./clone":29,"./toAwait":91,"./toString":104,"axios":111}],79:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -6190,7 +6212,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":60}],80:[function(require,module,exports){
+},{"./isArabic":59}],80:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 const {setContent} = require("./setContent")
@@ -6234,7 +6256,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":30,"./reducer":72,"./setContent":79}],81:[function(require,module,exports){
+},{"./clone":29,"./reducer":71,"./setContent":79}],81:[function(require,module,exports){
 const { controls } = require("./controls")
 // const { starter } = require("./starter")
 const { toArray } = require("./toArray")
@@ -6269,7 +6291,7 @@ const setElement = ({ id }) => {
 }
     
 module.exports = { setElement }
-},{"./controls":33,"./toArray":90}],82:[function(require,module,exports){
+},{"./controls":32,"./toArray":90}],82:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
   
   var value = window.children
@@ -6558,7 +6580,7 @@ const sort = ({ sort = {}, id, e }) => {
 }
 
 module.exports = {sort}
-},{"./reducer":72,"./toArray":90,"./toNumber":99}],84:[function(require,module,exports){
+},{"./reducer":71,"./toArray":90,"./toNumber":99}],84:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -6630,7 +6652,7 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":12,"./controls":33,"./defaultInputHandler":43,"./event":46,"./isArabic":60,"./resize":75,"./toArray":90,"./toParam":101}],85:[function(require,module,exports){
+},{"../control/control":11,"./controls":32,"./defaultInputHandler":42,"./event":45,"./isArabic":59,"./resize":75,"./toArray":90,"./toParam":101}],85:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
@@ -6824,7 +6846,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":28,"./clone":30,"./style":86}],88:[function(require,module,exports){
+},{"./capitalize":27,"./clone":29,"./style":86}],88:[function(require,module,exports){
 const { capitalize } = require("./capitalize")
 
 const formats = [
@@ -6891,7 +6913,7 @@ const textFormating = ({ _window, text, id }) => {
 }
 
 module.exports = { textFormating }
-},{"./capitalize":28}],89:[function(require,module,exports){
+},{"./capitalize":27}],89:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 
@@ -6965,8 +6987,10 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     if (key.includes("!")) {
       if (key.split("!")[0]) {
 
-        if (value) notEqual = true
-        if (notEqual) key = key.split("!")[0]
+        if (condition[1]) {
+          notEqual = true
+          key = key.split("!")[0]
+        }
 
       } else {
 
@@ -6985,9 +7009,9 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (key === "mobile()" || key === "phone()") local[keygen] = global.device.type === "phone"
     else if (key === "desktop()") local[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") local[keygen] = global.device.type === "tablet"
-    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, value, e, _, req, res, object })
+    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, e, _, req, res, object })
     else local[keygen] = key
-    
+
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
     else {
       if (equalOp) approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)
@@ -7003,7 +7027,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
 
 module.exports = { toApproval }
 
-},{"./generate":53,"./isEqual":61,"./reducer":72,"./toValue":106}],90:[function(require,module,exports){
+},{"./generate":52,"./isEqual":60,"./reducer":71,"./toValue":106}],90:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? [...data] : [data]) : [];
 }
@@ -7035,7 +7059,7 @@ module.exports = {
   }
 }
 
-},{"./execute":47,"./toParam":101}],92:[function(require,module,exports){
+},{"./execute":46,"./toParam":101}],92:[function(require,module,exports){
 module.exports = {
     toCSV: ({ file = {} }) => {
 
@@ -7180,7 +7204,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
 module.exports = { toCode }
 
-},{"./generate":53}],95:[function(require,module,exports){
+},{"./generate":52}],95:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -7213,7 +7237,7 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":53,"./toArray":90}],96:[function(require,module,exports){
+},{"./generate":52,"./toArray":90}],96:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
@@ -7337,7 +7361,7 @@ module.exports = {
     return tag
   }
 }
-},{"./clone":30,"./createElement":38,"./generate":53,"./textFormating":88,"./toArray":90,"./toStyle":105}],98:[function(require,module,exports){
+},{"./clone":29,"./createElement":37,"./generate":52,"./textFormating":88,"./toArray":90,"./toStyle":105}],98:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -7366,7 +7390,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":53}],99:[function(require,module,exports){
+},{"./generate":52}],99:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -7427,12 +7451,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
     // break
     if (params.break || local && local.break) return
-
-    if (param.slice(0, 2) === "#:") {
-      local["#"] = toArray(local["#"])
-      return local["#"].push(param.slice(2))
-    }
     
+    // split
     if (param.includes("=")) {
 
       var keys = param.split("=")
@@ -7459,7 +7479,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       params.await = params.await || ""
       return params.await += `${awaiter};`
     }
-
+/*
     if (local && local.status === "Loading") {
       if (key.includes("parent()") || key.includes("children()") || key.includes("next()")) {
 
@@ -7477,7 +7497,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         "event": `${event}?${_params}`
       })
     }
-    
+  */
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _ })
 
@@ -7487,7 +7507,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     id = localId
 
     var keys = typeof key === "string" ? key.split(".") : [], timer
-
+/*
     // conditions
     if (key && key.includes("<<")) {
       
@@ -7496,7 +7516,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       if (!approved) return
       key = key.split("<<")[0]
     }
-
+*/
     var path = typeof key === "string" ? key.split(".") : []
     
     // break
@@ -7505,9 +7525,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       params.break = true
       return params
     }
-    
-    // reload
-    if (key === "reload()") document.location.reload(true)
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -7557,8 +7574,16 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       
     } else if (key) {
       
-      if (mount) local[key] = value
-      params[key] = value
+      var args = key.split(":")
+      
+      if (args[1]) {
+        if (mount) local[args[0]] = local[args[0]] || {}
+        var _param = reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: mount ? local[args[0]] : {}, params, _ })
+        params[args[0]] = _param
+      } else {
+        if (mount) local[key] = value
+        params[key] = value
+      }
     }
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
@@ -7605,7 +7630,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
 module.exports = { toParam }
 
-},{"./generate":53,"./reducer":72,"./toApproval":89,"./toArray":90,"./toValue":106}],102:[function(require,module,exports){
+},{"./generate":52,"./reducer":71,"./toApproval":89,"./toArray":90,"./toValue":106}],102:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -7768,7 +7793,7 @@ const { reducer } = require("./reducer")
 
 const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) => {
 
-  const { toApproval } = require("./toApproval")
+  // const { toApproval } = require("./toApproval")
   const { toParam } = require("./toParam")
 
   var local = _window ? _window.children[id] : window.children[id]
@@ -7781,7 +7806,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
 
   // value is a param it has key=value
   if (value.includes("=") || value.includes(";")) return toParam({ req, res, _window, id, e, string: value, _, object, mount })
-
+/*
   // conditions
   if (value.includes("<<")) {
 
@@ -7790,7 +7815,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     if (!approved) return "*return*"
     value = value.split("<<")[0]
   }
-
+*/
   // string
   if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") {
     return value = value.slice(1, -1)
@@ -7810,7 +7835,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     if (_value !== value) return _value
   }
 
-  if (value.split("const.")[1] !== undefined && !value.split("const.")[0]) return value.split("const.")[1]
+  // if (value.split("const.")[1] !== undefined && !value.split("const.")[0]) return value.split("const.")[1]
 
   // return await value
   if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]
@@ -7818,7 +7843,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   var path = typeof value === "string" ? value.split(".") : []
 
   /* value */
-  if (value === "global()" || value === ")(") value = _window ? _window.global : window.global
+  if (value === ")(") value = _window ? _window.global : window.global
   else if (object) value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
   else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
   else if ((path[0].includes("()")) && path.length === 1) {
@@ -7839,10 +7864,6 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   else if (typeof value === "boolean") { }
   else if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === undefined || value === "generate") value = generate()
-  else if (value === "e()" || value === "event()") value = e
-  else if (value === "today()") value = new Date()
-  else if (value === "keys()") value = Object.keys(value)
-  else if (value === "values()") value = Object.values(value)
   else if (value === "undefined") value = undefined
   else if (value === "false") value = false
   else if (value === "true") value = true
@@ -7853,60 +7874,10 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     var key = args[0]
 
     value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _, mount }))
-
   }
 
   // _string
   else if (value === "_string") return ""
-  /*
-    // auto space
-    if (value === "") return ""
-  
-    // auto comma
-    if (value === "_comma") return ","
-  
-    // _quotation
-    if (value === "_quotation") return `'`
-  
-    // _quotations
-    if (value === "_quotations") return `"`
-  
-    // _array
-    if (value === "_array") return []
-  
-    // _map
-    if (value === "_map" || value === "_object") return {}
-  
-    // _string
-    if (value === "_string") return ""
-  
-    // _quest
-    if (value === "_quest") return "?"
-  
-    // _space
-    if (value === "_space" || value === " ") return " "
-  
-    // _semi
-    if (value === "_semi") return ";"
-  
-    // _dot
-    if (value === "_dot") return "."
-  
-    // _dots
-    if (value === "_dots") return "..."
-  
-    // _equal
-    if (value === "_equal") return "="
-  
-    // _equals
-    if (value === "_equals") return "=="
-  
-    // _equal_equal
-    if (value === "_equal_equal") return "=="
-  
-    // auto space
-    if (value === "&nbsp") return "&nbsp;"
-  */
   return value
 }
 
@@ -7988,7 +7959,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
 module.exports = { toValue, calcSubs }
 
-},{"./generate":53,"./reducer":72,"./toApproval":89,"./toParam":101}],107:[function(require,module,exports){
+},{"./generate":52,"./reducer":71,"./toParam":101}],107:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -8003,12 +7974,12 @@ const toggleView = ({ toggle, id }) => {
   var global = window.global
   var togglePage = toggle.page 
   var toggleId = toggle.id
-    || togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id
+    || togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id 
     || value[id] && value[id].element.children[0] && value[id].element.children[0].id
-  var parentId = toggleId ? (toggleId !== "root" ? value[toggleId].parent : toggleId) : id
+  var parentId = toggleId ? value[toggleId].parent : id
   var local = {}
   var viewId = toggle.viewId || toggle.view
-  
+
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
 
@@ -8024,7 +7995,8 @@ const toggleView = ({ toggle, id }) => {
 
     global.currentPage = togglePage.split("/")[0]
     var title = global.data.page[global.currentPage].title
-    global.path = togglePage = togglePage === "main" ? "/" : togglePage
+    togglePage = togglePage === "main" ? "" : togglePage
+    global.path = togglePage = togglePage ? `${global.projectId}/${togglePage}` : `/${global.projectId}`
 
     history.pushState({}, title, togglePage)
     document.title = title
@@ -8095,7 +8067,7 @@ const toggleView = ({ toggle, id }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":30,"./createElement":38,"./generate":53,"./setElement":81,"./starter":84,"./toArray":90,"./update":108}],108:[function(require,module,exports){
+},{"./clone":29,"./createElement":37,"./generate":52,"./setElement":81,"./starter":84,"./toArray":90,"./update":108}],108:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -8192,94 +8164,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":30,"./controls":33,"./createElement":38,"./generate":53,"./setElement":81,"./starter":84,"./toArray":90}],109:[function(require,module,exports){
-const { generate } = require("./generate")
-const { starter } = require("./starter")
-const { setElement } = require("./setElement")
-const { toArray } = require("./toArray")
-const { createElement } = require("./createElement")
-const { clone } = require("./clone")
-const { removeChildren } = require("./update")
-
-const updateSelf = ({ id, update = {} }) => {
-
-  var value = window.children
-  var local = value[id]
-  var timer = update.timer || 0
-  
-  if (!local || !local.element) return
-  var parent = value[local.parent]
-  var index = local.index
-
-  // children
-  var children = clone(toArray(parent.children[index]))
-  
-  // remove children
-  removeChildren({ id })
-
-  ////// remove local
-  Object.entries(value[id]).map(([k, v]) => {
-
-    if (k.includes("-timer")) clearTimeout(v)
-  })
-  delete value[id]
-  ///////
-
-  var innerHTML = children
-  .map(child => {
-
-    var id = child.id || generate()
-    value[id] = child
-    value[id].id = id
-    value[id].index = index
-    value[id].parent = parent.id
-    value[id].style = value[id].style || {}
-    value[id].style.opacity = "0"
-    if (timer) value[id].style.transition = `opacity ${timer}ms`
-    
-    return createElement({ id })
-
-  }).join("")
-  
-  var childrenNodes = [...parent.element.children]
-  childrenNodes.map((childNode, i) => {
-    var _index = parseInt(childNode.getAttribute("index"))
-    if (_index === index) parent.element.removeChild(childrenNodes[i])
-  })
-  
-  var lDiv = document.createElement("div")
-  document.body.appendChild(lDiv)
-  lDiv.style.position = "absolute"
-  lDiv.style.opacity = "0"
-  lDiv.style.left = -1000
-  lDiv.style.top = -1000
-  lDiv.innerHTML = innerHTML
-  var node = lDiv.children[0]
-
-  parent.element.insertBefore(node, parent.element.children[index])
-  var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  
-  idList.map(id => setElement({ id }))
-  idList.map(id => starter({ id }))
-  
-  var _children = [...parent.element.children]
-  _children.map(childNode => {
-    var _index = childNode.getAttribute("index")
-    if (_index === index) return childNode
-    else return
-  }).filter(child => child)
-  
-  if (timer) setTimeout(() => _children.map(el => value[el.id].style.opacity = value[el.id].element.style.opacity = "1"), 0)
-  else _children.map(el => value[el.id].style.opacity = value[el.id].element.style.opacity = "1")
-  
-  if (lDiv) {
-    document.body.removeChild(lDiv)
-    lDiv = null
-  }
-}
-
-module.exports = {updateSelf}
-},{"./clone":30,"./createElement":38,"./generate":53,"./setElement":81,"./starter":84,"./toArray":90,"./update":108}],110:[function(require,module,exports){
+},{"./clone":29,"./controls":32,"./createElement":37,"./generate":52,"./setElement":81,"./starter":84,"./toArray":90}],109:[function(require,module,exports){
 (function (global){(function (){
 const axios = require("axios")
 const { toAwait } = require("./toAwait")
@@ -8360,7 +8245,7 @@ module.exports = {
     }
 }*/
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":91,"axios":112}],111:[function(require,module,exports){
+},{"./toAwait":91,"axios":111}],110:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -8424,9 +8309,9 @@ const watch = ({ controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":30,"./execute":47,"./isEqual":61,"./toApproval":89,"./toCode":94,"./toParam":101,"./toValue":106}],112:[function(require,module,exports){
+},{"./clone":29,"./execute":46,"./isEqual":60,"./toApproval":89,"./toCode":94,"./toParam":101,"./toValue":106}],111:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":114}],113:[function(require,module,exports){
+},{"./lib/axios":113}],112:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -8617,7 +8502,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":120,"../core/createError":121,"./../core/settle":125,"./../helpers/buildURL":129,"./../helpers/cookies":131,"./../helpers/isURLSameOrigin":134,"./../helpers/parseHeaders":136,"./../utils":139}],114:[function(require,module,exports){
+},{"../core/buildFullPath":119,"../core/createError":120,"./../core/settle":124,"./../helpers/buildURL":128,"./../helpers/cookies":130,"./../helpers/isURLSameOrigin":133,"./../helpers/parseHeaders":135,"./../utils":138}],113:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -8675,7 +8560,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":115,"./cancel/CancelToken":116,"./cancel/isCancel":117,"./core/Axios":118,"./core/mergeConfig":124,"./defaults":127,"./helpers/bind":128,"./helpers/isAxiosError":133,"./helpers/spread":137,"./utils":139}],115:[function(require,module,exports){
+},{"./cancel/Cancel":114,"./cancel/CancelToken":115,"./cancel/isCancel":116,"./core/Axios":117,"./core/mergeConfig":123,"./defaults":126,"./helpers/bind":127,"./helpers/isAxiosError":132,"./helpers/spread":136,"./utils":138}],114:[function(require,module,exports){
 'use strict';
 
 /**
@@ -8696,7 +8581,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],116:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -8755,14 +8640,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":115}],117:[function(require,module,exports){
+},{"./Cancel":114}],116:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],118:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -8912,7 +8797,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":129,"../helpers/validator":138,"./../utils":139,"./InterceptorManager":119,"./dispatchRequest":122,"./mergeConfig":124}],119:[function(require,module,exports){
+},{"../helpers/buildURL":128,"../helpers/validator":137,"./../utils":138,"./InterceptorManager":118,"./dispatchRequest":121,"./mergeConfig":123}],118:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -8968,7 +8853,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":139}],120:[function(require,module,exports){
+},{"./../utils":138}],119:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -8990,7 +8875,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":130,"../helpers/isAbsoluteURL":132}],121:[function(require,module,exports){
+},{"../helpers/combineURLs":129,"../helpers/isAbsoluteURL":131}],120:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -9010,7 +8895,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":123}],122:[function(require,module,exports){
+},{"./enhanceError":122}],121:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9094,7 +8979,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":117,"../defaults":127,"./../utils":139,"./transformData":126}],123:[function(require,module,exports){
+},{"../cancel/isCancel":116,"../defaults":126,"./../utils":138,"./transformData":125}],122:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9138,7 +9023,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],124:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -9227,7 +9112,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":139}],125:[function(require,module,exports){
+},{"../utils":138}],124:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -9254,7 +9139,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":121}],126:[function(require,module,exports){
+},{"./createError":120}],125:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9278,7 +9163,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":127,"./../utils":139}],127:[function(require,module,exports){
+},{"./../defaults":126,"./../utils":138}],126:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -9416,7 +9301,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":113,"./adapters/xhr":113,"./core/enhanceError":123,"./helpers/normalizeHeaderName":135,"./utils":139,"_process":145}],128:[function(require,module,exports){
+},{"./adapters/http":112,"./adapters/xhr":112,"./core/enhanceError":122,"./helpers/normalizeHeaderName":134,"./utils":138,"_process":144}],127:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -9429,7 +9314,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],129:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9501,7 +9386,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":139}],130:[function(require,module,exports){
+},{"./../utils":138}],129:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9517,7 +9402,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],131:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9572,7 +9457,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":139}],132:[function(require,module,exports){
+},{"./../utils":138}],131:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9588,7 +9473,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],133:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9601,7 +9486,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],134:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9671,7 +9556,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":139}],135:[function(require,module,exports){
+},{"./../utils":138}],134:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -9685,7 +9570,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":139}],136:[function(require,module,exports){
+},{"../utils":138}],135:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9740,7 +9625,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":139}],137:[function(require,module,exports){
+},{"./../utils":138}],136:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9769,7 +9654,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],138:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -9876,7 +9761,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":140}],139:[function(require,module,exports){
+},{"./../../package.json":139}],138:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -10227,40 +10112,52 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":128}],140:[function(require,module,exports){
+},{"./helpers/bind":127}],139:[function(require,module,exports){
 module.exports={
-  "name": "axios",
-  "version": "0.21.4",
-  "description": "Promise based HTTP client for the browser and node.js",
-  "main": "index.js",
-  "scripts": {
-    "test": "grunt test",
-    "start": "node ./sandbox/server.js",
-    "build": "NODE_ENV=production grunt build",
-    "preversion": "npm test",
-    "version": "npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json",
-    "postversion": "git push && git push --tags",
-    "examples": "node ./examples/server.js",
-    "coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "fix": "eslint --fix lib/**/*.js"
+  "_from": "axios@^0.21.1",
+  "_id": "axios@0.21.4",
+  "_inBundle": false,
+  "_integrity": "sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==",
+  "_location": "/axios",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "axios@^0.21.1",
+    "name": "axios",
+    "escapedName": "axios",
+    "rawSpec": "^0.21.1",
+    "saveSpec": null,
+    "fetchSpec": "^0.21.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/axios/axios.git"
-  },
-  "keywords": [
-    "xhr",
-    "http",
-    "ajax",
-    "promise",
-    "node"
+  "_requiredBy": [
+    "/"
   ],
-  "author": "Matt Zabriskie",
-  "license": "MIT",
+  "_resolved": "https://registry.npmjs.org/axios/-/axios-0.21.4.tgz",
+  "_shasum": "c67b90dc0568e5c1cf2b0b858c43ba28e2eda575",
+  "_spec": "axios@^0.21.1",
+  "_where": "C:\\Users\\Maliks\\Desktop\\Bracket",
+  "author": {
+    "name": "Matt Zabriskie"
+  },
+  "browser": {
+    "./lib/adapters/http.js": "./lib/adapters/xhr.js"
+  },
   "bugs": {
     "url": "https://github.com/axios/axios/issues"
   },
-  "homepage": "https://axios-http.com",
+  "bundleDependencies": false,
+  "bundlesize": [
+    {
+      "path": "./dist/axios.min.js",
+      "threshold": "5kB"
+    }
+  ],
+  "dependencies": {
+    "follow-redirects": "^1.14.0"
+  },
+  "deprecated": false,
+  "description": "Promise based HTTP client for the browser and node.js",
   "devDependencies": {
     "coveralls": "^3.0.0",
     "es6-promise": "^4.2.4",
@@ -10296,26 +10193,41 @@ module.exports={
     "webpack": "^4.44.2",
     "webpack-dev-server": "^3.11.0"
   },
-  "browser": {
-    "./lib/adapters/http.js": "./lib/adapters/xhr.js"
-  },
+  "homepage": "https://axios-http.com",
   "jsdelivr": "dist/axios.min.js",
-  "unpkg": "dist/axios.min.js",
-  "typings": "./index.d.ts",
-  "dependencies": {
-    "follow-redirects": "^1.14.0"
+  "keywords": [
+    "xhr",
+    "http",
+    "ajax",
+    "promise",
+    "node"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "axios",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/axios/axios.git"
   },
-  "bundlesize": [
-    {
-      "path": "./dist/axios.min.js",
-      "threshold": "5kB"
-    }
-  ]
+  "scripts": {
+    "build": "NODE_ENV=production grunt build",
+    "coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "examples": "node ./examples/server.js",
+    "fix": "eslint --fix lib/**/*.js",
+    "postversion": "git push && git push --tags",
+    "preversion": "npm test",
+    "start": "node ./sandbox/server.js",
+    "test": "grunt test",
+    "version": "npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"
+  },
+  "typings": "./index.d.ts",
+  "unpkg": "dist/axios.min.js",
+  "version": "0.21.4"
 }
 
-},{}],141:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 
-},{}],142:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 (function (process){(function (){
 /* @flow */
 /*::
@@ -10437,7 +10349,7 @@ module.exports.config = config
 module.exports.parse = parse
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":145,"fs":141,"os":143,"path":144}],143:[function(require,module,exports){
+},{"_process":144,"fs":140,"os":142,"path":143}],142:[function(require,module,exports){
 exports.endianness = function () { return 'LE' };
 
 exports.hostname = function () {
@@ -10488,7 +10400,7 @@ exports.homedir = function () {
 	return '/'
 };
 
-},{}],144:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -11021,7 +10933,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":145}],145:[function(require,module,exports){
+},{"_process":144}],144:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

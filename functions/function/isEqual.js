@@ -1,6 +1,8 @@
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
+  if ((value && !other) || (other && !value)) return false
+
   // string || boolean || number
   if (typeof value !== "object" && typeof other !== "object") {
     return value == other;
@@ -36,7 +38,7 @@ const isEqual = function(value, other) {
   // If items are not an object or array, return false
   if (["[object Array]", "[object Object]"].indexOf(type) < 0) return false;
 
-  // Compare the length of the length of the two items
+  // Compare the length of the two items
   const valueLen =
     type === "[object Array]" ? value.length : Object.keys(value).length;
   const otherLen =

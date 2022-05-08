@@ -254,19 +254,19 @@ const Input = (component) => {
                 }, {
                     event: "select;mousedown?e().preventDefault()"
                 }, {
-                    event: "input?().parent().parent().required.mount=false;().parent().parent().click()?().parent().parent().required.mount;e().target.value.exist()"
+                    event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value.exist()"
                 }]
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?[${password}]`,
                 children: [{
                     type: `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
                     controls: [{
-                        event: "click?().parent().prev().element.type=text;().next().style().display=flex;().style().display=none"
+                        event: "click?parent().prev().element.type=text;next().style().display=flex;style().display=none"
                     }]
                 }, {
                     type: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
                     controls: [{
-                        event: "click?().parent().prev().element.type=password;().prev().style().display=flex;().style().display=none"
+                        event: "click?parent().prev().element.type=password;prev().style().display=flex;style().display=none"
                     }]
                 }]
             }, {
@@ -396,7 +396,7 @@ const Input = (component) => {
                 ...style,
             },
             controls: [...controls, {
-                event: "input?().parent().required.mount=false;().parent().click()?().parent().required.mount;e().target.value.exist()"
+                event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
             }]
         }
     }

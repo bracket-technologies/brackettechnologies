@@ -71,8 +71,10 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     if (key.includes("!")) {
       if (key.split("!")[0]) {
 
-        if (value) notEqual = true
-        if (notEqual) key = key.split("!")[0]
+        if (condition[1]) {
+          notEqual = true
+          key = key.split("!")[0]
+        }
 
       } else {
 
@@ -91,9 +93,9 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (key === "mobile()" || key === "phone()") local[keygen] = global.device.type === "phone"
     else if (key === "desktop()") local[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") local[keygen] = global.device.type === "tablet"
-    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, value, e, _, req, res, object })
+    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, e, _, req, res, object })
     else local[keygen] = key
-    
+
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
     else {
       if (equalOp) approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)

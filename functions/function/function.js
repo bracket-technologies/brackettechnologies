@@ -15,7 +15,7 @@ const {createDocument} = require("./createDocument")
 const {toControls} = require("./toControls")
 const {toArray} = require("./toArray")
 const {generate} = require("./generate")
-const {updateSelf} = require("./updateSelf")
+const {refresh} = require("./refresh")
 const {createElement} = require("./createElement")
 const {addEventListener} = require("./event")
 const {execute} = require("./execute")
@@ -83,7 +83,7 @@ const {createData, clearData} = require("./data")
 
 module.exports = {
   switchMode,
-  updateSelf,
+  refresh,
   getDaysInMonth,
   importJson,
   converter,
