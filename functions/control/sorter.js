@@ -6,6 +6,6 @@ module.exports = ({ id, controls }) => {
 
   return [{
     event: "click",
-    actions: `await().update:${controls.id};async().sort?sort.path=${controls.path};sort.Data=${controls.Data}?)(:${controls.Data}`
+    actions: `async():sort:[update:${controls.id}]?sort.path=${controls.path};sort.Data=${controls.Data}?)(:${controls.Data}`
   }]
 }

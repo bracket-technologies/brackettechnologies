@@ -658,7 +658,9 @@ module.exports = (component) => {
                     controls: [{
                         event: "input?Data().path():[derivations().clone().pull():[derivations().lastIndex()].push():val()]=data().clone();data().del();parent().parent().deepChildren().map():[derivations.[derivations().lastIndex()]=val()]"
                     }, {
-                        event: "keyup?if():[)(:droplist-positioner;)(:keyup-index]:[():droplist.children().[)(:keyup-index].click();timer():[)(:keyup-index.del()]:200;().break=true];)(:keyup-index=0;next().click();timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter"
+                        event: "keyup?if():[)(:droplist-positioner;)(:keyup-index]:[():droplist.children().[)(:keyup-index].click();timer():[)(:keyup-index.del()]:200;().break=true];)(:keyup-index=0;if():[)(:droplist-positioner!=next().id]:[next().click()];timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter"
+                    }, {
+                        event: "keyup?():droplist.mouseleave()?e().key=Escape"
                     }, {
                         event: "keyup?():droplist.children().[)(:keyup-index].mouseleave();)(:keyup-index=if():[e().keyCode=40]:[)(:keyup-index+1].else():[)(:keyup-index-1]];#;():droplist.children().[)(:keyup-index].mouseenter()?e().keyCode=40||e().keyCode=38];)(:droplist-positioner;if():[e().keyCode=38]:[)(:keyup-index.isgreater():0].elif():[e().keyCode=40]:[)(:keyup-index.less():[next().droplist.items.lastIndex()]]"
                     }]
@@ -680,7 +682,7 @@ module.exports = (component) => {
                             type: "Input?mode.dark.style.color=#c39178;if():[derivations().lastElement()=id]:[input.readonly=true];style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#ce743a",
                             controls: [{
                                 event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._map():[_.1stChild().2ndChild().text()=_.1stChild().2ndChild().text().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().map():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
-                                actions: "insert:[parent().parent().parent().parent().parent().id]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index"
+                                actions: "async():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index;async():[().insert.map.getInput().focus()]"
                             }]
                         }]
                     }]
@@ -1021,7 +1023,7 @@ module.exports = ({ id, controls }) => {
 
   return [{
     event: "click",
-    actions: `await().update:${controls.id};async().sort?sort.path=${controls.path};sort.Data=${controls.Data}?)(:${controls.Data}`
+    actions: `async():sort:[update:${controls.id}]?sort.path=${controls.path};sort.Data=${controls.Data}?)(:${controls.Data}`
   }]
 }
 
@@ -2114,7 +2116,7 @@ const droplist = ({ id, e }) => {
           event: `click??!():${id}.droplist.readonly;)(:droplist-positioner=${id}`,
           actions: [
             `resize:${id};isArabic:${input_id}?():${input_id}.data()=${item};():${input_id}.text()=${item}?!${local.droplist.isMap}`,
-            `update:[():${id}.parent().parent().id]?if():[${item}=array||${item}=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[${item}=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[${item}=controls]:[_map:event:_string].elif():[${item}=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[${item}=children]:[_map:type:_string].elif():[${item}=string]:_string.elif():[${item}=timestamp]:[today().getTime().num()].elif():[${item}=number]:0.elif():[${item}=boolean]:true.elif():[${item}=array]:_array.elif():[${item}=map]:[_map:_string:_string];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del();timer():[():droplist.val()=_string]:200?${item}!=():${id}.data().type();${local.droplist.isMap}`
+            `async():[update:[():${id}.parent().parent().id]]?if():[${item}=array||${item}=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[${item}=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[${item}=controls]:[_map:event:_string].elif():[${item}=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[${item}=children]:[_map:type:_string].elif():[${item}=string]:_string.elif():[${item}=timestamp]:[today().getTime().num()].elif():[${item}=number]:0.elif():[${item}=boolean]:true.elif():[${item}=array]:_array.elif():[${item}=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._map():[if():[!)(:break-loop;!_.text()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del()?${item}!=():${id}.data().type();${local.droplist.isMap}`
           ]
         }]
       }
@@ -2277,17 +2279,18 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         if (once) e.target.removeEventListener(event, myFn)
         
         // params
-        toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true })
+        await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true, eventParams: true })
 
         // break
         if (local.break) return
         
         // execute
         if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
-
+/*
         // awaiters
         if (local.await && local.await.length > 0) 
         toParam({ _window, req, res, id, e, string: local.await.join(";"), mount: true })
+*/
       }
       
       // onload event
@@ -2311,14 +2314,13 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (!approved) return
 
           // params
-          toParam({ string: events[1], e, id: mainID, mount: true })
+          await toParam({ string: events[1], e, id: mainID, mount: true, eventParams: true })
           
           if (controls.actions) await execute({ controls, e, id: mainID })
-
+/*
           // await params
-          if (local.await && local.await.length > 0)
-          toParam({ id, e, string: local.await.join(";"), mount: true })
-
+          if (local.await && local.await.length > 0) toParam({ id, e, string: local.await.join(";"), mount: true })
+*/
         }, timer)
       }
       
@@ -2338,6 +2340,24 @@ const defaultEventHandler = ({ id }) => {
   local.mousedown = false
 
   if (local.link) local.element.addEventListener("click", (e) => e.preventDefault())
+
+  if (local.type === "Input") {
+    var setEventType = (e) => {
+
+      if (!window.children[id]) return e.target.removeEventListener("focus", setEventType)
+      local.focus = true
+    }
+
+    local.element.addEventListener("focus", setEventType)
+
+    var setEventType = (e) => {
+
+      if (!window.children[id]) return e.target.removeEventListener("blur", setEventType)
+      local.focus = false
+    }
+
+    local.element.addEventListener("blur", setEventType)
+  }
 
   events.map((event) => {
 
@@ -2417,7 +2437,6 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     local.break = params.break
     delete params.break
 
-    // action does not exist
     actions.map(action => {
 
       if (action.includes("async():")) {
@@ -2483,7 +2502,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
           }
           
           await _method[name]({ _window, ...params, e, id })
-          if (name !== "search" && name !== "save" && name !== "erase" && name !== "searchArduino" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
+          if (name !== "search" && name !== "save" && name !== "erase" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
         })
       }
 
@@ -3012,7 +3031,7 @@ module.exports = {
     window.children[el.id].style.transition = window.children[el.id].element.style.transition = window.children[el.id].reservedStyles.transition || null
     window.children[el.id].style.opacity = window.children[el.id].element.style.opacity = window.children[el.id].reservedStyles.opacity || "1"
     delete window.children[el.id].reservedStyles
-    local.insert = { child: window.children[el.id], message: "Child inserted succefully", success: true }
+    local.insert = { map: window.children[el.id], message: "Child inserted succefully", success: true }
     
     if (lDiv) {
       document.body.removeChild(lDiv)
@@ -4040,7 +4059,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 toValue({ req, res, _window, id, value: args[2], params, _, e })
             }
             
-        } else if (k0 === "_()") {
+        } /*else if (k0 === "_()") {
 
             var args = k.split(":").slice(1)
             if (args.length > 0)
@@ -4050,7 +4069,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else _ = o
             return answer = o
             
-        } else if (k0 === "_") {
+        } */else if (k0 === "_") {
 
             if (typeof o === "object") answer = o[_]
             else answer = _
@@ -4096,14 +4115,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "parent()") {
 
-            var _parent, _o
+            var _parent
             
+            if (typeof o !== "object") return
             if (o.status === "Mounted") _parent = o.element.parentNode.id
             else _parent = o.parent
             _parent = _window ? _window.children[_parent] : window.children[_parent]
 
             if (o.templated || o.link) {
-                
+                console.log(path, o);
                 _parent = _parent.element.parentNode.id
                 _parent = _window ? _window.children[_parent] : window.children[_parent]
                 _parent = _window ? _window.children[_parent] : window.children[_parent]
@@ -5422,7 +5442,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
             else answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
             
-        } else if (k0.includes("map()")) {
+        } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
             var args = k.split(":").slice(1)
             args.map(arg => {
@@ -5512,12 +5532,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             answer = o.element
 
-        } else if (k0 === "()") { // map method
+        } /*else if (k0 === "()") { // map method
             
             var args = k.split(":").slice(1)
             args.map(arg => answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, object: o, value, key, params, index, _, e }) ))
 
-        } else if (k0 === "parseFloat()") {
+        } */else if (k0 === "parseFloat()") {
             
             answer = parseFloat(o)
 
@@ -7075,7 +7095,6 @@ module.exports = {
     const { toParam } = require("./toParam")
 
     if (!params.asyncer) return
-    
     var awaiter = params.awaiter, awaits = params.await, _params
 
     delete params.asyncer
@@ -7083,7 +7102,7 @@ module.exports = {
     delete params.await
     
     // get params
-    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, mount: true })
+    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, mount: true, asyncer: true })
     if (_params && _params.break) return
 
     // override params
@@ -7461,9 +7480,8 @@ module.exports = {
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
-const { toArray } = require("./toArray")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement, asyncer, eventParams }) => {
   const { toApproval } = require("./toApproval")
 
   var localId = id, mountDataUsed = false, mountPathUsed = false
@@ -7497,12 +7515,29 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     // await
     if (key.slice(0, 8) === "async():") {
 
-      var awaiter = param.split(":").slice(1)
-      if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
-      var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, createElement })
-      params = { ...params, ..._params }
-      params.await = params.await || ""
-      if (awaiter.slice(1)[0]) return params.await += `async():${awaiter.slice(1).join(":")};`
+      if (eventParams) {
+
+        var asyncers = param.split(":").slice(1)
+        var promises = []
+        asyncers.map(async asyncer => {
+          promises.push(await toParam({ _window, string: asyncer, e, id, req, res, mount, createElement }))
+          await Promise.all(promises)
+        })
+
+        return
+
+      } else {
+
+        var awaiter = param.split(":").slice(1)
+        if (asyncer) {
+          if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
+          var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, createElement })
+          params = { ...params, ..._params }
+          awaiter = awaiter.slice(1)
+        }
+        params.await = params.await || ""
+        if (awaiter[0]) return params.await += `async():${awaiter.join(":")};`
+      }
     }
 
     // await
@@ -7663,7 +7698,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
 module.exports = { toParam }
 
-},{"./generate":52,"./reducer":71,"./toApproval":89,"./toArray":90,"./toValue":106}],102:[function(require,module,exports){
+},{"./generate":52,"./reducer":71,"./toApproval":89,"./toValue":106}],102:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

@@ -1,9 +1,8 @@
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
-const { toArray } = require("./toArray")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement, asyncer, eventParams }) => {
   const { toApproval } = require("./toApproval")
 
   var localId = id, mountDataUsed = false, mountPathUsed = false
@@ -37,12 +36,29 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     // await
     if (key.slice(0, 8) === "async():") {
 
-      var awaiter = param.split(":").slice(1)
-      if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
-      var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, createElement })
-      params = { ...params, ..._params }
-      params.await = params.await || ""
-      if (awaiter.slice(1)[0]) return params.await += `async():${awaiter.slice(1).join(":")};`
+      if (eventParams) {
+
+        var asyncers = param.split(":").slice(1)
+        var promises = []
+        asyncers.map(async asyncer => {
+          promises.push(await toParam({ _window, string: asyncer, e, id, req, res, mount, createElement }))
+          await Promise.all(promises)
+        })
+
+        return
+
+      } else {
+
+        var awaiter = param.split(":").slice(1)
+        if (asyncer) {
+          if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
+          var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, createElement })
+          params = { ...params, ..._params }
+          awaiter = awaiter.slice(1)
+        }
+        params.await = params.await || ""
+        if (awaiter[0]) return params.await += `async():${awaiter.join(":")};`
+      }
     }
 
     // await

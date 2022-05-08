@@ -107,17 +107,18 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         if (once) e.target.removeEventListener(event, myFn)
         
         // params
-        toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true })
+        await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true, eventParams: true })
 
         // break
         if (local.break) return
         
         // execute
         if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
-
+/*
         // awaiters
         if (local.await && local.await.length > 0) 
         toParam({ _window, req, res, id, e, string: local.await.join(";"), mount: true })
+*/
       }
       
       // onload event
@@ -141,14 +142,13 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (!approved) return
 
           // params
-          toParam({ string: events[1], e, id: mainID, mount: true })
+          await toParam({ string: events[1], e, id: mainID, mount: true, eventParams: true })
           
           if (controls.actions) await execute({ controls, e, id: mainID })
-
+/*
           // await params
-          if (local.await && local.await.length > 0)
-          toParam({ id, e, string: local.await.join(";"), mount: true })
-
+          if (local.await && local.await.length > 0) toParam({ id, e, string: local.await.join(";"), mount: true })
+*/
         }, timer)
       }
       
@@ -168,6 +168,24 @@ const defaultEventHandler = ({ id }) => {
   local.mousedown = false
 
   if (local.link) local.element.addEventListener("click", (e) => e.preventDefault())
+
+  if (local.type === "Input") {
+    var setEventType = (e) => {
+
+      if (!window.children[id]) return e.target.removeEventListener("focus", setEventType)
+      local.focus = true
+    }
+
+    local.element.addEventListener("focus", setEventType)
+
+    var setEventType = (e) => {
+
+      if (!window.children[id]) return e.target.removeEventListener("blur", setEventType)
+      local.focus = false
+    }
+
+    local.element.addEventListener("blur", setEventType)
+  }
 
   events.map((event) => {
 

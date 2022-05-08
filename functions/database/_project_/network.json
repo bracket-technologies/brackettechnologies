@@ -1,0 +1,10 @@
+{
+    "creation-date": 1647263580321,
+    "domains": [
+        "network.bracketjs.com",
+        "localhost/network",
+        "192.168.25.150/network"
+    ],
+    "id": "network",
+    "name": "network"
+}

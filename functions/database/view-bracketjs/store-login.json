@@ -5,7 +5,7 @@
             "watch": ")(:data.editor.user.and():[)(:data.editor.project]:[)(:data.editor.view]:[)(:data.editor.page]"
         },
         {
-            "actions": "async():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_user_;search.doc=)(:path.split():/.2;async()::[)(:data.editor.user=().search.data]?)(:path.split():/.2",
+            "actions": "async():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_user_;search.doc=)(:path.split():/.2;async():[)(:data.editor.user=().search.data]?)(:path.split():/.2",
             "event": "loaded??!)(:data.editor.user"
         }
     ],
@@ -70,14 +70,14 @@
                             ]
                         },
                         {
-                            "type": "[Text]?data=)(:data.editor.user.project;hover.style.backgroundColor=#eee;style.padding=1rem;style.cursor=pointer;style.borderRadius=.5rem;style.borderBottom=1px solid #f9f9f9;style.height=4.5rem;class=flexbox;style.justifyContent=flex-start;style.fontSize=1.5rem;style.color=#000;await().text()=text().capitalize()?)(:data.editor.user.project.length().greater():0",
+                            "type": "[Text]?data=)(:data.editor.user.project;hover.style.backgroundColor=#eee;style.padding=1rem;style.cursor=pointer;style.borderRadius=.5rem;style.borderBottom=1px solid #f9f9f9;style.height=4.5rem;class=flexbox;style.justifyContent=flex-start;style.fontSize=1.5rem;style.color=#000;text=data().capitalize()?)(:data.editor.user.project.len()>0",
                             "controls": [
                                 {
                                     "actions": [
-                                        "async():search?search.collection=page;search.headers=_map:project:[text().uncapitalize()];async()::[)(:data.editor.page=().search.data]",
-                                        "async():search?search.collection=view;search.headers=_map:project:[text().uncapitalize()];async()::[)(:data.editor.view=().search.data]",
-                                        "async():search?search.collection=_user_;search.field.project.contains=text().uncapitalize();async()::[)(:data.editor.user=().search.data.0]",
-                                        "async():search?search.collection=_project_;search.field.id.equal=text().uncapitalize();async()::[)(:data.editor.project=().search.data.0]"
+                                        "async():search?search.collection=page;search.headers=_map:project:[text().uncapitalize()];async():[)(:data.editor.page=().search.data]",
+                                        "async():search?search.collection=view;search.headers=_map:project:[text().uncapitalize()];async():[)(:data.editor.view=().search.data]",
+                                        "async():search?search.collection=_user_;search.field.project.contains=text().uncapitalize();async():[)(:data.editor.user=().search.data.0]",
+                                        "async():search?search.collection=_project_;search.field.id.equal=text().uncapitalize();async():[)(:data.editor.project=().search.data.0]"
                                     ],
                                     "event": "click?)(:route-to-editor=true"
                                 }

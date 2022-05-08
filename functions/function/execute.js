@@ -48,7 +48,6 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     local.break = params.break
     delete params.break
 
-    // action does not exist
     actions.map(action => {
 
       if (action.includes("async():")) {
@@ -114,7 +113,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
           }
           
           await _method[name]({ _window, ...params, e, id })
-          if (name !== "search" && name !== "save" && name !== "erase" && name !== "searchArduino" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
+          if (name !== "search" && name !== "save" && name !== "erase" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
         })
       }
 

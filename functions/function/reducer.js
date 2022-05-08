@@ -429,7 +429,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 toValue({ req, res, _window, id, value: args[2], params, _, e })
             }
             
-        } else if (k0 === "_()") {
+        } /*else if (k0 === "_()") {
 
             var args = k.split(":").slice(1)
             if (args.length > 0)
@@ -439,7 +439,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else _ = o
             return answer = o
             
-        } else if (k0 === "_") {
+        } */else if (k0 === "_") {
 
             if (typeof o === "object") answer = o[_]
             else answer = _
@@ -485,14 +485,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "parent()") {
 
-            var _parent, _o
+            var _parent
             
+            if (typeof o !== "object") return
             if (o.status === "Mounted") _parent = o.element.parentNode.id
             else _parent = o.parent
             _parent = _window ? _window.children[_parent] : window.children[_parent]
 
             if (o.templated || o.link) {
-                
+                console.log(path, o);
                 _parent = _parent.element.parentNode.id
                 _parent = _window ? _window.children[_parent] : window.children[_parent]
                 _parent = _window ? _window.children[_parent] : window.children[_parent]
@@ -1811,7 +1812,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
             else answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
             
-        } else if (k0.includes("map()")) {
+        } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
             var args = k.split(":").slice(1)
             args.map(arg => {
@@ -1901,12 +1902,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             answer = o.element
 
-        } else if (k0 === "()") { // map method
+        } /*else if (k0 === "()") { // map method
             
             var args = k.split(":").slice(1)
             args.map(arg => answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, object: o, value, key, params, index, _, e }) ))
 
-        } else if (k0 === "parseFloat()") {
+        } */else if (k0 === "parseFloat()") {
             
             answer = parseFloat(o)
 

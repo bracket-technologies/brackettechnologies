@@ -72,7 +72,7 @@ module.exports = {
     window.children[el.id].style.transition = window.children[el.id].element.style.transition = window.children[el.id].reservedStyles.transition || null
     window.children[el.id].style.opacity = window.children[el.id].element.style.opacity = window.children[el.id].reservedStyles.opacity || "1"
     delete window.children[el.id].reservedStyles
-    local.insert = { child: window.children[el.id], message: "Child inserted succefully", success: true }
+    local.insert = { map: window.children[el.id], message: "Child inserted succefully", success: true }
     
     if (lDiv) {
       document.body.removeChild(lDiv)
