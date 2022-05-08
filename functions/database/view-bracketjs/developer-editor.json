@@ -13,7 +13,7 @@
                 "async():search:[update:gallery-view]?search.collection=storage;search.headers.project=)(:project;search.field.title.equals=image;search.limit=25;await().)(:gallery-images=().search.data",
                 "async():search:[update:storage-list]?search.collection=storage;search.headers.project=)(:project;await().)(:data.editor.storage=().search.data"
             ],
-            "event": "loaded?)(:project=)(:path.split():/.3"
+            "event": "loaded?)(:project=)(:path.split():/.2"
         }
     ],
     "creation-date": 1637494484000,
@@ -56,7 +56,7 @@
                                             "type": "Text?text=:;style.marginRight=1rem;style.fontSize=1.5rem"
                                         },
                                         {
-                                            "type": "Text?text=)(:path.split():/.3.capitalize();style.fontSize=1.5rem;style.marginRight=.75rem"
+                                            "type": "Text?text=)(:path.split():/.2.capitalize();style.fontSize=1.5rem;style.marginRight=.75rem"
                                         },
                                         {
                                             "type": "Icon?name=bi-caret-down-fill;style.fontSize=1.1rem;style.transition=transform .2s;style.transform=rotate(0deg)"
