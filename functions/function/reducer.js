@@ -493,7 +493,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             _parent = _window ? _window.children[_parent] : window.children[_parent]
 
             if (o.templated || o.link) {
-                console.log(path, o);
                 _parent = _parent.element.parentNode.id
                 _parent = _window ? _window.children[_parent] : window.children[_parent]
                 _parent = _window ? _window.children[_parent] : window.children[_parent]

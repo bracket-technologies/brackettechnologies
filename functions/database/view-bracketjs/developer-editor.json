@@ -4,7 +4,7 @@
         {
             "actions": [
                 "async():search:[update:user-file]?search.collection=_user_;search.field.projects.contains=)(:project;async():[)(:data.editor.user=().search.data.value()]",
-                "async():search:[update:sidebar-items]:[update:project-file]?search.collection=_project_;search.doc=)(:project;async():[)(:data.editor.project=().search.data]",
+                "async():search:[update:project-file]:[update:sidebar-items]?search.collection=_project_;search.doc=)(:project;async():[)(:data.editor.project=().search.data]",
                 "async():search:[update:collection-list]?search.collection=collection;search.headers.project=)(:project;async():[)(:data.editor.collection=().search.data]",
                 "async():search:[update:page-list]?search.collection=page;search.headers.project=)(:project;async():[)(:data.editor.page=().search.data]",
                 "async():search:[update:view-list]?search.collection=view;search.headers.project=)(:project;async():[)(:data.editor.view=().search.data]",

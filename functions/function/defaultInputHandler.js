@@ -50,7 +50,10 @@ const defaultInputHandler = ({ id }) => {
     var value = e.target.value
 
     // VAR[id] doesnot exist
-    if (!window.children[id]) return e.target.removeEventListener("input", myFn)
+    if (!window.children[id]) {
+      if (e.target) e.target.removeEventListener("input", myFn)
+      return 
+    }
     
     if (!local["preventDefault"]) {
       

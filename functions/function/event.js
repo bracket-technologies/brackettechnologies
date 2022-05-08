@@ -135,7 +135,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (once) e.target.removeEventListener(event, myFn)
 
           // VALUE[id] doesnot exist
-          if (!__local) return e.target.removeEventListener(event, myFn)
+          if (!__local) {
+            if (e.target) e.target.removeEventListener(event, myFn)
+            return 
+          }
           
           // approval
           var approved = toApproval({ string: events[2], e, id: mainID })
@@ -169,6 +172,7 @@ const defaultEventHandler = ({ id }) => {
 
   if (local.link) local.element.addEventListener("click", (e) => e.preventDefault())
 
+  // input
   if (local.type === "Input") {
     var setEventType = (e) => {
 

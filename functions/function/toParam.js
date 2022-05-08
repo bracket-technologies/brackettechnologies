@@ -58,6 +58,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         }
         params.await = params.await || ""
         if (awaiter[0]) return params.await += `async():${awaiter.join(":")};`
+        else if (awaiter.length === 0) return
       }
     }
 

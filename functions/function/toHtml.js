@@ -82,7 +82,7 @@ module.exports = {
         tag = `<p class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${text}</p>`
       }
     } else if (local.type === "Icon") {
-      tag = `<i class='${local.outlined ? "material-icons-outlined" : local.rounded ? "material-icons-round" : local.sharp ? "material-icons-sharp" : local.filled ? "material-icons" : local.twoTone ? "material-icons-two-tone" : ""} ${local.class || ""} ${local.icon.name}' id='${local.id}' style='${style}' index='${local.index}'>${local.google ? local.icon.name : ""}</i>`
+      tag = `<i class='${local.outlined ? "material-icons-outlined" : local.rounded ? "material-icons-round" : local.sharp ? "material-icons-sharp" : local.filled ? "material-icons" : local.twoTone ? "material-icons-two-tone" : ""} ${local.class || ""} ${local.icon.name}' id='${local.id}' style='${style}${_window ? ";opacity:0;transition=.2s" : ""}' index='${local.index}'>${local.google ? local.icon.name : ""}</i>`
     } else if (local.type === "Textarea") {
       tag = `<textarea class='${local.class}' id='${local.id}' style='${style}' placeholder='${local.placeholder || ""}' ${local.readonly ? "readonly" : ""} ${local.maxlength || ""} index='${local.index}'>${local.data || local.input.value || ""}</textarea>`
     } else if (local.type === "Input") {

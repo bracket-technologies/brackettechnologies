@@ -31,6 +31,13 @@ document.addEventListener('click', e => {
     
 }, false)
 
+window.onload = () => {
+    Object.values(window.children).filter(map => map.type === "Icon").map(map => {
+        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
+        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "0"
+    })
+}
+    
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
@@ -669,7 +676,7 @@ module.exports = (component) => {
                 }, {
                     type: "Text?text=:;class=flex-box pointer;mode.dark.style.color=#888;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_array:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
                 }, {
-                    type: `Text?text=";mode.dark.style.color=#c39178;style.color=#ce743a;style.marginRight=.3rem;style.fontSize=1.4rem?data().type()=string`
+                    type: `Text?text=";mode.dark.style.color=#c39178;style.color=#a35521;style.marginRight=.3rem;style.fontSize=1.4rem?data().type()=string`
                 }, {
                     type: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=array"
                 }, {
@@ -679,7 +686,7 @@ module.exports = (component) => {
                     children: [{
                         type: "View?style.display=inline-flex",
                         children: [{
-                            type: "Input?mode.dark.style.color=#c39178;if():[derivations().lastElement()=id]:[input.readonly=true];style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#ce743a",
+                            type: "Input?mode.dark.style.color=#c39178;if():[derivations().lastElement()=id]:[input.readonly=true];style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#a35521",
                             controls: [{
                                 event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._map():[_.1stChild().2ndChild().text()=_.1stChild().2ndChild().text().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().map():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
                                 actions: "async():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index;async():[().insert.map.getInput().focus()]"
@@ -702,7 +709,7 @@ module.exports = (component) => {
                         event: "loaded?val()=data().date().getDateTime()"
                     }]
                 }, {
-                    type: `Text?text=";mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#ce743a;style.fontSize=1.4rem?data().type()=string`
+                    type: `Text?text=";mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#a35521;style.fontSize=1.4rem?data().type()=string`
                 }, {
                     type: "Text?class=pointer;style.display=none;mode.dark.style.color=#888;text=...;style.fontSize=1.4rem?data().type()=array||data().type()=map;data().len().greater():0"
                 }, {
@@ -2037,7 +2044,10 @@ const defaultInputHandler = ({ id }) => {
     var value = e.target.value
 
     // VAR[id] doesnot exist
-    if (!window.children[id]) return e.target.removeEventListener("input", myFn)
+    if (!window.children[id]) {
+      if (e.target) e.target.removeEventListener("input", myFn)
+      return 
+    }
     
     if (!local["preventDefault"]) {
       
@@ -2307,7 +2317,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (once) e.target.removeEventListener(event, myFn)
 
           // VALUE[id] doesnot exist
-          if (!__local) return e.target.removeEventListener(event, myFn)
+          if (!__local) {
+            if (e.target) e.target.removeEventListener(event, myFn)
+            return 
+          }
           
           // approval
           var approved = toApproval({ string: events[2], e, id: mainID })
@@ -2341,6 +2354,7 @@ const defaultEventHandler = ({ id }) => {
 
   if (local.link) local.element.addEventListener("click", (e) => e.preventDefault())
 
+  // input
   if (local.type === "Input") {
     var setEventType = (e) => {
 
@@ -4123,7 +4137,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             _parent = _window ? _window.children[_parent] : window.children[_parent]
 
             if (o.templated || o.link) {
-                console.log(path, o);
                 _parent = _parent.element.parentNode.id
                 _parent = _window ? _window.children[_parent] : window.children[_parent]
                 _parent = _window ? _window.children[_parent] : window.children[_parent]
@@ -7379,7 +7392,7 @@ module.exports = {
         tag = `<p class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${text}</p>`
       }
     } else if (local.type === "Icon") {
-      tag = `<i class='${local.outlined ? "material-icons-outlined" : local.rounded ? "material-icons-round" : local.sharp ? "material-icons-sharp" : local.filled ? "material-icons" : local.twoTone ? "material-icons-two-tone" : ""} ${local.class || ""} ${local.icon.name}' id='${local.id}' style='${style}' index='${local.index}'>${local.google ? local.icon.name : ""}</i>`
+      tag = `<i class='${local.outlined ? "material-icons-outlined" : local.rounded ? "material-icons-round" : local.sharp ? "material-icons-sharp" : local.filled ? "material-icons" : local.twoTone ? "material-icons-two-tone" : ""} ${local.class || ""} ${local.icon.name}' id='${local.id}' style='${style}${_window ? ";opacity:0;transition=.2s" : ""}' index='${local.index}'>${local.google ? local.icon.name : ""}</i>`
     } else if (local.type === "Textarea") {
       tag = `<textarea class='${local.class}' id='${local.id}' style='${style}' placeholder='${local.placeholder || ""}' ${local.readonly ? "readonly" : ""} ${local.maxlength || ""} index='${local.index}'>${local.data || local.input.value || ""}</textarea>`
     } else if (local.type === "Input") {
@@ -7537,6 +7550,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         }
         params.await = params.await || ""
         if (awaiter[0]) return params.await += `async():${awaiter.join(":")};`
+        else if (awaiter.length === 0) return
       }
     }
 
