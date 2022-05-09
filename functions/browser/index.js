@@ -1773,7 +1773,7 @@ const createTags = ({ _window, id, req, res }) => {
       delete value[id]
       
       return data.map((_data, index) => {
-
+        
         var id = generate()
         var _local = clone(local)
 
@@ -3213,10 +3213,11 @@ var getJsonFiles = ({ search = {} }) => {
   path = `database/${collection}`
   
   // create folder if it doesnot exist
-  if (!fs.existsSync(path)) return
+  if (!fs.existsSync(path)) fs.mkdirSync(`${path}`)
 
   if (doc) {
     
+    if (!fs.existsSync(`${path}/${doc}.json`)) fs.writeFileSync(`${path}/${doc}.json`, "{}")
     data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
 
   } else if (docs && docs.length > 0) {
@@ -3819,7 +3820,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()")) {
         if (path0 === "getChildrenByClassName()") {
 
             path.unshift("doc()")
@@ -5203,7 +5204,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "ar()" || k0 === "arabic()") {
             //
-            answer = o.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+            if (Array.isArray(o)) answer = o.map(o => o.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d]))
+            else answer = o.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
 
         } else if (k0 === "date()" || k0 === "toDate()") {
 
@@ -5686,6 +5688,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _startIndex = toValue({ req, res, _window, id, e, _, value: args[0], params }) || 0
             var _endIndex = toValue({ req, res, _window, id, e, _, value: args[1], params })
             var _steps = toValue({ req, res, _window, id, e, _, value: args[2], params }) || 1
+            var _lang = args[3] || ""
             _index = _startIndex
             while (_index < _endIndex) {
                 if ((_index - _startIndex) % _steps === 0) {
@@ -5693,9 +5696,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     _index += 1
                 }
             }
+            if (_lang === "ar") _range = _range.map(num => num.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d]))
             answer = _range
-            console.log(_range);
-
+            
         } else if (k0 === "update()") {
           
             var args = k.split(":")
@@ -5733,7 +5736,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "copyToClipBoard()") {
           
             var text = k.split(":")[1]
-            text = toValue({ req, res, _window, id, e, _: o, value: text, params })
+            text = toValue({ req, res, _window, id, e, _, value: text, params })
+            
             if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
             else {
                 var textArea = document.createElement("textarea")
@@ -5741,6 +5745,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 document.body.appendChild(textArea)
                 textArea.focus()
                 textArea.select()
+                textArea.setSelectionRange(0, 99999)
+                if (navigator.clipboard) navigator.clipboard.writeText(text)
+                else document.execCommand("copy")
                 document.body.removeChild(textArea)
             }
 
@@ -7032,10 +7039,16 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
 
     condition = condition.split("=")
     var equalOp = condition.length > 1
-    var greaterOp = condition.length > 1 ? condition[0].slice(-1) === ">" : condition[0].includes(">") && true
-    if (greaterOp) condition[0] = condition[0].slice(0, -1)
-    var lessOp = condition.length > 1 ? condition[0].slice(-1) === "<" : condition[0].includes("<") && true
-    if (lessOp) condition[0] = condition[0].slice(0, -1)
+    var greaterOp = condition[0].split(">")[1] && true
+    if (greaterOp) {
+      condition[1] = condition[1] || condition[0].split(">")[1]
+      condition[0] = condition[0].split(">")[0]
+    }
+    var lessOp = condition[0].split("<")[1] && true
+    if (lessOp) {
+      condition[1] = condition[1] || condition[0].split("<")[1]
+      condition[0] = condition[0].split("<")[0]
+    }
 
     var key = condition[0]
     var value = condition[1]
@@ -7323,7 +7336,7 @@ module.exports = {
     var global = _window ? _window.global : window.global
     
     // innerHTML
-    var text = (local.text !== undefined && local.text.toString()) || (typeof local.data !== "object" && local.data) || ''
+    var text = local.text !== undefined ? local.text.toString() : typeof local.data !== "object" ? local.data : ''
     var innerHTML = local.type !== "View" ? text : ""
     var checked = local.input && local.input.type === "radio" && parseFloat(local.data) === parseFloat(local.input.defaultValue)
     
