@@ -13,7 +13,7 @@ module.exports = {
     var global = _window ? _window.global : window.global
     
     // innerHTML
-    var text = (local.text !== undefined && local.text.toString()) || (typeof local.data !== "object" && local.data) || ''
+    var text = local.text !== undefined ? local.text.toString() : typeof local.data !== "object" ? local.data : ''
     var innerHTML = local.type !== "View" ? text : ""
     var checked = local.input && local.input.type === "radio" && parseFloat(local.data) === parseFloat(local.input.defaultValue)
     

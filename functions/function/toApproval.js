@@ -50,10 +50,16 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
 
     condition = condition.split("=")
     var equalOp = condition.length > 1
-    var greaterOp = condition.length > 1 ? condition[0].slice(-1) === ">" : condition[0].includes(">") && true
-    if (greaterOp) condition[0] = condition[0].slice(0, -1)
-    var lessOp = condition.length > 1 ? condition[0].slice(-1) === "<" : condition[0].includes("<") && true
-    if (lessOp) condition[0] = condition[0].slice(0, -1)
+    var greaterOp = condition[0].split(">")[1] && true
+    if (greaterOp) {
+      condition[1] = condition[1] || condition[0].split(">")[1]
+      condition[0] = condition[0].split(">")[0]
+    }
+    var lessOp = condition[0].split("<")[1] && true
+    if (lessOp) {
+      condition[1] = condition[1] || condition[0].split("<")[1]
+      condition[0] = condition[0].split("<")[0]
+    }
 
     var key = condition[0]
     var value = condition[1]

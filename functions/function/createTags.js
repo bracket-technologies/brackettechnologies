@@ -25,7 +25,7 @@ const createTags = ({ _window, id, req, res }) => {
       delete value[id]
       
       return data.map((_data, index) => {
-
+        
         var id = generate()
         var _local = clone(local)
 
