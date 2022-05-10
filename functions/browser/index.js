@@ -2125,7 +2125,6 @@ const droplist = ({ id, e }) => {
         controls: [...(local.droplist.controls || []), {
           event: `click??!():${id}.droplist.readonly;)(:droplist-positioner=${id}`,
           actions: [
-            `resize:${id};isArabic:${input_id}?():${input_id}.data()=${item};():${input_id}.text()=${item}?!${local.droplist.isMap}`,
             `async():[update:[():${id}.parent().parent().id]]?if():[${item}=array||${item}=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[${item}=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[${item}=controls]:[_map:event:_string].elif():[${item}=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[${item}=children]:[_map:type:_string].elif():[${item}=string]:_string.elif():[${item}=timestamp]:[today().getTime().num()].elif():[${item}=number]:0.elif():[${item}=boolean]:true.elif():[${item}=array]:_array.elif():[${item}=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._map():[if():[!)(:break-loop;!_.text()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del()?${item}!=():${id}.data().type();${local.droplist.isMap}`
           ]
         }]
@@ -3820,8 +3819,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()")) {
-        if (path0 === "getChildrenByClassName()") {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()")) {
+        if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
             path0 = "doc()"
@@ -4063,8 +4062,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var el = k
             breakRequest = i + 1
             el = toValue({ req, res, _window, id, e, _, value: k, params })
-            if (Array.isArray(o)) o.splice(el, 1)
-            else delete o[el]
+            if (Array.isArray(o)) {
+                if (isNaN(el)) {
+                    if (o[0] && o[0][el]) {
+                        return delete o[0][el]
+                    } else return
+                }
+                o.splice(el, 1)
+            } else delete o[el]
             return
             
         } else if (k0 === "while()") {
@@ -4436,7 +4441,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var relativeTo = toValue({ req, res, _window, id, e, _, value: args[1], params })
             answer = position(o, relativeTo)
 
-        } else if (k0 === "getChildrenByClassName()") {
+        } else if (k0 === "getChildrenByClassName()" || k0 === "className()") {
 
             var args = k.split(":")
             var className = toValue({ req, res, _window, id, e, _, value: args[1], params })
@@ -4470,13 +4475,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = Math.round(toNumber(o))
 
         } else if (k0 === "click()") {
-
+            
             if (o.nodeType === Node.ELEMENT_NODE) o.click()
             else if (typeof o === "object" && o.element) o.element.click()
 
         } else if (k0 === "focus()") {
 
             focus({ id: o.id })
+
+        } else if (k0 === "getElementById()") {
+
+            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            answer = o.getElementById(_id)
 
         } else if (k0 === "mouseenter()") {
 
@@ -5006,6 +5016,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (i === lastIndex && key && value !== undefined) el.innerHTML = value
             }
  
+        } else if (k0 === "min()") {
+            
+            var el
+            if (o.nodeType === Node.ELEMENT_NODE) el = o
+            else if (o.element) el = o.element
+            
+            if (el) answer = el.min
+            if (i === lastIndex && key && value !== undefined) el.min = value
+ 
+        } else if (k0 === "max()") {
+            
+            var el
+            if (o.nodeType === Node.ELEMENT_NODE) el = o
+            else if (o.element) el = o.element
+            
+            if (el) answer = el.max
+            if (i === lastIndex && key && value !== undefined) el.max = value
+ 
         } else if (k0 === "field()") {
             
             var fields = k.split(":").slice(1)
@@ -5211,6 +5239,28 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             if (!isNaN(o) && typeof o === "string") o = parseInt(o)
             answer = new Date(o)
+
+        } else if (k0 === "toDateFormat()") { // returns date for input
+
+            if (!isNaN(o) && typeof o === "string") o = parseInt(o)
+            var _date = new Date(o)
+            var _year = _date.getFullYear()
+            var _month = _date.getMonth() + 1
+            var _day = _date.getDate()
+            var _dayofWeek = _date.getDay()
+
+            var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+            return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}`
+
+        } else if (k0 === "toDateInputFormat()") { // returns date for input in format yyyy-mm-dd
+
+            if (!isNaN(o) && typeof o === "string") o = parseInt(o)
+            var _date = new Date(o)
+            var _year = _date.getFullYear()
+            var _month = _date.getMonth() + 1
+            var _day = _date.getDate()
+            return `${_year}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
 
         } else if (k0 === "toUTCString()") {
             
@@ -5783,6 +5833,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 k = _key
             }
             
+            if (Array.isArray(o)) {
+                if (isNaN(k)) {
+                    if (o.length === 0) o.push({})
+                    o = o[0]
+                }
+            }
             answer = o[k] = value
 
         } else if (k0 === "target" && !o[k] && i === 0) {
@@ -5808,9 +5864,27 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (key && o[k] === undefined && i !== lastIndex) {
 
             if (!isNaN(path[i + 1])) answer = o[k] = []
-            else answer = o[k] = {}
+            else {
+            
+                if (Array.isArray(o)) {
+                    if (isNaN(k)) {
+                        if (o.length === 0) o.push({})
+                        o = o[0]
+                    }
+                }
+                answer = o[k] = {}
+            }
 
-        } else answer = o[k]
+        } else {
+
+            if (Array.isArray(o)) {
+                if (isNaN(k)) {
+                    if (o.length === 0) o.push({})
+                    o = o[0]
+                }
+            }
+            answer = o[k]
+        }
         
         return answer
 
@@ -7518,8 +7592,14 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
-  // condition not approval
+  // condition not param
   if (string.includes("==")) return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _ })
+
+  // condition not param
+  if (string.includes("!=")) return toApproval({ id, e, string, req, res, _window, _ })
+
+  // condition not param
+  if (string.slice(0, 1) === "!") return toApproval({ id, e, string, req, res, _window, _ })
 
   string.split(";").map(param => {
     
@@ -7639,46 +7719,58 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       } else {
         
         if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
-
+        else reducer({ _window, id, path, value, key, params, e, req, res, _, mount, object: params })
+/*
         path.reduce((obj, key, index) => {
 
-          if (obj[key] !== undefined) {
-            if (index === path.length - 1) {
+            if (obj[key] !== undefined) {
+            
+              var args = key.split(":")
+        
+              if (args[1]) {
+    
+                if (mount) o[args[0]] = o[args[0]] || {}
+                return reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: o[args[0]], params, _ })
+              }
 
-              // if key=value exists => mount the existing to local, then mount the new value to params
-              path.reduce((o, k, i) => {
+              if (index === path.length - 1) {
 
-                if (i === path.length - 1) return o[k] = value
-                return o[k] || {}
+                // if key=value exists => mount the existing to local, then mount the new value to params
+                path.reduce((o, k, i) => {
 
-              }, _window ? _window.children[id] : window.children[id])
+                  if (i === path.length - 1) return o[k] = value
+                  return o[k] || {}
 
-              return obj[key] = value
+                }, _window ? _window.children[id] : window.children[id])
+
+                return obj[key] = value
+              }
+
+            } else {
+
+              if (index === path.length - 1) {
+                var args = key.split(":")
+        
+                if (args[1]) {
+
+                  if (mount) local[args[0]] = local[args[0]] || {}
+                  var _param = reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: mount ? local[args[0]] : {}, params, _ })
+                  params[args[0]] = _param
+
+                } else return obj[key] = value
+
+              } else obj[key] = {}
             }
-
-          } else {
-
-            if (index === path.length - 1) return obj[key] = value
-            else obj[key] = {}
-          }
 
           return obj[key]
         }, params)
-
+*/
       }
       
     } else if (key) {
       
-      var args = key.split(":")
-      
-      if (args[1]) {
-        if (mount) local[args[0]] = local[args[0]] || {}
-        var _param = reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: mount ? local[args[0]] : {}, params, _ })
-        params[args[0]] = _param
-      } else {
-        if (mount) local[key] = value
-        params[key] = value
-      }
+      if (mount) local[key] = value
+      params[key] = value
     }
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
@@ -7902,6 +7994,12 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   // value is a param it has key=value
   if (value.includes("=") || value.includes(";")) return toParam({ req, res, _window, id, e, string: value, _, object, mount })
 /*
+  // condition
+  if (value.slice(0, 1) === "!") return toApproval({ id, e, string: value, req, res, _window, _ })
+
+  // condition
+  if (value.includes === "!=") return toApproval({ id, e, string: value, req, res, _window, _ })
+
   // conditions
   if (value.includes("<<")) {
 

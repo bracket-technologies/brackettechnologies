@@ -13,8 +13,14 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
-  // condition not approval
+  // condition not param
   if (string.includes("==")) return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _ })
+
+  // condition not param
+  if (string.includes("!=")) return toApproval({ id, e, string, req, res, _window, _ })
+
+  // condition not param
+  if (string.slice(0, 1) === "!") return toApproval({ id, e, string, req, res, _window, _ })
 
   string.split(";").map(param => {
     
@@ -134,46 +140,58 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       } else {
         
         if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
-
+        else reducer({ _window, id, path, value, key, params, e, req, res, _, mount, object: params })
+/*
         path.reduce((obj, key, index) => {
 
-          if (obj[key] !== undefined) {
-            if (index === path.length - 1) {
+            if (obj[key] !== undefined) {
+            
+              var args = key.split(":")
+        
+              if (args[1]) {
+    
+                if (mount) o[args[0]] = o[args[0]] || {}
+                return reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: o[args[0]], params, _ })
+              }
 
-              // if key=value exists => mount the existing to local, then mount the new value to params
-              path.reduce((o, k, i) => {
+              if (index === path.length - 1) {
 
-                if (i === path.length - 1) return o[k] = value
-                return o[k] || {}
+                // if key=value exists => mount the existing to local, then mount the new value to params
+                path.reduce((o, k, i) => {
 
-              }, _window ? _window.children[id] : window.children[id])
+                  if (i === path.length - 1) return o[k] = value
+                  return o[k] || {}
 
-              return obj[key] = value
+                }, _window ? _window.children[id] : window.children[id])
+
+                return obj[key] = value
+              }
+
+            } else {
+
+              if (index === path.length - 1) {
+                var args = key.split(":")
+        
+                if (args[1]) {
+
+                  if (mount) local[args[0]] = local[args[0]] || {}
+                  var _param = reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: mount ? local[args[0]] : {}, params, _ })
+                  params[args[0]] = _param
+
+                } else return obj[key] = value
+
+              } else obj[key] = {}
             }
-
-          } else {
-
-            if (index === path.length - 1) return obj[key] = value
-            else obj[key] = {}
-          }
 
           return obj[key]
         }, params)
-
+*/
       }
       
     } else if (key) {
       
-      var args = key.split(":")
-      
-      if (args[1]) {
-        if (mount) local[args[0]] = local[args[0]] || {}
-        var _param = reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: mount ? local[args[0]] : {}, params, _ })
-        params[args[0]] = _param
-      } else {
-        if (mount) local[key] = value
-        params[key] = value
-      }
+      if (mount) local[key] = value
+      params[key] = value
     }
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
