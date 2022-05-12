@@ -175,8 +175,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
+<<<<<<< HEAD
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "updateSelf()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "remove()" || path0 === "rem()")) {
+        if (path0 === "getChildrenByClassName()") {
+=======
     if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
+>>>>>>> ef7e1b2caf3b134a13feacb41fdeb5a378e0fda6
 
             path.unshift("doc()")
             path0 = "doc()"
@@ -890,9 +895,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
             
-            var args = k.split(":")
-            var _timer = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            answer = clearTimeout(_timer)
+            var args = k.split(":").slice(1)
+            args.map(arg => {
+                var _timer = toValue({ req, res, _window, id, e, value: arg, params, _ })
+                clearTimeout(_timer)
+            })
             
         } else if (k0 === "clearInterval()") {
             
@@ -1481,6 +1488,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = o
             
         } else if (k0 === "remove()" || k0 === "rem()") {
+
+            var args = k.split(":")
+            if (args[1]) {
+                var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
+                var _value = _window ? _window.children : window.children
+                if (!_value[_id]) return console.log("Element doesnot exist!")
+                return remove({ id: _id })
+            }
 
             var _id = typeof o === "string" ? o : o.id
             var _value = _window ? _window.children : window.children
@@ -2087,14 +2102,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             var _text = k.split(":")[1]
             _text = toValue({ req, res, _window, id, e, _, value: _text, params })
-            var mininoteControls = toCode({ string: `():mininote-text.txt()=${_text};)(:mininote-timer.clearTimer();():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000` })
+            var mininoteControls = toCode({ string: `():mininote-text.txt()=${_text};clearTimer():[)(:mininote-timer];():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _ })
 
         } else if (k0 === "tooltip()") {
           
             var _text = k.split(":")[1]
             _text = toValue({ req, res, _window, id, e, _, value: _text, params })
-            var mininoteControls = toCode({ string: `():tooltip-text.txt()=${_text};)(:tooltip-timer.clearTimer();():tooltip.style():[opacity=1;transform=scale(1)];)(:tooltip-timer=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
+            var mininoteControls = toCode({ string: `():tooltip-text.txt()=${_text};clearTimer():[)(:tooltip-timer];():tooltip.style():[opacity=1;transform=scale(1)];)(:tooltip-timer=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _ })
 
         } else if (k0 === "mouseenter()") {

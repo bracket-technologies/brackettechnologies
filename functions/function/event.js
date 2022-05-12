@@ -200,8 +200,14 @@ const defaultEventHandler = ({ id }) => {
 
   if (local.link) local.element.addEventListener("click", (e) => e.preventDefault())
 
+<<<<<<< HEAD
+  if (local.type === "Input") {
+
+    // focus
+=======
   // input
   if (local.type === "Input") {
+>>>>>>> ef7e1b2caf3b134a13feacb41fdeb5a378e0fda6
     var setEventType = (e) => {
 
       if (!window.children[id]) return e.target.removeEventListener("focus", setEventType)
@@ -210,6 +216,10 @@ const defaultEventHandler = ({ id }) => {
 
     local.element.addEventListener("focus", setEventType)
 
+<<<<<<< HEAD
+    // blur
+=======
+>>>>>>> ef7e1b2caf3b134a13feacb41fdeb5a378e0fda6
     var setEventType = (e) => {
 
       if (!window.children[id]) return e.target.removeEventListener("blur", setEventType)
