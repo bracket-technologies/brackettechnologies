@@ -14,6 +14,15 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
 
+  // or
+  if (value.includes("||")) {
+    var answer
+    value.split("||").map(value => {
+      if (answer === undefined || answer === "") answer = toValue({ _window, value, params, _, id, e, req, res, object, mount })
+    })
+    return answer
+  }
+
   // value is a param it has key=value
   if (value.includes("=") || value.includes(";")) return toParam({ req, res, _window, id, e, string: value, _, object, mount })
 /*

@@ -15,7 +15,7 @@ const events = [
   "touchend"
 ]
 
-const addEventListener = ({ _window, controls, id, req, res }) => {
+const addEventListener = ({ _window, controls, id, req, res, params }) => {
   
   const { execute } = require("./execute")
 
@@ -66,6 +66,16 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   }
 
   events[0].split(";").map(event => {
+
+    // event is coded
+    if (event.slice(0, 7) === "coded()") {
+      event = global.codes[event]
+      if (event.includes("?")) {
+        var localEventConditions = event.split("?")[2]
+        var localEventParams = event.split("?")[1]
+        event = event.split("?")[0]
+      }
+    }
     
     var timer = 0, idList
     var once = events[1] && events[1].includes('once')
@@ -100,6 +110,12 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         if (!__local) return e.target.removeEventListener(event, myFn)
         
         // approval
+        if (localEventConditions) {
+          var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+          if (!approved) return
+        }
+        
+        // approval
         var approved = toApproval({ _window, req, res, string: events[2], e, id: mainID })
         if (!approved) return
 
@@ -108,6 +124,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         
         // params
         await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true, eventParams: true })
+        
+        // approval
+        if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
 
         // break
         if (local.break) return
@@ -139,6 +158,12 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
             if (e.target) e.target.removeEventListener(event, myFn)
             return 
           }
+        
+          // approval
+          if (localEventConditions) {
+            var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+            if (!approved) return
+          }
           
           // approval
           var approved = toApproval({ string: events[2], e, id: mainID })
@@ -146,6 +171,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           // params
           await toParam({ string: events[1], e, id: mainID, mount: true, eventParams: true })
+        
+          // approval
+          if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
           
           if (controls.actions) await execute({ controls, e, id: mainID })
 /*

@@ -175,7 +175,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -511,19 +511,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "siblings()") {
             
-            var _parent = _window ? _window.children[o.element.id] : window.children[o.element.id]
+            var _parent = _window ? _window.children[_window.children[o.id].parent] : window.children[window.children[o.id].parent]
             answer = [..._parent.element.children].map(el => {
                 
-                var _id = el.id
-                if ((_window ? _window.children[_id] : window.children[_id]).component === "Input") {
+                var _id = el.id, _local = _window ? _window.children[_id] : window.children[_id]
+                if (!_local) return
+                if (_local.component === "Input") {
 
-                    _id = (_window ? _window.children[_id] : window.children[_id]).element.getElementsByTagName("INPUT")[0].id
-                    return _window ? _window.children[_id] : window.children[_id]
+                    _id = (_local).element.getElementsByTagName("INPUT")[0].id
+                    return _local
 
-                } else return _window ? _window.children[_id] : window.children[_id]
+                } else return _local
             })
-
-            answer = answer.filter(_o => _o.id !== o.id)
+            
+            answer = answer.filter(comp => comp && comp.id)
 
         } else if (k0 === "next()" || k0 === "nextSibling()") {
 
@@ -799,6 +800,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "getChildrenByClassName()" || k0 === "className()") {
 
+            // map not loaded yet
+            if (local.status === "Loading") {
+                local.controls = toArray(local.controls)
+                local.controls.push({
+                    event: `loaded?${key}`
+                })
+            }
             var args = k.split(":")
             var className = toValue({ req, res, _window, id, e, _, value: args[1], params })
             if (className) {
@@ -1566,6 +1574,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = new Date()
 
+        } else if (k0 === "todayStart()") {
+          
+            var now = new Date()
+            var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            return startOfDay
+            
         } else if (k0 === "toClock()") {
             
             answer = toClock({ timestamp: o })

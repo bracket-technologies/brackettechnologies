@@ -34,7 +34,7 @@ module.exports = {
         
         else if (lang === "en" && !simplified) simplifiedDate = days[dayofWeek] + " " + dayofMonth + " " + months[month] + " " + year
 
-        if (time) simplifiedDate += " | الساعة " + hours + ":" + mins
+        if (time) simplifiedDate += " | " + hours + ":" + mins
 
         if (lang === "ar") simplifiedDate = toArabicNum(simplifiedDate)
 

@@ -15,6 +15,7 @@ const upload = async ({ id, e, ...params }) => {
 
   // file
   var file = await readFile(upload.file)
+  delete upload.file
   
   // get file type
   var type = file.substring("data:".length, file.indexOf(";base64"))
@@ -24,7 +25,7 @@ const upload = async ({ id, e, ...params }) => {
   var regex = new RegExp(`^data:${type};base64,`, "gi")
   file = file.replace(regex, "")
   
-  var { data } = await axios.post(`/api/file/${collection}`, { upload, file }, {
+  var { data } = await axios.post(`/storage/${collection}`, { upload, file }, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...headers

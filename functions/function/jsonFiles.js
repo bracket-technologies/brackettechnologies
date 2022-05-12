@@ -23,7 +23,7 @@ var getJsonFiles = ({ search = {} }) => {
   } else if (docs && docs.length > 0) {
     
     toArray(docs).map(doc => {
-      data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
+      if (fs.existsSync(`${path}/${doc}.json`)) data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
     })
     
   } else if (!fields) {
@@ -151,7 +151,7 @@ const removeJsonFiles = ({ erase = {} }) => {
   docs.map(doc => fs.unlinkSync(`${path}/${doc}.json`))
 }
 
-const uploadFile = ({ upload = {} }) => {
+const uploadJsonFile = ({ upload = {} }) => {
   
   var file = upload.file, path, 
   collection = upload.collection, 
@@ -170,4 +170,4 @@ const uploadFile = ({ upload = {} }) => {
   return path
 }
 
-module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadFile }
+module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }

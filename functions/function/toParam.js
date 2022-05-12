@@ -14,13 +14,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
   // condition not param
-  if (string.includes("==")) return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _ })
-
-  // condition not param
-  if (string.includes("!=")) return toApproval({ id, e, string, req, res, _window, _ })
-
-  // condition not param
-  if (string.slice(0, 1) === "!") return toApproval({ id, e, string, req, res, _window, _ })
+  if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
+  return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, object })
 
   string.split(";").map(param => {
     
@@ -29,6 +24,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
     // break
     if (params.break || local && local.break) return
+
+    if (param.slice(0, 2) === "#:") return
     
     // split
     if (param.includes("=")) {
@@ -62,6 +59,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
           params = { ...params, ..._params }
           awaiter = awaiter.slice(1)
         }
+
         params.await = params.await || ""
         if (awaiter[0]) return params.await += `async():${awaiter.join(":")};`
         else if (awaiter.length === 0) return
@@ -140,7 +138,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       } else {
         
         if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
-        else reducer({ _window, id, path, value, key, params, e, req, res, _, mount, object: params })
+        reducer({ _window, id, path, value, key, params, e, req, res, _, mount, object: params })
 /*
         path.reduce((obj, key, index) => {
 

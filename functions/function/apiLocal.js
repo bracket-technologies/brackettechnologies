@@ -1,13 +1,13 @@
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const axios = require("axios")
-const { getJsonFiles, postJsonFiles, removeJsonFiles, uploadFile } = require("./jsonFiles")
+const { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile } = require("./jsonFiles")
 const { toString } = require("./toString")
 var _window = { children: {}, global: { codes: {} } }
 
 var getApi = async ({ req, res }) => {
   
-  // api/collection?params?conditions
+  // database/collection?params?conditions
   var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var string = decodeURI(req.headers.search), params = {}
@@ -99,7 +99,7 @@ const uploadApi = async ({ req, res }) => {
   upload.file = file
   upload.data = data
   upload.collection = collection
-  uploadFile({ upload })
+  uploadJsonFile({ upload })
   
   success = true
   message = `File/s uploaded successfuly!`
