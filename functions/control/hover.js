@@ -3,10 +3,10 @@ module.exports = ({ controls, id }) => {
     var local = window.children[id]
     var _id = controls.id || controls.controllerId || id
     
-    local.hover.before = local.hover.before || {}
+    local.hover.default = local.hover.default || { style: {} }
     local.hover.style &&
     Object.keys(local.hover.style).map(key => 
-        local.hover.before[key] = local.style[key] !== undefined ? local.style[key] : null 
+        local.hover.default.style[key] = local.hover.default.style[key] !== undefined ? local.hover.default.style[key] : local.style[key] !== undefined ? local.style[key] : null 
     )
     
     return [{
@@ -17,6 +17,6 @@ module.exports = ({ controls, id }) => {
         "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style].else():[().mode.[)(:mode].hover.style].else():_map"
     }, {
         "event": `mouseleave:${_id}??!().click.mount;!().hover.disable`,
-        "actions": "setStyle?style=().hover.before"
+        "actions": "setStyle?style=().hover.default.style"
     }]
 }

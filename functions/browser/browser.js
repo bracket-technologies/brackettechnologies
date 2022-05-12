@@ -30,17 +30,18 @@ document.addEventListener('click', e => {
     
 }, false)
 
-window.onload = () => {
-    Object.values(window.children).filter(map => map.type === "Icon").map(map => {
-        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
-        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "0"
-    })
-}
-    
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
 global.idList.map(id => starter({ id }))
+
+var icons = global.idList.filter(id => value[id].type === "Icon").map(id => value[id])
+window.onload = () => {
+    icons.map(map => {
+        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
+        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
+    })
+}
 
 Object.entries(window.children).map(([id, value]) => {
     if (value.status === "Loading") delete window.children[id]

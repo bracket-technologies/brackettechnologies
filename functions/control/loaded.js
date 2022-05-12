@@ -1,12 +1,16 @@
-const { toArray } = require("../function/toArray")
+const { toString } = require("../function/toString")
 
-module.exports = ({ controls, id }) => {
-
-    var actions = Object.keys(controls.actions)
-    id = toArray(controls.id || id)
+module.exports = ({ id }) => {
+    
+    var params = ""
+    var local = window.children[id]
+    
+    Object.entries(local.loaded).map(([key, val]) => {
+        if (key === "style") key = "style()"
+        params += `().${toString({ [key]: val })}`
+    })
     
     return [{
-        "event": "loaded",
-        "actions": id.map(id => `${actions}:${id}`)
+        "event": `loaded?${params}`
     }]
 }

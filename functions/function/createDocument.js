@@ -181,19 +181,20 @@ const createDocument = async ({ req, res, db }) => {
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="${viewport}">
-            <meta name="keywords" content="${global.data.page[currentPage].meta.keywords}">
+            <meta name="keywords" content="${global.data.page[currentPage].meta.keywords || ""}">
             <meta name="description" content="${global.data.page[currentPage].meta.description || ""}">
             <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
             <title>${global.data.page[currentPage].title}</title>
+            <link rel="stylesheet" href="/resources/index.css"/>
+            <link rel="icon" type="image/x-icon" href="${global.data.project.favicon || ""}"/>
             <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
-            <link rel="stylesheet" href="/index.css"/>
+            <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
             <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
             <link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
             <link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
             <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
             <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
             <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
-            <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
         </head>
         <body>
             ${innerHTML}

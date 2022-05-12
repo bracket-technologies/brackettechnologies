@@ -4,11 +4,11 @@ const { capitalize } = require("./capitalize")
 const { toCode } = require("./toCode")
 var _window = { global: {}, children: {} }
 
-var getApi = async ({ req, res, db }) => {
+var getdb = async ({ req, res, db }) => {
   
-  // api/collection?params?conditions
+  // database/collection?params?conditions
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var string = req.headers.search, params = {}
   string = toCode({ _window, string })
   
@@ -141,11 +141,11 @@ var getApi = async ({ req, res, db }) => {
   return res.send({ data, success, message })
 }
 
-var postApi = async ({ req, res, db }) => {
-  // api/collection?params?conditions
+var postdb = async ({ req, res, db }) => {
+  // database/collection?params?conditions
 
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var data = req.body.data
   var save = req.body.save
   var ref = db.collection(collection)
@@ -165,11 +165,11 @@ var postApi = async ({ req, res, db }) => {
   return res.send({ data, success, message })
 }
 
-var deleteApi = async ({ req, res, db }) => {
-  // api/collection?params?conditions
+var deletedb = async ({ req, res, db }) => {
+  // database/collection?params?conditions
 
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var string = req.header.erase, params = {}
   if (string) params = toParam({ _window, string, id: "" })
 
@@ -193,58 +193,8 @@ var deleteApi = async ({ req, res, db }) => {
   return res.send({ success, message })
 }
 
-const uploadApi = async ({ req, res, db, storage }) => {
-
-  var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  var file = req.body.file, url
-  var upload = req.body.upload
-  var ref = db.collection(collection)
-
-  // file Type
-  upload.type = upload.type.split("-").join("/")
-  // convert base64 to buffer
-  var buffer = Buffer.from(file, "base64")
-
-  await storage.ref().child(`${collection}/${upload.doc}`).put(buffer, { contentType: upload.type })
-    .then(async snapshot => {
-
-      url = await snapshot.ref.getDownloadURL()
-
-    }).catch(error => {
-
-      success = false
-      message = error
-    })
-
-  // post api
-  var data = {
-    url,
-    id: upload.doc,
-    name: upload.name,
-    description: upload.description || "",
-    type: upload.type,
-    tags: upload.tags,
-    title: upload.title
-  }
-
-  await ref.doc(data.id).set(data).then(() => {
-
-    success = true
-    message = `${collection} saved successfuly!`
-
-  }).catch(error => {
-
-    success = false
-    message = error
-  })
-
-  return res.send({ data, success, message })
-}
-
 module.exports = {
-  getApi,
-  postApi,
-  deleteApi,
-  uploadApi
+  getdb,
+  postdb,
+  deletedb
 }

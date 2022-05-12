@@ -5,11 +5,12 @@ const { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile } = require
 const { toString } = require("./toString")
 var _window = { children: {}, global: { codes: {} } }
 
-var getApi = async ({ req, res }) => {
+var getdb = async ({ req, res }) => {
   
   // database/collection?params?conditions
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  // if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  collection += `-${req.headers["project"]}`
   var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
   
@@ -41,11 +42,12 @@ var getApi = async ({ req, res }) => {
   return res.send({ data, success, message })
 }
 
-var postApi = async ({ req, res }) => {
+var postdb = async ({ req, res }) => {
 
   var data = req.body.data
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  // if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  collection += `-${req.headers["project"]}`
   var save = req.body.save
   var success, message
 
@@ -59,10 +61,11 @@ var postApi = async ({ req, res }) => {
   return res.send({ data, success, message })
 }
 
-var deleteApi = async ({ req, res }) => {
+var deletedb = async ({ req, res }) => {
 
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  // if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  collection += `-${req.headers["project"]}`
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   if (string) params = toParam({ _window, string, id: "" })
@@ -78,35 +81,7 @@ var deleteApi = async ({ req, res }) => {
   return res.send({ success, message })
 }
 
-const uploadApi = async ({ req, res }) => {
-      
-  var file = req.body.file, url
-  var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  var upload = req.body.upload
-  
-  // post api
-  var data = {
-    url,
-    id: upload.doc,
-    name : upload.name,
-    description: upload.description,
-    type: upload.type,
-    tags: upload.tags,
-    title : upload.title
-  }
-
-  upload.file = file
-  upload.data = data
-  upload.collection = collection
-  uploadJsonFile({ upload })
-  
-  success = true
-  message = `File/s uploaded successfuly!`
-
-  return res.send({ data, success, message })
-}
-module.exports = { getApi, postApi, deleteApi, uploadApi }
+module.exports = { getdb, postdb, deletedb }
 
 /*
 Query operators:
