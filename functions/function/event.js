@@ -15,7 +15,7 @@ const events = [
   "touchend"
 ]
 
-const addEventListener = ({ _window, controls, id, req, res }) => {
+const addEventListener = ({ _window, controls, id, req, res, params }) => {
   
   const { execute } = require("./execute")
 
@@ -66,6 +66,16 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   }
 
   events[0].split(";").map(event => {
+
+    // event is coded
+    if (event.slice(0, 7) === "coded()") {
+      event = global.codes[event]
+      if (event.includes("?")) {
+        var localEventConditions = event.split("?")[2]
+        var localEventParams = event.split("?")[1]
+        event = event.split("?")[0]
+      }
+    }
     
     var timer = 0, idList
     var once = events[1] && events[1].includes('once')
@@ -100,6 +110,12 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         if (!__local) return e.target.removeEventListener(event, myFn)
         
         // approval
+        if (localEventConditions) {
+          var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+          if (!approved) return
+        }
+        
+        // approval
         var approved = toApproval({ _window, req, res, string: events[2], e, id: mainID })
         if (!approved) return
 
@@ -107,17 +123,21 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         if (once) e.target.removeEventListener(event, myFn)
         
         // params
-        toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true })
+        await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true, eventParams: true })
+        
+        // approval
+        if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
 
         // break
         if (local.break) return
         
         // execute
         if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
-
+/*
         // awaiters
         if (local.await && local.await.length > 0) 
         toParam({ _window, req, res, id, e, string: local.await.join(";"), mount: true })
+*/
       }
       
       // onload event
@@ -134,21 +154,32 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (once) e.target.removeEventListener(event, myFn)
 
           // VALUE[id] doesnot exist
-          if (!__local) return e.target.removeEventListener(event, myFn)
+          if (!__local) {
+            if (e.target) e.target.removeEventListener(event, myFn)
+            return 
+          }
+        
+          // approval
+          if (localEventConditions) {
+            var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+            if (!approved) return
+          }
           
           // approval
           var approved = toApproval({ string: events[2], e, id: mainID })
           if (!approved) return
 
           // params
-          toParam({ string: events[1], e, id: mainID, mount: true })
+          await toParam({ string: events[1], e, id: mainID, mount: true, eventParams: true })
+        
+          // approval
+          if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
           
           if (controls.actions) await execute({ controls, e, id: mainID })
-
+/*
           // await params
-          if (local.await && local.await.length > 0)
-          toParam({ id, e, string: local.await.join(";"), mount: true })
-
+          if (local.await && local.await.length > 0) toParam({ id, e, string: local.await.join(";"), mount: true })
+*/
         }, timer)
       }
       
@@ -169,9 +200,14 @@ const defaultEventHandler = ({ id }) => {
 
   if (local.link) local.element.addEventListener("click", (e) => e.preventDefault())
 
+<<<<<<< HEAD
   if (local.type === "Input") {
 
     // focus
+=======
+  // input
+  if (local.type === "Input") {
+>>>>>>> ef7e1b2caf3b134a13feacb41fdeb5a378e0fda6
     var setEventType = (e) => {
 
       if (!window.children[id]) return e.target.removeEventListener("focus", setEventType)
@@ -180,7 +216,10 @@ const defaultEventHandler = ({ id }) => {
 
     local.element.addEventListener("focus", setEventType)
 
+<<<<<<< HEAD
     // blur
+=======
+>>>>>>> ef7e1b2caf3b134a13feacb41fdeb5a378e0fda6
     var setEventType = (e) => {
 
       if (!window.children[id]) return e.target.removeEventListener("blur", setEventType)

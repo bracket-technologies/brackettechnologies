@@ -30,6 +30,13 @@ document.addEventListener('click', e => {
     
 }, false)
 
+window.onload = () => {
+    Object.values(window.children).filter(map => map.type === "Icon").map(map => {
+        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
+        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "0"
+    })
+}
+    
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))

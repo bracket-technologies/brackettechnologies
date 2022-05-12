@@ -5,7 +5,7 @@
         {
             "event": "loaded",
             "actions": [
-                "async():search?search.collection=list;search.doc=user;async()::[)(:list.user=().search.data]"
+                "async():search?search.collection=list;search.doc=user;async():[)(:list.user=().search.data]"
             ]
         }
     ],

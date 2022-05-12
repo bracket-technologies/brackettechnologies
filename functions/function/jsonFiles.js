@@ -13,16 +13,17 @@ var getJsonFiles = ({ search = {} }) => {
   path = `database/${collection}`
   
   // create folder if it doesnot exist
-  if (!fs.existsSync(path)) return
+  if (!fs.existsSync(path)) fs.mkdirSync(`${path}`)
 
   if (doc) {
     
+    if (!fs.existsSync(`${path}/${doc}.json`)) fs.writeFileSync(`${path}/${doc}.json`, "{}")
     data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
 
   } else if (docs && docs.length > 0) {
     
     toArray(docs).map(doc => {
-      data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
+      if (fs.existsSync(`${path}/${doc}.json`)) data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
     })
     
   } else if (!fields) {
@@ -150,7 +151,7 @@ const removeJsonFiles = ({ erase = {} }) => {
   docs.map(doc => fs.unlinkSync(`${path}/${doc}.json`))
 }
 
-const uploadFile = ({ upload = {} }) => {
+const uploadJsonFile = ({ upload = {} }) => {
   
   var file = upload.file, path, 
   collection = upload.collection, 
@@ -169,4 +170,4 @@ const uploadFile = ({ upload = {} }) => {
   return path
 }
 
-module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadFile }
+module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }

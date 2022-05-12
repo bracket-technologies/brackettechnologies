@@ -9,14 +9,14 @@ module.exports = {
         var search = params.search || {}
         var local = window.children[id]
         var collection = search.collection || search.path || ""
-        var headers = clone(search.headers) || {}
+        var headers = search.headers || {}
         headers.project = headers.project || global.data.project.id
         delete search.headers
 
         // search
-        headers.search = toString({ search })
+        headers.search = encodeURI(toString({ search }))
         
-        var { data } = await axios.get(`/api/${collection}`, {
+        var { data } = await axios.get(`/database/${collection}`, {
             headers: {
                 "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
                 ...headers

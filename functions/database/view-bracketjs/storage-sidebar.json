@@ -82,13 +82,13 @@
                             "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                         },
                         {
-                            "event": "click?)(:open-doc=().data;)(:open-collection=storage;)(:open-map=)(:data.editor.storage.[().data];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.find():[=storage/+().data]"
+                            "event": "click?)(:open-doc=().data;)(:open-collection=storage;)(:open-map=)(:data.editor.storage.[().data];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.find():[=storage/+().data]"
                         },
                         {
                             "event": "click?():data-viewer-bar.style().display=flex;)(:open-docs.push():[storage/+().data];)(:open-doc=().data;)(:open-collection=storage;)(:open-map=)(:data.editor.storage.[().data];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false]?)(:clickedElement().id!=2ndLastChild().id;)(:clickedElement().id!=lastChild().id;!)(:open-docs.find():[=storage/+().data]",
                             "actions": [
-                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;await().().insert.child.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]",
-                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1;await().().insert.child.():[open-doc=)(:open-doc;open-collection=)(:open-collection]"
+                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.map.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len().subs():1;async():[().insert.map.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                             ]
                         }
                     ]

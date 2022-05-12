@@ -3,15 +3,15 @@
     "controls": [
         {
             "actions": [
-                "async():search?search.collection=_user_;search.field.projects.contains=)(:project;await().)(:data.editor.user=().search.data.value()",
-                "async():search:[update:sidebar-items]?search.collection=_project_;search.doc=)(:project;await().)(:data.editor.project=().search.data;await().log():[)(:data.editor]",
-                "async():search:[update:collection-list]?search.collection=collection;search.headers.project=)(:project;await().)(:data.editor.collection=().search.data",
-                "async():search:[update:page-list]?search.collection=page;search.headers.project=)(:project;await().)(:data.editor.page=().search.data",
-                "async():search:[update:view-list]?search.collection=view;search.headers.project=)(:project;await().)(:data.editor.view=().search.data",
-                "async():search:[update:hotel-list]?search.collection=hotel;search.headers.project=)(:project;search.limit=25;await().)(:data.editor.hotel=().search.data",
-                "async():search:[update:product-list]?search.collection=product;search.headers.project=)(:project;search.limit=25;await().)(:data.editor.product=().search.data",
-                "async():search:[update:gallery-view]?search.collection=storage;search.headers.project=)(:project;search.field.title.equals=image;search.limit=25;await().)(:gallery-images=().search.data",
-                "async():search:[update:storage-list]?search.collection=storage;search.headers.project=)(:project;await().)(:data.editor.storage=().search.data"
+                "async():search:[update:user-file]?search.collection=_user_;search.field.projects.contains=)(:project;async():[)(:data.editor.user=().search.data.value()]",
+                "async():search:[update:project-file]:[update:sidebar-items]?search.collection=_project_;search.doc=)(:project;async():[)(:data.editor.project=().search.data]",
+                "async():search:[update:collection-list]?search.collection=collection;search.headers.project=)(:project;async():[)(:data.editor.collection=().search.data]",
+                "async():search:[update:page-list]?search.collection=page;search.headers.project=)(:project;async():[)(:data.editor.page=().search.data]",
+                "async():search:[update:view-list]?search.collection=view;search.headers.project=)(:project;async():[)(:data.editor.view=().search.data]",
+                "async():search:[update:hotel-list]?search.collection=hotel;search.headers.project=)(:project;search.limit=25;async():[)(:data.editor.hotel=().search.data]",
+                "async():search:[update:product-list]?search.collection=product;search.headers.project=)(:project;search.limit=25;async():[)(:data.editor.product=().search.data]",
+                "async():search:[update:gallery-view]?search.collection=storage;search.headers.project=)(:project;search.field.title.equals=image;search.limit=25;async():[)(:gallery-images=().search.data]",
+                "async():search:[update:storage-list]?search.collection=storage;search.headers.project=)(:project;async():[)(:data.editor.storage=().search.data]"
             ],
             "event": "loaded?)(:project=)(:path.split():/.2"
         }
@@ -74,7 +74,11 @@
                                     "controls": [
                                         {
                                             "event": "click??!)(:open-map.hasNestedArray();!)(:open-map.hasEmptyField()",
+<<<<<<< HEAD
                                             "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc].data()"
+=======
+                                            "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=)(:open-map"
+>>>>>>> ef7e1b2caf3b134a13feacb41fdeb5a378e0fda6
                                         }
                                     ]
                                 }
@@ -118,7 +122,7 @@
                                     ],
                                     "controls": [
                                         {
-                                            "event": "click?parent().children().map():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=().open-doc]._():[_.style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data]?)(:clickedElement().id!=lastChild().id"
+                                            "event": "click?parent().children().map():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=().open-doc;open-collection=().open-collection]._():[_.style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data]?)(:clickedElement().id!=lastChild().id"
                                         }
                                     ]
                                 }
@@ -163,7 +167,7 @@
                 {
                     "controls": [
                         {
-                            "actions": "async():erase:[update:[)(:open-collection+-list]]?erase.collection=)(:open-collection;erase.doc=)(:open-doc;erase.headers.project=)(:project;async()::[)(:data.editor.[)(:open-collection].[)(:open-doc].del();)(:open-docs.pullItem():[)(:open-collection+/+().open-doc];():open-view.children().find():[open-doc=)(:open-doc].rem();():data-viewer-bar.children().find():[open-doc=)(:open-doc].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]]",
+                            "actions": "async():erase:note:[update:[)(:open-collection+-list]]?note.text=File has been erased!;erase.collection=)(:open-collection;erase.doc=)(:open-doc;erase.headers.project=)(:project;async():[)(:data.editor.[)(:open-collection].[)(:open-doc].del();)(:open-docs.pullItem():[)(:open-collection+/+().open-doc];():open-view.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].rem();():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]]",
                             "event": "click?popup()"
                         }
                     ],

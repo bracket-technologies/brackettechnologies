@@ -29,10 +29,6 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     var actions = _action.split("?")
     var params = actions[1]
     var conditions = actions[2]
-    var idList = actions[3] || localId
-
-    // id list
-    if (actions[3]) idList = toValue({ _window, id, value: idList, e })
     
     actions = actions[0].split(";")
 
@@ -48,7 +44,6 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     local.break = params.break
     delete params.break
 
-    // action does not exist
     actions.map(action => {
 
       if (action.includes("async():")) {
@@ -64,18 +59,22 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       if (action.slice(0, 7) === "coded()") return execute({ _window, actions: global.codes[action], e, id, params })
       
       // action === name:id:timer:condition
-      var actionid = action.split(":")[1]
-      var timer = action.split(":")[2] || ""
-      var caseCondition = action.split(":")[3]
       var name = action.split(':')[0]
+      var caseCondition = action.split(":")[3]
+
+      params.action = params.action || {}
       
       // timer
       var isInterval = false
+      var timer = params.action.timer
+      if (timer === undefined || timer === false) timer = action.split(":")[2] || ""
       if (timer.includes("i")) isInterval = params.isInterval = true
       timer = timer.split("i")[0]
       if (timer) timer = parseInt(timer)
       
-      if (actionid) actionid = toValue({ _window, value: actionid, params, id: localId, e })
+
+      var actionid = params.action.id
+      if (action.split(":")[1]) actionid = toValue({ _window, value: action.split(":")[1], params, id: localId, e })
       
       const myFn = () => {
         var approved = true
@@ -98,7 +97,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
         if (caseCondition) approved = toApproval({ _window, string: caseCondition, params, id: localId, e })
         if (!approved) return toAwait({ id, e, params })
         
-        if (_method[name]) toArray(actionid ? actionid : idList).map(async id => {
+        if (_method[name]) toArray(actionid ? actionid : localId).map(async id => {
           
           if (typeof id !== "string") return
 
@@ -114,7 +113,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
           }
           
           await _method[name]({ _window, ...params, e, id })
-          if (name !== "search" && name !== "save" && name !== "erase" && name !== "searchArduino" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
+          if (name !== "search" && name !== "save" && name !== "erase" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
         })
       }
 

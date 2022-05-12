@@ -129,11 +129,11 @@
                     "controls": [
                         {
                             "event": "click;keyup:[().prev().prev().getInput().id]??if():[e().type=keyup]:[e().key.is():Enter].else():false;prev().style().display=none;prev().prev().getInput().val()",
-                            "actions": "async():search:[note:::[!().search.data.0]]:[update:[():login.1stChild().id]::[().search.data.0]]?search.collection=_user_;search.field.email.equal=().prev().prev().getInput().val();note.text=User email does not exist!;note.type=danger;async()::[)(:data.editor.user=().search.data.0]"
+                            "actions": "async():search:[note:::[!().search.data.0]]:[update:[():login.1stChild().id]::[().search.data.0]]?search.collection=_user_;search.field.email.equal=().prev().prev().getInput().val();note.text=User email does not exist!;note.type=danger;async():[)(:data.editor.user=().search.data.0]"
                         },
                         {
                             "event": "click;keyup:().prev().getInput().id??if():[e().type=keyup]:[e().key.is():Enter].else():false;prev().style().display!=none;prev().getInput().val()",
-                            "actions": "async():search:[note:::[!)(:data.editor.password]]:[route:::[)(:data.editor.password]]?search.collection=_password_;search.field.user-id.equal=)(:data.editor.user.id;search.field.password.equal=().prev().getInput().val();async()::[)(:data.editor.password=().search.data.0;if():[)(:data.editor.password]:[setCookie():[)(:data.editor.user.id]:user-id];route.path=/store-login/+)(:data.editor.user.id;note.text=Password is incorrect!;note.type=danger"
+                            "actions": "async():search:[note:::[!)(:data.editor.password]]:[route:::[)(:data.editor.password]]?search.collection=_password_;search.field.user-id.equal=)(:data.editor.user.id;search.field.password.equal=().prev().getInput().val();async():[)(:data.editor.password=().search.data.0;if():[)(:data.editor.password]:[setCookie():[)(:data.editor.user.id]:user-id];route.path=/store-login/+)(:data.editor.user.id;note.text=Password is incorrect!;note.type=danger"
                         }
                     ],
                     "type": "Text?style.display=if():[)(:data.editor.user]:none.else().flex;text=Next;style.fontWeigt=bold;style.color=#fff;style.padding=2rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#008060;class=flex-box pointer;hover.style.backgroundColor=#084C3F"

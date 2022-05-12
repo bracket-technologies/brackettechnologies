@@ -14,7 +14,6 @@ module.exports = {
   pricable: require("./pricable"),
   hover: require("./hover"),
   click: require("./click"),
-  clicked: require("./clicked"),
   loaded: require("./loaded"),
   contentful: require("../function/contentful").contentful
 }

@@ -1,9 +1,8 @@
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
-const { toArray } = require("./toArray")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement, asyncer, eventParams }) => {
   const { toApproval } = require("./toApproval")
 
   var localId = id, mountDataUsed = false, mountPathUsed = false
@@ -14,8 +13,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
-  // condition not approval
-  if (string.includes("==")) return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _ })
+  // condition not param
+  if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
+  return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, object })
 
   string.split(";").map(param => {
     
@@ -25,11 +25,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     // break
     if (params.break || local && local.break) return
 
-    if (param.slice(0, 2) === "#:") {
-      local["#"] = toArray(local["#"])
-      return local["#"].push(param.slice(2))
-    }
+    if (param.slice(0, 2) === "#:") return
     
+    // split
     if (param.includes("=")) {
 
       var keys = param.split("=")
@@ -41,12 +39,31 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     // await
     if (key.slice(0, 8) === "async():") {
 
-      var awaiter = param.split(":").slice(1)
-      if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
-      var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, createElement })
-      params = { ...params, ..._params }
-      params.await = params.await || ""
-      if (awaiter.slice(1)[0]) return params.await += `async():${awaiter.slice(1).join(":")};`
+      if (eventParams) {
+
+        var asyncers = param.split(":").slice(1)
+        var promises = []
+        asyncers.map(async asyncer => {
+          promises.push(await toParam({ _window, string: asyncer, e, id, req, res, mount, createElement }))
+          await Promise.all(promises)
+        })
+
+        return
+
+      } else {
+
+        var awaiter = param.split(":").slice(1)
+        if (asyncer) {
+          if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
+          var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, createElement })
+          params = { ...params, ..._params }
+          awaiter = awaiter.slice(1)
+        }
+
+        params.await = params.await || ""
+        if (awaiter[0]) return params.await += `async():${awaiter.join(":")};`
+        else if (awaiter.length === 0) return
+      }
     }
 
     // await
@@ -56,7 +73,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       params.await = params.await || ""
       return params.await += `${awaiter};`
     }
-
+/*
     if (local && local.status === "Loading") {
       if (key.includes("parent()") || key.includes("children()") || key.includes("next()")) {
 
@@ -74,7 +91,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         "event": `${event}?${_params}`
       })
     }
-    
+  */
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _ })
 
@@ -84,7 +101,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     id = localId
 
     var keys = typeof key === "string" ? key.split(".") : [], timer
-
+/*
     // conditions
     if (key && key.includes("<<")) {
       
@@ -93,7 +110,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       if (!approved) return
       key = key.split("<<")[0]
     }
-
+*/
     var path = typeof key === "string" ? key.split(".") : []
     
     // break
@@ -102,9 +119,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       params.break = true
       return params
     }
-    
-    // reload
-    if (key === "reload()") document.location.reload(true)
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -124,32 +138,52 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       } else {
         
         if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
-
+        reducer({ _window, id, path, value, key, params, e, req, res, _, mount, object: params })
+/*
         path.reduce((obj, key, index) => {
 
-          if (obj[key] !== undefined) {
-            if (index === path.length - 1) {
+            if (obj[key] !== undefined) {
+            
+              var args = key.split(":")
+        
+              if (args[1]) {
+    
+                if (mount) o[args[0]] = o[args[0]] || {}
+                return reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: o[args[0]], params, _ })
+              }
 
-              // if key=value exists => mount the existing to local, then mount the new value to params
-              path.reduce((o, k, i) => {
+              if (index === path.length - 1) {
 
-                if (i === path.length - 1) return o[k] = value
-                return o[k] || {}
+                // if key=value exists => mount the existing to local, then mount the new value to params
+                path.reduce((o, k, i) => {
 
-              }, _window ? _window.children[id] : window.children[id])
+                  if (i === path.length - 1) return o[k] = value
+                  return o[k] || {}
 
-              return obj[key] = value
+                }, _window ? _window.children[id] : window.children[id])
+
+                return obj[key] = value
+              }
+
+            } else {
+
+              if (index === path.length - 1) {
+                var args = key.split(":")
+        
+                if (args[1]) {
+
+                  if (mount) local[args[0]] = local[args[0]] || {}
+                  var _param = reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: mount ? local[args[0]] : {}, params, _ })
+                  params[args[0]] = _param
+
+                } else return obj[key] = value
+
+              } else obj[key] = {}
             }
-
-          } else {
-
-            if (index === path.length - 1) return obj[key] = value
-            else obj[key] = {}
-          }
 
           return obj[key]
         }, params)
-
+*/
       }
       
     } else if (key) {
