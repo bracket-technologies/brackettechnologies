@@ -8,7 +8,7 @@ const upload = async ({ id, e, ...params }) => {
   var collection = upload.collection = upload.collection || upload.path
 
   var headers = clone(upload.headers) || {}
-  headers.project = headers.project || global.data.project.id
+  headers.project = headers.project || global.projectId
   delete upload.headers
   upload.doc = upload.doc || upload.id
   upload.name = upload.name || global.upload[0].name
@@ -24,6 +24,9 @@ const upload = async ({ id, e, ...params }) => {
   // get regex exp
   var regex = new RegExp(`^data:${type};base64,`, "gi")
   file = file.replace(regex, "")
+  
+  // access key
+  if (global["access-key"]) headers["access-key"] = global["access-key"]
   
   var { data } = await axios.post(`/storage/${collection}`, { upload, file }, {
     headers: {

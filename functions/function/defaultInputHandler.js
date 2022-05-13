@@ -55,17 +55,17 @@ const defaultInputHandler = ({ id }) => {
       return 
     }
     
-    if (!local["preventDefault"]) {
+    if (!local.preventDefault && !local.input.preventDefault) {
       
       // for number inputs, strings are rejected
       if (local.input && local.input.type === "number") {
 
+        if (isNaN(value)) value = value.toString().slice(0, -1)
+        if (!value) value = 0
+        if (local.input.min && local.input.min > parseFloat(value)) value = local.input.min
+        if (local.input.max && local.input.max < parseFloat(value)) value = local.input.max
+        
         value = parseFloat(value)
-
-        if (isNaN(value) || local.data === "free") return local.input.value = value.slice(0, -1)
-        if (local.input.min > value) value = local.input.min
-        else if (local.input.max < value) value = local.input.max
-
         local.input.value = value
       }
 
@@ -81,7 +81,7 @@ const defaultInputHandler = ({ id }) => {
     // arabic values
     isArabic({ id, value })
     
-    console.log(value, global[local.Data], local.derivations)
+    if (!local.preventDefault && !local.input.preventDefault) console.log(value, global[local.Data], local.derivations)
   }
 
   local.element.addEventListener("input", myFn)

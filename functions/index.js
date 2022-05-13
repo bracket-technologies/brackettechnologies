@@ -62,7 +62,7 @@ app.post("*", (req, res) => {
     if (path[1] === "storage") return require("./function/storageLocal").postFile({ req, res })
 
     // database
-    if (path[1] === "database") return require("./function/dbLocal").postdb({ req, res })
+    if (path[1] === "database") return require("./function/databaseLocal").postdb({ req, res })
   }
   */
   // storage
@@ -83,7 +83,7 @@ app.delete("*", (req, res) => {
     if (path[1] === "storage") return require("./function/storageLocal").deleteFile({ req, res })
 
     // database
-    if (path[1] === "database") return require("./function/dbLocal").deletedb({ req, res })
+    if (path[1] === "database") return require("./function/databaseLocal").deletedb({ req, res })
   }
 */
   // storage
@@ -107,7 +107,7 @@ app.get("*", (req, res) => {
     if (path[1] === "storage" || path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
 
     // database
-    if (path[1] === "database") return require("./function/dbLocal").getdb({ req, res })
+    if (path[1] === "database") return require("./function/databaseLocal").getdb({ req, res })
   }
   */
 

@@ -1,20 +1,30 @@
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const axios = require("axios")
-const { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile } = require("./jsonFiles")
+const { getJsonFiles, postJsonFiles, removeJsonFiles } = require("./jsonFiles")
 const { toString } = require("./toString")
 var _window = { children: {}, global: { codes: {} } }
 
 var getdb = async ({ req, res }) => {
+  var promises = []
+
+  // verify access key
+  var project, accessKey = req.headers["access-key"], projectId = req.headers["project"]
+
+  promises.push(
+    db.collection("_project_").doc(projectId).get().then(doc => {
+      if (doc.exists) project = doc.data()
+    })
+  )
   
-  // database/collection?params?conditions
   var collection = req.url.split("/")[2]
-  // if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+
+  // string => search
   var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
-  
   if (string) params = toParam({ _window, string, id: "" })
+
   var search = params.search
   var success, message, data
   search.collection = collection
@@ -36,9 +46,15 @@ var getdb = async ({ req, res }) => {
     
   } else data = await getJsonFiles({ search })
 
+  success = false
+  message = `Your are not verified!`
+  
+  Promise.all(promises)
+  if (project["access-key"] !== accessKey) return res.send({ success, message })
+
   success = true
   message = `File/s mounted successfuly!`
-    
+  
   return res.send({ data, success, message })
 }
 
@@ -46,8 +62,7 @@ var postdb = async ({ req, res }) => {
 
   var data = req.body.data
   var collection = req.url.split("/")[2]
-  // if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var save = req.body.save
   var success, message
 
@@ -64,8 +79,7 @@ var postdb = async ({ req, res }) => {
 var deletedb = async ({ req, res }) => {
 
   var collection = req.url.split("/")[2]
-  // if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   if (string) params = toParam({ _window, string, id: "" })
@@ -82,23 +96,3 @@ var deletedb = async ({ req, res }) => {
 }
 
 module.exports = { getdb, postdb, deletedb }
-
-/*
-Query operators:
-  1. < less than
-  2. <= less than or equal to
-  3. == equal to
-  4. > greater than
-  5. >= greater than or equal to
-  6. != not equal to
-  7. array-contains (search an array by 1 choice)
-  8. array-contains-any (search an array by multiple choices)
-  9. in (search a string by multiple choices)
-  10. not-in (search a string by multiple !choices)
-
-reference: https://firebase.google.com/docs/firestore/query-data/queries
-*/
-
-/*
-Pagination: ref.orderBy('createdAt').startAfter(x).limit(x)
-*/

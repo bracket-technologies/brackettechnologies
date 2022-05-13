@@ -6,7 +6,6 @@ var _window = { global: {}, children: {} }
 
 var getdb = async ({ req, res, db }) => {
   
-  // database/collection?params?conditions
   var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
   var string = req.headers.search, params = {}
@@ -19,9 +18,13 @@ var getdb = async ({ req, res, db }) => {
     field = search.field || search.fields,
     limit = search.limit || 25,
     data = {}, success, message,
-    ref = db.collection(collection)
+    ref = db.collection(collection),
+    promises = [], project
 
   if (search) search.collection = collection
+
+  /////////////////// verify access key /////////////////////
+  promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
   
   if (search.url) {
 
@@ -39,6 +42,14 @@ var getdb = async ({ req, res, db }) => {
     }
     success = true
     message = `File/s mounted successfuly!`
+    
+    await Promise.all(promises)
+    if (project["access-key"] !== req.headers["access-key"]) {
+
+      success = false
+      message = `Your are not verified!`
+      return res.send({ success, message })
+    }
 
     return res.send({ data, success, message })
   }
@@ -66,6 +77,14 @@ var getdb = async ({ req, res, db }) => {
         })
       })
     )
+    
+    await Promise.all(promises)
+    if (project["access-key"] !== req.headers["access-key"]) {
+
+      success = false
+      message = `Your are not verified!`
+      return res.send({ success, message })
+    }
 
     return res.send({ data, success, message })
   }
@@ -83,6 +102,14 @@ var getdb = async ({ req, res, db }) => {
       success = false
       message = `An error Occured!`
     })
+
+    await Promise.all(promises)
+    if (project["access-key"] !== req.headers["access-key"]) {
+
+      success = false
+      message = `Your are not verified!`
+      return res.send({ success, message })
+    }
 
     return res.send({ data, success, message })
   }
@@ -103,6 +130,14 @@ var getdb = async ({ req, res, db }) => {
       success = false
       message = `An error Occured!`
     })
+    
+    await Promise.all(promises)
+    if (project["access-key"] !== req.headers["access-key"]) {
+
+      success = false
+      message = `Your are not verified!`
+      return res.send({ success, message })
+    }
 
     return res.send({ data, success, message })
   }
@@ -137,6 +172,14 @@ var getdb = async ({ req, res, db }) => {
     success = false
     message = `An error Occured!`
   })
+    
+  await Promise.all(promises)
+  if (project["access-key"] !== req.headers["access-key"]) {
+
+    success = false
+    message = `Your are not verified!`
+    return res.send({ success, message })
+  }
 
   return res.send({ data, success, message })
 }
@@ -149,7 +192,18 @@ var postdb = async ({ req, res, db }) => {
   var data = req.body.data
   var save = req.body.save
   var ref = db.collection(collection)
-  var success, message
+  var success, message, promises = [], project
+    
+  /////////////////// verify access key /////////////////////
+  promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
+
+  await Promise.all(promises)
+  if (project["access-key"] !== req.headers["access-key"]) {
+
+    success = false
+    message = `Your are not verified!`
+    return res.send({ success, message })
+  }
 
   await ref.doc(save.doc.toString()).set(data).then(() => {
 
@@ -166,16 +220,26 @@ var postdb = async ({ req, res, db }) => {
 }
 
 var deletedb = async ({ req, res, db }) => {
-  // database/collection?params?conditions
 
   var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  var string = req.header.erase, params = {}
+  var string = req.headers.erase, params = {}
   if (string) params = toParam({ _window, string, id: "" })
 
   var erase = params.erase
   var ref = db.collection(collection)
-  var success, message
+  var success, message, promises = [], project
+    
+  /////////////////// verify access key /////////////////////
+  promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
+  
+  await Promise.all(promises)
+  if (project["access-key"] !== req.headers["access-key"]) {
+
+    success = false
+    message = `Your are not verified!`
+    return res.send({ success, message })
+  }
 
   await ref.doc(erase.doc.toString()).delete().then(async () => {
 
@@ -189,6 +253,14 @@ var deletedb = async ({ req, res, db }) => {
     success = false
     message = error
   })
+    
+    await Promise.all(promises)
+    if (project["access-key"] !== req.headers["access-key"]) {
+
+      success = false
+      message = `Your are not verified!`
+      return res.send({ success, message })
+    }
 
   return res.send({ success, message })
 }

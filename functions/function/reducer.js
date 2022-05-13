@@ -175,7 +175,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -1479,6 +1479,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _value = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
             var _index = toValue({ req, res, _window, id, value: args[2], params,_ ,e })
             if (_index === undefined) _index = o.length - 1
+            console.log(clone(o), _value, _index);
             o.splice(parseInt(_index), 0, _value)
             answer = o
             
@@ -1647,6 +1648,29 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!isNaN(o) && (parseFloat(o) + "").length === 13) o = new Date(parseFloat(o))
             answer = o.toUTCString()
             
+        } else if (k0 === "time()") {
+
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
+            else _o = o
+            
+            if (parseInt(_o)) {
+
+                var _1Day = 24 * 60 * 60 * 1000, _1Hr = 60 * 60 * 1000, _1Min = 60 * 1000
+                o = parseInt(o)
+
+                var _days = Math.floor(o / _1Day).toString()
+                _days = _days.length === 1 ? ("0" + _days) : _days
+
+                var _hrs = Math.floor(o % _1Day, _1Hr).toString()
+                _hrs = _hrs.length === 1 ? ("0" + _hrs) : _hrs
+
+                var _mins = Math.floor(o % _1Hr, _1Min).toString()
+                _mins = _mins.length === 1 ? ("0" + _mins) : _mins
+
+                answer = _days + ":" + _hrs + ":" + _mins
+            }
+
         } else if (k0 === "setTime()") {
             
             answer = new Date().setTime(o)
@@ -1654,6 +1678,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "getTime()" || k0 === "timestamp()") {
             
             if (o instanceof Date) answer = o.getTime()
+            else if (o.length === 5 && o.split(":").length === 2) {
+                var _hrs = parseInt(o.split(":")[0]) * 60 * 60 * 1000
+                var _mins = parseInt(o.split(":")[1]) * 60 * 1000
+                answer = _hrs + _mins
+            }
+            else if (o.length === 8 && o.split(":").length === 3) {
+                var _days = parseInt(o.split(":")[0]) * 24 * 60 * 60 * 1000
+                var _hrs = parseInt(o.split(":")[1]) * 60 * 60 * 1000
+                var _mins = parseInt(o.split(":")[2]) * 60 * 1000
+                answer = _days + _hrs + _mins
+            }
             else {
                 o = new Date(o)
                 answer = o.getTime()
@@ -2111,6 +2146,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             answer = o.mouseenter
 
+        } else if (k0 === "readonly()") {
+          
+            if (typeof o === "object") {
+                if (key && value !== undefined) answer = o.element.readOnly = value
+                answer = o.element.readOnly
+            } else if (o.nodeType === Node. ELEMENT_NODE) {
+                if (key && value !== undefined) answer = o.readOnly = value
+                answer = o.readOnly
+            }
+
         } else if (k0 === "range()") {
           
             var args = k.split(":").slice(1)
@@ -2131,8 +2176,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "update()") {
           
-            var args = k.split(":")
-            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
+            var _id
+            if (args[1]) _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
+            else _id = o.id
             return require("./update").update({ id: _id })
 
         } else if (k0 === "save()") {

@@ -8,12 +8,14 @@ const erase = async ({ id, e, ...params }) => {
   var local = window.children[id]
   var collection = erase.collection = erase.collection || erase.path
   var headers = erase.headers || {}
-  headers.project = headers.project || global.data.project.id
-  delete erase.headers
+  headers.project = headers.project || global.projectId
 
   // erase
   headers.erase = encodeURI(toString({ erase }))
 
+  // access key
+  if (global["access-key"]) headers["access-key"] = global["access-key"]
+  
   // no id
   if (!erase.id && !erase.doc && !erase.docs) return
   erase.doc = erase.doc || erase.id

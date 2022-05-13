@@ -1,11 +1,15 @@
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
+const { getCookie } = require("../function/cookie")
 
 window.children = JSON.parse(document.getElementById("children").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
 
 var value = window.children
 var global = window.global
+
+// access key
+global["access-key"] = getCookie({ name: "_key" })
 
 value.document = document
 value.document.element = document

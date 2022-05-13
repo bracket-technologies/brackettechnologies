@@ -32,7 +32,7 @@ const createDocument = async ({ req, res, db }) => {
         currentPage,
         path: req.url,
         device: req.device,
-        public: getJsonFiles({ search: { collection: "_public_" } }),
+        public: getJsonFiles({ search: { collection: "public" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
         country: req.headers["x-country-code"]
@@ -80,17 +80,17 @@ const createDocument = async ({ req, res, db }) => {
     // project not found
     if (!project) return res.send("Project not found!")
     global.projectId = project.id
-
-    // get user
-    user = db
-    .collection("_user_").where("projects", "array-contains", project.id)
-    .get().then(doc => {
-        
-        if (doc.docs[0].exists)
-        global.data.user = user = doc.docs[0].data()
-    })
     
     if (isBracket) {
+
+        // get user (for bracket users only)
+        user = db
+        .collection("_user_").where("projects", "array-contains", project.id)
+        .get().then(doc => {
+            
+            if (doc.docs[0].exists)
+            global.data.user = user = doc.docs[0].data()
+        })
         
         // get page
         global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
@@ -99,6 +99,9 @@ const createDocument = async ({ req, res, db }) => {
         global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
         
     } else {
+
+        // do not send project details
+        delete global.data.project
 
         // get page
         page = db
@@ -186,7 +189,7 @@ const createDocument = async ({ req, res, db }) => {
             <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
             <title>${global.data.page[currentPage].title}</title>
             <link rel="stylesheet" href="/resources/index.css"/>
-            <link rel="icon" type="image/x-icon" href="${global.data.project.favicon || ""}"/>
+            <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
             <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
             <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
             <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>

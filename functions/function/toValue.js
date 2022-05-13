@@ -46,15 +46,22 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     return value = value.slice(1, -1)
   }
 
-  // addition
-  if (value.includes("+")) {
+  // multiplication
+  if (value.includes("*")) {
+
+    var values = value.split("*").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
+    var newVal = values[0]
+    values.slice(1).map(val => newVal *= val)
+    return value = newVal
+
+  } else if (value.includes("+")) { // addition
 
     var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
     var newVal = values[0]
     values.slice(1).map(val => newVal += val)
     return value = newVal
 
-  } else if (value.includes("-")) {
+  } else if (value.includes("-")) { // subtraction
 
     var _value = calcSubs({ _window, value, params, _, id, e, req, res, object })
     if (_value !== value) return _value

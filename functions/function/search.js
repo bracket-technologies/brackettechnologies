@@ -10,7 +10,9 @@ module.exports = {
         var local = window.children[id]
         var collection = search.collection || search.path || ""
         var headers = search.headers || {}
-        headers.project = headers.project || global.data.project.id
+        headers.project = headers.project || global.projectId
+        
+        if (global["access-key"]) headers["access-key"] = global["access-key"]
         delete search.headers
 
         // search

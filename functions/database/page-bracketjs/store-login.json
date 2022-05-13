@@ -4,5 +4,6 @@
     ],
     "id": "store-login",
     "title": "Stores | Bracket",
+    "access-key-required": true,
     "description": "Choose store page"
 }

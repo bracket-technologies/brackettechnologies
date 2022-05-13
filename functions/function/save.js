@@ -9,8 +9,11 @@ const save = async ({ id, e, ...params }) => {
   var collection = save.collection = save.collection || save.path
   var _data = clone(save.data)
   var headers = clone(save.headers) || {}
-  headers.project = headers.project || global.data.project.id
+  headers.project = headers.project || global.projectId
   delete save.headers
+
+  // access key
+  if (global["access-key"]) headers["access-key"] = global["access-key"]
 
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id

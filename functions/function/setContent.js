@@ -3,7 +3,7 @@ const { isArabic } = require("./isArabic")
 const setContent = ({ id, content = {} }) => {
 
   var local = window.children[id]
-  var value = content.value || ""
+  var value = content.value !== undefined ? content.value : ""
 
   if (typeof value !== "string" && typeof value !== "number") return
 

@@ -1,12 +1,16 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
+const { getCookie } = require("../function/cookie")
 
 window.children = JSON.parse(document.getElementById("children").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
 
 var value = window.children
 var global = window.global
+
+// access key
+global["access-key"] = getCookie({ name: "_key" })
 
 value.document = document
 value.document.element = document
@@ -47,7 +51,7 @@ window.onload = () => {
 Object.entries(window.children).map(([id, value]) => {
     if (value.status === "Loading") delete window.children[id]
 })
-},{"../function/setElement":81,"../function/starter":84}],2:[function(require,module,exports){
+},{"../function/cookie":33,"../function/setElement":81,"../function/starter":84}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -313,7 +317,7 @@ const Input = (component) => {
                     border: '0',
                     height: "100%",
                     padding: "0.5rem",
-                    color: '#444',
+                    color: input.type === "number" ? "blue" : '#444',
                     outline: 'none',
                     userSelect: password ? "none" : "initial",
                     ...uploadInputStyle,
@@ -459,6 +463,7 @@ const Input = (component) => {
                 width: "fit-content",
                 padding: '0.5rem',
                 color: '#444',
+                color: input.type === "number" ? "blue" : '#444',
                 backgroundColor: 'inherit',
                 height: 'fit-content',
                 borderRadius: '0.25rem',
@@ -670,7 +675,7 @@ module.exports = (component) => {
                     }, {
                         event: "keyup?():droplist.mouseleave()?e().key=Escape"
                     }, {
-                        event: "keyup?():droplist.children().[)(:keyup-index].mouseleave();)(:keyup-index=if():[e().keyCode=40]:[)(:keyup-index+1].else():[)(:keyup-index-1]];():droplist.children().[)(:keyup-index].mouseenter()?e().keyCode=40||e().keyCode=38];)(:droplist-positioner;if():[e().keyCode=38]:[)(:keyup-index>0].elif():[e().keyCode=40]:[)(:keyup-index.less():[next().droplist.items.lastIndex()]]"
+                        event: "keyup?():droplist.children().[)(:keyup-index].mouseleave();)(:keyup-index=if():[e().keyCode=40]:[)(:keyup-index+1]:[)(:keyup-index-1];log():[)(:keyup-index];():droplist.children().[)(:keyup-index].mouseenter()?e().keyCode=40||e().keyCode=38];)(:droplist-positioner;if():[e().keyCode=38]:[)(:keyup-index>0].elif():[e().keyCode=40]:[)(:keyup-index.less():[next().droplist.items.lastIndex()]]"
                     }]
                 }, {
                     type: "Text?text=derivations().lastElement();class=flex-box;mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?derivations().lastElement().num().type()=number"
@@ -1462,7 +1467,7 @@ const createDocument = async ({ req, res, db }) => {
         currentPage,
         path: req.url,
         device: req.device,
-        public: getJsonFiles({ search: { collection: "_public_" } }),
+        public: getJsonFiles({ search: { collection: "public" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
         country: req.headers["x-country-code"]
@@ -1510,17 +1515,17 @@ const createDocument = async ({ req, res, db }) => {
     // project not found
     if (!project) return res.send("Project not found!")
     global.projectId = project.id
-
-    // get user
-    user = db
-    .collection("_user_").where("projects", "array-contains", project.id)
-    .get().then(doc => {
-        
-        if (doc.docs[0].exists)
-        global.data.user = user = doc.docs[0].data()
-    })
     
     if (isBracket) {
+
+        // get user (for bracket users only)
+        user = db
+        .collection("_user_").where("projects", "array-contains", project.id)
+        .get().then(doc => {
+            
+            if (doc.docs[0].exists)
+            global.data.user = user = doc.docs[0].data()
+        })
         
         // get page
         global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
@@ -1529,6 +1534,9 @@ const createDocument = async ({ req, res, db }) => {
         global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
         
     } else {
+
+        // do not send project details
+        delete global.data.project
 
         // get page
         page = db
@@ -1616,7 +1624,7 @@ const createDocument = async ({ req, res, db }) => {
             <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
             <title>${global.data.page[currentPage].title}</title>
             <link rel="stylesheet" href="/resources/index.css"/>
-            <link rel="icon" type="image/x-icon" href="${global.data.project.favicon || ""}"/>
+            <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
             <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
             <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
             <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
@@ -2055,17 +2063,17 @@ const defaultInputHandler = ({ id }) => {
       return 
     }
     
-    if (!local["preventDefault"]) {
+    if (!local.preventDefault && !local.input.preventDefault) {
       
       // for number inputs, strings are rejected
       if (local.input && local.input.type === "number") {
 
+        if (isNaN(value)) value = value.toString().slice(0, -1)
+        if (!value) value = 0
+        if (local.input.min && local.input.min > parseFloat(value)) value = local.input.min
+        if (local.input.max && local.input.max < parseFloat(value)) value = local.input.max
+        
         value = parseFloat(value)
-
-        if (isNaN(value) || local.data === "free") return local.input.value = value.slice(0, -1)
-        if (local.input.min > value) value = local.input.min
-        else if (local.input.max < value) value = local.input.max
-
         local.input.value = value
       }
 
@@ -2081,7 +2089,7 @@ const defaultInputHandler = ({ id }) => {
     // arabic values
     isArabic({ id, value })
     
-    console.log(value, global[local.Data], local.derivations)
+    if (!local.preventDefault && !local.input.preventDefault) console.log(value, global[local.Data], local.derivations)
   }
 
   local.element.addEventListener("input", myFn)
@@ -2159,12 +2167,14 @@ const erase = async ({ id, e, ...params }) => {
   var local = window.children[id]
   var collection = erase.collection = erase.collection || erase.path
   var headers = erase.headers || {}
-  headers.project = headers.project || global.data.project.id
-  delete erase.headers
+  headers.project = headers.project || global.projectId
 
   // erase
   headers.erase = encodeURI(toString({ erase }))
 
+  // access key
+  if (global["access-key"]) headers["access-key"] = global["access-key"]
+  
   // no id
   if (!erase.id && !erase.doc && !erase.docs) return
   erase.doc = erase.doc || erase.id
@@ -3859,7 +3869,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -5163,6 +5173,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _value = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
             var _index = toValue({ req, res, _window, id, value: args[2], params,_ ,e })
             if (_index === undefined) _index = o.length - 1
+            console.log(clone(o), _value, _index);
             o.splice(parseInt(_index), 0, _value)
             answer = o
             
@@ -5331,6 +5342,29 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!isNaN(o) && (parseFloat(o) + "").length === 13) o = new Date(parseFloat(o))
             answer = o.toUTCString()
             
+        } else if (k0 === "time()") {
+
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
+            else _o = o
+            
+            if (parseInt(_o)) {
+
+                var _1Day = 24 * 60 * 60 * 1000, _1Hr = 60 * 60 * 1000, _1Min = 60 * 1000
+                o = parseInt(o)
+
+                var _days = Math.floor(o / _1Day).toString()
+                _days = _days.length === 1 ? ("0" + _days) : _days
+
+                var _hrs = Math.floor(o % _1Day, _1Hr).toString()
+                _hrs = _hrs.length === 1 ? ("0" + _hrs) : _hrs
+
+                var _mins = Math.floor(o % _1Hr, _1Min).toString()
+                _mins = _mins.length === 1 ? ("0" + _mins) : _mins
+
+                answer = _days + ":" + _hrs + ":" + _mins
+            }
+
         } else if (k0 === "setTime()") {
             
             answer = new Date().setTime(o)
@@ -5338,6 +5372,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "getTime()" || k0 === "timestamp()") {
             
             if (o instanceof Date) answer = o.getTime()
+            else if (o.length === 5 && o.split(":").length === 2) {
+                var _hrs = parseInt(o.split(":")[0]) * 60 * 60 * 1000
+                var _mins = parseInt(o.split(":")[1]) * 60 * 1000
+                answer = _hrs + _mins
+            }
+            else if (o.length === 8 && o.split(":").length === 3) {
+                var _days = parseInt(o.split(":")[0]) * 24 * 60 * 60 * 1000
+                var _hrs = parseInt(o.split(":")[1]) * 60 * 60 * 1000
+                var _mins = parseInt(o.split(":")[2]) * 60 * 1000
+                answer = _days + _hrs + _mins
+            }
             else {
                 o = new Date(o)
                 answer = o.getTime()
@@ -5795,6 +5840,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             answer = o.mouseenter
 
+        } else if (k0 === "readonly()") {
+          
+            if (typeof o === "object") {
+                if (key && value !== undefined) answer = o.element.readOnly = value
+                answer = o.element.readOnly
+            } else if (o.nodeType === Node. ELEMENT_NODE) {
+                if (key && value !== undefined) answer = o.readOnly = value
+                answer = o.readOnly
+            }
+
         } else if (k0 === "range()") {
           
             var args = k.split(":").slice(1)
@@ -5815,8 +5870,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "update()") {
           
-            var args = k.split(":")
-            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
+            var _id
+            if (args[1]) _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
+            else _id = o.id
             return require("./update").update({ id: _id })
 
         } else if (k0 === "save()") {
@@ -6344,8 +6400,11 @@ const save = async ({ id, e, ...params }) => {
   var collection = save.collection = save.collection || save.path
   var _data = clone(save.data)
   var headers = clone(save.headers) || {}
-  headers.project = headers.project || global.data.project.id
+  headers.project = headers.project || global.projectId
   delete save.headers
+
+  // access key
+  if (global["access-key"]) headers["access-key"] = global["access-key"]
 
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
@@ -6381,7 +6440,9 @@ module.exports = {
         var local = window.children[id]
         var collection = search.collection || search.path || ""
         var headers = search.headers || {}
-        headers.project = headers.project || global.data.project.id
+        headers.project = headers.project || global.projectId
+        
+        if (global["access-key"]) headers["access-key"] = global["access-key"]
         delete search.headers
 
         // search
@@ -6407,7 +6468,7 @@ const { isArabic } = require("./isArabic")
 const setContent = ({ id, content = {} }) => {
 
   var local = window.children[id]
-  var value = content.value || ""
+  var value = content.value !== undefined ? content.value : ""
 
   if (typeof value !== "string" && typeof value !== "number") return
 
@@ -6454,16 +6515,17 @@ const setData = ({ id, data }) => {
   // keys
   var derivations = clone(local.derivations)
   var keys = [...derivations, ...path]
-
+  
   // set value
-  var value = reducer({ id, object: global[local.Data], path: keys, value: defValue, key: true })
-
+  reducer({ id, object: global[local.Data], path: keys, value: defValue, key: true })
+/*
   local.data = value
   if (local.input && local.input.type === "file") return
 
   // setContent
   var content = data.content || value
   setContent({ id, content: { value: content } })
+*/
 }
 
 module.exports = { setData }
@@ -8015,15 +8077,22 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     return value = value.slice(1, -1)
   }
 
-  // addition
-  if (value.includes("+")) {
+  // multiplication
+  if (value.includes("*")) {
+
+    var values = value.split("*").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
+    var newVal = values[0]
+    values.slice(1).map(val => newVal *= val)
+    return value = newVal
+
+  } else if (value.includes("+")) { // addition
 
     var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
     var newVal = values[0]
     values.slice(1).map(val => newVal += val)
     return value = newVal
 
-  } else if (value.includes("-")) {
+  } else if (value.includes("-")) { // subtraction
 
     var _value = calcSubs({ _window, value, params, _, id, e, req, res, object })
     if (_value !== value) return _value
@@ -8369,7 +8438,7 @@ const upload = async ({ id, e, ...params }) => {
   var collection = upload.collection = upload.collection || upload.path
 
   var headers = clone(upload.headers) || {}
-  headers.project = headers.project || global.data.project.id
+  headers.project = headers.project || global.projectId
   delete upload.headers
   upload.doc = upload.doc || upload.id
   upload.name = upload.name || global.upload[0].name
@@ -8385,6 +8454,9 @@ const upload = async ({ id, e, ...params }) => {
   // get regex exp
   var regex = new RegExp(`^data:${type};base64,`, "gi")
   file = file.replace(regex, "")
+  
+  // access key
+  if (global["access-key"]) headers["access-key"] = global["access-key"]
   
   var { data } = await axios.post(`/storage/${collection}`, { upload, file }, {
     headers: {

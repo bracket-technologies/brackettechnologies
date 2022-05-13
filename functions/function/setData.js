@@ -27,16 +27,17 @@ const setData = ({ id, data }) => {
   // keys
   var derivations = clone(local.derivations)
   var keys = [...derivations, ...path]
-
+  
   // set value
-  var value = reducer({ id, object: global[local.Data], path: keys, value: defValue, key: true })
-
+  reducer({ id, object: global[local.Data], path: keys, value: defValue, key: true })
+/*
   local.data = value
   if (local.input && local.input.type === "file") return
 
   // setContent
   var content = data.content || value
   setContent({ id, content: { value: content } })
+*/
 }
 
 module.exports = { setData }
