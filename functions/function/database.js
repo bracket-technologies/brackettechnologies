@@ -23,8 +23,9 @@ var getdb = async ({ req, res, db }) => {
 
   if (search) search.collection = collection
 
-  /////////////////// verify access key /////////////////////
-  promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
+  /////////////////// verify access key ///////////////////// access key is stopped
+  // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
+  project = { ["access-key"]: req.headers["access-key"] }
   
   if (search.url) {
 
