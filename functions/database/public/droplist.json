@@ -1,10 +1,10 @@
 {
-    "type": "View?class=box-shadow flex column;id=droplist;style.width=fit-content;style.transition=opacity .1s, transform .1s;style.height=fit-content;style.overflowY=auto;style.maxWidth=40rem;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=fixed;style.padding=.2rem;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.zIndex=999",
+    "type": "View?class=box-shadow flex column;id=droplist;style:[width=fit-content;transition=opacity .1s, transform .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
     "controls": [{
-        "event": "mouseleave??)(:droplist-positioner;!e().target.id.isChildOfId():[)(:droplist-positioner]",
-        "actions": "blur::200?()::400.if():[e().target.id.isnotChildOfId():[)(:droplist-caller].and():[().mouseenter.isfalse()]]:[().style().opacity.eq():0.then():[().style().transform.eq():[scale(0.5)]]:[().style().pointerEvents.eq():none]:[().children().map():[style().pointerEvents.eq():none]]:[)(:droplist-caller.delete()]:[)(:droplist-positioner.delete()]]?!().mouseenter;!e().target.id.isChildOfId():[)(:droplist-positioner]"
+        "event": "click:body?)(:droplist-timer=timer():[():[)(:droplist-positioner].click()]:400?)(:droplist-positioner;!)(:clickedElement.id.isChildOfId():[)(:droplist-positioner];!)(:clickedElement.id.isChildOfId():droplist"
     }, {
-        "event": "click:body??)(:droplist-positioner;!)(:clickedElement.id.isChildOfId():[)(:droplist-positioner]",
-        "actions": "blur::200?()::400.if():[e().target.id.isnotChildOfId():[)(:droplist-caller].and():[().mouseenter.isfalse()]]:[().style().opacity.eq():0.then():[().style().transform.eq():[scale(0.5)]]:[().style().pointerEvents.eq():none]:[().children().map():[style().pointerEvents.eq():none]]:[)(:droplist-caller.delete()]:[)(:droplist-positioner.delete()]]?!().mouseenter;!)(:clickedElement.id.isChildOfId():[)(:droplist-positioner]"
+        "event": "mouseleave?)(:droplist-timer=timer():[():[)(:droplist-positioner].click()]:400"
+    }, {
+        "event": "mouseenter?clearTimer():[)(:droplist-timer]"
     }]
 }

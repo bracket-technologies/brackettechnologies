@@ -99,6 +99,13 @@ const toggleView = ({ toggle, id }) => {
       value[id].style.transform = el.style.transform = toggle.fadein.after.transform || null
       value[id].style.opacity = el.style.opacity = toggle.fadein.after.opacity || "1"
     })
+  
+    setTimeout(() => {
+      idList.filter(id => value[id].type === "Icon").map(id => value[id]).map(map => {
+        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
+        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
+      })
+    }, 0)
     
   }, timer)
 }

@@ -60,7 +60,7 @@
                                     "event": "keyup?)(:data.editor.hotel.[text()]=if():[)(:open-doc]:[)(:data.editor.hotel.[)(:open-doc].clone()].else():[_map:creation-date:[today().timestamp()]:id:[text()]:type:[format():[View?id=]+text()]];)(:open-collection=hotel?text();text()!=)(:open-doc;e().key=Enter||e().key=Tab;)(:data.editor.hotel.keys().doesnotInclude():text()"
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;flex=1]"
+                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [

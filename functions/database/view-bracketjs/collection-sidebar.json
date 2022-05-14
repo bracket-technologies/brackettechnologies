@@ -61,7 +61,7 @@
                                     "event": "keyup?)(:data.editor.collection.[text()]=if():[)(:open-doc]:[)(:data.editor.collection.[)(:open-doc].clone()].else():[_map:creation-date:[today().timestamp()]:id:[text()]:type:[format():[View?id=]+text()]];)(:open-collection=collection?text();text()!=)(:open-doc;e().key=Enter||e().key=Tab;)(:data.editor.collection.keys().doesnotInclude():text()"
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;flex=1]"
+                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [

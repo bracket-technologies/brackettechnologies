@@ -1,5 +1,6 @@
 const { generate } = require("./generate")
 const { reducer } = require("./reducer")
+const { toCode } = require("./toCode")
 
 const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) => {
 
@@ -13,6 +14,10 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
 
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
+  
+  // string
+  if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
+  if (value.includes('codedS()') && value.length === 13) return value = global.codes[value]
 
   // or
   if (value.includes("||")) {
@@ -25,26 +30,6 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
 
   // value is a param it has key=value
   if (value.includes("=") || value.includes(";")) return toParam({ req, res, _window, id, e, string: value, _, object, mount })
-/*
-  // condition
-  if (value.slice(0, 1) === "!") return toApproval({ id, e, string: value, req, res, _window, _ })
-
-  // condition
-  if (value.includes === "!=") return toApproval({ id, e, string: value, req, res, _window, _ })
-
-  // conditions
-  if (value.includes("<<")) {
-
-    var condition = value.split("<<")[1]
-    var approved = toApproval({ _window, id, e, string: condition, _, req, res })
-    if (!approved) return "*return*"
-    value = value.split("<<")[0]
-  }
-*/
-  // string
-  if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") {
-    return value = value.slice(1, -1)
-  }
 
   // multiplication
   if (value.includes("*")) {
@@ -55,7 +40,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     return value = newVal
 
   } else if (value.includes("+")) { // addition
-
+    
     var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
     var newVal = values[0]
     values.slice(1).map(val => newVal += val)
@@ -67,10 +52,11 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     if (_value !== value) return _value
   }
 
-  // if (value.split("const.")[1] !== undefined && !value.split("const.")[0]) return value.split("const.")[1]
-
   // return await value
   if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]
+  
+  // string
+  // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
   var path = typeof value === "string" ? value.split(".") : []
 

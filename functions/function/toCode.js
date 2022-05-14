@@ -3,6 +3,7 @@ const { generate } = require("./generate")
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   if (typeof string !== "string") return string
+  var codeName = start === "'" ? "codedS()" : "coded()"
 
   var global = {}
   if (!codes) global = _window ? _window.global : window.global
@@ -12,7 +13,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   if (keys[1] !== undefined) {
 
-    var key = `coded()${generate()}`
+    var key = `${codeName}${generate()}`
     var subKey = keys[1].split(end)
 
     // ex. [ [ [] [] ] ]

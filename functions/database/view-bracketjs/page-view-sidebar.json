@@ -127,7 +127,7 @@
                                             "event": "keyup?)(:data.editor.page.[text()]=if():[)(:open-doc]:[)(:data.editor.page.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:[text()]:title:[text().split():-.join(): .capitalize()]:name:[text().split():-.join(): .capitalize()]:views:_array:path:[/+text()]]?e().key=Enter||e().key=Tab;text();text()!=)(:open-doc;!)(:data.editor.page.keys().inc():text();!text().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;flex=1]"
+                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -216,10 +216,10 @@
                                                 "async():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
                                                 "async():save:note:[update:view-list]?save.collection=view;save.doc=text();save.data=)(:data.editor.view.[text()];save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
                                             ],
-                                            "event": "keyup?)(:data.editor.view.[text()]=if():[)(:open-doc]:[)(:data.editor.view.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:[text()]:type:['View?id='+text()]]?text();text()!=)(:open-doc;e().key=Enter||e().key=Tab;!)(:data.editor.view.keys().inc():text();!text().inc(): "
+                                            "event": "keyup?)(:data.editor.view.[text()]=if():[)(:open-doc]:[)(:data.editor.view.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:text():type:['View?id='+text()]]?text();text()!=)(:open-doc;e().key=Enter||e().key=Tab;!)(:data.editor.view.keys().inc():text();!text().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;flex=1]"
+                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [

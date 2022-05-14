@@ -148,23 +148,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             path[0] = path0 = "()"
         }
     }
-/*   
-    if (path && (path.includes("equal()") || path.includes("equals()") || path.includes("eq()") || path.includes("=()"))) {
-        
-        var _index = path.findIndex(k => k && (k.includes("equal()") || k.includes("equals()") || k.includes("eq()") || path.includes("=()")))
-        if (_index !== -1 && _index === path.length - 2) {
-            
-            key = true
-            var args = path[_index].split(":")
-
-            if (path[_index][0] === "_")
-            _ = reducer({ req, res, _window, id, path: path.slice(0, _index).join("."), params, object, _, e, mount })
-
-            value = toValue({ req, res, _window, id, _, e, value: args[1], params, object, mount })
-            path = path.slice(0, _index)
-        }
-    }
-*/
+    
     if (path0 === "while()") {
             
         var args = path[0].split(":")

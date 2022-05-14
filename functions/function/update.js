@@ -67,6 +67,13 @@ const update = ({ id, update = {} }) => {
     
     value[el.id].style.opacity = value[el.id].element.style.opacity = "1"
   })
+  
+  setTimeout(() => {
+    idList.filter(id => value[id].type === "Icon").map(id => value[id]).map(map => {
+      map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
+      map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
+    })
+  }, 0)
 }
 
 const removeChildren = ({ id }) => {

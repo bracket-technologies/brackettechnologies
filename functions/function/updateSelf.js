@@ -81,6 +81,13 @@ const updateSelf = ({ id, update = {} }) => {
     document.body.removeChild(lDiv)
     lDiv = null
   }
+  
+  setTimeout(() => {
+    idList.filter(id => value[id].type === "Icon").map(id => value[id]).map(map => {
+      map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
+      map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
+    })
+  }, 0)
 }
 
 module.exports = {updateSelf}

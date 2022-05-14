@@ -186,7 +186,6 @@ var getdb = async ({ req, res, db }) => {
 }
 
 var postdb = async ({ req, res, db }) => {
-  // database/collection?params?conditions
 
   var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
@@ -194,9 +193,10 @@ var postdb = async ({ req, res, db }) => {
   var save = req.body.save
   var ref = db.collection(collection)
   var success, message, promises = [], project
-    
-  /////////////////// verify access key /////////////////////
-  promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
+
+  /////////////////// verify access key ///////////////////// access key is stopped
+  // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
+  project = { ["access-key"]: req.headers["access-key"] }
 
   await Promise.all(promises)
   if (project["access-key"] !== req.headers["access-key"]) {
@@ -230,9 +230,10 @@ var deletedb = async ({ req, res, db }) => {
   var erase = params.erase
   var ref = db.collection(collection)
   var success, message, promises = [], project
-    
-  /////////////////// verify access key /////////////////////
-  promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
+
+  /////////////////// verify access key ///////////////////// access key is stopped
+  // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
+  project = { ["access-key"]: req.headers["access-key"] }
   
   await Promise.all(promises)
   if (project["access-key"] !== req.headers["access-key"]) {

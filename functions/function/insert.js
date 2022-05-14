@@ -74,6 +74,13 @@ module.exports = {
     delete window.children[el.id].reservedStyles
     local.insert = { map: window.children[el.id], message: "Map inserted succefully!", success: true }
     
+    setTimeout(() => {
+      idList.filter(id => window.children[id].type === "Icon").map(id => window.children[id]).map(map => {
+        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
+        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
+      })
+    }, 0)
+    
     if (lDiv) {
       document.body.removeChild(lDiv)
       lDiv = null

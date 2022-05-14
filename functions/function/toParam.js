@@ -73,25 +73,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       params.await = params.await || ""
       return params.await += `${awaiter};`
     }
-/*
-    if (local && local.status === "Loading") {
-      if (key.includes("parent()") || key.includes("children()") || key.includes("next()")) {
-
-        params.await = params.await || ""
-        return params.await += `${param};`
-      }
-    }
-
-    // event
-    if (key.includes("event.") && !key.split("event.")[0]) {
-      
-      var event = key.split("event.")[1].split(".")[0]
-      var _params = key.split("event.")[1].split(`${event}.`)[1]
-      return local.controls.push({
-        "event": `${event}?${_params}`
-      })
-    }
-  */
+    
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _ })
 
@@ -100,25 +82,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
     id = localId
 
-    var keys = typeof key === "string" ? key.split(".") : [], timer
-/*
-    // conditions
-    if (key && key.includes("<<")) {
-      
-      var condition = key.split("<<")[1]
-      var approved = toApproval({ id, e, string: condition, req, res, _window, _ })
-      if (!approved) return
-      key = key.split("<<")[0]
-    }
-*/
-    var path = typeof key === "string" ? key.split(".") : []
-    
-    // break
-    if (key === "break" || key === "break()") {
-
-      params.break = true
-      return params
-    }
+    var path = typeof key === "string" ? key.split(".") : [], timer
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -126,12 +90,16 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       // mount state & value
       if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
         
+        var _object
+        if (path[0].split(":")[0] === "if()") _object = params
+        else _object = object
+
         var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object, mount })
         if (timer) {
           
           timer = parseInt(timer)
-          clearTimeout(local[keys.join(".")])
-          local[keys.join(".")] = setTimeout(myFn, timer)
+          clearTimeout(local[path.join(".")])
+          local[path.join(".")] = setTimeout(myFn, timer)
 
         } else myFn()
 
@@ -139,51 +107,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         
         if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
         reducer({ _window, id, path, value, key, params, e, req, res, _, mount, object: params })
-/*
-        path.reduce((obj, key, index) => {
-
-            if (obj[key] !== undefined) {
-            
-              var args = key.split(":")
-        
-              if (args[1]) {
-    
-                if (mount) o[args[0]] = o[args[0]] || {}
-                return reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: o[args[0]], params, _ })
-              }
-
-              if (index === path.length - 1) {
-
-                // if key=value exists => mount the existing to local, then mount the new value to params
-                path.reduce((o, k, i) => {
-
-                  if (i === path.length - 1) return o[k] = value
-                  return o[k] || {}
-
-                }, _window ? _window.children[id] : window.children[id])
-
-                return obj[key] = value
-              }
-
-            } else {
-
-              if (index === path.length - 1) {
-                var args = key.split(":")
-        
-                if (args[1]) {
-
-                  if (mount) local[args[0]] = local[args[0]] || {}
-                  var _param = reducer({ req, res, _window, id, e, path: [...args.slice(1)], object: mount ? local[args[0]] : {}, params, _ })
-                  params[args[0]] = _param
-
-                } else return obj[key] = value
-
-              } else obj[key] = {}
-            }
-
-          return obj[key]
-        }, params)
-*/
       }
       
     } else if (key) {

@@ -67,7 +67,7 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   events[0].split(";").map(event => {
 
-    // event is coded
+    // case event is coded
     if (event.slice(0, 7) === "coded()") {
       event = global.codes[event]
       if (event.includes("?")) {
@@ -133,11 +133,6 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
         
         // execute
         if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
-/*
-        // awaiters
-        if (local.await && local.await.length > 0) 
-        toParam({ _window, req, res, id, e, string: local.await.join(";"), mount: true })
-*/
       }
       
       // onload event
@@ -176,10 +171,6 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
           if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
           
           if (controls.actions) await execute({ controls, e, id: mainID })
-/*
-          // await params
-          if (local.await && local.await.length > 0) toParam({ id, e, string: local.await.join(";"), mount: true })
-*/
         }, timer)
       }
       
