@@ -16,6 +16,7 @@
   },
   "main": "index.js",
   "dependencies": {
+    "aws-sdk": "^2.1135.0",
     "axios": "*",
     "body-parser": "*",
     "cookie-parser": "*",
@@ -23,8 +24,10 @@
     "dotenv": "*",
     "express": "*",
     "express-device": "*",
+    "firebase": "^9.8.1",
     "firebase-admin": "*",
-    "firebase-functions": "*"
+    "firebase-functions": "*",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "browserify": "*",
