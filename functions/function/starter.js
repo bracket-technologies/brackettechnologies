@@ -23,29 +23,11 @@ const starter = ({ id }) => {
   
   // input handlers
   defaultInputHandler({ id })
-
-  // mouseenter, click, mouseover...
-  defaultEventHandler({ id })
   
   // on loaded image
-  if (local.type === 'Image') local.element.src = local.src
+  // if (local.type === 'Image') local.element.src = local.src
 
   /* End of default handlers */
-
-  // element awaiters
-  if (local.await) {
-
-    var params = toParam({ id, string: local.await.join(';'), mount: true })
-    
-    if (params.id) {
-
-      delete Object.assign(window.children, {[params.id]: window.children[id]})[id]
-      id = params.id
-      local = window.children[id]
-    }
-
-    delete local.await
-  }
 
   // resize
   if (local.type === "Input") resize({ id })
@@ -60,6 +42,9 @@ const starter = ({ id }) => {
       _controls && local.controls.push(..._controls)
     }
   })
+
+  // mouseenter, click, mouseover...
+  defaultEventHandler({ id })
   
   // execute controls
   if (local.controls) controls({ id })

@@ -127,6 +127,7 @@ const Input = (component) => {
         delete component.id
         delete component.tooltip
         label.tooltip = tooltip
+        component.clicked.preventDefault = true
 
         return {
             id, Data, parent, derivations, required, path,

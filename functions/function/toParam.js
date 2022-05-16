@@ -73,6 +73,51 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       params.await = params.await || ""
       return params.await += `${awaiter};`
     }
+
+    // mouseenter
+    if (param.slice(0, 10) === "mouseenter") {
+
+      param = param.slice(11)
+      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      local.mouseenter = local.mouseenter || ""
+      return local.mouseenter += `${param};`
+    }
+
+    // mouseleave
+    if (param.slice(0, 10) === "mouseleave") {
+
+      param = param.slice(11)
+      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      local.mouseleave = local.mouseleave || ""
+      return local.mouseleave += `${param};`
+    }
+
+    // mouseover
+    if (param.slice(0, 10) === "mouseover") {
+
+      param = param.slice(11)
+      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      local.mouseover = local.mouseover || ""
+      return local.mouseover += `${param};`
+    }
+
+    // keyup
+    if (param.slice(0, 10) === "keyup") {
+
+      param = param.slice(11)
+      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      local.keyup = local.keyup || ""
+      return local.keyup += `${param};`
+    }
+
+    // keydown
+    if (param.slice(0, 10) === "keydown") {
+
+      param = param.slice(11)
+      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      local.keydown = local.keydown || ""
+      return local.keydown += `${param};`
+    }
     
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _ })

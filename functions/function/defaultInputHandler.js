@@ -87,12 +87,16 @@ const defaultInputHandler = ({ id }) => {
       if (local.input.type === "text") {
         
         if (e.data === "[") {
-          e.target.value = value = value + "]"
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
+          var _prev = value.slice(0, e.target.selectionStart - 1)
+          var _next = value.slice(e.target.selectionStart)
+          e.target.value = value = _prev + "[]" + _next
+          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
 
         } else if (e.data === "(") {
-          e.target.value = value = value + ")"
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
+          var _prev = value.slice(0, e.target.selectionStart - 1)
+          var _next = value.slice(e.target.selectionStart)
+          e.target.value = value = _prev + "()" + _next
+          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
         } else if (e.data === "T" && e.target.selectionStart === 1 && local.derivations[local.derivations.length - 1] === "type") {
           e.target.value = value = "Text?class=flexbox;text=;style:[]"
@@ -111,7 +115,7 @@ const defaultInputHandler = ({ id }) => {
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
         } else if (e.data === "V" && e.target.selectionStart === 1 && local.derivations[local.derivations.length - 1] === "type") {
-          e.target.value = value = "View?class=flex;style:[]"
+          e.target.value = value = "View?class=vertical;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
         } else if (value.slice(e.target.selectionStart - 4, e.target.selectionStart) === "font") {

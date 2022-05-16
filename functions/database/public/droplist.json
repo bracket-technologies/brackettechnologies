@@ -1,9 +1,9 @@
 {
     "type": "View?class=box-shadow flex column;id=droplist;style:[width=fit-content;transition=opacity .1s, transform .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
     "controls": [{
-        "event": "click:body?)(:droplist-timer=timer():[():[)(:droplist-positioner].click()]:400?)(:droplist-positioner;!)(:clickedElement.id.isChildOfId():[)(:droplist-positioner];!)(:clickedElement.id.isChildOfId():droplist"
+        "event": "click:body?)(:droplist-timer=timer():[if():[)(:droplist-positioner!=():[)(:droplist-positioner].id]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner=():[)(:droplist-positioner].id]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]]:400?)(:droplist-positioner;!)(:clickedElement.id.isChildOfId():[)(:droplist-positioner];!)(:clickedElement.id.isChildOfId():droplist"
     }, {
-        "event": "mouseleave?)(:droplist-timer=timer():[():[)(:droplist-positioner].click()]:400"
+        "event": "mouseleave?)(:droplist-timer=timer():[if():[)(:droplist-positioner!=():[)(:droplist-positioner].id]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]]clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner=():[)(:droplist-positioner].id]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]]:400"
     }, {
         "event": "mouseenter?clearTimer():[)(:droplist-timer]"
     }]

@@ -32,7 +32,7 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   // droplist
   var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
-  if (droplist) {
+  if (droplist && local.droplist) {
     
     local.droplist.controls = local.droplist.controls || []
     return local.droplist.controls.push({
@@ -43,7 +43,7 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   // actionlist
   var actionlist = (events[1] || "").split(";").find(param => param === "actionlist()")
-  if (actionlist) {
+  if (actionlist && local.actionlist) {
     
     local.actionlist.controls = local.actionlist.controls || []
     return local.actionlist.controls.push({
@@ -54,7 +54,7 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   // popup
   var popup = (events[1] || "").split(";").find(param => param === "popup()")
-  if (popup) {
+  if (popup && local.popup) {
     
     local.popup = typeof local.popup === "object" ? local.popup : {}
     local.popup.controls = local.popup.controls || []
@@ -100,39 +100,35 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
       var _local = _window ? _window.children[id] : window.children[id]
       if (!_local) return
 
-      var myFn = async (e) => {
+      var myFn = (e) => {
 
-        // body
-        if (id === "body") id = mainID
-        var __local = _window ? _window.children[id] : window.children[id]
-        
-        // VALUE[id] doesnot exist
-        if (!__local) return e.target.removeEventListener(event, myFn)
-        
-        // approval
-        if (localEventConditions) {
-          var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+        setTimeout(async () => {
+
+          // body
+          if (id === "body") id = mainID
+          
+          // approval
+          if (localEventConditions) {
+            var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+            if (!approved) return
+          }
+          
+          // approval
+          var approved = toApproval({ _window, req, res, string: events[2], e, id: mainID })
           if (!approved) return
-        }
-        
-        // approval
-        var approved = toApproval({ _window, req, res, string: events[2], e, id: mainID })
-        if (!approved) return
 
-        // once
-        if (once) e.target.removeEventListener(event, myFn)
-        
-        // params
-        await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true, eventParams: true })
-        
-        // approval
-        if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
-
-        // break
-        if (local.break) return
-        
-        // execute
-        if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
+          // once
+          if (once) e.target.removeEventListener(event, myFn)
+          
+          // params
+          await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true, eventParams: true })
+          
+          // approval
+          if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
+          
+          // execute
+          if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
+        }, timer)
       }
       
       // onload event

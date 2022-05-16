@@ -13,7 +13,7 @@ const remove = ({ remove: _remove, id }) => {
   if (path) keys = path
   else keys = clone(local.derivations) || []
   
-  if (keys.length > 0 && !_remove.keepData) {
+  if (!_remove.onlyChild && keys.length > 0 && !_remove.keepData) {
 
     keys.unshift(local.Data)
     keys.unshift("global()")

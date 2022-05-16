@@ -28,12 +28,13 @@ module.exports = {
       if (path) _local.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       
       var innerHTML = toArray(_local)
-      .map((child, index) => {
+      .map((child, i) => {
 
         var id = child.id || generate()
         window.children[id] = child
         window.children[id].id = id
-        window.children[id].index = index
+        window.children[id].index = i
+        window.children[id].mapIndex = index
         window.children[id].parent = local.id
         window.children[id].style = window.children[id].style || {}
         window.children[id].reservedStyles = toParam({ id, string: window.children[id].type.split("?")[1] || "" }).style || {}

@@ -10,6 +10,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   var local = _window ? _window.children[id] : window.children[id]
   var global = _window ? _window.global : window.global
 
+  // no value
   if (!value) return value
 
   // coded

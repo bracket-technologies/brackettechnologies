@@ -14,6 +14,12 @@ module.exports = {
   pricable: require("./pricable"),
   hover: require("./hover"),
   click: require("./click"),
+  clicked: require("./clicked"),
+  mouseenter: require("./mouseenter"),
+  mouseleave: require("./mouseleave"),
+  mouseover: require("./mouseover"),
+  keyup: require("./keyup"),
+  keydown: require("./keydown"),
   loaded: require("./loaded"),
   contentful: require("../function/contentful").contentful
 }

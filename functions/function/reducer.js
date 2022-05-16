@@ -159,7 +159,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -321,11 +321,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             key = true
             var args = path[i + 1].split(":")
-            if (path[i + 1][0] === "_")
-                _ = reducer({ req, res, _window, id, path: [k], params, object: o, _, e })
+            if (path[i + 1][0] === "_") _ = reducer({ req, res, _window, id, path: [k], params, object: o, _, e })
             value = toValue({ req, res, _window, id, _, e, value: args[1], params })
             breakRequest = i + 1
             lastIndex = i
+        }
+        
+        // path[i]._
+        if (path[i + 1] === "_") {
+            
+            path[i +  1] = _
+            breakRequest = true
+            return answer = reducer({ req, res, _window, id, path: path.slice(i), params, object: o, _, e, key, value })
         }
         
         if (k0 === "else()" || k0 === "or()") {
@@ -1467,7 +1474,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             o.splice(parseInt(_index), 0, _value)
             answer = o
             
-        } else if (k0 === "remove()" || k0 === "rem()") {
+        } else if (k0 === "remove()" || k0 === "rem()") { // remove child with data
 
             var args = k.split(":")
             if (args[1]) {
@@ -1481,6 +1488,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _value = _window ? _window.children : window.children
             if (!_value[_id]) return console.log("Element doesnot exist!")
             remove({ id: o.id })
+
+        } else if (k0 === "removeChild()" || k0 === "remChild()") { // remove only child without removing data
+
+            var args = k.split(":")
+            if (args[1]) {
+                var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
+                var _value = _window ? _window.children : window.children
+                if (!_value[_id]) return console.log("Element doesnot exist!")
+                return remove({ id: _id, remove: { onlyChild: true } })
+            }
+
+            var _id = typeof o === "string" ? o : o.id
+            var _value = _window ? _window.children : window.children
+            if (!_value[_id]) return console.log("Element doesnot exist!")
+            remove({ id: o.id, remove: { onlyChild: true } })
 
         } else if (k0 === "charAt()") {
 
