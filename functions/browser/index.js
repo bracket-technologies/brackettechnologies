@@ -3961,6 +3961,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else {
 
             object = toValue({ req, res, _window, id, value: args[2], params, index, _, e, object, mount })
+            console.log(args[2], global.codes[args[2]], object);
             path.shift()
             while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
                 path.shift()
