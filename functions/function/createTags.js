@@ -7,37 +7,36 @@ const { toArray } = require("./toArray")
 
 const createTags = ({ _window, id, req, res }) => {
 
-  var value = _window ? _window.children : window.children
-  var local = value[id]
-  if (!local) return
+  var views = _window ? _window.views : window.views, view = views[id]
+  if (!view) return
 
-  local.length = 1
+  view.length = 1
   
   // data mapType
-  var data = Array.isArray(local.data) ? local.data : typeof local.data === "object" ? Object.keys(local.data) : []
-  var isObject = !Array.isArray(local.data)
-  local.length = data.length || 1
+  var data = Array.isArray(view.data) ? view.data : typeof view.data === "object" ? Object.keys(view.data) : []
+  var isObject = !Array.isArray(view.data)
+  view.length = data.length || 1
   
-  if (local.mapType) {
+  if (view.mapType) {
     if (data.length > 0) {
 
-      data = arrange({ data, arrange: local.arrange, id, _window })
-      delete value[id]
+      data = arrange({ data, arrange: view.arrange, id, _window })
+      delete views[id]
       
       return data.map((_data, index) => {
         
         var id = generate()
-        var _local = clone(local)
+        var _view = clone(view)
 
-        value[id] = _local
+        views[id] = _view
 
-        _local.id = id
-        _local.mapIndex = index
-        _local.data = isObject ? _local.data[_data] : _data
-        _local.derivations = isObject ? [..._local.derivations, _data] : [..._local.derivations, index]
+        _view.id = id
+        _view.mapIndex = index
+        _view.data = isObject ? _view.data[_data] : _data
+        _view.derivations = isObject ? [..._view.derivations, _data] : [..._view.derivations, index]
 
         // check approval again for last time
-        var conditions = value[local.parent].children[local.index]
+        var conditions = views[view.parent].children[view.index]
         var approved = toApproval({ _window, string: conditions, id, req, res })
         if (!approved) return
         
@@ -47,11 +46,11 @@ const createTags = ({ _window, id, req, res }) => {
 
     } else {
 
-      local.mapIndex = 0
-      local.derivations = isObject ? [...local.derivations, ""] : [...local.derivations, 0]
+      view.mapIndex = 0
+      view.derivations = isObject ? [...view.derivations, ""] : [...view.derivations, 0]
       
       // check approval again for last time
-      var conditions = value[local.parent].children[local.index].type.split("?")[2]
+      var conditions = views[view.parent].children[view.index].type.split("?")[2]
       var approved = toApproval({ _window, string: conditions, id, req, res })
       if (!approved) return
       
@@ -66,76 +65,76 @@ const createTag = ({ _window, id, req, res }) => {
 
   const {execute} = require("./execute")
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var view = _window ? _window.views[id] : window.views[id]
   
   // components
   componentModifier({ _window, id })
   createComponent({ _window, id, req, res })
 
-  if (local.actions) execute({ _window, actions: local.actions, id, req, res })
+  if (view.actions) execute({ _window, actions: view.actions, id, req, res })
   return toHtml({ _window, id, req, res })
 }
 
 const componentModifier = ({ _window, id }) => {
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var view = _window ? _window.views[id] : window.views[id]
 
   // icon
-  if (local.type === "Icon") {
+  if (view.type === "Icon") {
 
-    local.icon = local.icon || {}
-    local.icon.name = local.name || local.icon.name || ""
-    if (local.icon.google || local.google) {
+    view.icon = view.icon || {}
+    view.icon.name = view.name || view.icon.name || ""
+    if (view.icon.google || view.google) {
       
-      if (local.google.outlined) local.outlined = true
-      else if (local.google.filled) local.filled = true
-      else if (local.google.rounded) local.rounded = true
-      else if (local.google.sharp) local.sharp = true
-      else if (local.google.twoTone) local.twoTone = true
-      else local.google = true
+      if (view.google.outlined) view.outlined = true
+      else if (view.google.filled) view.filled = true
+      else if (view.google.rounded) view.rounded = true
+      else if (view.google.sharp) view.sharp = true
+      else if (view.google.twoTone) view.twoTone = true
+      else view.google = true
     }
   }
 
   // textarea
-  else if (local.textarea && !local.templated) {
+  else if (view.textarea && !view.templated) {
 
-    local.style = local.style || {}
-    local.input = local.input || {}
-    local.input.style = local.input.style || {}
-    local.input.style.height = "fit-content"
+    view.style = view.style || {}
+    view.input = view.input || {}
+    view.input.style = view.input.style || {}
+    view.input.style.height = "fit-content"
   }
 
   // input
-  else if (local.type === "Input") {
+  else if (view.type === "Input") {
 
-    local.input = local.input || {}
-    if (local.value) local.input.value = local.input.value || local.value
-    if (local.checked !== undefined) local.input.checked = local.checked
-    if (local.max !== undefined) local.input.max = local.max
-    if (local.min !== undefined) local.input.min = local.min
-    if (local.name !== undefined) local.input.name = local.name
-    if (local.input.placeholder) local.placeholder = local.input.placeholder
+    view.input = view.input || {}
+    if (view.value) view.input.value = view.input.value || view.value
+    if (view.checked !== undefined) view.input.checked = view.checked
+    if (view.max !== undefined) view.input.max = view.max
+    if (view.min !== undefined) view.input.min = view.min
+    if (view.name !== undefined) view.input.name = view.name
+    if (view.input.placeholder) view.placeholder = view.input.placeholder
     
-  } else if (local.type === "Item") {
+  } else if (view.type === "Item") {
 
-    var parent = _window ? _window.children[local.parent] : window.children[local.parent]
+    var parent = _window ? _window.views[view.parent] : window.views[view.parent]
 
-    if (local.index === 0) {
+    if (view.index === 0) {
 
-      local.state = generate()
-      parent.state = local.state
+      view.state = generate()
+      parent.state = view.state
       
-    } else local.state = parent.state
+    } else view.state = parent.state
   }
 }
 
 const arrange = ({ data, arrange, id, _window }) => {
 
-  var value = _window ? _window.children : window.children
-  var local = value[id], index = 0
+  var views = _window ? _window.views : window.views
+  var view = views[id], index = 0
 
-  if (local) {
-    if (local.arrange) toArray(arrange).map(el => {
+  if (view) {
+    if (view.arrange) toArray(arrange).map(el => {
 
       var _index = data.findIndex(_el => _el == el)
       if (_index > -1) {
@@ -147,7 +146,7 @@ const arrange = ({ data, arrange, id, _window }) => {
       }
     })
     
-    if (local.sort) {
+    if (view.sort) {
       
       var _sorted = data.slice(index).sort()
       data = data.slice(0, index)

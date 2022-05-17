@@ -2,7 +2,6 @@ const decode = ({ _window, string }) => {
 
   if (typeof string !== "string") return string
   
-  var global = _window ? _window.global : window.global
   if (string.includes("coded()")) {
 
     string.split("coded()").map((state, i) => {

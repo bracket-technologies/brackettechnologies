@@ -2,7 +2,7 @@ const { toArray } = require("../function/toArray")
 
 module.exports = ({ controls, id }) => {
 
-    var local = window.children[id]
+    var local = window.views[id]
     var idlist = toArray(controls.id || id)
     
     local.touched.freeze = local.touched.freeze ? true : false

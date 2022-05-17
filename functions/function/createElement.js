@@ -9,62 +9,62 @@ const { toValue } = require("./toValue")
 
 var createElement = ({ _window, id, req, res }) => {
 
-  var value = _window ? _window.children : window.children
-  var local = value[id]
+  var views = _window ? _window.views : window.views
+  var view = views[id]
   var global = _window ? _window.global : window.global
-  var parent = value[local.parent]
+  var parent = views[view.parent]
   
   // html
-  if (local.html) return local.html
+  if (view.html) return view.html
 
-  // view value
-  if (local.view && global.data.view[local.view]) local = clone(global.data.view[local.view])
+  // merge to another view
+  if (view.view && global.data.view[view.view]) view = clone(global.data.view[view.view])
 
-  // no value
-  if (!local.type) return
+  // view is empty
+  if (!view.type) return
 
-  local.type = toCode({ _window, string: local.type })
+  view.type = toCode({ _window, string: view.type })
 
   // 'string'
-  if (local.type.split("'").length > 2) local.type = toCode({ _window, string: local.type, start: "'", end: "'" })
+  if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
 
   // destructure type, params, & conditions from type
   
-  var type = local.type.split("?")[0]
-  var params = local.type.split("?")[1]
-  var conditions = local.type.split("?")[2]
+  var type = view.type.split("?")[0]
+  var params = view.type.split("?")[1]
+  var conditions = view.type.split("?")[2]
 
   // [type]
-  if (!local.duplicatedElement && type.includes("coded()")) local.mapType = true
-  type = local.type = toValue({ _window, value: type, id, req, res})
+  if (!view.duplicatedElement && type.includes("coded()")) view.mapType = true
+  type = view.type = toValue({ _window, value: type, id, req, res })
 
   // parent
-  local.parent = parent.id
+  view.parent = parent.id
 
   // style
-  local.style = local.style || {}
+  view.style = view.style || {}
 
   // id
-  local.id = local.id || generate()
-  id = local.id
+  view.id = view.id || generate()
+  id = view.id
 
   // class
-  local.class = local.class || ""
+  view.class = view.class || ""
 
   // Data
-  local.Data = parent.Data
+  view.Data = view.Data || parent.Data
 
   // derivations
-  local.derivations = local.derivations || [...(parent.derivations || [])]
+  view.derivations = view.derivations || [...(parent.derivations || [])]
 
   // controls
-  local.controls = local.controls || []
+  view.controls = view.controls || []
 
   // status
-  local.status = "Loading"
+  view.status = "Loading"
 
-  // first mount of local
-  value[id] = local
+  // first mount of view
+  views[id] = view
 
   // ///////////////// approval & params /////////////////////
 
@@ -72,40 +72,39 @@ var createElement = ({ _window, id, req, res }) => {
   var approved = toApproval({ _window, string: conditions, id, req, res })
   if (!approved) return
 
-  // push destructured params from type to local
+  // push destructured params from type to view
   if (params) {
     
     params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
-    // value[id] = local = override(local, params)
     
     if (params.id && params.id !== id) {
 
-      delete Object.assign(value, { [params.id]: value[id] })[id]
+      delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
     }
 
     // view
     if (params.view) {
 
-      var _local = clone(global.data.view[local.view])
-      if (_local) {
+      var _view = clone(global.data.view[view.view])
+      if (_view) {
 
-        delete local.type
-        delete local.view
+        delete view.type
+        delete view.view
         
-        value[id] = { ...local, ..._local}
+        views[id] = { ...view, ..._view}
         return createElement({ _window, id, req, res })
       }
     }
   }
 
   // data
-  if (parent.unDeriveData || local.unDeriveData) {
+  if (parent.unDeriveData || view.unDeriveData) {
 
-    local.data = local.data || ""
-    local.unDeriveData = true
+    view.data = view.data || ""
+    view.unDeriveData = true
 
-  } else local.data = reducer({ _window, id, path: local.derivations, value: local.data, key: true, object: global[local.Data], req, res })
+  } else view.data = reducer({ _window, id, path: view.derivations, value: view.data, key: true, object: global[view.Data], req, res })
   
   return createTags({ _window, id, req, res })
 }

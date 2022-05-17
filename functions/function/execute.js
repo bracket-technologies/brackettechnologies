@@ -8,11 +8,11 @@ const { toValue } = require("./toValue")
 
 const execute = ({ _window, controls, actions, e, id, params }) => {
 
-  var local = (_window ? _window.children[id] : window.children[id]) || {}
-  var _params = params, localId = id
+  var views = _window ? _window.views : window.views
+  var view = views[id] || {}
+  var _params = params, viewId = id
 
   if (controls) actions = controls.actions
-  if (local) local.break = false
 
   // execute actions
   toArray(actions).map(_action => {
@@ -20,9 +20,6 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
     // 'string'
     if (_action.split("'").length > 2) _action = toCode({ _window, string: _action, start: "'", end: "'" })
-    
-    // stop after actions
-    if (local && local.break) return
 
     var awaiter = ""
     var approved = true
@@ -33,15 +30,15 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     actions = actions[0].split(";")
 
     // approval
-    if (conditions) approved = toApproval({ _window, string: conditions, params, id: localId, e })
-    if (!approved) return
+    if (conditions) approved = toApproval({ _window, string: conditions, params, id: viewId, e })
+    if (!approved) return toAwait({ id, e, params: _params })
 
     // params
-    params = toParam({ _window, string: params, e, id: localId })
+    params = toParam({ _window, string: params, e, id: viewId })
     if (_params) params = {..._params, ...params}
 
     // break
-    local.break = params.break
+    view.break = params.break
     delete params.break
 
     actions.map(action => {
@@ -74,7 +71,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       
 
       var actionid = params.action.id
-      if (action.split(":")[1]) actionid = toValue({ _window, value: action.split(":")[1], params, id: localId, e })
+      if (action.split(":")[1]) actionid = toValue({ _window, value: action.split(":")[1], params, id: viewId, e })
       
       const myFn = () => {
         var approved = true
@@ -94,18 +91,18 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
         if (isAwaiter) return
 
         // case condition approval
-        if (caseCondition) approved = toApproval({ _window, string: caseCondition, params, id: localId, e })
+        if (caseCondition) approved = toApproval({ _window, string: caseCondition, params, id: viewId, e })
         if (!approved) return toAwait({ id, e, params })
         
-        if (_method[name]) toArray(actionid ? actionid : localId).map(async id => {
+        if (_method[name]) toArray(actionid ? actionid : viewId).map(async id => {
           
           if (typeof id !== "string") return
 
           // id = value.path
-          if (id.indexOf(".") > -1) id = toValue({ _window, value: id, e, id: localId })
+          if (id.indexOf(".") > -1) id = toValue({ _window, value: id, e, id: viewId })
           
           // component does not exist
-          if (!id || !window.children[id]) return
+          if (!id || !views[id]) return
 
           if (isAsyncer) {
             params.awaiter = awaiter
@@ -119,13 +116,13 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
       if (timer || timer === 0) {
 
-        if (local) {
+        if (view) {
 
           var _name = name.split('.')[1] || name.split('.')[0]
           if (isInterval) {
             myFn()
-            local[`${_name}-timer`] = setInterval(() => myFn(), timer)
-          } else local[`${_name}-timer`] = setTimeout(myFn, timer)
+            view[`${_name}-timer`] = setInterval(() => myFn(), timer)
+          } else view[`${_name}-timer`] = setTimeout(myFn, timer)
 
         } else {
 

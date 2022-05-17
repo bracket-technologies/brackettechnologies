@@ -1,11 +1,11 @@
 module.exports = {
   toStyle: ({ _window, id }) => {
 
-    var local = _window ? _window.children[id] : window.children[id]
+    var view = _window ? _window.views[id] : window.views[id]
     var style = ""
 
-    if (local.style) {
-      Object.entries(local.style).map(([k, v]) => {
+    if (view.style) {
+      Object.entries(view.style).map(([k, v]) => {
         if (k === "after" || k.includes(">>")) return;
         else if (k === "userSelect") k = "user-select";
         else if (k === "inlineSize") k = "inline-size";

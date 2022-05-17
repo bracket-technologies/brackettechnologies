@@ -5,32 +5,30 @@ const { setData } = require("./setData")
 
 const createData = ({ data, id }) => {
 
-  var local = window.children[id]
-  var global = window.global[id]
+  var view = window.views[id]
 
-  local.derivations.reduce((o, k, i) => {
+  view.derivations.reduce((o, k, i) => {
 
-    if (i === local.derivations.length - 1) return o[k] = data
+    if (i === view.derivations.length - 1) return o[k] = data
     return o[k]
 
-  }, global[local.Data])
+  }, global[view.Data])
 }
 
 const clearData = ({ id, e, clear = {} }) => {
 
-  var local = window.children[id]
-  var global = window.global
+  var view = window.views[id]
 
-  if (!global[local.Data]) return
+  if (!global[view.Data]) return
   
   var path = clear.path
-  path = path ? path.split(".") : clone(local.derivations)
+  path = path ? path.split(".") : clone(view.derivations)
   path.push('delete()')
   
-  reducer({ id, e, path, object: global[local.Data] })
+  reducer({ id, e, path, object: global[view.Data] })
 
   setContent({ id })
-  console.log("data removed", global[local.Data])
+  console.log("data removed", global[view.Data])
 }
 
 module.exports = { createData, setData, clearData }

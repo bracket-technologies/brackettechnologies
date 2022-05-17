@@ -2,18 +2,18 @@ const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
 
-  var local = window.children[id]
+  var view = window.views[id]
   var value = content.value !== undefined ? content.value : ""
 
   if (typeof value !== "string" && typeof value !== "number") return
 
   // not loaded yet
-  if (!local.element) return
+  if (!view.element) return
 
-  if (local.input && local.input.type === "radio" && value) local.element.checked = "checked"
-  else if (local.type === "Input" || local.type === "Textarea") local.element.value = value || ""
-  else if (local.type === "UploadInput") local.element.value = value || null
-  else if (local.type === "Text" || local.type === "Label" || local.type === "Header" ) local.element.innerHTML = value || ""
+  if (view.input && view.input.type === "radio" && value) view.element.checked = "checked"
+  else if (view.type === "Input" || view.type === "Textarea") view.element.value = value || ""
+  else if (view.type === "UploadInput") view.element.value = value || null
+  else if (view.type === "Text" || view.type === "Label" || view.type === "Header" ) view.element.innerHTML = value || ""
 
   isArabic({ id, value })
 }

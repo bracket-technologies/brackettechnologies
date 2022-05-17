@@ -1,6 +1,6 @@
 const blur = ({ id }) => {
 
-  var local = window.children[id]
+  var local = window.views[id]
   if (!local) return
 
   var isInput = local.type === "Input" || local.type === "Textarea"

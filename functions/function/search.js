@@ -7,7 +7,7 @@ module.exports = {
     search: async ({ id, e, ...params }) => {
         
         var search = params.search || {}
-        var local = window.children[id]
+        var view = window.views[id]
         var collection = search.collection || search.path || ""
         var headers = search.headers || {}
         headers.project = headers.project || global.projectId
@@ -24,7 +24,7 @@ module.exports = {
                 ...headers
             }
         })
-        local.search = clone(data)
+        view.search = clone(data)
         console.log(data)
         
         // await params

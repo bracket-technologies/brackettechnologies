@@ -4,18 +4,17 @@ const { reducer } = require("./reducer")
 
 const remove = ({ remove: _remove, id }) => {
 
-  var local = window.children[id]
-  var global = window.global
+  var view = window.views[id]
 
   _remove = _remove || {}
   var path = _remove.path, keys = []
 
   if (path) keys = path
-  else keys = clone(local.derivations) || []
+  else keys = clone(view.derivations) || []
   
   if (!_remove.onlyChild && keys.length > 0 && !_remove.keepData) {
 
-    keys.unshift(local.Data)
+    keys.unshift(view.Data)
     keys.unshift("global()")
     keys.push("delete()")
 
@@ -26,43 +25,43 @@ const remove = ({ remove: _remove, id }) => {
 
   if (keys.length === 0) {
 
-    local.element.remove()
-    delete window.children[id]
+    view.element.remove()
+    delete window.views[id]
     return
   }
 
   // reset length and derivations
   var nextSibling = false
-  var children = [...window.children[local.parent].element.children]
-  var index = local.derivations.length - 1
+  var children = [...window.views[view.parent].element.children]
+  var index = view.derivations.length - 1
 
   children.map((child) => {
 
     var id = child.id
-    window.children[id].length -= 1
+    window.views[id].length -= 1
 
     // derivation in array of next siblings must decrease by 1
     if (nextSibling) resetDerivations({ id, index })
 
-    if (id === local.id) {
+    if (id === view.id) {
       nextSibling = true
-      local.element.remove()
-      delete window.children[id]
+      view.element.remove()
+      delete window.views[id]
     }
   })
 }
 
 const resetDerivations = ({ id, index }) => {
 
-  var value = window.children
-  var local = value[id]
+  var views = window.views
+  var view = views[id]
 
-  if (!local) return
-  if (isNaN(local.derivations[index])) return
+  if (!view) return
+  if (isNaN(view.derivations[index])) return
 
-  local.derivations[index] -= 1
+  view.derivations[index] -= 1
 
-  var children = [...local.element.children]
+  var children = [...view.element.children]
   children.map((child) => resetDerivations({ id: child.id, index }) )
 }
 

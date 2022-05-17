@@ -5,7 +5,7 @@ const { toAwait } = require("./toAwait")
 const erase = async ({ id, e, ...params }) => {
 
   var erase = params.erase || {}
-  var local = window.children[id]
+  var view = window.views[id]
   var collection = erase.collection = erase.collection || erase.path
   var headers = erase.headers || {}
   headers.project = headers.project || global.projectId
@@ -28,7 +28,7 @@ const erase = async ({ id, e, ...params }) => {
     }
   })
 
-  local.erase = data
+  view.erase = data
   console.log(data)
 
   toAwait({ id, e, params })

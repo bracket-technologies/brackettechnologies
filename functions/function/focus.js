@@ -1,24 +1,24 @@
 const focus = ({ id }) => {
 
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
 
-  var isInput = local.type === "Input" || local.type === "Textarea"
-  if (isInput) local.element.focus()
+  var isInput = view.type === "Input" || view.type === "Textarea"
+  if (isInput) view.element.focus()
   else {
-    if (local.element) {
-      let childElements = local.element.getElementsByTagName("INPUT")
+    if (view.element) {
+      let childElements = view.element.getElementsByTagName("INPUT")
       if (childElements.length === 0) {
-        childElements = local.element.getElementsByTagName("TEXTAREA")
+        childElements = view.element.getElementsByTagName("TEXTAREA")
       }
       if (childElements.length > 0) {
         childElements[0].focus()
 
-        var _local = window.children[childElements[0].id]
+        var _view = window.views[childElements[0].id]
         // focus to the end of input
-        var value = _local.element.value
-        _local.element.value = ""
-        _local.element.value = value
+        var value = _view.element.value
+        _view.element.value = ""
+        _view.element.value = value
 
         return
       }
@@ -26,9 +26,9 @@ const focus = ({ id }) => {
   }
 
   // focus to the end of input
-  var value = local.element.value
-  local.element.value = ""
-  local.element.value = value
+  var value = view.element.value
+  view.element.value = ""
+  view.element.value = value
 }
 
 module.exports = {focus}

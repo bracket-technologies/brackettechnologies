@@ -1,6 +1,6 @@
 module.exports = ({ controls, id }) => {
 
-    var local = window.children[id]
+    var local = window.views[id]
     var _id = controls.id || id
     
     local.click.sticky = local.click.sticky ? true : false

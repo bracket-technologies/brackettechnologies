@@ -8,17 +8,17 @@ const { controls } = require("./controls")
 
 const update = ({ id, update = {} }) => {
 
-  var value = window.children
+  var views = window.views
   var global = window.global
-  var local = value[id]
+  var view = views[id]
   var timer = update.timer || 0
   
-  if (!local || !local.element) return
+  if (!view || !view.element) return
 
   // children
-  var children = clone(toArray(local.children))
+  var children = clone(toArray(view.children))
   
-  // remove id from VALUE
+  // remove id from views
   removeChildren({ id })
 
   // reset children for root
@@ -36,40 +36,40 @@ const update = ({ id, update = {} }) => {
   .map((child, index) => {
 
     var id = child.id || generate()
-    value[id] = child
-    value[id].id = id
-    value[id].index = index
-    value[id].parent = local.id
-    value[id].style = value[id].style || {}
-    value[id].style.opacity = "0"
-    if (timer) value[id].style.transition = `opacity ${timer}ms`
+    views[id] = child
+    views[id].id = id
+    views[id].index = index
+    views[id].parent = view.id
+    views[id].style = views[id].style || {}
+    views[id].style.opacity = "0"
+    if (timer) views[id].style.transition = `opacity ${timer}ms`
     
     return createElement({ id })
 
   }).join("")
   
-  local.element.innerHTML = ""
-  local.element.innerHTML = innerHTML
+  view.element.innerHTML = ""
+  view.element.innerHTML = innerHTML
 
   var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   
   idList.map(id => setElement({ id }))
   idList.map(id => starter({ id }))
   
-  var children = [...local.element.children]
+  var children = [...view.element.children]
   if (timer) setTimeout(() => {
       children.map(el => {
         
-        value[el.id].style.opacity = value[el.id].element.style.opacity = "1"
+        views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
       })
     }, 0)
   else children.map(el => {
     
-    value[el.id].style.opacity = value[el.id].element.style.opacity = "1"
+    views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
   })
   
   setTimeout(() => {
-    idList.filter(id => value[id].type === "Icon").map(id => value[id]).map(map => {
+    idList.filter(id => views[id].type === "Icon").map(id => views[id]).map(map => {
       map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
       map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })
@@ -78,25 +78,25 @@ const update = ({ id, update = {} }) => {
 
 const removeChildren = ({ id }) => {
 
-  var value = window.children
-  var local = value[id]
+  var views = window.views
+  var view = views[id]
 
-  //if (!local.element && id !== "root") return delete value[id]
-  var children = [...local.element.children]
+  //if (!view.element && id !== "root") return delete views[id]
+  var children = [...view.element.children]
 
   children.map((child) => {
 
     var id = child.id
-    if (!value[id]) return
+    if (!views[id]) return
 
     // clear time out
-    Object.entries(value[id]).map(([k, v]) => {
+    Object.entries(views[id]).map(([k, v]) => {
 
       if (k.includes("-timer")) clearTimeout(v)
     })
 
     removeChildren({ id })
-    delete value[id]
+    delete views[id]
   })
 }
 

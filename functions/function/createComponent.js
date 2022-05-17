@@ -2,7 +2,6 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
-// const { override } = require("./merge")
 
 const component = require("../component/component")
 const { toCode } = require("./toCode")
@@ -10,52 +9,50 @@ const { toCode } = require("./toCode")
 module.exports = {
   createComponent: ({ _window, id, req, res }) => {
     
-    var value = _window ? _window.children : window.children
+    var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
-    var local = value[id], parent = local.parent
+    var view = views[id], parent = view.parent
 
-    if (!component[local.type]) return
-    value[id] = local = component[local.type](local)
+    if (!component[view.type]) return
+    views[id] = view = component[view.type](view)
 
     // destructure type, params, & conditions from type
-    local.type = toCode({ _window, id, string: local.type })
+    view.type = toCode({ _window, id, string: view.type })
 
     // 'string'
-    if (local.type.split("'").length > 2) local.type = toCode({ _window, string: local.type, start: "'", end: "'" })
+    if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
     
-    var type = local.type.split("?")[0]
-    var params = local.type.split("?")[1]
-    var conditions = local.type.split("?")[2]
+    var type = view.type.split("?")[0]
+    var params = view.type.split("?")[1]
+    var conditions = view.type.split("?")[2]
 
     // type
-    local.type = type
-    local.parent = parent
+    view.type = type
+    view.parent = parent
 
     // approval
     var approved = toApproval({ _window, string: conditions, id, req, res })
     if (!approved) return
 
-    // push destructured params from type to local
+    // push destructured params from type to view
     if (params) {
       
       params = toParam({ _window, string: params, id, req, res, mount: true })
-      // value[id] = local = override(local, params)
+      // views[id] = view = override(view, params)
 
       if (params.id) {
         
-        delete Object.assign(value, { [params.id]: value[id] })[id]
+        delete Object.assign(views, { [params.id]: views[id] })[id]
         id = params.id
       }
       
-      if (params.data && (!local.Data || params.Data)) {
+      if (params.data && (!view.Data || params.Data)) {
 
-        local.Data = local.Data || generate()
-        var state = local.Data
-        global[state] = clone(local.data || global[state])
+        view.Data = view.Data || generate()
+        var state = view.Data
+        global[state] = clone(view.data || global[state])
         global[`${state}-options`] = global[`${state}-options`] || {}
       }
     }
-
-    // value[id] = local
   }
 }

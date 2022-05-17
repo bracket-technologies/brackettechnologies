@@ -4,7 +4,7 @@ const { toAwait } = require("./toAwait")
 const upload = async ({ id, e, ...params }) => {
         
   var upload = params.upload
-  var local = window.children[id]
+  var view = window.views[id]
   var collection = upload.collection = upload.collection || upload.path
 
   var headers = clone(upload.headers) || {}
@@ -35,7 +35,7 @@ const upload = async ({ id, e, ...params }) => {
     }
   })
 
-  local.upload = data
+  view.upload = data
   console.log(data)
 
   // await params
@@ -61,18 +61,18 @@ module.exports = {
     upload: async ({ id, e, upload = {}, ...params }) => {
 
         var global = window.global
-        var value = window.children
-        var local = value[id]
+        var value = window.views
+        var view = value[id]
         var storage = global.storage
         
         upload.save = upload.save !== undefined ? upload.save : true
         
-        await storage.child(`images/${local.file.fileName}.${local.file.fileType}`).put(local.file.src)
-        await storage.child(`images/${local.file.fileName}.${local.file.fileType}`).getDownloadURL().then(url => local.file.url = url)
+        await storage.child(`images/${view.file.fileName}.${view.file.fileType}`).put(view.file.src)
+        await storage.child(`images/${view.file.fileName}.${view.file.fileType}`).getDownloadURL().then(url => view.file.url = url)
         
-        local.file.id = `${local.file.fileName}.${local.file.fileType}`
+        view.file.id = `${view.file.fileName}.${view.file.fileType}`
         var _save = { path: "image", data: {
-            "creation-date": new Date().getTime() + 10800000 + "", name: `${local.file.fileName}.${local.file.fileType}`, id: `${local.file.fileName}.${local.file.fileType}`, url: local.file.url, description: `${capitalize(local.file.fileName.split('-')[0])} Image`, active: true
+            "creation-date": new Date().getTime() + 10800000 + "", name: `${view.file.fileName}.${view.file.fileType}`, id: `${view.file.fileName}.${view.file.fileType}`, url: view.file.url, description: `${capitalize(view.file.fileName.split('-')[0])} Image`, active: true
         }}
 
         upload.save && await save({ ...params, save: _save, id, e })

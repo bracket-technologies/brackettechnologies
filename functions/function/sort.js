@@ -4,11 +4,10 @@ const { toNumber } = require("./toNumber")
 
 const sort = ({ sort = {}, id, e }) => {
 
-  var global = window.global
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
 
-  var Data = sort.Data || local.Data
+  var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
 

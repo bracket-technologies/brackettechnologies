@@ -2,10 +2,10 @@ const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
 
-  var value = window.children
-  var note = value["action-note"]
+  var views = window.views
+  var note = views["action-note"]
   var type = _note.type || "success"
-  var noteText = value["action-note-text"]
+  var noteText = views["action-note-text"]
   var backgroundColor = type === "success" 
   ? "#2FB886" : type === "danger" 
   ? "#F66358" : type === "info"

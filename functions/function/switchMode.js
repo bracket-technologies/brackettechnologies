@@ -4,15 +4,15 @@ const { clone } = require("./clone")
 
 const switchMode = ({ mode, _id = "body" }) => {
 
-    var value = window.children
-    var children = [...value[_id].element.children]
+    var view = window.views
+    var children = [...view[_id].element.children]
 
     mode = mode.toLowerCase()
     if (mode === window.global.mode.toLowerCase()) return
 
     children.map(el => {
         
-        var local = value[el.id], style = {}
+        var local = view[el.id], style = {}
         if (!local) return
             
         if (local.mode) {
@@ -56,7 +56,7 @@ const switchMode = ({ mode, _id = "body" }) => {
         switchMode({ _id: el.id, mode })
     })
 
-    // set global mode value
+    // set global mode view
     if (_id === "body") window.global.mode = capitalize(mode)
 }
 

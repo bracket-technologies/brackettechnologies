@@ -30,7 +30,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     if (!approval) return false
 
     id = mainId
-    var local = _window ? _window.children[id] : window.children[id] || {}
+    var local = _window ? _window.views[id] : window.views[id] || {}
 
     if (condition.includes("#()")) {
       local["#"] = toArray(local["#"])

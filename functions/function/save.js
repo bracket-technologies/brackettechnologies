@@ -5,7 +5,7 @@ const { toAwait } = require("./toAwait")
 const save = async ({ id, e, ...params }) => {
 
   var save = params.save || {}
-  var local = window.children[id]
+  var local = window.views[id]
   var collection = save.collection = save.collection || save.path
   var _data = clone(save.data)
   var headers = clone(save.headers) || {}

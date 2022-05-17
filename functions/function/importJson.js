@@ -10,7 +10,6 @@ const getJson = (url) => {
 
 const importJson = ({ id, e, ...params }) => {
     
-    var global = window.global
     global.import = {}
     var inputEl = document.createElement('input')
     inputEl.style.position = "absolute"

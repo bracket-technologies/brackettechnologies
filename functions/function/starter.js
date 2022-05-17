@@ -10,11 +10,11 @@ const starter = ({ id }) => {
   const { controls } = require("./controls")
   const { defaultInputHandler } = require("./defaultInputHandler")
 
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
   
   // status
-  local.status = "Mounting Functions"
+  view.status = "Mounting Functions"
 
   /* Defaults must start before controls */
   
@@ -25,21 +25,21 @@ const starter = ({ id }) => {
   defaultInputHandler({ id })
   
   // on loaded image
-  // if (local.type === 'Image') local.element.src = local.src
+  // if (view.type === 'Image') view.element.src = view.src
 
   /* End of default handlers */
 
   // resize
-  if (local.type === "Input") resize({ id })
+  if (view.type === "Input") resize({ id })
 
   // lunch auto controls
   Object.entries(control).map(([type, control]) => {
 
-    if (local[type]) {
+    if (view[type]) {
       
-      local.controls = toArray(local.controls)
-      var _controls = control({ id, controls: local[type] })
-      _controls && local.controls.push(..._controls)
+      view.controls = toArray(view.controls)
+      var _controls = control({ id, controls: view[type] })
+      _controls && view.controls.push(..._controls)
     }
   })
 
@@ -47,9 +47,9 @@ const starter = ({ id }) => {
   defaultEventHandler({ id })
   
   // execute controls
-  if (local.controls) controls({ id })
+  if (view.controls) controls({ id })
 
-  local.status = "Mounted"
+  view.status = "Mounted"
 }
 
 module.exports = { starter }

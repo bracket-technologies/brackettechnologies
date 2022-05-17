@@ -1,24 +1,24 @@
 const resize = ({ id }) => {
 
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
   
-  if (local.type !== "Input") return
+  if (view.type !== "Input") return
 
   var results = dimensions({ id })
   
   // for width
-  var width = local.style.width
-  if (width === "fit-content" && local.element) {
-    local.element.style.width = results.width + "px"
-    local.element.style.minWidth = results.width + "px"
+  var width = view.style.width
+  if (width === "fit-content" && view.element) {
+    view.element.style.width = results.width + "px"
+    view.element.style.minWidth = results.width + "px"
   }
 
   // for height
-  var height = local.style.height
-  if (height === "fit-content" && local.element) {
-    local.element.style.height = results.height + "px"
-    local.element.style.minHeight = results.height + "px"
+  var height = view.style.height
+  if (height === "fit-content" && view.element) {
+    view.element.style.height = results.height + "px"
+    view.element.style.minHeight = results.height + "px"
   }
 }
 
@@ -27,14 +27,14 @@ const english = /[a-zA-Z]/
 
 const dimensions = ({ id, text }) => {
 
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
 
   var lDiv = document.createElement("div")
   document.body.appendChild(lDiv)
 
-  var pStyle = local.style
-  var pText = text || (local.type === "Input" && local.element && local.element.value) || "A"
+  var pStyle = view.style
+  var pText = text || (view.type === "Input" && view.element && view.element.value) || "A"
   if (pText.includes("<") || pText.includes(">")) pText = pText.split("<").join("&lt;").split(">").join("&gt;")
   
   if (pStyle != null) lDiv.style = pStyle
@@ -66,7 +66,7 @@ const dimensions = ({ id, text }) => {
   lDiv.innerHTML = pText
 
   if (pStyle.width === "100%")
-  lDiv.style.width = (local.element ? local.element.clientWidth : lDiv.style.width) + "px"
+  lDiv.style.width = (view.element ? view.element.clientWidth : lDiv.style.width) + "px"
   
   lDiv.style.width = lDiv.clientWidth + 2 + "px"
 

@@ -3,15 +3,15 @@ const {update} = require("./update")
 
 const popup = ({ id }) => {
   
-  var local = window.children[id]
-  var popup = window.children["popup"]
-  var popUp = local.popup
+  var view = window.views[id]
+  var popup = window.views["popup"]
+  var popUp = view.popup
   var _controls = popUp.controls
   popup.positioner = id
 
   /*
-  popup.Data = local.Data
-  popup.derivations = local.derivations
+  popup.Data = view.Data
+  popup.derivations = view.derivations
   popup.unDeriveData = true
   */
 
@@ -31,11 +31,11 @@ const popup = ({ id }) => {
 
     // caller
     popup.caller = id
-    // window.children["popup-text"].caller = id
-    window.children["popup-confirm"].caller = id
-    window.children["popup-cancel"].caller = id
+    // window.views["popup-text"].caller = id
+    window.views["popup-confirm"].caller = id
+    window.views["popup-cancel"].caller = id
 
-    if (popUp.text) window.children["popup-text"].element.innerHTML = popUp.text
+    if (popUp.text) window.views["popup-text"].element.innerHTML = popUp.text
     controls({ controls: _controls, id: "popup-confirm" })
 
   }, 50)

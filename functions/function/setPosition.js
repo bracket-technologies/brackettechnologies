@@ -1,6 +1,6 @@
 const setPosition = ({ position, id, e }) => {
   
-  var value = window.children
+  var value = window.views
   var leftDeviation = position.left
   var topDeviation = position.top
   var align = position.align

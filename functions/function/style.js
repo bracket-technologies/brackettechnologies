@@ -3,8 +3,8 @@ const { toArray } = require("./toArray")
 
 const setStyle = ({ id, style = {} }) => {
 
-  var local = window.children[id]
-  local.style = local.style || {}
+  var view = window.views[id]
+  view.style = view.style || {}
   
   Object.entries(style).map(([key, value]) => {
 
@@ -22,7 +22,7 @@ const setStyle = ({ id, style = {} }) => {
       if (value) {
 
         if (value === "available-width") {
-          var left = local.element.getBoundingClientRect().left
+          var left = view.element.getBoundingClientRect().left
           var tWidth = window.innerWidth
           if (left) {
             value = (tWidth - left) + "px"
@@ -34,7 +34,7 @@ const setStyle = ({ id, style = {} }) => {
         } else if (value === "width" || value.includes("width/")) {
 
           var divide = value.split("/")[1]
-          value = local.element.clientWidth
+          value = view.element.clientWidth
           if (divide) value = value / parseFloat(divide)
 
           value += "px"
@@ -42,25 +42,25 @@ const setStyle = ({ id, style = {} }) => {
         } else if (value === "height" || value.includes("height/")) {
 
           var divide = value.split("/")[1]
-          value = local.element.clientHeight
+          value = view.element.clientHeight
           if (divide) value = value / parseFloat(divide)
 
           value += "px"
 
         } else if (key === "left" && value === "center") {
 
-          var width = local.element.offsetWidth
-          var parentWidth = window.children[local.parent].element.clientWidth
+          var width = view.element.offsetWidth
+          var parentWidth = window.views[view.parent].element.clientWidth
 
           value = parentWidth / 2 - width / 2 + "px"
         }
       }
 
-      if (local.element) local.element.style[key] = value
-      else local.style[key] = value
+      if (view.element) view.element.style[key] = value
+      else view.style[key] = value
     }
 
-    if (timer) local[`${key}-timer`] = setTimeout(style, timer)
+    if (timer) view[`${key}-timer`] = setTimeout(style, timer)
     else style()
 
     // resize
@@ -70,11 +70,11 @@ const setStyle = ({ id, style = {} }) => {
 
 const resetStyles = ({ id, style = {} }) => {
 
-  var local = window.children[id]
-  local.afterStylesMounted = false
+  var view = window.views[id]
+  view.afterStylesMounted = false
 
-  Object.entries({...local.style.after, ...(local.hover && local.hover.style || {})}).map(([key]) => {
-    if (local.style[key] !== undefined) style[key] = local.style[key]
+  Object.entries({...view.style.after, ...(view.hover && view.hover.style || {})}).map(([key]) => {
+    if (view.style[key] !== undefined) style[key] = view.style[key]
     else style[key] = null
   })
   
@@ -83,19 +83,19 @@ const resetStyles = ({ id, style = {} }) => {
 
 const toggleStyles = ({ id }) => {
 
-  var local = window.children[id]
-  if (local.afterStylesMounted) resetStyles({ id, style })
+  var view = window.views[id]
+  if (view.afterStylesMounted) resetStyles({ id, style })
   else mountAfterStyles({ id })
 }
 
 const mountAfterStyles = ({ id }) => {
 
-  var local = window.children[id]
-  if (!local.style || !local.style.after) return
+  var view = window.views[id]
+  if (!view.style || !view.style.after) return
 
-  local.afterStylesMounted = true
+  view.afterStylesMounted = true
 
-  Object.entries(local.style.after).map(([key, value]) => {
+  Object.entries(view.style.after).map(([key, value]) => {
 
     var timer = 0
     value = value + ""
@@ -104,15 +104,15 @@ const mountAfterStyles = ({ id }) => {
       value = value.split(">>")[0]
     }
 
-    var myFn = () => local.element.style[key] = value
+    var myFn = () => view.element.style[key] = value
 
-    if (timer) local[`${key}-timer`] = setTimeout(myFn, timer)
+    if (timer) view[`${key}-timer`] = setTimeout(myFn, timer)
     else {
 
-      if (local.element) myFn()
+      if (view.element) myFn()
       else {
-        local.controls = toArray(local.controls)
-        local.controls.push({
+        view.controls = toArray(view.controls)
+        view.controls.push({
           event: `loaded?().element.style.${key}=${value}`
         })
       }

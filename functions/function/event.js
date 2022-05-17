@@ -15,11 +15,11 @@ const events = [
   "touchend"
 ]
 
-const addEventListener = ({ _window, controls, id, req, res, params }) => {
+const addEventListener = ({ _window, controls, id, req, res }) => {
   
   const { execute } = require("./execute")
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var view = _window ? _window.views[id] : window.views[id]
   var mainID = id
 
   var events = toCode({ _window, id, string: controls.event })
@@ -32,10 +32,10 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   // droplist
   var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
-  if (droplist && local.droplist) {
+  if (droplist && view.droplist) {
     
-    local.droplist.controls = local.droplist.controls || []
-    return local.droplist.controls.push({
+    view.droplist.controls = view.droplist.controls || []
+    return view.droplist.controls.push({
       event: events.join("?").replace("droplist()", ""),
       actions: controls.actions
     })
@@ -43,10 +43,10 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   // actionlist
   var actionlist = (events[1] || "").split(";").find(param => param === "actionlist()")
-  if (actionlist && local.actionlist) {
+  if (actionlist && view.actionlist) {
     
-    local.actionlist.controls = local.actionlist.controls || []
-    return local.actionlist.controls.push({
+    view.actionlist.controls = view.actionlist.controls || []
+    return view.actionlist.controls.push({
       event: events.join("?").replace("actionlist()", ""),
       actions: controls.actions
     })
@@ -54,12 +54,12 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   // popup
   var popup = (events[1] || "").split(";").find(param => param === "popup()")
-  if (popup && local.popup) {
+  if (popup && view.popup) {
     
-    local.popup = typeof local.popup === "object" ? local.popup : {}
-    local.popup.controls = local.popup.controls || []
+    view.popup = typeof view.popup === "object" ? view.popup : {}
+    view.popup.controls = view.popup.controls || []
 
-    return local.popup.controls.push({
+    return view.popup.controls.push({
       event: events.join("?").replace("popup()", ""),
       actions: controls.actions
     })
@@ -71,8 +71,8 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
     if (event.slice(0, 7) === "coded()") {
       event = global.codes[event]
       if (event.includes("?")) {
-        var localEventConditions = event.split("?")[2]
-        var localEventParams = event.split("?")[1]
+        var viewEventConditions = event.split("?")[2]
+        var viewEventParams = event.split("?")[1]
         event = event.split("?")[0]
       }
     }
@@ -91,14 +91,14 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
     // event
     event = event.split(":")[0]
 
-    if (!event || !local) return
-    clearTimeout(local[`${event}-timer`])
+    if (!event || !view) return
+    clearTimeout(view[`${event}-timer`])
 
     // add event listener
     toArray(idList).map(id => {
 
-      var _local = _window ? _window.children[id] : window.children[id]
-      if (!_local) return
+      var _view = _window ? _window.views[id] : window.views[id]
+      if (!_view) return
 
       var myFn = (e) => {
 
@@ -108,8 +108,8 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
           if (id === "body") id = mainID
           
           // approval
-          if (localEventConditions) {
-            var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+          if (viewEventConditions) {
+            var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
             if (!approved) return
           }
           
@@ -124,7 +124,7 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
           await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true, eventParams: true })
           
           // approval
-          if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
+          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
           // execute
           if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
@@ -132,27 +132,27 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
       }
       
       // onload event
-      if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _local.element })
+      if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _view.element })
 
       var myFn1 = (e) => {
         
-        local[`${event}-timer`] = setTimeout(async () => {
+        view[`${event}-timer`] = setTimeout(async () => {
 
           // body
           if (id === "body") id = mainID
-          var __local = _window ? _window.children[id] : window.children[id]
+          var __view = _window ? _window.views[id] : window.views[id]
 
           if (once) e.target.removeEventListener(event, myFn)
 
           // VALUE[id] doesnot exist
-          if (!__local) {
+          if (!__view) {
             if (e.target) e.target.removeEventListener(event, myFn)
             return 
           }
         
           // approval
-          if (localEventConditions) {
-            var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+          if (viewEventConditions) {
+            var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
             if (!approved) return
           }
           
@@ -164,72 +164,72 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
           await toParam({ string: events[1], e, id: mainID, mount: true, eventParams: true })
         
           // approval
-          if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
+          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
           if (controls.actions) await execute({ controls, e, id: mainID })
         }, timer)
       }
       
       // elements
-      _local.element.addEventListener(event, myFn1)
+      _view.element.addEventListener(event, myFn1)
     })
   })
 }
 
 const defaultEventHandler = ({ id }) => {
 
-  var local = window.children[id]
+  var view = window.views[id]
   var global = window.global
 
-  local.touchstart = false
-  local.mouseenter = false
-  local.mousedown = false
+  view.touchstart = false
+  view.mouseenter = false
+  view.mousedown = false
 
-  if (local.link) local.element.addEventListener("click", (e) => e.preventDefault())
+  if (view.link) view.element.addEventListener("click", (e) => e.preventDefault())
 
   // input
-  if (local.type === "Input") {
+  if (view.type === "Input") {
 
     // focus
     var setEventType = (e) => {
 
-      if (!window.children[id]) return e.target.removeEventListener("focus", setEventType)
-      local.focus = true
+      if (!window.views[id]) return e.target.removeEventListener("focus", setEventType)
+      view.focus = true
     }
 
-    local.element.addEventListener("focus", setEventType)
+    view.element.addEventListener("focus", setEventType)
 
     // blur
     var setEventType = (e) => {
 
-      if (!window.children[id]) return e.target.removeEventListener("blur", setEventType)
-      local.focus = false
+      if (!window.views[id]) return e.target.removeEventListener("blur", setEventType)
+      view.focus = false
     }
 
-    local.element.addEventListener("blur", setEventType)
+    view.element.addEventListener("blur", setEventType)
   }
 
   events.map((event) => {
 
     var setEventType = (e) => {
 
-      if (!window.children[id]) return e.target.removeEventListener(event, setEventType)
+      if (!window.views[id]) return e.target.removeEventListener(event, setEventType)
 
-      if (event === "mouseenter") local.mouseenter = true
-      else if (event === "mouseleave") local.mouseenter = false
+      if (event === "mouseenter") view.mouseenter = true
+      else if (event === "mouseleave") view.mouseenter = false
       else if (event === "mousedown") {
         
-        local.mousedown = true
-        window.children["tooltip"].element.style.opacity = "0"
+        view.mousedown = true
+        window.views["tooltip"].element.style.opacity = "0"
         clearTimeout(global["tooltip-timer"])
         delete global["tooltip-timer"]
 
-      } else if (event === "mouseup") local.mousedown = false
-      else if (event === "touchstart") local.touchstart = true
-      else if (event === "touchend") local.touchstart = false
+      } else if (event === "mouseup") view.mousedown = false
+      else if (event === "touchstart") view.touchstart = true
+      else if (event === "touchend") view.touchstart = false
     }
 
-    local.element.addEventListener(event, setEventType)
+    view.element.addEventListener(event, setEventType)
   })
 }
 

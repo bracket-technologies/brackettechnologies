@@ -5,7 +5,7 @@ const controls = ({ _window, controls, id, req, res }) => {
   const { addEventListener } = require("./event")
   const { watch } = require("./watch")
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var local = _window ? _window.views[id] : window.views[id]
 
   // controls coming from toControls action
   controls = controls || local.controls
@@ -20,7 +20,7 @@ const controls = ({ _window, controls, id, req, res }) => {
 
 const setControls = ({ id, params }) => {
 
-  var local = window.children[id]
+  var local = window.views[id]
   if (!local) return
 
   local.controls = toArray(local.controls)

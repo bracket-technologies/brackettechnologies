@@ -8,105 +8,98 @@ module.exports = {
 
     var { createElement } = require("./createElement")
 
-    var local = _window ? _window.children[id] : window.children[id]
+    // views
+    var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
+    var view = views[id]
     
     // innerHTML
-    var text = local.text !== undefined ? local.text.toString() : typeof local.data !== "object" ? local.data : ''
-    var innerHTML = local.type !== "View" ? text : ""
-    var checked = local.input && local.input.type === "radio" && parseFloat(local.data) === parseFloat(local.input.defaultValue)
+    var text = view.text !== undefined ? view.text.toString() : typeof view.data !== "object" ? view.data : ''
+    var innerHTML = view.type !== "View" ? text : ""
+    var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
     
-    // value
-    var value = _window ? _window.children : window.children
-
-    // format
-    // if (text && typeof text === "string") text = textFormating({ _window, text, id })
-    
-    innerHTML = toArray(local.children).map((child, index) => {
+    innerHTML = toArray(view.children).map((child, index) => {
 
       var id = child.id || generate()
-      value[id] = clone(child)
-      value[id].id = id
-      value[id].index = index
-      value[id].parent = local.id
+      views[id] = clone(child)
+      views[id].id = id
+      views[id].index = index
+      views[id].parent = view.id
       
       return createElement({ _window, id, req, res })
       
     }).join("\n")
     
-    var value = (local.input && local.input.value) !== undefined ?
-        local.input.value : local.data !== undefined ? local.data : ""
+    var value = (view.input && view.input.value) !== undefined ?
+        view.input.value : view.data !== undefined ? view.data : ""
 
     var tag, style = toStyle({ _window, id })
         
     if (typeof value === 'object') value = ''
     
-    if (local.type === "View") {
-      tag = `<div class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>\n${innerHTML}\n</div>`
-    } else if (local.type === "Image") {
-      tag = `<img class='${local.class}' alt='${local.alt || ''}' id='${local.id}' style='${style}' index='${local.index}' src='${local.src}'>${innerHTML}</img>`
-    } else if (local.type === "Table") {
-      tag = `<table class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>\n${innerHTML}\n</table>`
-    } else if (local.type === "Row") {
-      tag = `<tr class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</tr>`
-    } else if (local.type === "Header") {
-      tag = `<th class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</th>`
-    } else if (local.type === "Cell") {
-      tag = `<td class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</td>`
-    } else if (local.type === "Label") {
-      tag = `<label class='${local.class}' id='${local.id}' style='${style}' ${local["aria-label"] ? `aria-label="${local["aria-label"]}"` : ""} ${local.for ? `for="${local.for}"` : ""} index='${local.index}'>${innerHTML}</label>`
-    } else if (local.type === "Span") {
-      tag = `<span class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</span>`
-    } else if (local.type === "Text") {
-      if (local.label) {
-        tag = `<label class='${local.class}' id='${local.id}' style='${style}' ${local["aria-label"] ? `aria-label="${local["aria-label"]}"` : ""} ${local.for ? `for="${local.for}"` : ""} index='${local.index}'>${innerHTML}</label>`
-      } else if (local.h1) {
-        tag = `<h1 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h1>`
-      } else if (local.h2) {
-        tag = `<h2 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h2>`
-      } else if (local.h3) {
-        tag = `<h3 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h3>`
-      } else if (local.h4) {
-        tag = `<h4 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h4>`
-      } else if (local.h5) {
-        tag = `<h5 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h5>`
-      } else if (local.h6) {
-        tag = `<h6 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h6>`
-      } else if (local.span) {
-        tag = `<span class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</span>`
+    if (view.type === "View") {
+      tag = `<div class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML}\n</div>`
+    } else if (view.type === "Image") {
+      tag = `<img class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index}' src='${view.src}'>${innerHTML}</img>`
+    } else if (view.type === "Table") {
+      tag = `<table class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML}\n</table>`
+    } else if (view.type === "Row") {
+      tag = `<tr class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</tr>`
+    } else if (view.type === "Header") {
+      tag = `<th class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</th>`
+    } else if (view.type === "Cell") {
+      tag = `<td class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</td>`
+    } else if (view.type === "Label") {
+      tag = `<label class='${view.class}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index}'>${innerHTML}</label>`
+    } else if (view.type === "Span") {
+      tag = `<span class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</span>`
+    } else if (view.type === "Text") {
+      if (view.label) {
+        tag = `<label class='${view.class}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index}'>${innerHTML}</label>`
+      } else if (view.h1) {
+        tag = `<h1 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h1>`
+      } else if (view.h2) {
+        tag = `<h2 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h2>`
+      } else if (view.h3) {
+        tag = `<h3 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h3>`
+      } else if (view.h4) {
+        tag = `<h4 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h4>`
+      } else if (view.h5) {
+        tag = `<h5 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h5>`
+      } else if (view.h6) {
+        tag = `<h6 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h6>`
+      } else if (view.span) {
+        tag = `<span class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</span>`
       } else {
-        tag = `<p class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${text}</p>`
+        tag = `<p class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${text}</p>`
       }
-    } else if (local.type === "Icon") {
-      tag = `<i class='${local.outlined ? "material-icons-outlined" : local.rounded ? "material-icons-round" : local.sharp ? "material-icons-sharp" : local.filled ? "material-icons" : local.twoTone ? "material-icons-two-tone" : ""} ${local.class || ""} ${local.icon.name}' id='${local.id}' style='${style}; opacity:0; transition:.2s' index='${local.index}'>${local.google ? local.icon.name : ""}</i>`
-    } else if (local.type === "Textarea") {
-      tag = `<textarea class='${local.class}' id='${local.id}' style='${style}' placeholder='${local.placeholder || ""}' ${local.readonly ? "readonly" : ""} ${local.maxlength || ""} index='${local.index}'>${local.data || local.input.value || ""}</textarea>`
-    } else if (local.type === "Input") {
-      if (local.textarea) {
-        tag = `<textarea spellcheck='false' class='${local.class}' id='${local.id}' style='${style}' placeholder='${local.placeholder || ""}' ${local.readonly ? "readonly" : ""} ${local.maxlength || ""} index='${local.index}'>${value}</textarea>`
+    } else if (view.type === "Icon") {
+      tag = `<i class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}; opacity:0; transition:.2s' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
+    } else if (view.type === "Textarea") {
+      tag = `<textarea class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${view.data || view.input.value || ""}</textarea>`
+    } else if (view.type === "Input") {
+      if (view.textarea) {
+        tag = `<textarea spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${value}</textarea>`
       } else {
-        tag = `<input ${local["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${local.class}' id='${local.id}' style='${style}' ${local.input.name ? `name="${local.input.name}"` : ""} ${local.input.accept ? `accept="${local.input.accept}/*"` : ""} type='${local.input.type || "text"}' ${local.placeholder ? `placeholder="${local.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${local.readonly ? "readonly" : ""} ${local.input.min ? `min="${local.input.min}"` : ""} ${local.input.max ? `max="${local.input.max}"` : ""} ${local.input.defaultValue ? `defaultValue="${local.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${local.disabled ? "disabled" : ''} index='${local.index}'/>`
+        tag = `<input ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}/*"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index}'/>`
       }
-    } else if (local.type === "Paragraph") {
-      tag = `<textarea class='${local.class}' id='${local.id}' style='${style}' placeholder='${local.placeholder || ""}' index='${local.index}'>${text}</textarea>`
+    } else if (view.type === "Paragraph") {
+      tag = `<textarea class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index}'>${text}</textarea>`
     }
 
     // linkable
-    if (local.link) {
+    if (view.link) {
 
       var id = generate(), style = ''
-      if (_window) _window.children[id] = {}
-      else window.children[id] = {}
+      var _view = views[id]
+      views[id] = {}
 
-      var _local = _window ? _window.children[id] : window.children[id]
-
-      _local = { id, parent: local.id }
-      _local.style = local.link.style
-      if (_window) _window.children[id] = _local
-      else window.children[id] = _local
-      if (_local.style) style = toStyle({ _window, id })
+      _view = { id, parent: view.id }
+      _view.style = view.link.style
+      views[id] = _view
+      if (_view.style) style = toStyle({ _window, id })
       
-      tag = `<a id='${id}' href=${local.link.path || global.host} style='${style}' index='${local.index}'>${tag}</a>`
+      tag = `<a id='${id}' href=${view.link.path || global.host} style='${style}' index='${view.index}'>${tag}</a>`
     }
 
     return tag

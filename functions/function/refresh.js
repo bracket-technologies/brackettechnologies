@@ -8,13 +8,13 @@ const { removeChildren } = require("./update")
 
 const refresh = ({ id, update = {} }) => {
 
-  var value = window.children
-  var local = value[id]
+  var views = window.views
+  var view = views[id]
   var timer = update.timer || 0
   
-  if (!local || !local.element) return
-  var parent = value[local.parent]
-  var index = local.index
+  if (!view || !view.element) return
+  var parent = views[view.parent]
+  var index = view.index
 
   // children
   var children = clone(toArray(parent.children[index]))
@@ -22,25 +22,25 @@ const refresh = ({ id, update = {} }) => {
   // remove children
   removeChildren({ id })
 
-  ////// remove local
-  Object.entries(value[id]).map(([k, v]) => {
+  ////// remove view
+  Object.entries(views[id]).map(([k, v]) => {
 
     if (k.includes("-timer")) clearTimeout(v)
   })
-  delete value[id]
+  delete views[id]
   ///////
 
   var innerHTML = children
   .map(child => {
 
     var id = child.id || generate()
-    value[id] = child
-    value[id].id = id
-    value[id].index = index
-    value[id].parent = parent.id
-    value[id].style = value[id].style || {}
-    value[id].style.opacity = "0"
-    if (timer) value[id].style.transition = `opacity ${timer}ms`
+    views[id] = child
+    views[id].id = id
+    views[id].index = index
+    views[id].parent = parent.id
+    views[id].style = views[id].style || {}
+    views[id].style.opacity = "0"
+    if (timer) views[id].style.transition = `opacity ${timer}ms`
     
     return createElement({ id })
 
@@ -74,8 +74,8 @@ const refresh = ({ id, update = {} }) => {
     else return
   }).filter(child => child)
   
-  if (timer) setTimeout(() => _children.map(el => value[el.id].style.opacity = value[el.id].element.style.opacity = "1"), 0)
-  else _children.map(el => value[el.id].style.opacity = value[el.id].element.style.opacity = "1")
+  if (timer) setTimeout(() => _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1"), 0)
+  else _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1")
   
   if (lDiv) {
     document.body.removeChild(lDiv)

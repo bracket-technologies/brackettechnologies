@@ -1,46 +1,44 @@
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
-// const { generate } = require("./generate")
 
 const defaultInputHandler = ({ id }) => {
 
-  var local = window.children[id]
-  var global = window.global
+  var view = window.views[id]
 
-  if (!local) return
-  if (local.type !== "Input") return
+  if (!view) return
+  if (view.type !== "Input") return
 
   // checkbox input
-  if (local.input && local.input.type === "checkbox") {
+  if (view.input && view.input.type === "checkbox") {
 
-    if (local.data === true) local.element.checked = true
+    if (view.data === true) view.element.checked = true
 
     var myFn = (e) => {
 
-      // local doesnot exist
-      if (!window.children[id]) return e.target.removeEventListener("change", myFn)
+      // view doesnot exist
+      if (!window.views[id]) return e.target.removeEventListener("change", myFn)
 
       var data = e.target.checked
-      local.data = data
+      view.data = data
 
-      if (global[local.Data] && local.derivations[0] !== "") {
+      if (global[view.Data] && view.derivations[0] !== "") {
 
         // reset Data
         setData({ id, data })
       }
     }
 
-    return local.element.addEventListener("change", myFn)
+    return view.element.addEventListener("change", myFn)
   }
 
-  if (local.input && local.input.type === "number")
-  local.element.addEventListener("mousewheel", (e) => e.target.blur())
+  if (view.input && view.input.type === "number")
+  view.element.addEventListener("mousewheel", (e) => e.target.blur())
 
   // readonly
-  if (local.readonly) return
+  if (view.readonly) return
 
-  local.element.addEventListener("keydown", (e) => {
+  view.element.addEventListener("keydown", (e) => {
     if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
   })
   
@@ -50,41 +48,41 @@ const defaultInputHandler = ({ id }) => {
     var value = e.target.value
 
     // VAR[id] doesnot exist
-    if (!window.children[id]) {
+    if (!window.views[id]) {
       if (e.target) e.target.removeEventListener("input", myFn)
       return 
     }
     
     // map
-    if (local.preventDefault || local.input.preventDefault) {
+    if (view.preventDefault || view.input.preventDefault) {
       
-      if (e.data === "h" && e.target.selectionStart === 2 && value.charAt(0) === "c") local.element.value = value = "children"
-      else if (e.data === "o" && e.target.selectionStart === 2 && value.charAt(0) === "c") local.element.value = value = "controls"
-      else if (e.data === "y" && e.target.selectionStart === 2 && value.charAt(0) === "t") local.element.value = value = "type"
-      else if (e.data === "v" && e.target.selectionStart === 2 && value.charAt(0) === "e") local.element.value = value = "event"
-      else if (e.data === "a" && e.target.selectionStart === 2 && value.charAt(0) === "w") local.element.value = value = "watch"
+      if (e.data === "h" && e.target.selectionStart === 2 && value.charAt(0) === "c") view.element.value = value = "children"
+      else if (e.data === "o" && e.target.selectionStart === 2 && value.charAt(0) === "c") view.element.value = value = "controls"
+      else if (e.data === "y" && e.target.selectionStart === 2 && value.charAt(0) === "t") view.element.value = value = "type"
+      else if (e.data === "v" && e.target.selectionStart === 2 && value.charAt(0) === "e") view.element.value = value = "event"
+      else if (e.data === "a" && e.target.selectionStart === 2 && value.charAt(0) === "w") view.element.value = value = "watch"
     }
 
-    if (!local.preventDefault && !local.input.preventDefault) {
+    if (!view.preventDefault && !view.input.preventDefault) {
       
       // for number inputs, strings are rejected
-      if (local.input && local.input.type === "number") {
+      if (view.input && view.input.type === "number") {
 
         if (isNaN(value)) value = value.toString().slice(0, -1)
         if (!value) value = 0
         if (value.toString().charAt(0) === "0" && value.toString().length > 1) value = value.toString().slice(1)
-        if (local.input.min && local.input.min > parseFloat(value)) value = local.input.min
-        if (local.input.max && local.input.max < parseFloat(value)) value = local.input.max
+        if (view.input.min && view.input.min > parseFloat(value)) value = view.input.min
+        if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
         
         value = parseFloat(value)
-        local.input.value = value
+        view.input.value = value
       }
 
       // for uploads
-      if (local.input.type === "file") return global.upload = e.target.files
+      if (view.input.type === "file") return global.upload = e.target.files
 
       // contentfull
-      if (local.input.type === "text") {
+      if (view.input.type === "text") {
         
         if (e.data === "[") {
           var _prev = value.slice(0, e.target.selectionStart - 1)
@@ -98,23 +96,23 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = _prev + "()" + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
-        } else if (e.data === "T" && e.target.selectionStart === 1 && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Text?class=flexbox;text=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-        } else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Icon?class=flexbox;name=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-        } else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Input?style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
-        } else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Image?class=flexbox;src=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-        } else if (e.data === "V" && e.target.selectionStart === 1 && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "View?class=vertical;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
@@ -144,7 +142,7 @@ const defaultInputHandler = ({ id }) => {
         }
       }
 
-      if (local.Data && (local.input ? !local.input.preventDefault : true)) setData({ id, data: { value } })
+      if (view.Data && (view.input ? !view.input.preventDefault : true)) setData({ id, data: { value } })
     }
 
     // resize
@@ -153,10 +151,10 @@ const defaultInputHandler = ({ id }) => {
     // arabic values
     isArabic({ id, value })
     
-    if (!local.preventDefault && !local.input.preventDefault) console.log(value, global[local.Data], local.derivations)
+    console.log(value, global[view.Data], view.derivations)
   }
 
-  local.element.addEventListener("input", myFn)
+  view.element.addEventListener("input", myFn)
 }
 
 module.exports = { defaultInputHandler }

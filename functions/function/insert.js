@@ -10,36 +10,37 @@ module.exports = {
   insert: ({ id, insert }) => {
     
     var { index, value = {}, el, elementId, component, replace, path, data } = insert
-    var local = window.children[id], lDiv
+    var views = window.views
+    var view = views[id], lDiv
     
-    if (index === undefined) index = local.element.children.length
+    if (index === undefined) index = view.element.children.length
     
     if (component || replace) {
 
-      var _local = clone(component || replace)
+      var _view = clone(component || replace)
       
       // remove mapping
-      if (_local.type.slice(0, 1) === "[") {
-        var _type = _local.type.slice(1).split("]")[0]
-        _local.type = _type + _local.type.split("]").slice(1).join("]")
+      if (_view.type.slice(0, 1) === "[") {
+        var _type = _view.type.slice(1).split("]")[0]
+        _view.type = _type + _view.type.split("]").slice(1).join("]")
       }
       
-      if (data) _local.data = clone(data)
-      if (path) _local.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
+      if (data) _view.data = clone(data)
+      if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       
-      var innerHTML = toArray(_local)
+      var innerHTML = toArray(_view)
       .map((child, i) => {
 
         var id = child.id || generate()
-        window.children[id] = child
-        window.children[id].id = id
-        window.children[id].index = i
-        window.children[id].mapIndex = index
-        window.children[id].parent = local.id
-        window.children[id].style = window.children[id].style || {}
-        window.children[id].reservedStyles = toParam({ id, string: window.children[id].type.split("?")[1] || "" }).style || {}
-        window.children[id].style.transition = null
-        window.children[id].style.opacity = "0"
+        views[id] = child
+        views[id].id = id
+        views[id].index = i
+        views[id].mapIndex = index
+        views[id].parent = view.id
+        views[id].style = views[id].style || {}
+        views[id].reservedStyles = toParam({ id, string: views[id].type.split("?")[1] || "" }).style || {}
+        views[id].style.transition = null
+        views[id].style.opacity = "0"
         
         return createElement({ id })
 
@@ -54,29 +55,29 @@ module.exports = {
       lDiv.innerHTML = innerHTML
 
       el = lDiv.children[0]
-      window.children[el.id].parent = local.id
+      views[el.id].parent = view.id
 
     } else {
       
       elementId = elementId || value.id || el && el.id
-      el = el || value.el || window.children[elementId].el
+      el = el || value.el || views[elementId].el
     }
 
-    if (index >= local.element.children.length) local.element.appendChild(el)
-    else local.element.insertBefore(el, local.element.children[index])
+    if (index >= view.element.children.length) view.element.appendChild(el)
+    else view.element.insertBefore(el, view.element.children[index])
 
     var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
     
     idList.map(id => setElement({ id }))
     idList.map(id => starter({ id }))
 
-    window.children[el.id].style.transition = window.children[el.id].element.style.transition = window.children[el.id].reservedStyles.transition || null
-    window.children[el.id].style.opacity = window.children[el.id].element.style.opacity = window.children[el.id].reservedStyles.opacity || "1"
-    delete window.children[el.id].reservedStyles
-    local.insert = { map: window.children[el.id], message: "Map inserted succefully!", success: true }
+    views[el.id].style.transition = views[el.id].element.style.transition = views[el.id].reservedStyles.transition || null
+    views[el.id].style.opacity = views[el.id].element.style.opacity = views[el.id].reservedStyles.opacity || "1"
+    delete views[el.id].reservedStyles
+    view.insert = { map: views[el.id], message: "Map inserted succefully!", success: true }
     
     setTimeout(() => {
-      idList.filter(id => window.children[id].type === "Icon").map(id => window.children[id]).map(map => {
+      idList.filter(id => views[id].type === "Icon").map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })

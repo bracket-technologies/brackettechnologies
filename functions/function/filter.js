@@ -6,11 +6,10 @@ const { clone } = require("./clone")
 
 const filter = ({ filter = {}, id, e, ...params }) => {
 
-  var local = window.children[id]
-  var global = window.global
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
 
-  var Data = filter.Data || local.Data
+  var Data = filter.Data || view.Data
   var options = global[`${Data}-options`]
   if (!options) options = global[`${Data}-options`] = {}
 
@@ -54,7 +53,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
   }
   
   global[Data] = data
-  local.filter = { success: true, data }
+  view.filter = { success: true, data }
 }
 
 module.exports = {filter}

@@ -1,13 +1,11 @@
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
-const {setContent} = require("./setContent")
 
 const setData = ({ id, data }) => {
 
-  var local = window.children[id]
-  var global = window.global
+  var view = window.views[id]
 
-  if (!global[local.Data]) return
+  if (!global[view.Data]) return
 
   // defualt value
   var defValue = data.value
@@ -25,14 +23,14 @@ const setData = ({ id, data }) => {
   })
 
   // keys
-  var derivations = clone(local.derivations)
+  var derivations = clone(view.derivations)
   var keys = [...derivations, ...path]
   
   // set value
-  reducer({ id, object: global[local.Data], path: keys, value: defValue, key: true })
+  reducer({ id, object: global[view.Data], path: keys, value: defValue, key: true })
 /*
-  local.data = value
-  if (local.input && local.input.type === "file") return
+  view.data = value
+  if (view.input && view.input.type === "file") return
 
   // setContent
   var content = data.content || value

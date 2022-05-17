@@ -1,6 +1,6 @@
 module.exports = {
     contentful: ({ id }) => {
-        var local = window.children[id]
+        var local = window.views[id]
 
         local.element.addEventListener("keydown", (e => {
             

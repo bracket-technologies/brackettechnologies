@@ -3,9 +3,9 @@ const english = /[A-Za-z]/
 
 const isArabic = ({ id, value, text }) => {
 
-  var local = window.children[id]
-  if (!local || !local.element) return
-  text = text || value || local.element.value || local.element.innerHTML
+  var view = window.views[id]
+  if (!view || !view.element) return
+  text = text || value || view.element.value || view.element.innerHTML
   if (!text) return
 
   var isarabic = arabic.test(text)
@@ -13,17 +13,17 @@ const isArabic = ({ id, value, text }) => {
 
   if (isarabic && !isenglish) {
 
-    local.element.classList.add("arabic")
-    local.element.style.textAlign = "right"
-    if (local.type !== "Input") local.element.innerHTML = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
-    else local.element.value = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
-    if (local["placeholder-ar"]) local.element.placeholder = local["placeholder-ar"]
+    view.element.classList.add("arabic")
+    view.element.style.textAlign = "right"
+    if (view.type !== "Input") view.element.innerHTML = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+    else view.element.value = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+    if (view["placeholder-ar"]) view.element.placeholder = view["placeholder-ar"]
 
   } else {
 
-    if (local.element.className.includes("arabic")) local.element.style.textAlign = "left"
-    local.element.classList.remove("arabic")
-    if (local["placeholder"]) local.element.placeholder = local["placeholder"]
+    if (view.element.className.includes("arabic")) view.element.style.textAlign = "left"
+    view.element.classList.remove("arabic")
+    if (view["placeholder"]) view.element.placeholder = view["placeholder"]
 
   }
 

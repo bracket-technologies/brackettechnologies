@@ -13,11 +13,11 @@ var getJsonFiles = ({ search = {} }) => {
   path = `database/${collection}`
   
   // create folder if it doesnot exist
-  if (!fs.existsSync(path)) fs.mkdirSync(`${path}`)
+  if (!fs.existsSync(path)) return data
 
   if (doc) {
     
-    if (!fs.existsSync(`${path}/${doc}.json`)) fs.writeFileSync(`${path}/${doc}.json`, "{}")
+    if (!fs.existsSync(`${path}/${doc}.json`)) return data // fs.writeFileSync(`${path}/${doc}.json`, "{}")
     data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
 
   } else if (docs && docs.length > 0) {

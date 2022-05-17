@@ -5,7 +5,7 @@ const { generate } = require("./generate")
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement, asyncer, eventParams }) => {
   const { toApproval } = require("./toApproval")
 
-  var localId = id, mountDataUsed = false, mountPathUsed = false
+  var viewId = id, mountDataUsed = false, mountPathUsed = false
   var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
@@ -19,11 +19,11 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
   string.split(";").map(param => {
     
-    var key, value, id = localId
-    var local = _window ? _window.children[id] : window.children[id]
+    var key, value, id = viewId
+    var view = _window ? _window.views[id] : window.views[id]
 
     // break
-    if (params.break || local && local.break) return
+    if (params.break || view && view.break) return
 
     if (param.slice(0, 2) === "#:") return
     
@@ -79,8 +79,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.mouseenter = local.mouseenter || ""
-      return local.mouseenter += `${param};`
+      view.mouseenter = view.mouseenter || ""
+      return view.mouseenter += `${param};`
     }
 
     // mouseleave
@@ -88,8 +88,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.mouseleave = local.mouseleave || ""
-      return local.mouseleave += `${param};`
+      view.mouseleave = view.mouseleave || ""
+      return view.mouseleave += `${param};`
     }
 
     // mouseover
@@ -97,8 +97,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.mouseover = local.mouseover || ""
-      return local.mouseover += `${param};`
+      view.mouseover = view.mouseover || ""
+      return view.mouseover += `${param};`
     }
 
     // keyup
@@ -106,8 +106,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.keyup = local.keyup || ""
-      return local.keyup += `${param};`
+      view.keyup = view.keyup || ""
+      return view.keyup += `${param};`
     }
 
     // keydown
@@ -115,8 +115,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.keydown = local.keydown || ""
-      return local.keydown += `${param};`
+      view.keydown = view.keydown || ""
+      return view.keydown += `${param};`
     }
     
     if (value === undefined) value = generate()
@@ -125,7 +125,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     // condition not approved
     if (value === "*return*") return
 
-    id = localId
+    id = viewId
 
     var path = typeof key === "string" ? key.split(".") : [], timer
 
@@ -143,37 +143,37 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         if (timer) {
           
           timer = parseInt(timer)
-          clearTimeout(local[path.join(".")])
-          local[path.join(".")] = setTimeout(myFn, timer)
+          clearTimeout(view[path.join(".")])
+          view[path.join(".")] = setTimeout(myFn, timer)
 
         } else myFn()
 
       } else {
         
-        if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
+        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
         reducer({ _window, id, path, value, key, params, e, req, res, _, mount, object: params })
       }
       
     } else if (key) {
       
-      if (mount) local[key] = value
+      if (mount) view[key] = value
       params[key] = value
     }
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
     // mount data directly when found
-    if (createElement && mount && !mountDataUsed && ((params.data !== undefined && !local.Data) || params.Data || (local.data !== undefined && !local.Data))) {
+    if (createElement && mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view.data !== undefined && !view.Data))) {
 
       mountDataUsed = true
-      local.Data = local.Data || generate()
-      global[local.Data] = local.data = local.data !== undefined ? local.data : (global[local.Data] !== undefined ? global[local.Data] : {})
+      view.Data = view.Data || generate()
+      global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
 
       // duplicated element
-      if (local.duplicatedElement) {
+      if (view.duplicatedElement) {
 
-        delete local.path
-        delete local.data
+        delete view.path
+        delete view.data
       }
     }
   
@@ -183,16 +183,16 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       mountPathUsed = true
 
       // path & derivations
-      var path = (typeof local.path === "string" || typeof local.path === "number") ? local.path.toString().split(".") : []
+      var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : []
           
       if (path.length > 0) {
-        if (!local.Data) {
+        if (!view.Data) {
 
-          local.Data = generate()
-          global[local.Data] = local.data || {}
+          view.Data = generate()
+          global[view.Data] = view.data || {}
         }
 
-        local.derivations.push(...path)
+        view.derivations.push(...path)
       }
     }
   

@@ -3,19 +3,16 @@ const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
 const { getCookie } = require("../function/cookie")
 
-window.children = JSON.parse(document.getElementById("children").textContent)
-window.global = JSON.parse(document.getElementById("global").textContent)
-
-var value = window.children
-var global = window.global
+var views = window.views = JSON.parse(document.getElementById("views").textContent)
+var global = window.global = JSON.parse(document.getElementById("global").textContent)
 
 // access key
 global["access-key"] = getCookie({ name: "_key" })
 
-value.document = document
-value.document.element = document
-value.body.element = document.body
-value.window = { element: window }
+views.document = document
+views.document.element = document
+views.body.element = document.body
+// views.window = { element: window }
 
 // lunch arabic text
 var _ar = document.createElement("P")
@@ -23,14 +20,14 @@ _ar.innerHTML = "مرحبا"
 _ar.classList.add("ar")
 _ar.style.position = "absolute"
 _ar.style.top = "-1000px"
-value.body.element.appendChild(_ar)
+views.body.element.appendChild(_ar)
 
 history.pushState(null, global.data.page[global.currentPage].title, global.path)
 
 // clicked element
 document.addEventListener('click', e => {
 
-    global["clickedElement()"] = window.children[(e || window.event).target.id]
+    global["clickedElement()"] = views[(e || window.event).target.id]
     global.clickedElement = (e || window.event).target
     
 }, false)
@@ -40,7 +37,7 @@ global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
 global.idList.map(id => starter({ id }))
 
-var icons = global.idList.filter(id => value[id].type === "Icon").map(id => value[id])
+var icons = global.idList.filter(id => views[id].type === "Icon").map(id => views[id])
 window.onload = () => {
     icons.map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
@@ -48,8 +45,8 @@ window.onload = () => {
     })
 }
 
-Object.entries(window.children).map(([id, value]) => {
-    if (value.status === "Loading") delete window.children[id]
+Object.entries(views).map(([id, views]) => {
+    if (views.status === "Loading") delete views[id]
 })
 },{"../function/cookie":39,"../function/setElement":87,"../function/starter":90}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
@@ -830,7 +827,7 @@ module.exports = ({ controls, id }) => {
 },{}],10:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
-    var local = window.children[id]
+    var local = window.views[id]
     var _id = controls.id || id
     
     local.click.sticky = local.click.sticky ? true : false
@@ -857,7 +854,7 @@ module.exports = ({ controls, id }) => {
 },{}],11:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
-    var local = window.children[id]
+    var local = window.views[id]
     var _id = controls.id || id
     
     local.clicked.default = local.clicked.default || { style: {} }
@@ -903,7 +900,7 @@ module.exports = {
 },{"../function/contentful":37,"./actionlist":9,"./click":10,"./clicked":11,"./droplist":13,"./hover":14,"./hoverable":15,"./item":16,"./keydown":17,"./keyup":18,"./list":19,"./loaded":20,"./miniWindow":21,"./mininote":22,"./mouseenter":23,"./mouseleave":24,"./mouseover":25,"./popup":26,"./pricable":27,"./sorter":28,"./toggler":29,"./tooltip":30,"./touchableOpacity":31}],13:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
-  window.children[id].droplist.id = controls.id = id = controls.id || id
+  window.views[id].droplist.id = controls.id = id = controls.id || id
   
   return [{
     event: `click?if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
@@ -913,7 +910,7 @@ module.exports = ({ controls, id }) => {
 },{}],14:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
-    var local = window.children[id]
+    var local = window.views[id]
     var _id = controls.id || controls.controllerId || id
     
     local.hover.default = local.hover.default || { style: {} }
@@ -1000,7 +997,7 @@ const { toString } = require("../function/toString")
 module.exports = ({ id }) => {
     
     var params = ""
-    var local = window.children[id]
+    var local = window.views[id]
     
     Object.entries(local.loaded).map(([key, val]) => {
         if (key === "style") key = "style()"
@@ -1080,7 +1077,7 @@ module.exports = ({ controls, id }) => {
 },{}],27:[function(require,module,exports){
 module.exports = ({ id }) => {
     
-    var input_id = window.children[id].type === 'Input' ? id : `${id}-input`
+    var input_id = window.views[id].type === 'Input' ? id : `${id}-input`
     return [{
         "event": `input:${input_id}?():${input_id}.data()=():${input_id}.element.value().toPrice().else().0;():${input_id}.element.value=():${input_id}.data().else().0`
     }]
@@ -1130,9 +1127,9 @@ module.exports = ({ controls, id }) => {
 },{}],31:[function(require,module,exports){
 module.exports = ({ id }) => {
 
-  if (window.children[id].element.style.transition) {
-    window.children[id].element.style.transition += ", opacity .2s";
-  } else window.children[id].element.style.transition = "opacity .2s";
+  if (window.views[id].element.style.transition) {
+    window.views[id].element.style.transition += ", opacity .2s";
+  } else window.views[id].element.style.transition = "opacity .2s";
 
   return [{
     event: `mousedown?():body.element.addClass().unselectable`,
@@ -1152,7 +1149,7 @@ module.exports = ({ id }) => {
 },{}],32:[function(require,module,exports){
 const blur = ({ id }) => {
 
-  var local = window.children[id]
+  var local = window.views[id]
   if (!local) return
 
   var isInput = local.type === "Input" || local.type === "Textarea"
@@ -1298,7 +1295,7 @@ module.exports = {
 },{}],37:[function(require,module,exports){
 module.exports = {
     contentful: ({ id }) => {
-        var local = window.children[id]
+        var local = window.views[id]
 
         local.element.addEventListener("keydown", (e => {
             
@@ -1349,7 +1346,7 @@ const controls = ({ _window, controls, id, req, res }) => {
   const { addEventListener } = require("./event")
   const { watch } = require("./watch")
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var local = _window ? _window.views[id] : window.views[id]
 
   // controls coming from toControls action
   controls = controls || local.controls
@@ -1364,7 +1361,7 @@ const controls = ({ _window, controls, id, req, res }) => {
 
 const setControls = ({ id, params }) => {
 
-  var local = window.children[id]
+  var local = window.views[id]
   if (!local) return
 
   local.controls = toArray(local.controls)
@@ -1428,7 +1425,6 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
-// const { override } = require("./merge")
 
 const component = require("../component/component")
 const { toCode } = require("./toCode")
@@ -1436,53 +1432,51 @@ const { toCode } = require("./toCode")
 module.exports = {
   createComponent: ({ _window, id, req, res }) => {
     
-    var value = _window ? _window.children : window.children
+    var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
-    var local = value[id], parent = local.parent
+    var view = views[id], parent = view.parent
 
-    if (!component[local.type]) return
-    value[id] = local = component[local.type](local)
+    if (!component[view.type]) return
+    views[id] = view = component[view.type](view)
 
     // destructure type, params, & conditions from type
-    local.type = toCode({ _window, id, string: local.type })
+    view.type = toCode({ _window, id, string: view.type })
 
     // 'string'
-    if (local.type.split("'").length > 2) local.type = toCode({ _window, string: local.type, start: "'", end: "'" })
+    if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
     
-    var type = local.type.split("?")[0]
-    var params = local.type.split("?")[1]
-    var conditions = local.type.split("?")[2]
+    var type = view.type.split("?")[0]
+    var params = view.type.split("?")[1]
+    var conditions = view.type.split("?")[2]
 
     // type
-    local.type = type
-    local.parent = parent
+    view.type = type
+    view.parent = parent
 
     // approval
     var approved = toApproval({ _window, string: conditions, id, req, res })
     if (!approved) return
 
-    // push destructured params from type to local
+    // push destructured params from type to view
     if (params) {
       
       params = toParam({ _window, string: params, id, req, res, mount: true })
-      // value[id] = local = override(local, params)
+      // views[id] = view = override(view, params)
 
       if (params.id) {
         
-        delete Object.assign(value, { [params.id]: value[id] })[id]
+        delete Object.assign(views, { [params.id]: views[id] })[id]
         id = params.id
       }
       
-      if (params.data && (!local.Data || params.Data)) {
+      if (params.data && (!view.Data || params.Data)) {
 
-        local.Data = local.Data || generate()
-        var state = local.Data
-        global[state] = clone(local.data || global[state])
+        view.Data = view.Data || generate()
+        var state = view.Data
+        global[state] = clone(view.data || global[state])
         global[`${state}-options`] = global[`${state}-options`] || {}
       }
     }
-
-    // value[id] = local
   }
 }
 
@@ -1528,7 +1522,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         country: req.headers["x-country-code"]
     }
     
-    var children = {
+    var views = {
         body: { 
             id: "body" 
         },
@@ -1546,11 +1540,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         }
     }
 
-    var bracketDomains = [
-        "bracketjs.com",
-        "localhost",
-        "bracket.localhost"
-    ]
+    var bracketDomains = [ "bracketjs.com", "localhost", "bracket.localhost" ]
 
     // is brakcet domain
     var isBracket = bracketDomains.includes(host)
@@ -1558,7 +1548,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     console.log("Document started loading:");
     
     console.log("before project", new Date().getTime() - global.timer);
-
+    
     // get project
     if (isBracket) global.data.project = project = Object.values(getJsonFiles({ search: { collection: "_project_", fields: { domains: { "array-contains": host } } } }))[0]    
     else {
@@ -1587,7 +1577,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             global.data.user = user = Object.values(getJsonFiles({ search: { collection: "_user_", fields: { projects: { "array-contains": project.id } } } }))[0]
             console.log("after user", new Date().getTime() - global.timer);
 
-        } else {
+        }/* else {
 
             // get user (for bracket users only)
             console.log("before user / firestore", new Date().getTime() - global.timer);
@@ -1600,17 +1590,19 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
                 global.data.user = user = doc.docs[0].data()
                 console.log("after user", new Date().getTime() - global.timer);
             })
-        }
+        }*/
         
         console.log("before page", new Date().getTime() - global.timer);
 
         // get page
         global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
+        console.log("after page", new Date().getTime() - global.timer);
         
         console.log("before view", new Date().getTime() - global.timer);
 
         // get view
         global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
+        console.log("after view", new Date().getTime() - global.timer);
         
     } else {
 
@@ -1678,11 +1670,11 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     if (global.data.page[currentPage].global)
     Object.entries(global.data.page[currentPage].global).map(([key, value]) => global[key] = value)
     
-    // controls & children
-    children.root.controls = global.data.page[currentPage].controls
-    children.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
+    // controls & views
+    views.root.controls = global.data.page[currentPage].controls
+    views.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
 
-    var _window = { global, children }
+    var _window = { global, views }
 
     // forward
     if (global.data.page[currentPage].forward) {
@@ -1709,7 +1701,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
     // create html
     var innerHTML = ""
-    innerHTML = createElement({ _window, id: "root", req, res })
+    innerHTML += createElement({ _window, id: "root", req, res })
     innerHTML += createElement({ _window, id: "public", req, res })
 
     global.idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
@@ -1749,7 +1741,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         </head>
         <body>
             ${innerHTML}
-            <script id="children" type="application/json">${JSON.stringify(children)}</script>
+            <script id="views" type="application/json">${JSON.stringify(views)}</script>
             <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>
         </body>
@@ -1769,62 +1761,62 @@ const { toValue } = require("./toValue")
 
 var createElement = ({ _window, id, req, res }) => {
 
-  var value = _window ? _window.children : window.children
-  var local = value[id]
+  var views = _window ? _window.views : window.views
+  var view = views[id]
   var global = _window ? _window.global : window.global
-  var parent = value[local.parent]
+  var parent = views[view.parent]
   
   // html
-  if (local.html) return local.html
+  if (view.html) return view.html
 
-  // view value
-  if (local.view && global.data.view[local.view]) local = clone(global.data.view[local.view])
+  // merge to another view
+  if (view.view && global.data.view[view.view]) view = clone(global.data.view[view.view])
 
-  // no value
-  if (!local.type) return
+  // view is empty
+  if (!view.type) return
 
-  local.type = toCode({ _window, string: local.type })
+  view.type = toCode({ _window, string: view.type })
 
   // 'string'
-  if (local.type.split("'").length > 2) local.type = toCode({ _window, string: local.type, start: "'", end: "'" })
+  if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
 
   // destructure type, params, & conditions from type
   
-  var type = local.type.split("?")[0]
-  var params = local.type.split("?")[1]
-  var conditions = local.type.split("?")[2]
+  var type = view.type.split("?")[0]
+  var params = view.type.split("?")[1]
+  var conditions = view.type.split("?")[2]
 
   // [type]
-  if (!local.duplicatedElement && type.includes("coded()")) local.mapType = true
-  type = local.type = toValue({ _window, value: type, id, req, res})
+  if (!view.duplicatedElement && type.includes("coded()")) view.mapType = true
+  type = view.type = toValue({ _window, value: type, id, req, res })
 
   // parent
-  local.parent = parent.id
+  view.parent = parent.id
 
   // style
-  local.style = local.style || {}
+  view.style = view.style || {}
 
   // id
-  local.id = local.id || generate()
-  id = local.id
+  view.id = view.id || generate()
+  id = view.id
 
   // class
-  local.class = local.class || ""
+  view.class = view.class || ""
 
   // Data
-  local.Data = parent.Data
+  view.Data = view.Data || parent.Data
 
   // derivations
-  local.derivations = local.derivations || [...(parent.derivations || [])]
+  view.derivations = view.derivations || [...(parent.derivations || [])]
 
   // controls
-  local.controls = local.controls || []
+  view.controls = view.controls || []
 
   // status
-  local.status = "Loading"
+  view.status = "Loading"
 
-  // first mount of local
-  value[id] = local
+  // first mount of view
+  views[id] = view
 
   // ///////////////// approval & params /////////////////////
 
@@ -1832,40 +1824,39 @@ var createElement = ({ _window, id, req, res }) => {
   var approved = toApproval({ _window, string: conditions, id, req, res })
   if (!approved) return
 
-  // push destructured params from type to local
+  // push destructured params from type to view
   if (params) {
     
     params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
-    // value[id] = local = override(local, params)
     
     if (params.id && params.id !== id) {
 
-      delete Object.assign(value, { [params.id]: value[id] })[id]
+      delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
     }
 
     // view
     if (params.view) {
 
-      var _local = clone(global.data.view[local.view])
-      if (_local) {
+      var _view = clone(global.data.view[view.view])
+      if (_view) {
 
-        delete local.type
-        delete local.view
+        delete view.type
+        delete view.view
         
-        value[id] = { ...local, ..._local}
+        views[id] = { ...view, ..._view}
         return createElement({ _window, id, req, res })
       }
     }
   }
 
   // data
-  if (parent.unDeriveData || local.unDeriveData) {
+  if (parent.unDeriveData || view.unDeriveData) {
 
-    local.data = local.data || ""
-    local.unDeriveData = true
+    view.data = view.data || ""
+    view.unDeriveData = true
 
-  } else local.data = reducer({ _window, id, path: local.derivations, value: local.data, key: true, object: global[local.Data], req, res })
+  } else view.data = reducer({ _window, id, path: view.derivations, value: view.data, key: true, object: global[view.Data], req, res })
   
   return createTags({ _window, id, req, res })
 }
@@ -1882,37 +1873,36 @@ const { toArray } = require("./toArray")
 
 const createTags = ({ _window, id, req, res }) => {
 
-  var value = _window ? _window.children : window.children
-  var local = value[id]
-  if (!local) return
+  var views = _window ? _window.views : window.views, view = views[id]
+  if (!view) return
 
-  local.length = 1
+  view.length = 1
   
   // data mapType
-  var data = Array.isArray(local.data) ? local.data : typeof local.data === "object" ? Object.keys(local.data) : []
-  var isObject = !Array.isArray(local.data)
-  local.length = data.length || 1
+  var data = Array.isArray(view.data) ? view.data : typeof view.data === "object" ? Object.keys(view.data) : []
+  var isObject = !Array.isArray(view.data)
+  view.length = data.length || 1
   
-  if (local.mapType) {
+  if (view.mapType) {
     if (data.length > 0) {
 
-      data = arrange({ data, arrange: local.arrange, id, _window })
-      delete value[id]
+      data = arrange({ data, arrange: view.arrange, id, _window })
+      delete views[id]
       
       return data.map((_data, index) => {
         
         var id = generate()
-        var _local = clone(local)
+        var _view = clone(view)
 
-        value[id] = _local
+        views[id] = _view
 
-        _local.id = id
-        _local.mapIndex = index
-        _local.data = isObject ? _local.data[_data] : _data
-        _local.derivations = isObject ? [..._local.derivations, _data] : [..._local.derivations, index]
+        _view.id = id
+        _view.mapIndex = index
+        _view.data = isObject ? _view.data[_data] : _data
+        _view.derivations = isObject ? [..._view.derivations, _data] : [..._view.derivations, index]
 
         // check approval again for last time
-        var conditions = value[local.parent].children[local.index]
+        var conditions = views[view.parent].children[view.index]
         var approved = toApproval({ _window, string: conditions, id, req, res })
         if (!approved) return
         
@@ -1922,11 +1912,11 @@ const createTags = ({ _window, id, req, res }) => {
 
     } else {
 
-      local.mapIndex = 0
-      local.derivations = isObject ? [...local.derivations, ""] : [...local.derivations, 0]
+      view.mapIndex = 0
+      view.derivations = isObject ? [...view.derivations, ""] : [...view.derivations, 0]
       
       // check approval again for last time
-      var conditions = value[local.parent].children[local.index].type.split("?")[2]
+      var conditions = views[view.parent].children[view.index].type.split("?")[2]
       var approved = toApproval({ _window, string: conditions, id, req, res })
       if (!approved) return
       
@@ -1941,76 +1931,76 @@ const createTag = ({ _window, id, req, res }) => {
 
   const {execute} = require("./execute")
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var view = _window ? _window.views[id] : window.views[id]
   
   // components
   componentModifier({ _window, id })
   createComponent({ _window, id, req, res })
 
-  if (local.actions) execute({ _window, actions: local.actions, id, req, res })
+  if (view.actions) execute({ _window, actions: view.actions, id, req, res })
   return toHtml({ _window, id, req, res })
 }
 
 const componentModifier = ({ _window, id }) => {
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var view = _window ? _window.views[id] : window.views[id]
 
   // icon
-  if (local.type === "Icon") {
+  if (view.type === "Icon") {
 
-    local.icon = local.icon || {}
-    local.icon.name = local.name || local.icon.name || ""
-    if (local.icon.google || local.google) {
+    view.icon = view.icon || {}
+    view.icon.name = view.name || view.icon.name || ""
+    if (view.icon.google || view.google) {
       
-      if (local.google.outlined) local.outlined = true
-      else if (local.google.filled) local.filled = true
-      else if (local.google.rounded) local.rounded = true
-      else if (local.google.sharp) local.sharp = true
-      else if (local.google.twoTone) local.twoTone = true
-      else local.google = true
+      if (view.google.outlined) view.outlined = true
+      else if (view.google.filled) view.filled = true
+      else if (view.google.rounded) view.rounded = true
+      else if (view.google.sharp) view.sharp = true
+      else if (view.google.twoTone) view.twoTone = true
+      else view.google = true
     }
   }
 
   // textarea
-  else if (local.textarea && !local.templated) {
+  else if (view.textarea && !view.templated) {
 
-    local.style = local.style || {}
-    local.input = local.input || {}
-    local.input.style = local.input.style || {}
-    local.input.style.height = "fit-content"
+    view.style = view.style || {}
+    view.input = view.input || {}
+    view.input.style = view.input.style || {}
+    view.input.style.height = "fit-content"
   }
 
   // input
-  else if (local.type === "Input") {
+  else if (view.type === "Input") {
 
-    local.input = local.input || {}
-    if (local.value) local.input.value = local.input.value || local.value
-    if (local.checked !== undefined) local.input.checked = local.checked
-    if (local.max !== undefined) local.input.max = local.max
-    if (local.min !== undefined) local.input.min = local.min
-    if (local.name !== undefined) local.input.name = local.name
-    if (local.input.placeholder) local.placeholder = local.input.placeholder
+    view.input = view.input || {}
+    if (view.value) view.input.value = view.input.value || view.value
+    if (view.checked !== undefined) view.input.checked = view.checked
+    if (view.max !== undefined) view.input.max = view.max
+    if (view.min !== undefined) view.input.min = view.min
+    if (view.name !== undefined) view.input.name = view.name
+    if (view.input.placeholder) view.placeholder = view.input.placeholder
     
-  } else if (local.type === "Item") {
+  } else if (view.type === "Item") {
 
-    var parent = _window ? _window.children[local.parent] : window.children[local.parent]
+    var parent = _window ? _window.views[view.parent] : window.views[view.parent]
 
-    if (local.index === 0) {
+    if (view.index === 0) {
 
-      local.state = generate()
-      parent.state = local.state
+      view.state = generate()
+      parent.state = view.state
       
-    } else local.state = parent.state
+    } else view.state = parent.state
   }
 }
 
 const arrange = ({ data, arrange, id, _window }) => {
 
-  var value = _window ? _window.children : window.children
-  var local = value[id], index = 0
+  var views = _window ? _window.views : window.views
+  var view = views[id], index = 0
 
-  if (local) {
-    if (local.arrange) toArray(arrange).map(el => {
+  if (view) {
+    if (view.arrange) toArray(arrange).map(el => {
 
       var _index = data.findIndex(_el => _el == el)
       if (_index > -1) {
@@ -2022,7 +2012,7 @@ const arrange = ({ data, arrange, id, _window }) => {
       }
     })
     
-    if (local.sort) {
+    if (view.sort) {
       
       var _sorted = data.slice(index).sort()
       data = data.slice(0, index)
@@ -2041,12 +2031,12 @@ const {clone} = require("./clone")
 
 const createView = ({ view, id }) => {
 
-  var local = window.children[id]
+  var views = window.views[id]
   var global = window.global
 
   if (!view) return
   
-  local.children = toArray(clone(global.data.view[view]))
+  views.children = toArray(clone(global.data.view[view]))
 
   // update
   update({ id })
@@ -2055,6 +2045,7 @@ const createView = ({ view, id }) => {
 module.exports = {createView}
 
 },{"./clone":35,"./toArray":95,"./update":113}],46:[function(require,module,exports){
+(function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { setContent } = require("./setContent")
@@ -2062,42 +2053,41 @@ const { setData } = require("./setData")
 
 const createData = ({ data, id }) => {
 
-  var local = window.children[id]
-  var global = window.global[id]
+  var view = window.views[id]
 
-  local.derivations.reduce((o, k, i) => {
+  view.derivations.reduce((o, k, i) => {
 
-    if (i === local.derivations.length - 1) return o[k] = data
+    if (i === view.derivations.length - 1) return o[k] = data
     return o[k]
 
-  }, global[local.Data])
+  }, global[view.Data])
 }
 
 const clearData = ({ id, e, clear = {} }) => {
 
-  var local = window.children[id]
-  var global = window.global
+  var view = window.views[id]
 
-  if (!global[local.Data]) return
+  if (!global[view.Data]) return
   
   var path = clear.path
-  path = path ? path.split(".") : clone(local.derivations)
+  path = path ? path.split(".") : clone(view.derivations)
   path.push('delete()')
   
-  reducer({ id, e, path, object: global[local.Data] })
+  reducer({ id, e, path, object: global[view.Data] })
 
   setContent({ id })
-  console.log("data removed", global[local.Data])
+  console.log("data removed", global[view.Data])
 }
 
 module.exports = { createData, setData, clearData }
 
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./clone":35,"./reducer":77,"./setContent":85,"./setData":86}],47:[function(require,module,exports){
+(function (global){(function (){
 const decode = ({ _window, string }) => {
 
   if (typeof string !== "string") return string
   
-  var global = _window ? _window.global : window.global
   if (string.includes("coded()")) {
 
     string.split("coded()").map((state, i) => {
@@ -2118,50 +2108,50 @@ const decode = ({ _window, string }) => {
 
 module.exports = {decode}
 
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],48:[function(require,module,exports){
+(function (global){(function (){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
-// const { generate } = require("./generate")
 
 const defaultInputHandler = ({ id }) => {
 
-  var local = window.children[id]
-  var global = window.global
+  var view = window.views[id]
 
-  if (!local) return
-  if (local.type !== "Input") return
+  if (!view) return
+  if (view.type !== "Input") return
 
   // checkbox input
-  if (local.input && local.input.type === "checkbox") {
+  if (view.input && view.input.type === "checkbox") {
 
-    if (local.data === true) local.element.checked = true
+    if (view.data === true) view.element.checked = true
 
     var myFn = (e) => {
 
-      // local doesnot exist
-      if (!window.children[id]) return e.target.removeEventListener("change", myFn)
+      // view doesnot exist
+      if (!window.views[id]) return e.target.removeEventListener("change", myFn)
 
       var data = e.target.checked
-      local.data = data
+      view.data = data
 
-      if (global[local.Data] && local.derivations[0] !== "") {
+      if (global[view.Data] && view.derivations[0] !== "") {
 
         // reset Data
         setData({ id, data })
       }
     }
 
-    return local.element.addEventListener("change", myFn)
+    return view.element.addEventListener("change", myFn)
   }
 
-  if (local.input && local.input.type === "number")
-  local.element.addEventListener("mousewheel", (e) => e.target.blur())
+  if (view.input && view.input.type === "number")
+  view.element.addEventListener("mousewheel", (e) => e.target.blur())
 
   // readonly
-  if (local.readonly) return
+  if (view.readonly) return
 
-  local.element.addEventListener("keydown", (e) => {
+  view.element.addEventListener("keydown", (e) => {
     if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
   })
   
@@ -2171,41 +2161,41 @@ const defaultInputHandler = ({ id }) => {
     var value = e.target.value
 
     // VAR[id] doesnot exist
-    if (!window.children[id]) {
+    if (!window.views[id]) {
       if (e.target) e.target.removeEventListener("input", myFn)
       return 
     }
     
     // map
-    if (local.preventDefault || local.input.preventDefault) {
+    if (view.preventDefault || view.input.preventDefault) {
       
-      if (e.data === "h" && e.target.selectionStart === 2 && value.charAt(0) === "c") local.element.value = value = "children"
-      else if (e.data === "o" && e.target.selectionStart === 2 && value.charAt(0) === "c") local.element.value = value = "controls"
-      else if (e.data === "y" && e.target.selectionStart === 2 && value.charAt(0) === "t") local.element.value = value = "type"
-      else if (e.data === "v" && e.target.selectionStart === 2 && value.charAt(0) === "e") local.element.value = value = "event"
-      else if (e.data === "a" && e.target.selectionStart === 2 && value.charAt(0) === "w") local.element.value = value = "watch"
+      if (e.data === "h" && e.target.selectionStart === 2 && value.charAt(0) === "c") view.element.value = value = "children"
+      else if (e.data === "o" && e.target.selectionStart === 2 && value.charAt(0) === "c") view.element.value = value = "controls"
+      else if (e.data === "y" && e.target.selectionStart === 2 && value.charAt(0) === "t") view.element.value = value = "type"
+      else if (e.data === "v" && e.target.selectionStart === 2 && value.charAt(0) === "e") view.element.value = value = "event"
+      else if (e.data === "a" && e.target.selectionStart === 2 && value.charAt(0) === "w") view.element.value = value = "watch"
     }
 
-    if (!local.preventDefault && !local.input.preventDefault) {
+    if (!view.preventDefault && !view.input.preventDefault) {
       
       // for number inputs, strings are rejected
-      if (local.input && local.input.type === "number") {
+      if (view.input && view.input.type === "number") {
 
         if (isNaN(value)) value = value.toString().slice(0, -1)
         if (!value) value = 0
         if (value.toString().charAt(0) === "0" && value.toString().length > 1) value = value.toString().slice(1)
-        if (local.input.min && local.input.min > parseFloat(value)) value = local.input.min
-        if (local.input.max && local.input.max < parseFloat(value)) value = local.input.max
+        if (view.input.min && view.input.min > parseFloat(value)) value = view.input.min
+        if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
         
         value = parseFloat(value)
-        local.input.value = value
+        view.input.value = value
       }
 
       // for uploads
-      if (local.input.type === "file") return global.upload = e.target.files
+      if (view.input.type === "file") return global.upload = e.target.files
 
       // contentfull
-      if (local.input.type === "text") {
+      if (view.input.type === "text") {
         
         if (e.data === "[") {
           var _prev = value.slice(0, e.target.selectionStart - 1)
@@ -2219,23 +2209,23 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = _prev + "()" + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
-        } else if (e.data === "T" && e.target.selectionStart === 1 && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Text?class=flexbox;text=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-        } else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Icon?class=flexbox;name=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-        } else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Input?style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
-        } else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Image?class=flexbox;src=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-        } else if (e.data === "V" && e.target.selectionStart === 1 && local.derivations[local.derivations.length - 1] === "type") {
+        } else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "View?class=vertical;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
@@ -2265,7 +2255,7 @@ const defaultInputHandler = ({ id }) => {
         }
       }
 
-      if (local.Data && (local.input ? !local.input.preventDefault : true)) setData({ id, data: { value } })
+      if (view.Data && (view.input ? !view.input.preventDefault : true)) setData({ id, data: { value } })
     }
 
     // resize
@@ -2274,13 +2264,14 @@ const defaultInputHandler = ({ id }) => {
     // arabic values
     isArabic({ id, value })
     
-    if (!local.preventDefault && !local.input.preventDefault) console.log(value, global[local.Data], local.derivations)
+    console.log(value, global[view.Data], view.derivations)
   }
 
-  local.element.addEventListener("input", myFn)
+  view.element.addEventListener("input", myFn)
 }
 
 module.exports = { defaultInputHandler }
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./data":46,"./isArabic":65,"./resize":81}],49:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
@@ -2289,24 +2280,24 @@ const { toString } = require("./toString")
 
 const droplist = ({ id, e }) => {
 
-  var value = window.children
-  var local = window.children[id]
+  var value = window.views
+  var view = window.views[id]
   var dropList = value["droplist"]
   
   // items
-  var items = clone(local.droplist.items) || []
-  dropList.derivations = clone(local.derivations)
-  dropList.Data = local.Data
+  var items = clone(view.droplist.items) || []
+  dropList.derivations = clone(view.derivations)
+  dropList.Data = view.Data
   
   // path & derivations
-  if (local.droplist.path)
-  dropList.derivations.push(...local.droplist.path.split("."))
+  if (view.droplist.path)
+  dropList.derivations.push(...view.droplist.path.split("."))
 
   // input id
-  var input_id = local.type === "Input" ? local.id : ""
+  var input_id = view.type === "Input" ? view.id : ""
   if (!input_id) {
     
-    input_id = local.element.getElementsByTagName("INPUT")[0]
+    input_id = view.element.getElementsByTagName("INPUT")[0]
     if (input_id) input_id = input_id.id
   }
   
@@ -2320,12 +2311,12 @@ const droplist = ({ id, e }) => {
     dropList.children = clone(items).map(item => {
 
       return {
-        type: `Text?class=flex align-center pointer;style:[minHeight=3.5rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.4rem;width=100%];hover.style.backgroundColor=#eee;${toString(local.droplist.item)};caller=${id};text=${item}`,
-        controls: [...(local.droplist.controls || []), {
+        type: `Text?class=flex align-center pointer;style:[minHeight=3.5rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.4rem;width=100%];hover.style.backgroundColor=#eee;${toString(view.droplist.item)};caller=${id};text=${item}`,
+        controls: [...(view.droplist.controls || []), {
           event: `click??!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
-            `resize:${input_id};isArabic:${input_id}?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()]?!${local.droplist.isMap}`,
-            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._map():[if():[!)(:break-loop;!_.text()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();${local.droplist.isMap}`
+            `resize:${input_id};isArabic:${input_id}?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()]?!${view.droplist.isMap}`,
+            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._map():[if():[!)(:break-loop;!_.text()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();${view.droplist.isMap}`
           ]
         }]
       }
@@ -2349,7 +2340,7 @@ const { toAwait } = require("./toAwait")
 const erase = async ({ id, e, ...params }) => {
 
   var erase = params.erase || {}
-  var local = window.children[id]
+  var view = window.views[id]
   var collection = erase.collection = erase.collection || erase.path
   var headers = erase.headers || {}
   headers.project = headers.project || global.projectId
@@ -2372,7 +2363,7 @@ const erase = async ({ id, e, ...params }) => {
     }
   })
 
-  local.erase = data
+  view.erase = data
   console.log(data)
 
   toAwait({ id, e, params })
@@ -2399,11 +2390,11 @@ const events = [
   "touchend"
 ]
 
-const addEventListener = ({ _window, controls, id, req, res, params }) => {
+const addEventListener = ({ _window, controls, id, req, res }) => {
   
   const { execute } = require("./execute")
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var view = _window ? _window.views[id] : window.views[id]
   var mainID = id
 
   var events = toCode({ _window, id, string: controls.event })
@@ -2416,10 +2407,10 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   // droplist
   var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
-  if (droplist && local.droplist) {
+  if (droplist && view.droplist) {
     
-    local.droplist.controls = local.droplist.controls || []
-    return local.droplist.controls.push({
+    view.droplist.controls = view.droplist.controls || []
+    return view.droplist.controls.push({
       event: events.join("?").replace("droplist()", ""),
       actions: controls.actions
     })
@@ -2427,10 +2418,10 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   // actionlist
   var actionlist = (events[1] || "").split(";").find(param => param === "actionlist()")
-  if (actionlist && local.actionlist) {
+  if (actionlist && view.actionlist) {
     
-    local.actionlist.controls = local.actionlist.controls || []
-    return local.actionlist.controls.push({
+    view.actionlist.controls = view.actionlist.controls || []
+    return view.actionlist.controls.push({
       event: events.join("?").replace("actionlist()", ""),
       actions: controls.actions
     })
@@ -2438,12 +2429,12 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
 
   // popup
   var popup = (events[1] || "").split(";").find(param => param === "popup()")
-  if (popup && local.popup) {
+  if (popup && view.popup) {
     
-    local.popup = typeof local.popup === "object" ? local.popup : {}
-    local.popup.controls = local.popup.controls || []
+    view.popup = typeof view.popup === "object" ? view.popup : {}
+    view.popup.controls = view.popup.controls || []
 
-    return local.popup.controls.push({
+    return view.popup.controls.push({
       event: events.join("?").replace("popup()", ""),
       actions: controls.actions
     })
@@ -2455,8 +2446,8 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
     if (event.slice(0, 7) === "coded()") {
       event = global.codes[event]
       if (event.includes("?")) {
-        var localEventConditions = event.split("?")[2]
-        var localEventParams = event.split("?")[1]
+        var viewEventConditions = event.split("?")[2]
+        var viewEventParams = event.split("?")[1]
         event = event.split("?")[0]
       }
     }
@@ -2475,14 +2466,14 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
     // event
     event = event.split(":")[0]
 
-    if (!event || !local) return
-    clearTimeout(local[`${event}-timer`])
+    if (!event || !view) return
+    clearTimeout(view[`${event}-timer`])
 
     // add event listener
     toArray(idList).map(id => {
 
-      var _local = _window ? _window.children[id] : window.children[id]
-      if (!_local) return
+      var _view = _window ? _window.views[id] : window.views[id]
+      if (!_view) return
 
       var myFn = (e) => {
 
@@ -2492,8 +2483,8 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
           if (id === "body") id = mainID
           
           // approval
-          if (localEventConditions) {
-            var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+          if (viewEventConditions) {
+            var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
             if (!approved) return
           }
           
@@ -2508,7 +2499,7 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
           await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true, eventParams: true })
           
           // approval
-          if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
+          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
           // execute
           if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
@@ -2516,27 +2507,27 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
       }
       
       // onload event
-      if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _local.element })
+      if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _view.element })
 
       var myFn1 = (e) => {
         
-        local[`${event}-timer`] = setTimeout(async () => {
+        view[`${event}-timer`] = setTimeout(async () => {
 
           // body
           if (id === "body") id = mainID
-          var __local = _window ? _window.children[id] : window.children[id]
+          var __view = _window ? _window.views[id] : window.views[id]
 
           if (once) e.target.removeEventListener(event, myFn)
 
           // VALUE[id] doesnot exist
-          if (!__local) {
+          if (!__view) {
             if (e.target) e.target.removeEventListener(event, myFn)
             return 
           }
         
           // approval
-          if (localEventConditions) {
-            var approved = toApproval({ _window, req, res, string: localEventConditions, e, id: mainID })
+          if (viewEventConditions) {
+            var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
             if (!approved) return
           }
           
@@ -2548,72 +2539,72 @@ const addEventListener = ({ _window, controls, id, req, res, params }) => {
           await toParam({ string: events[1], e, id: mainID, mount: true, eventParams: true })
         
           // approval
-          if (localEventParams) await toParam({ _window, req, res, string: localEventParams, e, id: mainID, mount: true, eventParams: true })
+          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
           if (controls.actions) await execute({ controls, e, id: mainID })
         }, timer)
       }
       
       // elements
-      _local.element.addEventListener(event, myFn1)
+      _view.element.addEventListener(event, myFn1)
     })
   })
 }
 
 const defaultEventHandler = ({ id }) => {
 
-  var local = window.children[id]
+  var view = window.views[id]
   var global = window.global
 
-  local.touchstart = false
-  local.mouseenter = false
-  local.mousedown = false
+  view.touchstart = false
+  view.mouseenter = false
+  view.mousedown = false
 
-  if (local.link) local.element.addEventListener("click", (e) => e.preventDefault())
+  if (view.link) view.element.addEventListener("click", (e) => e.preventDefault())
 
   // input
-  if (local.type === "Input") {
+  if (view.type === "Input") {
 
     // focus
     var setEventType = (e) => {
 
-      if (!window.children[id]) return e.target.removeEventListener("focus", setEventType)
-      local.focus = true
+      if (!window.views[id]) return e.target.removeEventListener("focus", setEventType)
+      view.focus = true
     }
 
-    local.element.addEventListener("focus", setEventType)
+    view.element.addEventListener("focus", setEventType)
 
     // blur
     var setEventType = (e) => {
 
-      if (!window.children[id]) return e.target.removeEventListener("blur", setEventType)
-      local.focus = false
+      if (!window.views[id]) return e.target.removeEventListener("blur", setEventType)
+      view.focus = false
     }
 
-    local.element.addEventListener("blur", setEventType)
+    view.element.addEventListener("blur", setEventType)
   }
 
   events.map((event) => {
 
     var setEventType = (e) => {
 
-      if (!window.children[id]) return e.target.removeEventListener(event, setEventType)
+      if (!window.views[id]) return e.target.removeEventListener(event, setEventType)
 
-      if (event === "mouseenter") local.mouseenter = true
-      else if (event === "mouseleave") local.mouseenter = false
+      if (event === "mouseenter") view.mouseenter = true
+      else if (event === "mouseleave") view.mouseenter = false
       else if (event === "mousedown") {
         
-        local.mousedown = true
-        window.children["tooltip"].element.style.opacity = "0"
+        view.mousedown = true
+        window.views["tooltip"].element.style.opacity = "0"
         clearTimeout(global["tooltip-timer"])
         delete global["tooltip-timer"]
 
-      } else if (event === "mouseup") local.mousedown = false
-      else if (event === "touchstart") local.touchstart = true
-      else if (event === "touchend") local.touchstart = false
+      } else if (event === "mouseup") view.mousedown = false
+      else if (event === "touchstart") view.touchstart = true
+      else if (event === "touchend") view.touchstart = false
     }
 
-    local.element.addEventListener(event, setEventType)
+    view.element.addEventListener(event, setEventType)
   })
 }
 
@@ -2632,11 +2623,11 @@ const { toValue } = require("./toValue")
 
 const execute = ({ _window, controls, actions, e, id, params }) => {
 
-  var local = (_window ? _window.children[id] : window.children[id]) || {}
-  var _params = params, localId = id
+  var views = _window ? _window.views : window.views
+  var view = views[id] || {}
+  var _params = params, viewId = id
 
   if (controls) actions = controls.actions
-  if (local) local.break = false
 
   // execute actions
   toArray(actions).map(_action => {
@@ -2644,9 +2635,6 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
     // 'string'
     if (_action.split("'").length > 2) _action = toCode({ _window, string: _action, start: "'", end: "'" })
-    
-    // stop after actions
-    if (local && local.break) return
 
     var awaiter = ""
     var approved = true
@@ -2657,15 +2645,15 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     actions = actions[0].split(";")
 
     // approval
-    if (conditions) approved = toApproval({ _window, string: conditions, params, id: localId, e })
-    if (!approved) return
+    if (conditions) approved = toApproval({ _window, string: conditions, params, id: viewId, e })
+    if (!approved) return toAwait({ id, e, params: _params })
 
     // params
-    params = toParam({ _window, string: params, e, id: localId })
+    params = toParam({ _window, string: params, e, id: viewId })
     if (_params) params = {..._params, ...params}
 
     // break
-    local.break = params.break
+    view.break = params.break
     delete params.break
 
     actions.map(action => {
@@ -2698,7 +2686,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       
 
       var actionid = params.action.id
-      if (action.split(":")[1]) actionid = toValue({ _window, value: action.split(":")[1], params, id: localId, e })
+      if (action.split(":")[1]) actionid = toValue({ _window, value: action.split(":")[1], params, id: viewId, e })
       
       const myFn = () => {
         var approved = true
@@ -2718,18 +2706,18 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
         if (isAwaiter) return
 
         // case condition approval
-        if (caseCondition) approved = toApproval({ _window, string: caseCondition, params, id: localId, e })
+        if (caseCondition) approved = toApproval({ _window, string: caseCondition, params, id: viewId, e })
         if (!approved) return toAwait({ id, e, params })
         
-        if (_method[name]) toArray(actionid ? actionid : localId).map(async id => {
+        if (_method[name]) toArray(actionid ? actionid : viewId).map(async id => {
           
           if (typeof id !== "string") return
 
           // id = value.path
-          if (id.indexOf(".") > -1) id = toValue({ _window, value: id, e, id: localId })
+          if (id.indexOf(".") > -1) id = toValue({ _window, value: id, e, id: viewId })
           
           // component does not exist
-          if (!id || !window.children[id]) return
+          if (!id || !views[id]) return
 
           if (isAsyncer) {
             params.awaiter = awaiter
@@ -2743,13 +2731,13 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
       if (timer || timer === 0) {
 
-        if (local) {
+        if (view) {
 
           var _name = name.split('.')[1] || name.split('.')[0]
           if (isInterval) {
             myFn()
-            local[`${_name}-timer`] = setInterval(() => myFn(), timer)
-          } else local[`${_name}-timer`] = setTimeout(myFn, timer)
+            view[`${_name}-timer`] = setInterval(() => myFn(), timer)
+          } else view[`${_name}-timer`] = setTimeout(myFn, timer)
 
         } else {
 
@@ -2793,6 +2781,7 @@ module.exports = {
     }
 }
 },{"./function":57}],55:[function(require,module,exports){
+(function (global){(function (){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
 const { compare } = require("./compare")
@@ -2801,11 +2790,10 @@ const { clone } = require("./clone")
 
 const filter = ({ filter = {}, id, e, ...params }) => {
 
-  var local = window.children[id]
-  var global = window.global
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
 
-  var Data = filter.Data || local.Data
+  var Data = filter.Data || view.Data
   var options = global[`${Data}-options`]
   if (!options) options = global[`${Data}-options`] = {}
 
@@ -2849,33 +2837,34 @@ const filter = ({ filter = {}, id, e, ...params }) => {
   }
   
   global[Data] = data
-  local.filter = { success: true, data }
+  view.filter = { success: true, data }
 }
 
 module.exports = {filter}
 
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./clone":35,"./compare":36,"./isEqual":66,"./toArray":95,"./toOperator":105}],56:[function(require,module,exports){
 const focus = ({ id }) => {
 
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
 
-  var isInput = local.type === "Input" || local.type === "Textarea"
-  if (isInput) local.element.focus()
+  var isInput = view.type === "Input" || view.type === "Textarea"
+  if (isInput) view.element.focus()
   else {
-    if (local.element) {
-      let childElements = local.element.getElementsByTagName("INPUT")
+    if (view.element) {
+      let childElements = view.element.getElementsByTagName("INPUT")
       if (childElements.length === 0) {
-        childElements = local.element.getElementsByTagName("TEXTAREA")
+        childElements = view.element.getElementsByTagName("TEXTAREA")
       }
       if (childElements.length > 0) {
         childElements[0].focus()
 
-        var _local = window.children[childElements[0].id]
+        var _view = window.views[childElements[0].id]
         // focus to the end of input
-        var value = _local.element.value
-        _local.element.value = ""
-        _local.element.value = value
+        var value = _view.element.value
+        _view.element.value = ""
+        _view.element.value = value
 
         return
       }
@@ -2883,9 +2872,9 @@ const focus = ({ id }) => {
   }
 
   // focus to the end of input
-  var value = local.element.value
-  local.element.value = ""
-  local.element.value = value
+  var value = view.element.value
+  view.element.value = ""
+  view.element.value = value
 }
 
 module.exports = {focus}
@@ -3152,6 +3141,7 @@ module.exports = {
     }
 }
 },{}],63:[function(require,module,exports){
+(function (global){(function (){
 const { toAwait } = require("./toAwait")
 
 const getJson = (url) => {
@@ -3164,7 +3154,6 @@ const getJson = (url) => {
 
 const importJson = ({ id, e, ...params }) => {
     
-    var global = window.global
     global.import = {}
     var inputEl = document.createElement('input')
     inputEl.style.position = "absolute"
@@ -3191,6 +3180,7 @@ const importJson = ({ id, e, ...params }) => {
 }
 
 module.exports = {importJson, getJson}
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./toAwait":96}],64:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
@@ -3204,36 +3194,37 @@ module.exports = {
   insert: ({ id, insert }) => {
     
     var { index, value = {}, el, elementId, component, replace, path, data } = insert
-    var local = window.children[id], lDiv
+    var views = window.views
+    var view = views[id], lDiv
     
-    if (index === undefined) index = local.element.children.length
+    if (index === undefined) index = view.element.children.length
     
     if (component || replace) {
 
-      var _local = clone(component || replace)
+      var _view = clone(component || replace)
       
       // remove mapping
-      if (_local.type.slice(0, 1) === "[") {
-        var _type = _local.type.slice(1).split("]")[0]
-        _local.type = _type + _local.type.split("]").slice(1).join("]")
+      if (_view.type.slice(0, 1) === "[") {
+        var _type = _view.type.slice(1).split("]")[0]
+        _view.type = _type + _view.type.split("]").slice(1).join("]")
       }
       
-      if (data) _local.data = clone(data)
-      if (path) _local.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
+      if (data) _view.data = clone(data)
+      if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       
-      var innerHTML = toArray(_local)
+      var innerHTML = toArray(_view)
       .map((child, i) => {
 
         var id = child.id || generate()
-        window.children[id] = child
-        window.children[id].id = id
-        window.children[id].index = i
-        window.children[id].mapIndex = index
-        window.children[id].parent = local.id
-        window.children[id].style = window.children[id].style || {}
-        window.children[id].reservedStyles = toParam({ id, string: window.children[id].type.split("?")[1] || "" }).style || {}
-        window.children[id].style.transition = null
-        window.children[id].style.opacity = "0"
+        views[id] = child
+        views[id].id = id
+        views[id].index = i
+        views[id].mapIndex = index
+        views[id].parent = view.id
+        views[id].style = views[id].style || {}
+        views[id].reservedStyles = toParam({ id, string: views[id].type.split("?")[1] || "" }).style || {}
+        views[id].style.transition = null
+        views[id].style.opacity = "0"
         
         return createElement({ id })
 
@@ -3248,29 +3239,29 @@ module.exports = {
       lDiv.innerHTML = innerHTML
 
       el = lDiv.children[0]
-      window.children[el.id].parent = local.id
+      views[el.id].parent = view.id
 
     } else {
       
       elementId = elementId || value.id || el && el.id
-      el = el || value.el || window.children[elementId].el
+      el = el || value.el || views[elementId].el
     }
 
-    if (index >= local.element.children.length) local.element.appendChild(el)
-    else local.element.insertBefore(el, local.element.children[index])
+    if (index >= view.element.children.length) view.element.appendChild(el)
+    else view.element.insertBefore(el, view.element.children[index])
 
     var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
     
     idList.map(id => setElement({ id }))
     idList.map(id => starter({ id }))
 
-    window.children[el.id].style.transition = window.children[el.id].element.style.transition = window.children[el.id].reservedStyles.transition || null
-    window.children[el.id].style.opacity = window.children[el.id].element.style.opacity = window.children[el.id].reservedStyles.opacity || "1"
-    delete window.children[el.id].reservedStyles
-    local.insert = { map: window.children[el.id], message: "Map inserted succefully!", success: true }
+    views[el.id].style.transition = views[el.id].element.style.transition = views[el.id].reservedStyles.transition || null
+    views[el.id].style.opacity = views[el.id].element.style.opacity = views[el.id].reservedStyles.opacity || "1"
+    delete views[el.id].reservedStyles
+    view.insert = { map: views[el.id], message: "Map inserted succefully!", success: true }
     
     setTimeout(() => {
-      idList.filter(id => window.children[id].type === "Icon").map(id => window.children[id]).map(map => {
+      idList.filter(id => views[id].type === "Icon").map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
@@ -3288,9 +3279,9 @@ const english = /[A-Za-z]/
 
 const isArabic = ({ id, value, text }) => {
 
-  var local = window.children[id]
-  if (!local || !local.element) return
-  text = text || value || local.element.value || local.element.innerHTML
+  var view = window.views[id]
+  if (!view || !view.element) return
+  text = text || value || view.element.value || view.element.innerHTML
   if (!text) return
 
   var isarabic = arabic.test(text)
@@ -3298,17 +3289,17 @@ const isArabic = ({ id, value, text }) => {
 
   if (isarabic && !isenglish) {
 
-    local.element.classList.add("arabic")
-    local.element.style.textAlign = "right"
-    if (local.type !== "Input") local.element.innerHTML = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
-    else local.element.value = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
-    if (local["placeholder-ar"]) local.element.placeholder = local["placeholder-ar"]
+    view.element.classList.add("arabic")
+    view.element.style.textAlign = "right"
+    if (view.type !== "Input") view.element.innerHTML = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+    else view.element.value = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+    if (view["placeholder-ar"]) view.element.placeholder = view["placeholder-ar"]
 
   } else {
 
-    if (local.element.className.includes("arabic")) local.element.style.textAlign = "left"
-    local.element.classList.remove("arabic")
-    if (local["placeholder"]) local.element.placeholder = local["placeholder"]
+    if (view.element.className.includes("arabic")) view.element.style.textAlign = "left"
+    view.element.classList.remove("arabic")
+    if (view["placeholder"]) view.element.placeholder = view["placeholder"]
 
   }
 
@@ -3442,11 +3433,11 @@ var getJsonFiles = ({ search = {} }) => {
   path = `database/${collection}`
   
   // create folder if it doesnot exist
-  if (!fs.existsSync(path)) fs.mkdirSync(`${path}`)
+  if (!fs.existsSync(path)) return data
 
   if (doc) {
     
-    if (!fs.existsSync(`${path}/${doc}.json`)) fs.writeFileSync(`${path}/${doc}.json`, "{}")
+    if (!fs.existsSync(`${path}/${doc}.json`)) return data // fs.writeFileSync(`${path}/${doc}.json`, "{}")
     data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
 
   } else if (docs && docs.length > 0) {
@@ -3683,10 +3674,10 @@ const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
 
-  var value = window.children
-  var note = value["action-note"]
+  var views = window.views
+  var note = views["action-note"]
   var type = _note.type || "success"
-  var noteText = value["action-note-text"]
+  var noteText = views["action-note-text"]
   var backgroundColor = type === "success" 
   ? "#2FB886" : type === "danger" 
   ? "#F66358" : type === "info"
@@ -3716,29 +3707,28 @@ module.exports = { note }
 },{"./isArabic":65}],73:[function(require,module,exports){
 const overflow = ({ id }) => {
 
-  var local = window.children[id]
-
-  var width = local.element.clientWidth
-  var height = local.element.clientHeight
+  var view = window.views[id]
+  var width = view.element.clientWidth
+  var height = view.element.clientHeight
   var text
 
-  if (local.type === "Input" || local.type === "Textarea") {
-    text = local.element.value
+  if (view.type === "Input" || view.type === "Textarea") {
+    text = view.element.value
   } else if (
-    local.type === "Text" ||
-    local.type === "Label" ||
-    local.type === "Header"
+    view.type === "Text" ||
+    view.type === "Label" ||
+    view.type === "Header"
   ) {
-    text = local.element.innerHTML
-  } else if (local.type === "UploadInput") text = local.element.value
+    text = view.element.innerHTML
+  } else if (view.type === "UploadInput") text = view.element.value
 
   // create a test div
   let lDiv = document.createElement("div")
 
   document.body.appendChild(lDiv)
 
-  var pStyle = local.element.style
-  var pText = local.data || local.input.value || ""
+  var pStyle = view.element.style
+  var pText = view.data || view.input.value || ""
   var pFontSize = pStyle.fontSize
 
   if (pStyle != null) {
@@ -3777,15 +3767,15 @@ const {update} = require("./update")
 
 const popup = ({ id }) => {
   
-  var local = window.children[id]
-  var popup = window.children["popup"]
-  var popUp = local.popup
+  var view = window.views[id]
+  var popup = window.views["popup"]
+  var popUp = view.popup
   var _controls = popUp.controls
   popup.positioner = id
 
   /*
-  popup.Data = local.Data
-  popup.derivations = local.derivations
+  popup.Data = view.Data
+  popup.derivations = view.derivations
   popup.unDeriveData = true
   */
 
@@ -3805,11 +3795,11 @@ const popup = ({ id }) => {
 
     // caller
     popup.caller = id
-    // window.children["popup-text"].caller = id
-    window.children["popup-confirm"].caller = id
-    window.children["popup-cancel"].caller = id
+    // window.views["popup-text"].caller = id
+    window.views["popup-confirm"].caller = id
+    window.views["popup-cancel"].caller = id
 
-    if (popUp.text) window.children["popup-text"].element.innerHTML = popUp.text
+    if (popUp.text) window.views["popup-text"].element.innerHTML = popUp.text
     controls({ controls: _controls, id: "popup-confirm" })
 
   }, 50)
@@ -3900,7 +3890,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     const { execute } = require("./execute")
     const { toParam } = require("./toParam")
 
-    var local = _window ? _window.children[id] : window.children[id], breakRequest, coded, mainId = id
+    var views = _window ? _window.views : window.views
+    var view = views[id], breakRequest, coded, mainId = id
     var global = _window ? _window.global : window.global
 
     // path is a string
@@ -4017,7 +4008,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             // id
             var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
-            if (_id) local = _window ? _window.children[_id] : window.children[_id]
+            if (_id) view = views[_id]
             
             path[0] = path0 = "()"
         }
@@ -4045,7 +4036,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
     
-    object = path0 === "()" ? local
+    object = path0 === "()" ? view
     : path0 === "index()" ? index
     : (path0 === "global()" || path0 === ")(")? _window ? _window.global : window.global
     : path0 === "e()" ? e
@@ -4154,7 +4145,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 })
                 
             } else if (mount) {
-                object = local
+                object = view
                 path.unshift("()")
             }
         }
@@ -4337,7 +4328,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
             answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
 
-            delete local["data()"]
+            delete view["data()"]
 
         } else if (k0 === "Data()") {
 
@@ -4361,12 +4352,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o !== "object") return
             if (o.status === "Mounted") _parent = o.element.parentNode.id
             else _parent = o.parent
-            _parent = _window ? _window.children[_parent] : window.children[_parent]
+            _parent = views[_parent]
 
             if (o.templated || o.link) {
                 _parent = _parent.element.parentNode.id
-                _parent = _window ? _window.children[_parent] : window.children[_parent]
-                _parent = _window ? _window.children[_parent] : window.children[_parent]
+                _parent = views[_parent]
+                _parent = views[_parent]
             }
             
             answer = _parent
@@ -4376,17 +4367,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "siblings()") {
             
-            var _parent = _window ? _window.children[_window.children[o.id].parent] : window.children[window.children[o.id].parent]
+            var _parent = views[window.views[o.id].parent]
             answer = [..._parent.element.children].map(el => {
                 
-                var _id = el.id, _local = _window ? _window.children[_id] : window.children[_id]
-                if (!_local) return
-                if (_local.component === "Input") {
+                var _id = el.id, _view = views[_id]
+                if (!_view) return
+                if (_view.component === "Input") {
 
-                    _id = (_local).element.getElementsByTagName("INPUT")[0].id
-                    return _local
+                    _id = (_view).element.getElementsByTagName("INPUT")[0].id
+                    return _view
 
-                } else return _local
+                } else return _view
             })
             
             answer = answer.filter(comp => comp && comp.id)
@@ -4394,12 +4385,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "next()" || k0 === "nextSibling()") {
 
             var element = o.element
-            if (o.templated || o.link) element = _window ? _window.children[o.parent].element : window.children[o.parent].element
+            if (o.templated || o.link) element = views[o.parent].element
             
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
             var _id = nextSibling.id
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4408,24 +4399,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var nextSiblings = [], nextSibling
             var element = o.element
-            if (o.templated || o.link) element = _window ? _window.children[o.parent].element : window.children[o.parent].element
+            if (o.templated || o.link) element = views[o.parent].element
 
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
             while (nextSibling) {
                 var _id = nextSibling.id
-                nextSiblings.push(_window ? _window.children[_id] : window.children[_id])
-                nextSibling = (_window ? _window.children[_id] : window.children[_id]).element.nextElementSibling
+                nextSiblings.push(views[_id])
+                nextSibling = (views[_id]).element.nextElementSibling
             }
             answer = nextSiblings
 
         } else if (k0 === "last()" || k0 === "lastSibling()") {
 
             var element = o.element
-            if (o.templated || o.link) element = _window ? _window.children[o.parent].element : window.children[o.parent].element
+            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
             var lastSibling = element.parentNode.children[element.parentNode.children.length - 1]
             var _id = lastSibling.id
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4433,10 +4424,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "2ndlast()" || k0 === "2ndLast()" || k0 === "2ndLastSibling()") {
 
             var element = o.element
-            if (o.templated || o.link) element = _window ? _window.children[o.parent].element : window.children[o.parent].element
+            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
             var seclastSibling = element.parentNode.children[element.parentNode.children.length - 2]
             var _id = seclastSibling.id
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
             
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4444,10 +4435,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "3rdlast()" || k0 === "3rdLast()" || k0 === "3rdLastSibling()") {
 
             var element = o.element
-            if (o.templated || o.link) element = _window ? _window.children[o.parent].element : window.children[o.parent].element
+            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
             var thirdlastSibling = element.parentNode.children[element.parentNode.children.length - 3]
             var _id = thirdlastSibling.id
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4455,10 +4446,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "1st()" || k0 === "first()" || k0 === "firstSibling()") {
 
             var element = o.element
-            if (o.templated || o.link) element = _window ? _window.children[o.parent].element : window.children[o.parent].element
+            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
             var firstSibling = element.parentNode.children[0]
             var _id = firstSibling.id
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4466,10 +4457,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "2nd()" || k0 === "second()" || k0 === "secondSibling()") {
 
             var element = o.element
-            if (o.templated || o.link) element = _window ? _window.children[o.parent].element : window.children[o.parent].element
+            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
             var secondSibling = element.parentNode.children[1]
             var _id = secondSibling.id
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4477,7 +4468,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "prev()" || k0 === "prevSibling()") {
 
             var element, _el = o.element
-            if (o.templated || o.link) _el = _window ? _window.children[o.parent] : window.children[o.parent]
+            if (o.templated || o.link) _el = _window ? _window.views[o.parent] : window.views[o.parent]
             
             if (!_el) return
             if (_el.nodeType === Node.ELEMENT_NODE) element = _el
@@ -4487,7 +4478,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var previousSibling = element.previousElementSibling
             if (!previousSibling) return
             var _id = previousSibling.id
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
             
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4497,10 +4488,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!o.element) return
             if (!o.element.children[0]) return undefined
             var _id = o.element.children[0].id
-            if ((_window ? _window.children[_id] : window.children[_id]).component === "Input") 
-            _id = (_window ? _window.children[_id] : window.children[_id]).element.getElementsByTagName("INPUT")[0].id
+            if ((views[_id]).component === "Input") 
+            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
             
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
             
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4509,9 +4500,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             if (!o.element.children[0]) return undefined
             var _id = (o.element.children[1] || o.element.children[0]).id
-            if ((_window ? _window.children[_id] : window.children[_id]).component === "Input") 
-            _id = (_window ? _window.children[_id] : window.children[_id]).element.getElementsByTagName("INPUT")[0].id
-            answer = _window ? _window.children[_id] : window.children[_id]
+            if ((views[_id]).component === "Input") 
+            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4520,9 +4511,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             if (!o.element.children[0]) return undefined
             var _id = (o.element.children[2] || o.element.children[1] || o.element.children[0]).id
-            if ((_window ? _window.children[_id] : window.children[_id]).component === "Input")
-            _id = (_window ? _window.children[_id] : window.children[_id]).element.getElementsByTagName("INPUT")[0].id
-            answer = _window ? _window.children[_id] : window.children[_id]
+            if ((views[_id]).component === "Input")
+            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4531,10 +4522,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             if (!o.element.children[0]) return undefined
             var _id = o.element.children[o.element.children.length - 3].id
-            if ((_window ? _window.children[_id] : window.children[_id]).component === "Input")
-            _id = (_window ? _window.children[_id] : window.children[_id]).element.getElementsByTagName("INPUT")[0].id
+            if ((views[_id]).component === "Input")
+            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
             
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4543,10 +4534,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             if (!o.element.children[0]) return undefined
             var _id = o.element.children[o.element.children.length - 2].id
-            if ((_window ? _window.children[_id] : window.children[_id]).component === "Input")
-            _id = (_window ? _window.children[_id] : window.children[_id]).element.getElementsByTagName("INPUT")[0].id
+            if ((views[_id]).component === "Input")
+            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
             
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4556,10 +4547,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!o.element) return
             if (!o.element.children[0]) return undefined
             var _id = o.element.children[o.element.children.length - 1].id
-            if ((_window ? _window.children[_id] : window.children[_id]).component === "Input")
-            _id = (_window ? _window.children[_id] : window.children[_id]).element.getElementsByTagName("INPUT")[0].id
+            if ((views[_id]).component === "Input")
+            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
             
-            answer = _window ? _window.children[_id] : window.children[_id]
+            answer = views[_id]
 
             var args = k.split(":").slice(1)
             if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
@@ -4569,14 +4560,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!o.element) return
             answer = [...o.element.children].map(el => {
                 
-                var _id = el.id, _local = _window ? _window.children[_id] : window.children[_id]
-                if (!_local) return
-                if (_local.component === "Input") {
+                var _id = el.id, _view = views[_id]
+                if (!_view) return
+                if (_view.component === "Input") {
 
-                    _id = (_local).element.getElementsByTagName("INPUT")[0].id
-                    return _local
+                    _id = (_view).element.getElementsByTagName("INPUT")[0].id
+                    return _view
 
-                } else return _local
+                } else return _view
             })
             answer = answer.filter(comp => comp && comp.id)
             
@@ -4614,7 +4605,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)
             else answer = o.element && o.element.getElementsByTagName(_tag_name)
 
-            answer = [...answer].map(o => window.children[o.id])
+            answer = [...answer].map(o => window.views[o.id])
 
         } else if (k0 === "getTag()") {
           
@@ -4623,7 +4614,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)[0]
             else answer = o.element && o.element.getElementsByTagName(_tag_name)[0]
-            answer = window.children[answer.id]
+            answer = window.views[answer.id]
 
         } else if (k0 === "getInputs()" || k0 === "inputs()") {
             
@@ -4635,24 +4626,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 _input = o.element && o.element.getElementsByTagName("INPUT")
                 _textarea = o.element && o.element.getElementsByTagName("TEXTAREA")
             }
-            answer = [..._input, ..._textarea].map(o => window.children[o.id])
+            answer = [..._input, ..._textarea].map(o => window.views[o.id])
 
         } else if (k0 === "getInput()") {
             
-            var _value = _window ? _window.children : window.children
             if (o.nodeType === Node.ELEMENT_NODE) {
-                if (_value[o.id].type === "Input") answer = o
+                if (views[o.id].type === "Input") answer = o
                 else answer = o.getElementsByTagName("INPUT")[0]
             } else {
                 if (o.type === "Input") answer = o
                 else answer = o.element && o.element.getElementsByTagName("INPUT")[0]
             }
-            answer = _value[answer.id]
+            answer = views[answer.id]
 
         } else if (k0 === "position()") {
 
             var args = k.split(":")
-            var relativeTo = _window ? _window.children["root"].element : window.children["root"].element
+            var relativeTo = views["root"].element
             if (args[1]) 
                 relativeTo = toValue({ req, res, _window, id, e, _, value: args[1], params })
             answer = position(o, relativeTo)
@@ -4666,9 +4656,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "getChildrenByClassName()" || k0 === "className()") {
 
             // map not loaded yet
-            if (local.status === "Loading") {
-                local.controls = toArray(local.controls)
-                local.controls.push({
+            if (view.status === "Loading") {
+                view.controls = toArray(view.controls)
+                view.controls.push({
                     event: `loaded?${key}`
                 })
             }
@@ -4679,7 +4669,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByClassName(className)]
             } else answer = []
 
-            answer = answer.map(o => window.children[o.id])
+            answer = answer.map(o => window.views[o.id])
 
         } else if (k0 === "getElementsByClassName()") {
 
@@ -5053,7 +5043,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             o = toNumber(o)
 
             answer = Math.abs(o)
-            if (isPrice) answer = answer.toLocaleString()
+            if (isPrice) answer = answer.tovieweString()
             
         } else if (k0 === "dividedBy()" || k0 === "divide()" || k0 === "divided()" || k0 === "divideBy()" || k0 === "/()") {
             
@@ -5074,7 +5064,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 answer = answer % b === 0 ? answer / b : answer * 1.0 / b
             })
-            if (isPrice) answer = answer.toLocaleString()
+            if (isPrice) answer = answer.tovieweString()
             
         } else if (k0 === "times()" || k0 === "multiplyBy()" || k0 === "multiply()" || k0 === "mult()" || k0 === "x()" || k0 === "*()") {
             
@@ -5095,7 +5085,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 answer = answer * b
             })
-            if (isPrice) answer = answer.toLocaleString()
+            if (isPrice) answer = answer.tovieweString()
             
         } else if (k0 === "add()" || k0 === "plus()" || k0 === "+()") {
             
@@ -5117,7 +5107,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 answer = space ? answer + " " + b : answer + b
             })
-            if (isPrice) answer = answer.toLocaleString()
+            if (isPrice) answer = answer.tovieweString()
             
         } else if (k0 === "subs()" || k0 === "minus()" || k0 === "-()") {
             
@@ -5140,7 +5130,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else answer = answer.split(b)[0] - answer.split(b)[1]
             })
 
-            if (isPrice) answer = answer.toLocaleString()
+            if (isPrice) answer = answer.tovieweString()
 
         } else if (k0 === "mod()") {
             
@@ -5159,7 +5149,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             o = toNumber(o)
 
             answer = o % b
-            if (isPrice) answer = answer.toLocaleString()
+            if (isPrice) answer = answer.tovieweString()
             
         } else if (k0 === "sum()") {
             
@@ -5236,7 +5226,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (o.element) el = o.element
             
             if (el)
-            if (window.children[el.id].type === "Input") {
+            if (window.views[el.id].type === "Input") {
 
                 answer = el.value
                 if (i === lastIndex && key && value !== undefined) el.value = value
@@ -5353,14 +5343,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var args = k.split(":")
             if (args[1]) {
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
-                var _value = _window ? _window.children : window.children
-                if (!_value[_id]) return console.log("Element doesnot exist!")
+                if (!views[_id]) return console.log("Element doesnot exist!")
                 return remove({ id: _id })
             }
 
             var _id = typeof o === "string" ? o : o.id
-            var _value = _window ? _window.children : window.children
-            if (!_value[_id]) return console.log("Element doesnot exist!")
+            if (!views[_id]) return console.log("Element doesnot exist!")
             remove({ id: o.id })
 
         } else if (k0 === "removeChild()" || k0 === "remChild()") { // remove only child without removing data
@@ -5368,14 +5356,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var args = k.split(":")
             if (args[1]) {
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
-                var _value = _window ? _window.children : window.children
-                if (!_value[_id]) return console.log("Element doesnot exist!")
+                if (!views[_id]) return console.log("Element doesnot exist!")
                 return remove({ id: _id, remove: { onlyChild: true } })
             }
 
             var _id = typeof o === "string" ? o : o.id
-            var _value = _window ? _window.children : window.children
-            if (!_value[_id]) return console.log("Element doesnot exist!")
+            if (!views[_id]) return console.log("Element doesnot exist!")
             remove({ id: o.id, remove: { onlyChild: true } })
 
         } else if (k0 === "charAt()") {
@@ -5813,7 +5799,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "index()") {
             
-            var element = _window ? _window.children[o.parent].element : window.children[o.parent].element
+            var element = views[o.parent].element
             if (!element) answer = o.mapIndex
             else { 
                 var children = [...element.children]
@@ -5892,12 +5878,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             answer = o.element
 
-        } /*else if (k0 === "()") { // map method
-            
-            var args = k.split(":").slice(1)
-            args.map(arg => answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, object: o, value, key, params, index, _, e }) ))
-
-        } */else if (k0 === "parseFloat()") {
+        } else if (k0 === "parseFloat()") {
             
             answer = parseFloat(o)
 
@@ -6004,7 +5985,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = answer ? false : true
 
         } else if (k0 === "allChildren()" || k0 === "deepChildren()") { 
-            // all values of local element and children elements in object formula
+            // all values of view element and children elements in object formula
             
             answer = getDeepChildren({ _window, id: o.id })
             
@@ -6201,19 +6182,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
 const getDeepChildren = ({ _window, id }) => {
 
-    var local = _window ? _window.children[id] : window.children[id]
-    var all = [local]
-    if (!local) return []
+    var views = _window ? _window.views : window.views
+    var view = views[id]
+    var all = [view]
+    if (!view) return []
     
-    if ([...local.element.children].length > 0) 
-    ([...local.element.children]).map(el => {
+    if ([...view.element.children].length > 0) 
+    ([...view.element.children]).map(el => {
 
-        var _local = _window ? _window.children[el.id] : window.children[el.id]
+        var _view = _window ? _window.views[el.id] : window.views[el.id]
         
-        if ([..._local.element.children].length > 0) 
+        if ([..._view.element.children].length > 0) 
             all.push(...getDeepChildren({ id: el.id }))
 
-        else all.push(_local)
+        else all.push(_view)
     })
 
     return all
@@ -6221,16 +6203,17 @@ const getDeepChildren = ({ _window, id }) => {
 
 const getDeepChildrenId = ({ _window, id }) => {
 
-    var local = _window ? _window.children[id] : window.children[id]
+    var views = _window ? _window.views : window.views
+    var view = views[id]
     var all = [id]
-    if (!local) return []
+    if (!view) return []
     
-    if ([...local.element.children].length > 0) 
-    ([...local.element.children]).map(el => {
+    if ([...view.element.children].length > 0) 
+    ([...view.element.children]).map(el => {
         
-        var _local = _window ? _window.children[el.id] : window.children[el.id]
+        var _view = _window ? _window.views[el.id] : window.views[el.id]
 
-        if ([..._local.element.children].length > 0) 
+        if ([..._view.element.children].length > 0) 
             all.push(...getDeepChildrenId({ id: el.id }))
 
         else all.push(el.id)
@@ -6241,10 +6224,11 @@ const getDeepChildrenId = ({ _window, id }) => {
 
 const getDeepParentId = ({ _window, id }) => {
 
-    var local = _window ? _window.children[id] : window.children[id]
-    if (!local.element.parentNode || local.element.parentNode.nodeName === "BODY") return []
+    var views = _window ? _window.views : window.views
+    var view = views[id]
+    if (!view.element.parentNode || view.element.parentNode.nodeName === "BODY") return []
 
-    var parentId = local.element.parentNode.id
+    var parentId = view.element.parentNode.id
     var all = [parentId]
     
     all.push(...getDeepParentId({ _window, id: parentId }))
@@ -6304,13 +6288,13 @@ const { removeChildren } = require("./update")
 
 const refresh = ({ id, update = {} }) => {
 
-  var value = window.children
-  var local = value[id]
+  var views = window.views
+  var view = views[id]
   var timer = update.timer || 0
   
-  if (!local || !local.element) return
-  var parent = value[local.parent]
-  var index = local.index
+  if (!view || !view.element) return
+  var parent = views[view.parent]
+  var index = view.index
 
   // children
   var children = clone(toArray(parent.children[index]))
@@ -6318,25 +6302,25 @@ const refresh = ({ id, update = {} }) => {
   // remove children
   removeChildren({ id })
 
-  ////// remove local
-  Object.entries(value[id]).map(([k, v]) => {
+  ////// remove view
+  Object.entries(views[id]).map(([k, v]) => {
 
     if (k.includes("-timer")) clearTimeout(v)
   })
-  delete value[id]
+  delete views[id]
   ///////
 
   var innerHTML = children
   .map(child => {
 
     var id = child.id || generate()
-    value[id] = child
-    value[id].id = id
-    value[id].index = index
-    value[id].parent = parent.id
-    value[id].style = value[id].style || {}
-    value[id].style.opacity = "0"
-    if (timer) value[id].style.transition = `opacity ${timer}ms`
+    views[id] = child
+    views[id].id = id
+    views[id].index = index
+    views[id].parent = parent.id
+    views[id].style = views[id].style || {}
+    views[id].style.opacity = "0"
+    if (timer) views[id].style.transition = `opacity ${timer}ms`
     
     return createElement({ id })
 
@@ -6370,8 +6354,8 @@ const refresh = ({ id, update = {} }) => {
     else return
   }).filter(child => child)
   
-  if (timer) setTimeout(() => _children.map(el => value[el.id].style.opacity = value[el.id].element.style.opacity = "1"), 0)
-  else _children.map(el => value[el.id].style.opacity = value[el.id].element.style.opacity = "1")
+  if (timer) setTimeout(() => _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1"), 0)
+  else _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1")
   
   if (lDiv) {
     document.body.removeChild(lDiv)
@@ -6393,18 +6377,17 @@ const { reducer } = require("./reducer")
 
 const remove = ({ remove: _remove, id }) => {
 
-  var local = window.children[id]
-  var global = window.global
+  var view = window.views[id]
 
   _remove = _remove || {}
   var path = _remove.path, keys = []
 
   if (path) keys = path
-  else keys = clone(local.derivations) || []
+  else keys = clone(view.derivations) || []
   
   if (!_remove.onlyChild && keys.length > 0 && !_remove.keepData) {
 
-    keys.unshift(local.Data)
+    keys.unshift(view.Data)
     keys.unshift("global()")
     keys.push("delete()")
 
@@ -6415,43 +6398,43 @@ const remove = ({ remove: _remove, id }) => {
 
   if (keys.length === 0) {
 
-    local.element.remove()
-    delete window.children[id]
+    view.element.remove()
+    delete window.views[id]
     return
   }
 
   // reset length and derivations
   var nextSibling = false
-  var children = [...window.children[local.parent].element.children]
-  var index = local.derivations.length - 1
+  var children = [...window.views[view.parent].element.children]
+  var index = view.derivations.length - 1
 
   children.map((child) => {
 
     var id = child.id
-    window.children[id].length -= 1
+    window.views[id].length -= 1
 
     // derivation in array of next siblings must decrease by 1
     if (nextSibling) resetDerivations({ id, index })
 
-    if (id === local.id) {
+    if (id === view.id) {
       nextSibling = true
-      local.element.remove()
-      delete window.children[id]
+      view.element.remove()
+      delete window.views[id]
     }
   })
 }
 
 const resetDerivations = ({ id, index }) => {
 
-  var value = window.children
-  var local = value[id]
+  var views = window.views
+  var view = views[id]
 
-  if (!local) return
-  if (isNaN(local.derivations[index])) return
+  if (!view) return
+  if (isNaN(view.derivations[index])) return
 
-  local.derivations[index] -= 1
+  view.derivations[index] -= 1
 
-  var children = [...local.element.children]
+  var children = [...view.element.children]
   children.map((child) => resetDerivations({ id: child.id, index }) )
 }
 
@@ -6460,25 +6443,25 @@ module.exports = { remove }
 },{"./clone":35,"./reducer":77,"./update":113}],81:[function(require,module,exports){
 const resize = ({ id }) => {
 
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
   
-  if (local.type !== "Input") return
+  if (view.type !== "Input") return
 
   var results = dimensions({ id })
   
   // for width
-  var width = local.style.width
-  if (width === "fit-content" && local.element) {
-    local.element.style.width = results.width + "px"
-    local.element.style.minWidth = results.width + "px"
+  var width = view.style.width
+  if (width === "fit-content" && view.element) {
+    view.element.style.width = results.width + "px"
+    view.element.style.minWidth = results.width + "px"
   }
 
   // for height
-  var height = local.style.height
-  if (height === "fit-content" && local.element) {
-    local.element.style.height = results.height + "px"
-    local.element.style.minHeight = results.height + "px"
+  var height = view.style.height
+  if (height === "fit-content" && view.element) {
+    view.element.style.height = results.height + "px"
+    view.element.style.minHeight = results.height + "px"
   }
 }
 
@@ -6487,14 +6470,14 @@ const english = /[a-zA-Z]/
 
 const dimensions = ({ id, text }) => {
 
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
 
   var lDiv = document.createElement("div")
   document.body.appendChild(lDiv)
 
-  var pStyle = local.style
-  var pText = text || (local.type === "Input" && local.element && local.element.value) || "A"
+  var pStyle = view.style
+  var pText = text || (view.type === "Input" && view.element && view.element.value) || "A"
   if (pText.includes("<") || pText.includes(">")) pText = pText.split("<").join("&lt;").split(">").join("&gt;")
   
   if (pStyle != null) lDiv.style = pStyle
@@ -6526,7 +6509,7 @@ const dimensions = ({ id, text }) => {
   lDiv.innerHTML = pText
 
   if (pStyle.width === "100%")
-  lDiv.style.width = (local.element ? local.element.clientWidth : lDiv.style.width) + "px"
+  lDiv.style.width = (view.element ? view.element.clientWidth : lDiv.style.width) + "px"
   
   lDiv.style.width = lDiv.clientWidth + 2 + "px"
 
@@ -6551,12 +6534,12 @@ var converter = (dimension) => {
 module.exports = {resize, dimensions, converter}
 
 },{}],82:[function(require,module,exports){
+(function (global){(function (){
 const { update } = require("./update")
 
 module.exports = {
     route: ({ route = {} }) => {
 
-        var global = window.global
         var path = route.path || global.path
         var currentPage = route.page || path.split("/")[1].split("?")[0] || "main"
         var title = route.title || global.data.page[currentPage].title
@@ -6573,6 +6556,7 @@ module.exports = {
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
 }
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./update":113}],83:[function(require,module,exports){
 (function (global){(function (){
 const axios = require("axios")
@@ -6582,7 +6566,7 @@ const { toAwait } = require("./toAwait")
 const save = async ({ id, e, ...params }) => {
 
   var save = params.save || {}
-  var local = window.children[id]
+  var local = window.views[id]
   var collection = save.collection = save.collection || save.path
   var _data = clone(save.data)
   var headers = clone(save.headers) || {}
@@ -6623,7 +6607,7 @@ module.exports = {
     search: async ({ id, e, ...params }) => {
         
         var search = params.search || {}
-        var local = window.children[id]
+        var view = window.views[id]
         var collection = search.collection || search.path || ""
         var headers = search.headers || {}
         headers.project = headers.project || global.projectId
@@ -6640,7 +6624,7 @@ module.exports = {
                 ...headers
             }
         })
-        local.search = clone(data)
+        view.search = clone(data)
         console.log(data)
         
         // await params
@@ -6653,18 +6637,18 @@ const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
 
-  var local = window.children[id]
+  var view = window.views[id]
   var value = content.value !== undefined ? content.value : ""
 
   if (typeof value !== "string" && typeof value !== "number") return
 
   // not loaded yet
-  if (!local.element) return
+  if (!view.element) return
 
-  if (local.input && local.input.type === "radio" && value) local.element.checked = "checked"
-  else if (local.type === "Input" || local.type === "Textarea") local.element.value = value || ""
-  else if (local.type === "UploadInput") local.element.value = value || null
-  else if (local.type === "Text" || local.type === "Label" || local.type === "Header" ) local.element.innerHTML = value || ""
+  if (view.input && view.input.type === "radio" && value) view.element.checked = "checked"
+  else if (view.type === "Input" || view.type === "Textarea") view.element.value = value || ""
+  else if (view.type === "UploadInput") view.element.value = value || null
+  else if (view.type === "Text" || view.type === "Label" || view.type === "Header" ) view.element.innerHTML = value || ""
 
   isArabic({ id, value })
 }
@@ -6672,16 +6656,15 @@ const setContent = ({ id, content = {} }) => {
 module.exports = {setContent}
 
 },{"./isArabic":65}],86:[function(require,module,exports){
+(function (global){(function (){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
-const {setContent} = require("./setContent")
 
 const setData = ({ id, data }) => {
 
-  var local = window.children[id]
-  var global = window.global
+  var view = window.views[id]
 
-  if (!global[local.Data]) return
+  if (!global[view.Data]) return
 
   // defualt value
   var defValue = data.value
@@ -6699,14 +6682,14 @@ const setData = ({ id, data }) => {
   })
 
   // keys
-  var derivations = clone(local.derivations)
+  var derivations = clone(view.derivations)
   var keys = [...derivations, ...path]
   
   // set value
-  reducer({ id, object: global[local.Data], path: keys, value: defValue, key: true })
+  reducer({ id, object: global[view.Data], path: keys, value: defValue, key: true })
 /*
-  local.data = value
-  if (local.input && local.input.type === "file") return
+  view.data = value
+  if (view.input && view.input.type === "file") return
 
   // setContent
   var content = data.content || value
@@ -6716,45 +6699,47 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":35,"./reducer":77,"./setContent":85}],87:[function(require,module,exports){
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./clone":35,"./reducer":77}],87:[function(require,module,exports){
+(function (global){(function (){
 const { controls } = require("./controls")
 // const { starter } = require("./starter")
 const { toArray } = require("./toArray")
 
 const setElement = ({ id }) => {
 
-    var local = window.children[id]
-    var global = window.global
-    if (!local) return console.log("No Element", id)
+    var view = window.views[id]
+    if (!view) return console.log("No Element", id)
     
     // before loading event
-    var beforeLoadingControls = local.controls && toArray(local.controls)
+    var beforeLoadingControls = view.controls && toArray(view.controls)
         .filter(control => control.event && control.event.split("?")[0].includes("beforeLoading"))
     if (beforeLoadingControls) {
 
         var currentPage = global.currentPage
         controls({ controls: beforeLoadingControls, id })
-        local.controls = toArray(local.controls).filter(controls => controls.event ? !controls.event.includes("beforeLoading") : true)
+        view.controls = toArray(view.controls).filter(controls => controls.event ? !controls.event.includes("beforeLoading") : true)
 
         // page routed
         if (currentPage !== global.currentPage) return true
     }
 
     // status
-    local.status = "Mounting Element"
+    view.status = "Mounting Element"
     
-    local.element = document.getElementById(id)
-    if (!local.element) return delete window.children[id]
+    view.element = document.getElementById(id)
+    if (!view.element) return delete window.views[id]
 
     // status
-    local.status = "Element Loaded"
+    view.status = "Element Loaded"
 }
     
 module.exports = { setElement }
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./controls":38,"./toArray":95}],88:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
   
-  var value = window.children
+  var value = window.views
   var leftDeviation = position.left
   var topDeviation = position.top
   var align = position.align
@@ -6925,17 +6910,17 @@ const setPosition = ({ position, id, e }) => {
 module.exports = {setPosition}
 
 },{}],89:[function(require,module,exports){
+(function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
 const { toNumber } = require("./toNumber")
 
 const sort = ({ sort = {}, id, e }) => {
 
-  var global = window.global
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
 
-  var Data = sort.Data || local.Data
+  var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
 
@@ -7040,6 +7025,7 @@ const sort = ({ sort = {}, id, e }) => {
 }
 
 module.exports = {sort}
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./reducer":77,"./toArray":95,"./toNumber":104}],90:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
@@ -7053,11 +7039,11 @@ const starter = ({ id }) => {
   const { controls } = require("./controls")
   const { defaultInputHandler } = require("./defaultInputHandler")
 
-  var local = window.children[id]
-  if (!local) return
+  var view = window.views[id]
+  if (!view) return
   
   // status
-  local.status = "Mounting Functions"
+  view.status = "Mounting Functions"
 
   /* Defaults must start before controls */
   
@@ -7068,21 +7054,21 @@ const starter = ({ id }) => {
   defaultInputHandler({ id })
   
   // on loaded image
-  // if (local.type === 'Image') local.element.src = local.src
+  // if (view.type === 'Image') view.element.src = view.src
 
   /* End of default handlers */
 
   // resize
-  if (local.type === "Input") resize({ id })
+  if (view.type === "Input") resize({ id })
 
   // lunch auto controls
   Object.entries(control).map(([type, control]) => {
 
-    if (local[type]) {
+    if (view[type]) {
       
-      local.controls = toArray(local.controls)
-      var _controls = control({ id, controls: local[type] })
-      _controls && local.controls.push(..._controls)
+      view.controls = toArray(view.controls)
+      var _controls = control({ id, controls: view[type] })
+      _controls && view.controls.push(..._controls)
     }
   })
 
@@ -7090,9 +7076,9 @@ const starter = ({ id }) => {
   defaultEventHandler({ id })
   
   // execute controls
-  if (local.controls) controls({ id })
+  if (view.controls) controls({ id })
 
-  local.status = "Mounted"
+  view.status = "Mounted"
 }
 
 module.exports = { starter }
@@ -7108,8 +7094,8 @@ const { toArray } = require("./toArray")
 
 const setStyle = ({ id, style = {} }) => {
 
-  var local = window.children[id]
-  local.style = local.style || {}
+  var view = window.views[id]
+  view.style = view.style || {}
   
   Object.entries(style).map(([key, value]) => {
 
@@ -7127,7 +7113,7 @@ const setStyle = ({ id, style = {} }) => {
       if (value) {
 
         if (value === "available-width") {
-          var left = local.element.getBoundingClientRect().left
+          var left = view.element.getBoundingClientRect().left
           var tWidth = window.innerWidth
           if (left) {
             value = (tWidth - left) + "px"
@@ -7139,7 +7125,7 @@ const setStyle = ({ id, style = {} }) => {
         } else if (value === "width" || value.includes("width/")) {
 
           var divide = value.split("/")[1]
-          value = local.element.clientWidth
+          value = view.element.clientWidth
           if (divide) value = value / parseFloat(divide)
 
           value += "px"
@@ -7147,25 +7133,25 @@ const setStyle = ({ id, style = {} }) => {
         } else if (value === "height" || value.includes("height/")) {
 
           var divide = value.split("/")[1]
-          value = local.element.clientHeight
+          value = view.element.clientHeight
           if (divide) value = value / parseFloat(divide)
 
           value += "px"
 
         } else if (key === "left" && value === "center") {
 
-          var width = local.element.offsetWidth
-          var parentWidth = window.children[local.parent].element.clientWidth
+          var width = view.element.offsetWidth
+          var parentWidth = window.views[view.parent].element.clientWidth
 
           value = parentWidth / 2 - width / 2 + "px"
         }
       }
 
-      if (local.element) local.element.style[key] = value
-      else local.style[key] = value
+      if (view.element) view.element.style[key] = value
+      else view.style[key] = value
     }
 
-    if (timer) local[`${key}-timer`] = setTimeout(style, timer)
+    if (timer) view[`${key}-timer`] = setTimeout(style, timer)
     else style()
 
     // resize
@@ -7175,11 +7161,11 @@ const setStyle = ({ id, style = {} }) => {
 
 const resetStyles = ({ id, style = {} }) => {
 
-  var local = window.children[id]
-  local.afterStylesMounted = false
+  var view = window.views[id]
+  view.afterStylesMounted = false
 
-  Object.entries({...local.style.after, ...(local.hover && local.hover.style || {})}).map(([key]) => {
-    if (local.style[key] !== undefined) style[key] = local.style[key]
+  Object.entries({...view.style.after, ...(view.hover && view.hover.style || {})}).map(([key]) => {
+    if (view.style[key] !== undefined) style[key] = view.style[key]
     else style[key] = null
   })
   
@@ -7188,19 +7174,19 @@ const resetStyles = ({ id, style = {} }) => {
 
 const toggleStyles = ({ id }) => {
 
-  var local = window.children[id]
-  if (local.afterStylesMounted) resetStyles({ id, style })
+  var view = window.views[id]
+  if (view.afterStylesMounted) resetStyles({ id, style })
   else mountAfterStyles({ id })
 }
 
 const mountAfterStyles = ({ id }) => {
 
-  var local = window.children[id]
-  if (!local.style || !local.style.after) return
+  var view = window.views[id]
+  if (!view.style || !view.style.after) return
 
-  local.afterStylesMounted = true
+  view.afterStylesMounted = true
 
-  Object.entries(local.style.after).map(([key, value]) => {
+  Object.entries(view.style.after).map(([key, value]) => {
 
     var timer = 0
     value = value + ""
@@ -7209,15 +7195,15 @@ const mountAfterStyles = ({ id }) => {
       value = value.split(">>")[0]
     }
 
-    var myFn = () => local.element.style[key] = value
+    var myFn = () => view.element.style[key] = value
 
-    if (timer) local[`${key}-timer`] = setTimeout(myFn, timer)
+    if (timer) view[`${key}-timer`] = setTimeout(myFn, timer)
     else {
 
-      if (local.element) myFn()
+      if (view.element) myFn()
       else {
-        local.controls = toArray(local.controls)
-        local.controls.push({
+        view.controls = toArray(view.controls)
+        view.controls.push({
           event: `loaded?().element.style.${key}=${value}`
         })
       }
@@ -7234,15 +7220,15 @@ const { clone } = require("./clone")
 
 const switchMode = ({ mode, _id = "body" }) => {
 
-    var value = window.children
-    var children = [...value[_id].element.children]
+    var view = window.views
+    var children = [...view[_id].element.children]
 
     mode = mode.toLowerCase()
     if (mode === window.global.mode.toLowerCase()) return
 
     children.map(el => {
         
-        var local = value[el.id], style = {}
+        var local = view[el.id], style = {}
         if (!local) return
             
         if (local.mode) {
@@ -7286,7 +7272,7 @@ const switchMode = ({ mode, _id = "body" }) => {
         switchMode({ _id: el.id, mode })
     })
 
-    // set global mode value
+    // set global mode view
     if (_id === "body") window.global.mode = capitalize(mode)
 }
 
@@ -7324,7 +7310,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     if (!approval) return false
 
     id = mainId
-    var local = _window ? _window.children[id] : window.children[id] || {}
+    var local = _window ? _window.views[id] : window.views[id] || {}
 
     if (condition.includes("#()")) {
       local["#"] = toArray(local["#"])
@@ -7637,105 +7623,98 @@ module.exports = {
 
     var { createElement } = require("./createElement")
 
-    var local = _window ? _window.children[id] : window.children[id]
+    // views
+    var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
+    var view = views[id]
     
     // innerHTML
-    var text = local.text !== undefined ? local.text.toString() : typeof local.data !== "object" ? local.data : ''
-    var innerHTML = local.type !== "View" ? text : ""
-    var checked = local.input && local.input.type === "radio" && parseFloat(local.data) === parseFloat(local.input.defaultValue)
+    var text = view.text !== undefined ? view.text.toString() : typeof view.data !== "object" ? view.data : ''
+    var innerHTML = view.type !== "View" ? text : ""
+    var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
     
-    // value
-    var value = _window ? _window.children : window.children
-
-    // format
-    // if (text && typeof text === "string") text = textFormating({ _window, text, id })
-    
-    innerHTML = toArray(local.children).map((child, index) => {
+    innerHTML = toArray(view.children).map((child, index) => {
 
       var id = child.id || generate()
-      value[id] = clone(child)
-      value[id].id = id
-      value[id].index = index
-      value[id].parent = local.id
+      views[id] = clone(child)
+      views[id].id = id
+      views[id].index = index
+      views[id].parent = view.id
       
       return createElement({ _window, id, req, res })
       
     }).join("\n")
     
-    var value = (local.input && local.input.value) !== undefined ?
-        local.input.value : local.data !== undefined ? local.data : ""
+    var value = (view.input && view.input.value) !== undefined ?
+        view.input.value : view.data !== undefined ? view.data : ""
 
     var tag, style = toStyle({ _window, id })
         
     if (typeof value === 'object') value = ''
     
-    if (local.type === "View") {
-      tag = `<div class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>\n${innerHTML}\n</div>`
-    } else if (local.type === "Image") {
-      tag = `<img class='${local.class}' alt='${local.alt || ''}' id='${local.id}' style='${style}' index='${local.index}' src='${local.src}'>${innerHTML}</img>`
-    } else if (local.type === "Table") {
-      tag = `<table class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>\n${innerHTML}\n</table>`
-    } else if (local.type === "Row") {
-      tag = `<tr class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</tr>`
-    } else if (local.type === "Header") {
-      tag = `<th class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</th>`
-    } else if (local.type === "Cell") {
-      tag = `<td class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</td>`
-    } else if (local.type === "Label") {
-      tag = `<label class='${local.class}' id='${local.id}' style='${style}' ${local["aria-label"] ? `aria-label="${local["aria-label"]}"` : ""} ${local.for ? `for="${local.for}"` : ""} index='${local.index}'>${innerHTML}</label>`
-    } else if (local.type === "Span") {
-      tag = `<span class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</span>`
-    } else if (local.type === "Text") {
-      if (local.label) {
-        tag = `<label class='${local.class}' id='${local.id}' style='${style}' ${local["aria-label"] ? `aria-label="${local["aria-label"]}"` : ""} ${local.for ? `for="${local.for}"` : ""} index='${local.index}'>${innerHTML}</label>`
-      } else if (local.h1) {
-        tag = `<h1 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h1>`
-      } else if (local.h2) {
-        tag = `<h2 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h2>`
-      } else if (local.h3) {
-        tag = `<h3 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h3>`
-      } else if (local.h4) {
-        tag = `<h4 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h4>`
-      } else if (local.h5) {
-        tag = `<h5 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h5>`
-      } else if (local.h6) {
-        tag = `<h6 class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</h6>`
-      } else if (local.span) {
-        tag = `<span class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${innerHTML}</span>`
+    if (view.type === "View") {
+      tag = `<div class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML}\n</div>`
+    } else if (view.type === "Image") {
+      tag = `<img class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index}' src='${view.src}'>${innerHTML}</img>`
+    } else if (view.type === "Table") {
+      tag = `<table class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML}\n</table>`
+    } else if (view.type === "Row") {
+      tag = `<tr class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</tr>`
+    } else if (view.type === "Header") {
+      tag = `<th class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</th>`
+    } else if (view.type === "Cell") {
+      tag = `<td class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</td>`
+    } else if (view.type === "Label") {
+      tag = `<label class='${view.class}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index}'>${innerHTML}</label>`
+    } else if (view.type === "Span") {
+      tag = `<span class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</span>`
+    } else if (view.type === "Text") {
+      if (view.label) {
+        tag = `<label class='${view.class}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index}'>${innerHTML}</label>`
+      } else if (view.h1) {
+        tag = `<h1 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h1>`
+      } else if (view.h2) {
+        tag = `<h2 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h2>`
+      } else if (view.h3) {
+        tag = `<h3 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h3>`
+      } else if (view.h4) {
+        tag = `<h4 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h4>`
+      } else if (view.h5) {
+        tag = `<h5 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h5>`
+      } else if (view.h6) {
+        tag = `<h6 class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</h6>`
+      } else if (view.span) {
+        tag = `<span class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</span>`
       } else {
-        tag = `<p class='${local.class}' id='${local.id}' style='${style}' index='${local.index}'>${text}</p>`
+        tag = `<p class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${text}</p>`
       }
-    } else if (local.type === "Icon") {
-      tag = `<i class='${local.outlined ? "material-icons-outlined" : local.rounded ? "material-icons-round" : local.sharp ? "material-icons-sharp" : local.filled ? "material-icons" : local.twoTone ? "material-icons-two-tone" : ""} ${local.class || ""} ${local.icon.name}' id='${local.id}' style='${style}; opacity:0; transition:.2s' index='${local.index}'>${local.google ? local.icon.name : ""}</i>`
-    } else if (local.type === "Textarea") {
-      tag = `<textarea class='${local.class}' id='${local.id}' style='${style}' placeholder='${local.placeholder || ""}' ${local.readonly ? "readonly" : ""} ${local.maxlength || ""} index='${local.index}'>${local.data || local.input.value || ""}</textarea>`
-    } else if (local.type === "Input") {
-      if (local.textarea) {
-        tag = `<textarea spellcheck='false' class='${local.class}' id='${local.id}' style='${style}' placeholder='${local.placeholder || ""}' ${local.readonly ? "readonly" : ""} ${local.maxlength || ""} index='${local.index}'>${value}</textarea>`
+    } else if (view.type === "Icon") {
+      tag = `<i class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}; opacity:0; transition:.2s' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
+    } else if (view.type === "Textarea") {
+      tag = `<textarea class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${view.data || view.input.value || ""}</textarea>`
+    } else if (view.type === "Input") {
+      if (view.textarea) {
+        tag = `<textarea spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${value}</textarea>`
       } else {
-        tag = `<input ${local["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${local.class}' id='${local.id}' style='${style}' ${local.input.name ? `name="${local.input.name}"` : ""} ${local.input.accept ? `accept="${local.input.accept}/*"` : ""} type='${local.input.type || "text"}' ${local.placeholder ? `placeholder="${local.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${local.readonly ? "readonly" : ""} ${local.input.min ? `min="${local.input.min}"` : ""} ${local.input.max ? `max="${local.input.max}"` : ""} ${local.input.defaultValue ? `defaultValue="${local.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${local.disabled ? "disabled" : ''} index='${local.index}'/>`
+        tag = `<input ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}/*"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index}'/>`
       }
-    } else if (local.type === "Paragraph") {
-      tag = `<textarea class='${local.class}' id='${local.id}' style='${style}' placeholder='${local.placeholder || ""}' index='${local.index}'>${text}</textarea>`
+    } else if (view.type === "Paragraph") {
+      tag = `<textarea class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index}'>${text}</textarea>`
     }
 
     // linkable
-    if (local.link) {
+    if (view.link) {
 
       var id = generate(), style = ''
-      if (_window) _window.children[id] = {}
-      else window.children[id] = {}
+      var _view = views[id]
+      views[id] = {}
 
-      var _local = _window ? _window.children[id] : window.children[id]
-
-      _local = { id, parent: local.id }
-      _local.style = local.link.style
-      if (_window) _window.children[id] = _local
-      else window.children[id] = _local
-      if (_local.style) style = toStyle({ _window, id })
+      _view = { id, parent: view.id }
+      _view.style = view.link.style
+      views[id] = _view
+      if (_view.style) style = toStyle({ _window, id })
       
-      tag = `<a id='${id}' href=${local.link.path || global.host} style='${style}' index='${local.index}'>${tag}</a>`
+      tag = `<a id='${id}' href=${view.link.path || global.host} style='${style}' index='${view.index}'>${tag}</a>`
     }
 
     return tag
@@ -7812,7 +7791,7 @@ const { generate } = require("./generate")
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement, asyncer, eventParams }) => {
   const { toApproval } = require("./toApproval")
 
-  var localId = id, mountDataUsed = false, mountPathUsed = false
+  var viewId = id, mountDataUsed = false, mountPathUsed = false
   var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
@@ -7826,11 +7805,11 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
   string.split(";").map(param => {
     
-    var key, value, id = localId
-    var local = _window ? _window.children[id] : window.children[id]
+    var key, value, id = viewId
+    var view = _window ? _window.views[id] : window.views[id]
 
     // break
-    if (params.break || local && local.break) return
+    if (params.break || view && view.break) return
 
     if (param.slice(0, 2) === "#:") return
     
@@ -7886,8 +7865,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.mouseenter = local.mouseenter || ""
-      return local.mouseenter += `${param};`
+      view.mouseenter = view.mouseenter || ""
+      return view.mouseenter += `${param};`
     }
 
     // mouseleave
@@ -7895,8 +7874,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.mouseleave = local.mouseleave || ""
-      return local.mouseleave += `${param};`
+      view.mouseleave = view.mouseleave || ""
+      return view.mouseleave += `${param};`
     }
 
     // mouseover
@@ -7904,8 +7883,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.mouseover = local.mouseover || ""
-      return local.mouseover += `${param};`
+      view.mouseover = view.mouseover || ""
+      return view.mouseover += `${param};`
     }
 
     // keyup
@@ -7913,8 +7892,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.keyup = local.keyup || ""
-      return local.keyup += `${param};`
+      view.keyup = view.keyup || ""
+      return view.keyup += `${param};`
     }
 
     // keydown
@@ -7922,8 +7901,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
       param = param.slice(11)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
-      local.keydown = local.keydown || ""
-      return local.keydown += `${param};`
+      view.keydown = view.keydown || ""
+      return view.keydown += `${param};`
     }
     
     if (value === undefined) value = generate()
@@ -7932,7 +7911,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     // condition not approved
     if (value === "*return*") return
 
-    id = localId
+    id = viewId
 
     var path = typeof key === "string" ? key.split(".") : [], timer
 
@@ -7950,37 +7929,37 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         if (timer) {
           
           timer = parseInt(timer)
-          clearTimeout(local[path.join(".")])
-          local[path.join(".")] = setTimeout(myFn, timer)
+          clearTimeout(view[path.join(".")])
+          view[path.join(".")] = setTimeout(myFn, timer)
 
         } else myFn()
 
       } else {
         
-        if (id && local && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
+        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
         reducer({ _window, id, path, value, key, params, e, req, res, _, mount, object: params })
       }
       
     } else if (key) {
       
-      if (mount) local[key] = value
+      if (mount) view[key] = value
       params[key] = value
     }
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
     // mount data directly when found
-    if (createElement && mount && !mountDataUsed && ((params.data !== undefined && !local.Data) || params.Data || (local.data !== undefined && !local.Data))) {
+    if (createElement && mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view.data !== undefined && !view.Data))) {
 
       mountDataUsed = true
-      local.Data = local.Data || generate()
-      global[local.Data] = local.data = local.data !== undefined ? local.data : (global[local.Data] !== undefined ? global[local.Data] : {})
+      view.Data = view.Data || generate()
+      global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
 
       // duplicated element
-      if (local.duplicatedElement) {
+      if (view.duplicatedElement) {
 
-        delete local.path
-        delete local.data
+        delete view.path
+        delete view.data
       }
     }
   
@@ -7990,16 +7969,16 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       mountPathUsed = true
 
       // path & derivations
-      var path = (typeof local.path === "string" || typeof local.path === "number") ? local.path.toString().split(".") : []
+      var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : []
           
       if (path.length > 0) {
-        if (!local.Data) {
+        if (!view.Data) {
 
-          local.Data = generate()
-          global[local.Data] = local.data || {}
+          view.Data = generate()
+          global[view.Data] = view.data || {}
         }
 
-        local.derivations.push(...path)
+        view.derivations.push(...path)
       }
     }
   
@@ -8100,11 +8079,11 @@ module.exports = {toString}
 module.exports = {
   toStyle: ({ _window, id }) => {
 
-    var local = _window ? _window.children[id] : window.children[id]
+    var view = _window ? _window.views[id] : window.views[id]
     var style = ""
 
-    if (local.style) {
-      Object.entries(local.style).map(([k, v]) => {
+    if (view.style) {
+      Object.entries(view.style).map(([k, v]) => {
         if (k === "after" || k.includes(">>")) return;
         else if (k === "userSelect") k = "user-select";
         else if (k === "inlineSize") k = "inline-size";
@@ -8178,7 +8157,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   // const { toApproval } = require("./toApproval")
   const { toParam } = require("./toParam")
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
 
   // no value
@@ -8250,7 +8229,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     } else value = reducer({ _window, id, e, path, params, object, _, req, res })
   } else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
   else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res, mount })
-  else if (value === "()") value = local
+  else if (value === "()") value = view
   else if (typeof value === "boolean") { }
   else if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === undefined || value === "generate") value = generate()
@@ -8360,14 +8339,14 @@ const { toArray } = require("./toArray")
 
 const toggleView = ({ toggle, id }) => {
 
-  var value = window.children
+  var views = window.views
   var global = window.global
   var togglePage = toggle.page 
   var toggleId = toggle.id
-    || togglePage && value.root && value.root.element.children[0] && value.root.element.children[0].id
-    || value[id] && value[id].element.children[0] && value[id].element.children[0].id
-  var parentId = toggleId ? (toggleId !== "root" ? value[toggleId].parent : toggleId) : id
-  var local = {}
+    || togglePage && views.root && views.root.element.children[0] && views.root.element.children[0].id
+    || views[id] && views[id].element.children[0] && views[id].element.children[0].id
+  var parentId = toggleId ? (toggleId !== "root" ? views[toggleId].parent : toggleId) : id
+  var view = {}
   var viewId = toggle.viewId || toggle.view
   
   toggle.fadein = toggle.fadein || {}
@@ -8389,43 +8368,43 @@ const toggleView = ({ toggle, id }) => {
 
     history.pushState({}, title, togglePage)
     document.title = title
-    local = value.root
+    view = views.root
     children = global.data.page[global.currentPage]["views"].map(view => global.data.view[view])
 
   } else {
 
     children = toArray(global.data.view[viewId])
-    local = value[parentId]
+    view = views[parentId]
   }
 
   if (!children) return
-  if (!local || !local.element) return
+  if (!view || !view.element) return
 
   // fadeout
   var timer = toggle.timer || toggle.fadeout.timer || 0
 
-  if (toggleId && value[toggleId] && value[toggleId].element) {
+  if (toggleId && views[toggleId] && views[toggleId].element) {
     
-    value[toggleId].element.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
-    value[toggleId].element.style.transform = toggle.fadeout.after.transform || null
-    value[toggleId].element.style.opacity = toggle.fadeout.after.opacity || "0"
+    views[toggleId].element.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
+    views[toggleId].element.style.transform = toggle.fadeout.after.transform || null
+    views[toggleId].element.style.opacity = toggle.fadeout.after.opacity || "0"
     
     removeChildren({ id: toggleId })
-    delete value[toggleId]
+    delete views[toggleId]
   }
   
   var innerHTML = children
     .map((child, index) => {
 
       var id = child.id || generate()
-      value[id] = clone(child)
-      value[id].id = id
-      value[id].index = index
-      value[id].parent = local.id
-      value[id].style = {}
-      value[id].style.transition = toggle.fadein.before.transition || null
-      value[id].style.opacity = toggle.fadein.before.opacity || "0"
-      value[id].style.transform = toggle.fadein.before.transform || null
+      views[id] = clone(child)
+      views[id].id = id
+      views[id].index = index
+      views[id].parent = view.id
+      views[id].style = {}
+      views[id].style.transition = toggle.fadein.before.transition || null
+      views[id].style.opacity = toggle.fadein.before.opacity || "0"
+      views[id].style.transform = toggle.fadein.before.transform || null
 
       return createElement({ id })
 
@@ -8433,8 +8412,8 @@ const toggleView = ({ toggle, id }) => {
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
-  local.element.innerHTML = ""
-  local.element.innerHTML = innerHTML
+  view.element.innerHTML = ""
+  view.element.innerHTML = innerHTML
   
   var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   idList.map(id => setElement({ id }))
@@ -8443,17 +8422,17 @@ const toggleView = ({ toggle, id }) => {
   // set visible
   setTimeout(() => {
   
-    var children = [...local.element.children]
+    var children = [...view.element.children]
     children.map(el => {
 
       var id = el.id
-      value[id].style.transition = el.style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`
-      value[id].style.transform = el.style.transform = toggle.fadein.after.transform || null
-      value[id].style.opacity = el.style.opacity = toggle.fadein.after.opacity || "1"
+      views[id].style.transition = el.style.transition = toggle.fadein.after.transition || `${timer}ms ease-out`
+      views[id].style.transform = el.style.transform = toggle.fadein.after.transform || null
+      views[id].style.opacity = el.style.opacity = toggle.fadein.after.opacity || "1"
     })
   
     setTimeout(() => {
-      idList.filter(id => value[id].type === "Icon").map(id => value[id]).map(map => {
+      idList.filter(id => views[id].type === "Icon").map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
@@ -8474,17 +8453,17 @@ const { controls } = require("./controls")
 
 const update = ({ id, update = {} }) => {
 
-  var value = window.children
+  var views = window.views
   var global = window.global
-  var local = value[id]
+  var view = views[id]
   var timer = update.timer || 0
   
-  if (!local || !local.element) return
+  if (!view || !view.element) return
 
   // children
-  var children = clone(toArray(local.children))
+  var children = clone(toArray(view.children))
   
-  // remove id from VALUE
+  // remove id from views
   removeChildren({ id })
 
   // reset children for root
@@ -8502,40 +8481,40 @@ const update = ({ id, update = {} }) => {
   .map((child, index) => {
 
     var id = child.id || generate()
-    value[id] = child
-    value[id].id = id
-    value[id].index = index
-    value[id].parent = local.id
-    value[id].style = value[id].style || {}
-    value[id].style.opacity = "0"
-    if (timer) value[id].style.transition = `opacity ${timer}ms`
+    views[id] = child
+    views[id].id = id
+    views[id].index = index
+    views[id].parent = view.id
+    views[id].style = views[id].style || {}
+    views[id].style.opacity = "0"
+    if (timer) views[id].style.transition = `opacity ${timer}ms`
     
     return createElement({ id })
 
   }).join("")
   
-  local.element.innerHTML = ""
-  local.element.innerHTML = innerHTML
+  view.element.innerHTML = ""
+  view.element.innerHTML = innerHTML
 
   var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   
   idList.map(id => setElement({ id }))
   idList.map(id => starter({ id }))
   
-  var children = [...local.element.children]
+  var children = [...view.element.children]
   if (timer) setTimeout(() => {
       children.map(el => {
         
-        value[el.id].style.opacity = value[el.id].element.style.opacity = "1"
+        views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
       })
     }, 0)
   else children.map(el => {
     
-    value[el.id].style.opacity = value[el.id].element.style.opacity = "1"
+    views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
   })
   
   setTimeout(() => {
-    idList.filter(id => value[id].type === "Icon").map(id => value[id]).map(map => {
+    idList.filter(id => views[id].type === "Icon").map(id => views[id]).map(map => {
       map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
       map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })
@@ -8544,25 +8523,25 @@ const update = ({ id, update = {} }) => {
 
 const removeChildren = ({ id }) => {
 
-  var value = window.children
-  var local = value[id]
+  var views = window.views
+  var view = views[id]
 
-  //if (!local.element && id !== "root") return delete value[id]
-  var children = [...local.element.children]
+  //if (!view.element && id !== "root") return delete views[id]
+  var children = [...view.element.children]
 
   children.map((child) => {
 
     var id = child.id
-    if (!value[id]) return
+    if (!views[id]) return
 
     // clear time out
-    Object.entries(value[id]).map(([k, v]) => {
+    Object.entries(views[id]).map(([k, v]) => {
 
       if (k.includes("-timer")) clearTimeout(v)
     })
 
     removeChildren({ id })
-    delete value[id]
+    delete views[id]
   })
 }
 
@@ -8575,7 +8554,7 @@ const { toAwait } = require("./toAwait")
 const upload = async ({ id, e, ...params }) => {
         
   var upload = params.upload
-  var local = window.children[id]
+  var view = window.views[id]
   var collection = upload.collection = upload.collection || upload.path
 
   var headers = clone(upload.headers) || {}
@@ -8606,7 +8585,7 @@ const upload = async ({ id, e, ...params }) => {
     }
   })
 
-  local.upload = data
+  view.upload = data
   console.log(data)
 
   // await params
@@ -8632,18 +8611,18 @@ module.exports = {
     upload: async ({ id, e, upload = {}, ...params }) => {
 
         var global = window.global
-        var value = window.children
-        var local = value[id]
+        var value = window.views
+        var view = value[id]
         var storage = global.storage
         
         upload.save = upload.save !== undefined ? upload.save : true
         
-        await storage.child(`images/${local.file.fileName}.${local.file.fileType}`).put(local.file.src)
-        await storage.child(`images/${local.file.fileName}.${local.file.fileType}`).getDownloadURL().then(url => local.file.url = url)
+        await storage.child(`images/${view.file.fileName}.${view.file.fileType}`).put(view.file.src)
+        await storage.child(`images/${view.file.fileName}.${view.file.fileType}`).getDownloadURL().then(url => view.file.url = url)
         
-        local.file.id = `${local.file.fileName}.${local.file.fileType}`
+        view.file.id = `${view.file.fileName}.${view.file.fileType}`
         var _save = { path: "image", data: {
-            "creation-date": new Date().getTime() + 10800000 + "", name: `${local.file.fileName}.${local.file.fileType}`, id: `${local.file.fileName}.${local.file.fileType}`, url: local.file.url, description: `${capitalize(local.file.fileName.split('-')[0])} Image`, active: true
+            "creation-date": new Date().getTime() + 10800000 + "", name: `${view.file.fileName}.${view.file.fileType}`, id: `${view.file.fileName}.${view.file.fileType}`, url: view.file.url, description: `${capitalize(view.file.fileName.split('-')[0])} Image`, active: true
         }}
 
         upload.save && await save({ ...params, save: _save, id, e })
@@ -8664,8 +8643,8 @@ const watch = ({ controls, id }) => {
 
     const { execute } = require("./execute")
 
-    var local = window.children[id]
-    if (!local) return
+    var view = window.views[id]
+    if (!view) return
 
     var watch = toCode({ id, string: controls.watch })
 
@@ -8678,24 +8657,24 @@ const watch = ({ controls, id }) => {
     watch.split('?')[0].split(';').map(_watch => {
 
         var timer = 500
-        local[`${_watch}-watch`] = clone(toValue({ id, value: _watch }))
+        view[`${_watch}-watch`] = clone(toValue({ id, value: _watch }))
         
         const myFn = async () => {
             
-            if (!window.children[id]) return clearInterval(local[`${_watch}-timer`])
+            if (!window.views[id]) return clearInterval(view[`${_watch}-timer`])
             
             var value = toValue({ id, value: _watch })
 
-            if ((value === undefined && local[`${_watch}-watch`] === undefined) || isEqual(value, local[`${_watch}-watch`])) return
+            if ((value === undefined && view[`${_watch}-watch`] === undefined) || isEqual(value, view[`${_watch}-watch`])) return
 
-            local[`${_watch}-watch`] = clone(value)
+            view[`${_watch}-watch`] = clone(value)
             
             // params
             toParam({ id, string: watch.split('?')[1], mount: true })
-            if (local["once"] || local["once()"]) {
+            if (view["once"] || view["once()"]) {
 
-                delete local["once"]
-                clearInterval(local[`${_watch}-timer`])
+                delete view["once"]
+                clearInterval(view[`${_watch}-timer`])
             }
             
             // approval
@@ -8706,11 +8685,11 @@ const watch = ({ controls, id }) => {
             if (controls.actions) await execute({ controls, id })
                 
             // await params
-            if (local.await) toParam({ id, string: local.await.join(';'), mount: true })
+            if (view.await) toParam({ id, string: view.await.join(';'), mount: true })
         }
 
-        if (local[`${_watch}-timer`]) clearInterval(local[`${_watch}-timer`])
-        local[`${_watch}-timer`] = setInterval(myFn, timer)
+        if (view[`${_watch}-timer`]) clearInterval(view[`${_watch}-timer`])
+        view[`${_watch}-timer`] = setInterval(myFn, timer)
 
     })
 }

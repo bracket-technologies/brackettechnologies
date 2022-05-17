@@ -9,8 +9,8 @@ const watch = ({ controls, id }) => {
 
     const { execute } = require("./execute")
 
-    var local = window.children[id]
-    if (!local) return
+    var view = window.views[id]
+    if (!view) return
 
     var watch = toCode({ id, string: controls.watch })
 
@@ -23,24 +23,24 @@ const watch = ({ controls, id }) => {
     watch.split('?')[0].split(';').map(_watch => {
 
         var timer = 500
-        local[`${_watch}-watch`] = clone(toValue({ id, value: _watch }))
+        view[`${_watch}-watch`] = clone(toValue({ id, value: _watch }))
         
         const myFn = async () => {
             
-            if (!window.children[id]) return clearInterval(local[`${_watch}-timer`])
+            if (!window.views[id]) return clearInterval(view[`${_watch}-timer`])
             
             var value = toValue({ id, value: _watch })
 
-            if ((value === undefined && local[`${_watch}-watch`] === undefined) || isEqual(value, local[`${_watch}-watch`])) return
+            if ((value === undefined && view[`${_watch}-watch`] === undefined) || isEqual(value, view[`${_watch}-watch`])) return
 
-            local[`${_watch}-watch`] = clone(value)
+            view[`${_watch}-watch`] = clone(value)
             
             // params
             toParam({ id, string: watch.split('?')[1], mount: true })
-            if (local["once"] || local["once()"]) {
+            if (view["once"] || view["once()"]) {
 
-                delete local["once"]
-                clearInterval(local[`${_watch}-timer`])
+                delete view["once"]
+                clearInterval(view[`${_watch}-timer`])
             }
             
             // approval
@@ -51,11 +51,11 @@ const watch = ({ controls, id }) => {
             if (controls.actions) await execute({ controls, id })
                 
             // await params
-            if (local.await) toParam({ id, string: local.await.join(';'), mount: true })
+            if (view.await) toParam({ id, string: view.await.join(';'), mount: true })
         }
 
-        if (local[`${_watch}-timer`]) clearInterval(local[`${_watch}-timer`])
-        local[`${_watch}-timer`] = setInterval(myFn, timer)
+        if (view[`${_watch}-timer`]) clearInterval(view[`${_watch}-timer`])
+        view[`${_watch}-timer`] = setInterval(myFn, timer)
 
     })
 }

@@ -7,7 +7,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   // const { toApproval } = require("./toApproval")
   const { toParam } = require("./toParam")
 
-  var local = _window ? _window.children[id] : window.children[id]
+  var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
 
   // no value
@@ -79,7 +79,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     } else value = reducer({ _window, id, e, path, params, object, _, req, res })
   } else if (path[1] || path[0].includes(")(")) value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
   else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res, mount })
-  else if (value === "()") value = local
+  else if (value === "()") value = view
   else if (typeof value === "boolean") { }
   else if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === undefined || value === "generate") value = generate()

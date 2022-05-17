@@ -1,6 +1,6 @@
 module.exports = ({ controls, id }) => {
   
-  window.children[id].droplist.id = controls.id = id = controls.id || id
+  window.views[id].droplist.id = controls.id = id = controls.id || id
   
   return [{
     event: `click?if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,

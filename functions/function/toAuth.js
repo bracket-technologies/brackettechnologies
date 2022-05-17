@@ -1,7 +1,6 @@
 module.exports = {
     toAuth: () => {
 
-        var global = window.global
         global.authenticated = false
         var auth = document.cookie.split("authentication=")
         

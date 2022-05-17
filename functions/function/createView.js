@@ -4,12 +4,12 @@ const {clone} = require("./clone")
 
 const createView = ({ view, id }) => {
 
-  var local = window.children[id]
+  var views = window.views[id]
   var global = window.global
 
   if (!view) return
   
-  local.children = toArray(clone(global.data.view[view]))
+  views.children = toArray(clone(global.data.view[view]))
 
   // update
   update({ id })

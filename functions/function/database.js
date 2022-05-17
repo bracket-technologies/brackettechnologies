@@ -2,12 +2,12 @@ const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { capitalize } = require("./capitalize")
 const { toCode } = require("./toCode")
-var _window = { global: {}, children: {} }
+var _window = { global: {}, views: {} }
 
 var getdb = async ({ req, res, db }) => {
   
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   var string = req.headers.search, params = {}
   string = toCode({ _window, string })
   
@@ -188,7 +188,7 @@ var getdb = async ({ req, res, db }) => {
 var postdb = async ({ req, res, db }) => {
 
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   var data = req.body.data
   var save = req.body.save
   var ref = db.collection(collection)
@@ -223,7 +223,7 @@ var postdb = async ({ req, res, db }) => {
 var deletedb = async ({ req, res, db }) => {
 
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   var string = req.headers.erase, params = {}
   if (string) params = toParam({ _window, string, id: "" })
 

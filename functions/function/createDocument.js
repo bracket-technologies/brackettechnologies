@@ -39,7 +39,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         country: req.headers["x-country-code"]
     }
     
-    var children = {
+    var views = {
         body: { 
             id: "body" 
         },
@@ -57,11 +57,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         }
     }
 
-    var bracketDomains = [
-        "bracketjs.com",
-        "localhost",
-        "bracket.localhost"
-    ]
+    var bracketDomains = [ "bracketjs.com", "localhost", "bracket.localhost" ]
 
     // is brakcet domain
     var isBracket = bracketDomains.includes(host)
@@ -69,7 +65,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     console.log("Document started loading:");
     
     console.log("before project", new Date().getTime() - global.timer);
-
+    
     // get project
     if (isBracket) global.data.project = project = Object.values(getJsonFiles({ search: { collection: "_project_", fields: { domains: { "array-contains": host } } } }))[0]    
     else {
@@ -98,7 +94,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             global.data.user = user = Object.values(getJsonFiles({ search: { collection: "_user_", fields: { projects: { "array-contains": project.id } } } }))[0]
             console.log("after user", new Date().getTime() - global.timer);
 
-        } else {
+        }/* else {
 
             // get user (for bracket users only)
             console.log("before user / firestore", new Date().getTime() - global.timer);
@@ -111,17 +107,19 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
                 global.data.user = user = doc.docs[0].data()
                 console.log("after user", new Date().getTime() - global.timer);
             })
-        }
+        }*/
         
         console.log("before page", new Date().getTime() - global.timer);
 
         // get page
         global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
+        console.log("after page", new Date().getTime() - global.timer);
         
         console.log("before view", new Date().getTime() - global.timer);
 
         // get view
         global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
+        console.log("after view", new Date().getTime() - global.timer);
         
     } else {
 
@@ -189,11 +187,11 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     if (global.data.page[currentPage].global)
     Object.entries(global.data.page[currentPage].global).map(([key, value]) => global[key] = value)
     
-    // controls & children
-    children.root.controls = global.data.page[currentPage].controls
-    children.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
+    // controls & views
+    views.root.controls = global.data.page[currentPage].controls
+    views.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
 
-    var _window = { global, children }
+    var _window = { global, views }
 
     // forward
     if (global.data.page[currentPage].forward) {
@@ -220,7 +218,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
     // create html
     var innerHTML = ""
-    innerHTML = createElement({ _window, id: "root", req, res })
+    innerHTML += createElement({ _window, id: "root", req, res })
     innerHTML += createElement({ _window, id: "public", req, res })
 
     global.idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
@@ -260,7 +258,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         </head>
         <body>
             ${innerHTML}
-            <script id="children" type="application/json">${JSON.stringify(children)}</script>
+            <script id="views" type="application/json">${JSON.stringify(views)}</script>
             <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>
         </body>

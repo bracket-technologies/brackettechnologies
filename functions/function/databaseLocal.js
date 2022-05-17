@@ -3,11 +3,12 @@ const { toCode } = require("./toCode")
 const axios = require("axios")
 const { getJsonFiles, postJsonFiles, removeJsonFiles } = require("./jsonFiles")
 const { toString } = require("./toString")
-var _window = { children: {}, global: { codes: {} } }
+var _window = { views: {}, global: { codes: {} } }
 
 var getdb = async ({ req, res }) => {
+  /*
   var promises = []
-
+  
   // verify access key
   var project, accessKey = req.headers["access-key"], projectId = req.headers["project"]
 
@@ -16,9 +17,10 @@ var getdb = async ({ req, res }) => {
       if (doc.exists) project = doc.data()
     })
   )
+  */
   
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   // string => search
   var string = decodeURI(req.headers.search), params = {}
@@ -48,10 +50,10 @@ var getdb = async ({ req, res }) => {
 
   success = false
   message = `Your are not verified!`
-  
+  /*
   Promise.all(promises)
   if (project["access-key"] !== accessKey) return res.send({ success, message })
-
+  */
   success = true
   message = `File/s mounted successfuly!`
   
@@ -62,7 +64,7 @@ var postdb = async ({ req, res }) => {
 
   var data = req.body.data
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   var save = req.body.save
   var success, message
 
@@ -79,7 +81,7 @@ var postdb = async ({ req, res }) => {
 var deletedb = async ({ req, res }) => {
 
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_") collection += `-${req.headers["project"]}`
+  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   if (string) params = toParam({ _window, string, id: "" })
