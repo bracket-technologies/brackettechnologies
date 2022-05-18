@@ -1,157 +1,156 @@
 {
-    "type": "View?style.backgroundColor=#084C3F;style.minHeight=100vh;style.position=relative;style.overflow=hidden",
-    "creation-date": 1639346801468,
-    "controls": [
+  "type": "View?style.backgroundColor=#084C3F;style.minHeight=100vh;style.position=relative;style.overflow=hidden",
+  "creation-date": 1639346801468,
+  "controls": [
+    {
+      "event": "loaded",
+      "actions": [
+        "async():search?search.collection=list;search.doc=user;async():[)(:list.user=().search.data]"
+      ]
+    }
+  ],
+  "children": [
+    {
+      "type": "View?Data=new-user-data;data=_map;style.backgroundColor=#fff;style.borderRadius=1rem;style.width=38%;style.margin=2% 10%;style.padding=8rem 4rem;class=column;style.display=flex;style.paddingBottom=3rem;style.zIndex=1",
+      "children": [
         {
-            "event": "loaded",
-            "actions": [
-                "async():search?search.collection=list;search.doc=user;async():[)(:list.user=().search.data]"
-            ]
-        }
-    ],
-    "children": [
-        {
-            "type": "View?Data=new-user-data;data=_map;style.backgroundColor=#fff;style.borderRadius=1rem;style.width=38%;style.margin=2% 10%;style.padding=8rem 4rem;class=column;style.display=flex;style.paddingBottom=3rem;style.zIndex=1",
-            "children": [
-                {
-                    "type": "Text?text=BracketJs;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.marginBottom=6rem"
-                },
-                {
-                    "type": "Text?text=Create a Shopify ID;style.fontSize=2.3rem;style.color=#000"
-                },
-                {
-                    "type": "Text?text=The ecommerce platform made for you;style.fontSize=1.7rem;style.marginBottom=2rem;style.color=#888"
-                },
-                {
-                    "type": "Input?path=email;container.style.marginBottom=1.5rem;label.text=Email;label.location=outside;style.height=5rem;style.width=100%;style.padding=1rem",
-                    "controls": [
-                        {
-                            "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer;)(:create-user=true]].elif():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial;)(:create-user=false]]"
-                        }
-                    ]
-                },
-                {
-                    "type": "View?class=grid gridTemplateColumns-1fr1fr gap-1rem marginBottom-1rem",
-                    "children": [
-                        {
-                            "type": "Input?path=first-name;label.text=First name;label.location=outside;style.height=5rem;style.width=100%;style.padding=1rem",
-                            "controls": [
-                                {
-                                    "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "Input?path=last-name;label.text=Last name;label.location=outside;style.height=5rem;style.width=100%;style.padding=1rem",
-                            "controls": [
-                                {
-                                    "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "Text?text=Enter your first and last name as they appear on your government-issued ID.;style.width=100%;style.fontSize=1.3rem;style.marginBottom=1.5rem"
-                },
-                {
-                    "type": "Input?path=password;container.style.marginBottom=1rem;label.text=Password;label.location=outside;style.height=5rem;style.width=100%;style.padding=0;style.paddingLeft=1rem;password",
-                    "controls": [
-                        {
-                            "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
-                        }
-                    ]
-                },
-                {
-                    "type": "Text?text=Your password must be at least 5 characters, and can’t begin or end with a space.;style.width=100%;style.fontSize=1.3rem;style.marginBottom=1.5rem"
-                },
-                {
-                    "type": "Input?container.style.marginBottom=1rem;path=confirm-password;label.text=Confirm new password;label.location=outside;style.height=5rem;style.width=100%;style.padding=0;style.paddingLeft=1rem;password",
-                    "controls": [
-                        {
-                            "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
-                        }
-                    ]
-                },
-                {
-                    "type": "View?class=flex start;style.width=100%;style.marginBottom=3.5rem;style.gap=.2rem",
-                    "children": [
-                        {
-                            "type": "Text?text=By proceeding, you agree to the;style.fontSize=1.3rem"
-                        },
-                        {
-                            "type": "Text?text=Terms and Conditions;style.color=#008060;style.fontSize=1.3rem;hover.style.textDecoration=underline;class=pointer;link.path=/terms"
-                        }
-                    ]
-                },
-                {
-                    "controls": [
-                        {
-                            "actions": "note?note.text=This Email already exists!;note.type=danger",
-                            "event": "click??)(:list.user.email.find():[Data().email]"
-                        },
-                        {
-                            "actions": [
-                                "async():save:route?save.doc=Data().id;save.collection=_user_;save.data=Data();route.path=/login/+Data().id",
-                                "save?)(:list.user.user-id.push():[Data().id];)(:list.user.email.push():[Data().email];save.doc=user;save.collection=list;save.data=)(:list.user",
-                                "save?save.doc=Data().id;save.collection=_password_;save.data=_map:creation-date:[today().timestamp()]:user-id:[Data().id]:password:[)(:user-password]"
-                            ],
-                            "event": "click?)(:user-password=Data().password;Data().password.del();Data().confirm-password.del();Data().id=[Data().first-name+ +Data().last-name].toId();Data().project=_array;Data()?)(:create-user;)(:list.user.email.find():[Data().email]"
-                        }
-                    ],
-                    "type": "Text?id=create-id-btn;style.transition=.2s;text=Create Bracket ID;style.color=#8C9196;style.padding=1.75rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#f1f1f1;class=flex-box;#style.cursor=pointer;hover.style.backgroundColor=#084C3F;hover.disable"
-                },
-                {
-                    "type": "View?style.marginTop=2.5rem;class=flexbox;style.gap=.5rem;style.justifyContent=flex-start",
-                    "children": [
-                        {
-                            "type": "Text?text=Already have a Shopify ID_question;style.color=#666;style.fontSize=1.4rem"
-                        },
-                        {
-                            "controls": [
-                                {
-                                    "actions": "route?route.path=/login",
-                                    "event": "click"
-                                }
-                            ],
-                            "type": "Text?text=Log in;style.color=#008060;link.path=/login;style.fontSize=1.4rem;hover.style.textDecoration=underline"
-                        }
-                    ]
-                },
-                {
-                    "children": [
-                        {
-                            "type": "Text?text=Help;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/help;hover.style.textDecoration=underline"
-                        },
-                        {
-                            "type": "Text?text=Privacy;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/privacy;hover.style.textDecoration=underline"
-                        },
-                        {
-                            "type": "Text?text=Terms;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/terms;hover.style.textDecoration=underline"
-                        }
-                    ],
-                    "type": "View?class=flex-start;style.gap=2.5rem;style.width=fit-content;style.marginTop=8rem;style.alignSelf=flex-end"
-                }
-            ]
+          "type": "Text?text=Bracket;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.marginBottom=6rem"
         },
         {
-            "type": "View?style.width=50%;style.height=100vh;style.left=50%;style.position=fixed;style.top=0;style.bottom=0",
-            "children": [
+          "type": "Text?text=Create a Shopify ID;style.fontSize=2.3rem;style.color=#000"
+        },
+        {
+          "type": "Text?text=The ecommerce platform made for you;style.fontSize=1.7rem;style.marginBottom=2rem;style.color=#888"
+        },
+        {
+          "type": "Input?path=email;container.style.marginBottom=1.5rem;label.text=Email;label.location=outside;style.height=5rem;style.width=100%;style.padding=1rem",
+          "controls": [
+            {
+              "event": "input?if():[Data().email;Data().first-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer;)(:create-user=true]].elif():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial;)(:create-user=false]]"
+            }
+          ]
+        },
+        {
+          "type": "View?class=grid gridTemplateColumns-1fr1fr gap-1rem marginBottom-1rem",
+          "children": [
+            {
+              "type": "Input?path=first-name;label.text=First name;label.location=outside;style.height=5rem;style.width=100%;style.padding=1rem",
+              "controls": [
                 {
-                    "type": "View?style.backgroundColor=#008060;style.height=100vh;style.width=100vh;style.position=absolute;style.left=15vw;style.borderRadius=50vh;style.top=-15vh"
-                },
-                {
-                    "type": "View?style.backgroundColor=#FFA781;style.height=100%;style.width=200%;style.position=absolute;style.transform=rotate(-45deg);style.left=0;style.zIndex=1;style.overflow=hidden;style.top=30vh",
-                    "children": [
-                        {
-                            "type": "View?style.backgroundColor=#FFCB67;style.height=100vh;style.width=100vh;style.position=absolute;style.left=33.15vw;style.borderRadius=50vh;style.top=-50vh"
-                        }
-                    ]
-                },
-                {
-                    "type": "View?style.backgroundColor=#FFCB67;style.height=50vh;style.width=50vh;style.transform=rotate(-135deg);style.position=absolute;style.right=0;style.zIndex=2;style.top=-25vh"
+                  "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
                 }
-            ]
+              ]
+            },
+            {
+              "type": "Input?path=last-name;label.text=Last name;label.location=outside;style.height=5rem;style.width=100%;style.padding=1rem",
+              "controls": [
+                {
+                  "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Text?text=Enter your first and last name as they appear on your government-issued ID.;style.width=100%;style.fontSize=1.3rem;style.marginBottom=1.5rem"
+        },
+        {
+          "type": "Input?path=password;container.style.marginBottom=1rem;label.text=Password;label.location=outside;style.height=5rem;style.width=100%;style.padding=0;style.paddingLeft=1rem;password",
+          "controls": [
+            {
+              "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
+            }
+          ]
+        },
+        {
+          "type": "Text?text=Your password must be at least 5 characters, and can’t begin or end with a space.;style.width=100%;style.fontSize=1.3rem;style.marginBottom=1.5rem"
+        },
+        {
+          "type": "Input?container.style.marginBottom=1rem;path=confirm-password;label.text=Confirm new password;label.location=outside;style.height=5rem;style.width=100%;style.padding=0;style.paddingLeft=1rem;password",
+          "controls": [
+            {
+              "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
+            }
+          ]
+        },
+        {
+          "type": "View?class=flex start;style.width=100%;style.marginBottom=3.5rem;style.gap=.2rem",
+          "children": [
+            {
+              "type": "Text?text=By proceeding, you agree to the;style.fontSize=1.3rem"
+            },
+            {
+              "type": "Text?text=Terms and Conditions;style.color=#008060;style.fontSize=1.3rem;hover.style.textDecoration=underline;class=pointer;link.path=/terms"
+            }
+          ]
+        },
+        {
+          "controls": [
+            {
+              "actions": "note?note.text=This Email already exists!;note.type=danger",
+              "event": "click??)(:list.user.email.find():[Data().email]"
+            },
+            {
+              "actions": [
+                "async():save:route?save.doc=Data().id;save.collection=_user_;save.data=Data();route.path=/login/+Data().id",
+                "save?save.doc=Data().id;save.collection=_password_;save.data=_map:creation-date:[today().timestamp()]:user:[Data().id]:password:[)(:user-password]"
+              ],
+              "event": "click?)(:user-password=Data().password;Data().password.del();Data().confirm-password.del();Data().id=[Data().first-name+ +Data().last-name].toId();Data().projects=_array?)(:create-user"
+            }
+          ],
+          "type": "Text?id=create-id-btn;style.transition=.2s;text=Create Bracket ID;style.color=#8C9196;style.padding=1.75rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#f1f1f1;class=flex-box;#style.cursor=pointer;hover.style.backgroundColor=#084C3F;hover.disable"
+        },
+        {
+          "type": "View?style.marginTop=2.5rem;class=flexbox;style.gap=.5rem;style.justifyContent=flex-start",
+          "children": [
+            {
+              "type": "Text?text='Already have a Shopify ID?';style.color=#666;style.fontSize=1.4rem"
+            },
+            {
+              "controls": [
+                {
+                  "actions": "route?route.path=/login",
+                  "event": "click"
+                }
+              ],
+              "type": "Text?text=Log in;style.color=#008060;link.path=/login;style.fontSize=1.4rem;hover.style.textDecoration=underline"
+            }
+          ]
+        },
+        {
+          "children": [
+            {
+              "type": "Text?text=Help;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/help;hover.style.textDecoration=underline"
+            },
+            {
+              "type": "Text?text=Privacy;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/privacy;hover.style.textDecoration=underline"
+            },
+            {
+              "type": "Text?text=Terms;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/terms;hover.style.textDecoration=underline"
+            }
+          ],
+          "type": "View?class=flex-start;style.gap=2.5rem;style.width=fit-content;style.marginTop=8rem;style.alignSelf=flex-end"
         }
-    ]
+      ]
+    },
+    {
+      "type": "View?style.width=50%;style.height=100vh;style.left=50%;style.position=fixed;style.top=0;style.bottom=0",
+      "children": [
+        {
+          "type": "View?style.backgroundColor=#008060;style.height=100vh;style.width=100vh;style.position=absolute;style.left=15vw;style.borderRadius=50vh;style.top=-15vh"
+        },
+        {
+          "type": "View?style.backgroundColor=#FFA781;style.height=100%;style.width=200%;style.position=absolute;style.transform=rotate(-45deg);style.left=0;style.zIndex=1;style.overflow=hidden;style.top=30vh",
+          "children": [
+            {
+              "type": "View?style.backgroundColor=#FFCB67;style.height=100vh;style.width=100vh;style.position=absolute;style.left=33.15vw;style.borderRadius=50vh;style.top=-50vh"
+            }
+          ]
+        },
+        {
+          "type": "View?style.backgroundColor=#FFCB67;style.height=50vh;style.width=50vh;style.transform=rotate(-135deg);style.position=absolute;style.right=0;style.zIndex=2;style.top=-25vh"
+        }
+      ]
+    }
+  ]
 }

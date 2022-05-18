@@ -75,7 +75,7 @@ var postdb = async ({ req, res }) => {
   success = true
   message = `File/s saved successfuly!`
     
-  return res.send({ data, success, message })
+  // return res.send({ data, success, message })
 }
 
 var deletedb = async ({ req, res }) => {
@@ -94,7 +94,7 @@ var deletedb = async ({ req, res }) => {
   success = true
   message = `File/s erased successfuly!`
 
-  return res.send({ success, message })
+  // return res.send({ success, message })
 }
 
 module.exports = { getdb, postdb, deletedb }

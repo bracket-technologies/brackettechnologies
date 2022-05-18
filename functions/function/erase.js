@@ -4,6 +4,7 @@ const { toAwait } = require("./toAwait")
 
 const erase = async ({ id, e, ...params }) => {
 
+  var global = window.global
   var erase = params.erase || {}
   var view = window.views[id]
   var collection = erase.collection = erase.collection || erase.path

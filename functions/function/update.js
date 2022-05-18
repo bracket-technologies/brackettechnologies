@@ -79,6 +79,7 @@ const update = ({ id, update = {} }) => {
 const removeChildren = ({ id }) => {
 
   var views = window.views
+  var global = window.global
   var view = views[id]
 
   //if (!view.element && id !== "root") return delete views[id]
@@ -96,6 +97,7 @@ const removeChildren = ({ id }) => {
     })
 
     removeChildren({ id })
+    delete global["body-click-events"][id]
     delete views[id]
   })
 }

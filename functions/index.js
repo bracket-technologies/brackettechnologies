@@ -60,17 +60,17 @@ exports.app = functions.https.onRequest(app)
 // post
 app.post("*", (req, res) => {
   var path = req.url.split("/")
-  
-  // bracketjs
+
+  // bracket
   if (req.headers.project === "bracket") {
 
     // storage
-    if (path[1] === "storage") return require("./function/storageLocal").postFile({ req, res })
+    if (path[1] === "storage") require("./function/storageLocal").postFile({ req, res })
 
     // database
-    if (path[1] === "database") return require("./function/databaseLocal").postdb({ req, res })
+    if (path[1] === "database") require("./function/databaseLocal").postdb({ req, res })
   }
-  
+
   // storage
   if (path[1] === "storage") return postFile({ req, res, storage })
 
@@ -82,14 +82,14 @@ app.post("*", (req, res) => {
 app.delete("*", (req, res) => {
   var path = req.url.split("/")
 
-  // bracketjs
+  // bracket
   if (req.headers.project === "bracket") {
 
     // storage
-    if (path[1] === "storage") return require("./function/storageLocal").deleteFile({ req, res })
+    if (path[1] === "storage") require("./function/storageLocal").deleteFile({ req, res })
 
     // database
-    if (path[1] === "database") return require("./function/databaseLocal").deletedb({ req, res })
+    if (path[1] === "database") require("./function/databaseLocal").deletedb({ req, res })
   }
 
   // storage
@@ -104,8 +104,8 @@ app.get("*", (req, res) => {
   var path = req.url.split("/")
 
   // var host = req.headers["x-forwarded-host"] || req.headers["host"]
-  
-  // bracketjs
+/*
+  // bracket
   if (req.headers.project === "bracket") {
   
     // storage & resources
@@ -114,7 +114,7 @@ app.get("*", (req, res) => {
     // database
     if (path[1] === "database") return require("./function/databaseLocal").getdb({ req, res })
   }
-
+*/
   // resources
   if (path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
   

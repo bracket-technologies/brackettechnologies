@@ -3,6 +3,7 @@ const { update } = require("./update")
 module.exports = {
     route: ({ route = {} }) => {
 
+        var global = window.global
         var path = route.path || global.path
         var currentPage = route.page || path.split("/")[1].split("?")[0] || "main"
         var title = route.title || global.data.page[currentPage].title

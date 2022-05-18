@@ -5,6 +5,7 @@ const { isArabic } = require("./isArabic")
 const defaultInputHandler = ({ id }) => {
 
   var view = window.views[id]
+  var global = window.global
 
   if (!view) return
   if (view.type !== "Input") return
@@ -75,7 +76,7 @@ const defaultInputHandler = ({ id }) => {
         if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
         
         value = parseFloat(value)
-        view.input.value = value
+        view.element.value = value.toString()
       }
 
       // for uploads
@@ -90,10 +91,16 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = _prev + "[]" + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
 
-        } else if (e.data === "(") {
+        } else if (e.data === "(" && value[e.target.selectionStart - 2] !== ")") {
           var _prev = value.slice(0, e.target.selectionStart - 1)
           var _next = value.slice(e.target.selectionStart)
           e.target.value = value = _prev + "()" + _next
+          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
+
+        } else if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
+          var _prev = value.slice(0, e.target.selectionStart - 1)
+          var _next = value.slice(e.target.selectionStart)
+          e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
         } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {

@@ -6,6 +6,7 @@ const { clone } = require('./clone')
 module.exports = {
     search: async ({ id, e, ...params }) => {
         
+        var global = window.global
         var search = params.search || {}
         var view = window.views[id]
         var collection = search.collection || search.path || ""

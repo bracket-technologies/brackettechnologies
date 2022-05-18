@@ -1,5 +1,5 @@
 {
-    "type": "View?class=box-shadow;id=actionlist;style.zIndex=10;style.transition=opacity .1s, transform .1s;style.width=fit-content;style.height=fit-content;style.maxWidth=40rem;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=fixed;style.padding=.5rem;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff",
+    "type": "View?class=box-shadow flex column;id=actionlist;style:[width=fit-content;transition=opacity .1s, transform .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
     "children": [{
         "type": "Item?tooltip.text=add new;icon.name=bi-plus;style.fontSize=1.7rem;map-length=data().len();map-items=_array;while():[().map-length.greater():-1]:[().map-items.push():[().map-length];().map-length=().map-length.subs():1];droplist.items=().map-items;droplist.placement=left;droplist.readonly;droplist.preventDefault?data();data().type()=map||data().type()=array",
         "controls": [{
@@ -48,7 +48,10 @@
         }]
     }],
     "controls": [{
-        "event": "mouseleave;click:body??)(:actionlist-caller;!e().target.id.isChildOfId():[)(:actionlist-caller]",
-        "actions": "blur::200?()::400.if():[e().target.id.isnotChildOfId():[)(:actionlist-caller].and():[().mouseenter.isfalse()]]:[().style().opacity=0;().style().transform=scale(0.5);().style().pointerEvents=none;().children().map():[style().pointerEvents=none];)(:actionlist-caller.delete()]?!().mouseenter;!e().target.id.isChildOfId():[)(:actionlist-caller]"
+        "event": "click:body?)(:actionlist-timer=timer():[if():[)(:actionlist-caller!=():[)(:actionlist-caller].id]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=():[)(:actionlist-caller].id]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]]:400?)(:actionlist-caller;!)(:clickedElement.id.isChildOfId():[)(:actionlist-caller];!)(:clickedElement.id.isChildOfId():actionlist"
+    }, {
+        "event": "mouseleave?)(:actionlist-timer=timer():[if():[)(:actionlist-caller!=():[)(:actionlist-caller].id]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]]clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=():[)(:actionlist-caller].id]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]]:400"
+    }, {
+        "event": "mouseenter?clearTimer():[)(:actionlist-timer]"
     }]
 }

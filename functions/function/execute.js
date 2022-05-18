@@ -10,6 +10,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id] || {}
+  var global = window.global
   var _params = params, viewId = id
 
   if (controls) actions = controls.actions
@@ -51,7 +52,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
         if (_actions.slice(1)[0]) params.awaiter += `async():${_actions.slice(1).join(":")}`
         params.asyncer = true
       }
-
+      
       // action is coded
       if (action.slice(0, 7) === "coded()") return execute({ _window, actions: global.codes[action], e, id, params })
       

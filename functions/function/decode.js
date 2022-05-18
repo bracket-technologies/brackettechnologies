@@ -1,5 +1,6 @@
 const decode = ({ _window, string }) => {
 
+  var global = _window ? _window.global : window.global
   if (typeof string !== "string") return string
   
   if (string.includes("coded()")) {

@@ -128,13 +128,10 @@
               "type": "Input?id=project-name;style.width=100%;style.height=5rem;clicked.style.border=2px solid #00A0AC;style.borderRadius=.5rem;style.padding=0 1.5rem;style.border=1px solid #eee;style.marginBottom=3rem",
               "controls": [
                 {
-                  "event": "input?)(:new-project-name=val();)(:new-project=)(:new-project-name.toId()?val().length().greater():2"
+                  "event": "input?if():[val().len()>3]:[)(:new-project-name=val();)(:new-project=)(:new-project-name.toId()].elif():[val().len()<3]:[)(:new-project-name.del();)(:new-project.del()]"
                 },
                 {
-                  "event": "input?)(:new-project-name.delete();)(:new-project.delete()?val().length().less():3"
-                },
-                {
-                  "event": "click?().next().click()?e().key=Enter"
+                  "event": "click?next().click()?e().key=Enter"
                 }
               ]
             },
@@ -143,10 +140,10 @@
               "controls": [
                 {
                   "actions": [
-                    "async():save?save.collection=_project_;save.doc=)(:new-project;)(:data.editor.project=_map:creation-date:[today().timestamp()]:name:[)(:new-project-name]:id:[)(:new-project]:domains:[_array:[)(:new-project+'.bracketjs.com']];save.data=)(:data.editor.project",
+                    "async():save?save.collection=_project_;save.doc=)(:new-project;)(:data.editor.project=_map:creation-date:[today().timestamp()]:name:[)(:new-project-name]:id:[)(:new-project]:domains:[_array:[)(:new-project+'.bracketjs.com']:[)(:new-project+'.localhost']];save.data=)(:data.editor.project",
                     "async():save?)(:data.editor.user.projects.push():[)(:new-project];save.collection=_user_;save.doc=)(:data.editor.user.id;save.data=)(:data.editor.user",
-                    "async():save?save.collection=page;save.headers=_map:project:[)(:new-project];save.doc=main;)(:data.editor.page.main=_map:title:[)(:new-project-name]:creation-date:[today().timestamp()]:name:main:path:/:views:[_array:main];save.data=)(:data.editor.page.main",
-                    "async():save?save.collection=view;save.headers=_map:project:[)(:new-project];save.doc=main;)(:data.editor.view.main=_map:creation-date:[today().timestamp()]:type:View;save.data=)(:data.editor.view.main"
+                    "async():save?save.collection=page;save.headers.project=)(:new-project;save.doc=main;)(:data.editor.page.main=_map:title:[)(:new-project-name]:creation-date:[today().timestamp()]:name:main:path:/:views:[_array:main];save.data=)(:data.editor.page.main",
+                    "async():save?save.collection=view;save.headers.project=)(:new-project;save.doc=main;)(:data.editor.view.main=_map:creation-date:[today().timestamp()]:type:'View?id=main';save.data=)(:data.editor.view.main"
                   ],
                   "event": "click?)(:route-to-account-setup=true?)(:new-project-name;)(:new-project"
                 },

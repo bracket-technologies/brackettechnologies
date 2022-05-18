@@ -456,24 +456,42 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
             
         } else if (k0 === "data()") {
-            
+            /*
             breakRequest = true
             var args = k.split(":").slice(1)
             args = args.map(arg => toValue({ req, res, _window, id, e, value: arg, params, _ }))
             if (args.length > 0) args = args.flat()
             if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
             answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
+            */
+            
+            breakRequest = true
+            answer = reducer({ req, res, _window, id, value, key, path: [...(o.derivations || [])], object: global[o.Data], params, _, e })
+            var arg = k.split(":").slice(1)[0]
+            if (arg) {
+                if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
+                reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _ })
+            }
+            if (path[i + 1] !== undefined) {
+                if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
+                answer = reducer({ req, res, _window, id, e, value, key, path: path.slice(i + 1), object: answer, params, _ })
+            }
 
             delete view["data()"]
 
         } else if (k0 === "Data()") {
 
             breakRequest = true
-            var args = k.split(":").slice(1)
-            args = args.map(arg => toValue({ req, res, _window, id, e, value: arg, params, _ }))
-            if (args.length > 0) args = args.flat()
-            if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
-            answer = reducer({ req, res, _window, id, e, value, key, path: [...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
+            answer = global[o.Data]
+            var arg = k.split(":").slice(1)[0]
+            if (arg) {
+                if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
+                reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _ })
+            }
+            if (path[i + 1] !== undefined) {
+                if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
+                answer = reducer({ req, res, _window, id, e, value, key, path: path.slice(i + 1), object: answer, params, _ })
+            }
 
         } else if (k0 === "removeAttribute()") {
 

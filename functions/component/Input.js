@@ -70,6 +70,10 @@ const Input = (component) => {
         var parent = component.parent
         var Data = component.Data
         var password = component.password && true
+        component.controls = component.controls || []
+        component.controls.push({
+            event: `focus?():${id}.1stChild().click()`
+        })
         
         delete component.parent
         delete component.label
@@ -107,7 +111,7 @@ const Input = (component) => {
             "controls": [{
                 "event": "click:body?style().border=if():[)(:clickedElement.outside():[().element]]:[1px solid #ccc]:[2px solid #008060]"
             }, {
-                "event": "click?getInput().focus()"
+                "event": "click?getInput().focus()?!getInput().focus"
             }]
         }
     }
@@ -120,14 +124,18 @@ const Input = (component) => {
         var parent = component.parent
         var Data = component.Data
         var tooltip = component.tooltip
-        var clicked = component.clicked || { style: {} }
+        var clicked = component.clicked = component.clicked || { style: {} }
+        component.clicked.preventDefault = true
+        component.controls = component.controls || []
+        component.controls.push({
+            event: `focus?():${id}.1stChild().click()`
+        })
         
         delete component.label
         delete component.path
         delete component.id
         delete component.tooltip
         label.tooltip = tooltip
-        component.clicked.preventDefault = true
 
         return {
             id, Data, parent, derivations, required, path,
@@ -145,7 +153,7 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": `click:[1stChild().id];click:[2ndChild().id]?getInput().focus();2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
+                "event": `click:[1stChild().id];click:[2ndChild().id]?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
             }, {
                 "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?)(:clickedElement.outside():[().element]`
             }]

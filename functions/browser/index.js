@@ -2,12 +2,20 @@
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
 const { getCookie } = require("../function/cookie")
+const { toParam } = require("../function/toParam")
+const { toApproval } = require("../function/toApproval")
+const { execute } = require("../function/execute")
 
-var views = window.views = JSON.parse(document.getElementById("views").textContent)
-var global = window.global = JSON.parse(document.getElementById("global").textContent)
+window.views = JSON.parse(document.getElementById("views").textContent)
+window.global = JSON.parse(document.getElementById("global").textContent)
+
+//
+var views = window.views
+var global = window.global
 
 // access key
 global["access-key"] = getCookie({ name: "_key" })
+global["body-click-events"] = {}
 
 views.document = document
 views.document.element = document
@@ -27,9 +35,26 @@ history.pushState(null, global.data.page[global.currentPage].title, global.path)
 // clicked element
 document.addEventListener('click', e => {
 
+    var global = window.global
     global["clickedElement()"] = views[(e || window.event).target.id]
     global.clickedElement = (e || window.event).target
-    
+
+    // droplist
+    if (global.clickedElement.id === "droplist") delete global["droplist-item-clicked"]
+    else if (views.droplist.element.contains(global.clickedElement)) {
+        global["droplist-item-clicked"] = global["droplist-item"] = global.clickedElement
+        global["droplist-item-txt"] = global["droplist-txt"] = global.clickedElement.innerHTML
+    }
+
+    // actionlist
+    else if (global.clickedElement.id === "actionlist") delete global["actionlist-item-clicked"]
+    else if (views.droplist.element.contains(global.clickedElement)) {
+        global["actionlist-item-clicked"] = global["actionlist-item"] = global.clickedElement
+        global["actionlist-item-txt"] = global["actionlist-txt"] = global.clickedElement.innerHTML
+    }
+
+    // body event listeners
+    Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o))
 }, false)
 
 // default global mode
@@ -48,7 +73,37 @@ window.onload = () => {
 Object.entries(views).map(([id, views]) => {
     if (views.status === "Loading") delete views[id]
 })
-},{"../function/cookie":39,"../function/setElement":87,"../function/starter":90}],2:[function(require,module,exports){
+
+        
+// body clicked
+var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index }) => {
+    
+    if (!views[id]) return
+    var e = { target: views[id].element }
+    
+    // approval
+    if (viewEventConditions) {
+    var approved = toApproval({ string: viewEventConditions, id, e })
+    if (!approved) return
+    }
+    
+    // approval
+    var approved = toApproval({ string: events[2], id, e })
+    if (!approved) return
+
+    // once
+    if (once) window.global["body-click-events"][id].splice(index, 1)
+    
+    // params
+    await toParam({ string: events[1], id, mount: true, eventParams: true, e })
+    
+    // approval
+    if (viewEventParams) await toParam({ string: viewEventParams, id, mount: true, eventParams: true, e })
+    
+    // execute
+    if (controls.actions) await execute({ controls, id, e })
+}
+},{"../function/cookie":39,"../function/execute":52,"../function/setElement":87,"../function/starter":90,"../function/toApproval":94,"../function/toParam":106}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -142,6 +197,10 @@ const Input = (component) => {
         var parent = component.parent
         var Data = component.Data
         var password = component.password && true
+        component.controls = component.controls || []
+        component.controls.push({
+            event: `focus?():${id}.1stChild().click()`
+        })
         
         delete component.parent
         delete component.label
@@ -179,7 +238,7 @@ const Input = (component) => {
             "controls": [{
                 "event": "click:body?style().border=if():[)(:clickedElement.outside():[().element]]:[1px solid #ccc]:[2px solid #008060]"
             }, {
-                "event": "click?getInput().focus()"
+                "event": "click?getInput().focus()?!getInput().focus"
             }]
         }
     }
@@ -192,14 +251,18 @@ const Input = (component) => {
         var parent = component.parent
         var Data = component.Data
         var tooltip = component.tooltip
-        var clicked = component.clicked || { style: {} }
+        var clicked = component.clicked = component.clicked || { style: {} }
+        component.clicked.preventDefault = true
+        component.controls = component.controls || []
+        component.controls.push({
+            event: `focus?():${id}.1stChild().click()`
+        })
         
         delete component.label
         delete component.path
         delete component.id
         delete component.tooltip
         label.tooltip = tooltip
-        component.clicked.preventDefault = true
 
         return {
             id, Data, parent, derivations, required, path,
@@ -217,7 +280,7 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": `click:[1stChild().id];click:[2ndChild().id]?getInput().focus();2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
+                "event": `click:[1stChild().id];click:[2ndChild().id]?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
             }, {
                 "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?)(:clickedElement.outside():[().element]`
             }]
@@ -813,15 +876,11 @@ module.exports = {
 },{"./Checkbox":2,"./Input":3,"./Item":4,"./Map":5,"./Swiper":6,"./Switch":7}],9:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
-  id = controls.id || id
+  window.views[id].actionlist.id = controls.id = id = controls.id || id
   
   return [{
-    event: "click",
-    actions: [
-      `?():actionlist.children().map():[style().pointerEvents=none];():actionlist.style().opacity=0;():actionlist.style().transform=scale(0.5);():actionlist.style().pointerEvents=none;)(:actionlist-caller.delete();break?():actionlist.style().opacity=1;)(:actionlist-caller=${id}`,
-      `update:actionlist?().actionlist.undeletable=():actionlist.undeletable.or():_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;)(:actionlist-caller=${id};)(:actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.style().opacity=0;():actionlist.style().transform=scale(0.5);():actionlist.style().pointerEvents=none;():actionlist.children().map():[style().pointerEvents=none]`,
-      `setPosition:actionlist?():actionlist.children().map():[style().pointerEvents=auto];():actionlist.style().opacity=1;():actionlist.style().transform=scale(1);():actionlist.style().pointerEvents=auto;position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance}`
-    ]
+    event: `click?if():[)(:actionlist-caller!=${id}]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=${id}]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]`,
+    actions: `async():[update:actionlist]:[setPosition:actionlist]?().actionlist.undeletable=():actionlist.undeletable||_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;)(:actionlist-caller=${id};)(:actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]?)(:actionlist-caller!=().id`
   }]
 }
 },{}],10:[function(require,module,exports){
@@ -904,7 +963,7 @@ module.exports = ({ controls, id }) => {
   
   return [{
     event: `click?if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
-    actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};)(:droplister=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?)(:droplist-positioner!=().id`
+    actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?)(:droplist-positioner!=().id`
   }]
 }
 },{}],14:[function(require,module,exports){
@@ -2083,9 +2142,9 @@ module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./clone":35,"./reducer":77,"./setContent":85,"./setData":86}],47:[function(require,module,exports){
-(function (global){(function (){
 const decode = ({ _window, string }) => {
 
+  var global = _window ? _window.global : window.global
   if (typeof string !== "string") return string
   
   if (string.includes("coded()")) {
@@ -2108,9 +2167,7 @@ const decode = ({ _window, string }) => {
 
 module.exports = {decode}
 
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],48:[function(require,module,exports){
-(function (global){(function (){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -2118,6 +2175,7 @@ const { isArabic } = require("./isArabic")
 const defaultInputHandler = ({ id }) => {
 
   var view = window.views[id]
+  var global = window.global
 
   if (!view) return
   if (view.type !== "Input") return
@@ -2188,7 +2246,7 @@ const defaultInputHandler = ({ id }) => {
         if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
         
         value = parseFloat(value)
-        view.input.value = value
+        view.element.value = value.toString()
       }
 
       // for uploads
@@ -2203,10 +2261,16 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = _prev + "[]" + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
 
-        } else if (e.data === "(") {
+        } else if (e.data === "(" && value[e.target.selectionStart - 2] !== ")") {
           var _prev = value.slice(0, e.target.selectionStart - 1)
           var _next = value.slice(e.target.selectionStart)
           e.target.value = value = _prev + "()" + _next
+          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
+
+        } else if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
+          var _prev = value.slice(0, e.target.selectionStart - 1)
+          var _next = value.slice(e.target.selectionStart)
+          e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
         } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
@@ -2271,7 +2335,6 @@ const defaultInputHandler = ({ id }) => {
 }
 
 module.exports = { defaultInputHandler }
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./data":46,"./isArabic":65,"./resize":81}],49:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
@@ -2332,13 +2395,13 @@ const droplist = ({ id, e }) => {
 
 module.exports = { droplist }
 },{"./clone":35,"./toString":109,"./toValue":111,"./update":113}],50:[function(require,module,exports){
-(function (global){(function (){
 const axios = require("axios");
 const { toString } = require("./toString")
 const { toAwait } = require("./toAwait")
 
 const erase = async ({ id, e, ...params }) => {
 
+  var global = window.global
   var erase = params.erase || {}
   var view = window.views[id]
   var collection = erase.collection = erase.collection || erase.path
@@ -2370,9 +2433,7 @@ const erase = async ({ id, e, ...params }) => {
 }
 
 module.exports = { erase }
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./toAwait":96,"./toString":109,"axios":116}],51:[function(require,module,exports){
-(function (global){(function (){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -2394,7 +2455,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   
   const { execute } = require("./execute")
 
-  var view = _window ? _window.views[id] : window.views[id]
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.global : window.global
+  var view = views[id]
   var mainID = id
 
   var events = toCode({ _window, id, string: controls.event })
@@ -2472,7 +2535,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     // add event listener
     toArray(idList).map(id => {
 
-      var _view = _window ? _window.views[id] : window.views[id]
+      var _view = views[id]
       if (!_view) return
 
       var myFn = (e) => {
@@ -2509,13 +2572,23 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       // onload event
       if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _view.element })
 
+      // body event
+      if (id === "body") {
+
+        global["body-click-events"] = global["body-click-events"] || {}
+        global["body-click-events"][mainID] = global["body-click-events"][mainID] || []
+        var index = global["body-click-events"][mainID].length
+        global["body-click-events"][mainID].push({ id: mainID, viewEventConditions, viewEventParams, events, once, controls, index })
+        return
+      }
+
       var myFn1 = (e) => {
         
         view[`${event}-timer`] = setTimeout(async () => {
 
           // body
-          if (id === "body") id = mainID
-          var __view = _window ? _window.views[id] : window.views[id]
+          if (eventid === "droplist" || eventid === "actionlist") id = mainID
+          var __view = views[id]
 
           if (once) e.target.removeEventListener(event, myFn)
 
@@ -2542,6 +2615,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
           if (controls.actions) await execute({ controls, e, id: mainID })
+          
         }, timer)
       }
       
@@ -2610,9 +2684,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./clone":35,"./execute":52,"./toApproval":94,"./toArray":95,"./toCode":99,"./toParam":106,"./toValue":111}],52:[function(require,module,exports){
-(function (global){(function (){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -2625,6 +2697,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id] || {}
+  var global = window.global
   var _params = params, viewId = id
 
   if (controls) actions = controls.actions
@@ -2666,7 +2739,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
         if (_actions.slice(1)[0]) params.awaiter += `async():${_actions.slice(1).join(":")}`
         params.asyncer = true
       }
-
+      
       // action is coded
       if (action.slice(0, 7) === "coded()") return execute({ _window, actions: global.codes[action], e, id, params })
       
@@ -2752,7 +2825,6 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
 module.exports = { execute }
 
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./function":57,"./toApproval":94,"./toArray":95,"./toAwait":96,"./toCode":99,"./toParam":106,"./toValue":111}],53:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
@@ -4320,24 +4392,42 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
             
         } else if (k0 === "data()") {
-            
+            /*
             breakRequest = true
             var args = k.split(":").slice(1)
             args = args.map(arg => toValue({ req, res, _window, id, e, value: arg, params, _ }))
             if (args.length > 0) args = args.flat()
             if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
             answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
+            */
+            
+            breakRequest = true
+            answer = reducer({ req, res, _window, id, value, key, path: [...(o.derivations || [])], object: global[o.Data], params, _, e })
+            var arg = k.split(":").slice(1)[0]
+            if (arg) {
+                if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
+                reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _ })
+            }
+            if (path[i + 1] !== undefined) {
+                if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
+                answer = reducer({ req, res, _window, id, e, value, key, path: path.slice(i + 1), object: answer, params, _ })
+            }
 
             delete view["data()"]
 
         } else if (k0 === "Data()") {
 
             breakRequest = true
-            var args = k.split(":").slice(1)
-            args = args.map(arg => toValue({ req, res, _window, id, e, value: arg, params, _ }))
-            if (args.length > 0) args = args.flat()
-            if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
-            answer = reducer({ req, res, _window, id, e, value, key, path: [...args, ...path.slice(i + 1)], object: global[o.Data], params, _ })
+            answer = global[o.Data]
+            var arg = k.split(":").slice(1)[0]
+            if (arg) {
+                if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
+                reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _ })
+            }
+            if (path[i + 1] !== undefined) {
+                if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
+                answer = reducer({ req, res, _window, id, e, value, key, path: path.slice(i + 1), object: answer, params, _ })
+            }
 
         } else if (k0 === "removeAttribute()") {
 
@@ -6534,12 +6624,12 @@ var converter = (dimension) => {
 module.exports = {resize, dimensions, converter}
 
 },{}],82:[function(require,module,exports){
-(function (global){(function (){
 const { update } = require("./update")
 
 module.exports = {
     route: ({ route = {} }) => {
 
+        var global = window.global
         var path = route.path || global.path
         var currentPage = route.page || path.split("/")[1].split("?")[0] || "main"
         var title = route.title || global.data.page[currentPage].title
@@ -6556,15 +6646,14 @@ module.exports = {
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
 }
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./update":113}],83:[function(require,module,exports){
-(function (global){(function (){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { toAwait } = require("./toAwait")
 
 const save = async ({ id, e, ...params }) => {
 
+  var global = window.global
   var save = params.save || {}
   var local = window.views[id]
   var collection = save.collection = save.collection || save.path
@@ -6595,9 +6684,7 @@ const save = async ({ id, e, ...params }) => {
 }
 
 module.exports = { save }
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./clone":35,"./toAwait":96,"axios":116}],84:[function(require,module,exports){
-(function (global){(function (){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { toAwait } = require('./toAwait')
@@ -6606,6 +6693,7 @@ const { clone } = require('./clone')
 module.exports = {
     search: async ({ id, e, ...params }) => {
         
+        var global = window.global
         var search = params.search || {}
         var view = window.views[id]
         var collection = search.collection || search.path || ""
@@ -6631,7 +6719,6 @@ module.exports = {
         toAwait({ id, e, params })
     }
 }
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./clone":35,"./toAwait":96,"./toString":109,"axios":116}],85:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
@@ -6656,13 +6743,13 @@ const setContent = ({ id, content = {} }) => {
 module.exports = {setContent}
 
 },{"./isArabic":65}],86:[function(require,module,exports){
-(function (global){(function (){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
 const setData = ({ id, data }) => {
 
   var view = window.views[id]
+  var global = window.global
 
   if (!global[view.Data]) return
 
@@ -6699,7 +6786,6 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./clone":35,"./reducer":77}],87:[function(require,module,exports){
 (function (global){(function (){
 const { controls } = require("./controls")
@@ -8524,6 +8610,7 @@ const update = ({ id, update = {} }) => {
 const removeChildren = ({ id }) => {
 
   var views = window.views
+  var global = window.global
   var view = views[id]
 
   //if (!view.element && id !== "root") return delete views[id]
@@ -8541,6 +8628,7 @@ const removeChildren = ({ id }) => {
     })
 
     removeChildren({ id })
+    delete global["body-click-events"][id]
     delete views[id]
   })
 }

@@ -19,7 +19,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   
   const { execute } = require("./execute")
 
-  var view = _window ? _window.views[id] : window.views[id]
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.global : window.global
+  var view = views[id]
   var mainID = id
 
   var events = toCode({ _window, id, string: controls.event })
@@ -97,7 +99,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     // add event listener
     toArray(idList).map(id => {
 
-      var _view = _window ? _window.views[id] : window.views[id]
+      var _view = views[id]
       if (!_view) return
 
       var myFn = (e) => {
@@ -134,13 +136,23 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       // onload event
       if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _view.element })
 
+      // body event
+      if (id === "body") {
+
+        global["body-click-events"] = global["body-click-events"] || {}
+        global["body-click-events"][mainID] = global["body-click-events"][mainID] || []
+        var index = global["body-click-events"][mainID].length
+        global["body-click-events"][mainID].push({ id: mainID, viewEventConditions, viewEventParams, events, once, controls, index })
+        return
+      }
+
       var myFn1 = (e) => {
         
         view[`${event}-timer`] = setTimeout(async () => {
 
           // body
-          if (id === "body") id = mainID
-          var __view = _window ? _window.views[id] : window.views[id]
+          if (eventid === "droplist" || eventid === "actionlist") id = mainID
+          var __view = views[id]
 
           if (once) e.target.removeEventListener(event, myFn)
 
@@ -167,6 +179,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
           if (controls.actions) await execute({ controls, e, id: mainID })
+          
         }, timer)
       }
       

@@ -4,6 +4,7 @@ const {reducer} = require("./reducer")
 const setData = ({ id, data }) => {
 
   var view = window.views[id]
+  var global = window.global
 
   if (!global[view.Data]) return
 
