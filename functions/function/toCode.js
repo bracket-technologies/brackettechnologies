@@ -40,7 +40,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
     string = `${before}${value}${subKey.join(end)}${after}`
   }
 
-  if (string.split(start)[1] !== undefined && string.split("[").slice(1).join("[").length > 0)
+  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0)
   string = toCode({ _window, string, e, start, end })
 
   return string

@@ -5,6 +5,7 @@ const { toArray } = require("./toArray")
 const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { controls } = require("./controls")
+const { toParam } = require("./toParam")
 
 const update = ({ id, update = {} }) => {
 
@@ -14,6 +15,20 @@ const update = ({ id, update = {} }) => {
   var timer = update.timer || 0
   
   if (!view || !view.element) return
+
+  // close droplist
+  if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
+    var closeDroplist = ")(:droplist-timer=timer():[if():[)(:droplist-positioner!=():[)(:droplist-positioner].id]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner=():[)(:droplist-positioner].id]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]]:400"
+    toParam({ string: closeDroplist, id: "droplist", mount: true, eventParams: true })
+    delete global["droplist-positioner"]
+  }
+
+  // close actionlist
+  if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
+    var closeActionlist = ")(:actionlist-timer=timer():[if():[)(:actionlist-caller!=():[)(:actionlist-caller].id]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=():[)(:actionlist-caller].id]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]]:400"
+    toParam({ string: closeActionlist, id: "actionlist", mount: true, eventParams: true })
+    delete global["actionlist-caller"]
+  }
 
   // children
   var children = clone(toArray(view.children))
@@ -31,7 +46,7 @@ const update = ({ id, update = {} }) => {
       .find(controls => controls.event.split("?")[0].includes("loading"))
     if (loadingEventControls) controls({ id: "root", controls: loadingEventControls })
   }
-
+  
   var innerHTML = children
   .map((child, index) => {
 

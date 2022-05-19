@@ -74,7 +74,7 @@
                   "controls": [
                     {
                       "event": "click??!)(:open-map.hasNestedArray();!)(:open-map.hasEmptyField()",
-                      "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=doc().getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=)(:open-map"
+                      "actions": "async():save:note?note.text=File saved successfully!;save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].data()"
                     }
                   ]
                 }
@@ -83,7 +83,7 @@
           ]
         }
       ],
-      "type": "View?id=navbar;class=flex-start;style.position=fixed;style.zIndex=9;style.backgroundColor=#fff;mode.dark.style.backgroundColor=#3c3c3c;style.top=0;style.whiteSpace=nowrap;style.width=100%;style.height=4rem;style.borderBottom=1px solid #ddd"
+      "type": "View?id=navbar;class=flex-start;style.position=absolute;style.zIndex=1;style.backgroundColor=#fff;mode.dark.style.backgroundColor=#3c3c3c;style.top=0;style.whiteSpace=nowrap;style.width=100%;style.height=4rem;style.borderBottom=1px solid #ddd"
     },
     {
       "type": "View?class=flex;style.minHeight=100%;style.maxWidth=100%;style.marginTop=4rem",
@@ -123,13 +123,18 @@
                   ]
                 }
               ],
-              "type": "View?id=data-viewer-bar;class=flex;style.height=3.5rem;style.width=inherit;style.marginLeft=inherit;style.position=fixed;style.right=0;style.backgroundColor=#f0f0f0;style.zIndex=1;style.display=if():[)(:open-docs.len()=0]:none.else():flex"
+              "type": "View?id=data-viewer-bar;class=flex;style.height=3.5rem;style.width=100%;style.backgroundColor=#f0f0f0;style.display=if():[)(:open-docs.len()=0]:none:flex"
             },
             {
-              "type": "View?class=data-viewer;data=)(:open-map.clone();style.width=100%;style.position=absolute;style.top=3.5rem;style.left=0;style.right=0;style.overflowY=auto?)(:open-map",
+              "type": "View?class=data-viewer;data=)(:open-map.clone();style.width=calc(100vw - 22.5rem);style.maxHeight=calc(100vh - 7.5rem);style.overflowY=auto",
               "children": [
                 {
-                  "type": "Map?arrange=_array:creation-date:id:name:title:path:description:type:children:controls:event:watch:actions"
+                  "type": "View?class=flex column;style.width=100%?)(:open-map",
+                  "children": [
+                    {
+                      "type": "Map?arrange=_array:creation-date:id:name:title:path:description:type:children:controls:event:watch:actions"
+                    }
+                  ]
                 }
               ]
             },

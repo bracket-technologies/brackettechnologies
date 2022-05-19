@@ -97,7 +97,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else {
 
             object = toValue({ req, res, _window, id, value: args[2], params, index, _, e, object, mount })
-            console.log(args[2], global.codes[args[2]], object);
+            // console.log(args[2], global.codes[args[2]], object);
             path.shift()
             while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
                 path.shift()
@@ -161,7 +161,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -467,18 +467,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             */
             
             breakRequest = true
-            answer = reducer({ req, res, _window, id, value, key, path: [...(o.derivations || [])], object: global[o.Data], params, _, e })
-            var arg = k.split(":").slice(1)[0]
+            var arg = args.slice(1)[0]
             if (arg) {
+                answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(o.derivations || [])], object: global[o.Data], params, _, e })
                 if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
                 reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _ })
             }
             if (path[i + 1] !== undefined) {
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
-                answer = reducer({ req, res, _window, id, e, value, key, path: path.slice(i + 1), object: answer, params, _ })
-            }
+                answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...path.slice(i + 1)], object: global[o.Data], params, _ })
+            } else answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(o.derivations || [])], object: global[o.Data], params, _, e })
 
-            delete view["data()"]
+            // delete view["data()"]
 
         } else if (k0 === "Data()") {
 
@@ -802,6 +802,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 relativeTo = toValue({ req, res, _window, id, e, _, value: args[1], params })
             answer = position(o, relativeTo)
 
+        } else if (k0 === "getBoundingClientRect()") {
+
+            var relativeTo
+            if (args[1]) relativeTo = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else relativeTo = o
+            if (typeof relativeTo === "object") relativeTo = o.element
+            answer = relativeTo.getBoundingClientRect()
+
         } else if (k0 === "relativePosition()") {
 
             var args = k.split(":")
@@ -900,8 +908,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
             
-            var args = k.split(":").slice(1)
-            args.map(arg => {
+            args.slice(1).map(arg => {
                 var _timer = toValue({ req, res, _window, id, e, value: arg, params, _ })
                 clearTimeout(_timer)
             })
@@ -1489,7 +1496,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _value = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
             var _index = toValue({ req, res, _window, id, value: args[2], params,_ ,e })
             if (_index === undefined) _index = o.length - 1
-            console.log(clone(o), _value, _index);
+            // console.log(clone(o), _value, _index);
             o.splice(parseInt(_index), 0, _value)
             answer = o
             

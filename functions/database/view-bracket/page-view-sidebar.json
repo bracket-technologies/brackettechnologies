@@ -94,7 +94,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=().lastChild().id]:flex:none;1stChild().style().transform=if():[next().style().display=none]:rotate(0):rotate(90deg)"
+                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=().lastChild().id]:flex:none;1stChild().style().transform=if():[next().style().display=none]:rotate(0):rotate(90deg)?)(:data.editor.page.keys().len()>0"
                         }
                     ]
                 },
@@ -102,7 +102,7 @@
                     "type": "View?id=page-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
                     "children": [
                         {
-                            "type": "[View]?data=)(:data.editor.page.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative",
+                            "type": "[View]?data=)(:data.editor.page.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?)(:data.editor.page.keys().len()>0",
                             "children": [
                                 {
                                     "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
@@ -186,7 +186,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=lastChild().id]:flex:none;1stChild().style().transform=if():[next().style().display=none]:rotate(0):rotate(90deg)"
+                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=lastChild().id]:flex:none;1stChild().style().transform=if():[next().style().display=none]:rotate(0):rotate(90deg)?)(:data.editor.view.keys().len()>0"
                         }
                     ]
                 },
