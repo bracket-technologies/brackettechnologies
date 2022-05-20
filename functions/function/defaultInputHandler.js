@@ -69,14 +69,16 @@ const defaultInputHandler = ({ id }) => {
       // for number inputs, strings are rejected
       if (view.input && view.input.type === "number") {
 
-        if (isNaN(value)) value = value.toString().slice(0, -1)
-        if (!value) value = 0
-        if (value.toString().charAt(0) === "0" && value.toString().length > 1) value = value.toString().slice(1)
-        if (view.input.min && view.input.min > parseFloat(value)) value = view.input.min
-        if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
+        if (e.data !== ".") {
+          if (isNaN(value)) value = value.toString().slice(0, -1)
+          if (!value) value = 0
+          if (value.toString().charAt(0) === "0" && value.toString().length > 1) value = value.toString().slice(1)
+          if (view.input.min && view.input.min > parseFloat(value)) value = view.input.min
+          if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
+          value = parseFloat(value)
+          view.element.value = value.toString()
+        } else value = parseFloat(value + ".0")
         
-        value = parseFloat(value)
-        view.element.value = value.toString()
       }
 
       // for uploads

@@ -792,6 +792,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (o.type === "Input") answer = o
                 else answer = o.element && o.element.getElementsByTagName("INPUT")[0]
             }
+            
+            if (!answer) return
             answer = views[answer.id]
 
         } else if (k0 === "position()") {
@@ -1619,9 +1621,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
             return startOfDay
             
-        } else if (k0 === "toClock()") {
+        } else if (k0 === "toClock()") { // dd:hh:mm:ss
             
-            answer = toClock({ timestamp: o })
+            var timestamp_ = o, days_ = true, hours_ = true, mins_ = true, secs_ = true
+            if (args[1]) days_ = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            if (args[2]) hours_ = toValue({ req, res, _window, id, e, value: args[2], params, _ })
+            if (args[3]) mins_ = toValue({ req, res, _window, id, e, value: args[3], params, _ })
+            if (args[4]) secs_ = toValue({ req, res, _window, id, e, value: args[4], params, _ })
+
+            answer = toClock({ timestamp: timestamp_, days_, hours_, mins_, secs_  })
 
         } else if (k0 === "toSimplifiedDateAr()") {
             
@@ -1930,7 +1938,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0.includes("filterById()")) {
 
-            var args = k.split(":")
             if (k[0] === "_") {
                 answer = o.filter(o => toValue({ req, res, _window, id, e, _: o, value: args[1], params }))
             } else {
@@ -1940,7 +1947,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0.includes("find()")) {
             
-            var arg = k.split(":")[1]
             if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
             else answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
             

@@ -5,9 +5,10 @@ const { toString } = require("./toString")
 
 const droplist = ({ id, e }) => {
 
-  var value = window.views
+  var views = window.views
+  var global = window.global
   var view = window.views[id]
-  var dropList = value["droplist"]
+  var dropList = views["droplist"]
   
   // items
   var items = clone(view.droplist.items) || []
@@ -27,7 +28,11 @@ const droplist = ({ id, e }) => {
   }
   
   // items
-  if (typeof items === "string") items = toValue({ id, e, value: items })
+  if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
+  
+  // searchable
+  if (view.droplist.searchable && global["droplist-search-txt"] !== undefined) 
+  items = items.filter(item => item.includes(global["droplist-search-txt"]))
   
   // children
   if (items && items.length > 0) {

@@ -10,10 +10,10 @@ module.exports = ({ controls, id }) => {
     )
 
     return [{
-        "event": `loaded:${_id}?().clicked.disable=true;if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?().clicked.mount||().clicked.freeze||().clicked.disable`
+        "event": `loaded:${_id}?().clicked.disable=true;if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?().clicked.mount||().clicked.disable`
     }, {
-        "event": "click?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!().parent().required.mount;!().clicked.disable"
+        "event": "click?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!parent().required.mount;!().clicked.disable"
     }, {
-        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]?!().required.mount;!parent().required.mount;!().clicked.freeze;!)(:clickedElement.id.isChildOfId():[().id];!().clicked.disable"
+        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]?!().required.mount;!parent().required.mount;!().clicked.disable;!)(:clickedElement.id.isChildOfId():[().id]"
     }]
 }

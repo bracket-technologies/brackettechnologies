@@ -5,6 +5,7 @@ const { getCookie } = require("../function/cookie")
 const { toParam } = require("../function/toParam")
 const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
+const { toCode } = require("../function/toCode")
 
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -74,6 +75,23 @@ Object.entries(views).map(([id, views]) => {
     if (views.status === "Loading") delete views[id]
 })
 
+document.addEventListener('scroll', () => {
+    
+    // close droplist
+    if (views.droplist.element.style.pointerEvents === "auto") {
+        
+        var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+        toParam({ string: closeDroplist, id: "droplist" })
+    }
+  
+    // close actionlist
+    if (views.actionlist.element.style.pointerEvents === "auto") {
+
+        var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+        toParam({ string: closeActionlist, id: "actionlist" })
+    }
+}, true)
+
         
 // body clicked
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index }) => {
@@ -103,7 +121,7 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     // execute
     if (controls.actions) await execute({ controls, id, e })
 }
-},{"../function/cookie":39,"../function/execute":52,"../function/setElement":87,"../function/starter":90,"../function/toApproval":94,"../function/toParam":106}],2:[function(require,module,exports){
+},{"../function/cookie":39,"../function/execute":52,"../function/setElement":87,"../function/starter":90,"../function/toApproval":94,"../function/toCode":99,"../function/toParam":106}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -884,30 +902,10 @@ module.exports = ({ controls, id }) => {
   }]
 }
 },{}],10:[function(require,module,exports){
-module.exports = ({ controls, id }) => {
-
-    var local = window.views[id]
-    var _id = controls.id || id
+module.exports = ({ controls }) => {
     
-    local.click.sticky = local.click.sticky ? true : false
-    local.click.before = local.click.before || {}
-    local.click.style &&
-    Object.keys(local.click.style).map(key => 
-        local.click.before[key] = local.style[key] !== undefined ? local.style[key] : null 
-    )
-
     return [{
-        "event": `loaded:${_id}?if():[().state=().click.id]:[)(:[().state]=gen()]?().click.mount`,
-        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().click.style].else():[().mode.[)(:mode].click.style].else():_map"
-    }, {
-        "event": `mousedown:${_id}??!().click.disable;!().click.sticky`,
-        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().click.style].else():[().mode.[)(:mode].click.style].else():_map"
-    }, {
-        "event": `mouseup:${_id}??!().click.freeze;!().click.disable;!().click.sticky`,
-        "actions": "setStyle?style=().click.before?().click.freeze.not()"
-    }, {
-        "event": `click:${_id}?().click.mount=if():[().click.mount]:false.else():true?().click.sticky;!().click.disable`,
-        "actions": "setStyle?style=if():[().click.mount]:[().click.style].else():[().click.before]"
+      event: `click?${controls}`
     }]
 }
 },{}],11:[function(require,module,exports){
@@ -923,11 +921,11 @@ module.exports = ({ controls, id }) => {
     )
 
     return [{
-        "event": `loaded:${_id}?().clicked.disable=true;if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?().clicked.mount||().clicked.freeze||().clicked.disable`
+        "event": `loaded:${_id}?().clicked.disable=true;if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?().clicked.mount||().clicked.disable`
     }, {
-        "event": "click?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!().parent().required.mount;!().clicked.disable"
+        "event": "click?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!parent().required.mount;!().clicked.disable"
     }, {
-        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]?!().required.mount;!parent().required.mount;!().clicked.freeze;!)(:clickedElement.id.isChildOfId():[().id];!().clicked.disable"
+        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]?!().required.mount;!parent().required.mount;!().clicked.disable;!)(:clickedElement.id.isChildOfId():[().id]"
     }]
 }
 },{}],12:[function(require,module,exports){
@@ -964,6 +962,9 @@ module.exports = ({ controls, id }) => {
   return [{
     event: `click?clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
     actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?)(:droplist-positioner!=().id`
+  }, {
+    event: "input:[getInput().id]?)(:droplist-search-txt=getInput().txt()?().droplist.searchable",
+    actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
   }]
 }
 },{}],14:[function(require,module,exports){
@@ -2239,14 +2240,16 @@ const defaultInputHandler = ({ id }) => {
       // for number inputs, strings are rejected
       if (view.input && view.input.type === "number") {
 
-        if (isNaN(value)) value = value.toString().slice(0, -1)
-        if (!value) value = 0
-        if (value.toString().charAt(0) === "0" && value.toString().length > 1) value = value.toString().slice(1)
-        if (view.input.min && view.input.min > parseFloat(value)) value = view.input.min
-        if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
+        if (e.data !== ".") {
+          if (isNaN(value)) value = value.toString().slice(0, -1)
+          if (!value) value = 0
+          if (value.toString().charAt(0) === "0" && value.toString().length > 1) value = value.toString().slice(1)
+          if (view.input.min && view.input.min > parseFloat(value)) value = view.input.min
+          if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
+          value = parseFloat(value)
+          view.element.value = value.toString()
+        } else value = parseFloat(value + ".0")
         
-        value = parseFloat(value)
-        view.element.value = value.toString()
       }
 
       // for uploads
@@ -2349,9 +2352,10 @@ const { toString } = require("./toString")
 
 const droplist = ({ id, e }) => {
 
-  var value = window.views
+  var views = window.views
+  var global = window.global
   var view = window.views[id]
-  var dropList = value["droplist"]
+  var dropList = views["droplist"]
   
   // items
   var items = clone(view.droplist.items) || []
@@ -2371,7 +2375,11 @@ const droplist = ({ id, e }) => {
   }
   
   // items
-  if (typeof items === "string") items = toValue({ id, e, value: items })
+  if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
+  
+  // searchable
+  if (view.droplist.searchable && global["droplist-search-txt"] !== undefined) 
+  items = items.filter(item => item.includes(global["droplist-search-txt"]))
   
   // children
   if (items && items.length > 0) {
@@ -4736,6 +4744,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (o.type === "Input") answer = o
                 else answer = o.element && o.element.getElementsByTagName("INPUT")[0]
             }
+            
+            if (!answer) return
             answer = views[answer.id]
 
         } else if (k0 === "position()") {
@@ -5563,9 +5573,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
             return startOfDay
             
-        } else if (k0 === "toClock()") {
+        } else if (k0 === "toClock()") { // dd:hh:mm:ss
             
-            answer = toClock({ timestamp: o })
+            var timestamp_ = o, days_ = true, hours_ = true, mins_ = true, secs_ = true
+            if (args[1]) days_ = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            if (args[2]) hours_ = toValue({ req, res, _window, id, e, value: args[2], params, _ })
+            if (args[3]) mins_ = toValue({ req, res, _window, id, e, value: args[3], params, _ })
+            if (args[4]) secs_ = toValue({ req, res, _window, id, e, value: args[4], params, _ })
+
+            answer = toClock({ timestamp: timestamp_, days_, hours_, mins_, secs_  })
 
         } else if (k0 === "toSimplifiedDateAr()") {
             
@@ -7622,7 +7638,7 @@ module.exports = {
 }
 },{}],98:[function(require,module,exports){
 module.exports = {
-    toClock: ({ timestamp }) => {
+    toClock: ({ timestamp, days_ = true, hours_ = true, mins_ = true, secs_ = true }) => {
 
         if (!timestamp) return "00:00"
         var days = Math.floor(timestamp / 86400000) + ""
@@ -7638,7 +7654,7 @@ module.exports = {
         if (mins.length === 1) mins = "0" + mins
         if (secs.length === 1) secs = "0" + secs
 
-        return days + " : " + hrs + " : " + mins + " : " + secs
+        return (days_ ? days + " : " : "") + (hours_ ? hrs + " : " : "") + (mins_ ? mins + " : " : "") + (secs_ ? secs : "")
     }
 }
 },{}],99:[function(require,module,exports){
@@ -7985,6 +8001,15 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
       view.mouseenter = view.mouseenter || ""
       return view.mouseenter += `${param};`
+    }
+
+    // click
+    if (param.slice(0, 6) === "click.") {
+
+      param = param.slice(6)
+      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      view.click = view.click || ""
+      return view.click += `${param};`
     }
 
     // mouseleave

@@ -100,6 +100,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (key === "desktop()") local[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") local[keygen] = global.device.type === "tablet"
     else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, e, _, req, res, object })
+    else if (key === "_") local[keygen] = _
     else local[keygen] = key
 
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])

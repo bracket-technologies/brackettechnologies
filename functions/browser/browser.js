@@ -4,6 +4,7 @@ const { getCookie } = require("../function/cookie")
 const { toParam } = require("../function/toParam")
 const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
+const { toCode } = require("../function/toCode")
 
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -72,6 +73,23 @@ window.onload = () => {
 Object.entries(views).map(([id, views]) => {
     if (views.status === "Loading") delete views[id]
 })
+
+document.addEventListener('scroll', () => {
+    
+    // close droplist
+    if (views.droplist.element.style.pointerEvents === "auto") {
+        
+        var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+        toParam({ string: closeDroplist, id: "droplist" })
+    }
+  
+    // close actionlist
+    if (views.actionlist.element.style.pointerEvents === "auto") {
+
+        var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+        toParam({ string: closeActionlist, id: "actionlist" })
+    }
+}, true)
 
         
 // body clicked
