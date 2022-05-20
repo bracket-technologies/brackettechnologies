@@ -10,11 +10,24 @@ const updateSelf = ({ id, update = {} }) => {
 
   var views = window.views
   var view = views[id]
+  var global = window.global
   var timer = update.timer || 0
   
   if (!view || !view.element) return
   var parent = views[view.parent]
   var index = view.index
+
+  // close droplist
+  if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
+    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    toParam({ string: closeDroplist, id: "droplist" })
+  }
+  
+  // close actionlist
+  if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
+    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    toParam({ string: closeActionlist, id: "actionlist" })
+  }
 
   // children
   var children = clone(toArray(parent.children[index]))
@@ -83,7 +96,7 @@ const updateSelf = ({ id, update = {} }) => {
   }
   
   setTimeout(() => {
-    idList.filter(id => views[id].type === "Icon").map(id => views[id]).map(map => {
+    idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
       map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
       map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })

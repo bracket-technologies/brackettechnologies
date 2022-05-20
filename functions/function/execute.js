@@ -44,12 +44,12 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
     actions.map(action => {
 
-      if (action.includes("async():")) {
+      if (action.includes("async():") || action.includes("wait():")) {
         
         var _actions = action.split(":").slice(1)
         action = _actions[0]
         params.awaiter = params.awaiter || ""
-        if (_actions.slice(1)[0]) params.awaiter += `async():${_actions.slice(1).join(":")}`
+        if (_actions.slice(1)[0]) params.awaiter += `wait():${_actions.slice(1).join(":")}`
         params.asyncer = true
       }
       

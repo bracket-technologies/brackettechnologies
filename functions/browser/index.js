@@ -62,7 +62,7 @@ global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
 global.idList.map(id => starter({ id }))
 
-var icons = global.idList.filter(id => views[id].type === "Icon").map(id => views[id])
+var icons = global.idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id])
 window.onload = () => {
     icons.map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
@@ -1938,8 +1938,8 @@ const createTags = ({ _window, id, req, res }) => {
   view.length = 1
   
   // data mapType
-  var data = Array.isArray(view.data) ? view.data : typeof view.data === "object" ? Object.keys(view.data) : []
-  var isObject = !Array.isArray(view.data)
+  var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
+  var isObject = view.data && ((Array.isArray(view.data) || typeof view.data === "string") ? false : true)
   view.length = data.length || 1
   
   if (view.mapType) {
@@ -2273,11 +2273,11 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
-        } else if (e.data === "]" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "[]") {
-          var _prev = value.slice(0, e.target.selectionStart - 1)
-          var _next = value.slice(e.target.selectionStart)
+        } else if (e.data === "]" && value[e.target.selectionStart - 2] === "[" && value[e.target.selectionStart] === "]") {
+          var _prev = value.slice(0, e.target.selectionStart)
+          var _next = value.slice(e.target.selectionStart + 1)
           e.target.value = value = _prev + _next
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
+          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
 
         } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Text?class=flexbox;text=;style:[]"
@@ -2594,6 +2594,8 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           // body
           if (eventid === "droplist" || eventid === "actionlist") id = mainID
+          if (eventid === "droplist" && id !== global["droplist-positioner"]) return
+          if (eventid === "actionlist" && id !== global["actionlist-caller"]) return
           var __view = views[id]
 
           if (once) e.target.removeEventListener(event, myFn)
@@ -2737,12 +2739,12 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
     actions.map(action => {
 
-      if (action.includes("async():")) {
+      if (action.includes("async():") || action.includes("wait():")) {
         
         var _actions = action.split(":").slice(1)
         action = _actions[0]
         params.awaiter = params.awaiter || ""
-        if (_actions.slice(1)[0]) params.awaiter += `async():${_actions.slice(1).join(":")}`
+        if (_actions.slice(1)[0]) params.awaiter += `wait():${_actions.slice(1).join(":")}`
         params.asyncer = true
       }
       
@@ -3339,7 +3341,7 @@ module.exports = {
     view.insert = { map: views[el.id], message: "Map inserted succefully!", success: true }
     
     setTimeout(() => {
-      idList.filter(id => views[id].type === "Icon").map(id => views[id]).map(map => {
+      idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
@@ -3397,6 +3399,12 @@ const isEqual = function(value, other) {
     return value == other;
   }
 
+  // Get the value type
+  const type = Object.prototype.toString.call(value);
+
+  // If the two objects are not the same type, return false
+  if (type !== Object.prototype.toString.call(other)) return false;
+
   // html elements
   if (value && other) {
     if (
@@ -3417,12 +3425,6 @@ const isEqual = function(value, other) {
       return false;
     }
   }
-
-  // Get the value type
-  const type = Object.prototype.toString.call(value);
-
-  // If the two objects are not the same type, return false
-  if (type !== Object.prototype.toString.call(other)) return false;
 
   // If items are not an object or array, return false
   if (["[object Array]", "[object Object]"].indexOf(type) < 0) return false;
@@ -6267,7 +6269,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
 
         } else {
-
+            
             if (Array.isArray(o)) {
                 if (isNaN(k)) {
                     if (o.length === 0) o.push({})
@@ -6479,6 +6481,7 @@ const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { toParam } = require("./toParam")
+const { toCode } = require("./toCode")
 
 const remove = ({ remove: _remove, id }) => {
 
@@ -6503,16 +6506,14 @@ const remove = ({ remove: _remove, id }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = ")(:droplist-timer=timer():[if():[)(:droplist-positioner!=():[)(:droplist-positioner].id]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner=():[)(:droplist-positioner].id]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]]:400"
-    toParam({ string: closeDroplist, id: "droplist", mount: true, eventParams: true })
-    delete global["droplist-positioner"]
+    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    toParam({ string: closeDroplist, id: "droplist" })
   }
-
+  
   // close actionlist
   if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = ")(:actionlist-timer=timer():[if():[)(:actionlist-caller!=():[)(:actionlist-caller].id]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=():[)(:actionlist-caller].id]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]]:400"
-    toParam({ string: closeActionlist, id: "actionlist", mount: true, eventParams: true })
-    delete global["actionlist-caller"]
+    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    toParam({ string: closeActionlist, id: "actionlist" })
   }
 
   removeChildren({ id })
@@ -6561,7 +6562,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":35,"./reducer":77,"./toParam":106,"./update":113}],81:[function(require,module,exports){
+},{"./clone":35,"./reducer":77,"./toCode":99,"./toParam":106,"./update":113}],81:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -7806,7 +7807,7 @@ module.exports = {
         tag = `<p class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${text}</p>`
       }
     } else if (view.type === "Icon") {
-      tag = `<i class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}; opacity:0; transition:.2s' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
+      tag = `<i class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${view.google ? "; opacity:0; transition:.2s" : ""}' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
     } else if (view.type === "Textarea") {
       tag = `<textarea class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${view.data || view.input.value || ""}</textarea>`
     } else if (view.type === "Input") {
@@ -7926,7 +7927,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     var view = _window ? _window.views[id] : window.views[id]
 
     // break
-    if (params.break || view && view.break) return
+    //if (params.break || view && view.break) return
 
     if (param.slice(0, 2) === "#:") return
     
@@ -7940,7 +7941,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     } else key = param
 
     // await
-    if (key.slice(0, 8) === "async():") {
+    if (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():") {
 
       if (eventParams) {
 
@@ -7964,7 +7965,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         }
 
         params.await = params.await || ""
-        if (awaiter[0]) return params.await += `async():${awaiter.join(":")};`
+        if (awaiter[0]) return params.await += `wait():${awaiter.join(":")};`
         else if (awaiter.length === 0) return
       }
     }
@@ -8143,6 +8144,10 @@ module.exports = {
         var mins = date.getMinutes()
         var secs = date.getSeconds()
 
+        if (hours.toString().length === 1) hours = "0" + hours
+        if (mins.toString().length === 1) mins = "0" + mins
+        if (secs.toString().length === 1) secs = "0" + secs
+
         var simplifiedDate
 
         if (lang === "ar") simplifiedDate = daysAr[dayofWeek] + " " + dayofMonth + " " + monthsAr[month] + " " + year
@@ -8151,7 +8156,7 @@ module.exports = {
         
         else if (lang === "en" && !simplified) simplifiedDate = days[dayofWeek] + " " + dayofMonth + " " + months[month] + " " + year
 
-        if (time) simplifiedDate += " | " + hours + ":" + mins
+        if (time) simplifiedDate += " | " + hours + ":" + mins + ":" + secs
 
         if (lang === "ar") simplifiedDate = toArabicNum(simplifiedDate)
 
@@ -8549,7 +8554,7 @@ const toggleView = ({ toggle, id }) => {
     })
   
     setTimeout(() => {
-      idList.filter(id => views[id].type === "Icon").map(id => views[id]).map(map => {
+      idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
@@ -8580,16 +8585,14 @@ const update = ({ id, update = {} }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = ")(:droplist-timer=timer():[if():[)(:droplist-positioner!=():[)(:droplist-positioner].id]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner=():[)(:droplist-positioner].id]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]]:400"
-    toParam({ string: closeDroplist, id: "droplist", mount: true, eventParams: true })
-    delete global["droplist-positioner"]
+    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    toParam({ string: closeDroplist, id: "droplist" })
   }
-
+  
   // close actionlist
   if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = ")(:actionlist-timer=timer():[if():[)(:actionlist-caller!=():[)(:actionlist-caller].id]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=():[)(:actionlist-caller].id]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]]:400"
-    toParam({ string: closeActionlist, id: "actionlist", mount: true, eventParams: true })
-    delete global["actionlist-caller"]
+    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    toParam({ string: closeActionlist, id: "actionlist" })
   }
 
   // children
@@ -8646,7 +8649,7 @@ const update = ({ id, update = {} }) => {
   })
   
   setTimeout(() => {
-    idList.filter(id => views[id].type === "Icon").map(id => views[id]).map(map => {
+    idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
       map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
       map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })

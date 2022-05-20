@@ -23,7 +23,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     var view = _window ? _window.views[id] : window.views[id]
 
     // break
-    if (params.break || view && view.break) return
+    //if (params.break || view && view.break) return
 
     if (param.slice(0, 2) === "#:") return
     
@@ -37,7 +37,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     } else key = param
 
     // await
-    if (key.slice(0, 8) === "async():") {
+    if (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():") {
 
       if (eventParams) {
 
@@ -61,7 +61,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         }
 
         params.await = params.await || ""
-        if (awaiter[0]) return params.await += `async():${awaiter.join(":")};`
+        if (awaiter[0]) return params.await += `wait():${awaiter.join(":")};`
         else if (awaiter.length === 0) return
       }
     }

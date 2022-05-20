@@ -13,8 +13,8 @@ const createTags = ({ _window, id, req, res }) => {
   view.length = 1
   
   // data mapType
-  var data = Array.isArray(view.data) ? view.data : typeof view.data === "object" ? Object.keys(view.data) : []
-  var isObject = !Array.isArray(view.data)
+  var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
+  var isObject = view.data && ((Array.isArray(view.data) || typeof view.data === "string") ? false : true)
   view.length = data.length || 1
   
   if (view.mapType) {

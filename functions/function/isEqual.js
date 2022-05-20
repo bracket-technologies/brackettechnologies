@@ -8,6 +8,12 @@ const isEqual = function(value, other) {
     return value == other;
   }
 
+  // Get the value type
+  const type = Object.prototype.toString.call(value);
+
+  // If the two objects are not the same type, return false
+  if (type !== Object.prototype.toString.call(other)) return false;
+
   // html elements
   if (value && other) {
     if (
@@ -28,12 +34,6 @@ const isEqual = function(value, other) {
       return false;
     }
   }
-
-  // Get the value type
-  const type = Object.prototype.toString.call(value);
-
-  // If the two objects are not the same type, return false
-  if (type !== Object.prototype.toString.call(other)) return false;
 
   // If items are not an object or array, return false
   if (["[object Array]", "[object Object]"].indexOf(type) < 0) return false;

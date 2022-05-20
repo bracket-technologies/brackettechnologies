@@ -2325,7 +2325,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
 
         } else {
-
+            
             if (Array.isArray(o)) {
                 if (isNaN(k)) {
                     if (o.length === 0) o.push({})

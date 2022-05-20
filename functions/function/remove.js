@@ -2,6 +2,7 @@ const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { toParam } = require("./toParam")
+const { toCode } = require("./toCode")
 
 const remove = ({ remove: _remove, id }) => {
 
@@ -26,16 +27,14 @@ const remove = ({ remove: _remove, id }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = ")(:droplist-timer=timer():[if():[)(:droplist-positioner!=():[)(:droplist-positioner].id]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner=():[)(:droplist-positioner].id]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]]:400"
-    toParam({ string: closeDroplist, id: "droplist", mount: true, eventParams: true })
-    delete global["droplist-positioner"]
+    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    toParam({ string: closeDroplist, id: "droplist" })
   }
-
+  
   // close actionlist
   if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = ")(:actionlist-timer=timer():[if():[)(:actionlist-caller!=():[)(:actionlist-caller].id]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=():[)(:actionlist-caller].id]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]]:400"
-    toParam({ string: closeActionlist, id: "actionlist", mount: true, eventParams: true })
-    delete global["actionlist-caller"]
+    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    toParam({ string: closeActionlist, id: "actionlist" })
   }
 
   removeChildren({ id })

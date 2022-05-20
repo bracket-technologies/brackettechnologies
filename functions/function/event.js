@@ -152,6 +152,8 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           // body
           if (eventid === "droplist" || eventid === "actionlist") id = mainID
+          if (eventid === "droplist" && id !== global["droplist-positioner"]) return
+          if (eventid === "actionlist" && id !== global["actionlist-caller"]) return
           var __view = views[id]
 
           if (once) e.target.removeEventListener(event, myFn)

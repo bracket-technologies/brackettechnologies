@@ -26,6 +26,10 @@ module.exports = {
         var mins = date.getMinutes()
         var secs = date.getSeconds()
 
+        if (hours.toString().length === 1) hours = "0" + hours
+        if (mins.toString().length === 1) mins = "0" + mins
+        if (secs.toString().length === 1) secs = "0" + secs
+
         var simplifiedDate
 
         if (lang === "ar") simplifiedDate = daysAr[dayofWeek] + " " + dayofMonth + " " + monthsAr[month] + " " + year
@@ -34,7 +38,7 @@ module.exports = {
         
         else if (lang === "en" && !simplified) simplifiedDate = days[dayofWeek] + " " + dayofMonth + " " + months[month] + " " + year
 
-        if (time) simplifiedDate += " | " + hours + ":" + mins
+        if (time) simplifiedDate += " | " + hours + ":" + mins + ":" + secs
 
         if (lang === "ar") simplifiedDate = toArabicNum(simplifiedDate)
 

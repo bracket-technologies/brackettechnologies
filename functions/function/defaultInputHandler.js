@@ -103,11 +103,11 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
-        } else if (e.data === "]" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "[]") {
-          var _prev = value.slice(0, e.target.selectionStart - 1)
-          var _next = value.slice(e.target.selectionStart)
+        } else if (e.data === "]" && value[e.target.selectionStart - 2] === "[" && value[e.target.selectionStart] === "]") {
+          var _prev = value.slice(0, e.target.selectionStart)
+          var _next = value.slice(e.target.selectionStart + 1)
           e.target.value = value = _prev + _next
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
+          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
 
         } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Text?class=flexbox;text=;style:[]"
