@@ -61,7 +61,11 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
     // is brakcet domain
     var isBracket = bracketDomains.includes(host)
-
+    if (!isBracket) {
+        isBracket = host.includes(".loca.lt")
+        host = "bracketjs.com"
+    }
+    
     console.log("Document started loading:");
     
     console.log("before project", new Date().getTime() - global.timer);

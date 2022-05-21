@@ -10,3 +10,6 @@ III- terminal: firebase login (to login to firebase)/ firebsase logout (to logou
 IIV- firebase re authentication: firebase login --reauth
 
 // firebase deploy --only "functions:app"
+
+npm install -g localtunnel
+lt --port 80

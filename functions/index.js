@@ -102,7 +102,7 @@ app.delete("*", (req, res) => {
 // get
 app.get("*", (req, res) => {
   var path = req.url.split("/")
-
+console.log(path);
   // var host = req.headers["x-forwarded-host"] || req.headers["host"]
 /*
   // bracket

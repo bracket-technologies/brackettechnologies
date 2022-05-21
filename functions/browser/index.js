@@ -1604,7 +1604,11 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
     // is brakcet domain
     var isBracket = bracketDomains.includes(host)
-
+    if (!isBracket) {
+        isBracket = host.includes(".loca.lt")
+        host = "bracketjs.com"
+    }
+    
     console.log("Document started loading:");
     
     console.log("before project", new Date().getTime() - global.timer);
@@ -5890,7 +5894,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0.includes("filterById()")) {
 
-            var args = k.split(":")
             if (k[0] === "_") {
                 answer = o.filter(o => toValue({ req, res, _window, id, e, _: o, value: args[1], params }))
             } else {
@@ -5900,7 +5903,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0.includes("find()")) {
             
-            var arg = k.split(":")[1]
             if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
             else answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
             
@@ -7514,6 +7516,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (key === "desktop()") local[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") local[keygen] = global.device.type === "tablet"
     else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, e, _, req, res, object })
+    else if (key === "_") local[keygen] = _
     else local[keygen] = key
 
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
