@@ -6,6 +6,7 @@ const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { controls } = require("./controls")
 const { toParam } = require("./toParam")
+const { toCode } = require("./toCode")
 
 const update = ({ id, update = {} }) => {
 

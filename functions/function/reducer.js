@@ -1947,19 +1947,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0.includes("find()")) {
             
-            if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
-            else answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
+            if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _: o, req, res }) )
+            else answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _, req, res, object: o }) )
             
         } else if (k0.includes("findIndex()")) {
             
-            var arg = k.split(":")[1]
-            if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
-            else answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
+            if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: args[1], id, _: o, req, res }) )
+            else answer = o.findIndex(o => toApproval({ _window, e, string: args[1], id, _, req, res, object: o }) )
             
         } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
-            var args = k.split(":").slice(1)
-            args.map(arg => {
+            args.slice(1).map(arg => {
 
                 if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, value, key, params, index, _: o, e }) )
                 else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, object: o, value, key, params, index, _, e }) )

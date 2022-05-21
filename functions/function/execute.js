@@ -72,7 +72,12 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       
 
       var actionid = params.action.id
-      if (action.split(":")[1]) actionid = toValue({ _window, value: action.split(":")[1], params, id: viewId, e })
+      actionid = toArray(action.split(":")[1] ? toValue({ _window, value: action.split(":")[1], params, id: viewId, e }) : viewId)
+    
+      actionid = toArray(actionid).map(id => {
+        if (typeof id === "object" && id.id) return id.id
+        else return id
+      })
       
       const myFn = () => {
         var approved = true
@@ -95,7 +100,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
         if (caseCondition) approved = toApproval({ _window, string: caseCondition, params, id: viewId, e })
         if (!approved) return toAwait({ id, e, params })
         
-        if (_method[name]) toArray(actionid ? actionid : viewId).map(async id => {
+        if (_method[name]) actionid.map(async id => {
           
           if (typeof id !== "string") return
 

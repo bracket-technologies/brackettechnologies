@@ -5,6 +5,7 @@ const { toArray } = require("./toArray")
 const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
+const { toCode } = require("./toCode")
 
 const updateSelf = ({ id, update = {} }) => {
 

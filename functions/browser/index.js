@@ -121,7 +121,7 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     // execute
     if (controls.actions) await execute({ controls, id, e })
 }
-},{"../function/cookie":39,"../function/execute":52,"../function/setElement":87,"../function/starter":90,"../function/toApproval":94,"../function/toCode":99,"../function/toParam":106}],2:[function(require,module,exports){
+},{"../function/cookie":40,"../function/execute":53,"../function/setElement":88,"../function/starter":91,"../function/toApproval":95,"../function/toCode":100,"../function/toParam":107}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -142,7 +142,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":100}],3:[function(require,module,exports){
+},{"../function/toComponent":101}],3:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
@@ -558,7 +558,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":35,"../function/merge":71,"../function/toComponent":100,"../function/toString":109}],4:[function(require,module,exports){
+},{"../function/clone":36,"../function/merge":72,"../function/toComponent":101,"../function/toString":110}],4:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -697,7 +697,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":100}],5:[function(require,module,exports){
+},{"../function/toComponent":101}],5:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -822,7 +822,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":100}],6:[function(require,module,exports){
+},{"../function/toComponent":101}],6:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -849,7 +849,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":100}],7:[function(require,module,exports){
+},{"../function/toComponent":101}],7:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 const { toString } = require("../function/toString")
 
@@ -881,7 +881,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":100,"../function/toString":109}],8:[function(require,module,exports){
+},{"../function/toComponent":101,"../function/toString":110}],8:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Item : require("./Item"),
@@ -905,10 +905,17 @@ module.exports = ({ controls, id }) => {
 module.exports = ({ controls }) => {
     
     return [{
-      event: `click?${controls}`
+      event: `change:[getInput().id]?${controls}??getInput().id`
     }]
 }
 },{}],11:[function(require,module,exports){
+module.exports = ({ controls }) => {
+    
+    return [{
+      event: `click?${controls}`
+    }]
+}
+},{}],12:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var local = window.views[id]
@@ -925,10 +932,10 @@ module.exports = ({ controls, id }) => {
     }, {
         "event": "click?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!parent().required.mount;!().clicked.disable"
     }, {
-        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]?!().required.mount;!parent().required.mount;!().clicked.disable;!)(:clickedElement.id.isChildOfId():[().id]"
+        "event": "click:body?timer():[if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]]:0?!().required.mount;!parent().required.mount;!().clicked.disable;!)(:clickedElement.id.isChildOfId():[().id]"
     }]
 }
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = {
   item: require("./item"),
   list: require("./list"),
@@ -945,6 +952,7 @@ module.exports = {
   pricable: require("./pricable"),
   hover: require("./hover"),
   click: require("./click"),
+  change: require("./change"),
   clicked: require("./clicked"),
   mouseenter: require("./mouseenter"),
   mouseleave: require("./mouseleave"),
@@ -954,20 +962,20 @@ module.exports = {
   loaded: require("./loaded"),
   contentful: require("../function/contentful").contentful
 }
-},{"../function/contentful":37,"./actionlist":9,"./click":10,"./clicked":11,"./droplist":13,"./hover":14,"./hoverable":15,"./item":16,"./keydown":17,"./keyup":18,"./list":19,"./loaded":20,"./miniWindow":21,"./mininote":22,"./mouseenter":23,"./mouseleave":24,"./mouseover":25,"./popup":26,"./pricable":27,"./sorter":28,"./toggler":29,"./tooltip":30,"./touchableOpacity":31}],13:[function(require,module,exports){
+},{"../function/contentful":38,"./actionlist":9,"./change":10,"./click":11,"./clicked":12,"./droplist":14,"./hover":15,"./hoverable":16,"./item":17,"./keydown":18,"./keyup":19,"./list":20,"./loaded":21,"./miniWindow":22,"./mininote":23,"./mouseenter":24,"./mouseleave":25,"./mouseover":26,"./popup":27,"./pricable":28,"./sorter":29,"./toggler":30,"./tooltip":31,"./touchableOpacity":32}],14:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   window.views[id].droplist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
+    event: `click?)(:droplist-search-txt.del();if():[getInput().txt()]:[)(:droplist-search-txt=getInput().txt()];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
     actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?)(:droplist-positioner!=().id`
   }, {
     event: "input:[getInput().id]?)(:droplist-search-txt=getInput().txt()?().droplist.searchable",
     actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
   }]
 }
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var local = window.views[id]
@@ -990,7 +998,7 @@ module.exports = ({ controls, id }) => {
         "actions": "setStyle?style=().hover.default.style"
     }]
 }
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 const {toArray} = require("../function/toArray")
 
 module.exports = ({ id, controls }) => {
@@ -1006,7 +1014,7 @@ module.exports = ({ id, controls }) => {
     }]
 }
 
-},{"../function/toArray":95}],16:[function(require,module,exports){
+},{"../function/toArray":96}],17:[function(require,module,exports){
 module.exports = ({params}) => [
   "setData?data.value=().text",
   `resetStyles?():[)(:${params.state}.0].mountonload=false??)(:${params.state}`,
@@ -1018,21 +1026,21 @@ module.exports = ({params}) => [
   `mountAfterStyles?().mountonload:)(:${params.state}.0??)(:${params.state}`,
 ];
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `keydown?${controls}`
     }]
 }
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `keyup?${controls}`
     }]
 }
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = ({ controls }) => {
 
   return [{
@@ -1051,7 +1059,7 @@ module.exports = ({ controls }) => {
   }]
 }
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 const { toString } = require("../function/toString")
 
 module.exports = ({ id }) => {
@@ -1068,7 +1076,7 @@ module.exports = ({ id }) => {
         "event": `loaded?${params}`
     }]
 }
-},{"../function/toString":109}],21:[function(require,module,exports){
+},{"../function/toString":110}],22:[function(require,module,exports){
 const { generate } = require("../function/generate");
 
 module.exports = ({ params }) => {
@@ -1085,7 +1093,7 @@ module.exports = ({ params }) => {
   }]
 }
 
-},{"../function/generate":58}],22:[function(require,module,exports){
+},{"../function/generate":59}],23:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   id = controls.id || id
@@ -1096,28 +1104,28 @@ module.exports = ({ controls, id }) => {
     actions: "setPosition:mininote?position.positioner=mouse;position.placement=right"
   }]
 }
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mouseenter?${controls}`
     }]
 }
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mouseleave?${controls}`
     }]
 }
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mouseover?${controls}`
     }]
 }
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   id = controls.id || id
@@ -1134,7 +1142,7 @@ module.exports = ({ controls, id }) => {
   }]
 }
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = ({ id }) => {
     
     var input_id = window.views[id].type === 'Input' ? id : `${id}-input`
@@ -1142,7 +1150,7 @@ module.exports = ({ id }) => {
         "event": `input:${input_id}?():${input_id}.data()=():${input_id}.element.value().toPrice().else().0;():${input_id}.element.value=():${input_id}.data().else().0`
     }]
 }
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 const { toArray } = require("../function/toArray");
 
 module.exports = ({ id, controls }) => {
@@ -1155,7 +1163,7 @@ module.exports = ({ id, controls }) => {
   }]
 }
 
-},{"../function/toArray":95}],29:[function(require,module,exports){
+},{"../function/toArray":96}],30:[function(require,module,exports){
 module.exports = ({ controls }) => {
 
   return [{
@@ -1168,7 +1176,7 @@ module.exports = ({ controls }) => {
   }]
 }
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -1184,7 +1192,7 @@ module.exports = ({ controls, id }) => {
     event: "mouseleave?clearTimer():[)(:tooltip-timer];)(:tooltip-timer.del();():tooltip.style().opacity=0"
   }]
 }
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 module.exports = ({ id }) => {
 
   if (window.views[id].element.style.transition) {
@@ -1206,7 +1214,7 @@ module.exports = ({ id }) => {
   }]
 }
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -1229,7 +1237,7 @@ const blur = ({ id }) => {
 
 module.exports = {blur}
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 const capitalize = (string, minimize) => {
   if (typeof string !== "string") return string
 
@@ -1254,7 +1262,7 @@ const capitalizeFirst = (string, minimize) => {
 
 module.exports = {capitalize, capitalizeFirst}
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 const {clone} = require("./clone");
 
 const clearValues = (obj) => {
@@ -1296,7 +1304,7 @@ const clearValues = (obj) => {
 
 module.exports = {clearValues};
 
-},{"./clone":35}],35:[function(require,module,exports){
+},{"./clone":36}],36:[function(require,module,exports){
 const clone = (obj) => {
 
   /*if (typeof obj !== "object") return obj
@@ -1341,7 +1349,7 @@ const isElement = (obj) => {
 
 module.exports = {clone}
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 module.exports = {
     compare: (value1, operator, value2) => {
         if (operator === "==") return value1 === value2
@@ -1352,7 +1360,7 @@ module.exports = {
         else if (operator === "in") return value1.includes(value2)
     }
 }
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = {
     contentful: ({ id }) => {
         var local = window.views[id]
@@ -1398,7 +1406,7 @@ module.exports = {
         }))
     }
 }
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 const controls = ({ _window, controls, id, req, res }) => {
@@ -1430,7 +1438,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":51,"./toArray":95,"./watch":115}],39:[function(require,module,exports){
+},{"./event":52,"./toArray":96,"./watch":116}],40:[function(require,module,exports){
 const setCookie = ({ name = "", value, expiry = 360 }) => {
 
   var d = new Date()
@@ -1465,7 +1473,7 @@ const eraseCookie = ({ name }) => {
 }
 
 module.exports = {setCookie, getCookie, eraseCookie}
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 const control = require("../control/control")
 
 const createActions = ({ params, id }) => {
@@ -1480,7 +1488,7 @@ const createActions = ({ params, id }) => {
 
 module.exports = {createActions}
 
-},{"../control/control":12,"./execute":52}],41:[function(require,module,exports){
+},{"../control/control":13,"./execute":53}],42:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
@@ -1540,7 +1548,7 @@ module.exports = {
   }
 }
 
-},{"../component/component":8,"./clone":35,"./generate":58,"./toApproval":94,"./toCode":99,"./toParam":106}],42:[function(require,module,exports){
+},{"../component/component":8,"./clone":36,"./generate":59,"./toApproval":95,"./toCode":100,"./toParam":107}],43:[function(require,module,exports){
 const { createElement } = require("./createElement")
 const { toArray } = require("./toArray")
 const { controls } = require("./controls")
@@ -1606,7 +1614,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     var isBracket = bracketDomains.includes(host)
     if (!isBracket) {
         isBracket = host.includes(".loca.lt")
-        host = "bracketjs.com"
+        if (isBracket) host = "bracketjs.com"
     }
     
     console.log("Document started loading:");
@@ -1813,7 +1821,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 }
 
 module.exports = { createDocument }
-},{"./controls":38,"./createElement":43,"./jsonFiles":68,"./toApproval":94,"./toArray":95,"./toCode":99,"dotenv":146}],43:[function(require,module,exports){
+},{"./controls":39,"./createElement":44,"./jsonFiles":69,"./toApproval":95,"./toArray":96,"./toCode":100,"dotenv":147}],44:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -1927,7 +1935,7 @@ var createElement = ({ _window, id, req, res }) => {
 
 module.exports = { createElement }
 
-},{"./clone":35,"./createTags":44,"./generate":58,"./reducer":77,"./toApproval":94,"./toCode":99,"./toParam":106,"./toValue":111}],44:[function(require,module,exports){
+},{"./clone":36,"./createTags":45,"./generate":59,"./reducer":78,"./toApproval":95,"./toCode":100,"./toParam":107,"./toValue":112}],45:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2088,7 +2096,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":35,"./createComponent":41,"./execute":52,"./generate":58,"./toApproval":94,"./toArray":95,"./toHtml":102}],45:[function(require,module,exports){
+},{"./clone":36,"./createComponent":42,"./execute":53,"./generate":59,"./toApproval":95,"./toArray":96,"./toHtml":103}],46:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -2108,7 +2116,7 @@ const createView = ({ view, id }) => {
 
 module.exports = {createView}
 
-},{"./clone":35,"./toArray":95,"./update":113}],46:[function(require,module,exports){
+},{"./clone":36,"./toArray":96,"./update":114}],47:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -2146,7 +2154,7 @@ const clearData = ({ id, e, clear = {} }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":35,"./reducer":77,"./setContent":85,"./setData":86}],47:[function(require,module,exports){
+},{"./clone":36,"./reducer":78,"./setContent":86,"./setData":87}],48:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -2172,7 +2180,7 @@ const decode = ({ _window, string }) => {
 
 module.exports = {decode}
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -2348,7 +2356,7 @@ const defaultInputHandler = ({ id }) => {
 }
 
 module.exports = { defaultInputHandler }
-},{"./data":46,"./isArabic":65,"./resize":81}],49:[function(require,module,exports){
+},{"./data":47,"./isArabic":66,"./resize":82}],50:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -2394,10 +2402,11 @@ const droplist = ({ id, e }) => {
       return {
         type: `Text?class=flex align-center pointer;style:[minHeight=3.5rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.4rem;width=100%];hover.style.backgroundColor=#eee;${toString(view.droplist.item)};caller=${id};text=${item}`,
         controls: [...(view.droplist.controls || []), {
-          event: `click??!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
+          event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
             `resize:${input_id};isArabic:${input_id}?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()]?!${view.droplist.isMap}`,
-            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._map():[if():[!)(:break-loop;!_.text()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();${view.droplist.isMap}`
+            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._map():[if():[!)(:break-loop;!_.text()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();${view.droplist.isMap}`,
+            `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
           ]
         }]
       }
@@ -2412,7 +2421,7 @@ const droplist = ({ id, e }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":35,"./toString":109,"./toValue":111,"./update":113}],50:[function(require,module,exports){
+},{"./clone":36,"./toString":110,"./toValue":112,"./update":114}],51:[function(require,module,exports){
 const axios = require("axios");
 const { toString } = require("./toString")
 const { toAwait } = require("./toAwait")
@@ -2451,7 +2460,7 @@ const erase = async ({ id, e, ...params }) => {
 }
 
 module.exports = { erase }
-},{"./toAwait":96,"./toString":109,"axios":116}],51:[function(require,module,exports){
+},{"./toAwait":97,"./toString":110,"axios":117}],52:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -2527,11 +2536,15 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     if (event.slice(0, 7) === "coded()") {
       event = global.codes[event]
       if (event.includes("?")) {
+        var viewEventIdList = event.split("?")[3]
         var viewEventConditions = event.split("?")[2]
         var viewEventParams = event.split("?")[1]
         event = event.split("?")[0]
       }
     }
+
+    // id
+    if (viewEventIdList) mainID = toValue({ _window, req, res, id, value: viewEventIdList })
     
     var timer = 0, idList
     var once = events[1] && events[1].includes('once')
@@ -2541,6 +2554,11 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     if (eventid) idList = toValue({ _window, req, res, id, value: eventid })
     else idList = clone(_idList)
     
+    idList = toArray(idList).map(id => {
+      if (typeof id === "object" && id.id) return id.id
+      else return id
+    })
+
     // timer
     timer = event.split(":")[2] || 0
     
@@ -2551,7 +2569,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     clearTimeout(view[`${event}-timer`])
 
     // add event listener
-    toArray(idList).map(id => {
+    idList.map(id => {
 
       var _view = views[id]
       if (!_view) return
@@ -2559,9 +2577,6 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       var myFn = (e) => {
 
         setTimeout(async () => {
-
-          // body
-          if (id === "body") id = mainID
           
           // approval
           if (viewEventConditions) {
@@ -2704,7 +2719,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":35,"./execute":52,"./toApproval":94,"./toArray":95,"./toCode":99,"./toParam":106,"./toValue":111}],52:[function(require,module,exports){
+},{"./clone":36,"./execute":53,"./toApproval":95,"./toArray":96,"./toCode":100,"./toParam":107,"./toValue":112}],53:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -2779,7 +2794,12 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       
 
       var actionid = params.action.id
-      if (action.split(":")[1]) actionid = toValue({ _window, value: action.split(":")[1], params, id: viewId, e })
+      actionid = toArray(action.split(":")[1] ? toValue({ _window, value: action.split(":")[1], params, id: viewId, e }) : viewId)
+    
+      actionid = toArray(actionid).map(id => {
+        if (typeof id === "object" && id.id) return id.id
+        else return id
+      })
       
       const myFn = () => {
         var approved = true
@@ -2802,7 +2822,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
         if (caseCondition) approved = toApproval({ _window, string: caseCondition, params, id: viewId, e })
         if (!approved) return toAwait({ id, e, params })
         
-        if (_method[name]) toArray(actionid ? actionid : viewId).map(async id => {
+        if (_method[name]) actionid.map(async id => {
           
           if (typeof id !== "string") return
 
@@ -2845,7 +2865,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
 module.exports = { execute }
 
-},{"./function":57,"./toApproval":94,"./toArray":95,"./toAwait":96,"./toCode":99,"./toParam":106,"./toValue":111}],53:[function(require,module,exports){
+},{"./function":58,"./toApproval":95,"./toArray":96,"./toAwait":97,"./toCode":100,"./toParam":107,"./toValue":112}],54:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -2861,7 +2881,7 @@ module.exports = {
         // linkElement.delete()
     }
 }
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 const { toValue } = require("./function")
 
 module.exports = {
@@ -2872,7 +2892,7 @@ module.exports = {
         reader.readAsDataURL(file)
     }
 }
-},{"./function":57}],55:[function(require,module,exports){
+},{"./function":58}],56:[function(require,module,exports){
 (function (global){(function (){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
@@ -2935,7 +2955,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":35,"./compare":36,"./isEqual":66,"./toArray":95,"./toOperator":105}],56:[function(require,module,exports){
+},{"./clone":36,"./compare":37,"./isEqual":67,"./toArray":96,"./toOperator":106}],57:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -2971,7 +2991,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -3143,7 +3163,7 @@ module.exports = {
   toggleView,
   insert
 }
-},{"./blur":32,"./capitalize":33,"./clearValues":34,"./clone":35,"./compare":36,"./contentful":37,"./controls":38,"./cookie":39,"./createActions":40,"./createComponent":41,"./createDocument":42,"./createElement":43,"./createView":45,"./data":46,"./decode":47,"./defaultInputHandler":48,"./droplist":49,"./erase":50,"./event":51,"./execute":52,"./exportJson":53,"./fileReader":54,"./filter":55,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getParam":61,"./importJson":63,"./insert":64,"./isArabic":65,"./isEqual":66,"./isPath":67,"./jsonFiles":68,"./keys":69,"./log":70,"./merge":71,"./note":72,"./overflow":73,"./popup":74,"./position":75,"./preventDefault":76,"./reducer":77,"./refresh":78,"./reload":79,"./remove":80,"./resize":81,"./route":82,"./save":83,"./search":84,"./setContent":85,"./setData":86,"./setElement":87,"./setPosition":88,"./sort":89,"./starter":90,"./state":91,"./style":92,"./switchMode":93,"./toApproval":94,"./toArray":95,"./toAwait":96,"./toCSV":97,"./toCode":99,"./toComponent":100,"./toControls":101,"./toHtml":102,"./toId":103,"./toNumber":104,"./toOperator":105,"./toParam":106,"./toString":109,"./toStyle":110,"./toValue":111,"./toggleView":112,"./update":113,"./upload":114}],58:[function(require,module,exports){
+},{"./blur":33,"./capitalize":34,"./clearValues":35,"./clone":36,"./compare":37,"./contentful":38,"./controls":39,"./cookie":40,"./createActions":41,"./createComponent":42,"./createDocument":43,"./createElement":44,"./createView":46,"./data":47,"./decode":48,"./defaultInputHandler":49,"./droplist":50,"./erase":51,"./event":52,"./execute":53,"./exportJson":54,"./fileReader":55,"./filter":56,"./focus":57,"./generate":59,"./getDateTime":60,"./getDaysInMonth":61,"./getParam":62,"./importJson":64,"./insert":65,"./isArabic":66,"./isEqual":67,"./isPath":68,"./jsonFiles":69,"./keys":70,"./log":71,"./merge":72,"./note":73,"./overflow":74,"./popup":75,"./position":76,"./preventDefault":77,"./reducer":78,"./refresh":79,"./reload":80,"./remove":81,"./resize":82,"./route":83,"./save":84,"./search":85,"./setContent":86,"./setData":87,"./setElement":88,"./setPosition":89,"./sort":90,"./starter":91,"./state":92,"./style":93,"./switchMode":94,"./toApproval":95,"./toArray":96,"./toAwait":97,"./toCSV":98,"./toCode":100,"./toComponent":101,"./toControls":102,"./toHtml":103,"./toId":104,"./toNumber":105,"./toOperator":106,"./toParam":107,"./toString":110,"./toStyle":111,"./toValue":112,"./toggleView":113,"./update":114,"./upload":115}],59:[function(require,module,exports){
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -3162,7 +3182,7 @@ const generate = (length) => {
 
 module.exports = {generate}
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 module.exports = {
     getDateTime: (time) => {
         
@@ -3183,13 +3203,13 @@ module.exports = {
         return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 const getParam = ({ string, param, defValue }) => {
@@ -3213,7 +3233,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":106}],62:[function(require,module,exports){
+},{"./toParam":107}],63:[function(require,module,exports){
 module.exports = {
     getType: (value) => {
         if (typeof value === "string") {
@@ -3232,7 +3252,7 @@ module.exports = {
         if (typeof value === "function") return "function"
     }
 }
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 (function (global){(function (){
 const { toAwait } = require("./toAwait")
 
@@ -3273,7 +3293,7 @@ const importJson = ({ id, e, ...params }) => {
 
 module.exports = {importJson, getJson}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":96}],64:[function(require,module,exports){
+},{"./toAwait":97}],65:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
 const { starter } = require("./starter")
@@ -3365,7 +3385,7 @@ module.exports = {
     }
   }
 }
-},{"./clone":35,"./createElement":43,"./generate":58,"./setElement":87,"./starter":90,"./toArray":95,"./toParam":106}],65:[function(require,module,exports){
+},{"./clone":36,"./createElement":44,"./generate":59,"./setElement":88,"./starter":91,"./toArray":96,"./toParam":107}],66:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -3400,7 +3420,7 @@ const isArabic = ({ id, value, text }) => {
 
 module.exports = { isArabic }
 
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -3492,7 +3512,7 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual}
 
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
@@ -3509,7 +3529,7 @@ module.exports = {
   },
 };
 
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -3683,20 +3703,20 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":95,"./toOperator":105,"fs":145}],69:[function(require,module,exports){
+},{"./toArray":96,"./toOperator":106,"fs":146}],70:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -3761,7 +3781,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":35,"./toArray":95}],72:[function(require,module,exports){
+},{"./clone":36,"./toArray":96}],73:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -3796,7 +3816,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":65}],73:[function(require,module,exports){
+},{"./isArabic":66}],74:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var view = window.views[id]
@@ -3853,7 +3873,7 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],74:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 const {controls} = require("./controls")
 const {update} = require("./update")
 
@@ -3899,7 +3919,7 @@ const popup = ({ id }) => {
 
 module.exports = {popup}
 
-},{"./controls":38,"./update":113}],75:[function(require,module,exports){
+},{"./controls":39,"./update":114}],76:[function(require,module,exports){
 const { converter } = require("./resize")
 
 const getPadding = (el) => {
@@ -3946,14 +3966,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":81}],76:[function(require,module,exports){
+},{"./resize":82}],77:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -5903,19 +5923,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0.includes("find()")) {
             
-            if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
-            else answer = toArray(o).find(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
+            if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _: o, req, res }) )
+            else answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _, req, res, object: o }) )
             
         } else if (k0.includes("findIndex()")) {
             
-            var arg = k.split(":")[1]
-            if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
-            else answer = o.findIndex(o => toApproval({ _window, e, string: arg, id, _, req, res, object: o }) )
+            if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: args[1], id, _: o, req, res }) )
+            else answer = o.findIndex(o => toApproval({ _window, e, string: args[1], id, _, req, res, object: o }) )
             
         } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
-            var args = k.split(":").slice(1)
-            args.map(arg => {
+            args.slice(1).map(arg => {
 
                 if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, value, key, params, index, _: o, e }) )
                 else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, object: o, value, key, params, index, _, e }) )
@@ -6401,7 +6419,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./capitalize":33,"./clone":35,"./cookie":39,"./decode":47,"./execute":52,"./exportJson":53,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getType":62,"./importJson":63,"./isEqual":66,"./refresh":78,"./remove":80,"./route":82,"./save":83,"./setPosition":88,"./toApproval":94,"./toArray":95,"./toClock":98,"./toCode":99,"./toId":103,"./toNumber":104,"./toParam":106,"./toPrice":107,"./toSimplifiedDate":108,"./toValue":111,"./toggleView":112,"./update":113}],78:[function(require,module,exports){
+},{"./capitalize":34,"./clone":36,"./cookie":40,"./decode":48,"./execute":53,"./exportJson":54,"./focus":57,"./generate":59,"./getDateTime":60,"./getDaysInMonth":61,"./getType":63,"./importJson":64,"./isEqual":67,"./refresh":79,"./remove":81,"./route":83,"./save":84,"./setPosition":89,"./toApproval":95,"./toArray":96,"./toClock":99,"./toCode":100,"./toId":104,"./toNumber":105,"./toParam":107,"./toPrice":108,"./toSimplifiedDate":109,"./toValue":112,"./toggleView":113,"./update":114}],79:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -6488,13 +6506,13 @@ const refresh = ({ id, update = {} }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":35,"./createElement":43,"./generate":58,"./setElement":87,"./starter":90,"./toArray":95,"./update":113}],79:[function(require,module,exports){
+},{"./clone":36,"./createElement":44,"./generate":59,"./setElement":88,"./starter":91,"./toArray":96,"./update":114}],80:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -6580,7 +6598,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":35,"./reducer":77,"./toCode":99,"./toParam":106,"./update":113}],81:[function(require,module,exports){
+},{"./clone":36,"./reducer":78,"./toCode":100,"./toParam":107,"./update":114}],82:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -6673,7 +6691,7 @@ var converter = (dimension) => {
 
 module.exports = {resize, dimensions, converter}
 
-},{}],82:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 const { update } = require("./update")
 
 module.exports = {
@@ -6696,7 +6714,7 @@ module.exports = {
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
 }
-},{"./update":113}],83:[function(require,module,exports){
+},{"./update":114}],84:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { toAwait } = require("./toAwait")
@@ -6734,7 +6752,7 @@ const save = async ({ id, e, ...params }) => {
 }
 
 module.exports = { save }
-},{"./clone":35,"./toAwait":96,"axios":116}],84:[function(require,module,exports){
+},{"./clone":36,"./toAwait":97,"axios":117}],85:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { toAwait } = require('./toAwait')
@@ -6769,7 +6787,7 @@ module.exports = {
         toAwait({ id, e, params })
     }
 }
-},{"./clone":35,"./toAwait":96,"./toString":109,"axios":116}],85:[function(require,module,exports){
+},{"./clone":36,"./toAwait":97,"./toString":110,"axios":117}],86:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -6792,7 +6810,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":65}],86:[function(require,module,exports){
+},{"./isArabic":66}],87:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
@@ -6836,7 +6854,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":35,"./reducer":77}],87:[function(require,module,exports){
+},{"./clone":36,"./reducer":78}],88:[function(require,module,exports){
 (function (global){(function (){
 const { controls } = require("./controls")
 // const { starter } = require("./starter")
@@ -6872,7 +6890,7 @@ const setElement = ({ id }) => {
     
 module.exports = { setElement }
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./controls":38,"./toArray":95}],88:[function(require,module,exports){
+},{"./controls":39,"./toArray":96}],89:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
   
   var value = window.views
@@ -7045,7 +7063,7 @@ const setPosition = ({ position, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
@@ -7162,7 +7180,7 @@ const sort = ({ sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":77,"./toArray":95,"./toNumber":104}],90:[function(require,module,exports){
+},{"./reducer":78,"./toArray":96,"./toNumber":105}],91:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -7219,12 +7237,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":12,"./controls":38,"./defaultInputHandler":48,"./event":51,"./isArabic":65,"./resize":81,"./toArray":95,"./toParam":106}],91:[function(require,module,exports){
+},{"../control/control":13,"./controls":39,"./defaultInputHandler":49,"./event":52,"./isArabic":66,"./resize":82,"./toArray":96,"./toParam":107}],92:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],92:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -7349,7 +7367,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":81,"./toArray":95}],93:[function(require,module,exports){
+},{"./resize":82,"./toArray":96}],94:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -7413,7 +7431,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":33,"./clone":35,"./style":92}],94:[function(require,module,exports){
+},{"./capitalize":34,"./clone":36,"./style":93}],95:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 
@@ -7534,14 +7552,14 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
 
 module.exports = { toApproval }
 
-},{"./generate":58,"./isEqual":66,"./reducer":77,"./toValue":111}],95:[function(require,module,exports){
+},{"./generate":59,"./isEqual":67,"./reducer":78,"./toValue":112}],96:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? [...data] : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 module.exports = {
   toAwait: ({ id, e, params = {} }) => {
 
@@ -7565,7 +7583,7 @@ module.exports = {
   }
 }
 
-},{"./execute":52,"./toParam":106}],97:[function(require,module,exports){
+},{"./execute":53,"./toParam":107}],98:[function(require,module,exports){
 module.exports = {
     toCSV: ({ file = {} }) => {
 
@@ -7639,7 +7657,7 @@ module.exports = {
         }
     }
 }
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, days_ = true, hours_ = true, mins_ = true, secs_ = true }) => {
 
@@ -7660,7 +7678,7 @@ module.exports = {
         return (days_ ? days + " : " : "") + (hours_ ? hrs + " : " : "") + (mins_ ? mins + " : " : "") + (secs_ ? secs : "")
     }
 }
-},{}],99:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
@@ -7711,7 +7729,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
 module.exports = { toCode }
 
-},{"./generate":58}],100:[function(require,module,exports){
+},{"./generate":59}],101:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -7744,12 +7762,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":58,"./toArray":95}],101:[function(require,module,exports){
+},{"./generate":59,"./toArray":96}],102:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],102:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
@@ -7857,7 +7875,7 @@ module.exports = {
     return tag
   }
 }
-},{"./clone":35,"./createElement":43,"./generate":58,"./toArray":95,"./toStyle":110}],103:[function(require,module,exports){
+},{"./clone":36,"./createElement":44,"./generate":59,"./toArray":96,"./toStyle":111}],104:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -7886,7 +7904,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":58}],104:[function(require,module,exports){
+},{"./generate":59}],105:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -7904,7 +7922,7 @@ module.exports = {
   },
 };
 
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -7920,7 +7938,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -8007,12 +8025,21 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     }
 
     // click
-    if (param.slice(0, 6) === "click.") {
+    if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
 
       param = param.slice(6)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
       view.click = view.click || ""
       return view.click += `${param};`
+    }
+
+    // change
+    if (param.slice(0, 6) === "change") {
+
+      param = param.slice(7)
+      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      view.change = view.change || ""
+      return view.change += `${param};`
     }
 
     // mouseleave
@@ -8136,14 +8163,14 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
 module.exports = { toParam }
 
-},{"./generate":58,"./reducer":77,"./toApproval":94,"./toValue":111}],107:[function(require,module,exports){
+},{"./generate":59,"./reducer":78,"./toApproval":95,"./toValue":112}],108:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 };
 
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -8191,7 +8218,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],109:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -8225,7 +8252,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -8297,7 +8324,7 @@ module.exports = {
   }
 }
 
-},{}],111:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 const { generate } = require("./generate")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
@@ -8478,7 +8505,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
 module.exports = { toValue, calcSubs }
 
-},{"./generate":58,"./reducer":77,"./toCode":99,"./toParam":106}],112:[function(require,module,exports){
+},{"./generate":59,"./reducer":78,"./toCode":100,"./toParam":107}],113:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -8592,7 +8619,7 @@ const toggleView = ({ toggle, id }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":35,"./createElement":43,"./generate":58,"./setElement":87,"./starter":90,"./toArray":95,"./update":113}],113:[function(require,module,exports){
+},{"./clone":36,"./createElement":44,"./generate":59,"./setElement":88,"./starter":91,"./toArray":96,"./update":114}],114:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -8601,6 +8628,7 @@ const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { controls } = require("./controls")
 const { toParam } = require("./toParam")
+const { toCode } = require("./toCode")
 
 const update = ({ id, update = {} }) => {
 
@@ -8711,7 +8739,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":35,"./controls":38,"./createElement":43,"./generate":58,"./setElement":87,"./starter":90,"./toArray":95,"./toParam":106}],114:[function(require,module,exports){
+},{"./clone":36,"./controls":39,"./createElement":44,"./generate":59,"./setElement":88,"./starter":91,"./toArray":96,"./toCode":100,"./toParam":107}],115:[function(require,module,exports){
 (function (global){(function (){
 const axios = require("axios")
 const { toAwait } = require("./toAwait")
@@ -8796,7 +8824,7 @@ module.exports = {
     }
 }*/
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":96,"axios":116}],115:[function(require,module,exports){
+},{"./toAwait":97,"axios":117}],116:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -8860,9 +8888,9 @@ const watch = ({ controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":35,"./execute":52,"./isEqual":66,"./toApproval":94,"./toCode":99,"./toParam":106,"./toValue":111}],116:[function(require,module,exports){
+},{"./clone":36,"./execute":53,"./isEqual":67,"./toApproval":95,"./toCode":100,"./toParam":107,"./toValue":112}],117:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":118}],117:[function(require,module,exports){
+},{"./lib/axios":119}],118:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9053,7 +9081,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":124,"../core/createError":125,"./../core/settle":129,"./../helpers/buildURL":133,"./../helpers/cookies":135,"./../helpers/isURLSameOrigin":138,"./../helpers/parseHeaders":140,"./../utils":143}],118:[function(require,module,exports){
+},{"../core/buildFullPath":125,"../core/createError":126,"./../core/settle":130,"./../helpers/buildURL":134,"./../helpers/cookies":136,"./../helpers/isURLSameOrigin":139,"./../helpers/parseHeaders":141,"./../utils":144}],119:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -9111,7 +9139,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":119,"./cancel/CancelToken":120,"./cancel/isCancel":121,"./core/Axios":122,"./core/mergeConfig":128,"./defaults":131,"./helpers/bind":132,"./helpers/isAxiosError":137,"./helpers/spread":141,"./utils":143}],119:[function(require,module,exports){
+},{"./cancel/Cancel":120,"./cancel/CancelToken":121,"./cancel/isCancel":122,"./core/Axios":123,"./core/mergeConfig":129,"./defaults":132,"./helpers/bind":133,"./helpers/isAxiosError":138,"./helpers/spread":142,"./utils":144}],120:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9132,7 +9160,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],120:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -9191,14 +9219,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":119}],121:[function(require,module,exports){
+},{"./Cancel":120}],122:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],122:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9348,7 +9376,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":133,"../helpers/validator":142,"./../utils":143,"./InterceptorManager":123,"./dispatchRequest":126,"./mergeConfig":128}],123:[function(require,module,exports){
+},{"../helpers/buildURL":134,"../helpers/validator":143,"./../utils":144,"./InterceptorManager":124,"./dispatchRequest":127,"./mergeConfig":129}],124:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9404,7 +9432,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":143}],124:[function(require,module,exports){
+},{"./../utils":144}],125:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -9426,7 +9454,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":134,"../helpers/isAbsoluteURL":136}],125:[function(require,module,exports){
+},{"../helpers/combineURLs":135,"../helpers/isAbsoluteURL":137}],126:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -9446,7 +9474,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":127}],126:[function(require,module,exports){
+},{"./enhanceError":128}],127:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9530,7 +9558,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":121,"../defaults":131,"./../utils":143,"./transformData":130}],127:[function(require,module,exports){
+},{"../cancel/isCancel":122,"../defaults":132,"./../utils":144,"./transformData":131}],128:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9574,7 +9602,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],128:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -9663,7 +9691,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":143}],129:[function(require,module,exports){
+},{"../utils":144}],130:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -9690,7 +9718,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":125}],130:[function(require,module,exports){
+},{"./createError":126}],131:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9714,7 +9742,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":131,"./../utils":143}],131:[function(require,module,exports){
+},{"./../defaults":132,"./../utils":144}],132:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -9852,7 +9880,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":117,"./adapters/xhr":117,"./core/enhanceError":127,"./helpers/normalizeHeaderName":139,"./utils":143,"_process":149}],132:[function(require,module,exports){
+},{"./adapters/http":118,"./adapters/xhr":118,"./core/enhanceError":128,"./helpers/normalizeHeaderName":140,"./utils":144,"_process":150}],133:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -9865,7 +9893,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],133:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9937,7 +9965,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":143}],134:[function(require,module,exports){
+},{"./../utils":144}],135:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9953,7 +9981,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],135:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10008,7 +10036,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":143}],136:[function(require,module,exports){
+},{"./../utils":144}],137:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10024,7 +10052,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],137:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10037,7 +10065,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],138:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10107,7 +10135,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":143}],139:[function(require,module,exports){
+},{"./../utils":144}],140:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10121,7 +10149,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":143}],140:[function(require,module,exports){
+},{"../utils":144}],141:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10176,7 +10204,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":143}],141:[function(require,module,exports){
+},{"./../utils":144}],142:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10205,7 +10233,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],142:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -10312,7 +10340,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":144}],143:[function(require,module,exports){
+},{"./../../package.json":145}],144:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -10663,7 +10691,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":132}],144:[function(require,module,exports){
+},{"./helpers/bind":133}],145:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -10749,9 +10777,9 @@ module.exports={
   ]
 }
 
-},{}],145:[function(require,module,exports){
-
 },{}],146:[function(require,module,exports){
+
+},{}],147:[function(require,module,exports){
 (function (process){(function (){
 /* @flow */
 /*::
@@ -10873,7 +10901,7 @@ module.exports.config = config
 module.exports.parse = parse
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":149,"fs":145,"os":147,"path":148}],147:[function(require,module,exports){
+},{"_process":150,"fs":146,"os":148,"path":149}],148:[function(require,module,exports){
 exports.endianness = function () { return 'LE' };
 
 exports.hostname = function () {
@@ -10924,7 +10952,7 @@ exports.homedir = function () {
 	return '/'
 };
 
-},{}],148:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -11457,7 +11485,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":149}],149:[function(require,module,exports){
+},{"_process":150}],150:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

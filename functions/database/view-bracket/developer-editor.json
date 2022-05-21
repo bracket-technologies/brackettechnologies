@@ -118,7 +118,7 @@
                   ],
                   "controls": [
                     {
-                      "event": "click?parent().children().map():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=().open-doc;open-collection=().open-collection]._():[_.style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data]?)(:clickedElement().id!=lastChild().id"
+                      "event": "click?parent().children().map():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=().open-doc;open-collection=().open-collection]._():[_.style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data()]?)(:clickedElement().id!=lastChild().id"
                     }
                   ]
                 }
@@ -126,10 +126,10 @@
               "type": "View?id=data-viewer-bar;class=flex;style.height=3.5rem;style.width=100%;style.backgroundColor=#f0f0f0;style.display=if():[)(:open-docs.len()=0]:none:flex"
             },
             {
-              "type": "View?class=data-viewer;data=)(:open-map.clone();style.width=calc(100vw - 22.5rem);style.maxHeight=calc(100vh - 7.5rem);style.overflowY=auto",
+              "type": "View?class=data-viewer;data=)(:open-map.clone();style.width=calc(100vw - 22.5rem);style.maxHeight=calc(100vh - 7.5rem);style.overflowY=auto?)(:open-map",
               "children": [
                 {
-                  "type": "View?class=flex column;style.width=100%?)(:open-map",
+                  "type": "View?class=flex column;style.width=100%",
                   "children": [
                     {
                       "type": "Map?arrange=_array:creation-date:id:name:title:path:description:type:children:controls:event:watch:actions"

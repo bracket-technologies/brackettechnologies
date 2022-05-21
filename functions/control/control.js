@@ -14,6 +14,7 @@ module.exports = {
   pricable: require("./pricable"),
   hover: require("./hover"),
   click: require("./click"),
+  change: require("./change"),
   clicked: require("./clicked"),
   mouseenter: require("./mouseenter"),
   mouseleave: require("./mouseleave"),

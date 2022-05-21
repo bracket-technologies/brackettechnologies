@@ -73,11 +73,15 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     if (event.slice(0, 7) === "coded()") {
       event = global.codes[event]
       if (event.includes("?")) {
+        var viewEventIdList = event.split("?")[3]
         var viewEventConditions = event.split("?")[2]
         var viewEventParams = event.split("?")[1]
         event = event.split("?")[0]
       }
     }
+
+    // id
+    if (viewEventIdList) mainID = toValue({ _window, req, res, id, value: viewEventIdList })
     
     var timer = 0, idList
     var once = events[1] && events[1].includes('once')
@@ -87,6 +91,11 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     if (eventid) idList = toValue({ _window, req, res, id, value: eventid })
     else idList = clone(_idList)
     
+    idList = toArray(idList).map(id => {
+      if (typeof id === "object" && id.id) return id.id
+      else return id
+    })
+
     // timer
     timer = event.split(":")[2] || 0
     
@@ -97,7 +106,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     clearTimeout(view[`${event}-timer`])
 
     // add event listener
-    toArray(idList).map(id => {
+    idList.map(id => {
 
       var _view = views[id]
       if (!_view) return
@@ -105,9 +114,6 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       var myFn = (e) => {
 
         setTimeout(async () => {
-
-          // body
-          if (id === "body") id = mainID
           
           // approval
           if (viewEventConditions) {

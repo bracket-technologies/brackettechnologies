@@ -84,12 +84,21 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     }
 
     // click
-    if (param.slice(0, 6) === "click.") {
+    if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
 
       param = param.slice(6)
       if (param.slice(0, 7) === "coded()") param = global.codes[param]
       view.click = view.click || ""
       return view.click += `${param};`
+    }
+
+    // change
+    if (param.slice(0, 6) === "change") {
+
+      param = param.slice(7)
+      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      view.change = view.change || ""
+      return view.change += `${param};`
     }
 
     // mouseleave
