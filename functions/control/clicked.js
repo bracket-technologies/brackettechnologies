@@ -14,6 +14,6 @@ module.exports = ({ controls, id }) => {
     }, {
         "event": "click?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!parent().required.mount;!().clicked.disable"
     }, {
-        "event": "click:body?timer():[if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]]:0?!().required.mount;!parent().required.mount;!().clicked.disable;!)(:clickedElement.id.isChildOfId():[().id]"
+        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]?!().required.mount;!parent().required.mount;!().clicked.disable;!().element.contains():[)(:clickedElement];!():droplist.element.contains():[)(:clickedElement]"
     }]
 }

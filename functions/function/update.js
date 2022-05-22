@@ -83,7 +83,7 @@ const update = ({ id, update = {} }) => {
   })
   
   setTimeout(() => {
-    idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+    idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
       map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
       map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })

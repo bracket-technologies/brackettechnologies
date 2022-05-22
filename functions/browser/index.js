@@ -63,7 +63,7 @@ global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
 global.idList.map(id => starter({ id }))
 
-var icons = global.idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id])
+var icons = global.idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id])
 window.onload = () => {
     icons.map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
@@ -180,9 +180,9 @@ const Input = (component) => {
     
     component = toComponent(component)
 
-    var { id, input, model, droplist, readonly, style, controls, icon, duplicated, duration, required,
-        placeholder, textarea, filterable, clearable, removable, msg, day, disabled, label, password,
-        duplicatable, lang, unit, currency, google, key, note, edit, minlength , children, container
+    var { id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
+        placeholder, textarea, clearable, removable, day, disabled, label, password,
+        duplicatable, lang, unit, currency, google, key, minlength , children, container
     } = component
     
     if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
@@ -205,7 +205,7 @@ const Input = (component) => {
         cursor: 'pointer',
     } : {}
     
-    var path = `${unit ? `path=amount` :  currency ? `path=${currency}` : duration ? `path=${duration}` : day ? `path=${day}` : lang ? `path=${lang}` : google ? `path=name` : key ? `path=${key}` : ''}`
+    // var path = `${unit ? `path=amount` :  currency ? `path=${currency}` : duration ? `path=${duration}` : day ? `path=${day}` : lang ? `path=${lang}` : google ? `path=name` : key ? `path=${key}` : ''}`
 
     if (label && (label.location === "inside" || label.position === "inside")) {
 
@@ -304,16 +304,19 @@ const Input = (component) => {
             }]
         }
     }
-    
-    if (model === 'featured' || password) {
-        
+
+    if (model === 'featured' || password || clearable || removable) {
+       
         return {
             ...component,
             type: 'View',
             class: 'flex-box unselectable',
             // remove from comp
-            controls: {},
-            droplist: undefined,
+            controls: [{
+                event: "mouseenter?():[().id+-clear].style().opacity=1?clearable;removable"
+            }, {
+                event: "mouseleave?():[().id+-clear].style().opacity=0?clearable;removable"
+            }],
             style: {
                 display: "inline-flex",
                 alignItems: "center",
@@ -328,26 +331,8 @@ const Input = (component) => {
                 border: input.type === "file" ? "1px dashed #ccc" : "0",
                 ...style,
             },
-            children: [...children, {
-                type: `Icon?id=${id}-icon?${icon.name}`,
-                ...icon,
-                hover: {
-                    ...icon.hover,
-                    style: {
-                        ...icon.style.after,
-                        ...icon.hover.style
-                    }
-                },
-                style: {
-                    fontSize: '1.6rem',
-                    marginLeft: '1rem',
-                    marginRight: '.5rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    ...icon.style
-                }
-            }, {
-                type: `Text?id=${id}-msg;msg=${msg};text=${msg}?${msg}`,
+            children: [...children, { // message
+                type: `Text?id=parent().id+-msg;msg=parent().msg;text=parent().msg?parent().msg`,
                 style: {
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
@@ -358,8 +343,8 @@ const Input = (component) => {
             }, {
                 type: `Input`,
                 id: `${id}-input`,
-                path: component.path,
                 class: `${input.class} ${component.class.includes("ar") ? "ar" : ""}`,
+                // droplist,
                 input,
                 currency, 
                 day,
@@ -370,11 +355,9 @@ const Input = (component) => {
                 duration,
                 textarea,
                 readonly,
-                filterable,
                 placeholder,
                 duplicated,
                 disabled,
-                droplist,
                 templated: true,
                 'placeholder-ar': component['placeholer-ar'],
                 hover: {
@@ -387,7 +370,7 @@ const Input = (component) => {
                     }
                 },
                 style: {
-                    width: password ? "100%" : "fit-content",
+                    width: password || clearable || removable ? "100%" : "fit-content",
                     height: 'fit-content',
                     borderRadius: style.borderRadius || '0.25rem',
                     backgroundColor: style.backgroundColor || 'inherit',
@@ -403,15 +386,14 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: `keyup??().data();e().key=Enter;${duplicatable}`,
-                    actions: `duplicate:${id}?${duplicatable && duplicatable.path ? `duplicate.path=${duplicatable.path}` : ''}`
-                }, {
                     event: "select;mousedown?e().preventDefault()"
-                }, {
-                    event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value.exist()"
-                }]
+                }/*, {
+                    event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
+                }*/]
             }, {
-                type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?[${password}]`,
+                type: "Icon?class=pointer;id=parent().id+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable",
+            }, {
+                type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
                     type: `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
                     controls: [{
@@ -421,112 +403,6 @@ const Input = (component) => {
                     type: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
                     controls: [{
                         event: "click?parent().prev().element.type=password;prev().style().display=flex;style().display=none"
-                    }]
-                }]
-            }, {
-                type: `View?class=flex-box;style.alignSelf=flex-start;style.minWidth=fit-content;style.height=${style.height || '4rem'}?!().parent().password`,
-                children: [{
-                    type: `Icon?icon.name=bi-caret-down-fill;style.color=#444;style.fontSize=1.2rem;style.width=1rem;style.marginRight=.5rem?():${id}-input.droplist.items.isdefined()`
-                }, {
-                    type: `Icon?class=pointer;icon.name=bi-files;style.color=#444;style.fontSize=1.2rem;style.width=1rem;style.marginRight=.5rem;hoverable;style.after.color=#116dff?${duplicatable}`,
-                    controls: {
-                        event: `click??():${id}-input.data();[${duplicatable}]`,
-                        actions: `duplicate:${id}?${duplicatable && duplicatable.path ? `duplicate.path=${duplicatable.path}` : "" }`
-                    }
-                }, {
-                    type: `Text?text=${note};style.color=#666;style.fontSize=1.3rem;style.padding=.5rem?[${note}]`
-                }, {
-                    type: `Text?id=${id}-key;key=${key};text=${key};droplist.items<<!${readonly}=await()._array:[any.Enter a special key:._param.readonly]:[any.${key}._param.input];hoverable;duplicated=${duplicated}?${key}`,
-                    style: {
-                        fontSize: '1.3rem',
-                        color: '#666',
-                        cursor: 'pointer',
-                        padding: '.25rem',
-                        borderRadius: '.25rem',
-                        transition: 'color .2s',
-                        after: { color: '#0d6efd' }
-                    },
-                }, {
-                    type: `Text?id=${id}-currency;currency=${currency};text=${currency};droplist.items<<!${readonly}=await().)(:asset.findByName():Currency.options.map():name;hoverable;duplicated=${duplicated}?${currency}`,
-                    style: {
-                        fontSize: '1.3rem',
-                        color: '#666',
-                        cursor: 'pointer',
-                        padding: '.25rem',
-                        borderRadius: '.25rem',
-                        transition: 'color .2s',
-                        after: { color: '#0d6efd' }
-                    },
-                }, {
-                    type: `Text?path=unit;id=${id}-unit;droplist.items<<!${readonly}=await().)(:asset.findByName():Unit.options.map():name;hoverable?${unit}`,
-                    style: {
-                        fontSize: '1.3rem',
-                        color: '#666',
-                        cursor: 'pointer',
-                        padding: '.25rem',
-                        borderRadius: '.25rem',
-                        transition: 'color .2s',
-                        after: { color: '#0d6efd' }
-                    },
-                    actions: `setData?data.value=${unit}?!().data()`
-                }, {
-                    type: `Text?id=${id}-day;day=${day || 'day'};text=${day};droplist.items<<!${readonly}=await()._array:Monday:Tuesday:Wednesday:Thursday:Friday:Saturday:Sunday;droplist.day;hoverable;duplicated=${duplicated}?${day}`,
-                    style: {
-                        fontSize: '1.3rem',
-                        color: '#666',
-                        cursor: 'pointer',
-                        padding: '.25rem',
-                        borderRadius: '.25rem',
-                        transition: 'color .2s',
-                        after: { color: '#0d6efd' }
-                    }
-                }, {
-                    type: `Text?id=${id}-duration;duration=${duration || 'hr'};text=${duration};droplist.items<<!${readonly}=_array:sec:min:hr:day:week:month:3month:year;droplist.duration;hoverable;duplicated=${duplicated}?${duration}`,
-                    style: {
-                        fontSize: '1.3rem',
-                        color: '#666',
-                        cursor: 'pointer',
-                        padding: '.25rem',
-                        borderRadius: '.25rem',
-                        transition: 'color .2s',
-                        after: { color: '#0d6efd' }
-                    }
-                }, {
-                    type: `Text?id=${id}-language;lang=${lang};text=${lang};droplist.items<<!${readonly}=await().)(:asset.findByName():Language.options.map():name;droplist.lang;hoverable;duplicated=${duplicated}?${lang}`,
-                    style: {
-                        fontSize: '1.3rem',
-                        color: '#666',
-                        cursor: 'pointer',
-                        padding: '.25rem',
-                        borderRadius: '.25rem',
-                        transition: 'color .2s',
-                        after: { color: '#0d6efd' }
-                    }
-                }, {
-                    type: `Checkbox?id=${id}-google;class=align-center;path=google;style.cursor=pointer;style.margin=0 .25rem?${google}`,
-                    controls: [{
-                        event: `change;loaded?():${id}-more.style().display=none<<!e().target.checked;():${id}-more.style().display=flex<<e().target.checked`
-                    }]
-                }, {
-                    type: `Icon?id=${id}-more;name=bi-three-dots-vertical;path=type;style.width=1.5rem;style.display=none;style.color=#666;style.cursor=pointer;style.fontSize=2rem;)(:google-items=_array:outlined:rounded:sharp:twoTone;droplist.items=_array:[any.Enter google icon type]:[)(:google-items];hoverable?${google}`,
-                }, {
-                    type: `Icon?class=align-center;name=bi-x;id=${id}-x;hoverable?${clearable}.or():${removable}`,
-                    style: {
-                        fontSize: '2rem',
-                        color: '#444',
-                        cursor: 'pointer',
-                        after: { color: 'red' }
-                    },
-                    controls: [{
-                        event: 'click',
-                        actions: [
-                            // remove element
-                            `remove:${id}??${removable};():${id}.length().greater():${minlength};!():${id}-input.data()<<${clearable}`,
-                            // clear data
-                            `focus;resize?().Data().path():[[():${id}.clearable.path].or():[():${id}-input.derivations]]=_string;():${id}-input.val()=_string?():${id}.clearable.isdefined()?${id}-input`,
-                            // for key
-                            `focus:${id}-input?():${id}-input.val()=_string;():${edit}-key.element.innerHTML=():${edit}-key.key;():${edit}-input.path=():${edit}-key.key;():${edit}-input.derivations=():${edit}.derivations.push():[${edit}-key.key];().Data().[():${edit}-input.derivations]=():${edit}-input.val()?${edit}`
-                        ]
                     }]
                 }]
             }]
@@ -932,7 +808,7 @@ module.exports = ({ controls, id }) => {
     }, {
         "event": "click?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!parent().required.mount;!().clicked.disable"
     }, {
-        "event": "click:body?timer():[if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]]:0?!().required.mount;!parent().required.mount;!().clicked.disable;!)(:clickedElement.id.isChildOfId():[().id]"
+        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]?!().required.mount;!parent().required.mount;!().clicked.disable;!().element.contains():[)(:clickedElement];!():droplist.element.contains():[)(:clickedElement]"
     }]
 }
 },{}],13:[function(require,module,exports){
@@ -2404,7 +2280,7 @@ const droplist = ({ id, e }) => {
         controls: [...(view.droplist.controls || []), {
           event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
-            `resize:${input_id};isArabic:${input_id}?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()]?!${view.droplist.isMap}`,
+            `resize:${input_id};isArabic:${input_id};focus:${input_id}?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()]?!${view.droplist.isMap}`,
             `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._map():[if():[!)(:break-loop;!_.text()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();${view.droplist.isMap}`,
             `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
           ]
@@ -3373,7 +3249,7 @@ module.exports = {
     view.insert = { map: views[el.id], message: "Map inserted succefully!", success: true }
     
     setTimeout(() => {
-      idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+      idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
@@ -4841,7 +4717,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "focus()") {
 
-            focus({ id: o.id })
+            if (args[1]) {
+                var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+                if (typeof _id === "object") focus({ id: _id.id })
+            } else focus({ id: o.id })
 
         } else if (k0 === "getElementById()") {
 
@@ -5070,9 +4949,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = _next.contains(o) || _next === o
             
         } else if (k0 === "contains()") {
-
-            var args = k.split(":")
+            
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e })
+
+            if (_next.nodeType === Node.ELEMENT_NODE) {}
+            else if (typeof _next === "object") _next = _next.element
+            else if (typeof _next === "string" && views[_next]) _next = views[_next].element
+
+            if (o.nodeType === Node.ELEMENT_NODE) {}
+            else if (typeof o === "object") o = o.element
+            else if (typeof o === "string" && views[o]) o = views[o].element
+
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = o.contains(_next)
             
@@ -5480,7 +5367,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "remove()" || k0 === "rem()") { // remove child with data
 
-            var args = k.split(":")
             if (args[1]) {
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
                 if (!views[_id]) return console.log("Element doesnot exist!")
@@ -7464,11 +7350,11 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     if (!approval) return false
 
     id = mainId
-    var local = _window ? _window.views[id] : window.views[id] || {}
+    var view = _window ? _window.views[id] : window.views[id] || {}
 
     if (condition.includes("#()")) {
-      local["#"] = toArray(local["#"])
-      return local["#"].push(condition.slice(4))
+      view["#"] = toArray(view["#"])
+      return view["#"].push(condition.slice(4))
     }
 
     // or
@@ -7527,24 +7413,25 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     var keygen = generate()
     var path = typeof key === "string" ? key.split(".") : []
 
-    if (!key && object !== undefined) local[keygen] = object
-    else if (key === "false" || key === "undefined") local[keygen] = false
-    else if (key === "true") local[keygen] = true
-    else if (key === "mobile()" || key === "phone()") local[keygen] = global.device.type === "phone"
-    else if (key === "desktop()") local[keygen] = global.device.type === "desktop"
-    else if (key === "tablet()") local[keygen] = global.device.type === "tablet"
-    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, e, _, req, res, object })
-    else if (key === "_") local[keygen] = _
-    else local[keygen] = key
+    if (!key && object !== undefined) view[keygen] = object
+    else if (key === "false" || key === "undefined") view[keygen] = false
+    else if (key === "true") view[keygen] = true
+    else if (key === "mobile()" || key === "phone()") view[keygen] = global.device.type === "phone"
+    else if (key === "desktop()") view[keygen] = global.device.type === "desktop"
+    else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
+    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) view[keygen] = reducer({ _window, id, path, e, _, req, res, object })
+    else if (key === "_") view[keygen] = _
+    else if (view.hasOwnProperty(key)) view[keygen] = view[key]
+    else view[keygen] = key
 
-    if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
+    if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !view[keygen] : (view[keygen] === 0 ? true : view[keygen])
     else {
-      if (equalOp) approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)
-      if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(local[keygen] > value) : (local[keygen] > value)
-      if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(local[keygen] < value) : (local[keygen] < value)
+      if (equalOp) approval = notEqual ? !isEqual(view[keygen], value) : isEqual(view[keygen], value)
+      if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(view[keygen] > value) : (view[keygen] > value)
+      if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(view[keygen] < value) : (view[keygen] < value)
     }
 
-    delete local[keygen]
+    delete view[keygen]
   })
 
   return approval
@@ -8609,7 +8496,7 @@ const toggleView = ({ toggle, id }) => {
     })
   
     setTimeout(() => {
-      idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+      idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
@@ -8705,7 +8592,7 @@ const update = ({ id, update = {} }) => {
   })
   
   setTimeout(() => {
-    idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+    idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
       map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
       map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })

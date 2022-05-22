@@ -865,7 +865,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "focus()") {
 
-            focus({ id: o.id })
+            if (args[1]) {
+                var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+                if (typeof _id === "object") focus({ id: _id.id })
+            } else focus({ id: o.id })
 
         } else if (k0 === "getElementById()") {
 
@@ -1094,9 +1097,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = _next.contains(o) || _next === o
             
         } else if (k0 === "contains()") {
-
-            var args = k.split(":")
+            
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e })
+
+            if (_next.nodeType === Node.ELEMENT_NODE) {}
+            else if (typeof _next === "object") _next = _next.element
+            else if (typeof _next === "string" && views[_next]) _next = views[_next].element
+
+            if (o.nodeType === Node.ELEMENT_NODE) {}
+            else if (typeof o === "object") o = o.element
+            else if (typeof o === "string" && views[o]) o = views[o].element
+
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = o.contains(_next)
             
@@ -1504,7 +1515,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "remove()" || k0 === "rem()") { // remove child with data
 
-            var args = k.split(":")
             if (args[1]) {
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
                 if (!views[_id]) return console.log("Element doesnot exist!")

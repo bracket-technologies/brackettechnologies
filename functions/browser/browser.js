@@ -62,7 +62,7 @@ global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
 global.idList.map(id => starter({ id }))
 
-var icons = global.idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id])
+var icons = global.idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id])
 window.onload = () => {
     icons.map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"

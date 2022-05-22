@@ -30,11 +30,11 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     if (!approval) return false
 
     id = mainId
-    var local = _window ? _window.views[id] : window.views[id] || {}
+    var view = _window ? _window.views[id] : window.views[id] || {}
 
     if (condition.includes("#()")) {
-      local["#"] = toArray(local["#"])
-      return local["#"].push(condition.slice(4))
+      view["#"] = toArray(view["#"])
+      return view["#"].push(condition.slice(4))
     }
 
     // or
@@ -93,24 +93,25 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     var keygen = generate()
     var path = typeof key === "string" ? key.split(".") : []
 
-    if (!key && object !== undefined) local[keygen] = object
-    else if (key === "false" || key === "undefined") local[keygen] = false
-    else if (key === "true") local[keygen] = true
-    else if (key === "mobile()" || key === "phone()") local[keygen] = global.device.type === "phone"
-    else if (key === "desktop()") local[keygen] = global.device.type === "desktop"
-    else if (key === "tablet()") local[keygen] = global.device.type === "tablet"
-    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) local[keygen] = reducer({ _window, id, path, e, _, req, res, object })
-    else if (key === "_") local[keygen] = _
-    else local[keygen] = key
+    if (!key && object !== undefined) view[keygen] = object
+    else if (key === "false" || key === "undefined") view[keygen] = false
+    else if (key === "true") view[keygen] = true
+    else if (key === "mobile()" || key === "phone()") view[keygen] = global.device.type === "phone"
+    else if (key === "desktop()") view[keygen] = global.device.type === "desktop"
+    else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
+    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) view[keygen] = reducer({ _window, id, path, e, _, req, res, object })
+    else if (key === "_") view[keygen] = _
+    else if (view.hasOwnProperty(key)) view[keygen] = view[key]
+    else view[keygen] = key
 
-    if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !local[keygen] : (local[keygen] === 0 ? true : local[keygen])
+    if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !view[keygen] : (view[keygen] === 0 ? true : view[keygen])
     else {
-      if (equalOp) approval = notEqual ? !isEqual(local[keygen], value) : isEqual(local[keygen], value)
-      if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(local[keygen] > value) : (local[keygen] > value)
-      if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(local[keygen] < value) : (local[keygen] < value)
+      if (equalOp) approval = notEqual ? !isEqual(view[keygen], value) : isEqual(view[keygen], value)
+      if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(view[keygen] > value) : (view[keygen] > value)
+      if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(view[keygen] < value) : (view[keygen] < value)
     }
 
-    delete local[keygen]
+    delete view[keygen]
   })
 
   return approval

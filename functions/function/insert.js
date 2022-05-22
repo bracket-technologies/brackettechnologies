@@ -77,7 +77,7 @@ module.exports = {
     view.insert = { map: views[el.id], message: "Map inserted succefully!", success: true }
     
     setTimeout(() => {
-      idList.filter(id => views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+      idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
