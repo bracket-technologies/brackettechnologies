@@ -216,9 +216,6 @@ const Input = (component) => {
         var Data = component.Data
         var password = component.password && true
         component.controls = component.controls || []
-        component.controls.push({
-            event: `focus?():${id}.1stChild().click()`
-        })
         
         delete component.parent
         delete component.label
@@ -254,7 +251,7 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": "click:body?style().border=if():[)(:clickedElement.outside():[().element]]:[1px solid #ccc]:[2px solid #008060]"
+                "event": "click:body?style().border=if():[)(:clickedElement.outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[)(:clickedElement];!droplist.contains():[)(:clickedElement]"
             }, {
                 "event": "click?getInput().focus()?!getInput().focus"
             }]
@@ -272,9 +269,6 @@ const Input = (component) => {
         var clicked = component.clicked = component.clicked || { style: {} }
         component.clicked.preventDefault = true
         component.controls = component.controls || []
-        component.controls.push({
-            event: `focus?():${id}.1stChild().click()`
-        })
         
         delete component.label
         delete component.path
@@ -286,7 +280,7 @@ const Input = (component) => {
             id, Data, parent, derivations, required, path,
             "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
             "children": [{
-                "type": `Text?text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
+                "type": `Text?id=${id}-label;text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
                 Input({ ...component, component: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
@@ -300,7 +294,7 @@ const Input = (component) => {
             "controls": [{
                 "event": `click:[1stChild().id];click:[2ndChild().id]?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
             }, {
-                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?)(:clickedElement.outside():[().element]`
+                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[)(:clickedElement];!droplist.contains():[)(:clickedElement]`
             }]
         }
     }
@@ -1775,7 +1769,7 @@ var createElement = ({ _window, id, req, res }) => {
   // push destructured params from type to view
   if (params) {
     
-    params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
+    params = toParam({ _window, string: params, id, req, res, mount: true })
     
     if (params.id && params.id !== id) {
 
@@ -2280,9 +2274,9 @@ const droplist = ({ id, e }) => {
         controls: [...(view.droplist.controls || []), {
           event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
-            `resize:${input_id};isArabic:${input_id};focus:${input_id}?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()]?!${view.droplist.isMap}`,
+            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()];timer():[():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]]]:0?!${view.droplist.isMap}`,
             `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._map():[if():[!)(:break-loop;!_.text()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();${view.droplist.isMap}`,
-            `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
+            `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
           ]
         }]
       }
@@ -3902,6 +3896,27 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
 
+    // function
+    if (path0.slice(-2) === "()" && path0 !== "()" && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
+            
+        var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
+        if (_params.length > 0) {
+            _params.map((param, index) => {
+                var _index = 0
+                while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
+                var _replacemenet = path[0].split(":").slice(1)[index]
+                if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
+                string = string.replace(param, _replacemenet)
+                _index += 1
+                }
+            })
+        }
+        string = toCode({ _window, string })
+        console.log(string);
+        if (view[path0]) return toParam({ _window, ...view[path0], string })
+        else if (view[path0.slice(1)]) return toParam({ _window, ...view[path0], string })
+    }
+
     // addition
     if (path.join(".").includes("+")) {
   
@@ -4013,7 +4028,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -4042,21 +4057,19 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         if (path[0]) {
 
-            if (path0 === "undefined") undefined
-            else if (path0 === "false") false
-            else if (path0 === "true") true
+            if (path0 === "undefined") return undefined
+            else if (path0 === "false") return false
+            else if (path0 === "true") return true
             else if (path0 === "desktop()") return global.device.type === "desktop"
             else if (path0 === "tablet()") return global.device.type === "tablet"
             else if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
+            else if (path0 === "clickedElement()") object = global["clickedElement()"]
 
             else if (path0 === "log()") {
 
                 var args = path[0].split(":").slice(1)
-                return args.map(arg => {
-
-                    var _log = toValue({ req, res, _window, id, value: arg, params, _, e })
-                    console.log(_log)
-                })
+                _log = args.map(arg => toValue({ req, res, _window, id, value: arg, params, _, e }))
+                console.log(..._log)
             }
 
             else if (path0.slice(0, 7) === "coded()") {
@@ -4248,11 +4261,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         // log
         if (k0.includes("log()")) {
 
-            var args = k.split(":"), __
+            var __
             if (k0[0] === "_") __ = o
-            var _log = toValue({ req, res, _window, id, e, _: __ ? __ : _, value: args[1], params })
-            if (_log === undefined) _log = o !== undefined ? o : "here"
-            console.log(_log)
+            var _log = args.slice(1).map(arg => toValue({ req, res, _window, id, e, _: __ ? __ : _, value: arg, params }))
+            if (_log.length === 0) _log = o !== undefined ? [o] : ["here"]
+            console.log(..._log)
             return o
         }
 
@@ -4948,7 +4961,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = _next.contains(o) || _next === o
             
-        } else if (k0 === "contains()") {
+        } else if (k0 === "contains()" || k0 === "contain()") {
             
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e })
 
@@ -6118,18 +6131,49 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "addClass()") {
             
-            var args = k.split(":")
             var _class = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
             if (o.element) answer = o.element.classList.add(_class)
             else answer = o.classList.add(_class)
 
         } else if (k0 === "removeClass()") {
             
-            var args = k.split(":")
             var _class = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
             if (o.element) answer = o.element.classList.remove(_class)
             else if(o.nodeType) answer = o.classList.remove(_class)
 
+        } else if (k.includes("def()")) {
+
+            var _name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            var _params = global.codes[args[2]] ? global.codes[args[2]] : args[2]
+            var _string = toValue({ req, res, _window, id, e, _, value: args[3], params })
+            o[`${_name}()`] = {
+                name: _name,
+                params: _params ? _params.split(":") : [],
+                string: _string,
+                id, _, e, mount,
+                req, res, 
+            }
+            
+        } else if (k0.slice(-2) === "()" && k0 !== "()" && (o[k0.charAt(0) === "_" ? k0.slice(1) : k0] || o[k0])) { // function
+            
+            var string = decode({ _window, string: o[k0].string }), _params = o[k0].params
+            console.log(string, k0);
+            if (_params.length > 0) {
+                _params.map((param, index) => {
+                    var _index = 0
+                    while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
+                    var _replacemenet = path[0].split(":").slice(1)[index]
+                    if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
+                    string = string.replace(param, _replacemenet)
+                    _index += 1
+                    }
+                })
+            }
+            string = toCode({ _window, string })
+            console.log(string);
+            if (o[k0]) return toParam({ _window, ...o[k0], string, object: o })
+            else if (o[k0.slice(1)]) return toParam({ _window, ...o[k0], string, _: o })
+            
         } else if (k.includes(":coded()")) {
             
             breakRequest = true
@@ -7461,7 +7505,7 @@ module.exports = {
     delete params.await
     
     // get params
-    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, mount: true, asyncer: true })
+    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true })
     if (_params && _params.break) return
 
     // override params
@@ -7562,7 +7606,7 @@ module.exports = {
         if (mins.length === 1) mins = "0" + mins
         if (secs.length === 1) secs = "0" + secs
 
-        return (days_ ? days + " : " : "") + (hours_ ? hrs + " : " : "") + (mins_ ? mins + " : " : "") + (secs_ ? secs : "")
+        return (days_ ? days + " : " : "") + (hours_ ? hrs + " : " : "") + (mins_ ? mins : "") + (secs_ ? " : " + secs : "")
     }
 }
 },{}],100:[function(require,module,exports){
@@ -7575,6 +7619,9 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   var global = {}
   if (!codes) global = _window ? _window.global : window.global
+  string = string.split("[]").join("_array")
+  string = string.split("{}").join("_map")
+  
   var keys = string.split(start)
   
   if (keys.length === 1) return string
@@ -7829,15 +7876,17 @@ module.exports = {
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
+const { decode } = require("./decode")
+const { toCode } = require("./toCode")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement, asyncer, eventParams }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams }) => {
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
   var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
-  var params = {}
+  var params = object || {}
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
@@ -7872,7 +7921,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         var asyncers = param.split(":").slice(1)
         var promises = []
         asyncers.map(async asyncer => {
-          promises.push(await toParam({ _window, string: asyncer, e, id, req, res, mount, createElement }))
+          promises.push(await toParam({ _window, string: asyncer, e, id, req, res, mount }))
           await Promise.all(promises)
         })
 
@@ -7883,7 +7932,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         var awaiter = param.split(":").slice(1)
         if (asyncer) {
           if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
-          var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, createElement })
+          var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount })
           params = { ...params, ..._params }
           awaiter = awaiter.slice(1)
         }
@@ -7974,6 +8023,29 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     id = viewId
 
     var path = typeof key === "string" ? key.split(".") : [], timer
+    var path0 = path[0].split(":")[0]
+    var underscored = path0.charAt(0) === "_"
+
+    // implemented function
+    if (path0.slice(-2) === "()" && path0 !== "()" && (view[underscored ? path0.slice(1) : path0] || view[path0])) {
+      
+      var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
+      if (_params.length > 0) {
+        _params.map((param, index) => {
+          var _index = 0
+          while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
+            var _replacemenet = path[0].split(":").slice(1)[index]
+            if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
+            string = string.replace(param, _replacemenet)
+            _index += 1
+          }
+        })
+      }
+      string = toCode({ _window, string })
+      console.log(string);
+      if (view[path0]) return toParam({ _window, ...view[path0], string, object  })
+      else if (underscored && view[path0.slice(1)]) return toParam({ _window, ...view[path0], string, _: object })
+    }
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -8009,7 +8081,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
     // mount data directly when found
-    if (createElement && mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view.data !== undefined && !view.Data))) {
+    if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view.data !== undefined && !view.Data))) {
 
       mountDataUsed = true
       view.Data = view.Data || generate()
@@ -8024,7 +8096,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     }
   
     // mount path directly when found
-    if (createElement && mount && !mountPathUsed && params.path) {
+    if (mount && !mountPathUsed && params.path) {
 
       mountPathUsed = true
 
@@ -8050,7 +8122,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
 
 module.exports = { toParam }
 
-},{"./generate":59,"./reducer":78,"./toApproval":95,"./toValue":112}],108:[function(require,module,exports){
+},{"./decode":48,"./generate":59,"./reducer":78,"./toApproval":95,"./toCode":100,"./toValue":112}],108:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -8765,7 +8837,7 @@ const watch = ({ controls, id }) => {
             if (controls.actions) await execute({ controls, id })
                 
             // await params
-            if (view.await) toParam({ id, string: view.await.join(';'), mount: true })
+            if (view.await) toParam({ id, string: view.await.join(';') })
         }
 
         if (view[`${_watch}-timer`]) clearInterval(view[`${_watch}-timer`])

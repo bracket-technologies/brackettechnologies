@@ -51,7 +51,7 @@ const watch = ({ controls, id }) => {
             if (controls.actions) await execute({ controls, id })
                 
             // await params
-            if (view.await) toParam({ id, string: view.await.join(';'), mount: true })
+            if (view.await) toParam({ id, string: view.await.join(';') })
         }
 
         if (view[`${_watch}-timer`]) clearInterval(view[`${_watch}-timer`])

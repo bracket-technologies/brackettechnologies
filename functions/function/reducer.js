@@ -50,6 +50,27 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
 
+    // function
+    if (path0.slice(-2) === "()" && path0 !== "()" && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
+            
+        var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
+        if (_params.length > 0) {
+            _params.map((param, index) => {
+                var _index = 0
+                while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
+                var _replacemenet = path[0].split(":").slice(1)[index]
+                if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
+                string = string.replace(param, _replacemenet)
+                _index += 1
+                }
+            })
+        }
+        string = toCode({ _window, string })
+        console.log(string);
+        if (view[path0]) return toParam({ _window, ...view[path0], string })
+        else if (view[path0.slice(1)]) return toParam({ _window, ...view[path0], string })
+    }
+
     // addition
     if (path.join(".").includes("+")) {
   
@@ -161,7 +182,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -190,21 +211,19 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         if (path[0]) {
 
-            if (path0 === "undefined") undefined
-            else if (path0 === "false") false
-            else if (path0 === "true") true
+            if (path0 === "undefined") return undefined
+            else if (path0 === "false") return false
+            else if (path0 === "true") return true
             else if (path0 === "desktop()") return global.device.type === "desktop"
             else if (path0 === "tablet()") return global.device.type === "tablet"
             else if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
+            else if (path0 === "clickedElement()") object = global["clickedElement()"]
 
             else if (path0 === "log()") {
 
                 var args = path[0].split(":").slice(1)
-                return args.map(arg => {
-
-                    var _log = toValue({ req, res, _window, id, value: arg, params, _, e })
-                    console.log(_log)
-                })
+                _log = args.map(arg => toValue({ req, res, _window, id, value: arg, params, _, e }))
+                console.log(..._log)
             }
 
             else if (path0.slice(0, 7) === "coded()") {
@@ -396,11 +415,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         // log
         if (k0.includes("log()")) {
 
-            var args = k.split(":"), __
+            var __
             if (k0[0] === "_") __ = o
-            var _log = toValue({ req, res, _window, id, e, _: __ ? __ : _, value: args[1], params })
-            if (_log === undefined) _log = o !== undefined ? o : "here"
-            console.log(_log)
+            var _log = args.slice(1).map(arg => toValue({ req, res, _window, id, e, _: __ ? __ : _, value: arg, params }))
+            if (_log.length === 0) _log = o !== undefined ? [o] : ["here"]
+            console.log(..._log)
             return o
         }
 
@@ -1096,7 +1115,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = _next.contains(o) || _next === o
             
-        } else if (k0 === "contains()") {
+        } else if (k0 === "contains()" || k0 === "contain()") {
             
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, e })
 
@@ -2266,18 +2285,49 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "addClass()") {
             
-            var args = k.split(":")
             var _class = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
             if (o.element) answer = o.element.classList.add(_class)
             else answer = o.classList.add(_class)
 
         } else if (k0 === "removeClass()") {
             
-            var args = k.split(":")
             var _class = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
             if (o.element) answer = o.element.classList.remove(_class)
             else if(o.nodeType) answer = o.classList.remove(_class)
 
+        } else if (k.includes("def()")) {
+
+            var _name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            var _params = global.codes[args[2]] ? global.codes[args[2]] : args[2]
+            var _string = toValue({ req, res, _window, id, e, _, value: args[3], params })
+            o[`${_name}()`] = {
+                name: _name,
+                params: _params ? _params.split(":") : [],
+                string: _string,
+                id, _, e, mount,
+                req, res, 
+            }
+            
+        } else if (k0.slice(-2) === "()" && k0 !== "()" && (o[k0.charAt(0) === "_" ? k0.slice(1) : k0] || o[k0])) { // function
+            
+            var string = decode({ _window, string: o[k0].string }), _params = o[k0].params
+            console.log(string, k0);
+            if (_params.length > 0) {
+                _params.map((param, index) => {
+                    var _index = 0
+                    while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
+                    var _replacemenet = path[0].split(":").slice(1)[index]
+                    if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
+                    string = string.replace(param, _replacemenet)
+                    _index += 1
+                    }
+                })
+            }
+            string = toCode({ _window, string })
+            console.log(string);
+            if (o[k0]) return toParam({ _window, ...o[k0], string, object: o })
+            else if (o[k0.slice(1)]) return toParam({ _window, ...o[k0], string, _: o })
+            
         } else if (k.includes(":coded()")) {
             
             breakRequest = true

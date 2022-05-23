@@ -1,15 +1,17 @@
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
+const { decode } = require("./decode")
+const { toCode } = require("./toCode")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, createElement, asyncer, eventParams }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams }) => {
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
   var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
-  var params = {}
+  var params = object || {}
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
@@ -44,7 +46,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         var asyncers = param.split(":").slice(1)
         var promises = []
         asyncers.map(async asyncer => {
-          promises.push(await toParam({ _window, string: asyncer, e, id, req, res, mount, createElement }))
+          promises.push(await toParam({ _window, string: asyncer, e, id, req, res, mount }))
           await Promise.all(promises)
         })
 
@@ -55,7 +57,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
         var awaiter = param.split(":").slice(1)
         if (asyncer) {
           if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
-          var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, createElement })
+          var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount })
           params = { ...params, ..._params }
           awaiter = awaiter.slice(1)
         }
@@ -146,6 +148,29 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     id = viewId
 
     var path = typeof key === "string" ? key.split(".") : [], timer
+    var path0 = path[0].split(":")[0]
+    var underscored = path0.charAt(0) === "_"
+
+    // implemented function
+    if (path0.slice(-2) === "()" && path0 !== "()" && (view[underscored ? path0.slice(1) : path0] || view[path0])) {
+      
+      var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
+      if (_params.length > 0) {
+        _params.map((param, index) => {
+          var _index = 0
+          while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
+            var _replacemenet = path[0].split(":").slice(1)[index]
+            if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
+            string = string.replace(param, _replacemenet)
+            _index += 1
+          }
+        })
+      }
+      string = toCode({ _window, string })
+      console.log(string);
+      if (view[path0]) return toParam({ _window, ...view[path0], string, object  })
+      else if (underscored && view[path0.slice(1)]) return toParam({ _window, ...view[path0], string, _: object })
+    }
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -181,7 +206,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
     // mount data directly when found
-    if (createElement && mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view.data !== undefined && !view.Data))) {
+    if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view.data !== undefined && !view.Data))) {
 
       mountDataUsed = true
       view.Data = view.Data || generate()
@@ -196,7 +221,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, crea
     }
   
     // mount path directly when found
-    if (createElement && mount && !mountPathUsed && params.path) {
+    if (mount && !mountPathUsed && params.path) {
 
       mountPathUsed = true
 

@@ -12,7 +12,7 @@ module.exports = {
     delete params.await
     
     // get params
-    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, mount: true, asyncer: true })
+    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true })
     if (_params && _params.break) return
 
     // override params

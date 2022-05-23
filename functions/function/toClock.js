@@ -15,6 +15,6 @@ module.exports = {
         if (mins.length === 1) mins = "0" + mins
         if (secs.length === 1) secs = "0" + secs
 
-        return (days_ ? days + " : " : "") + (hours_ ? hrs + " : " : "") + (mins_ ? mins + " : " : "") + (secs_ ? secs : "")
+        return (days_ ? days + " : " : "") + (hours_ ? hrs + " : " : "") + (mins_ ? mins : "") + (secs_ ? " : " + secs : "")
     }
 }

@@ -71,9 +71,6 @@ const Input = (component) => {
         var Data = component.Data
         var password = component.password && true
         component.controls = component.controls || []
-        component.controls.push({
-            event: `focus?():${id}.1stChild().click()`
-        })
         
         delete component.parent
         delete component.label
@@ -109,7 +106,7 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": "click:body?style().border=if():[)(:clickedElement.outside():[().element]]:[1px solid #ccc]:[2px solid #008060]"
+                "event": "click:body?style().border=if():[)(:clickedElement.outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[)(:clickedElement];!droplist.contains():[)(:clickedElement]"
             }, {
                 "event": "click?getInput().focus()?!getInput().focus"
             }]
@@ -127,9 +124,6 @@ const Input = (component) => {
         var clicked = component.clicked = component.clicked || { style: {} }
         component.clicked.preventDefault = true
         component.controls = component.controls || []
-        component.controls.push({
-            event: `focus?():${id}.1stChild().click()`
-        })
         
         delete component.label
         delete component.path
@@ -141,7 +135,7 @@ const Input = (component) => {
             id, Data, parent, derivations, required, path,
             "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
             "children": [{
-                "type": `Text?text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
+                "type": `Text?id=${id}-label;text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
                 Input({ ...component, component: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
@@ -155,7 +149,7 @@ const Input = (component) => {
             "controls": [{
                 "event": `click:[1stChild().id];click:[2ndChild().id]?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
             }, {
-                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?)(:clickedElement.outside():[().element]`
+                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[)(:clickedElement];!droplist.contains():[)(:clickedElement]`
             }]
         }
     }
