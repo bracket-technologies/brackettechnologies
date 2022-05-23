@@ -57,6 +57,14 @@ document.addEventListener('click', e => {
     Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o))
 }, false)
 
+document.addEventListener("mousedown", () => {
+    global.mousedown = true
+})
+
+document.addEventListener("mouseup", () => {
+    global.mousedown = false
+})
+
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))

@@ -74,7 +74,7 @@ module.exports = {
     views[el.id].style.transition = views[el.id].element.style.transition = views[el.id].reservedStyles.transition || null
     views[el.id].style.opacity = views[el.id].element.style.opacity = views[el.id].reservedStyles.opacity || "1"
     delete views[el.id].reservedStyles
-    view.insert = { map: views[el.id], message: "Map inserted succefully!", success: true }
+    view.insert = { view: views[el.id], message: "Map inserted succefully!", success: true }
     
     setTimeout(() => {
       idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {

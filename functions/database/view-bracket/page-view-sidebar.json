@@ -1,6 +1,6 @@
 {
     "creation-date": 1643565851564,
-    "type": "View?class=flex column;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0;style.zIndex=2",
+    "type": "View?id=page-view-sidebar;class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0;style.zIndex=2",
     "children": [
         {
             "type": "View?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
@@ -33,14 +33,14 @@
                     ],
                     "controls": [
                         {
-                            "event": "click?)(:open-doc=)(:data.editor.user.id;)(:open-collection=_user_;)(:open-map=)(:data.editor.user;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:open-docs.inc():[)(:data.editor.user.id]"
+                            "event": "click?)(:open-doc=)(:data.editor.user.id;)(:open-collection=_user_;)(:open-map=)(:data.editor.user;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:open-docs.inc():[)(:data.editor.user.id]"
                         },
                         {
                             "actions": [
-                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.map.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
-                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.map.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
+                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                             ],
-                            "event": "click?)(:open-doc=)(:data.editor.user.id;)(:open-docs.push():[)(:open-doc];)(:open-collection=_user_;)(:open-map=)(:data.editor.user;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none]?!)(:open-docs.inc():[)(:data.editor.user.id]"
+                            "event": "click?)(:open-doc=)(:data.editor.user.id;)(:open-docs.push():[)(:open-doc];)(:open-collection=_user_;)(:open-map=)(:data.editor.user;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():open-view.className():data-viewer.():[style().display=none]?!)(:open-docs.inc():[)(:data.editor.user.id]"
                         }
                     ]
                 },
@@ -56,19 +56,18 @@
                     "type": "View?id=project-file;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
                     "controls": [
                         {
-                            "event": "click?)(:open-doc=)(:project;)(:open-collection=_project_;)(:open-map=)(:data.editor.project;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:open-docs.inc():[)(:data.editor.project.id]"
+                            "event": "click?)(:open-doc=)(:project;)(:open-collection=_project_;)(:open-map=)(:data.editor.project;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:open-docs.inc():[)(:data.editor.project.id]"
                         },
                         {
-                            "event": "click?)(:open-doc=)(:project;)(:open-docs.push():[)(:open-doc];)(:open-collection=_project_;)(:open-map=)(:data.editor.project;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none]?!)(:open-docs.inc():[)(:data.editor.project.id]",
+                            "event": "click?)(:open-doc=)(:project;)(:open-docs.push():[)(:open-doc];)(:open-collection=_project_;)(:open-map=)(:data.editor.project;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():open-view.className():data-viewer.():[style().display=none]?!)(:open-docs.inc():[)(:data.editor.project.id]",
                             "actions": [
-                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.map.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
-                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.map.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
+                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                             ]
                         }
                     ]
                 },
                 {
-                    "type": "View?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
                     "children": [
                         {
                             "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;click.sticky;style.transition=.2s"
@@ -80,12 +79,13 @@
                             "type": "Icon?style.display=none;tooltip.text=create new page;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                             "controls": [
                                 {
-                                    "event": "click?parent().style().display=flex;)(:open-doc.del();)(:open-collection=page",
-                                    "actions": "insert:[parent().next().id]?insert.component=parent().next().children.0;timer():[parent().next().lastChild().():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()]]:50;timer():[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:100"
+                                    "event": "click?parent().next().style().display=flex;)(:open-doc.del();)(:open-collection=page",
+                                    "actions": "async():[insert:[parent().next().id]]?insert.component=parent().next().children.0;async():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
                                 }
                             ]
                         }
                     ],
+                    "type": "View?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
                     "controls": [
                         {
                             "event": "mouseenter?lastChild().style().display=flex"
@@ -94,7 +94,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=().lastChild().id]:flex:none;1stChild().style().transform=if():[next().style().display=none]:rotate(0):rotate(90deg)?)(:data.editor.page.keys().len()>0"
+                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:rotate(0):rotate(90deg)?)(:data.editor.page.keys().len()>0;!3rdChild().contains():[)(:clickedElement]"
                         }
                     ]
                 },
@@ -113,18 +113,18 @@
                                 {
                                     "controls": [
                                         {
-                                            "event": "keyup?text()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.page.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
+                                            "event": "keyup?txt()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.page.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
                                         },
                                         {
-                                            "actions": "note?note.text=if():[!text()]:[File name could not be empty!].elif():[)(:data.editor.page.keys().inc():text()]:[File name should be unique!].elif():[text().inc(): ]:[File name should not contain any spaces!]",
-                                            "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.page.keys().inc():text()||!text()||text().inc(): "
+                                            "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[)(:data.editor.page.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",
+                                            "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.page.keys().inc():txt()||!txt()||txt().inc(): "
                                         },
                                         {
                                             "actions": [
                                                 "async():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
-                                                "async():save:note:[update:page-list]?save.collection=page;save.doc=text();save.data=)(:data.editor.page.[text()];save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
+                                                "async():save:note:[update:page-list]?save.collection=page;save.doc=txt();save.data=)(:data.editor.page.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
                                             ],
-                                            "event": "keyup?)(:data.editor.page.[text()]=if():[)(:open-doc]:[)(:data.editor.page.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:[text()]:title:[text().split():-.join(): .capitalize()]:name:[text().split():-.join(): .capitalize()]:views:_array:path:[/+text()]]?e().key=Enter||e().key=Tab;text();text()!=)(:open-doc;!)(:data.editor.page.keys().inc():text();!text().inc(): "
+                                            "event": "keyup?)(:data.editor.page.txt()=if():[)(:open-doc]:[)(:data.editor.page.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:txt():title:[txt().split():-.join(): .capitalize()]:name:[txt().split():-.join(): .capitalize()]:views:_array:path:[/+txt()]]?e().key=Enter||e().key=Tab;txt();txt()!=)(:open-doc;!)(:data.editor.page.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
                                     "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -146,13 +146,13 @@
                                     "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                                 },
                                 {
-                                    "event": "click?)(:open-doc=().data;)(:open-collection=page;)(:open-map=)(:data.editor.page.[)(:open-doc];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[page/+().data]"
+                                    "event": "click?)(:open-doc=().data;)(:open-collection=page;)(:open-map=)(:data.editor.page.[)(:open-doc];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[page/+().data]"
                                 },
                                 {
-                                    "event": "click?)(:open-doc=().data;)(:open-docs.push():[page/+)(:open-doc];)(:open-collection=page;)(:open-map=)(:data.editor.page.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false]?)(:clickedElement().id!=2ndLastChild().id;)(:clickedElement().id!=lastChild().id;!)(:open-docs.inc():[page/+().data]",
+                                    "event": "click?)(:open-doc=().data;)(:open-docs.push():[page/+)(:open-doc];)(:open-collection=page;)(:open-map=)(:data.editor.page.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[page/+().data]",
                                     "actions": [
-                                        "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.map.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
-                                        "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.map.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
+                                        "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                        "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                                     ]
                                 }
                             ]
@@ -171,8 +171,8 @@
                             "type": "Icon?style.display=none;tooltip.text=create new view;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                             "controls": [
                                 {
-                                    "event": "click?parent().style().display=flex;)(:open-doc.del();)(:open-collection=view",
-                                    "actions": "insert:[parent().next().id]?insert.component=parent().next().children.0;timer():[parent().next().lastChild().():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()]]:50;timer():[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:100"
+                                    "event": "click?parent().next().style().display=flex;)(:open-doc.del();)(:open-collection=view",
+                                    "actions": "async():[insert:[parent().next().id]]?insert.component=parent().next().children.0;async():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
                                 }
                             ]
                         }
@@ -186,7 +186,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||)(:clickedElement().id=lastChild().id]:flex:none;1stChild().style().transform=if():[next().style().display=none]:rotate(0):rotate(90deg)?)(:data.editor.view.keys().len()>0"
+                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:rotate(0):rotate(90deg)?)(:data.editor.view.keys().len()>0"
                         }
                     ]
                 },
@@ -205,18 +205,18 @@
                                 {
                                     "controls": [
                                         {
-                                            "event": "keyup?text()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.view.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
+                                            "event": "keyup?txt()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.view.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
                                         },
                                         {
-                                            "actions": "note?note.text=if():[!text()]:[File name could not be empty!].elif():[)(:data.editor.view.keys().inc():text()]:[File name should be unique!].elif():[text().inc(): ]:[File name should not contain any spaces!]",
-                                            "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.view.keys().inc():text()||!text()||text().inc(): "
+                                            "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[)(:data.editor.view.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",
+                                            "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.view.keys().inc():txt()||!txt()||txt().inc(): "
                                         },
                                         {
                                             "actions": [
                                                 "async():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
-                                                "async():save:note:[update:view-list]?save.collection=view;save.doc=text();save.data=)(:data.editor.view.[text()];save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
+                                                "async():save:note:[update:view-list]?save.collection=view;save.doc=txt();save.data=)(:data.editor.view.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
                                             ],
-                                            "event": "keyup?)(:data.editor.view.[text()]=if():[)(:open-doc]:[)(:data.editor.view.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:text():type:['View?id='+text()]]?text();text()!=)(:open-doc;e().key=Enter||e().key=Tab;!)(:data.editor.view.keys().inc():text();!text().inc(): "
+                                            "event": "keyup?)(:data.editor.view.txt()=if():[)(:open-doc]:[)(:data.editor.view.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:txt():type:['View?id='+txt()]]?txt();txt()!=)(:open-doc;e().key=Enter||e().key=Tab;!)(:data.editor.view.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
                                     "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -238,13 +238,13 @@
                                     "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                                 },
                                 {
-                                    "event": "click?)(:open-doc=().data;)(:open-collection=view;)(:open-map=)(:data.editor.view.[)(:open-doc];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():open-view.getChildrenByClassName():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[view/+().data]"
+                                    "event": "click?)(:open-doc=().data;)(:open-collection=view;)(:open-map=)(:data.editor.view.[)(:open-doc];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[view/+().data]"
                                 },
                                 {
-                                    "event": "click?)(:open-doc=().data;)(:open-docs.push():[view/+)(:open-doc];)(:open-collection=view;)(:open-map=)(:data.editor.view.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():data-viewer-bar.children().map():[style().backgroundColor=inherit;hover.disable=false]?)(:clickedElement().id!=2ndLastChild().id;)(:clickedElement().id!=lastChild().id;!)(:open-docs.inc():[view/+().data]",
+                                    "event": "click?)(:open-doc=().data;)(:open-docs.push():[view/+)(:open-doc];)(:open-collection=view;)(:open-map=)(:data.editor.view.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[view/+().data]",
                                     "actions": [
-                                        "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.map.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
-                                        "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.map.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
+                                        "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                        "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                                     ]
                                 }
                             ]

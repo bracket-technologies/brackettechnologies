@@ -40,7 +40,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         var args = path.join(".").split("||")
         var answer
         args.map(value => {
-            if (answer === undefined || answer === "") answer = toValue({ _window, value, params, _, id, e, req, res })
+            if (!answer) answer = toValue({ _window, value, params, _, id, e, req, res })
         })
         return answer
     }
@@ -51,7 +51,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
 
     // function
-    if (path0.slice(-2) === "()" && path0 !== "()" && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
+    if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
             
         var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
         if (_params.length > 0) {
@@ -86,6 +86,31 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         var _value = calcSubs({ _window, value: path.join("."), params, _, id, e, req, res, object })
         if (_value !== path.join(".")) return _value
     }
+
+    // multiplication
+    if (path.join(".").includes("*")) {
+
+        var values = path.join(".").split("*").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
+        var newVal = values[0]
+        values.slice(1).map(val => {
+          if (!isNaN(newVal) && !isNaN(val)) newVal *= val
+          else if (isNaN(newVal) && !isNaN(val)) {
+            while (val > 1) {
+              newVal += newVal
+              val -= 1
+            }
+          } else if (!isNaN(newVal) && isNaN(val)) {
+            var index = newVal
+            newVal = val
+            while (index > 1) {
+              newVal += newVal
+              index -= 1
+            }
+          }
+        })
+        return newVal
+    
+      }
 
     // codeds
     if (path0.slice(0, 7) === "coded()" && path.length === 1) {
@@ -182,7 +207,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -205,7 +230,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
     : object
 
-    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "win()" || path0 === "history()") path = path.slice(1)
+    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
         
     if (!object && object !== 0 && object !== false) {
 
@@ -752,8 +777,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (o.element) answer = o.element.style
                 else answer = o.style
             }
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+            
+            if (args[1]) args.slice(1).map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
             
         } else if (k0 === "getTagElements()") {
           
@@ -1328,7 +1353,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "mod()") {
             
-            var args = k.split(":")
             var b = toValue({ req, res, _window, id, value: args[1], params, _, e })
             
             o = o === 0 ? o : (o || "")
@@ -1419,16 +1443,26 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o.nodeType === Node.ELEMENT_NODE) el = o
             else if (o.element) el = o.element
             
-            if (el)
-            if (window.views[el.id].type === "Input") {
+            if (el) {
+                if (window.views[el.id].type === "Input") {
 
-                answer = el.value
-                if (i === lastIndex && key && value !== undefined) el.value = value
+                    answer = el.value
+                    if (i === lastIndex && key && value !== undefined) el.value = value
 
-            } else {
+                } else {
 
-                answer = el.innerHTML
-                if (i === lastIndex && key && value !== undefined) el.innerHTML = value
+                    answer = el.innerHTML
+                    if (i === lastIndex && key && value !== undefined) el.innerHTML = value
+                }
+            } else if (view.type === "Input") {
+
+                if (i === lastIndex && key && value !== undefined) o[view.element.value] = value
+                else return answer = o[view.element.value]
+
+            } else if (view.type !== "Input") {
+
+                if (i === lastIndex && key && value !== undefined) o[view.element.innerHTML] = value
+                else return answer = o[view.element.innerHTML]
             }
  
         } else if (k0 === "min()") {
@@ -2017,7 +2051,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "toPrice()" || k0 === "price()") {
             
-            answer = o = toPrice(toNumber(o))
+            var _price
+            if (args[1]) _price = toValue({ req, res, _window, id, e, _, params, value: args[1] })
+            else _price = o
+            answer = o = toPrice(toNumber(_price))
             
         } else if (k0 === "toBoolean()" || k0 === "boolean()" || k0 === "bool()") {
 
@@ -2091,14 +2128,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "getCookie()") {
 
-            var args = k.split(":")
             var cname = toValue({ req, res, _window, id, e, _, params, value: args[1] })
             answer = getCookie({ name: cname, req, res })
         
         } else if (k0 === "eraseCookie()") {
 
             // eraseCookie():name
-            var _name, args = k.split(":")
             if (args[1]) _name = toValue({ req, res, _window, id, e, _, params, value: args[1] })
 
             eraseCookie({ name: _name })

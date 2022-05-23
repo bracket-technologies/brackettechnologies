@@ -58,6 +58,14 @@ document.addEventListener('click', e => {
     Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o))
 }, false)
 
+document.addEventListener("mousedown", () => {
+    global.mousedown = true
+})
+
+document.addEventListener("mouseup", () => {
+    global.mousedown = false
+})
+
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
@@ -580,7 +588,7 @@ module.exports = (component) => {
         children: [{
             type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?!parent().isField",
             controls: [{
-                event: "click?().opened=1stChild().style().transform.includes():rotate(90deg);parent().children().pull():0.pullLast().map():[style().display=if():[().opened]:none.else():flex];1stChild().style().transform=if():[().opened]:rotate(0deg).else():rotate(90deg);1stChild().2ndlast().style().display=if():[().opened]:flex.else():none;lastSibling().style().display=if():[().opened]:none.else():flex;1stChild().3rdlast().style().display=if():[().opened]:flex.else():none?)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
+                event: "click?().opened=1stChild().style().transform.includes():rotate(90deg);parent().children().pull():0.pullLast().():[style().display=if():[().opened]:none.else():flex];1stChild().style().transform=if():[().opened]:rotate(0deg).else():rotate(90deg);1stChild().2ndlast().style().display=if():[().opened]:flex.else():none;lastSibling().style().display=if():[().opened]:none.else():flex;1stChild().3rdlast().style().display=if():[().opened]:flex.else():none?)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
             }, {
                 event: "mouseenter?lastChild().style().opacity=1"
             }, {
@@ -618,7 +626,7 @@ module.exports = (component) => {
                 }, {
                     type: "Input?preventDefault;mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=derivations().lastElement();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?derivations().lastElement().num().type()!=number",
                     controls: [{
-                        event: "input?Data().path():[derivations().clone().pull():[derivations().lastIndex()].push():val()]=data().clone();data().del();parent().parent().deepChildren().map():[derivations.[derivations().lastIndex()]=val()]"
+                        event: "input?Data().path():[derivations().clone().pull():[derivations().lastIndex()].push():val()]=data().clone();data().del();parent().parent().deepChildren().():[derivations.[derivations().lastIndex()]=val()]"
                     }, {
                         event: "keyup?if():[)(:droplist-positioner;)(:keyup-index]:[():droplist.children().[)(:keyup-index].click();timer():[)(:keyup-index.del()]:200;().break=true];)(:keyup-index=0;if():[)(:droplist-positioner!=next().id]:[next().click()];timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter"
                     }, {
@@ -643,15 +651,15 @@ module.exports = (component) => {
                         children: [{
                             type: "Input?mode.dark.style.color=#c39178;if():[derivations().lastElement()=id]:[input.readonly=true];style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#a35521",
                             controls: [{
-                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._map():[_.1stChild().2ndChild().text()=_.1stChild().2ndChild().text().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().map():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
-                                actions: "async():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index;async():[().insert.map.getInput().focus()]"
+                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
+                                actions: "async():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index;async():[().insert.view.getInput().focus()]"
                             }]
                         }]
                     }]
                 }, {
                     type: "Input?style.height=3.2rem;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.type=number;input.style.color=olive;style.width=fit-content;style.borderRadius=.5rem?data().type().is():number",
                     controls: [{
-                        event: "keyup?if():[parent().parent().parent().data().type()=map]:[)(:insert-index=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;parent().parent().parent().data().field():_string:_string];if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().data().len()+1];parent().parent().parent().data().type()=array]:[parent().parent().parent().children().slice():[)(:insert-index]._map():[_.1stChild().2ndChild().text()=_.1stChild().2ndChild().text().num()+1;)(:last-index=_.derivations.len()-1;#;)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().map():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
+                        event: "keyup?if():[parent().parent().parent().data().type()=map]:[)(:insert-index=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;parent().parent().parent().data().field():_string:_string];if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().data().len()+1];parent().parent().parent().data().type()=array]:[parent().parent().parent().children().slice():[)(:insert-index]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;#;)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
                         actions: "insert:[parent().parent().parent().id]?insert.component=parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index"
                     }]
                 }, {
@@ -767,8 +775,8 @@ module.exports = ({ controls, id }) => {
   window.views[id].actionlist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?if():[)(:actionlist-caller!=${id}]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=${id}]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]`,
-    actions: `async():[update:actionlist]:[setPosition:actionlist]?().actionlist.undeletable=():actionlist.undeletable||_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;)(:actionlist-caller=${id};)(:actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]?)(:actionlist-caller!=().id`
+    event: `click?if():[)(:actionlist-caller!=${id}]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=${id}]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]`,
+    actions: `async():[update:actionlist]:[setPosition:actionlist]?().actionlist.undeletable=():actionlist.undeletable||_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;)(:actionlist-caller=${id};)(:actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]?)(:actionlist-caller!=().id`
   }]
 }
 },{}],10:[function(require,module,exports){
@@ -800,7 +808,7 @@ module.exports = ({ controls, id }) => {
     return [{
         "event": `loaded:${_id}?().clicked.disable=true;if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?().clicked.mount||().clicked.disable`
     }, {
-        "event": "click?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!parent().required.mount;!().clicked.disable"
+        "event": `click:${_id}?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!parent().required.mount;!().clicked.disable`
     }, {
         "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]?!().required.mount;!parent().required.mount;!().clicked.disable;!().element.contains():[)(:clickedElement];!():droplist.element.contains():[)(:clickedElement]"
     }]
@@ -838,11 +846,11 @@ module.exports = ({ controls, id }) => {
   window.views[id].droplist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?)(:droplist-search-txt.del();if():[getInput().txt()]:[)(:droplist-search-txt=getInput().txt()];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().map():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
-    actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?)(:droplist-positioner!=().id`
+    event: `click?)(:droplist-search-txt.del();if():[getInput().txt()]:[)(:droplist-search-txt=getInput().txt()];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
+    actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?)(:droplist-positioner!=().id`
   }, {
     event: "input:[getInput().id]?)(:droplist-search-txt=getInput().txt()?().droplist.searchable",
-    actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
+    actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
   }]
 }
 },{}],15:[function(require,module,exports){
@@ -970,7 +978,7 @@ module.exports = ({ controls, id }) => {
   var text = controls.text || ""
   
   return [{
-    event: `click?():mininote-text.text()=${text};)(:mininote-timer.clearTimeout();():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000`,
+    event: `click?():mininote-text.txt()=${text};)(:mininote-timer.clearTimeout();():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000`,
     actions: "setPosition:mininote?position.positioner=mouse;position.placement=right"
   }]
 }
@@ -1056,7 +1064,7 @@ module.exports = ({ controls, id }) => {
   var text = controls.text || ""
   
   return [{
-    event: `mousemove?if():[!)(:tooltip-timer]:[)(:tooltip-timer=timer():[():tooltip.style().opacity=1]:500];():tooltip-text.text()=${text};():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar]`,
+    event: `mousemove?if():[!)(:tooltip-timer]:[)(:tooltip-timer=timer():[():tooltip.style().opacity=1]:500];():tooltip-text.txt()=${text};():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar]`,
     actions: `setPosition:tooltip?position.positioner=mouse;position.placement=${controls.placement || "left"};position.distance=${controls.distance}`
   }, {
     event: "mouseleave?clearTimer():[)(:tooltip-timer];)(:tooltip-timer.del();():tooltip.style().opacity=0"
@@ -1506,7 +1514,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     }
 
     await Promise.resolve(project)
-
+    
     // project not found
     if (!project) return res.send("Project not found!")
     global.projectId = project.id
@@ -2274,8 +2282,8 @@ const droplist = ({ id, e }) => {
         controls: [...(view.droplist.controls || []), {
           event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
-            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()];timer():[():droplist.():[children().map():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]]]:0?!${view.droplist.isMap}`,
-            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._map():[if():[!)(:break-loop;!_.text()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().map():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();${view.droplist.isMap}`,
+            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()];timer():[():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]]]:0?!${view.droplist.isMap}`,
+            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();${view.droplist.isMap}`,
             `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
           ]
         }]
@@ -3240,7 +3248,7 @@ module.exports = {
     views[el.id].style.transition = views[el.id].element.style.transition = views[el.id].reservedStyles.transition || null
     views[el.id].style.opacity = views[el.id].element.style.opacity = views[el.id].reservedStyles.opacity || "1"
     delete views[el.id].reservedStyles
-    view.insert = { map: views[el.id], message: "Map inserted succefully!", success: true }
+    view.insert = { view: views[el.id], message: "Map inserted succefully!", success: true }
     
     setTimeout(() => {
       idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
@@ -3886,7 +3894,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         var args = path.join(".").split("||")
         var answer
         args.map(value => {
-            if (answer === undefined || answer === "") answer = toValue({ _window, value, params, _, id, e, req, res })
+            if (!answer) answer = toValue({ _window, value, params, _, id, e, req, res })
         })
         return answer
     }
@@ -3897,7 +3905,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
 
     // function
-    if (path0.slice(-2) === "()" && path0 !== "()" && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
+    if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
             
         var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
         if (_params.length > 0) {
@@ -3932,6 +3940,31 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         var _value = calcSubs({ _window, value: path.join("."), params, _, id, e, req, res, object })
         if (_value !== path.join(".")) return _value
     }
+
+    // multiplication
+    if (path.join(".").includes("*")) {
+
+        var values = path.join(".").split("*").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
+        var newVal = values[0]
+        values.slice(1).map(val => {
+          if (!isNaN(newVal) && !isNaN(val)) newVal *= val
+          else if (isNaN(newVal) && !isNaN(val)) {
+            while (val > 1) {
+              newVal += newVal
+              val -= 1
+            }
+          } else if (!isNaN(newVal) && isNaN(val)) {
+            var index = newVal
+            newVal = val
+            while (index > 1) {
+              newVal += newVal
+              index -= 1
+            }
+          }
+        })
+        return newVal
+    
+      }
 
     // codeds
     if (path0.slice(0, 7) === "coded()" && path.length === 1) {
@@ -4028,7 +4061,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -4051,7 +4084,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
     : object
 
-    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "win()" || path0 === "history()") path = path.slice(1)
+    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
         
     if (!object && object !== 0 && object !== false) {
 
@@ -4598,8 +4631,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (o.element) answer = o.element.style
                 else answer = o.style
             }
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+            
+            if (args[1]) args.slice(1).map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
             
         } else if (k0 === "getTagElements()") {
           
@@ -5174,7 +5207,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "mod()") {
             
-            var args = k.split(":")
             var b = toValue({ req, res, _window, id, value: args[1], params, _, e })
             
             o = o === 0 ? o : (o || "")
@@ -5265,16 +5297,26 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o.nodeType === Node.ELEMENT_NODE) el = o
             else if (o.element) el = o.element
             
-            if (el)
-            if (window.views[el.id].type === "Input") {
+            if (el) {
+                if (window.views[el.id].type === "Input") {
 
-                answer = el.value
-                if (i === lastIndex && key && value !== undefined) el.value = value
+                    answer = el.value
+                    if (i === lastIndex && key && value !== undefined) el.value = value
 
-            } else {
+                } else {
 
-                answer = el.innerHTML
-                if (i === lastIndex && key && value !== undefined) el.innerHTML = value
+                    answer = el.innerHTML
+                    if (i === lastIndex && key && value !== undefined) el.innerHTML = value
+                }
+            } else if (view.type === "Input") {
+
+                if (i === lastIndex && key && value !== undefined) o[view.element.value] = value
+                else return answer = o[view.element.value]
+
+            } else if (view.type !== "Input") {
+
+                if (i === lastIndex && key && value !== undefined) o[view.element.innerHTML] = value
+                else return answer = o[view.element.innerHTML]
             }
  
         } else if (k0 === "min()") {
@@ -5863,7 +5905,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "toPrice()" || k0 === "price()") {
             
-            answer = o = toPrice(toNumber(o))
+            var _price
+            if (args[1]) _price = toValue({ req, res, _window, id, e, _, params, value: args[1] })
+            else _price = o
+            answer = o = toPrice(toNumber(_price))
             
         } else if (k0 === "toBoolean()" || k0 === "boolean()" || k0 === "bool()") {
 
@@ -5937,14 +5982,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "getCookie()") {
 
-            var args = k.split(":")
             var cname = toValue({ req, res, _window, id, e, _, params, value: args[1] })
             answer = getCookie({ name: cname, req, res })
         
         } else if (k0 === "eraseCookie()") {
 
             // eraseCookie():name
-            var _name, args = k.split(":")
             if (args[1]) _name = toValue({ req, res, _window, id, e, _, params, value: args[1] })
 
             eraseCookie({ name: _name })
@@ -8027,7 +8070,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     var underscored = path0.charAt(0) === "_"
 
     // implemented function
-    if (path0.slice(-2) === "()" && path0 !== "()" && (view[underscored ? path0.slice(1) : path0] || view[path0])) {
+    if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[underscored ? path0.slice(1) : path0] || view[path0])) {
       
       var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
       if (_params.length > 0) {
@@ -8081,7 +8124,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
     // mount data directly when found
-    if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view.data !== undefined && !view.Data))) {
+    if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view && view.data !== undefined && !view.Data))) {
 
       mountDataUsed = true
       view.Data = view.Data || generate()
@@ -8290,7 +8333,6 @@ const { toCode } = require("./toCode")
 
 const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) => {
 
-  // const { toApproval } = require("./toApproval")
   const { toParam } = require("./toParam")
 
   var view = _window ? _window.views[id] : window.views[id]
@@ -8323,7 +8365,22 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
 
     var values = value.split("*").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
     var newVal = values[0]
-    values.slice(1).map(val => newVal *= val)
+    values.slice(1).map(val => {
+      if (!isNaN(newVal) && !isNaN(val)) newVal *= val
+      else if (isNaN(newVal) && !isNaN(val)) {
+        while (val > 1) {
+          newVal += newVal
+          val -= 1
+        }
+      } else if (!isNaN(newVal) && isNaN(val)) {
+        var index = newVal
+        newVal = val
+        while (index > 1) {
+          newVal += newVal
+          index -= 1
+        }
+      }
+    })
     return value = newVal
 
   } else if (value.includes("+")) { // addition

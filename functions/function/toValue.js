@@ -4,7 +4,6 @@ const { toCode } = require("./toCode")
 
 const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) => {
 
-  // const { toApproval } = require("./toApproval")
   const { toParam } = require("./toParam")
 
   var view = _window ? _window.views[id] : window.views[id]
@@ -37,7 +36,22 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
 
     var values = value.split("*").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
     var newVal = values[0]
-    values.slice(1).map(val => newVal *= val)
+    values.slice(1).map(val => {
+      if (!isNaN(newVal) && !isNaN(val)) newVal *= val
+      else if (isNaN(newVal) && !isNaN(val)) {
+        while (val > 1) {
+          newVal += newVal
+          val -= 1
+        }
+      } else if (!isNaN(newVal) && isNaN(val)) {
+        var index = newVal
+        newVal = val
+        while (index > 1) {
+          newVal += newVal
+          index -= 1
+        }
+      }
+    })
     return value = newVal
 
   } else if (value.includes("+")) { // addition

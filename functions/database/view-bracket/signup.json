@@ -1,5 +1,5 @@
 {
-  "type": "View?style.backgroundColor=#084C3F;style.minHeight=100vh;style.position=relative;style.overflow=hidden",
+  "type": "View?id=signup;style.transition=.2s;style.backgroundColor=#084C3F;style.minHeight=100vh;style.position=relative;style.overflow=hidden",
   "creation-date": 1639346801468,
   "controls": [
     {

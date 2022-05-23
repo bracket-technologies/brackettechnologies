@@ -152,7 +152,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     var underscored = path0.charAt(0) === "_"
 
     // implemented function
-    if (path0.slice(-2) === "()" && path0 !== "()" && (view[underscored ? path0.slice(1) : path0] || view[path0])) {
+    if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[underscored ? path0.slice(1) : path0] || view[path0])) {
       
       var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
       if (_params.length > 0) {
@@ -206,7 +206,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
     // mount data directly when found
-    if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view.data !== undefined && !view.Data))) {
+    if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view && view.data !== undefined && !view.Data))) {
 
       mountDataUsed = true
       view.Data = view.Data || generate()

@@ -1,40 +1,40 @@
 {
-    "type": "View?class=flex;style.height=calc(100vh - 4rem)",
+    "type": "View?id=sidebar;class=flex;style.transition=.2s;style.height=calc(100vh - 4rem)",
     "creation-date": 1640440075917,
     "children": [
         {
             "children": [
                 {
-                    "type": "Icon?id=view-page-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-code-slash;tooltip.text=pages & views;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "Icon?id=view-page-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true:false;name=bi-code-slash;tooltip.text=pages & views;style.color=if():[().open]:#000:#888;style.borderRight=if():[().open]:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
                     "controls": [
                         {
-                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.map():[style().width=0px];parent().next().style().width=if():[().open]:18rem.else():0px;getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                            "event": "click?():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.():[style().width=0px];parent().next().style().width=if():[().open]:19rem:0px;className():data-viewer.():[style().display=flex]"
                         }
                     ]
                 },
                 {
-                    "type": "Icon?id=view-product-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-boxes;tooltip.text=products;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem?)(:data.editor.project.which-industry-will-you-be-operating-in.is():Food & Beverages",
+                    "type": "Icon?id=view-product-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true:false;name=bi-boxes;tooltip.text=products;style.color=if():[().open]:#000:#888;style.borderRight=if():[().open]:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem?)(:data.editor.project.which-industry-will-you-be-operating-in.is():Food & Beverages",
                     "controls": [
                         {
-                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.map():[style().width=0px];():product-sidebar.style().width=if():[().open]:18rem.else():0px;getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                            "event": "click?():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.():[style().width=0px];():product-sidebar.style().width=if():[().open]:19rem:0px;className():data-viewer.():[style().display=flex]"
                         }
                     ]
                 },
                 {
-                    "type": "Icon?id=view-collection-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-collection;tooltip.text=collection;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "Icon?id=view-collection-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true:false;name=bi-collection;tooltip.text=collection;style.color=if():[().open]:#000:#888;style.borderRight=if():[().open]:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
                     "controls": [
                         {
-                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.map():[style().width=0px];():collection-sidebar.style().width=if():[().open]:18rem.else():0px;getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                            "event": "click?():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.():[style().width=0px];():collection-sidebar.style().width=if():[().open]:19rem:0px;className():data-viewer.():[style().display=flex]"
                         }
                     ]
                 },
                 {
                     "controls": [
                         {
-                            "event": "click?():gallery-view.style().display=none;().parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];if():[().open]:[():hotels-btn.deepChildren().map():[style().color=#888];().style().borderRight=2px solid #000;deepChildren().map():[style().color=#000];)(:sidebar-item-open=().id];parent().parent().children().slice():1.map():[style().width=0px];():hotel-sidebar.style().width=if():[().open]:18rem.else():0px;().open-view.style().marginLeft=if():[().open]:[22.5rem].else():[4.5rem];getChildrenByClassName():data-viewer.map().[style().display=flex]"
+                            "event": "click?():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];if():[().open]:[():hotels-btn.deepChildren().():[style().color=#000];style().borderRight=2px solid #000;deepChildren().():[style().color=#000];)(:sidebar-item-open=().id];parent().parent().children().slice():1.():[style().width=0px];():hotel-sidebar.style().width=if():[().open]:19rem:0px;className():data-viewer.().[style().display=flex]"
                         }
                     ],
-                    "type": "View?id=hotels-btn;open=if():[)(:sidebar-item-open=().id]:true.else():false;class=flexbox;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00",
+                    "type": "View?id=hotels-btn;open=if():[)(:sidebar-item-open=().id]:true:false;class=flexbox;style.color=if():[().open]:#000:#888;style.borderRight=if():[().open]:2px solid #000:2px solid #ffffff00",
                     "children": [
                         {
                             "children": [
@@ -61,26 +61,26 @@
                     ]
                 },
                 {
-                    "type": "Icon?id=view-storage-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-menu-button-wide-fill;tooltip.text=storage;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "Icon?id=view-storage-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true:false;name=bi-menu-button-wide-fill;tooltip.text=storage;style.color=if():[().open]:#000:#888;style.borderRight=if():[().open]:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
                     "controls": [
                         {
-                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.map():[style().width=0px];():storage-sidebar.style().width=if():[().open]:18rem.else():0px;getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                            "event": "click?():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.():[style().width=0px];():storage-sidebar.style().width=if():[().open]:19rem:0px;className():data-viewer.():[style().display=flex]"
                         }
                     ]
                 },
                 {
-                    "type": "Icon?id=gallery-icon;class=flexbox;open=)(:sidebar-item-open.is():[().id];name=bi-images;tooltip.text=gallery;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "Icon?id=gallery-icon;class=flexbox;open=)(:sidebar-item-open.is():[().id];name=bi-images;tooltip.text=gallery;style.color=if():[().open]:#000:#888;style.borderRight=if():[().open]:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
                     "controls": [
                         {
-                            "event": "click?parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];if():[().open]:[style().borderRight=2px solid #000;style().color=#000;)(:sidebar-item-open=().id];parent().parent().children().slice():1.map():[style().width=0px];():open-view.style().marginLeft=4.5rem;():gallery-view.style().display=if():[().open]:grid.else():none;():data-viewer-bar.style().display=none;():open-view.getChildrenByClassName():data-viewer.map():[style().display=none];():gallery-view.style().display=grid;style():[borderRight=2px solid #000;color=#000];().open=true"
+                            "event": "click?parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];if():[().open]:[style().borderRight=2px solid #000;style().color=#000;)(:sidebar-item-open=().id];parent().parent().children().slice():1.():[style().width=0px];():open-view.style().marginLeft=4.5rem;():gallery-view.style().display=if():[().open]:grid:none;():data-viewer-bar.style().display=none;():open-view.className():data-viewer.():[style().display=none];():gallery-view.style().display=grid;style():[borderRight=2px solid #000;color=#000];open=true"
                         }
                     ]
                 },
                 {
-                    "type": "Icon?id=review-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true.else():false;name=bi-chat-left-text;tooltip.text=reviews;style.color=if():[().open]:#000.else():#888;style.borderRight=if():[().open]:2px solid #000.else():2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "Icon?id=review-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true:false;name=bi-chat-left-text;tooltip.text=reviews;style.color=if():[().open]:#000:#888;style.borderRight=if():[().open]:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
                     "controls": [
                         {
-                            "event": "click?():gallery-view.style().display=none;parent().children()._map():[if():[_.id!=().id]:[_.open=false]];().open=().open.opp();parent().children().map():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().map():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.map():[style().width=0px];():review-sidebar.style().width=if():[().open]:18rem.else():0px;getChildrenByClassName():data-viewer.map():[style().display=flex]"
+                            "event": "click?():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];if():[().open]:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1.():[style().width=0px];():review-sidebar.style().width=if():[().open]:19rem:0px;className():data-viewer.():[style().display=flex]"
                         }
                     ]
                 }

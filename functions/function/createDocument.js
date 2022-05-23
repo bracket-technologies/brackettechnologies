@@ -85,7 +85,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     }
 
     await Promise.resolve(project)
-
+    
     // project not found
     if (!project) return res.send("Project not found!")
     global.projectId = project.id

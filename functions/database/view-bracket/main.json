@@ -32,10 +32,10 @@
                                     ],
                                     "controls": [
                                         {
-                                            "event": "mouseenter?children().map():[style().color=#000]"
+                                            "event": "mouseenter?children().():[style().color=#000]"
                                         },
                                         {
-                                            "event": "mouseleave?children().map():[style().color=#888]"
+                                            "event": "mouseleave?children().():[style().color=#888]"
                                         }
                                     ]
                                 },
@@ -50,10 +50,10 @@
                                     ],
                                     "controls": [
                                         {
-                                            "event": "mouseenter?children().map():[style().color=#000]"
+                                            "event": "mouseenter?children().():[style().color=#000]"
                                         },
                                         {
-                                            "event": "mouseleave?children().map():[style().color=#888]"
+                                            "event": "mouseleave?children().():[style().color=#888]"
                                         }
                                     ],
                                     "type": "View?style.height=100%;class=flex-box pointer"
@@ -61,18 +61,18 @@
                                 {
                                     "controls": [
                                         {
-                                            "event": "mouseenter?children().map():[style().color=#000]"
+                                            "event": "mouseenter?children().():[style().color=#000]"
                                         },
                                         {
-                                            "event": "mouseleave?children().map():[style().color=#888]"
+                                            "event": "mouseleave?children().():[style().color=#888]"
                                         }
                                     ],
                                     "children": [
                                         {
-                                            "event": "mouseenter?children().map():[style().color=#000]"
+                                            "event": "mouseenter?children().():[style().color=#000]"
                                         },
                                         {
-                                            "event": "mouseleave?children().map():[style().color=#888]"
+                                            "event": "mouseleave?children().():[style().color=#888]"
                                         }
                                     ],
                                     "type": "View?style.height=100%;class=flex-box pointer"
@@ -89,10 +89,10 @@
                                     ],
                                     "controls": [
                                         {
-                                            "event": "mouseenter?children().map():[style().color=#000]"
+                                            "event": "mouseenter?children().():[style().color=#000]"
                                         },
                                         {
-                                            "event": "mouseleave?children().map():[style().color=#888]"
+                                            "event": "mouseleave?children().():[style().color=#888]"
                                         }
                                     ]
                                 }
@@ -110,10 +110,10 @@
                                     "type": "View?style.height=100%;class=flex-box pointer",
                                     "controls": [
                                         {
-                                            "event": "mouseenter?children().map():[style().color=#000]"
+                                            "event": "mouseenter?children().():[style().color=#000]"
                                         },
                                         {
-                                            "event": "mouseleave?children().map():[style().color=#444]"
+                                            "event": "mouseleave?children().():[style().color=#444]"
                                         }
                                     ]
                                 },
@@ -121,10 +121,10 @@
                                     "type": "View?style.height=100%;class=flex-box pointer",
                                     "controls": [
                                         {
-                                            "event": "mouseenter?children().map():[style().color=#000]"
+                                            "event": "mouseenter?children().():[style().color=#000]"
                                         },
                                         {
-                                            "event": "mouseleave?children().map():[style().color=#888]"
+                                            "event": "mouseleave?children().():[style().color=#888]"
                                         }
                                     ],
                                     "children": [
@@ -139,10 +139,10 @@
                                 {
                                     "controls": [
                                         {
-                                            "event": "mouseenter?children().map():[style().color=#000]"
+                                            "event": "mouseenter?children().():[style().color=#000]"
                                         },
                                         {
-                                            "event": "mouseleave?children().map():[style().color=#444]"
+                                            "event": "mouseleave?children().():[style().color=#444]"
                                         }
                                     ],
                                     "children": [
@@ -599,10 +599,10 @@
                                 {
                                     "controls": [
                                         {
-                                            "event": "mouseenter?children().map():[style().color=#002E25]"
+                                            "event": "mouseenter?children().():[style().color=#002E25]"
                                         },
                                         {
-                                            "event": "mouseleave?children().map():[style().color=#fff]"
+                                            "event": "mouseleave?children().():[style().color=#fff]"
                                         }
                                     ],
                                     "type": "View?style.border=1px solid #fff;style.padding=1.3rem 1.75rem;style.alignSelf=center;style.width=fit-content;class=flex-box pointer;style.gap=1rem;hover.style.backgroundColor=#fff;style.borderRadius=.5rem;style.transition=.2s",
@@ -1125,6 +1125,6 @@
             ]
         }
     ],
-    "type": "View",
+    "type": "View?id=main",
     "creation-date": 1637494484000
 }
