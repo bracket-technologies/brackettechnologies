@@ -4,7 +4,7 @@ const note = ({ note: _note }) => {
 
   var views = window.views
   var note = views["action-note"]
-  var type = _note.type || "success"
+  var type = (_note.type || "success").toLowerCase()
   var noteText = views["action-note-text"]
   var backgroundColor = type === "success" 
   ? "#2FB886" : type === "danger" 

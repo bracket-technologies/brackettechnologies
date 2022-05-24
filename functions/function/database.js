@@ -8,7 +8,7 @@ var getdb = async ({ req, res, db }) => {
   
   var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
-  var string = req.headers.search, params = {}
+  var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
   
   if (string) params = toParam({ _window, string, id: "" })
@@ -22,7 +22,7 @@ var getdb = async ({ req, res, db }) => {
     promises = [], project
 
   if (search) search.collection = collection
-
+  
   /////////////////// verify access key ///////////////////// access key is stopped
   // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
   project = { ["access-key"]: req.headers["access-key"] }
@@ -224,7 +224,7 @@ var deletedb = async ({ req, res, db }) => {
 
   var collection = req.url.split("/")[2]
   if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
-  var string = req.headers.erase, params = {}
+  var string = decodeURI(req.headers.erase), params = {}
   if (string) params = toParam({ _window, string, id: "" })
 
   var erase = params.erase

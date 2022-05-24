@@ -18,6 +18,7 @@ const { toSimplifiedDate } = require("./toSimplifiedDate")
 const { toClock } = require("./toClock")
 const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
+const { note } = require("./note")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount }) => {
     
@@ -207,7 +208,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -536,23 +537,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "parent()") {
 
-            var _parent
+            var _view, _parent
+            if (args[1]) _view = reducer({ req, res, _window, id, path: args[1], value, key, object: answer, params, index, _, e })
+            else _view = o
             
-            if (typeof o !== "object") return
-            if (o.status === "Mounted") _parent = o.element.parentNode.id
-            else _parent = o.parent
-            _parent = views[_parent]
+            if (typeof _view === "string") _view = views[_view]    
+            if (!_view) return
+            if (typeof _view === "object") {
 
-            if (o.templated || o.link) {
-                _parent = _parent.element.parentNode.id
-                _parent = views[_parent]
-                _parent = views[_parent]
+                if (_view.status === "Mounted") _parent = views[_view.element.parentNode.id]
+                else _parent = views[_view.parent]
             }
-            
-            answer = _parent
-            
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+            if (!_parent) return
+
+            if (_parent.templated || _parent.link) return views[_parent.element.parentNode.id]
+            else return _parent
             
         } else if (k0 === "siblings()") {
             
@@ -1669,10 +1668,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = new Date()
 
         } else if (k0 === "todayStart()") {
-          
+
             var now = new Date()
-            var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-            return startOfDay
+            var todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            return todayStart
             
         } else if (k0 === "toClock()") { // dd:hh:mm:ss
             
@@ -2172,7 +2171,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "toggleView()") {
           
-            var args = k.split(":")
             var _id = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
             var _view = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
             var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _ })
@@ -2185,21 +2183,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "isChildOf()") {
             
-            var args = k.split(":")
-            var el = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
+            var el = toValue({ req, res, _window, id, e, _, value: args[1], params })
             answer = isEqual(el, o)
 
         } else if (k0 === "isChildOfId()") {
             
-            var args = k.split(":")
-            var _id = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
+            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
             var _ids = getDeepChildren({ _window, id: _id }).map(val => val.id)
             answer = _ids.find(_id => _id === o)
 
         } else if (k0 === "isnotChildOfId()") {
             
-            var args = k.split(":")
-            var _id = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
+            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
             var _ids = getDeepChildren({ _window, id: _id }).map(val => val.id)
             answer = _ids.find(_id => _id === o)
             answer = answer ? false : true
@@ -2208,6 +2203,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             // all values of view element and children elements in object formula
             
             answer = getDeepChildren({ _window, id: o.id })
+            
+        } else if (k0 === "note()") { // note
+            
+            var text = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            var type = toValue({ req, res, _window, id, e, _, value: args[2], params })
+            return note({ note: { text, type } })
             
         } else if (k0 === "mininote()") {
           

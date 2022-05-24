@@ -102,6 +102,7 @@ const removeChildren = ({ id }) => {
   children.map((child) => {
 
     var id = child.id
+    var view = views[id]
     if (!views[id]) return
 
     // clear time out
@@ -112,6 +113,7 @@ const removeChildren = ({ id }) => {
 
     removeChildren({ id })
     delete global["body-click-events"][id]
+    Object.keys(view).map(key => delete view[key])
     delete views[id]
   })
 }

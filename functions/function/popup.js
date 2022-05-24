@@ -9,12 +9,6 @@ const popup = ({ id }) => {
   var _controls = popUp.controls
   popup.positioner = id
 
-  /*
-  popup.Data = view.Data
-  popup.derivations = view.derivations
-  popup.unDeriveData = true
-  */
-
   update({ id: "popup" })
   
   // eraser

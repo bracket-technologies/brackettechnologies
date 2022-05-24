@@ -98,7 +98,7 @@ var createElement = ({ _window, id, req, res }) => {
     }
   }
 
-  // data
+  // for droplist
   if (parent.unDeriveData || view.unDeriveData) {
 
     view.data = view.data || ""

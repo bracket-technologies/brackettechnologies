@@ -3,6 +3,7 @@ const { reducer } = require("./reducer")
 const { generate } = require("./generate")
 const { decode } = require("./decode")
 const { toCode } = require("./toCode")
+const { clone } = require("./clone")
 
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams }) => {
   const { toApproval } = require("./toApproval")
@@ -209,9 +210,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view && view.data !== undefined && !view.Data))) {
 
       mountDataUsed = true
-      view.Data = view.Data || generate()
-      global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
-
+      params.Data = view.Data = view.Data || generate()
+      params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
+      
       // duplicated element
       if (view.duplicatedElement) {
 

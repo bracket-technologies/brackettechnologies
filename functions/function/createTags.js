@@ -20,19 +20,19 @@ const createTags = ({ _window, id, req, res }) => {
   if (view.mapType) {
     if (data.length > 0) {
 
-      data = arrange({ data, arrange: view.arrange, id, _window })
+      if (view.arrange) data = arrange({ data, arrange: view.arrange, id, _window })
       delete views[id]
       
       return data.map((_data, index) => {
         
         var id = generate()
-        var _view = clone(view)
+        var _view = clone({ ...view, data: "" })
 
         views[id] = _view
 
         _view.id = id
         _view.mapIndex = index
-        _view.data = isObject ? _view.data[_data] : _data
+        _view.data = isObject ? view.data[_data] : _data
         _view.derivations = isObject ? [..._view.derivations, _data] : [..._view.derivations, index]
 
         // check approval again for last time

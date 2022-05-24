@@ -806,11 +806,11 @@ module.exports = ({ controls, id }) => {
     )
 
     return [{
-        "event": `loaded:${_id}?().clicked.disable=true;if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?().clicked.mount||().clicked.disable`
+        "event": `loaded:${_id}?clicked.disable=true;if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().clicked.style._]]?clicked.mount||clicked.disable`
     }, {
-        "event": `click:${_id}?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!parent().required.mount;!().clicked.disable`
+        "event": `click:${_id}?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().clicked.style._]]?!required.mount;!parent().required.mount;!clicked.disable`
     }, {
-        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||null]]?!().required.mount;!parent().required.mount;!().clicked.disable;!().element.contains():[)(:clickedElement];!():droplist.element.contains():[)(:clickedElement]"
+        "event": "click:body?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().style._||null]]?!required.mount;!parent().required.mount;!clicked.disable;!element.contains():[)(:clickedElement];!():droplist.element.contains():[)(:clickedElement]"
     }]
 }
 },{}],13:[function(require,module,exports){
@@ -856,23 +856,24 @@ module.exports = ({ controls, id }) => {
 },{}],15:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
-    var local = window.views[id]
+    var view = window.views[id]
     var _id = controls.id || controls.controllerId || id
+    if (typeof _id === "object" && _id.id) _id = _id.id
     
-    local.hover.default = local.hover.default || { style: {} }
-    local.hover.style &&
-    Object.keys(local.hover.style).map(key => 
-        local.hover.default.style[key] = local.hover.default.style[key] !== undefined ? local.hover.default.style[key] : local.style[key] !== undefined ? local.style[key] : null 
+    view.hover.default = view.hover.default || { style: {} }
+    view.hover.style &&
+    Object.keys(view.hover.style).map(key => 
+        view.hover.default.style[key] = view.hover.default.style[key] !== undefined ? view.hover.default.style[key] : view.style[key] !== undefined ? view.style[key] : null 
     )
     
     return [{
-        "event": `loaded:${_id}?if():[().state=().hover.id]:[)(:[().state]=generate()]?().hover.mount`,
-        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style].else():[().mode.[)(:mode].hover.style].else():_map"
+        "event": `loaded:${_id}?if():[().state=().hover.id]:[)(:[().state]=generate()]?hover.mount`,
+        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style]:[().mode.[)(:mode].hover.style]||_map"
     }, {
-        "event": `mouseenter:${_id}??!().click.mount;!().hover.disable`,
-        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style].else():[().mode.[)(:mode].hover.style].else():_map"
+        "event": `mouseenter:${_id}??!clicked.disable;!hover.disable`,
+        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style]:[().mode.[)(:mode].hover.style]||_map"
     }, {
-        "event": `mouseleave:${_id}??!().click.mount;!().hover.disable`,
+        "event": `mouseleave:${_id}??!clicked.disable;!hover.disable`,
         "actions": "setStyle?style=().hover.default.style"
     }]
 }
@@ -1185,44 +1186,19 @@ module.exports = {clearValues};
 },{"./clone":36}],36:[function(require,module,exports){
 const clone = (obj) => {
 
-  /*if (typeof obj !== "object") return obj
-  if (Array.isArray(obj)) return obj.map(obj => clone(obj))
-  else { 
-    var copy = {}
-    Object.assign(copy, obj)
-    return copy
-  }*/
-
   var copy
   if (typeof obj !== "object") copy = obj
-  else if (Array.isArray(obj)) copy = obj.map((obj) => clone(obj))
+  else if (Array.isArray(obj)) copy = [...obj.map(obj => clone(obj))]
+  else if (Object.keys(obj).length === 0) copy = {}
   else {
-    var element
-
-    if (obj.element) element = obj.element
-    copy = JSON.parse(JSON.stringify(obj))
-
-    if (element) copy.element = element
+    copy = {}
+    Object.entries(obj).map(([key, value]) => {
+      if (key !== "element") copy[key] = clone(value)
+      else copy[key] = value
+    })
   }
 
   return copy
-}
-
-const isElement = (obj) => {
-  try {
-    // Using W3 DOM2 (works for FF, Opera and Chrome)
-    return obj instanceof HTMLElement
-  } catch (e) {
-    // Browsers not supporting W3 DOM2 don't have HTMLElement and
-    // an exception is thrown and we end up here. Testing some
-    // properties that all elements have (works on IE7)
-    return (
-      typeof obj === "object" &&
-      obj.nodeType === 1 &&
-      typeof obj.style === "object" &&
-      typeof obj.ownerDocument === "object"
-    )
-  }
 }
 
 module.exports = {clone}
@@ -1800,7 +1776,7 @@ var createElement = ({ _window, id, req, res }) => {
     }
   }
 
-  // data
+  // for droplist
   if (parent.unDeriveData || view.unDeriveData) {
 
     view.data = view.data || ""
@@ -1836,19 +1812,19 @@ const createTags = ({ _window, id, req, res }) => {
   if (view.mapType) {
     if (data.length > 0) {
 
-      data = arrange({ data, arrange: view.arrange, id, _window })
+      if (view.arrange) data = arrange({ data, arrange: view.arrange, id, _window })
       delete views[id]
       
       return data.map((_data, index) => {
         
         var id = generate()
-        var _view = clone(view)
+        var _view = clone({ ...view, data: "" })
 
         views[id] = _view
 
         _view.id = id
         _view.mapIndex = index
-        _view.data = isObject ? _view.data[_data] : _data
+        _view.data = isObject ? view.data[_data] : _data
         _view.derivations = isObject ? [..._view.derivations, _data] : [..._view.derivations, index]
 
         // check approval again for last time
@@ -2191,12 +2167,6 @@ const defaultInputHandler = ({ id }) => {
         } else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "View?class=vertical;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
-
-        } else if (value.slice(e.target.selectionStart - 4, e.target.selectionStart) === "font") {
-          var _prev = value.slice(0, e.target.selectionStart - 4)
-          var _next = value.slice(e.target.selectionStart)
-          e.target.value = value = _prev + "fontSize" + _next
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
         } else if (value.slice(e.target.selectionStart - 4, e.target.selectionStart) === "back") {
           var _prev = value.slice(0, e.target.selectionStart - 4)
@@ -3666,7 +3636,7 @@ const note = ({ note: _note }) => {
 
   var views = window.views
   var note = views["action-note"]
-  var type = _note.type || "success"
+  var type = (_note.type || "success").toLowerCase()
   var noteText = views["action-note-text"]
   var backgroundColor = type === "success" 
   ? "#2FB886" : type === "danger" 
@@ -3762,12 +3732,6 @@ const popup = ({ id }) => {
   var popUp = view.popup
   var _controls = popUp.controls
   popup.positioner = id
-
-  /*
-  popup.Data = view.Data
-  popup.derivations = view.derivations
-  popup.unDeriveData = true
-  */
 
   update({ id: "popup" })
   
@@ -3872,6 +3836,7 @@ const { toSimplifiedDate } = require("./toSimplifiedDate")
 const { toClock } = require("./toClock")
 const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
+const { note } = require("./note")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount }) => {
     
@@ -4061,7 +4026,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -4390,23 +4355,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "parent()") {
 
-            var _parent
+            var _view, _parent
+            if (args[1]) _view = reducer({ req, res, _window, id, path: args[1], value, key, object: answer, params, index, _, e })
+            else _view = o
             
-            if (typeof o !== "object") return
-            if (o.status === "Mounted") _parent = o.element.parentNode.id
-            else _parent = o.parent
-            _parent = views[_parent]
+            if (typeof _view === "string") _view = views[_view]    
+            if (!_view) return
+            if (typeof _view === "object") {
 
-            if (o.templated || o.link) {
-                _parent = _parent.element.parentNode.id
-                _parent = views[_parent]
-                _parent = views[_parent]
+                if (_view.status === "Mounted") _parent = views[_view.element.parentNode.id]
+                else _parent = views[_view.parent]
             }
-            
-            answer = _parent
-            
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+            if (!_parent) return
+
+            if (_parent.templated || _parent.link) return views[_parent.element.parentNode.id]
+            else return _parent
             
         } else if (k0 === "siblings()") {
             
@@ -5523,10 +5486,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = new Date()
 
         } else if (k0 === "todayStart()") {
-          
+
             var now = new Date()
-            var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-            return startOfDay
+            var todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            return todayStart
             
         } else if (k0 === "toClock()") { // dd:hh:mm:ss
             
@@ -6026,7 +5989,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "toggleView()") {
           
-            var args = k.split(":")
             var _id = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
             var _view = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
             var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _ })
@@ -6039,21 +6001,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "isChildOf()") {
             
-            var args = k.split(":")
-            var el = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
+            var el = toValue({ req, res, _window, id, e, _, value: args[1], params })
             answer = isEqual(el, o)
 
         } else if (k0 === "isChildOfId()") {
             
-            var args = k.split(":")
-            var _id = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
+            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
             var _ids = getDeepChildren({ _window, id: _id }).map(val => val.id)
             answer = _ids.find(_id => _id === o)
 
         } else if (k0 === "isnotChildOfId()") {
             
-            var args = k.split(":")
-            var _id = toValue({ req, res, _window, id, e, _: o, value: args[1], params })
+            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
             var _ids = getDeepChildren({ _window, id: _id }).map(val => val.id)
             answer = _ids.find(_id => _id === o)
             answer = answer ? false : true
@@ -6062,6 +6021,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             // all values of view element and children elements in object formula
             
             answer = getDeepChildren({ _window, id: o.id })
+            
+        } else if (k0 === "note()") { // note
+            
+            var text = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            var type = toValue({ req, res, _window, id, e, _, value: args[2], params })
+            return note({ note: { text, type } })
             
         } else if (k0 === "mininote()") {
           
@@ -6382,7 +6347,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./capitalize":34,"./clone":36,"./cookie":40,"./decode":48,"./execute":53,"./exportJson":54,"./focus":57,"./generate":59,"./getDateTime":60,"./getDaysInMonth":61,"./getType":63,"./importJson":64,"./isEqual":67,"./refresh":79,"./remove":81,"./route":83,"./save":84,"./setPosition":89,"./toApproval":95,"./toArray":96,"./toClock":99,"./toCode":100,"./toId":104,"./toNumber":105,"./toParam":107,"./toPrice":108,"./toSimplifiedDate":109,"./toValue":112,"./toggleView":113,"./update":114}],79:[function(require,module,exports){
+},{"./capitalize":34,"./clone":36,"./cookie":40,"./decode":48,"./execute":53,"./exportJson":54,"./focus":57,"./generate":59,"./getDateTime":60,"./getDaysInMonth":61,"./getType":63,"./importJson":64,"./isEqual":67,"./note":73,"./refresh":79,"./remove":81,"./route":83,"./save":84,"./setPosition":89,"./toApproval":95,"./toArray":96,"./toClock":99,"./toCode":100,"./toId":104,"./toNumber":105,"./toParam":107,"./toPrice":108,"./toSimplifiedDate":109,"./toValue":112,"./toggleView":113,"./update":114}],79:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -7220,11 +7185,6 @@ const setStyle = ({ id, style = {} }) => {
     var timer = 0
     if (value || value === 0) value = value + ""
 
-    if (value && value.includes(">>")) {
-      timer = value.split(">>")[1]
-      value = value.split(">>")[0]
-    }
-
     const style = () => {
       // value = width || height
       if (value) {
@@ -7496,10 +7456,10 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (key === "mobile()" || key === "phone()") view[keygen] = global.device.type === "phone"
     else if (key === "desktop()") view[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
-    else if (object || path[1] || path[0].includes("()") || path[0].includes(")(")) view[keygen] = reducer({ _window, id, path, e, _, req, res, object })
     else if (key === "_") view[keygen] = _
-    else if (view.hasOwnProperty(key)) view[keygen] = view[key]
-    else view[keygen] = key
+    else if (object || path[0].includes("()") || path[0].includes(")(")) view[keygen] = reducer({ _window, id, path, e, _, req, res, object })
+    else view[keygen] = reducer({ _window, id, path, e, _, req, res, object: object ? object : view })
+    // else view[keygen] = key
 
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !view[keygen] : (view[keygen] === 0 ? true : view[keygen])
     else {
@@ -7911,6 +7871,7 @@ const { reducer } = require("./reducer")
 const { generate } = require("./generate")
 const { decode } = require("./decode")
 const { toCode } = require("./toCode")
+const { clone } = require("./clone")
 
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams }) => {
   const { toApproval } = require("./toApproval")
@@ -8117,9 +8078,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view && view.data !== undefined && !view.Data))) {
 
       mountDataUsed = true
-      view.Data = view.Data || generate()
-      global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
-
+      params.Data = view.Data = view.Data || generate()
+      params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
+      
       // duplicated element
       if (view.duplicatedElement) {
 
@@ -8155,7 +8116,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
 
 module.exports = { toParam }
 
-},{"./decode":48,"./generate":59,"./reducer":78,"./toApproval":95,"./toCode":100,"./toValue":112}],108:[function(require,module,exports){
+},{"./clone":36,"./decode":48,"./generate":59,"./reducer":78,"./toApproval":95,"./toCode":100,"./toValue":112}],108:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -8731,6 +8692,7 @@ const removeChildren = ({ id }) => {
   children.map((child) => {
 
     var id = child.id
+    var view = views[id]
     if (!views[id]) return
 
     // clear time out
@@ -8741,6 +8703,7 @@ const removeChildren = ({ id }) => {
 
     removeChildren({ id })
     delete global["body-click-events"][id]
+    Object.keys(view).map(key => delete view[key])
     delete views[id]
   })
 }
