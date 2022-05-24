@@ -374,12 +374,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
         
         // path[i]._
-        if (path[i + 1] === "_") {
+        /*if (path[i + 1] === "_") {
             
-            path[i +  1] = _
+            path[i + 1] = _
             breakRequest = true
             return answer = reducer({ req, res, _window, id, path: path.slice(i), params, object: o, _, e, key, value })
-        }
+        }*/
         
         if (k0 === "else()" || k0 === "or()") {
             
@@ -472,20 +472,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 toValue({ req, res, _window, id, value: args[2], params, _, e })
             }
             
-        } /*else if (k0 === "_()") {
-
-            var args = k.split(":").slice(1)
-            if (args.length > 0)
-            args.map(arg => {
-                answer = toValue({ req, res, _window, id, e, value: arg, params, _: o })
-            })
-            else _ = o
-            return answer = o
+        } else if (k0 === "_") {
             
-        } */else if (k0 === "_") {
-
-            if (typeof o === "object") answer = o[_]
-            else answer = _
+            if (value !== undefined && key && i === lastIndex) answer = o[_] = value
+            else if (typeof o === "object") answer = o[_]
 
         } else if (k0 === ")(") {
 

@@ -1,5 +1,4 @@
 {
-    "type": "View?id=product-sidebar;class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0;style.zIndex=2",
     "children": [
         {
             "children": [
@@ -7,13 +6,13 @@
                     "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;click.sticky;style.transition=.2s"
                 },
                 {
-                    "type": "Text?class=dots;text=product;style.fontSize=1.3rem"
+                    "type": "Text?class=dots;text=Product;style.fontSize=1.3rem"
                 },
                 {
                     "type": "Icon?style.display=none;tooltip.text=create new product;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                     "controls": [
                         {
-                            "event": "click?parent().next().style().display=flex;)(:open-doc.del();)(:open-product=product",
+                            "event": "click?parent().next().style().display=flex;)(:open-doc.del();)(:open-collection=product",
                             "actions": "async():[insert:[parent().next().id]]?insert.component=parent().next().children.0;async():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
                         }
                     ]
@@ -28,7 +27,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:rotate(0):rotate(90deg)?)(:data.editor.product.keys().len()>0"
+                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:rotate(0):rotate(90deg)?)(:data.editor.product.keys().len()>0;!3rdChild().contains():[)(:clickedElement]"
                 }
             ]
         },
@@ -36,10 +35,10 @@
             "type": "View?id=product-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
             "children": [
                 {
-                    "type": "[View]?data=)(:data.editor.product.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative",
+                    "type": "[View]?data=)(:data.editor.product.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?)(:data.editor.product.keys().len()>0",
                     "children": [
                         {
-                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.width=2.25rem"
+                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
                         },
                         {
                             "type": "Text?class=dots;text=().data;style.fontSize=1.3rem;style.maxWidth=13rem"
@@ -50,15 +49,15 @@
                                     "event": "keyup?txt()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.product.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[)(:data.editor.product.keys().inc():txt()]:[File name should be unique!]",
-                                    "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.product.keys().inc():txt()||!txt()"
+                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[)(:data.editor.product.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",
+                                    "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.product.keys().inc():txt()||!txt()||txt().inc(): "
                                 },
                                 {
                                     "actions": [
-                                        "async():erase?erase.product=)(:open-product;erase.doc=)(:open-doc?)(:open-doc",
-                                        "async():save:note:[update:product-list]?save.product=product;save.doc=txt();save.data=)(:data.editor.product.txt();note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
+                                        "async():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
+                                        "async():save:note:[update:product-list]?save.collection=product;save.doc=txt();save.data=)(:data.editor.product.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
                                     ],
-                                    "event": "keyup?)(:data.editor.product.txt()=if():[)(:open-doc]:[)(:data.editor.product.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:txt():_string:_string];)(:open-product=product?txt();txt()!=)(:open-doc;e().key=Enter||e().key=Tab;!)(:data.editor.product.keys().inc():txt()"
+                                    "event": "keyup?)(:data.editor.product.txt()=if():[)(:open-doc]:[)(:data.editor.product.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=)(:open-doc;!)(:data.editor.product.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
                             "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -66,28 +65,27 @@
                         {
                             "controls": [
                                 {
-                                    "actions": "setPosition:file-action-popup?position.placement=right;position.positioner=().id;():file-action-popup.caller=().id",
-                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]].else():[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];parent().open-doc=data();parent().open-product=product"
+                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];)(:open-doc=().data;)(:open-collection=product;():file-action-popup.caller=().id;setPosition():file-action-popup:[().id]:right"
                                 }
                             ],
-                            "type": "Icon?open-doc=data();open-product=product;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                            "type": "Icon?open-doc=data();open-collection=product;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
                         }
                     ],
                     "controls": [
                         {
-                            "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex"
+                            "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
                         },
                         {
                             "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                         },
                         {
-                            "event": "click?)(:open-doc=().data;)(:open-product=product;)(:open-map=)(:data.editor.product.[().data];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-product=)(:open-product].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=)(:open-doc;open-product=)(:open-product].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[product/+().data]"
+                            "event": "click?)(:open-doc=().data;)(:open-collection=product;)(:open-map=)(:data.editor.product.[)(:open-doc];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[product/+().data]"
                         },
                         {
-                            "event": "click?():data-viewer-bar.style().display=flex;)(:open-docs.push():[product/+().data];)(:open-doc=().data;)(:open-product=product;)(:open-map=)(:data.editor.product.[().data];():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[product/+().data]",
+                            "event": "click?)(:open-doc=().data;)(:open-docs.push():[product/+)(:open-doc];)(:open-collection=product;)(:open-map=)(:data.editor.product.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[product/+().data]",
                             "actions": [
-                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-product=)(:open-product]]",
-                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.view.():[open-doc=)(:open-doc;open-product=)(:open-product]]"
+                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=)(:open-doc;async():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                             ]
                         }
                     ]
@@ -95,5 +93,6 @@
             ]
         }
     ],
-    "creation-date": 1643565754810
+    "creation-date": 1643562122803,
+    "type": "View?id=product-sidebar;class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0px;style.zIndex=2"
 }

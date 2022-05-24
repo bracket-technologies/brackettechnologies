@@ -12,11 +12,6 @@ const setStyle = ({ id, style = {} }) => {
     var timer = 0
     if (value || value === 0) value = value + ""
 
-    if (value && value.includes(">>")) {
-      timer = value.split(">>")[1]
-      value = value.split(">>")[0]
-    }
-
     const style = () => {
       // value = width || height
       if (value) {

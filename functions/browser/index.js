@@ -810,7 +810,7 @@ module.exports = ({ controls, id }) => {
     }, {
         "event": `click:${_id}?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().clicked.style._]]?!().required.mount;!parent().required.mount;!().clicked.disable`
     }, {
-        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||default]]?!().required.mount;!parent().required.mount;!().clicked.disable;!().element.contains():[)(:clickedElement];!():droplist.element.contains():[)(:clickedElement]"
+        "event": "click:body?if():[)(:mode=)(:default-mode]:[().clicked.style.keys()._():[style()._=().style._||null]]?!().required.mount;!parent().required.mount;!().clicked.disable;!().element.contains():[)(:clickedElement];!():droplist.element.contains():[)(:clickedElement]"
     }]
 }
 },{}],13:[function(require,module,exports){
@@ -4228,12 +4228,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
         
         // path[i]._
-        if (path[i + 1] === "_") {
+        /*if (path[i + 1] === "_") {
             
-            path[i +  1] = _
+            path[i + 1] = _
             breakRequest = true
             return answer = reducer({ req, res, _window, id, path: path.slice(i), params, object: o, _, e, key, value })
-        }
+        }*/
         
         if (k0 === "else()" || k0 === "or()") {
             
@@ -4326,20 +4326,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 toValue({ req, res, _window, id, value: args[2], params, _, e })
             }
             
-        } /*else if (k0 === "_()") {
-
-            var args = k.split(":").slice(1)
-            if (args.length > 0)
-            args.map(arg => {
-                answer = toValue({ req, res, _window, id, e, value: arg, params, _: o })
-            })
-            else _ = o
-            return answer = o
+        } else if (k0 === "_") {
             
-        } */else if (k0 === "_") {
-
-            if (typeof o === "object") answer = o[_]
-            else answer = _
+            if (value !== undefined && key && i === lastIndex) answer = o[_] = value
+            else if (typeof o === "object") answer = o[_]
 
         } else if (k0 === ")(") {
 
@@ -8352,7 +8342,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   if (value.includes("||")) {
     var answer
     value.split("||").map(value => {
-      if (answer === undefined || answer === "") answer = toValue({ _window, value, params, _, id, e, req, res, object, mount })
+      if (!answer) answer = toValue({ _window, value, params, _, id, e, req, res, object, mount })
     })
     return answer
   }
@@ -8429,6 +8419,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   else if (value === "undefined") value = undefined
   else if (value === "false") value = false
   else if (value === "true") value = true
+  else if (value === "null") value = null
   else if (value === "_") value = _
   else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
 

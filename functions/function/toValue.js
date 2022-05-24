@@ -23,7 +23,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   if (value.includes("||")) {
     var answer
     value.split("||").map(value => {
-      if (answer === undefined || answer === "") answer = toValue({ _window, value, params, _, id, e, req, res, object, mount })
+      if (!answer) answer = toValue({ _window, value, params, _, id, e, req, res, object, mount })
     })
     return answer
   }
@@ -100,6 +100,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   else if (value === "undefined") value = undefined
   else if (value === "false") value = false
   else if (value === "true") value = true
+  else if (value === "null") value = null
   else if (value === "_") value = _
   else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
 
