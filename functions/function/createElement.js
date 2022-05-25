@@ -38,9 +38,6 @@ var createElement = ({ _window, id, req, res }) => {
   if (!view.duplicatedElement && type.includes("coded()")) view.mapType = true
   type = view.type = toValue({ _window, value: type, id, req, res })
 
-  // parent
-  view.parent = parent.id
-
   // style
   view.style = view.style || {}
 

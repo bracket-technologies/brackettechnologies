@@ -155,16 +155,16 @@ const Input = (component) => {
     }
 
     if (model === 'featured' || password || clearable || removable) {
-       
+        
         return {
             ...component,
             type: 'View',
             class: 'flex-box unselectable',
             // remove from comp
             controls: [{
-                event: "mouseenter?():[().id+-clear].style().opacity=1?clearable;removable"
+                event: "mouseenter?():[().id+'-clear'].style().opacity=1?clearable||removable"
             }, {
-                event: "mouseleave?():[().id+-clear].style().opacity=0?clearable;removable"
+                event: "mouseleave?():[().id+'-clear'].style().opacity=0?clearable||removable"
             }],
             style: {
                 display: "inline-flex",

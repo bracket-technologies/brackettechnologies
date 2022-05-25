@@ -750,6 +750,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
                 var _id = el.id, _view = views[_id]
                 if (!_view) return
+                
                 if (_view.component === "Input") {
 
                     _id = (_view).element.getElementsByTagName("INPUT")[0].id
@@ -757,7 +758,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 } else return _view
             })
-            answer = answer.filter(comp => comp && comp.id)
             
         } else if (k0 === "style()") {
             
@@ -1141,6 +1141,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (typeof o === "object") o = o.element
             else if (typeof o === "string" && views[o]) o = views[o].element
 
+            if (!o || !_next) return
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = o.contains(_next)
             
@@ -1443,12 +1444,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     answer = el.innerHTML
                     if (i === lastIndex && key && value !== undefined) el.innerHTML = value
                 }
-            } else if (view.type === "Input") {
+            } else if (view && view.type === "Input") {
 
                 if (i === lastIndex && key && value !== undefined) o[view.element.value] = value
                 else return answer = o[view.element.value]
 
-            } else if (view.type !== "Input") {
+            } else if (view && view.type !== "Input") {
 
                 if (i === lastIndex && key && value !== undefined) o[view.element.innerHTML] = value
                 else return answer = o[view.element.innerHTML]
@@ -1539,7 +1540,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = o
             
         } else if (k0 === "pullLastElement()" || k0 === "pullLast()") {
-
+            
             // if no index, it pulls the last element
             o.splice(o.length - 1, 1)
             answer = o

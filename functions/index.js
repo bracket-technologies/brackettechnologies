@@ -100,11 +100,12 @@ app.delete("*", (req, res) => {
 })
 
 // get
-app.get("*", (req, res) => {
+app.get("*", async (req, res) => {
   var path = req.url.split("/")
-  
-  // var host = req.headers["x-forwarded-host"] || req.headers["host"]
+
 /*
+  // var host = req.headers["x-forwarded-host"] || req.headers["host"]
+
   // bracket
   if (req.headers.project === "bracket") {
   
@@ -115,6 +116,7 @@ app.get("*", (req, res) => {
     if (path[1] === "database") return require("./function/databaseLocal").getdb({ req, res })
   }
 */
+
   // resources
   if (path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
   
@@ -130,3 +132,6 @@ app.get("*", (req, res) => {
   // respond
   return createDocument({ req, res, db, realtimedb })
 })
+
+// book a ticket
+// require("./function/bookFlyBaghdad")()

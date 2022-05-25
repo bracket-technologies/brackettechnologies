@@ -144,11 +144,11 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
       // body event
       if (id === "body") {
-
-        global["body-click-events"] = global["body-click-events"] || {}
-        global["body-click-events"][mainID] = global["body-click-events"][mainID] || []
-        var index = global["body-click-events"][mainID].length
-        global["body-click-events"][mainID].push({ id: mainID, viewEventConditions, viewEventParams, events, once, controls, index })
+        
+        global[`body-${event}-events`] = global[`body-${event}-events`] || {}
+        global[`body-${event}-events`][mainID] = global[`body-${event}-events`][mainID] || []
+        var index = global[`body-${event}-events`][mainID].length
+        global[`body-${event}-events`][mainID].push({ id: mainID, viewEventConditions, viewEventParams, events, once, controls, index, event })
         return
       }
 

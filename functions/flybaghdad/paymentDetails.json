@@ -1,0 +1,93 @@
+{
+  "success": true,
+  "message": null,
+  "errorCode": null,
+  "result": {
+    "paymentMethods": [
+      "AC"
+    ],
+    "availableCardPayments": [
+      {
+        "cardPaymentProviderId": 81,
+        "providerName": "ZAIN",
+        "displayName": "ZAIN",
+        "defaultCurrencyCode": "IQD",
+        "cardTypeCode": null,
+        "cardTypeCategory": null,
+        "cardPaymentProviderCardTypes": [
+          "ZAIN"
+        ],
+        "applicableCurrencies": "IQD:ACT",
+        "applicableCountries": null,
+        "integrationType": "REDIRECT",
+        "blockedSeatReleaseDurationInSecs": 0,
+        "queryStartInSecs": null,
+        "queryCount": null,
+        "queryIntervalInSecs": null,
+        "status": null,
+        "salesChannelIdsStr": null,
+        "salesChannelId": null,
+        "salesChannelName": null,
+        "salesChannelNameListStr": null,
+        "extraInfoDTO": {
+          "ttlPendingPaymentCutOverTime": null
+        },
+        "agentTopUpEligibility": false,
+        "displayOrder": 3,
+        "invoiceSettlementEligible": false,
+        "pgLoadContainerInAgent": null,
+        "paymentStatusPollingInterval": null,
+        "getPaymentStatusPollingDuration": null
+      },
+      {
+        "cardPaymentProviderId": 82,
+        "providerName": "ASIAHAWALA",
+        "displayName": "ASIAHAWALA",
+        "defaultCurrencyCode": "IQD",
+        "cardTypeCode": null,
+        "cardTypeCategory": null,
+        "cardPaymentProviderCardTypes": [
+          "ASIAHAWALA"
+        ],
+        "applicableCurrencies": "IQD:ACT",
+        "applicableCountries": null,
+        "integrationType": "DIRECT",
+        "blockedSeatReleaseDurationInSecs": 0,
+        "queryStartInSecs": null,
+        "queryCount": null,
+        "queryIntervalInSecs": null,
+        "status": null,
+        "salesChannelIdsStr": null,
+        "salesChannelId": null,
+        "salesChannelName": null,
+        "salesChannelNameListStr": null,
+        "extraInfoDTO": {
+          "ttlPendingPaymentCutOverTime": null
+        },
+        "agentTopUpEligibility": false,
+        "displayOrder": 4,
+        "invoiceSettlementEligible": false,
+        "pgLoadContainerInAgent": null,
+        "paymentStatusPollingInterval": null,
+        "getPaymentStatusPollingDuration": null
+      }
+    ],
+    "ttlEnabled": null,
+    "transactionFeeStatus": {
+      "AC": false,
+      "CA": false,
+      "CC": false,
+      "PC": false
+    },
+    "transactionFee": "0",
+    "paxTransactionFee": {},
+    "paymentSubMethodFee": {},
+    "receipt": {
+      "receiptNumber": "2296401",
+      "allowedPaymentMethods": [],
+      "allowedBookingType": []
+    },
+    "pmtSubTypeFeeApplicability": {},
+    "hasTourCodeApplicableFareRule": false
+  }
+}

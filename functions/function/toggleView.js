@@ -14,6 +14,7 @@ const toggleView = ({ toggle, id }) => {
   var toggleId = toggle.id
     || togglePage && views.root && views.root.element.children[0] && views.root.element.children[0].id
     || views[id] && views[id].element.children[0] && views[id].element.children[0].id
+
   var parentId = toggleId ? (toggleId !== "root" ? views[toggleId].parent : toggleId) : id
   var view = {}
   var viewId = toggle.viewId || toggle.view

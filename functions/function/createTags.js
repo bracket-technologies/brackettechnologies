@@ -2,59 +2,58 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
 const { toHtml } = require("./toHtml")
-const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 
 const createTags = ({ _window, id, req, res }) => {
 
+  const { createElement } = require("./createElement")
   var views = _window ? _window.views : window.views, view = views[id]
   if (!view) return
-
-  view.length = 1
-  
-  // data mapType
-  var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
-  var isObject = view.data && ((Array.isArray(view.data) || typeof view.data === "string") ? false : true)
-  view.length = data.length || 1
   
   if (view.mapType) {
-    if (data.length > 0) {
+  
+    // data mapType
+    var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
+    var isObject = view.data && ((Array.isArray(view.data) || typeof view.data === "string") ? false : true)
+    var type = views[view.parent].children[view.index].type.replace("[", "").replace("]", "")
+    if (type.includes(";data=")) type = type.split(";data=")[0] + ";" + type.split(";data=").slice(1).join("").split(";").slice(1).join(";")
+    if (type.includes("?data=")) type = type.split("?data=")[0] + "?" + type.split("?data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";Data=")) type = type.split(";Data=")[0] + ";" + type.split(";Data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes("?Data=")) type = type.split("?Data=")[0] + "?" + type.split("?Data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes("?id=")) type = type.split("?id=")[0] + "?" + type.split("?id=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";id=")) type = type.split(";id=")[0] + "?" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
+    view.length = data.length || 1
 
-      if (view.arrange) data = arrange({ data, arrange: view.arrange, id, _window })
-      delete views[id]
+    // arrange
+    if (view.arrange) data = arrange({ data, arrange: view.arrange, id, _window })
+
+    delete views[id]
+    delete view.mapType
+
+    if (data.length > 0) {
       
       return data.map((_data, index) => {
         
         var id = generate()
-        var _view = clone({ ...view, data: "" })
+        var mapIndex = index
+        var data = isObject ? view.data[_data] : _data
+        var derivations = isObject ? [...view.derivations, _data] : [...view.derivations, index]
+        var _view = clone({ ...view, id, type, data, mapIndex, derivations })
 
         views[id] = _view
-
-        _view.id = id
-        _view.mapIndex = index
-        _view.data = isObject ? view.data[_data] : _data
-        _view.derivations = isObject ? [..._view.derivations, _data] : [..._view.derivations, index]
-
-        // check approval again for last time
-        var conditions = views[view.parent].children[view.index]
-        var approved = toApproval({ _window, string: conditions, id, req, res })
-        if (!approved) return
-        
-        return createTag({ _window, id, req, res })
+        return createElement({ _window, id, req, res })
 
       }).join("")
 
     } else {
+        
+      var id = generate()
+      var mapIndex = 0
+      var derivations = isObject ? [...view.derivations, ""] : [...view.derivations, 0]
+      var _view = clone({ ...view, id, type, mapIndex, derivations })
 
-      view.mapIndex = 0
-      view.derivations = isObject ? [...view.derivations, ""] : [...view.derivations, 0]
-      
-      // check approval again for last time
-      var conditions = views[view.parent].children[view.index].type.split("?")[2]
-      var approved = toApproval({ _window, string: conditions, id, req, res })
-      if (!approved) return
-      
-      return createTag({ _window, id, req, res })
+      views[id] = _view
+      return createElement({ _window, id, req, res })
     }
   }
 

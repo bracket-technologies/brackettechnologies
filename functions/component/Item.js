@@ -81,7 +81,7 @@ module.exports = (component) => {
         ...style
       },
       children: [{
-        type: `Icon?id=${id}-icon?[${icon.name}]`,
+        type: `Icon?id=${id}-icon?'${icon.name}'`,
         ...icon,
         hover: {
           id,

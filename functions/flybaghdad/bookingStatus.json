@@ -1,0 +1,22 @@
+{
+  "login": false,
+  "endLogin": true,
+  "searching": false,
+  "endSearch": true,
+  "ancillarySearch": false,
+  "endAncillarySearch": true,
+  "seatMapDetails": false,
+  "endSeatMapDetails": true,
+  "paymentDetails": false,
+  "endPaymentDetails": true,
+  "bookingcreation": false,
+  "data": {
+    "flightSegId": "45546",
+    "price": "159.90",
+    "flightID": 44806,
+    "departureDateLocalStr": "29/05/2022 21:45:00",
+    "departureDateUTCStr": "29/05/2022 18:45:00",
+    "segmentCode": "BEY-BGW"
+  },
+  "endBookingcreation": true
+}

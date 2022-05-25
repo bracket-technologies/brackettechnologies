@@ -29,7 +29,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   }
 
   // value is a param it has key=value
-  if (value.includes("=") || value.includes(";")) return toParam({ req, res, _window, id, e, string: value, _, object, mount })
+  if (value.includes("=") || value.includes(";") || value.includes(">") || value.includes("<")) return toParam({ req, res, _window, id, e, string: value, _, object, mount })
 
   // multiplication
   if (value.includes("*")) {
@@ -121,7 +121,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
     var allAreNumbers = true
     var values = value.split("-").map(value => {
-      if (value.includes(":")) return allAreNumbers = false
+      if (value.includes(":") && value.split(":")[0] !== ")(") return allAreNumbers = false
 
       if (allAreNumbers) {
         var num = toValue({ _window, value, params, _, id, e, req, res, object })
@@ -145,7 +145,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.includes(":")) return allAreNumbers = false
+        if (value.includes(":") && value.split(":")[0] !== ")(") return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, id, e, req, res, object })
@@ -168,7 +168,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
         var _values = value.split("-").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.includes(":")) return allAreNumbers = false
+          if (value.includes(":") && value.split(":")[0] !== ")(") return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, id, e, req, res, object })

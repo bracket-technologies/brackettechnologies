@@ -1,0 +1,1101 @@
+{
+  "success": true,
+  "message": null,
+  "errorCode": null,
+  "result": {
+    "searchUID": null,
+    "journeys": [
+      {
+        "selected": true,
+        "seatAvailability": true,
+        "fareAmount": null,
+        "totalAmount": null,
+        "onDInfoDTOs": [
+          {
+            "sequence": 1,
+            "origin": "BEY",
+            "destination": "BGW",
+            "departureDate": 1653782400000,
+            "arrivalDate": null,
+            "departureDateStr": "29/05/2022",
+            "segmentCode": "BEY-BGW",
+            "flightSegmentUId": "45546",
+            "direction": "OUTBOUND",
+            "openOND": false,
+            "availableRBD": {
+              "45546": [
+                {
+                  "rbdId": 832,
+                  "rbdCode": "A13",
+                  "nestRank": 36,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 17,
+                  "selected": true,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 816,
+                  "rbdCode": "AC",
+                  "nestRank": 20,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 817,
+                  "rbdCode": "AB",
+                  "nestRank": 21,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 818,
+                  "rbdCode": "AA",
+                  "nestRank": 22,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 819,
+                  "rbdCode": "A0",
+                  "nestRank": 23,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 820,
+                  "rbdCode": "A1",
+                  "nestRank": 24,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 821,
+                  "rbdCode": "A2",
+                  "nestRank": 25,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 822,
+                  "rbdCode": "A3",
+                  "nestRank": 26,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 823,
+                  "rbdCode": "A4",
+                  "nestRank": 27,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 824,
+                  "rbdCode": "A5",
+                  "nestRank": 28,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 825,
+                  "rbdCode": "A6",
+                  "nestRank": 29,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 826,
+                  "rbdCode": "A7",
+                  "nestRank": 30,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 827,
+                  "rbdCode": "A8",
+                  "nestRank": 31,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 828,
+                  "rbdCode": "A9",
+                  "nestRank": 32,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 829,
+                  "rbdCode": "A10",
+                  "nestRank": 33,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 830,
+                  "rbdCode": "A11",
+                  "nestRank": 34,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 831,
+                  "rbdCode": "A12",
+                  "nestRank": 35,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                }
+              ]
+            },
+            "fareProductAmounts": null,
+            "flightSegmentInfos": null
+          }
+        ]
+      },
+      {
+        "selected": false,
+        "seatAvailability": true,
+        "fareAmount": null,
+        "totalAmount": null,
+        "onDInfoDTOs": [
+          {
+            "sequence": 1,
+            "origin": "BEY",
+            "destination": "BGW",
+            "departureDate": 1653782400000,
+            "arrivalDate": null,
+            "departureDateStr": "29/05/2022",
+            "segmentCode": "BEY-BGW",
+            "flightSegmentUId": "45785",
+            "direction": "OUTBOUND",
+            "openOND": false,
+            "availableRBD": {
+              "45785": [
+                {
+                  "rbdId": 832,
+                  "rbdCode": "A13",
+                  "nestRank": 36,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 816,
+                  "rbdCode": "AC",
+                  "nestRank": 20,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 817,
+                  "rbdCode": "AB",
+                  "nestRank": 21,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 818,
+                  "rbdCode": "AA",
+                  "nestRank": 22,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 819,
+                  "rbdCode": "A0",
+                  "nestRank": 23,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 820,
+                  "rbdCode": "A1",
+                  "nestRank": 24,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 821,
+                  "rbdCode": "A2",
+                  "nestRank": 25,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 822,
+                  "rbdCode": "A3",
+                  "nestRank": 26,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 823,
+                  "rbdCode": "A4",
+                  "nestRank": 27,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 824,
+                  "rbdCode": "A5",
+                  "nestRank": 28,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 825,
+                  "rbdCode": "A6",
+                  "nestRank": 29,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 826,
+                  "rbdCode": "A7",
+                  "nestRank": 30,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 827,
+                  "rbdCode": "A8",
+                  "nestRank": 31,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 828,
+                  "rbdCode": "A9",
+                  "nestRank": 32,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 829,
+                  "rbdCode": "A10",
+                  "nestRank": 33,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 830,
+                  "rbdCode": "A11",
+                  "nestRank": 34,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 831,
+                  "rbdCode": "A12",
+                  "nestRank": 35,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                }
+              ]
+            },
+            "fareProductAmounts": null,
+            "flightSegmentInfos": null
+          }
+        ]
+      },
+      {
+        "selected": false,
+        "seatAvailability": true,
+        "fareAmount": null,
+        "totalAmount": null,
+        "onDInfoDTOs": [
+          {
+            "sequence": 1,
+            "origin": "BEY",
+            "destination": "BGW",
+            "departureDate": 1653782400000,
+            "arrivalDate": null,
+            "departureDateStr": "29/05/2022",
+            "segmentCode": "BEY-BGW",
+            "flightSegmentUId": "45775",
+            "direction": "OUTBOUND",
+            "openOND": false,
+            "availableRBD": {
+              "45775": [
+                {
+                  "rbdId": 832,
+                  "rbdCode": "A13",
+                  "nestRank": 36,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 21,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 816,
+                  "rbdCode": "AC",
+                  "nestRank": 20,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 817,
+                  "rbdCode": "AB",
+                  "nestRank": 21,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 818,
+                  "rbdCode": "AA",
+                  "nestRank": 22,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 819,
+                  "rbdCode": "A0",
+                  "nestRank": 23,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 820,
+                  "rbdCode": "A1",
+                  "nestRank": 24,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 821,
+                  "rbdCode": "A2",
+                  "nestRank": 25,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 822,
+                  "rbdCode": "A3",
+                  "nestRank": 26,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 823,
+                  "rbdCode": "A4",
+                  "nestRank": 27,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 824,
+                  "rbdCode": "A5",
+                  "nestRank": 28,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 825,
+                  "rbdCode": "A6",
+                  "nestRank": 29,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 826,
+                  "rbdCode": "A7",
+                  "nestRank": 30,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 827,
+                  "rbdCode": "A8",
+                  "nestRank": 31,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 828,
+                  "rbdCode": "A9",
+                  "nestRank": 32,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 829,
+                  "rbdCode": "A10",
+                  "nestRank": 33,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 830,
+                  "rbdCode": "A11",
+                  "nestRank": 34,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                },
+                {
+                  "rbdId": 831,
+                  "rbdCode": "A12",
+                  "nestRank": 35,
+                  "displayOrder": null,
+                  "salesType": "STANDARD",
+                  "cabinClassId": 41,
+                  "cabinClassCode": "Y",
+                  "availability": 20,
+                  "selected": false,
+                  "rbdType": "STANDARD",
+                  "overbookCount": 0,
+                  "infantOverbookCount": 0
+                }
+              ]
+            },
+            "fareProductAmounts": null,
+            "flightSegmentInfos": null
+          }
+        ]
+      }
+    ],
+    "priceQuote": {
+      "paxTypes": [
+        "ADT"
+      ],
+      "baseFares": [
+        {
+          "segmentCode": "BEY-BGW",
+          "marriedSegment": false,
+          "bookingClass": "A13",
+          "fareClass": "A13OW",
+          "fareRuleId": 8689,
+          "fareId": 34516,
+          "fareProduct": "P1",
+          "salesType": "STANDARD",
+          "bundled": false,
+          "linkedFltSegIDs": [
+            45546
+          ],
+          "paxPrice": {
+            "ADT": "96.90"
+          },
+          "vatAmount": {},
+          "discountAmount": {},
+          "fareRuleBaggageAllowanceDTOs": [],
+          "freeVoucherAmount": null,
+          "segmentCodeWithMarriedStatus": "BEY-BGW"
+        }
+      ],
+      "baseFaresTotal": {
+        "currency": "USD",
+        "paxPrice": {
+          "ADT": "96.90"
+        },
+        "total": "96.90"
+      },
+      "taxes": [
+        {
+          "name": "BEY_YL (BEYYL)",
+          "chargeCode": "BEYYL",
+          "chargeDescription": "BEY_YL",
+          "paxPrice": {
+            "ADT": "3.30"
+          },
+          "vatAmount": {
+            "ADT": "0"
+          }
+        },
+        {
+          "name": "BEY_H4 (BYH4)",
+          "chargeCode": "BYH4",
+          "chargeDescription": "BEY_H4",
+          "paxPrice": {
+            "ADT": "0.40"
+          },
+          "vatAmount": {
+            "ADT": "0"
+          }
+        },
+        {
+          "name": "BEY_LB (BEYLB)",
+          "chargeCode": "BEYLB",
+          "chargeDescription": "BEY_LB",
+          "paxPrice": {
+            "ADT": "33.30"
+          },
+          "vatAmount": {
+            "ADT": "0"
+          }
+        }
+      ],
+      "taxesTotal": {
+        "currency": "USD",
+        "paxPrice": {
+          "ADT": "37.00"
+        },
+        "total": "37.00"
+      },
+      "charges": [
+        {
+          "name": "Int Fuel Surcharge (FBAYR)",
+          "chargeCode": "FBAYR",
+          "chargeDescription": "Int Fuel Surcharge",
+          "paxPrice": {
+            "ADT": "14.00"
+          },
+          "vatAmount": {
+            "ADT": "0"
+          }
+        },
+        {
+          "name": "BEY Surcharge (BEYYQ)",
+          "chargeCode": "BEYYQ",
+          "chargeDescription": "BEY Surcharge",
+          "paxPrice": {
+            "ADT": "12.00"
+          },
+          "vatAmount": {
+            "ADT": "0"
+          }
+        }
+      ],
+      "chargesTotal": {
+        "currency": "USD",
+        "paxPrice": {
+          "ADT": "26.00"
+        },
+        "total": "26.00"
+      },
+      "perPaxTotal": {
+        "currency": "USD",
+        "paxPrice": {
+          "ADT": "159.90"
+        },
+        "total": "159.90"
+      },
+      "total": {
+        "currency": "USD",
+        "paxPrice": {
+          "ADT": "159.90"
+        },
+        "total": "159.90"
+      },
+      "commissionTotal": {
+        "currency": "USD",
+        "paxPrice": {
+          "ADT": "6.80"
+        },
+        "total": "6.80"
+      },
+      "commissionOrTotal": null,
+      "agentCommissionTotal": {
+        "currency": "USD",
+        "paxPrice": {
+          "ADT": "6.80"
+        },
+        "total": "6.80"
+      },
+      "discountTotal": null,
+      "currency": "USD",
+      "selectedCurrencyTotal": null,
+      "ancillaryBundle": {
+        "45546": false
+      },
+      "pqLight": {
+        "fares": [
+          {
+            "fareId": 34516,
+            "fareRuleID": 8689,
+            "fareSeq": 1,
+            "amount": {
+              "ADT": "96.90"
+            },
+            "segmentSpan": [
+              {
+                "fltSegID": 45546,
+                "cabinClassID": 41,
+                "rbdID": 832,
+                "invFltSegCCID": 48606,
+                "actualDirection": "OUTBOUND",
+                "flightID": 44806,
+                "segmentCode": "BEY-BGW",
+                "ownerAirlineID": 10,
+                "puGroupID": 2752605022587342000,
+                "flightType": "INT",
+                "flightOperationType": "STANDARD"
+              }
+            ],
+            "segmentSpanCode": "BEY-BGW"
+          }
+        ],
+        "fltSegs": {
+          "45546": {
+            "fltSegID": 45546,
+            "cabinClassID": 41,
+            "rbdID": 832,
+            "invFltSegCCID": 48606,
+            "actualDirection": "OUTBOUND",
+            "flightID": 44806,
+            "segmentCode": "BEY-BGW",
+            "ownerAirlineID": 10,
+            "puGroupID": 2752605022587342000,
+            "flightType": "INT",
+            "flightOperationType": "STANDARD"
+          }
+        },
+        "inventoryConsumption": {
+          "adtConsumption": 1,
+          "infConsumption": 0
+        },
+        "bookingCurrencyCode": "USD",
+        "searchUID": null
+      },
+      "segmentFareAmount": {
+        "ADT": {
+          "45546": "96.90"
+        }
+      },
+      "segmentChargeAmount": {
+        "ADT": {
+          "45546": "26.00"
+        }
+      },
+      "segmentTaxAmount": {
+        "ADT": {
+          "45546": "37.00"
+        }
+      },
+      "segmentFareChargeAmount": {
+        "ADT": {
+          "45546": "159.90"
+        }
+      },
+      "openReturnBooking": false,
+      "openReturnMaxDate": null,
+      "openReturnMaxDateStr": null,
+      "agentDiscountApplied": false,
+      "searchUID": null
+    },
+    "baseCurrencyCode": "USD",
+    "availableFltSegments": {
+      "45546": [
+        {
+          "flightID": 44806,
+          "fltSegID": 45546,
+          "segmentCode": "BEY-BGW",
+          "operatedCarrier": "IF",
+          "flightDesignator": "IF302",
+          "flightType": "INT",
+          "flightOperationType": "STANDARD",
+          "aircraftModel": "737-700",
+          "departureCode": "BEY",
+          "arrivalCode": "BGW",
+          "departureAirportName": null,
+          "arrivalAirportName": null,
+          "stops": 0,
+          "departureDateUTCStr": "29/05/2022 18:45:00",
+          "arrivalDateUTCStr": "29/05/2022 20:25:00",
+          "departureDateLocalStr": "29/05/2022 21:45:00",
+          "arrivalDateLocalStr": "29/05/2022 23:25:00",
+          "duration": "01h:40m",
+          "legADTCount": 52,
+          "legINFCount": 9,
+          "ownerAirlineID": 10,
+          "operatingAirlineID": 10
+        }
+      ],
+      "45775": [
+        {
+          "flightID": 45030,
+          "fltSegID": 45775,
+          "segmentCode": "BEY-BGW",
+          "operatedCarrier": "IF",
+          "flightDesignator": "IF302",
+          "flightType": "INT",
+          "flightOperationType": "STANDARD",
+          "aircraftModel": "737-800",
+          "departureCode": "BEY",
+          "arrivalCode": "BGW",
+          "departureAirportName": null,
+          "arrivalAirportName": null,
+          "stops": 0,
+          "departureDateUTCStr": "28/05/2022 18:50:00",
+          "arrivalDateUTCStr": "28/05/2022 20:30:00",
+          "departureDateLocalStr": "28/05/2022 21:50:00",
+          "arrivalDateLocalStr": "28/05/2022 23:30:00",
+          "duration": "01h:40m",
+          "legADTCount": 44,
+          "legINFCount": 16,
+          "ownerAirlineID": 10,
+          "operatingAirlineID": 10
+        }
+      ],
+      "45785": [
+        {
+          "flightID": 45040,
+          "fltSegID": 45785,
+          "segmentCode": "BEY-BGW",
+          "operatedCarrier": "IF",
+          "flightDesignator": "IF302",
+          "flightType": "INT",
+          "flightOperationType": "STANDARD",
+          "aircraftModel": "737-800",
+          "departureCode": "BEY",
+          "arrivalCode": "BGW",
+          "departureAirportName": null,
+          "arrivalAirportName": null,
+          "stops": 0,
+          "departureDateUTCStr": "30/05/2022 18:45:00",
+          "arrivalDateUTCStr": "30/05/2022 20:25:00",
+          "departureDateLocalStr": "30/05/2022 21:45:00",
+          "arrivalDateLocalStr": "30/05/2022 23:25:00",
+          "duration": "01h:40m",
+          "legADTCount": 125,
+          "legINFCount": 16,
+          "ownerAirlineID": 10,
+          "operatingAirlineID": 10
+        }
+      ]
+    }
+  }
+}

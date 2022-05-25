@@ -17,6 +17,9 @@ var global = window.global
 // access key
 global["access-key"] = getCookie({ name: "_key" })
 global["body-click-events"] = {}
+global["body-mousemove-events"] = {}
+global["body-mousedown-events"] = {}
+global["body-mouseup-events"] = {}
 
 views.document = document
 views.document.element = document
@@ -53,17 +56,24 @@ document.addEventListener('click', e => {
         global["actionlist-item-clicked"] = global["actionlist-item"] = global.clickedElement
         global["actionlist-item-txt"] = global["actionlist-txt"] = global.clickedElement.innerHTML
     }
-
+    
     // body event listeners
-    Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o))
+    Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o, e))
 }, false)
 
-document.addEventListener("mousedown", () => {
-    global.mousedown = true
+// mousemove
+document.body.addEventListener('mousemove', (e) => {
+    Object.values(window.global["body-mousemove-events"]).flat().map(o => bodyEventListener(o, e))
+}, false)
+
+document.addEventListener("mousedown", (e) => {
+    window.global.mousedown = true
+    Object.values(window.global["body-mousedown-events"]).flat().map(o => bodyEventListener(o, e))
 })
 
-document.addEventListener("mouseup", () => {
-    global.mousedown = false
+document.addEventListener("mouseup", (e) => {
+    window.global.mousedown = false
+    Object.values(window.global["body-mouseup-events"]).flat().map(o => bodyEventListener(o, e))
 })
 
 // default global mode
@@ -102,23 +112,23 @@ document.addEventListener('scroll', () => {
 
         
 // body clicked
-var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index }) => {
+var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
     
     if (!views[id]) return
-    var e = { target: views[id].element }
+    e.target = views[id].element
     
     // approval
     if (viewEventConditions) {
-    var approved = toApproval({ string: viewEventConditions, id, e })
-    if (!approved) return
+        var approved = toApproval({ string: viewEventConditions, id, e })
+        if (!approved) return
     }
-    
+
     // approval
     var approved = toApproval({ string: events[2], id, e })
     if (!approved) return
 
     // once
-    if (once) window.global["body-click-events"][id].splice(index, 1)
+    if (once) window.global[`body-${event}-events`][id].splice(index, 1)
     
     // params
     await toParam({ string: events[1], id, mount: true, eventParams: true, e })
@@ -308,16 +318,16 @@ const Input = (component) => {
     }
 
     if (model === 'featured' || password || clearable || removable) {
-       
+        
         return {
             ...component,
             type: 'View',
             class: 'flex-box unselectable',
             // remove from comp
             controls: [{
-                event: "mouseenter?():[().id+-clear].style().opacity=1?clearable;removable"
+                event: "mouseenter?():[().id+'-clear'].style().opacity=1?clearable||removable"
             }, {
-                event: "mouseleave?():[().id+-clear].style().opacity=0?clearable;removable"
+                event: "mouseleave?():[().id+'-clear'].style().opacity=0?clearable||removable"
             }],
             style: {
                 display: "inline-flex",
@@ -520,7 +530,7 @@ module.exports = (component) => {
         ...style
       },
       children: [{
-        type: `Icon?id=${id}-icon?[${icon.name}]`,
+        type: `Icon?id=${id}-icon?'${icon.name}'`,
         ...icon,
         hover: {
           id,
@@ -632,7 +642,7 @@ module.exports = (component) => {
                     }, {
                         event: "keyup?():droplist.mouseleave()?e().key=Escape"
                     }, {
-                        event: "keyup?():droplist.children().[)(:keyup-index].mouseleave();)(:keyup-index=if():[e().keyCode=40]:[)(:keyup-index+1]:[)(:keyup-index-1];log():[)(:keyup-index];():droplist.children().[)(:keyup-index].mouseenter()?e().keyCode=40||e().keyCode=38];)(:droplist-positioner;if():[e().keyCode=38]:[)(:keyup-index>0].elif():[e().keyCode=40]:[)(:keyup-index.less():[next().droplist.items.lastIndex()]]"
+                        event: "keyup?():droplist.children().[)(:keyup-index].mouseleave();)(:keyup-index=if():[e().keyCode=40]:[)(:keyup-index+1]:[)(:keyup-index-1];():droplist.children().[)(:keyup-index].mouseenter()?e().keyCode=40||e().keyCode=38;)(:droplist-positioner;if():[e().keyCode=38]:[)(:keyup-index>0].elif():[e().keyCode=40]:[)(:keyup-index<next().droplist.items.lastIndex()]"
                     }]
                 }, {
                     type: "Text?text=derivations().lastElement();class=flex-box;mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?derivations().lastElement().num().type()=number"
@@ -1716,9 +1726,6 @@ var createElement = ({ _window, id, req, res }) => {
   if (!view.duplicatedElement && type.includes("coded()")) view.mapType = true
   type = view.type = toValue({ _window, value: type, id, req, res })
 
-  // parent
-  view.parent = parent.id
-
   // style
   view.style = view.style || {}
 
@@ -1794,59 +1801,58 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
 const { toHtml } = require("./toHtml")
-const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 
 const createTags = ({ _window, id, req, res }) => {
 
+  const { createElement } = require("./createElement")
   var views = _window ? _window.views : window.views, view = views[id]
   if (!view) return
-
-  view.length = 1
-  
-  // data mapType
-  var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
-  var isObject = view.data && ((Array.isArray(view.data) || typeof view.data === "string") ? false : true)
-  view.length = data.length || 1
   
   if (view.mapType) {
-    if (data.length > 0) {
+  
+    // data mapType
+    var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
+    var isObject = view.data && ((Array.isArray(view.data) || typeof view.data === "string") ? false : true)
+    var type = views[view.parent].children[view.index].type.replace("[", "").replace("]", "")
+    if (type.includes(";data=")) type = type.split(";data=")[0] + ";" + type.split(";data=").slice(1).join("").split(";").slice(1).join(";")
+    if (type.includes("?data=")) type = type.split("?data=")[0] + "?" + type.split("?data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";Data=")) type = type.split(";Data=")[0] + ";" + type.split(";Data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes("?Data=")) type = type.split("?Data=")[0] + "?" + type.split("?Data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes("?id=")) type = type.split("?id=")[0] + "?" + type.split("?id=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";id=")) type = type.split(";id=")[0] + "?" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
+    view.length = data.length || 1
 
-      if (view.arrange) data = arrange({ data, arrange: view.arrange, id, _window })
-      delete views[id]
+    // arrange
+    if (view.arrange) data = arrange({ data, arrange: view.arrange, id, _window })
+
+    delete views[id]
+    delete view.mapType
+
+    if (data.length > 0) {
       
       return data.map((_data, index) => {
         
         var id = generate()
-        var _view = clone({ ...view, data: "" })
+        var mapIndex = index
+        var data = isObject ? view.data[_data] : _data
+        var derivations = isObject ? [...view.derivations, _data] : [...view.derivations, index]
+        var _view = clone({ ...view, id, type, data, mapIndex, derivations })
 
         views[id] = _view
-
-        _view.id = id
-        _view.mapIndex = index
-        _view.data = isObject ? view.data[_data] : _data
-        _view.derivations = isObject ? [..._view.derivations, _data] : [..._view.derivations, index]
-
-        // check approval again for last time
-        var conditions = views[view.parent].children[view.index]
-        var approved = toApproval({ _window, string: conditions, id, req, res })
-        if (!approved) return
-        
-        return createTag({ _window, id, req, res })
+        return createElement({ _window, id, req, res })
 
       }).join("")
 
     } else {
+        
+      var id = generate()
+      var mapIndex = 0
+      var derivations = isObject ? [...view.derivations, ""] : [...view.derivations, 0]
+      var _view = clone({ ...view, id, type, mapIndex, derivations })
 
-      view.mapIndex = 0
-      view.derivations = isObject ? [...view.derivations, ""] : [...view.derivations, 0]
-      
-      // check approval again for last time
-      var conditions = views[view.parent].children[view.index].type.split("?")[2]
-      var approved = toApproval({ _window, string: conditions, id, req, res })
-      if (!approved) return
-      
-      return createTag({ _window, id, req, res })
+      views[id] = _view
+      return createElement({ _window, id, req, res })
     }
   }
 
@@ -1950,7 +1956,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":36,"./createComponent":42,"./execute":53,"./generate":59,"./toApproval":95,"./toArray":96,"./toHtml":103}],46:[function(require,module,exports){
+},{"./clone":36,"./createComponent":42,"./createElement":44,"./execute":53,"./generate":59,"./toArray":96,"./toHtml":103}],46:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -2252,8 +2258,8 @@ const droplist = ({ id, e }) => {
         controls: [...(view.droplist.controls || []), {
           event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
-            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[${input_id}]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()];timer():[():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]]]:0?!${view.droplist.isMap}`,
-            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();${view.droplist.isMap}`,
+            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[():${input_id}.getInput()]:[():${input_id}.data()=txt();():${input_id}.txt()=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()]?!():${id}.droplist.isMap`,
+            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
             `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
           ]
         }]
@@ -2455,11 +2461,11 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
       // body event
       if (id === "body") {
-
-        global["body-click-events"] = global["body-click-events"] || {}
-        global["body-click-events"][mainID] = global["body-click-events"][mainID] || []
-        var index = global["body-click-events"][mainID].length
-        global["body-click-events"][mainID].push({ id: mainID, viewEventConditions, viewEventParams, events, once, controls, index })
+        
+        global[`body-${event}-events`] = global[`body-${event}-events`] || {}
+        global[`body-${event}-events`][mainID] = global[`body-${event}-events`][mainID] || []
+        var index = global[`body-${event}-events`][mainID].length
+        global[`body-${event}-events`][mainID].push({ id: mainID, viewEventConditions, viewEventParams, events, once, controls, index, event })
         return
       }
 
@@ -4568,6 +4574,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
                 var _id = el.id, _view = views[_id]
                 if (!_view) return
+                
                 if (_view.component === "Input") {
 
                     _id = (_view).element.getElementsByTagName("INPUT")[0].id
@@ -4575,7 +4582,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 } else return _view
             })
-            answer = answer.filter(comp => comp && comp.id)
             
         } else if (k0 === "style()") {
             
@@ -4959,6 +4965,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (typeof o === "object") o = o.element
             else if (typeof o === "string" && views[o]) o = views[o].element
 
+            if (!o || !_next) return
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = o.contains(_next)
             
@@ -5261,12 +5268,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     answer = el.innerHTML
                     if (i === lastIndex && key && value !== undefined) el.innerHTML = value
                 }
-            } else if (view.type === "Input") {
+            } else if (view && view.type === "Input") {
 
                 if (i === lastIndex && key && value !== undefined) o[view.element.value] = value
                 else return answer = o[view.element.value]
 
-            } else if (view.type !== "Input") {
+            } else if (view && view.type !== "Input") {
 
                 if (i === lastIndex && key && value !== undefined) o[view.element.innerHTML] = value
                 else return answer = o[view.element.innerHTML]
@@ -5357,7 +5364,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = o
             
         } else if (k0 === "pullLastElement()" || k0 === "pullLast()") {
-
+            
             // if no index, it pulls the last element
             o.splice(o.length - 1, 1)
             answer = o
@@ -7457,7 +7464,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (key === "desktop()") view[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
     else if (key === "_") view[keygen] = _
-    else if (object || path[0].includes("()") || path[0].includes(")(")) view[keygen] = reducer({ _window, id, path, e, _, req, res, object })
+    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, req, res, object })
     else view[keygen] = reducer({ _window, id, path, e, _, req, res, object: object ? object : view })
     // else view[keygen] = key
 
@@ -8309,7 +8316,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   }
 
   // value is a param it has key=value
-  if (value.includes("=") || value.includes(";")) return toParam({ req, res, _window, id, e, string: value, _, object, mount })
+  if (value.includes("=") || value.includes(";") || value.includes(">") || value.includes("<")) return toParam({ req, res, _window, id, e, string: value, _, object, mount })
 
   // multiplication
   if (value.includes("*")) {
@@ -8401,7 +8408,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
     var allAreNumbers = true
     var values = value.split("-").map(value => {
-      if (value.includes(":")) return allAreNumbers = false
+      if (value.includes(":") && value.split(":")[0] !== ")(") return allAreNumbers = false
 
       if (allAreNumbers) {
         var num = toValue({ _window, value, params, _, id, e, req, res, object })
@@ -8425,7 +8432,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.includes(":")) return allAreNumbers = false
+        if (value.includes(":") && value.split(":")[0] !== ")(") return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, id, e, req, res, object })
@@ -8448,7 +8455,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
         var _values = value.split("-").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.includes(":")) return allAreNumbers = false
+          if (value.includes(":") && value.split(":")[0] !== ")(") return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, id, e, req, res, object })
@@ -8490,6 +8497,7 @@ const toggleView = ({ toggle, id }) => {
   var toggleId = toggle.id
     || togglePage && views.root && views.root.element.children[0] && views.root.element.children[0].id
     || views[id] && views[id].element.children[0] && views[id].element.children[0].id
+
   var parentId = toggleId ? (toggleId !== "root" ? views[toggleId].parent : toggleId) : id
   var view = {}
   var viewId = toggle.viewId || toggle.view

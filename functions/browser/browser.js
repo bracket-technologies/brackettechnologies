@@ -16,6 +16,9 @@ var global = window.global
 // access key
 global["access-key"] = getCookie({ name: "_key" })
 global["body-click-events"] = {}
+global["body-mousemove-events"] = {}
+global["body-mousedown-events"] = {}
+global["body-mouseup-events"] = {}
 
 views.document = document
 views.document.element = document
@@ -52,17 +55,24 @@ document.addEventListener('click', e => {
         global["actionlist-item-clicked"] = global["actionlist-item"] = global.clickedElement
         global["actionlist-item-txt"] = global["actionlist-txt"] = global.clickedElement.innerHTML
     }
-
+    
     // body event listeners
-    Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o))
+    Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o, e))
 }, false)
 
-document.addEventListener("mousedown", () => {
-    global.mousedown = true
+// mousemove
+document.body.addEventListener('mousemove', (e) => {
+    Object.values(window.global["body-mousemove-events"]).flat().map(o => bodyEventListener(o, e))
+}, false)
+
+document.addEventListener("mousedown", (e) => {
+    window.global.mousedown = true
+    Object.values(window.global["body-mousedown-events"]).flat().map(o => bodyEventListener(o, e))
 })
 
-document.addEventListener("mouseup", () => {
-    global.mousedown = false
+document.addEventListener("mouseup", (e) => {
+    window.global.mousedown = false
+    Object.values(window.global["body-mouseup-events"]).flat().map(o => bodyEventListener(o, e))
 })
 
 // default global mode
@@ -101,23 +111,23 @@ document.addEventListener('scroll', () => {
 
         
 // body clicked
-var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index }) => {
+var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
     
     if (!views[id]) return
-    var e = { target: views[id].element }
+    e.target = views[id].element
     
     // approval
     if (viewEventConditions) {
-    var approved = toApproval({ string: viewEventConditions, id, e })
-    if (!approved) return
+        var approved = toApproval({ string: viewEventConditions, id, e })
+        if (!approved) return
     }
-    
+
     // approval
     var approved = toApproval({ string: events[2], id, e })
     if (!approved) return
 
     // once
-    if (once) window.global["body-click-events"][id].splice(index, 1)
+    if (once) window.global[`body-${event}-events`][id].splice(index, 1)
     
     // params
     await toParam({ string: events[1], id, mount: true, eventParams: true, e })
