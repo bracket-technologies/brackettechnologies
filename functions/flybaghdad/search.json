@@ -6,7 +6,7 @@
     "searchUID": null,
     "journeys": [
       {
-        "selected": true,
+        "selected": false,
         "seatAvailability": true,
         "fareAmount": null,
         "totalAmount": null,
@@ -15,9 +15,9 @@
             "sequence": 1,
             "origin": "BEY",
             "destination": "BGW",
-            "departureDate": 1653782400000,
+            "departureDate": 1653696000000,
             "arrivalDate": null,
-            "departureDateStr": "29/05/2022",
+            "departureDateStr": "28/05/2022",
             "segmentCode": "BEY-BGW",
             "flightSegmentUId": "45546",
             "direction": "OUTBOUND",
@@ -32,8 +32,8 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 17,
-                  "selected": true,
+                  "availability": 18,
+                  "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
                   "infantOverbookCount": 0
@@ -279,15 +279,15 @@
             "sequence": 1,
             "origin": "BEY",
             "destination": "BGW",
-            "departureDate": 1653782400000,
+            "departureDate": 1653696000000,
             "arrivalDate": null,
-            "departureDateStr": "29/05/2022",
+            "departureDateStr": "28/05/2022",
             "segmentCode": "BEY-BGW",
-            "flightSegmentUId": "45785",
+            "flightSegmentUId": "48976",
             "direction": "OUTBOUND",
             "openOND": false,
             "availableRBD": {
-              "45785": [
+              "48976": [
                 {
                   "rbdId": 832,
                   "rbdCode": "A13",
@@ -296,49 +296,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
-                  "selected": false,
-                  "rbdType": "STANDARD",
-                  "overbookCount": 0,
-                  "infantOverbookCount": 0
-                },
-                {
-                  "rbdId": 816,
-                  "rbdCode": "AC",
-                  "nestRank": 20,
-                  "displayOrder": null,
-                  "salesType": "STANDARD",
-                  "cabinClassId": 41,
-                  "cabinClassCode": "Y",
-                  "availability": 20,
-                  "selected": false,
-                  "rbdType": "STANDARD",
-                  "overbookCount": 0,
-                  "infantOverbookCount": 0
-                },
-                {
-                  "rbdId": 817,
-                  "rbdCode": "AB",
-                  "nestRank": 21,
-                  "displayOrder": null,
-                  "salesType": "STANDARD",
-                  "cabinClassId": 41,
-                  "cabinClassCode": "Y",
-                  "availability": 20,
-                  "selected": false,
-                  "rbdType": "STANDARD",
-                  "overbookCount": 0,
-                  "infantOverbookCount": 0
-                },
-                {
-                  "rbdId": 818,
-                  "rbdCode": "AA",
-                  "nestRank": 22,
-                  "displayOrder": null,
-                  "salesType": "STANDARD",
-                  "cabinClassId": 41,
-                  "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 8,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -352,7 +310,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -366,7 +324,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -380,7 +338,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -394,7 +352,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -408,7 +366,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -422,7 +380,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -436,7 +394,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -450,7 +408,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -464,7 +422,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -478,7 +436,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -492,7 +450,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -506,7 +464,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -520,7 +478,7 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 20,
+                  "availability": 15,
                   "selected": false,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
@@ -534,7 +492,7 @@
         ]
       },
       {
-        "selected": false,
+        "selected": true,
         "seatAvailability": true,
         "fareAmount": null,
         "totalAmount": null,
@@ -543,9 +501,9 @@
             "sequence": 1,
             "origin": "BEY",
             "destination": "BGW",
-            "departureDate": 1653782400000,
+            "departureDate": 1653696000000,
             "arrivalDate": null,
-            "departureDateStr": "29/05/2022",
+            "departureDateStr": "28/05/2022",
             "segmentCode": "BEY-BGW",
             "flightSegmentUId": "45775",
             "direction": "OUTBOUND",
@@ -560,8 +518,8 @@
                   "salesType": "STANDARD",
                   "cabinClassId": 41,
                   "cabinClassCode": "Y",
-                  "availability": 21,
-                  "selected": false,
+                  "availability": 20,
+                  "selected": true,
                   "rbdType": "STANDARD",
                   "overbookCount": 0,
                   "infantOverbookCount": 0
@@ -814,7 +772,7 @@
           "salesType": "STANDARD",
           "bundled": false,
           "linkedFltSegIDs": [
-            45546
+            45775
           ],
           "paxPrice": {
             "ADT": "96.90"
@@ -939,7 +897,7 @@
       "currency": "USD",
       "selectedCurrencyTotal": null,
       "ancillaryBundle": {
-        "45546": false
+        "45775": false
       },
       "pqLight": {
         "fares": [
@@ -952,15 +910,15 @@
             },
             "segmentSpan": [
               {
-                "fltSegID": 45546,
+                "fltSegID": 45775,
                 "cabinClassID": 41,
                 "rbdID": 832,
-                "invFltSegCCID": 48606,
+                "invFltSegCCID": 48836,
                 "actualDirection": "OUTBOUND",
-                "flightID": 44806,
+                "flightID": 45030,
                 "segmentCode": "BEY-BGW",
                 "ownerAirlineID": 10,
-                "puGroupID": 2752605022587342000,
+                "puGroupID": 8793128334147470000,
                 "flightType": "INT",
                 "flightOperationType": "STANDARD"
               }
@@ -969,16 +927,16 @@
           }
         ],
         "fltSegs": {
-          "45546": {
-            "fltSegID": 45546,
+          "45775": {
+            "fltSegID": 45775,
             "cabinClassID": 41,
             "rbdID": 832,
-            "invFltSegCCID": 48606,
+            "invFltSegCCID": 48836,
             "actualDirection": "OUTBOUND",
-            "flightID": 44806,
+            "flightID": 45030,
             "segmentCode": "BEY-BGW",
             "ownerAirlineID": 10,
-            "puGroupID": 2752605022587342000,
+            "puGroupID": 8793128334147470000,
             "flightType": "INT",
             "flightOperationType": "STANDARD"
           }
@@ -992,22 +950,22 @@
       },
       "segmentFareAmount": {
         "ADT": {
-          "45546": "96.90"
+          "45775": "96.90"
         }
       },
       "segmentChargeAmount": {
         "ADT": {
-          "45546": "26.00"
+          "45775": "26.00"
         }
       },
       "segmentTaxAmount": {
         "ADT": {
-          "45546": "37.00"
+          "45775": "37.00"
         }
       },
       "segmentFareChargeAmount": {
         "ADT": {
-          "45546": "159.90"
+          "45775": "159.90"
         }
       },
       "openReturnBooking": false,
@@ -1038,7 +996,7 @@
           "departureDateLocalStr": "29/05/2022 21:45:00",
           "arrivalDateLocalStr": "29/05/2022 23:25:00",
           "duration": "01h:40m",
-          "legADTCount": 52,
+          "legADTCount": 51,
           "legINFCount": 9,
           "ownerAirlineID": 10,
           "operatingAirlineID": 10
@@ -1053,7 +1011,7 @@
           "flightDesignator": "IF302",
           "flightType": "INT",
           "flightOperationType": "STANDARD",
-          "aircraftModel": "737-800",
+          "aircraftModel": "737-700",
           "departureCode": "BEY",
           "arrivalCode": "BGW",
           "departureAirportName": null,
@@ -1064,16 +1022,16 @@
           "departureDateLocalStr": "28/05/2022 21:50:00",
           "arrivalDateLocalStr": "28/05/2022 23:30:00",
           "duration": "01h:40m",
-          "legADTCount": 44,
-          "legINFCount": 16,
+          "legADTCount": 40,
+          "legINFCount": 13,
           "ownerAirlineID": 10,
           "operatingAirlineID": 10
         }
       ],
-      "45785": [
+      "48976": [
         {
-          "flightID": 45040,
-          "fltSegID": 45785,
+          "flightID": 48138,
+          "fltSegID": 48976,
           "segmentCode": "BEY-BGW",
           "operatedCarrier": "IF",
           "flightDesignator": "IF302",
@@ -1085,13 +1043,13 @@
           "departureAirportName": null,
           "arrivalAirportName": null,
           "stops": 0,
-          "departureDateUTCStr": "30/05/2022 18:45:00",
-          "arrivalDateUTCStr": "30/05/2022 20:25:00",
-          "departureDateLocalStr": "30/05/2022 21:45:00",
-          "arrivalDateLocalStr": "30/05/2022 23:25:00",
+          "departureDateUTCStr": "27/05/2022 18:50:00",
+          "arrivalDateUTCStr": "27/05/2022 20:30:00",
+          "departureDateLocalStr": "27/05/2022 21:50:00",
+          "arrivalDateLocalStr": "27/05/2022 23:30:00",
           "duration": "01h:40m",
-          "legADTCount": 125,
-          "legINFCount": 16,
+          "legADTCount": 38,
+          "legINFCount": 10,
           "ownerAirlineID": 10,
           "operatingAirlineID": 10
         }

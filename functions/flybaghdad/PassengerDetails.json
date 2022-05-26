@@ -1,0 +1,15 @@
+{
+    "Cookie": "",
+    "uuid": "bfa58feb-3eb7-4d92-8135-7226111b4abp",
+    "pnr": "N9HIER", 
+    "passportNumber": "R1234569", 
+    "travelDate": "28/05/2022", 
+    "from": "BEY",
+    "to": "BGW",
+    "firstName": "Tst",
+    "lastName": "Test",
+    "paxType": "ADT",
+    "passportExpiryDate": "25/05/2030",
+    "dob": "18/08/1950",
+    "gender": "M"
+}

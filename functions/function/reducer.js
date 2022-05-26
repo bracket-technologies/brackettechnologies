@@ -2423,6 +2423,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     o = o[0]
                 }
             }
+            
             answer = o[k]
         }
         

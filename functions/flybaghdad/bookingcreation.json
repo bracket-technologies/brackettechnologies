@@ -4,14 +4,14 @@
   "errorCode": null,
   "result": {
     "firstMarketingCarrierId": 10,
-    "bkgReference": "N9HIUR",
+    "bkgReference": "N9HITR",
     "bkgStatus": "TTL",
     "searchType": "OW",
     "createdTimestamp": null,
     "tktTimestamp": null,
     "lastTnxTimestamp": null,
-    "releaseTimestamp": "25/05/2022 16:26",
-    "releaseTimestampGMT": "25/05/2022 13:26",
+    "releaseTimestamp": "26/05/2022 13:28",
+    "releaseTimestampGMT": "26/05/2022 10:28",
     "ownerAgentId": 13712,
     "ownerChannelCode": "AGENT",
     "originAgentIATACode": null,
@@ -27,12 +27,12 @@
           "title": "Mr",
           "passengerTitleID": 41,
           "prefix": null,
-          "firstName": "Merci",
+          "firstName": "Test",
           "middleName": null,
-          "lastName": "Papa Nowel",
+          "lastName": "Test",
           "suffix": null,
-          "dateOfBirthStr": "02/05/1991",
-          "gender": "F",
+          "dateOfBirthStr": "18/08/1950",
+          "gender": "M",
           "nationalityID": 502,
           "ffpNumber": null,
           "travelWithPaxSeq": null,
@@ -42,10 +42,10 @@
           "mobile": null,
           "email": null,
           "additionalInfo": {
-            "passportNumber": "R12345671",
+            "passportNumber": "R1234569",
             "identityCardNumber": null,
             "passportCountryID": 636,
-            "passportExpiryDateStr": "16/05/2027",
+            "passportExpiryDateStr": "25/05/2030",
             "passportIssuedDateStr": null,
             "passportNationalityID": null,
             "visaNumber": null,
@@ -65,7 +65,7 @@
             "destinationStateProvince": null,
             "destinationZipPostalCode": null
           },
-          "paxID": 2219496,
+          "paxID": 2222686,
           "travelWithPaxID": null,
           "emdStrs": [],
           "eticketStrs": [],
@@ -87,10 +87,10 @@
           "balance": "159.9",
           "parent": false,
           "paxWithUnequalSegments": false,
-          "paxNameToString": "First Name =Merci, Middle Name =null, Last Name=Papa Nowel",
-          "paxName": "MrMerciPapa Nowel",
-          "firstNameWithoutSpaces": "Merci",
-          "lastNameWithoutSpaces": "PapaNowel"
+          "paxNameToString": "First Name =Test, Middle Name =null, Last Name=Test",
+          "paxName": "MrTestTest",
+          "firstNameWithoutSpaces": "Test",
+          "lastNameWithoutSpaces": "Test"
         }
       ]
     },
@@ -110,7 +110,7 @@
       "passengerTitleID": null,
       "viberUserID": null,
       "viberSubscribeUrl": null,
-      "contactID": 2089717,
+      "contactID": 2092866,
       "contactElePresent": false
     },
     "flightSegments": [
@@ -144,14 +144,14 @@
         "cabinClassCode": "Y",
         "cabinClassName": "Economy",
         "status": "CONFIRMED",
-        "puGroupID": "-4795192788629895145",
+        "puGroupID": "8924795238499304296",
         "direction": "O",
-        "bkgSegID": 3415232,
+        "bkgSegID": 3420422,
         "alertExist": false,
         "alertsProcessStatus": "NO",
         "flown": false,
-        "bkgSegCreatedDateStr": "25/05/2022 11:26",
-        "bkgSegPriceQuoteDateStr": "25/05/2022 11:26",
+        "bkgSegCreatedDateStr": "26/05/2022 08:28",
+        "bkgSegPriceQuoteDateStr": "26/05/2022 08:28",
         "fareAmount": "96.90",
         "segmentGrouping": "1O",
         "segmentCode": "BEY-BGW",
@@ -194,13 +194,13 @@
         "BEY-BGW|A13|A13OW": "0"
       },
       "taxes": {
-        "BEYLB|BEY_LB": "33.30",
         "BEYYL|BEY_YL": "3.30",
-        "BYH4|BEY_H4": "0.40"
+        "BYH4|BEY_H4": "0.40",
+        "BEYLB|BEY_LB": "33.30"
       },
       "fees": {
-        "FBAYR|Int Fuel Surcharge": "14.00",
-        "BEYYQ|BEY Surcharge": "12.00"
+        "BEYYQ|BEY Surcharge": "12.00",
+        "FBAYR|Int Fuel Surcharge": "14.00"
       },
       "ancillaries": {},
       "commissions": null,
@@ -243,15 +243,15 @@
         "45546": false
       },
       "rescheduleJourneyEligibility": {
-        "-4795192788629895145": false
+        "8924795238499304296": false
       },
       "addSegment": false,
       "addSegmentAsReturnJourney": false,
       "addBusSegmentEligibility": {
-        "3415232": false
+        "3420422": false
       },
       "rescheduleBusSegEligibility": {
-        "3415232": false
+        "3420422": false
       },
       "cancelPostDepStatus": {
         "45546": false
@@ -365,7 +365,7 @@
         "key": false
       },
       "rescheduleJourneyEligibilityOverrideSU": {
-        "-4795192788629895145": false
+        "8924795238499304296": false
       }
     },
     "totalRevenue": null,
@@ -426,8 +426,8 @@
     "openReturnBookingValidDate": null,
     "queuesForBooking": null,
     "puGroups": {
-      "-4795192788629895145": {
-        "puGroupID": "-4795192788629895145",
+      "8924795238499304296": {
+        "puGroupID": "8924795238499304296",
         "maxValidityStr": "1::::",
         "validityExtendable": true
       }
@@ -446,12 +446,12 @@
         "title": "Mr",
         "passengerTitleID": 41,
         "prefix": null,
-        "firstName": "Merci",
+        "firstName": "Test",
         "middleName": null,
-        "lastName": "Papa Nowel",
+        "lastName": "Test",
         "suffix": null,
-        "dateOfBirthStr": "02/05/1991",
-        "gender": "F",
+        "dateOfBirthStr": "18/08/1950",
+        "gender": "M",
         "nationalityID": 502,
         "ffpNumber": null,
         "travelWithPaxSeq": null,
@@ -461,10 +461,10 @@
         "mobile": null,
         "email": null,
         "additionalInfo": {
-          "passportNumber": "R12345671",
+          "passportNumber": "R1234569",
           "identityCardNumber": null,
           "passportCountryID": 636,
-          "passportExpiryDateStr": "16/05/2027",
+          "passportExpiryDateStr": "25/05/2030",
           "passportIssuedDateStr": null,
           "passportNationalityID": null,
           "visaNumber": null,
@@ -484,7 +484,7 @@
           "destinationStateProvince": null,
           "destinationZipPostalCode": null
         },
-        "paxID": 2219496,
+        "paxID": 2222686,
         "travelWithPaxID": null,
         "emdStrs": [],
         "eticketStrs": [],
@@ -506,10 +506,10 @@
         "balance": "159.9",
         "parent": false,
         "paxWithUnequalSegments": false,
-        "paxNameToString": "First Name =Merci, Middle Name =null, Last Name=Papa Nowel",
-        "paxName": "MrMerciPapa Nowel",
-        "firstNameWithoutSpaces": "Merci",
-        "lastNameWithoutSpaces": "PapaNowel"
+        "paxNameToString": "First Name =Test, Middle Name =null, Last Name=Test",
+        "paxName": "MrTestTest",
+        "firstNameWithoutSpaces": "Test",
+        "lastNameWithoutSpaces": "Test"
       }
     ],
     "notificationExist": false

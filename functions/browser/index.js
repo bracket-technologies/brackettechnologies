@@ -1200,6 +1200,7 @@ const clone = (obj) => {
   if (typeof obj !== "object") copy = obj
   else if (Array.isArray(obj)) copy = [...obj.map(obj => clone(obj))]
   else if (Object.keys(obj).length === 0) copy = {}
+  else if (!obj) return obj
   else {
     copy = {}
     Object.entries(obj).map(([key, value]) => {
@@ -1810,17 +1811,21 @@ const createTags = ({ _window, id, req, res }) => {
   if (!view) return
   
   if (view.mapType) {
-  
+
     // data mapType
     var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
-    var isObject = view.data && ((Array.isArray(view.data) || typeof view.data === "string") ? false : true)
+    var isObject = (typeof view.data === "object" && !Array.isArray(view.data)) ? true : false
     var type = views[view.parent].children[view.index].type.replace("[", "").replace("]", "")
     if (type.includes(";data=")) type = type.split(";data=")[0] + ";" + type.split(";data=").slice(1).join("").split(";").slice(1).join(";")
     if (type.includes("?data=")) type = type.split("?data=")[0] + "?" + type.split("?data=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes(";Data=")) type = type.split(";Data=")[0] + ";" + type.split(";Data=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?Data=")) type = type.split("?Data=")[0] + "?" + type.split("?Data=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?id=")) type = type.split("?id=")[0] + "?" + type.split("?id=").slice(1).join("").split(";").slice(1).join(";") 
-    if (type.includes(";id=")) type = type.split(";id=")[0] + "?" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";id=")) type = type.split(";id=")[0] + ";" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes("?path=")) type = type.split("?path=")[0] + "?" + type.split("?path=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";path=")) type = type.split(";path=")[0] + ";" + type.split(";path=").slice(1).join("").split(";").slice(1).join(";")
+    if (type.includes(";arrange=")) type = type.split(";arrange=")[0] + ";" + type.split(";arrange=").slice(1).join("").split(";").slice(1).join(";")
+    if (type.split("?")[2]) type = type.split("?").slice(0, 2).join("?")
     view.length = data.length || 1
 
     // arrange
@@ -1828,17 +1833,20 @@ const createTags = ({ _window, id, req, res }) => {
 
     delete views[id]
     delete view.mapType
-
+    
     if (data.length > 0) {
       
       return data.map((_data, index) => {
         
         var id = generate()
         var mapIndex = index
+        var derivations = clone(view.derivations)
+        var lastEl = isObject ? _data : index
         var data = isObject ? view.data[_data] : _data
-        var derivations = isObject ? [...view.derivations, _data] : [...view.derivations, index]
+        derivations.push(lastEl)
+        
         var _view = clone({ ...view, id, type, data, mapIndex, derivations })
-
+        
         views[id] = _view
         return createElement({ _window, id, req, res })
 
@@ -1848,9 +1856,13 @@ const createTags = ({ _window, id, req, res }) => {
         
       var id = generate()
       var mapIndex = 0
-      var derivations = isObject ? [...view.derivations, ""] : [...view.derivations, 0]
-      var _view = clone({ ...view, id, type, mapIndex, derivations })
+      var lastEl = isObject ? "" : 0
+      var derivations = clone(view.derivations)
+      var data = view.data ? lastElview.data[lastEl] : view.data
+      derivations.push(lastEl)
 
+      var _view = clone({ ...view, id, type, data, mapIndex, derivations })
+      
       views[id] = _view
       return createElement({ _window, id, req, res })
     }
@@ -2096,16 +2108,6 @@ const defaultInputHandler = ({ id }) => {
       if (e.target) e.target.removeEventListener("input", myFn)
       return 
     }
-    
-    // map
-    if (view.preventDefault || view.input.preventDefault) {
-      
-      if (e.data === "h" && e.target.selectionStart === 2 && value.charAt(0) === "c") view.element.value = value = "children"
-      else if (e.data === "o" && e.target.selectionStart === 2 && value.charAt(0) === "c") view.element.value = value = "controls"
-      else if (e.data === "y" && e.target.selectionStart === 2 && value.charAt(0) === "t") view.element.value = value = "type"
-      else if (e.data === "v" && e.target.selectionStart === 2 && value.charAt(0) === "e") view.element.value = value = "event"
-      else if (e.data === "a" && e.target.selectionStart === 2 && value.charAt(0) === "w") view.element.value = value = "watch"
-    }
 
     if (!view.preventDefault && !view.input.preventDefault) {
       
@@ -2174,23 +2176,6 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = "View?class=vertical;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
-        } else if (value.slice(e.target.selectionStart - 4, e.target.selectionStart) === "back") {
-          var _prev = value.slice(0, e.target.selectionStart - 4)
-          var _next = value.slice(e.target.selectionStart)
-          e.target.value = value = _prev + "backgroundColor" + _next
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
-        
-        } else if (value.slice(e.target.selectionStart - 7, e.target.selectionStart) === "borderR") {
-          var _prev = value.slice(0, e.target.selectionStart - 7)
-          var _next = value.slice(e.target.selectionStart)
-          e.target.value = value = _prev + "borderRadius" + _next
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
-        
-        } else if (value.slice(e.target.selectionStart - 5, e.target.selectionStart) === "gridT") {
-          var _prev = value.slice(0, e.target.selectionStart - 5)
-          var _next = value.slice(e.target.selectionStart)
-          e.target.value = value = _prev + "gridTemplateColumns" + _next
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
         }
       }
 
@@ -6247,6 +6232,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     o = o[0]
                 }
             }
+            
             answer = o[k]
         }
         

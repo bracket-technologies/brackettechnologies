@@ -1,24 +1,28 @@
 module.exports = async () => {
 
-    var Cookie = "JSESSIONID=_QblJ9MAJWkTAmrrEx5RAOeLwo62kf5lU9A9wKyi.server04"
-    var uuid = "bfa58feb-3eb7-4d92-8035-7226e11b6abp"
-    var pnr = "N9HIUR"
-    var passportNumber = "R12345671"
-    var travelDate = "29/05/2022"
-    var from = "BEY"
-    var to = "BGW"
-    var firstName = "Merci"
-    var lastName = "Papa Nowel"
-    var paxType = "ADT"
-    var passportExpiryDate = "16/05/2027"
-    var dob = "02/05/1991"
-    var gender = "F"
-    /*
-    await require("fs").writeFileSync(`flybaghdad/bookingStatus.json`, JSON.stringify({
+    var { Cookie, uuid, pnr, passportNumber, travelDate, from, to, firstName, lastName, paxType, passportExpiryDate, dob, gender } = require("../flybaghdad/PassengerDetails.json")
+
+    // ----------------------------------------------Login---------------------------------------------------- //
+
+    await require("fs").writeFileSync(`flybaghdad/status.json`, JSON.stringify({
         login: true
     }, null, 2))
 
-    var { data } = await require("axios").post("https://booking.flybaghdad.net/agent/login", "j_username=hiba&username=IF%3AHIBA&password=vESOloeXC7WwAhdN4DfjPQ%3D%3D+046157e6e870dd128e1dfac45c0a4c74+1ecde3995f10343b88f7e192cc153037&captcha=&language=en&carrierID=10&carrierCode=IF", {
+    var { data, headers } = await require("axios").post("https://booking.flybaghdad.net/agent/login", "j_username=hiba&username=IF%3AHIBA&password=AA9CDOd5t1KLd9fwnriFZA%3D%3D+c306989dae8bd27e80255fdb2253cc19+bf8a723bed4520e13f00dedbef49fc8a&captcha=&language=en&carrierID=10&carrierCode=IF", {
+        timeout: 1000 * 10,
+        headers: {
+            "Origin": "https://booking.flybaghdad.net",
+            "Referer": "https://booking.flybaghdad.net/agent/booking",
+            "Host": "booking.flybaghdad.net",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin"
+        }
+    })
+    
+    Cookie = headers["set-cookie"][0].split("; ")[0]
+    await require("fs").writeFileSync(`flybaghdad/cookie.json`, JSON.stringify({ Cookie }, null, 2))
+
+    /*var { data, headers } = await require("axios").post("https://booking.flybaghdad.net/agent/home/init", "",{
         timeout: 1000 * 10,
         headers: {
             "Origin": "https://booking.flybaghdad.net",
@@ -26,19 +30,44 @@ module.exports = async () => {
             Cookie,
             "Host": "booking.flybaghdad.net",
             "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+            "Content-Length": 0
+        }
+    })*/
+    
+    await require("fs").writeFileSync(`flybaghdad/home-init.json`, JSON.stringify({ headers }, null, 2))
+
+    var { data, headers } = await require("axios").post("https://booking.flybaghdad.net/agent/home/agent-init", "masterData=userPrivileges", {
+        timeout: 1000 * 10,
+        headers: {
+            "Host": "booking.flybaghdad.net",
+            "Origin": "https://booking.flybaghdad.net",
+            "Referer": "https://booking.flybaghdad.net/agent/home",
+            Cookie,
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36",
+            "Host": "booking.flybaghdad.net",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Site": "same-origin"
         }
     })
-    await require("fs").writeFileSync(`flybaghdad/login.json`, JSON.stringify(data, null, 2))
-    */
-    await require("fs").writeFileSync(`flybaghdad/bookingStatus.json`, JSON.stringify({
+
+    await require("fs").writeFileSync(`flybaghdad/agent-init.json`, JSON.stringify({ headers }, null, 2))
+    await require("fs").writeFileSync(`flybaghdad/status.json`, JSON.stringify({
+        login: false,
+        endLogin: true
+    }, null, 2))
+
+    // ----------------------------------------------Search---------------------------------------------------- //
+    await require("fs").writeFileSync(`flybaghdad/status.json`, JSON.stringify({
         login: false,
         endLogin: true,
         search: true
     }, null, 2))
 
     var { data } = await require("axios").post("https://booking.flybaghdad.net/agent/availability/search", {
-        "rand": "2022-05-25T12:53:16.150Z",
+        "rand": "2022-05-26T12:53:16.150Z",
         uuid,
         "searchRequestContext": {
             "modifyBookingContext": false,
@@ -99,13 +128,15 @@ module.exports = async () => {
     })
     await require("fs").writeFileSync(`flybaghdad/search.json`, JSON.stringify(data, null, 2))
     
-    await require("fs").writeFileSync(`flybaghdad/bookingStatus.json`, JSON.stringify({
+    await require("fs").writeFileSync(`flybaghdad/status.json`, JSON.stringify({
         login: false,
         endLogin: true,
         search: false,
         endSearch: true,
         ancillarySearch: true
     }, null, 2))
+
+    // ----------------------------------------------ancillarySearch---------------------------------------------------- //
 
     var { data } = await require("axios").post("https://booking.flybaghdad.net/agent/ancillaryAvailability/ancillarySearch", {
         uuid,
@@ -127,7 +158,7 @@ module.exports = async () => {
     })
     await require("fs").writeFileSync(`flybaghdad/ancillarySearch.json`, JSON.stringify(data, null, 2))
     
-    await require("fs").writeFileSync(`flybaghdad/bookingStatus.json`, JSON.stringify({
+    await require("fs").writeFileSync(`flybaghdad/status.json`, JSON.stringify({
         login: false,
         endLogin: true,
         search: false,
@@ -136,6 +167,8 @@ module.exports = async () => {
         endAncillarySearch: true,
         seatMapDetails: true
     }, null, 2))
+
+    // ----------------------------------------------seatMapDetails---------------------------------------------------- //
 
     var { data } = await require("axios").post("https://booking.flybaghdad.net/agent/ancillaryAvailability/seatMapDetails", {
         uuid,
@@ -177,7 +210,7 @@ module.exports = async () => {
     })
     await require("fs").writeFileSync(`flybaghdad/seatMapDetails.json`, JSON.stringify(data, null, 2))
     
-    await require("fs").writeFileSync(`flybaghdad/bookingStatus.json`, JSON.stringify({
+    await require("fs").writeFileSync(`flybaghdad/status.json`, JSON.stringify({
         login: false,
         endLogin: true,
         search: false,
@@ -188,6 +221,8 @@ module.exports = async () => {
         endSeatMapDetails: true,
         paymentDetails: true
     }, null, 2))
+
+    // ----------------------------------------------paymentDetails---------------------------------------------------- //
 
     var { data } = await require("axios").post("https://booking.flybaghdad.net/agent/payment/paymentDetails", {
         uuid,
@@ -215,7 +250,7 @@ module.exports = async () => {
     var departureDateUTCStr = require("../flybaghdad/search.json").result.availableFltSegments[flightSegId][0].departureDateUTCStr
     var segmentCode = require("../flybaghdad/search.json").result.availableFltSegments[flightSegId][0].segmentCode
     
-    await require("fs").writeFileSync(`flybaghdad/bookingStatus.json`, JSON.stringify({
+    await require("fs").writeFileSync(`flybaghdad/status.json`, JSON.stringify({
         login: false,
         endLogin: true,
         search: false,
@@ -237,6 +272,8 @@ module.exports = async () => {
             segmentCode
         }
     }, null, 2))
+
+    // ----------------------------------------------createBooking---------------------------------------------------- //
     
     var { data } = await require("axios").post("https://booking.flybaghdad.net/agent/bookingcreation/create", {
         uuid,
@@ -384,7 +421,7 @@ module.exports = async () => {
     })
     await require("fs").writeFileSync(`flybaghdad/bookingcreation.json`, JSON.stringify(data, null, 2))
     
-    await require("fs").writeFileSync(`flybaghdad/bookingStatus.json`, JSON.stringify({
+    await require("fs").writeFileSync(`flybaghdad/status.json`, JSON.stringify({
         login: false,
         endLogin: true,
         searching: false,
@@ -407,4 +444,6 @@ module.exports = async () => {
         },
         endBookingcreation: true
     }, null, 2))
+
+    // ----------------------------------------------Booking created---------------------------------------------------- //
 }

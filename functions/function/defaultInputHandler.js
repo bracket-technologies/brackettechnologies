@@ -53,16 +53,6 @@ const defaultInputHandler = ({ id }) => {
       if (e.target) e.target.removeEventListener("input", myFn)
       return 
     }
-    
-    // map
-    if (view.preventDefault || view.input.preventDefault) {
-      
-      if (e.data === "h" && e.target.selectionStart === 2 && value.charAt(0) === "c") view.element.value = value = "children"
-      else if (e.data === "o" && e.target.selectionStart === 2 && value.charAt(0) === "c") view.element.value = value = "controls"
-      else if (e.data === "y" && e.target.selectionStart === 2 && value.charAt(0) === "t") view.element.value = value = "type"
-      else if (e.data === "v" && e.target.selectionStart === 2 && value.charAt(0) === "e") view.element.value = value = "event"
-      else if (e.data === "a" && e.target.selectionStart === 2 && value.charAt(0) === "w") view.element.value = value = "watch"
-    }
 
     if (!view.preventDefault && !view.input.preventDefault) {
       
@@ -131,23 +121,6 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = "View?class=vertical;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
-        } else if (value.slice(e.target.selectionStart - 4, e.target.selectionStart) === "back") {
-          var _prev = value.slice(0, e.target.selectionStart - 4)
-          var _next = value.slice(e.target.selectionStart)
-          e.target.value = value = _prev + "backgroundColor" + _next
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
-        
-        } else if (value.slice(e.target.selectionStart - 7, e.target.selectionStart) === "borderR") {
-          var _prev = value.slice(0, e.target.selectionStart - 7)
-          var _next = value.slice(e.target.selectionStart)
-          e.target.value = value = _prev + "borderRadius" + _next
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
-        
-        } else if (value.slice(e.target.selectionStart - 5, e.target.selectionStart) === "gridT") {
-          var _prev = value.slice(0, e.target.selectionStart - 5)
-          var _next = value.slice(e.target.selectionStart)
-          e.target.value = value = _prev + "gridTemplateColumns" + _next
-          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
         }
       }
 

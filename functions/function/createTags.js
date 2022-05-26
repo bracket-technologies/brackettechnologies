@@ -11,17 +11,21 @@ const createTags = ({ _window, id, req, res }) => {
   if (!view) return
   
   if (view.mapType) {
-  
+
     // data mapType
     var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
-    var isObject = view.data && ((Array.isArray(view.data) || typeof view.data === "string") ? false : true)
+    var isObject = (typeof view.data === "object" && !Array.isArray(view.data)) ? true : false
     var type = views[view.parent].children[view.index].type.replace("[", "").replace("]", "")
     if (type.includes(";data=")) type = type.split(";data=")[0] + ";" + type.split(";data=").slice(1).join("").split(";").slice(1).join(";")
     if (type.includes("?data=")) type = type.split("?data=")[0] + "?" + type.split("?data=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes(";Data=")) type = type.split(";Data=")[0] + ";" + type.split(";Data=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?Data=")) type = type.split("?Data=")[0] + "?" + type.split("?Data=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?id=")) type = type.split("?id=")[0] + "?" + type.split("?id=").slice(1).join("").split(";").slice(1).join(";") 
-    if (type.includes(";id=")) type = type.split(";id=")[0] + "?" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";id=")) type = type.split(";id=")[0] + ";" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes("?path=")) type = type.split("?path=")[0] + "?" + type.split("?path=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";path=")) type = type.split(";path=")[0] + ";" + type.split(";path=").slice(1).join("").split(";").slice(1).join(";")
+    if (type.includes(";arrange=")) type = type.split(";arrange=")[0] + ";" + type.split(";arrange=").slice(1).join("").split(";").slice(1).join(";")
+    if (type.split("?")[2]) type = type.split("?").slice(0, 2).join("?")
     view.length = data.length || 1
 
     // arrange
@@ -29,17 +33,20 @@ const createTags = ({ _window, id, req, res }) => {
 
     delete views[id]
     delete view.mapType
-
+    
     if (data.length > 0) {
       
       return data.map((_data, index) => {
         
         var id = generate()
         var mapIndex = index
+        var derivations = clone(view.derivations)
+        var lastEl = isObject ? _data : index
         var data = isObject ? view.data[_data] : _data
-        var derivations = isObject ? [...view.derivations, _data] : [...view.derivations, index]
+        derivations.push(lastEl)
+        
         var _view = clone({ ...view, id, type, data, mapIndex, derivations })
-
+        
         views[id] = _view
         return createElement({ _window, id, req, res })
 
@@ -49,9 +56,13 @@ const createTags = ({ _window, id, req, res }) => {
         
       var id = generate()
       var mapIndex = 0
-      var derivations = isObject ? [...view.derivations, ""] : [...view.derivations, 0]
-      var _view = clone({ ...view, id, type, mapIndex, derivations })
+      var lastEl = isObject ? "" : 0
+      var derivations = clone(view.derivations)
+      var data = view.data ? lastElview.data[lastEl] : view.data
+      derivations.push(lastEl)
 
+      var _view = clone({ ...view, id, type, data, mapIndex, derivations })
+      
       views[id] = _view
       return createElement({ _window, id, req, res })
     }
