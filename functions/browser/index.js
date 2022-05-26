@@ -1858,7 +1858,7 @@ const createTags = ({ _window, id, req, res }) => {
       var mapIndex = 0
       var lastEl = isObject ? "" : 0
       var derivations = clone(view.derivations)
-      var data = view.data ? lastElview.data[lastEl] : view.data
+      var data = view.data ? view.data[lastEl] : view.data
       derivations.push(lastEl)
 
       var _view = clone({ ...view, id, type, data, mapIndex, derivations })
