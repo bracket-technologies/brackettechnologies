@@ -211,6 +211,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
 
       mountDataUsed = true
       params.Data = view.Data = view.Data || generate()
+      // problem is here maybe-------------------------------------------------------------------- global[view.Data] is multiplicating
       params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
       
       // duplicated element

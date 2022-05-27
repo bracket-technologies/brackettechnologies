@@ -13,7 +13,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
   var global = window.global
   var _params = params, viewId = id
 
-  if (controls) actions = controls.actions
+  if (controls) actions = controls.actions || controls.action
 
   // execute actions
   toArray(actions).map(_action => {

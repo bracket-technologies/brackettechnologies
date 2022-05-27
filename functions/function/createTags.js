@@ -16,10 +16,10 @@ const createTags = ({ _window, id, req, res }) => {
     var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
     var isObject = (typeof view.data === "object" && !Array.isArray(view.data)) ? true : false
     var type = views[view.parent].children[view.index].type.replace("[", "").replace("]", "")
-    if (type.includes(";data=")) type = type.split(";data=")[0] + ";" + type.split(";data=").slice(1).join("").split(";").slice(1).join(";")
     if (type.includes("?data=")) type = type.split("?data=")[0] + "?" + type.split("?data=").slice(1).join("").split(";").slice(1).join(";") 
-    if (type.includes(";Data=")) type = type.split(";Data=")[0] + ";" + type.split(";Data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";data=")) type = type.split(";data=")[0] + ";" + type.split(";data=").slice(1).join("").split(";").slice(1).join(";")
     if (type.includes("?Data=")) type = type.split("?Data=")[0] + "?" + type.split("?Data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";Data=")) type = type.split(";Data=")[0] + ";" + type.split(";Data=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?id=")) type = type.split("?id=")[0] + "?" + type.split("?id=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes(";id=")) type = type.split(";id=")[0] + ";" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?path=")) type = type.split("?path=")[0] + "?" + type.split("?path=").slice(1).join("").split(";").slice(1).join(";") 
@@ -40,11 +40,11 @@ const createTags = ({ _window, id, req, res }) => {
         
         var id = generate()
         var mapIndex = index
-        var derivations = clone(view.derivations)
         var lastEl = isObject ? _data : index
-        var data = isObject ? view.data[_data] : _data
+        var derivations = clone(view.derivations)
+        var data = clone(isObject ? view.data[_data] : _data)
         derivations.push(lastEl)
-        
+
         var _view = clone({ ...view, id, type, data, mapIndex, derivations })
         
         views[id] = _view
@@ -58,7 +58,7 @@ const createTags = ({ _window, id, req, res }) => {
       var mapIndex = 0
       var lastEl = isObject ? "" : 0
       var derivations = clone(view.derivations)
-      var data = view.data ? view.data[lastEl] : view.data
+      var data = clone(view.data ? view.data[lastEl] : view.data)
       derivations.push(lastEl)
 
       var _view = clone({ ...view, id, type, data, mapIndex, derivations })

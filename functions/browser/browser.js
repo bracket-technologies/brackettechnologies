@@ -136,5 +136,5 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     if (viewEventParams) await toParam({ string: viewEventParams, id, mount: true, eventParams: true, e })
     
     // execute
-    if (controls.actions) await execute({ controls, id, e })
+    if (controls.actions || controls.action) await execute({ controls, id, e })
 }

@@ -137,7 +137,7 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     if (viewEventParams) await toParam({ string: viewEventParams, id, mount: true, eventParams: true, e })
     
     // execute
-    if (controls.actions) await execute({ controls, id, e })
+    if (controls.actions || controls.action) await execute({ controls, id, e })
 }
 },{"../function/cookie":40,"../function/execute":53,"../function/setElement":88,"../function/starter":91,"../function/toApproval":95,"../function/toCode":100,"../function/toParam":107}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
@@ -145,21 +145,20 @@ const { toComponent } = require('../function/toComponent')
 module.exports = (component) => {
 
   component = toComponent(component)
-  var { check, style } = component
-  check = check || {}
+  var { icon, style } = component
+  icon = icon || {}
 
   return {
     ...component,
-    "type": `View?class=flexbox pointer;style.height=2rem;style.width=2rem;style.borderRadius=.25rem;style.transition=.1s;style.backgroundColor=#fff;style.border=1px solid #ccc;click.style.backgroundColor=#2C6ECB;click.style.border=1px solid #ffffff00;click.sticky;${toString({ style })}`,
+    "type": `View?class=flexbox pointer;style.height=2rem;style.width=2rem;style.borderRadius=.25rem;style.transition=.1s;style.backgroundColor=#fff;style.border=1px solid #ccc;clicked.style.backgroundColor=#2C6ECB;clicked.style.border=1px solid #ffffff00;clicked.mount=true;${toString({ style })}`,
     "children": [{
-      "type": `Icon?name=bi-check;style.color=#fff;style.fontSize=2rem;style.opacity=0;style.transition=.1s;${toString(check)}`
+      "type": `Icon?name=bi-check;style.color=#fff;style.fontSize=2rem;style.opacity=0;style.transition=.1s;${toString(icon)}`
     }],
     "controls": [{
-      "event": "click?().element.checked=if():[().element.checked]:false.else():true;().1stChild().element.style.opacity=[1].if().[().element.checked].else().[0];().data()=[true].if().[().element.checked].else().[false]"
+      "event": "click?checked()=if():checked():false:true;1stChild().style().opacity=if():checked():1:0;data()=if():checked():true:false"
     }]
   }
 }
-
 },{"../function/toComponent":101}],3:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
@@ -1731,6 +1730,10 @@ var createElement = ({ _window, id, req, res }) => {
   view.style = view.style || {}
 
   // id
+  var priorityId = false
+  if (view.type.split(":")[1]) priorityId = true
+  id = view.id = view.type.split(":")[1] || id
+  view.type = view.type.split(":")[0]
   view.id = view.id || generate()
   id = view.id
 
@@ -1763,11 +1766,12 @@ var createElement = ({ _window, id, req, res }) => {
     
     params = toParam({ _window, string: params, id, req, res, mount: true })
     
-    if (params.id && params.id !== id) {
+    if (params.id && params.id !== id && !priorityId) {
 
       delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
-    }
+
+    } else if (priorityId) view.id = id // we have View:id & an id parameter. the priority is for View:id
 
     // view
     if (params.view) {
@@ -1783,7 +1787,7 @@ var createElement = ({ _window, id, req, res }) => {
       }
     }
   }
-
+  
   // for droplist
   if (parent.unDeriveData || view.unDeriveData) {
 
@@ -1816,10 +1820,10 @@ const createTags = ({ _window, id, req, res }) => {
     var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
     var isObject = (typeof view.data === "object" && !Array.isArray(view.data)) ? true : false
     var type = views[view.parent].children[view.index].type.replace("[", "").replace("]", "")
-    if (type.includes(";data=")) type = type.split(";data=")[0] + ";" + type.split(";data=").slice(1).join("").split(";").slice(1).join(";")
     if (type.includes("?data=")) type = type.split("?data=")[0] + "?" + type.split("?data=").slice(1).join("").split(";").slice(1).join(";") 
-    if (type.includes(";Data=")) type = type.split(";Data=")[0] + ";" + type.split(";Data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";data=")) type = type.split(";data=")[0] + ";" + type.split(";data=").slice(1).join("").split(";").slice(1).join(";")
     if (type.includes("?Data=")) type = type.split("?Data=")[0] + "?" + type.split("?Data=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";Data=")) type = type.split(";Data=")[0] + ";" + type.split(";Data=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?id=")) type = type.split("?id=")[0] + "?" + type.split("?id=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes(";id=")) type = type.split(";id=")[0] + ";" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?path=")) type = type.split("?path=")[0] + "?" + type.split("?path=").slice(1).join("").split(";").slice(1).join(";") 
@@ -1840,11 +1844,11 @@ const createTags = ({ _window, id, req, res }) => {
         
         var id = generate()
         var mapIndex = index
-        var derivations = clone(view.derivations)
         var lastEl = isObject ? _data : index
-        var data = isObject ? view.data[_data] : _data
+        var derivations = clone(view.derivations)
+        var data = clone(isObject ? view.data[_data] : _data)
         derivations.push(lastEl)
-        
+
         var _view = clone({ ...view, id, type, data, mapIndex, derivations })
         
         views[id] = _view
@@ -1858,7 +1862,7 @@ const createTags = ({ _window, id, req, res }) => {
       var mapIndex = 0
       var lastEl = isObject ? "" : 0
       var derivations = clone(view.derivations)
-      var data = view.data ? view.data[lastEl] : view.data
+      var data = clone(view.data ? view.data[lastEl] : view.data)
       derivations.push(lastEl)
 
       var _view = clone({ ...view, id, type, data, mapIndex, derivations })
@@ -2437,7 +2441,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
           // execute
-          if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
+          if (controls.actions || controls.action) await execute({ _window, req, res, controls, e, id: mainID })
         }, timer)
       }
       
@@ -2488,7 +2492,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           // approval
           if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
-          if (controls.actions) await execute({ controls, e, id: mainID })
+          if (controls.actions || controls.action) await execute({ controls, e, id: mainID })
           
         }, timer)
       }
@@ -2574,7 +2578,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
   var global = window.global
   var _params = params, viewId = id
 
-  if (controls) actions = controls.actions
+  if (controls) actions = controls.actions || controls.action
 
   // execute actions
   toArray(actions).map(_action => {
@@ -4017,7 +4021,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -4627,7 +4631,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "getInput()") {
             
-            if (o.nodeType === Node.ELEMENT_NODE) {
+            if (typeof o === "string") answer = views[o].getElementsByTagName("INPUT")[0]
+            else if (o.nodeType === Node.ELEMENT_NODE) {
                 if (views[o.id].type === "Input") answer = o
                 else answer = o.getElementsByTagName("INPUT")[0]
             } else {
@@ -5909,6 +5914,25 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             answer = o.element
 
+        } else if (k0 === "checked()") {
+
+            var _o
+            if (typeof o === "string") _o = views[o] // id
+            else if (o.nodeType === Node.ELEMENT_NODE) _o = o // element
+            else if (o.type === "Input") _o = o.element // view
+            else _o = o
+
+            if (value !== undefined && key) answer = _o.checked = value
+            else answer = _o.checked
+        
+        } else if (k0 === "check()") {
+
+            breakRequest = true
+            if (typeof o === "string") answer = views[o].checked = true // id
+            else if (o.nodeType === Node.ELEMENT_NODE) answer = o.checked = true // element
+            else if (o.type === "Input") answer = o.element.checked = true // view
+            else answer = o.checked = true 
+        
         } else if (k0 === "parseFloat()") {
             
             answer = parseFloat(o)
@@ -6043,7 +6067,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o === "object") {
                 if (key && value !== undefined) answer = o.element.readOnly = value
                 answer = o.element.readOnly
-            } else if (o.nodeType === Node. ELEMENT_NODE) {
+            } else if (o.nodeType === Node.ELEMENT_NODE) {
                 if (key && value !== undefined) answer = o.readOnly = value
                 answer = o.readOnly
             }
@@ -6070,7 +6094,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             var _id
             if (args[1]) _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
-            else _id = o.id
+
+            if (typeof _id === "object") _id = o.id
             return require("./update").update({ id: _id })
 
         } else if (k0 === "save()") {
@@ -7710,6 +7735,7 @@ module.exports = {
     
     innerHTML = toArray(view.children).map((child, index) => {
 
+      if (!child) return
       var id = child.id || generate()
       views[id] = clone(child)
       views[id].id = id
@@ -8072,6 +8098,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
 
       mountDataUsed = true
       params.Data = view.Data = view.Data || generate()
+      // problem is here maybe-------------------------------------------------------------------- global[view.Data] is multiplicating
       params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
       
       // duplicated element
@@ -8839,7 +8866,7 @@ const watch = ({ controls, id }) => {
             if (!approved) return
             
             // once
-            if (controls.actions) await execute({ controls, id })
+            if (controls.actions || controls.action) await execute({ controls, id })
                 
             // await params
             if (view.await) toParam({ id, string: view.await.join(';') })

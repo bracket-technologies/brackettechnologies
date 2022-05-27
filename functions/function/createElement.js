@@ -42,6 +42,10 @@ var createElement = ({ _window, id, req, res }) => {
   view.style = view.style || {}
 
   // id
+  var priorityId = false
+  if (view.type.split(":")[1]) priorityId = true
+  id = view.id = view.type.split(":")[1] || id
+  view.type = view.type.split(":")[0]
   view.id = view.id || generate()
   id = view.id
 
@@ -74,11 +78,12 @@ var createElement = ({ _window, id, req, res }) => {
     
     params = toParam({ _window, string: params, id, req, res, mount: true })
     
-    if (params.id && params.id !== id) {
+    if (params.id && params.id !== id && !priorityId) {
 
       delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
-    }
+
+    } else if (priorityId) view.id = id // we have View:id & an id parameter. the priority is for View:id
 
     // view
     if (params.view) {
@@ -94,7 +99,7 @@ var createElement = ({ _window, id, req, res }) => {
       }
     }
   }
-
+  
   // for droplist
   if (parent.unDeriveData || view.unDeriveData) {
 

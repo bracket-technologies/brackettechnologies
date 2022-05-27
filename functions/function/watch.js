@@ -48,7 +48,7 @@ const watch = ({ controls, id }) => {
             if (!approved) return
             
             // once
-            if (controls.actions) await execute({ controls, id })
+            if (controls.actions || controls.action) await execute({ controls, id })
                 
             // await params
             if (view.await) toParam({ id, string: view.await.join(';') })

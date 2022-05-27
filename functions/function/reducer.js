@@ -208,7 +208,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -818,7 +818,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "getInput()") {
             
-            if (o.nodeType === Node.ELEMENT_NODE) {
+            if (typeof o === "string") answer = views[o].getElementsByTagName("INPUT")[0]
+            else if (o.nodeType === Node.ELEMENT_NODE) {
                 if (views[o.id].type === "Input") answer = o
                 else answer = o.getElementsByTagName("INPUT")[0]
             } else {
@@ -2100,6 +2101,25 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             answer = o.element
 
+        } else if (k0 === "checked()") {
+
+            var _o
+            if (typeof o === "string") _o = views[o] // id
+            else if (o.nodeType === Node.ELEMENT_NODE) _o = o // element
+            else if (o.type === "Input") _o = o.element // view
+            else _o = o
+
+            if (value !== undefined && key) answer = _o.checked = value
+            else answer = _o.checked
+        
+        } else if (k0 === "check()") {
+
+            breakRequest = true
+            if (typeof o === "string") answer = views[o].checked = true // id
+            else if (o.nodeType === Node.ELEMENT_NODE) answer = o.checked = true // element
+            else if (o.type === "Input") answer = o.element.checked = true // view
+            else answer = o.checked = true 
+        
         } else if (k0 === "parseFloat()") {
             
             answer = parseFloat(o)
@@ -2234,7 +2254,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o === "object") {
                 if (key && value !== undefined) answer = o.element.readOnly = value
                 answer = o.element.readOnly
-            } else if (o.nodeType === Node. ELEMENT_NODE) {
+            } else if (o.nodeType === Node.ELEMENT_NODE) {
                 if (key && value !== undefined) answer = o.readOnly = value
                 answer = o.readOnly
             }
@@ -2261,7 +2281,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             var _id
             if (args[1]) _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
-            else _id = o.id
+
+            if (typeof _id === "object") _id = o.id
             return require("./update").update({ id: _id })
 
         } else if (k0 === "save()") {

@@ -3,15 +3,15 @@
   "controls": [
     {
       "actions": [
-        "async():search:[update:user-file]?search.collection=_user_;search.field.projects.contains=)(:project;search.headers.project=)(:project;async():[)(:data.editor.user=().search.data.value()]?!)(:data.editor.user",
-        "async():search:[update:project-file]:[update:sidebar-items]?search.collection=_project_;search.doc=)(:project;search.headers.project=)(:project;async():[)(:data.editor.project=().search.data]?!)(:data.editor.project",
-        "async():search:[update:collection-list]?search.collection=collection;search.headers.project=)(:project;async():[)(:data.editor.collection=().search.data]?!)(:data.editor.collection",
-        "async():search:[update:page-list]?search.collection=page;search.headers.project=)(:project;async():[)(:data.editor.page=().search.data]?!)(:data.editor.page",
-        "async():search:[update:view-list]?search.collection=view;search.headers.project=)(:project;async():[)(:data.editor.view=().search.data]?!)(:data.editor.view",
-        "async():search:[update:hotel-list]?search.collection=hotel;search.headers.project=)(:project;search.limit=25;async():[)(:data.editor.hotel=().search.data]?!)(:data.editor.hotel",
-        "async():search:[update:product-list]?search.collection=product;search.headers.project=)(:project;search.limit=25;async():[)(:data.editor.product=().search.data]?!)(:data.editor.product",
-        "async():search:[update:gallery-view]?search.collection=storage;search.headers.project=)(:project;search.field.title.equals=image;search.limit=25;async():[)(:gallery-images=().search.data]?!)(:gallery-images",
-        "async():search:[update:storage-list]?search.collection=storage;search.headers.project=)(:project;async():[)(:data.editor.storage=().search.data]?!)(:data.editor.storage"
+        "wait():search:[update:user-file]?search.collection=_user_;search.field.projects.contains=)(:project;search.headers.project=)(:project;wait():[)(:data.editor.user=().search.data.value()]?!)(:data.editor.user",
+        "wait():search:[update:project-file]:[update:sidebar-items]?search.collection=_project_;search.doc=)(:project;search.headers.project=)(:project;wait():[)(:data.editor.project=().search.data]?!)(:data.editor.project",
+        "wait():search:[update:collection-list]?search.collection=collection;search.headers.project=)(:project;wait():[)(:data.editor.collection=().search.data]?!)(:data.editor.collection",
+        "wait():search:[update:page-list]?search.collection=page;search.headers.project=)(:project;wait():[)(:data.editor.page=().search.data]?!)(:data.editor.page",
+        "wait():search:[update:view-list]?search.collection=view;search.headers.project=)(:project;wait():[)(:data.editor.view=().search.data]?!)(:data.editor.view",
+        "wait():search:[update:hotel-list]?search.collection=hotel;search.headers.project=)(:project;search.limit=25;wait():[)(:data.editor.hotel=().search.data]?!)(:data.editor.hotel",
+        "wait():search:[update:product-list]?search.collection=product;search.headers.project=)(:project;search.limit=25;wait():[)(:data.editor.product=().search.data]?!)(:data.editor.product",
+        "wait():search:[update:gallery-view]?search.collection=storage;search.headers.project=)(:project;search.field.title.equals=image;search.limit=25;wait():[)(:gallery-images=().search.data]?!)(:gallery-images",
+        "wait():search:[update:storage-list]?search.collection=storage;search.headers.project=)(:project;wait():[)(:data.editor.storage=().search.data]?!)(:data.editor.storage"
       ],
       "event": "loaded"
     }
@@ -41,13 +41,13 @@
                   "type": "Switch?icon.off.name=bi-brightness-low;icon.on.name=bi-moon;style.margin=0 2rem;mode.dark.style.backgroundColor=#646464?false",
                   "controls": [
                     {
-                      "actions": "switchMode?mode=if():[el().checked]:dark.else():light",
+                      "actions": "switchMode?mode=if():[el().checked]:dark:light",
                       "event": "click"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #eee;style.borderLeft=1px solid #eee;droplist.items=)(:data.editor.user.project;droplist.disabled",
+                  "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #eee;style.borderLeft=1px solid #eee;droplist.items=)(:data.editor.user.project;droplist.readonly",
                   "children": [
                     {
                       "type": "Text?text=project;style.fontSize=1.5rem;style.marginRight=.5rem;style.color=#888"
@@ -74,7 +74,7 @@
                   "controls": [
                     {
                       "event": "click??!)(:open-map.hasNestedArray();!)(:open-map.hasEmptyField()",
-                      "actions": "async():save:note?note.text='File saved successfully!';save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].data()"
+                      "actions": "wait():save:note?note.text='File saved successfully!';save.collection=)(:open-collection;save.headers.project=)(:project;save.doc=)(:open-doc;save.data=className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].data();)(:data.editor.[)(:open-collection].[)(:open-doc]=className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].data()"
                     }
                   ]
                 }
@@ -168,7 +168,7 @@
         {
           "controls": [
             {
-              "actions": "async():erase:note:[update:[)(:open-collection+-list]]?note.text=File has been erased!;erase.collection=)(:open-collection;erase.doc=)(:open-doc;erase.headers.project=)(:project;async():[)(:data.editor.[)(:open-collection].[)(:open-doc].del();)(:open-docs.pullItem():[)(:open-collection+/+().open-doc];():open-view.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].rem();():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]]",
+              "actions": "wait():erase:note:[update:[)(:open-collection+-list]]?note.text=File has been erased!;erase.collection=)(:open-collection;erase.doc=)(:open-doc;erase.headers.project=)(:project;wait():[)(:data.editor.[)(:open-collection].[)(:open-doc].del();)(:open-docs.pullItem():[)(:open-collection+/+().open-doc];():open-view.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].rem();():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].rem();if():[)(:open-docs.len()=0]:[():data-viewer-bar.style().display=none]]",
               "event": "click?popup()"
             }
           ],

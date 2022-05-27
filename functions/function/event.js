@@ -135,7 +135,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
           // execute
-          if (controls.actions) await execute({ _window, req, res, controls, e, id: mainID })
+          if (controls.actions || controls.action) await execute({ _window, req, res, controls, e, id: mainID })
         }, timer)
       }
       
@@ -186,7 +186,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           // approval
           if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
           
-          if (controls.actions) await execute({ controls, e, id: mainID })
+          if (controls.actions || controls.action) await execute({ controls, e, id: mainID })
           
         }, timer)
       }

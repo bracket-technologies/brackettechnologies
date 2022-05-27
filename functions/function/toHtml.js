@@ -20,6 +20,7 @@ module.exports = {
     
     innerHTML = toArray(view.children).map((child, index) => {
 
+      if (!child) return
       var id = child.id || generate()
       views[id] = clone(child)
       views[id].id = id
