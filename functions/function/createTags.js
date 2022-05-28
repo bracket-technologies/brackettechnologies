@@ -35,7 +35,6 @@ const createTags = ({ _window, id, req, res }) => {
     delete view.mapType
     
     if (data.length > 0) {
-      
       return data.map((_data, index) => {
         
         var id = generate()

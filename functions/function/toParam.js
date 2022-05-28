@@ -81,7 +81,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (param.slice(0, 10) === "mouseenter") {
 
       param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.mouseenter = view.mouseenter || ""
       return view.mouseenter += `${param};`
     }
@@ -90,7 +90,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
 
       param = param.slice(6)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.click = view.click || ""
       return view.click += `${param};`
     }
@@ -99,7 +99,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (param.slice(0, 6) === "change") {
 
       param = param.slice(7)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.change = view.change || ""
       return view.change += `${param};`
     }
@@ -108,36 +108,45 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (param.slice(0, 10) === "mouseleave") {
 
       param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.mouseleave = view.mouseleave || ""
       return view.mouseleave += `${param};`
     }
 
     // mouseover
-    if (param.slice(0, 10) === "mouseover") {
+    if (param.slice(0, 9) === "mouseover") {
 
-      param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      param = param.slice(10)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.mouseover = view.mouseover || ""
       return view.mouseover += `${param};`
     }
 
     // keyup
-    if (param.slice(0, 10) === "keyup") {
+    if (param.slice(0, 5) === "keyup") {
 
-      param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      param = param.slice(6)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.keyup = view.keyup || ""
       return view.keyup += `${param};`
     }
 
     // keydown
-    if (param.slice(0, 10) === "keydown") {
+    if (param.slice(0, 7) === "keydown") {
 
-      param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      param = param.slice(8)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.keydown = view.keydown || ""
       return view.keydown += `${param};`
+    }
+
+    // loaded
+    if (param.slice(0, 6) === "loaded") {
+
+      param = param.slice(7)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+      view.loaded = view.loaded || ""
+      return view.loaded += `${param};`
     }
     
     if (value === undefined) value = generate()
@@ -209,11 +218,11 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     // mount data directly when found
     if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view && view.data !== undefined && !view.Data))) {
 
+      if (params.Data || (params.data !== undefined && !view.Data)) view.derivations = []
       mountDataUsed = true
-      params.Data = view.Data = view.Data || generate()
-      // problem is here maybe-------------------------------------------------------------------- global[view.Data] is multiplicating
+      params.Data = view.Data = params.Data || view.Data || generate()
       params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
-      
+
       // duplicated element
       if (view.duplicatedElement) {
 

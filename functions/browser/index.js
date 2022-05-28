@@ -309,7 +309,7 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": `click:[1stChild().id];click:[2ndChild().id]?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
+                "event": `click:1stChild();click:2ndChild()?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
             }, {
                 "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[)(:clickedElement];!droplist.contains():[)(:clickedElement]`
             }]
@@ -948,23 +948,13 @@ module.exports = ({ controls }) => {
 }
 
 },{}],21:[function(require,module,exports){
-const { toString } = require("../function/toString")
-
-module.exports = ({ id }) => {
-    
-    var params = ""
-    var local = window.views[id]
-    
-    Object.entries(local.loaded).map(([key, val]) => {
-        if (key === "style") key = "style()"
-        params += `().${toString({ [key]: val })}`
-    })
+module.exports = ({ controls }) => {
     
     return [{
-        "event": `loaded?${params}`
+        event: `loaded?${controls}`
     }]
 }
-},{"../function/toString":110}],22:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 const { generate } = require("../function/generate");
 
 module.exports = ({ params }) => {
@@ -1712,7 +1702,7 @@ var createElement = ({ _window, id, req, res }) => {
   if (!view.type) return
 
   view.type = toCode({ _window, string: view.type })
-
+  
   // 'string'
   if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
 
@@ -1759,7 +1749,10 @@ var createElement = ({ _window, id, req, res }) => {
 
   // approval
   var approved = toApproval({ _window, string: conditions, id, req, res })
-  if (!approved) return
+  if (!approved) {
+    delete views[id]
+    return ""
+  }
 
   // push destructured params from type to view
   if (params) {
@@ -1839,7 +1832,6 @@ const createTags = ({ _window, id, req, res }) => {
     delete view.mapType
     
     if (data.length > 0) {
-      
       return data.map((_data, index) => {
         
         var id = generate()
@@ -4021,7 +4013,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -4350,16 +4342,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "parent()") {
 
-            var _view, _parent
-            if (args[1]) _view = reducer({ req, res, _window, id, path: args[1], value, key, object: answer, params, index, _, e })
-            else _view = o
-            
-            if (typeof _view === "string") _view = views[_view]    
-            if (!_view) return
-            if (typeof _view === "object") {
+            var _o, _parent
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
 
-                if (_view.status === "Mounted") _parent = views[_view.element.parentNode.id]
-                else _parent = views[_view.parent]
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "object") {
+
+                if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
+                else _parent = views[_o.parent]
             }
             if (!_parent) return
 
@@ -4367,8 +4358,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else return _parent
             
         } else if (k0 === "siblings()") {
+
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
             
-            var _parent = views[window.views[o.id].parent]
+            var _parent = views[window.views[_o.id].parent]
             answer = [..._parent.element.children].map(el => {
                 
                 var _id = el.id, _view = views[_id]
@@ -4385,22 +4382,31 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "next()" || k0 === "nextSibling()") {
 
-            var element = o.element
-            if (o.templated || o.link) element = views[o.parent].element
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            var element = _o.element
+            if (_o.templated || _o.link) element = views[_o.parent].element
             
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
             var _id = nextSibling.id
             answer = views[_id]
-
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
-
+            
         } else if (k0 === "nextSiblings()") {
 
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
             var nextSiblings = [], nextSibling
-            var element = o.element
-            if (o.templated || o.link) element = views[o.parent].element
+            var element = _o.element
+            if (_o.templated || _o.link) element = views[_o.parent].element
 
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
@@ -4413,63 +4419,84 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "last()" || k0 === "lastSibling()") {
 
-            var element = o.element
-            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            var element = _o.element
+            if (_o.templated || _o.link) element = views[o.parent].element
             var lastSibling = element.parentNode.children[element.parentNode.children.length - 1]
             var _id = lastSibling.id
             answer = views[_id]
 
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
-
         } else if (k0 === "2ndlast()" || k0 === "2ndLast()" || k0 === "2ndLastSibling()") {
 
-            var element = o.element
-            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            var element = _o.element
+            if (_o.templated || _o.link) element = views[o.parent].element
             var seclastSibling = element.parentNode.children[element.parentNode.children.length - 2]
             var _id = seclastSibling.id
             answer = views[_id]
             
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
-
         } else if (k0 === "3rdlast()" || k0 === "3rdLast()" || k0 === "3rdLastSibling()") {
 
-            var element = o.element
-            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            var element = _o.element
+            if (_o.templated || _o.link) element = views[o.parent].element
             var thirdlastSibling = element.parentNode.children[element.parentNode.children.length - 3]
             var _id = thirdlastSibling.id
             answer = views[_id]
 
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
-
         } else if (k0 === "1st()" || k0 === "first()" || k0 === "firstSibling()") {
 
-            var element = o.element
-            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            var element = _o.element
+            if (_o.templated || _o.link) element = views[o.parent].element
             var firstSibling = element.parentNode.children[0]
             var _id = firstSibling.id
             answer = views[_id]
 
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
-
         } else if (k0 === "2nd()" || k0 === "second()" || k0 === "secondSibling()") {
 
-            var element = o.element
-            if (o.templated || o.link) element = _window ? _window.views[o.parent].element : window.views[o.parent].element
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            var element = _o.element
+            if (_o.templated || _o.link) element = views[o.parent].element
             var secondSibling = element.parentNode.children[1]
             var _id = secondSibling.id
             answer = views[_id]
 
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
-
         } else if (k0 === "prev()" || k0 === "prevSibling()") {
 
-            var element, _el = o.element
-            if (o.templated || o.link) _el = _window ? _window.views[o.parent] : window.views[o.parent]
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            var element, _el = _o.element
+            if (_o.templated || _o.link) _el = views[_o.parent]
             
             if (!_el) return
             if (_el.nodeType === Node.ELEMENT_NODE) element = _el
@@ -4480,86 +4507,107 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!previousSibling) return
             var _id = previousSibling.id
             answer = views[_id]
+
+        } else if (k0 === "1stChild()") {// o could be a string or element or view
             
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
 
-        } else if (k0 === "1stChild()") {
-            
-            if (!o.element) return
-            if (!o.element.children[0]) return undefined
-            var _id = o.element.children[0].id
-            if ((views[_id]).component === "Input") 
-            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
-            
-            answer = views[_id]
-            
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
 
-        } else if (k0 === "2ndChild()") {
-            
-            if (!o.element.children[0]) return undefined
-            var _id = (o.element.children[1] || o.element.children[0]).id
-            if ((views[_id]).component === "Input") 
-            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
-            answer = views[_id]
-
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
-
-        } else if (k0 === "3rdChild()") {
-
-            if (!o.element.children[0]) return undefined
-            var _id = (o.element.children[2] || o.element.children[1] || o.element.children[0]).id
-            if ((views[_id]).component === "Input")
-            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
-            answer = views[_id]
-
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
-
-        } else if (k0 === "3rdlastChild()") {
-
-            if (!o.element.children[0]) return undefined
-            var _id = o.element.children[o.element.children.length - 3].id
-            if ((views[_id]).component === "Input")
-            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
+            if (!_o.element) return
+            if (!_o.element.children[0]) return
+            var _id = _o.element.children[0].id
             
             answer = views[_id]
 
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+        } else if (k0 === "2ndChild()") {// o could be a string or element or view
+            
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
 
-        } else if (k0 === "2ndlastChild()" || k0 === "2ndLastChild()") {
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
 
-            if (!o.element.children[0]) return undefined
-            var _id = o.element.children[o.element.children.length - 2].id
-            if ((views[_id]).component === "Input")
-            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
+            if (!_o.element) return
+            if (!_o.element.children[1]) return
+            var _id = _o.element.children[1].id
             
             answer = views[_id]
 
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+        } else if (k0 === "3rdChild()") {// o could be a string or element or view
+            
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
 
-        } else if (k0 === "lastChild()") {
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
 
-            if (!o.element) return
-            if (!o.element.children[0]) return undefined
-            var _id = o.element.children[o.element.children.length - 1].id
-            if ((views[_id]).component === "Input")
-            _id = (views[_id]).element.getElementsByTagName("INPUT")[0].id
+            if (!_o.element) return
+            if (!_o.element.children[2]) return
+            var _id = _o.element.children[2].id
             
             answer = views[_id]
 
-            var args = k.split(":").slice(1)
-            if (args.length > 0) args.map(arg => reducer({ req, res, _window, id, path: arg, value, key, object: answer, params, index, _, e }))
+        } else if (k0 === "3rdlastChild()") { // o could be a string or element or view
+            
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
+
+            if (!_o.element) return
+            if (!_o.element.children[_o.element.children - 3]) return
+            var _id = _o.element.children[_o.element.children - 3].id
+            
+            answer = views[_id]
+
+        } else if (k0 === "2ndlastChild()" || k0 === "2ndLastChild()") { // o could be a string or element or view
+            
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
+
+            if (!_o.element) return
+            if (!_o.element.children[_o.element.children - 2]) return
+            var _id = _o.element.children[_o.element.children - 2].id
+            
+            answer = views[_id]
+
+        } else if (k0 === "lastChild()") {  // o could be a string or element or view
+            
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
+
+            if (!_o.element) return
+            if (!_o.element.children[_o.element.children - 1]) return
+            var _id = _o.element.children[_o.element.children - 1].id
+            
+            answer = views[_id]
 
         } else if (k0 === "children()") {
             
-            if (!o.element) return
-            answer = [...o.element.children].map(el => {
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
+            if (!_o.element) return
+            answer = [..._o.element.children].map(el => {
                 
                 var _id = el.id, _view = views[_id]
                 if (!_view) return
@@ -4629,19 +4677,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             answer = [..._input, ..._textarea].map(o => window.views[o.id])
 
-        } else if (k0 === "getInput()") {
+        } else if (k0 === "getInput()" || k0 === "input()") {
             
-            if (typeof o === "string") answer = views[o].getElementsByTagName("INPUT")[0]
-            else if (o.nodeType === Node.ELEMENT_NODE) {
-                if (views[o.id].type === "Input") answer = o
-                else answer = o.getElementsByTagName("INPUT")[0]
-            } else {
-                if (o.type === "Input") answer = o
-                else answer = o.element && o.element.getElementsByTagName("INPUT")[0]
-            }
-            
-            if (!answer) return
-            answer = views[answer.id]
+            var _o, _el, __o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string") __o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
+
+            if (!__o) return
+            if (__o.type !== "Input") answer = __o.element && views[__o.element.getElementsByTagName("INPUT")[0].id]
+            else answer = __o
 
         } else if (k0 === "position()") {
 
@@ -4707,8 +4754,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "click()") {
             
-            if (o.nodeType === Node.ELEMENT_NODE) o.click()
-            else if (typeof o === "object" && o.element) o.element.click()
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+            
+            if (typeof _o === "string" && views[_o]) views[_o].element.click()
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
+            else if (typeof _o === "object" && _o.element) _o.element.click()
 
         } else if (k0 === "focus()") {
 
@@ -5210,7 +5262,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "clone()") {
             
-            answer = clone(o)
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, e })
+            else _o = o
+            answer = clone(_o)
 
         } else if (k0 === "override()") {
             
@@ -5242,10 +5297,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else answer = _o = _obj
 
         } else if (k0 === "text()" || k0 === "val()" || k0 === "txt()") {
+
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, e })
+            else _o = o
             
             var el
-            if (o.nodeType === Node.ELEMENT_NODE) el = o
-            else if (o.element) el = o.element
+            if (typeof _o === "string") el = views[_o].element
+            else if (_o.nodeType === Node.ELEMENT_NODE) el = _o
+            else if (_o.element) el = _o.element
             
             if (el) {
                 if (window.views[el.id].type === "Input") {
@@ -5260,13 +5320,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 }
             } else if (view && view.type === "Input") {
 
-                if (i === lastIndex && key && value !== undefined) o[view.element.value] = value
-                else return answer = o[view.element.value]
+                if (i === lastIndex && key && value !== undefined) _o[view.element.value] = value
+                else return answer = _o[view.element.value]
 
             } else if (view && view.type !== "Input") {
 
-                if (i === lastIndex && key && value !== undefined) o[view.element.innerHTML] = value
-                else return answer = o[view.element.innerHTML]
+                if (i === lastIndex && key && value !== undefined) _o[view.element.innerHTML] = value
+                else return answer = _o[view.element.innerHTML]
             }
  
         } else if (k0 === "min()") {
@@ -5466,7 +5526,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "uppercase()" || k0 === "toUpperCase()") {
             
-            answer = o.toUpperCase()
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            else _o = o
+            answer = _o.toUpperCase()
             
         } else if (k0 === "lowercase()" || k0 === "toLowerCase()") {
             
@@ -5550,6 +5613,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             if (!isNaN(o) && (parseFloat(o) + "").length === 13) o = new Date(parseFloat(o))
             answer = o.toUTCString()
+            
+        } else if (k0 === "uuid()") {
+            
+            answer = require("uuid").v4()
+            console.log(answer);
             
         } else if (k0 === "time()") {
 
@@ -6365,7 +6433,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./capitalize":34,"./clone":36,"./cookie":40,"./decode":48,"./execute":53,"./exportJson":54,"./focus":57,"./generate":59,"./getDateTime":60,"./getDaysInMonth":61,"./getType":63,"./importJson":64,"./isEqual":67,"./note":73,"./refresh":79,"./remove":81,"./route":83,"./save":84,"./setPosition":89,"./toApproval":95,"./toArray":96,"./toClock":99,"./toCode":100,"./toId":104,"./toNumber":105,"./toParam":107,"./toPrice":108,"./toSimplifiedDate":109,"./toValue":112,"./toggleView":113,"./update":114}],79:[function(require,module,exports){
+},{"./capitalize":34,"./clone":36,"./cookie":40,"./decode":48,"./execute":53,"./exportJson":54,"./focus":57,"./generate":59,"./getDateTime":60,"./getDaysInMonth":61,"./getType":63,"./importJson":64,"./isEqual":67,"./note":73,"./refresh":79,"./remove":81,"./route":83,"./save":84,"./setPosition":89,"./toApproval":95,"./toArray":96,"./toClock":99,"./toCode":100,"./toId":104,"./toNumber":105,"./toParam":107,"./toPrice":108,"./toSimplifiedDate":109,"./toValue":112,"./toggleView":113,"./update":114,"uuid":151}],79:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -7968,7 +8036,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (param.slice(0, 10) === "mouseenter") {
 
       param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.mouseenter = view.mouseenter || ""
       return view.mouseenter += `${param};`
     }
@@ -7977,7 +8045,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
 
       param = param.slice(6)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.click = view.click || ""
       return view.click += `${param};`
     }
@@ -7986,7 +8054,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (param.slice(0, 6) === "change") {
 
       param = param.slice(7)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.change = view.change || ""
       return view.change += `${param};`
     }
@@ -7995,36 +8063,45 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (param.slice(0, 10) === "mouseleave") {
 
       param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.mouseleave = view.mouseleave || ""
       return view.mouseleave += `${param};`
     }
 
     // mouseover
-    if (param.slice(0, 10) === "mouseover") {
+    if (param.slice(0, 9) === "mouseover") {
 
-      param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      param = param.slice(10)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.mouseover = view.mouseover || ""
       return view.mouseover += `${param};`
     }
 
     // keyup
-    if (param.slice(0, 10) === "keyup") {
+    if (param.slice(0, 5) === "keyup") {
 
-      param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      param = param.slice(6)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.keyup = view.keyup || ""
       return view.keyup += `${param};`
     }
 
     // keydown
-    if (param.slice(0, 10) === "keydown") {
+    if (param.slice(0, 7) === "keydown") {
 
-      param = param.slice(11)
-      if (param.slice(0, 7) === "coded()") param = global.codes[param]
+      param = param.slice(8)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.keydown = view.keydown || ""
       return view.keydown += `${param};`
+    }
+
+    // loaded
+    if (param.slice(0, 6) === "loaded") {
+
+      param = param.slice(7)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+      view.loaded = view.loaded || ""
+      return view.loaded += `${param};`
     }
     
     if (value === undefined) value = generate()
@@ -8096,11 +8173,11 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     // mount data directly when found
     if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view && view.data !== undefined && !view.Data))) {
 
+      if (params.Data || (params.data !== undefined && !view.Data)) view.derivations = []
       mountDataUsed = true
-      params.Data = view.Data = view.Data || generate()
-      // problem is here maybe-------------------------------------------------------------------- global[view.Data] is multiplicating
+      params.Data = view.Data = params.Data || view.Data || generate()
       params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
-      
+
       // duplicated element
       if (view.duplicatedElement) {
 
@@ -11662,4 +11739,843 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[1]);
+},{}],151:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "v1", {
+  enumerable: true,
+  get: function () {
+    return _v.default;
+  }
+});
+Object.defineProperty(exports, "v3", {
+  enumerable: true,
+  get: function () {
+    return _v2.default;
+  }
+});
+Object.defineProperty(exports, "v4", {
+  enumerable: true,
+  get: function () {
+    return _v3.default;
+  }
+});
+Object.defineProperty(exports, "v5", {
+  enumerable: true,
+  get: function () {
+    return _v4.default;
+  }
+});
+Object.defineProperty(exports, "NIL", {
+  enumerable: true,
+  get: function () {
+    return _nil.default;
+  }
+});
+Object.defineProperty(exports, "version", {
+  enumerable: true,
+  get: function () {
+    return _version.default;
+  }
+});
+Object.defineProperty(exports, "validate", {
+  enumerable: true,
+  get: function () {
+    return _validate.default;
+  }
+});
+Object.defineProperty(exports, "stringify", {
+  enumerable: true,
+  get: function () {
+    return _stringify.default;
+  }
+});
+Object.defineProperty(exports, "parse", {
+  enumerable: true,
+  get: function () {
+    return _parse.default;
+  }
+});
+
+var _v = _interopRequireDefault(require("./v1.js"));
+
+var _v2 = _interopRequireDefault(require("./v3.js"));
+
+var _v3 = _interopRequireDefault(require("./v4.js"));
+
+var _v4 = _interopRequireDefault(require("./v5.js"));
+
+var _nil = _interopRequireDefault(require("./nil.js"));
+
+var _version = _interopRequireDefault(require("./version.js"));
+
+var _validate = _interopRequireDefault(require("./validate.js"));
+
+var _stringify = _interopRequireDefault(require("./stringify.js"));
+
+var _parse = _interopRequireDefault(require("./parse.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./nil.js":153,"./parse.js":154,"./stringify.js":158,"./v1.js":159,"./v3.js":160,"./v4.js":162,"./v5.js":163,"./validate.js":164,"./version.js":165}],152:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+/*
+ * Browser-compatible JavaScript MD5
+ *
+ * Modification of JavaScript MD5
+ * https://github.com/blueimp/JavaScript-MD5
+ *
+ * Copyright 2011, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ *
+ * Based on
+ * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+ * Digest Algorithm, as defined in RFC 1321.
+ * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for more info.
+ */
+function md5(bytes) {
+  if (typeof bytes === 'string') {
+    const msg = unescape(encodeURIComponent(bytes)); // UTF8 escape
+
+    bytes = new Uint8Array(msg.length);
+
+    for (let i = 0; i < msg.length; ++i) {
+      bytes[i] = msg.charCodeAt(i);
+    }
+  }
+
+  return md5ToHexEncodedArray(wordsToMd5(bytesToWords(bytes), bytes.length * 8));
+}
+/*
+ * Convert an array of little-endian words to an array of bytes
+ */
+
+
+function md5ToHexEncodedArray(input) {
+  const output = [];
+  const length32 = input.length * 32;
+  const hexTab = '0123456789abcdef';
+
+  for (let i = 0; i < length32; i += 8) {
+    const x = input[i >> 5] >>> i % 32 & 0xff;
+    const hex = parseInt(hexTab.charAt(x >>> 4 & 0x0f) + hexTab.charAt(x & 0x0f), 16);
+    output.push(hex);
+  }
+
+  return output;
+}
+/**
+ * Calculate output length with padding and bit length
+ */
+
+
+function getOutputLength(inputLength8) {
+  return (inputLength8 + 64 >>> 9 << 4) + 14 + 1;
+}
+/*
+ * Calculate the MD5 of an array of little-endian words, and a bit length.
+ */
+
+
+function wordsToMd5(x, len) {
+  /* append padding */
+  x[len >> 5] |= 0x80 << len % 32;
+  x[getOutputLength(len) - 1] = len;
+  let a = 1732584193;
+  let b = -271733879;
+  let c = -1732584194;
+  let d = 271733878;
+
+  for (let i = 0; i < x.length; i += 16) {
+    const olda = a;
+    const oldb = b;
+    const oldc = c;
+    const oldd = d;
+    a = md5ff(a, b, c, d, x[i], 7, -680876936);
+    d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
+    c = md5ff(c, d, a, b, x[i + 2], 17, 606105819);
+    b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+    a = md5ff(a, b, c, d, x[i + 4], 7, -176418897);
+    d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
+    c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341);
+    b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+    a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416);
+    d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
+    c = md5ff(c, d, a, b, x[i + 10], 17, -42063);
+    b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+    a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682);
+    d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
+    c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
+    b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+    a = md5gg(a, b, c, d, x[i + 1], 5, -165796510);
+    d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
+    c = md5gg(c, d, a, b, x[i + 11], 14, 643717713);
+    b = md5gg(b, c, d, a, x[i], 20, -373897302);
+    a = md5gg(a, b, c, d, x[i + 5], 5, -701558691);
+    d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
+    c = md5gg(c, d, a, b, x[i + 15], 14, -660478335);
+    b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+    a = md5gg(a, b, c, d, x[i + 9], 5, 568446438);
+    d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
+    c = md5gg(c, d, a, b, x[i + 3], 14, -187363961);
+    b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+    a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467);
+    d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
+    c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
+    b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+    a = md5hh(a, b, c, d, x[i + 5], 4, -378558);
+    d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
+    c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
+    b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+    a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060);
+    d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
+    c = md5hh(c, d, a, b, x[i + 7], 16, -155497632);
+    b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+    a = md5hh(a, b, c, d, x[i + 13], 4, 681279174);
+    d = md5hh(d, a, b, c, x[i], 11, -358537222);
+    c = md5hh(c, d, a, b, x[i + 3], 16, -722521979);
+    b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+    a = md5hh(a, b, c, d, x[i + 9], 4, -640364487);
+    d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
+    c = md5hh(c, d, a, b, x[i + 15], 16, 530742520);
+    b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+    a = md5ii(a, b, c, d, x[i], 6, -198630844);
+    d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
+    c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
+    b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+    a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571);
+    d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
+    c = md5ii(c, d, a, b, x[i + 10], 15, -1051523);
+    b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+    a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359);
+    d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
+    c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380);
+    b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+    a = md5ii(a, b, c, d, x[i + 4], 6, -145523070);
+    d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
+    c = md5ii(c, d, a, b, x[i + 2], 15, 718787259);
+    b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+    a = safeAdd(a, olda);
+    b = safeAdd(b, oldb);
+    c = safeAdd(c, oldc);
+    d = safeAdd(d, oldd);
+  }
+
+  return [a, b, c, d];
+}
+/*
+ * Convert an array bytes to an array of little-endian words
+ * Characters >255 have their high-byte silently ignored.
+ */
+
+
+function bytesToWords(input) {
+  if (input.length === 0) {
+    return [];
+  }
+
+  const length8 = input.length * 8;
+  const output = new Uint32Array(getOutputLength(length8));
+
+  for (let i = 0; i < length8; i += 8) {
+    output[i >> 5] |= (input[i / 8] & 0xff) << i % 32;
+  }
+
+  return output;
+}
+/*
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+ * to work around bugs in some JS interpreters.
+ */
+
+
+function safeAdd(x, y) {
+  const lsw = (x & 0xffff) + (y & 0xffff);
+  const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return msw << 16 | lsw & 0xffff;
+}
+/*
+ * Bitwise rotate a 32-bit number to the left.
+ */
+
+
+function bitRotateLeft(num, cnt) {
+  return num << cnt | num >>> 32 - cnt;
+}
+/*
+ * These functions implement the four basic operations the algorithm uses.
+ */
+
+
+function md5cmn(q, a, b, x, s, t) {
+  return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b);
+}
+
+function md5ff(a, b, c, d, x, s, t) {
+  return md5cmn(b & c | ~b & d, a, b, x, s, t);
+}
+
+function md5gg(a, b, c, d, x, s, t) {
+  return md5cmn(b & d | c & ~d, a, b, x, s, t);
+}
+
+function md5hh(a, b, c, d, x, s, t) {
+  return md5cmn(b ^ c ^ d, a, b, x, s, t);
+}
+
+function md5ii(a, b, c, d, x, s, t) {
+  return md5cmn(c ^ (b | ~d), a, b, x, s, t);
+}
+
+var _default = md5;
+exports.default = _default;
+},{}],153:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = '00000000-0000-0000-0000-000000000000';
+exports.default = _default;
+},{}],154:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _validate = _interopRequireDefault(require("./validate.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function parse(uuid) {
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  let v;
+  const arr = new Uint8Array(16); // Parse ########-....-....-....-............
+
+  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
+  arr[1] = v >>> 16 & 0xff;
+  arr[2] = v >>> 8 & 0xff;
+  arr[3] = v & 0xff; // Parse ........-####-....-....-............
+
+  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
+  arr[5] = v & 0xff; // Parse ........-....-####-....-............
+
+  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
+  arr[7] = v & 0xff; // Parse ........-....-....-####-............
+
+  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
+  arr[9] = v & 0xff; // Parse ........-....-....-....-############
+  // (Use "/" to avoid 32-bit truncation when bit-shifting high-order bytes)
+
+  arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 0x10000000000 & 0xff;
+  arr[11] = v / 0x100000000 & 0xff;
+  arr[12] = v >>> 24 & 0xff;
+  arr[13] = v >>> 16 & 0xff;
+  arr[14] = v >>> 8 & 0xff;
+  arr[15] = v & 0xff;
+  return arr;
+}
+
+var _default = parse;
+exports.default = _default;
+},{"./validate.js":164}],155:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+exports.default = _default;
+},{}],156:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = rng;
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
+
+function rng() {
+  // lazy load so that environments that need to polyfill have a chance to do so
+  if (!getRandomValues) {
+    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
+    // find the complete implementation of crypto (msCrypto) on IE11.
+    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
+
+    if (!getRandomValues) {
+      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    }
+  }
+
+  return getRandomValues(rnds8);
+}
+},{}],157:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+// Adapted from Chris Veness' SHA1 code at
+// http://www.movable-type.co.uk/scripts/sha1.html
+function f(s, x, y, z) {
+  switch (s) {
+    case 0:
+      return x & y ^ ~x & z;
+
+    case 1:
+      return x ^ y ^ z;
+
+    case 2:
+      return x & y ^ x & z ^ y & z;
+
+    case 3:
+      return x ^ y ^ z;
+  }
+}
+
+function ROTL(x, n) {
+  return x << n | x >>> 32 - n;
+}
+
+function sha1(bytes) {
+  const K = [0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6];
+  const H = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
+
+  if (typeof bytes === 'string') {
+    const msg = unescape(encodeURIComponent(bytes)); // UTF8 escape
+
+    bytes = [];
+
+    for (let i = 0; i < msg.length; ++i) {
+      bytes.push(msg.charCodeAt(i));
+    }
+  } else if (!Array.isArray(bytes)) {
+    // Convert Array-like to Array
+    bytes = Array.prototype.slice.call(bytes);
+  }
+
+  bytes.push(0x80);
+  const l = bytes.length / 4 + 2;
+  const N = Math.ceil(l / 16);
+  const M = new Array(N);
+
+  for (let i = 0; i < N; ++i) {
+    const arr = new Uint32Array(16);
+
+    for (let j = 0; j < 16; ++j) {
+      arr[j] = bytes[i * 64 + j * 4] << 24 | bytes[i * 64 + j * 4 + 1] << 16 | bytes[i * 64 + j * 4 + 2] << 8 | bytes[i * 64 + j * 4 + 3];
+    }
+
+    M[i] = arr;
+  }
+
+  M[N - 1][14] = (bytes.length - 1) * 8 / Math.pow(2, 32);
+  M[N - 1][14] = Math.floor(M[N - 1][14]);
+  M[N - 1][15] = (bytes.length - 1) * 8 & 0xffffffff;
+
+  for (let i = 0; i < N; ++i) {
+    const W = new Uint32Array(80);
+
+    for (let t = 0; t < 16; ++t) {
+      W[t] = M[i][t];
+    }
+
+    for (let t = 16; t < 80; ++t) {
+      W[t] = ROTL(W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16], 1);
+    }
+
+    let a = H[0];
+    let b = H[1];
+    let c = H[2];
+    let d = H[3];
+    let e = H[4];
+
+    for (let t = 0; t < 80; ++t) {
+      const s = Math.floor(t / 20);
+      const T = ROTL(a, 5) + f(s, b, c, d) + e + K[s] + W[t] >>> 0;
+      e = d;
+      d = c;
+      c = ROTL(b, 30) >>> 0;
+      b = a;
+      a = T;
+    }
+
+    H[0] = H[0] + a >>> 0;
+    H[1] = H[1] + b >>> 0;
+    H[2] = H[2] + c >>> 0;
+    H[3] = H[3] + d >>> 0;
+    H[4] = H[4] + e >>> 0;
+  }
+
+  return [H[0] >> 24 & 0xff, H[0] >> 16 & 0xff, H[0] >> 8 & 0xff, H[0] & 0xff, H[1] >> 24 & 0xff, H[1] >> 16 & 0xff, H[1] >> 8 & 0xff, H[1] & 0xff, H[2] >> 24 & 0xff, H[2] >> 16 & 0xff, H[2] >> 8 & 0xff, H[2] & 0xff, H[3] >> 24 & 0xff, H[3] >> 16 & 0xff, H[3] >> 8 & 0xff, H[3] & 0xff, H[4] >> 24 & 0xff, H[4] >> 16 & 0xff, H[4] >> 8 & 0xff, H[4] & 0xff];
+}
+
+var _default = sha1;
+exports.default = _default;
+},{}],158:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _validate = _interopRequireDefault(require("./validate.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+const byteToHex = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).substr(1));
+}
+
+function stringify(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  const uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
+  // of the following:
+  // - One or more input array values don't map to a hex octet (leading to
+  // "undefined" in the uuid)
+  // - Invalid input values for the RFC `version` or `variant` fields
+
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Stringified UUID is invalid');
+  }
+
+  return uuid;
+}
+
+var _default = stringify;
+exports.default = _default;
+},{"./validate.js":164}],159:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _rng = _interopRequireDefault(require("./rng.js"));
+
+var _stringify = _interopRequireDefault(require("./stringify.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// **`v1()` - Generate time-based UUID**
+//
+// Inspired by https://github.com/LiosK/UUID.js
+// and http://docs.python.org/library/uuid.html
+let _nodeId;
+
+let _clockseq; // Previous uuid creation time
+
+
+let _lastMSecs = 0;
+let _lastNSecs = 0; // See https://github.com/uuidjs/uuid for API details
+
+function v1(options, buf, offset) {
+  let i = buf && offset || 0;
+  const b = buf || new Array(16);
+  options = options || {};
+  let node = options.node || _nodeId;
+  let clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq; // node and clockseq need to be initialized to random values if they're not
+  // specified.  We do this lazily to minimize issues related to insufficient
+  // system entropy.  See #189
+
+  if (node == null || clockseq == null) {
+    const seedBytes = options.random || (options.rng || _rng.default)();
+
+    if (node == null) {
+      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+      node = _nodeId = [seedBytes[0] | 0x01, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
+    }
+
+    if (clockseq == null) {
+      // Per 4.2.2, randomize (14 bit) clockseq
+      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
+    }
+  } // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+
+
+  let msecs = options.msecs !== undefined ? options.msecs : Date.now(); // Per 4.2.1.2, use count of uuid's generated during the current clock
+  // cycle to simulate higher resolution clock
+
+  let nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1; // Time since last uuid creation (in msecs)
+
+  const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 10000; // Per 4.2.1.2, Bump clockseq on clock regression
+
+  if (dt < 0 && options.clockseq === undefined) {
+    clockseq = clockseq + 1 & 0x3fff;
+  } // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+  // time interval
+
+
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+    nsecs = 0;
+  } // Per 4.2.1.2 Throw error if too many uuids are requested
+
+
+  if (nsecs >= 10000) {
+    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
+  }
+
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq; // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+
+  msecs += 12219292800000; // `time_low`
+
+  const tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+  b[i++] = tl >>> 24 & 0xff;
+  b[i++] = tl >>> 16 & 0xff;
+  b[i++] = tl >>> 8 & 0xff;
+  b[i++] = tl & 0xff; // `time_mid`
+
+  const tmh = msecs / 0x100000000 * 10000 & 0xfffffff;
+  b[i++] = tmh >>> 8 & 0xff;
+  b[i++] = tmh & 0xff; // `time_high_and_version`
+
+  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+
+  b[i++] = tmh >>> 16 & 0xff; // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+
+  b[i++] = clockseq >>> 8 | 0x80; // `clock_seq_low`
+
+  b[i++] = clockseq & 0xff; // `node`
+
+  for (let n = 0; n < 6; ++n) {
+    b[i + n] = node[n];
+  }
+
+  return buf || (0, _stringify.default)(b);
+}
+
+var _default = v1;
+exports.default = _default;
+},{"./rng.js":156,"./stringify.js":158}],160:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _v = _interopRequireDefault(require("./v35.js"));
+
+var _md = _interopRequireDefault(require("./md5.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const v3 = (0, _v.default)('v3', 0x30, _md.default);
+var _default = v3;
+exports.default = _default;
+},{"./md5.js":152,"./v35.js":161}],161:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+exports.URL = exports.DNS = void 0;
+
+var _stringify = _interopRequireDefault(require("./stringify.js"));
+
+var _parse = _interopRequireDefault(require("./parse.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function stringToBytes(str) {
+  str = unescape(encodeURIComponent(str)); // UTF8 escape
+
+  const bytes = [];
+
+  for (let i = 0; i < str.length; ++i) {
+    bytes.push(str.charCodeAt(i));
+  }
+
+  return bytes;
+}
+
+const DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+exports.DNS = DNS;
+const URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
+exports.URL = URL;
+
+function _default(name, version, hashfunc) {
+  function generateUUID(value, namespace, buf, offset) {
+    if (typeof value === 'string') {
+      value = stringToBytes(value);
+    }
+
+    if (typeof namespace === 'string') {
+      namespace = (0, _parse.default)(namespace);
+    }
+
+    if (namespace.length !== 16) {
+      throw TypeError('Namespace must be array-like (16 iterable integer values, 0-255)');
+    } // Compute hash of namespace and value, Per 4.3
+    // Future: Use spread syntax when supported on all platforms, e.g. `bytes =
+    // hashfunc([...namespace, ... value])`
+
+
+    let bytes = new Uint8Array(16 + value.length);
+    bytes.set(namespace);
+    bytes.set(value, namespace.length);
+    bytes = hashfunc(bytes);
+    bytes[6] = bytes[6] & 0x0f | version;
+    bytes[8] = bytes[8] & 0x3f | 0x80;
+
+    if (buf) {
+      offset = offset || 0;
+
+      for (let i = 0; i < 16; ++i) {
+        buf[offset + i] = bytes[i];
+      }
+
+      return buf;
+    }
+
+    return (0, _stringify.default)(bytes);
+  } // Function#name is not settable on some platforms (#270)
+
+
+  try {
+    generateUUID.name = name; // eslint-disable-next-line no-empty
+  } catch (err) {} // For CommonJS default export support
+
+
+  generateUUID.DNS = DNS;
+  generateUUID.URL = URL;
+  return generateUUID;
+}
+},{"./parse.js":154,"./stringify.js":158}],162:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _rng = _interopRequireDefault(require("./rng.js"));
+
+var _stringify = _interopRequireDefault(require("./stringify.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function v4(options, buf, offset) {
+  options = options || {};
+
+  const rnds = options.random || (options.rng || _rng.default)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return (0, _stringify.default)(rnds);
+}
+
+var _default = v4;
+exports.default = _default;
+},{"./rng.js":156,"./stringify.js":158}],163:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _v = _interopRequireDefault(require("./v35.js"));
+
+var _sha = _interopRequireDefault(require("./sha1.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const v5 = (0, _v.default)('v5', 0x50, _sha.default);
+var _default = v5;
+exports.default = _default;
+},{"./sha1.js":157,"./v35.js":161}],164:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regex = _interopRequireDefault(require("./regex.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function validate(uuid) {
+  return typeof uuid === 'string' && _regex.default.test(uuid);
+}
+
+var _default = validate;
+exports.default = _default;
+},{"./regex.js":155}],165:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _validate = _interopRequireDefault(require("./validate.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function version(uuid) {
+  if (!(0, _validate.default)(uuid)) {
+    throw TypeError('Invalid UUID');
+  }
+
+  return parseInt(uuid.substr(14, 1), 16);
+}
+
+var _default = version;
+exports.default = _default;
+},{"./validate.js":164}]},{},[1]);

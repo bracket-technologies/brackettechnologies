@@ -24,7 +24,7 @@ var createElement = ({ _window, id, req, res }) => {
   if (!view.type) return
 
   view.type = toCode({ _window, string: view.type })
-
+  
   // 'string'
   if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
 
@@ -71,7 +71,10 @@ var createElement = ({ _window, id, req, res }) => {
 
   // approval
   var approved = toApproval({ _window, string: conditions, id, req, res })
-  if (!approved) return
+  if (!approved) {
+    delete views[id]
+    return ""
+  }
 
   // push destructured params from type to view
   if (params) {

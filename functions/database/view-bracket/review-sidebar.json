@@ -3,7 +3,7 @@
         {
             "children": [
                 {
-                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;click.sticky;style.transition=.2s"
+                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                 },
                 {
                     "type": "Text?class=dots;text=Review;style.fontSize=1.3rem"
@@ -12,8 +12,8 @@
                     "type": "Icon?style.display=none;tooltip.text=create new review;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                     "controls": [
                         {
-                            "event": "click?parent().next().style().display=flex;)(:open-doc.del();)(:open-collection=review",
-                            "actions": "async():[insert:[parent().next().id]]?insert.component=parent().next().children.0;async():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                            "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);)(:open-doc.del();)(:open-collection=review",
+                            "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
                         }
                     ]
                 }
@@ -35,7 +35,7 @@
             "type": "View?id=review-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
             "children": [
                 {
-                    "type": "[View]?data=)(:data.editor.review.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?)(:data.editor.review.keys().len()>0",
+                    "type": "[View]?data=)(:data.editor.review.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?)(:data.editor.review.keys().len()>0||[!)(:open-doc;)(:open-collection=review]",
                     "children": [
                         {
                             "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
@@ -49,13 +49,13 @@
                                     "event": "keyup?txt()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.review.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[)(:data.editor.review.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",
+                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[)(:data.editor.review.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
                                     "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.review.keys().inc():txt()||!txt()||txt().inc(): "
                                 },
                                 {
                                     "actions": [
-                                        "async():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
-                                        "async():save:note:[update:review-list]?save.collection=review;save.doc=txt();save.data=)(:data.editor.review.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!"
+                                        "wait():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
+                                        "wait():save:note:[update:review-list]?save.collection=review;save.doc=txt();save.data=)(:data.editor.review.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!;if():[!)(:open-doc]:[)(:new-file-created=true]"
                                     ],
                                     "event": "keyup?)(:data.editor.review.txt()=if():[)(:open-doc]:[)(:data.editor.review.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=)(:open-doc;!)(:data.editor.review.keys().inc():txt();!txt().inc(): "
                                 }
@@ -79,13 +79,16 @@
                             "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                         },
                         {
+                            "event": "loaded?if():[)(:new-file-created;mapIndex=)(:data.editor.review.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                        },
+                        {
                             "event": "click?)(:open-doc=().data;)(:open-collection=review;)(:open-map=)(:data.editor.review.[)(:open-doc];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[review/+().data]"
                         },
                         {
                             "event": "click?)(:open-doc=().data;)(:open-docs.push():[review/+)(:open-doc];)(:open-collection=review;)(:open-map=)(:data.editor.review.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[review/+().data]",
                             "actions": [
-                                "async():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=review/+)(:open-doc;async():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
-                                "async():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;async():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
+                                "wait():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=review/+)(:open-doc;wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                "wait():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
                             ]
                         }
                     ]
