@@ -1,5 +1,5 @@
 {
-    "type": "View?class=box-shadow;id=popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=fixed;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s, max-height 0.2s",
+    "type": "View?class=box-shadow;id=popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=fixed;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s, max-height 0.2s;mouseenter.mousenter=true;mouseleave.mouseenter=false",
     "children": [{
         "type": "Icon?class=pointer;id=popup-confirm;name=bi-check2;tooltip.text=Confirm;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
         "controls": [{
@@ -13,6 +13,6 @@
     }],
     "controls": [{
         "event": "mouseleave;click:body??)(:popup-positioner;!e().target.id.isChildOfId():[)(:popup-positioner]",
-        "actions": "blur::200?().style().opacity=0;style().pointerEvents=none;style().transform=scale(0.5);)(:popup-positioner.delete()?().mouseenter.isfalse();!e().target.id.isChildOfId():[)(:popup-positioner]"
+        "actions": "blur::200?().style().opacity=0;style().pointerEvents=none;style().transform=scale(0.5);)(:popup-positioner.delete()?!mouseenter;!e().target.id.isChildOfId():[)(:popup-positioner]"
     }]
 }

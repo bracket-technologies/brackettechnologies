@@ -41,7 +41,7 @@
                             "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
                         },
                         {
-                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem;style.maxWidth=13rem"
+                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
                         },
                         {
                             "controls": [

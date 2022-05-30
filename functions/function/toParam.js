@@ -5,7 +5,7 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams, createElement }) => {
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
@@ -77,6 +77,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
       return params.await += `${awaiter};`
     }
 
+    // events attached to type
+  if (createElement) {
+
     // mouseenter
     if (param.slice(0, 10) === "mouseenter") {
 
@@ -122,6 +125,24 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
       return view.mouseover += `${param};`
     }
 
+    // mousedown
+    if (param.slice(0, 9) === "mousedown") {
+
+      param = param.slice(10)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+      view.mousedown = view.mousedown || ""
+      return view.mousedown += `${param};`
+    }
+
+    // mouseup
+    if (param.slice(0, 7) === "mouseup") {
+
+      param = param.slice(8)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+      view.mouseup = view.mouseup || ""
+      return view.mouseup += `${param};`
+    }
+
     // keyup
     if (param.slice(0, 5) === "keyup") {
 
@@ -148,7 +169,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
       view.loaded = view.loaded || ""
       return view.loaded += `${param};`
     }
-    
+  }
+
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _ })
 

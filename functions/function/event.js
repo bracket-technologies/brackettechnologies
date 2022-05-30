@@ -90,7 +90,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     var eventid = event.split(":")[1]
     if (eventid) idList = toValue({ _window, req, res, id, value: eventid })
     else idList = clone(_idList)
-    
+
     idList = toArray(idList).map(id => {
       if (typeof id === "object" && id.id) return id.id
       else return id
@@ -98,7 +98,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
     // timer
     timer = event.split(":")[2] || 0
-    
+
     // event
     event = event.split(":")[0]
 
@@ -109,12 +109,12 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     idList.map(id => {
 
       var _view = views[id]
-      if (!_view) return
-
+      if (!_view && id !== "window") return
+      
       var myFn = (e) => {
 
         setTimeout(async () => {
-          
+
           // approval
           if (viewEventConditions) {
             var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
@@ -141,6 +141,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       
       // onload event
       if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _view.element })
+      else if (id === "window") return window.addEventListener(event, myFn)
 
       // body event
       if (id === "body") {
@@ -152,7 +153,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         return
       }
 
-      var myFn1 = (e) => {
+      var myFn = (e) => {
         
         view[`${event}-timer`] = setTimeout(async () => {
 
@@ -192,7 +193,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       }
       
       // elements
-      _view.element.addEventListener(event, myFn1)
+      _view.element.addEventListener(event, myFn)
     })
   })
 }
@@ -201,11 +202,11 @@ const defaultEventHandler = ({ id }) => {
 
   var view = window.views[id]
   var global = window.global
-
+/*
   view.touchstart = false
   view.mouseenter = false
   view.mousedown = false
-
+*/
   if (view.link) view.element.addEventListener("click", (e) => e.preventDefault())
 
   // input
@@ -229,9 +230,9 @@ const defaultEventHandler = ({ id }) => {
 
     view.element.addEventListener("blur", setEventType)
   }
-
+/*
   events.map((event) => {
-
+    
     var setEventType = (e) => {
 
       if (!window.views[id]) return e.target.removeEventListener(event, setEventType)
@@ -239,19 +240,21 @@ const defaultEventHandler = ({ id }) => {
       if (event === "mouseenter") view.mouseenter = true
       else if (event === "mouseleave") view.mouseenter = false
       else if (event === "mousedown") {
-        
+
         view.mousedown = true
         window.views["tooltip"].element.style.opacity = "0"
         clearTimeout(global["tooltip-timer"])
         delete global["tooltip-timer"]
 
-      } else if (event === "mouseup") view.mousedown = false
+      } 
+      else if (event === "mouseup") view.mousedown = false
       else if (event === "touchstart") view.touchstart = true
       else if (event === "touchend") view.touchstart = false
     }
 
     view.element.addEventListener(event, setEventType)
   })
+*/
 }
 
 module.exports = { addEventListener, defaultEventHandler }

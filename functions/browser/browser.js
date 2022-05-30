@@ -62,6 +62,8 @@ document.addEventListener('click', e => {
 
 // mousemove
 document.body.addEventListener('mousemove', (e) => {
+    global.screenX = e.screenX
+    global.screenY = e.screenY
     Object.values(window.global["body-mousemove-events"]).flat().map(o => bodyEventListener(o, e))
 }, false)
 
@@ -86,6 +88,14 @@ window.onload = () => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })
+}
+
+window.onmousedown = (e) => {
+    e.preventDefault()
+    
+    var global = window.global
+    global["clickedElement()"] = views[(e || window.event).target.id]
+    global.clickedElement = (e || window.event).target
 }
 
 Object.entries(views).map(([id, views]) => {

@@ -15,6 +15,6 @@ module.exports = ({ id }) => {
     actions: "setStyle?style.opacity=1",
   }, {
     event: "mouseenter",
-    actions: "setStyle?style.opacity=1?().mousedown",
+    actions: "setStyle?style.opacity=1?mousedown",
   }]
 }

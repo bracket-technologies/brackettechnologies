@@ -76,7 +76,8 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   var path = typeof value === "string" ? value.split(".") : []
 
   /* value */
-  if (value === ")(") value = _window ? _window.global : window.global
+  if (!isNaN(value) && value !== " ") value = parseFloat(value)
+  else if (value === ")(") value = _window ? _window.global : window.global
   else if (object) value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
   else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
   else if ((path[0].includes("()")) && path.length === 1) {
@@ -95,7 +96,6 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   else if (path[0].includes("_array") || path[0].includes("_map")) value = reducer({ _window, id, e, path, params, object, _, req, res, mount })
   else if (value === "()") value = view
   else if (typeof value === "boolean") { }
-  else if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === undefined || value === "generate") value = generate()
   else if (value === "undefined") value = undefined
   else if (value === "false") value = false
@@ -134,7 +134,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
       value = values[0]
       values.slice(1).map(val => value -= val)
-      console.log(value);
+      // console.log(value);
       return value
 
     } else if (value.split("-").length > 2) {
@@ -158,7 +158,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
         value = values[0]
         values.slice(1).map(val => value -= val)
-        console.log(value);
+        // console.log(value);
         return value
   
       } else if (value.split("-").length > 3) {
@@ -181,7 +181,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
           value = values[0]
           values.slice(1).map(val => value -= val)
-          console.log(value);
+          // console.log(value);
           return value
     
         }

@@ -1,6 +1,6 @@
 {
     "creation-date": 1643565851564,
-    "type": "View?id=page-view-sidebar;class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0;style.zIndex=2",
+    "type": "View?id=page-view-sidebar;class=flex column;style.transition=.2s;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0;style.zIndex=2",
     "children": [
         {
             "type": "View?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
@@ -108,7 +108,7 @@
                                     "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
                                 },
                                 {
-                                    "type": "Text?class=dots;text=().data;style.fontSize=1.3rem;style.maxWidth=13rem"
+                                    "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
                                 },
                                 {
                                     "controls": [
@@ -203,7 +203,7 @@
                                     "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
                                 },
                                 {
-                                    "type": "Text?class=dots;text=().data;style.fontSize=1.3rem;style.maxWidth=13rem"
+                                    "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
                                 },
                                 {
                                     "controls": [

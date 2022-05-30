@@ -119,6 +119,9 @@
                   "controls": [
                     {
                       "event": "click?parent().children().():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=().open-doc;open-collection=().open-collection]._():[_.style().display=flex;)(:open-doc=_.open-doc;)(:open-collection=_.open-collection;)(:open-map=_.data()]?)(:clickedElement().id!=lastChild().id"
+                    },
+                    {
+                      "event": "mousedown:window?lastChild().click()?e().button=1||e().buttons=4;contains():[)(:clickedElement]"
                     }
                   ]
                 }
@@ -142,7 +145,7 @@
               "type": "View?view=gallery-view"
             }
           ],
-          "type": "View?id=open-view;class=flex column;style.width=100%;style.position=relative;)(:open-docs=)(:open-docs.else():_array"
+          "type": "View?id=open-view;class=flex column;style.width=100%;style.position=relative;)(:open-docs=)(:open-docs||_array"
         }
       ]
     },
