@@ -1,20 +1,20 @@
 module.exports = {
-    toClock: ({ timestamp, days_ = true, hours_ = true, mins_ = true, secs_ = true }) => {
+    toClock: ({ timestamp, days = true, hours = true, mins = true, secs = true }) => {
 
         if (!timestamp) return "00:00"
-        var days = Math.floor(timestamp / 86400000) + ""
+        var days_ = Math.floor(timestamp / 86400000) + ""
         var _days = timestamp % 86400000
-        var hrs = Math.floor(_days / 3600000) + ""
+        var hrs_ = Math.floor(_days / 3600000) + ""
         var _hrs = _days % 3600000
-        var mins = Math.floor(_hrs / 60000) + ""
+        var mins_ = Math.floor(_hrs / 60000) + ""
         var _mins = _hrs % 60000
-        var secs = Math.floor(_mins / 1000) + ""
+        var secs_ = Math.floor(_mins / 1000) + ""
 
-        if (days.length === 1) days = "0" + days
-        if (hrs.length === 1) hrs = "0" + hrs
-        if (mins.length === 1) mins = "0" + mins
-        if (secs.length === 1) secs = "0" + secs
+        if (days_.length === 1) days_ = "0" + days_
+        if (hrs_.length === 1) hrs_ = "0" + hrs_
+        if (mins_.length === 1) mins_ = "0" + mins_
+        if (secs_.length === 1) secs_ = "0" + secs_
 
-        return (days_ ? days + " : " : "") + (hours_ ? hrs + " : " : "") + (mins_ ? mins : "") + (secs_ ? " : " + secs : "")
+        return (days ? days_ + " : " : "") + (hours ? hrs_ + " : " : "") + (mins ? mins_ : "") + (secs ? " : " + secs : "")
     }
 }

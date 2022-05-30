@@ -100,7 +100,7 @@ const defaultInputHandler = ({ id }) => {
           var _next = value.slice(e.target.selectionStart + 1)
           e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
-
+/*
         } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Text?class=flexbox;text=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
@@ -120,7 +120,7 @@ const defaultInputHandler = ({ id }) => {
         } else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "View?class=vertical;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
-
+*/
         }
       }
 

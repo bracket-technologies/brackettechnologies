@@ -4,7 +4,7 @@ const setPosition = ({ position, id, e }) => {
   var leftDeviation = position.left
   var topDeviation = position.top
   var align = position.align
-  var element = value[id].element
+  var element = value[position.id || id].element
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
 

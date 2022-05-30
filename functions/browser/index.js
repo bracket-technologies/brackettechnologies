@@ -92,7 +92,7 @@ window.onload = () => {
 }
 
 window.onmousedown = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
     
     var global = window.global
     global["clickedElement()"] = views[(e || window.event).target.id]
@@ -108,14 +108,14 @@ document.addEventListener('scroll', () => {
     // close droplist
     if (views.droplist.element.style.pointerEvents === "auto") {
         
-        var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+        var closeDroplist = toCode({ string: "if():[!mouseenter]:[clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]" })
         toParam({ string: closeDroplist, id: "droplist" })
     }
   
     // close actionlist
     if (views.actionlist.element.style.pointerEvents === "auto") {
 
-        var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+        var closeActionlist = toCode({ string: "if():[!mouseenter]:[clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]" })
         toParam({ string: closeActionlist, id: "actionlist" })
     }
 }, true)
@@ -2114,7 +2114,7 @@ const defaultInputHandler = ({ id }) => {
           var _next = value.slice(e.target.selectionStart + 1)
           e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
-
+/*
         } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Text?class=flexbox;text=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
@@ -2134,7 +2134,7 @@ const defaultInputHandler = ({ id }) => {
         } else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "View?class=vertical;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
-
+*/
         }
       }
 
@@ -3981,7 +3981,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -4650,7 +4650,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else return
             } else answer = __o
 
-        } else if (k0 === "position()") {
+        } /*else if (k0 === "position()") {
 
             var args = k.split(":")
             var relativeTo = views["root"].element
@@ -4658,7 +4658,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 relativeTo = toValue({ req, res, _window, id, e, _, value: args[1], params })
             answer = position(o, relativeTo)
 
-        } else if (k0 === "getBoundingClientRect()") {
+        } */else if (k0 === "getBoundingClientRect()") {
 
             var relativeTo
             if (args[1]) relativeTo = toValue({ req, res, _window, id, e, _, value: args[1], params })
@@ -5458,10 +5458,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = Object.entries(o)
 
-        } else if (k0 === "toLowerCase()") {
-            
-            answer = o.toLowerCase()
-
         } else if (k0 === "toId()") {
             
             var args = k.split(":")
@@ -5498,14 +5494,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = capitalize(o, true)
             
-        } else if (k0 === "uppercase()" || k0 === "toUpperCase()") {
+        } else if (k0 === "uppercase()" || k0 === "toUpperCase()" && k0 === "touppercase()") {
             
             var _o
             if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
             else _o = o
             answer = _o.toUpperCase()
             
-        } else if (k0 === "lowercase()" || k0 === "toLowerCase()") {
+        } else if (k0 === "lowercase()" || k0 === "toLowerCase()" && k0 === "tolowercase()") {
             
             answer = o.toLowerCase()
             
@@ -5632,21 +5628,25 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "getTime()" || k0 === "timestamp()") {
             
-            if (o instanceof Date) answer = o.getTime()
-            else if (o.length === 5 && o.split(":").length === 2) {
-                var _hrs = parseInt(o.split(":")[0]) * 60 * 60 * 1000
-                var _mins = parseInt(o.split(":")[1]) * 60 * 1000
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
+            else _o = o
+
+            if (_o instanceof Date) answer = _o.getTime()
+            else if (_o.length === 5 && _o.split(":").length === 2) {
+                var _hrs = parseInt(_o.split(":")[0]) * 60 * 60 * 1000
+                var _mins = parseInt(_o.split(":")[1]) * 60 * 1000
                 answer = _hrs + _mins
             }
-            else if (o.length === 8 && o.split(":").length === 3) {
-                var _days = parseInt(o.split(":")[0]) * 24 * 60 * 60 * 1000
-                var _hrs = parseInt(o.split(":")[1]) * 60 * 60 * 1000
-                var _mins = parseInt(o.split(":")[2]) * 60 * 1000
+            else if (_o.length === 8 && _o.split(":").length === 3) {
+                var _days = parseInt(_o.split(":")[0]) * 24 * 60 * 60 * 1000
+                var _hrs = parseInt(_o.split(":")[1]) * 60 * 60 * 1000
+                var _mins = parseInt(_o.split(":")[2]) * 60 * 1000
                 answer = _days + _hrs + _mins
             }
             else {
-                o = new Date(o)
-                answer = o.getTime()
+                _o = new Date(_o)
+                answer = _o.getTime()
             }
             
         } else if (k0 === "getDateTime()") {
@@ -5835,11 +5835,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = Array.isArray(o) ? o.flat() : o
             
-        } else if (k0 === "deep()" || k0 === "getDeepChildrenId()") {
+        } else if (k0 === "getDeepChildrenId()") {
             
             answer = getDeepChildrenId({ _window, id: o.id })
             
-        } else if (k0 === "deepChildren()" || k0 === "getDeepChildren()") {
+        } else if (k0 === "deep()" || k0 === "deepChildren()" || k0 === "getDeepChildren()") {
             
             answer = getDeepChildren({ _window, id: o.id })
             
@@ -6168,17 +6168,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             return require("./save").save({ id, e, save: _save })
 
-        } else if (k0 === "setPosition()") {
+        } else if (k0 === "setPosition()" || k0 === "position()") {
           
             // setPosition():toBePositioned:positioner:placement:align
-            var args = k.split(":") 
+            /*
             var toBePositioned = toValue({ req, res, _window, id, e, _, value: args[1], params })
             var positioner = toValue({ req, res, _window, id, e, _, value: args[2], params }) || id
             var placement = toValue({ req, res, _window, id, e, _, value: args[3], params })
             var align = toValue({ req, res, _window, id, e, _, value: args[4], params })
-            var position = { positioner, placement, align }
+            */
+            var position = toParam({ req, res, _window, id, e, _, string: args[1], params })
 
-            return require("./setPosition").setPosition({ position, id: toBePositioned, e })
+            return require("./setPosition").setPosition({ position, id, e })
 
         } else if (k0 === "refresh()") {
           
@@ -6903,7 +6904,7 @@ const setPosition = ({ position, id, e }) => {
   var leftDeviation = position.left
   var topDeviation = position.top
   var align = position.align
-  var element = value[id].element
+  var element = value[position.id || id].element
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
 
