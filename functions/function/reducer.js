@@ -1762,7 +1762,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "toClock()") { // dd:hh:mm:ss
             
-            var days = true, hours = true, mins = true, secs = true
             /*
             if (args[1]) days_ = toValue({ req, res, _window, id, e, value: args[1], params, _ })
             if (args[2]) hours_ = toValue({ req, res, _window, id, e, value: args[2], params, _ })
@@ -1772,8 +1771,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _params = toParam({ req, res, _window, id, e, string: args[1], params, _ })
             if (!_params.timestamp) _params.timestamp = o
 
-            answer = toClock({ ..._params, days, hours, mins, secs  })
-
+            answer = toClock(_params)
+            
         } else if (k0 === "toSimplifiedDateAr()") {
             
             answer = toSimplifiedDate({ timestamp: o, lang: "ar" })
@@ -2388,7 +2387,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id
             if (args[1]) _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
 
-            if (typeof _id === "object") _id = o.id
+            if (typeof _id === "object") _id = _id.id
             return require("./update").update({ id: _id })
 
         } else if (k0 === "save()") {
@@ -2422,8 +2421,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "copyToClipBoard()") {
           
-            var text = k.split(":")[1]
-            text = toValue({ req, res, _window, id, e, _, value: text, params })
+            var text 
+            if (args[1]) text = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else text = o
             
             if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
             else {

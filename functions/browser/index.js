@@ -208,7 +208,7 @@ const Input = (component) => {
     component = toComponent(component)
 
     var { id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
-        placeholder, textarea, clearable, removable, day, disabled, label, password,
+        placeholder, textarea, clearable, removable, day, disabled, label, password, copyable,
         duplicatable, lang, unit, currency, google, key, minlength , children, container
     } = component
     
@@ -326,7 +326,7 @@ const Input = (component) => {
         }
     }
 
-    if (model === 'featured' || password || clearable || removable) {
+    if (model === 'featured' || password || clearable || removable || copyable) {
         
         return {
             ...component,
@@ -334,11 +334,12 @@ const Input = (component) => {
             class: 'flex-box unselectable',
             // remove from comp
             controls: [{
-                event: "mouseenter?():[().id+'-clear'].style().opacity=1?clearable||removable"
+                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1]`
             }, {
-                event: "mouseleave?():[().id+'-clear'].style().opacity=0?clearable||removable"
+                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0]`
             }],
             style: {
+                cursor: readonly ? "pointer" : "auto",
                 display: "inline-flex",
                 alignItems: "center",
                 width: "fit-content",
@@ -353,7 +354,7 @@ const Input = (component) => {
                 ...style,
             },
             children: [...children, { // message
-                type: `Text?id=parent().id+-msg;msg=parent().msg;text=parent().msg?parent().msg`,
+                type: `Text?id=${id}+-msg;msg=parent().msg;text=parent().msg?parent().msg`,
                 style: {
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
@@ -391,7 +392,7 @@ const Input = (component) => {
                     }
                 },
                 style: {
-                    width: password || clearable || removable ? "100%" : "fit-content",
+                    width: password || clearable || removable || copyable ? "100%" : "fit-content",
                     height: 'fit-content',
                     borderRadius: style.borderRadius || '0.25rem',
                     backgroundColor: style.backgroundColor || 'inherit',
@@ -412,7 +413,9 @@ const Input = (component) => {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
             }, {
-                type: "Icon?class=pointer;id=parent().id+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable",
+                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
+            }, {
+                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[():${id}-input.val()]:[prev().data().copyToClipBoard();prev().focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
@@ -1724,6 +1727,10 @@ var createElement = ({ _window, id, req, res }) => {
     
     if (params.id && params.id !== id && !priorityId) {
 
+      if (view[params.id]) {
+        view[params.id]["id-repetition-counter"] = (view[params.id]["id-repetition-counter"] || 0) + 1
+        params.id = params.id + `-${view[params.id]["id-repetition-counter"]}`
+      }
       delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
 
@@ -5533,14 +5540,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "toClock()") { // dd:hh:mm:ss
             
-            var timestamp_ = o, days_ = true, hours_ = true, mins_ = true, secs_ = true
+            /*
             if (args[1]) days_ = toValue({ req, res, _window, id, e, value: args[1], params, _ })
             if (args[2]) hours_ = toValue({ req, res, _window, id, e, value: args[2], params, _ })
             if (args[3]) mins_ = toValue({ req, res, _window, id, e, value: args[3], params, _ })
             if (args[4]) secs_ = toValue({ req, res, _window, id, e, value: args[4], params, _ })
+            */
+            var _params = toParam({ req, res, _window, id, e, string: args[1], params, _ })
+            if (!_params.timestamp) _params.timestamp = o
 
-            answer = toClock({ timestamp: timestamp_, days_, hours_, mins_, secs_  })
-
+            answer = toClock(_params)
+            
         } else if (k0 === "toSimplifiedDateAr()") {
             
             answer = toSimplifiedDate({ timestamp: o, lang: "ar" })
@@ -6155,7 +6165,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id
             if (args[1]) _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
 
-            if (typeof _id === "object") _id = o.id
+            if (typeof _id === "object") _id = _id.id
             return require("./update").update({ id: _id })
 
         } else if (k0 === "save()") {
@@ -6189,8 +6199,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "copyToClipBoard()") {
           
-            var text = k.split(":")[1]
-            text = toValue({ req, res, _window, id, e, _, value: text, params })
+            var text 
+            if (args[1]) text = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else text = o
             
             if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
             else {
@@ -7662,23 +7673,23 @@ module.exports = {
 }
 },{}],97:[function(require,module,exports){
 module.exports = {
-    toClock: ({ timestamp, days_ = true, hours_ = true, mins_ = true, secs_ = true }) => {
+    toClock: ({ timestamp, day, hr, min, sec }) => {
 
         if (!timestamp) return "00:00"
-        var days = Math.floor(timestamp / 86400000) + ""
+        var days_ = Math.floor(timestamp / 86400000) + ""
         var _days = timestamp % 86400000
-        var hrs = Math.floor(_days / 3600000) + ""
+        var hrs_ = Math.floor(_days / 3600000) + ""
         var _hrs = _days % 3600000
-        var mins = Math.floor(_hrs / 60000) + ""
+        var mins_ = Math.floor(_hrs / 60000) + ""
         var _mins = _hrs % 60000
-        var secs = Math.floor(_mins / 1000) + ""
+        var secs_ = Math.floor(_mins / 1000) + ""
 
-        if (days.length === 1) days = "0" + days
-        if (hrs.length === 1) hrs = "0" + hrs
-        if (mins.length === 1) mins = "0" + mins
-        if (secs.length === 1) secs = "0" + secs
+        if (days_.length === 1) days_ = "0" + days_
+        if (hrs_.length === 1) hrs_ = "0" + hrs_
+        if (mins_.length === 1) mins_ = "0" + mins_
+        if (secs_.length === 1) secs_ = "0" + secs_
 
-        return (days_ ? days + " : " : "") + (hours_ ? hrs + " : " : "") + (mins_ ? mins : "") + (secs_ ? " : " + secs : "")
+        return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
 },{}],98:[function(require,module,exports){

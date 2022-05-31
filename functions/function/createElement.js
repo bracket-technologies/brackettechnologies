@@ -83,6 +83,10 @@ var createElement = ({ _window, id, req, res }) => {
     
     if (params.id && params.id !== id && !priorityId) {
 
+      if (view[params.id]) {
+        view[params.id]["id-repetition-counter"] = (view[params.id]["id-repetition-counter"] || 0) + 1
+        params.id = params.id + `-${view[params.id]["id-repetition-counter"]}`
+      }
       delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
 

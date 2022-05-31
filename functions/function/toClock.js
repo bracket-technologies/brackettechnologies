@@ -1,5 +1,5 @@
 module.exports = {
-    toClock: ({ timestamp, days = true, hours = true, mins = true, secs = true }) => {
+    toClock: ({ timestamp, day, hr, min, sec }) => {
 
         if (!timestamp) return "00:00"
         var days_ = Math.floor(timestamp / 86400000) + ""
@@ -15,6 +15,6 @@ module.exports = {
         if (mins_.length === 1) mins_ = "0" + mins_
         if (secs_.length === 1) secs_ = "0" + secs_
 
-        return (days ? days_ + " : " : "") + (hours ? hrs_ + " : " : "") + (mins ? mins_ : "") + (secs ? " : " + secs : "")
+        return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }

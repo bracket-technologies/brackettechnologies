@@ -36,7 +36,7 @@ const Input = (component) => {
     component = toComponent(component)
 
     var { id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
-        placeholder, textarea, clearable, removable, day, disabled, label, password,
+        placeholder, textarea, clearable, removable, day, disabled, label, password, copyable,
         duplicatable, lang, unit, currency, google, key, minlength , children, container
     } = component
     
@@ -154,7 +154,7 @@ const Input = (component) => {
         }
     }
 
-    if (model === 'featured' || password || clearable || removable) {
+    if (model === 'featured' || password || clearable || removable || copyable) {
         
         return {
             ...component,
@@ -162,11 +162,12 @@ const Input = (component) => {
             class: 'flex-box unselectable',
             // remove from comp
             controls: [{
-                event: "mouseenter?():[().id+'-clear'].style().opacity=1?clearable||removable"
+                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1]`
             }, {
-                event: "mouseleave?():[().id+'-clear'].style().opacity=0?clearable||removable"
+                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0]`
             }],
             style: {
+                cursor: readonly ? "pointer" : "auto",
                 display: "inline-flex",
                 alignItems: "center",
                 width: "fit-content",
@@ -181,7 +182,7 @@ const Input = (component) => {
                 ...style,
             },
             children: [...children, { // message
-                type: `Text?id=parent().id+-msg;msg=parent().msg;text=parent().msg?parent().msg`,
+                type: `Text?id=${id}+-msg;msg=parent().msg;text=parent().msg?parent().msg`,
                 style: {
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
@@ -219,7 +220,7 @@ const Input = (component) => {
                     }
                 },
                 style: {
-                    width: password || clearable || removable ? "100%" : "fit-content",
+                    width: password || clearable || removable || copyable ? "100%" : "fit-content",
                     height: 'fit-content',
                     borderRadius: style.borderRadius || '0.25rem',
                     backgroundColor: style.backgroundColor || 'inherit',
@@ -240,7 +241,9 @@ const Input = (component) => {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
             }, {
-                type: "Icon?class=pointer;id=parent().id+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable",
+                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
+            }, {
+                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[():${id}-input.val()]:[prev().data().copyToClipBoard();prev().focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
