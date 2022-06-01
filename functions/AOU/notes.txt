@@ -1,0 +1,313 @@
+/----------------------------------- Signin sisksa --------------------------------------------/
+Request URL: https://sisksa.aou.edu.kw/OnlineServicesLEB/Index.aspx
+
+Payload: __EVENTTARGET=lbtnLogin&__EVENTARGUMENT=&__VIEWSTATE=kXDFH0mnS0%2FH%2Fi9n%2FWG6sQsy2SQzr5%2BufNXGROs8j0ft1kC3XiChpA%2FBUGj%2B9V5GCmxJzgc8KODzS1PAmQPxWFA8G8rpBY%2Bg2r4hthCji5w8HIqeX7hObFvuG7YI2lnFk%2B1vmxjJHWZmEXPUz7KJVPaQFhTyUMK0EHkdDzBXOzjfxJnmKDWRlNtW6GIjZcyni0O5s3omvgtSWQInkUcGQ5cRuR5qE1RE0TyoD7PEXZyq%2FINjpXPC9S0s2Ybh%2Fg9l%2FjgHx6ygwCPdr8U0oXZuidxH5qhA7RjncpABmhMRG30%3D&__VIEWSTATEGENERATOR=72710744&__EVENTVALIDATION=AN6x1V14tC3lfRLi%2Frru2uxPZD2BSp%2FMiwT9vuYZlTBiyr2RS1WdW73bh2DZ5FvmmUXZsq6P0cN93sNlMW5gA73pvWPwBTtlA0ozSaqkWIdp%2BHHZ9rbCugVEwH0IM47Y5nZpLCwkFYJ7RNpzDfA9ktdUVCCA%2FxkCB4qxfXDVNyI%3D&txtUsername=mmo007&txtPassword=Loyooth7%40ydar
+Payload Parsed:
+__EVENTTARGET: lbtnLogin
+__EVENTARGUMENT: 
+__VIEWSTATE: kXDFH0mnS0/H/i9n/WG6sQsy2SQzr5+ufNXGROs8j0ft1kC3XiChpA/BUGj+9V5GCmxJzgc8KODzS1PAmQPxWFA8G8rpBY+g2r4hthCji5w8HIqeX7hObFvuG7YI2lnFk+1vmxjJHWZmEXPUz7KJVPaQFhTyUMK0EHkdDzBXOzjfxJnmKDWRlNtW6GIjZcyni0O5s3omvgtSWQInkUcGQ5cRuR5qE1RE0TyoD7PEXZyq/INjpXPC9S0s2Ybh/g9l/jgHx6ygwCPdr8U0oXZuidxH5qhA7RjncpABmhMRG30=
+__VIEWSTATEGENERATOR: 72710744
+__EVENTVALIDATION: AN6x1V14tC3lfRLi/rru2uxPZD2BSp/MiwT9vuYZlTBiyr2RS1WdW73bh2DZ5FvmmUXZsq6P0cN93sNlMW5gA73pvWPwBTtlA0ozSaqkWIdp+HHZ9rbCugVEwH0IM47Y5nZpLCwkFYJ7RNpzDfA9ktdUVCCA/xkCB4qxfXDVNyI=
+txtUsername: mmo007
+txtPassword: Loyooth7@ydar
+
+Request Headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Encoding: gzip, deflate, br
+    Accept-Language: en,en-US;q=0.9,ar;q=0.8
+    Cache-Control: max-age=0
+    Connection: keep-alive
+    Content-Length: 655
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: ASP.NET_SessionId=fdtm3oqh5bardtmagob4nnrx
+    Host: sisksa.aou.edu.kw
+    Origin: https://sisksa.aou.edu.kw
+    Referer: https://sisksa.aou.edu.kw/OnlineServicesLEB/Index.aspx
+    sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="101", "Google Chrome";v="101"
+    sec-ch-ua-mobile: ?0
+    sec-ch-ua-platform: "Windows"
+    Sec-Fetch-Dest: document
+    Sec-Fetch-Mode: navigate
+    Sec-Fetch-Site: same-origin
+    Sec-Fetch-User: ?1
+    Upgrade-Insecure-Requests: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36
+
+Response Headers:
+    Cache-Control: private
+    Connection: Keep-Alive
+    Content-Encoding: gzip
+    Content-Type: text/html;charset=utf-8
+    Date: Wed, 01 Jun 2022 09:16:36 GMT
+    Keep-Alive: timeout=15, max=100
+    Location: /OnlineServicesLEB/StudentServicesCenter.aspx
+    Referrer-Policy: strict-origin-when-cross-origin
+    Server: Apache
+    Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+    Transfer-Encoding: chunked
+    Vary: Accept-Encoding
+    X-AspNet-Version: 4.0.30319
+    X-Frame-Options: SAMEORIGIN
+    X-Powered-By: ASP.NET
+
+/----------------------------------- Logout sisksa --------------------------------------------/
+Request URL: https://sisksa.aou.edu.kw/OnlineServicesLEB/StudentServicesCenter.aspx
+
+Payload: __EVENTTARGET=HeaderReg%24lnkbtnLogOut&__EVENTARGUMENT=&__VIEWSTATE=FSrQuQ8x6HcQDQTz7oeELlwAkeMZ61tBqKX3HRLBhlf7heRMoFoyHScRergPW7ntdQMZYkNuMu0IeO%2BWLgh9zijYplV86M8X8uG9kTR9HSCw6dC2wuvICNifdAf2MqwnWf91Tt%2FRmnygYvusR5Zo2qUkHkiGoQeVVRu5xjuSovt5Wjlh2HumgtxqQ4LyrbUX7PsP4EL5ca69bBpahoxRTx8ZRMLKJKM9vblwFFqMWR%2BrucvyRZRQEhfylfFzo7Myk16Xn0r6eGXQWBYm74qmOFq%2F8XNw79K429w1jwW9BdYOtqQiBZb0EtkL0IHM8ObQFErmUfjXFjfR6yR%2FpsnkAmqa8Gnb1Cpentvj8FrgeKqKS3UwGwZXFstBjb1D1dKZ4aXnRTWSU8XEMJpOXIEg7pyElAPAksmVIdvoGiM660NGgEJmxclG%2B0RevSf%2BXeEWWoJIgoRMTBFt8C%2B54IiAhR6Z0R9Hh3Pk%2FZisFieoaECwMz36odeinJU9w05qE6kSvr2jHBUaHvvof7NgCCo3aEieCHByCzLLkQKey66AShhkJGVj%2FMg9fKb7QaL728M6FVvFgdRloNzbU7HEnFW50KFU8PTmP0KaC%2BSHKauDae7CONzF23VngowwS%2F7K%2FglmsBqUOglQPbNu7M6nMBJuYI4nIgZ1vF34Nm1aKAYlFNjJvgSLMBnvm03c9vfq%2FVElbiDzYYX7wWp667BbsN0%2BXEDy%2BA1Jp9VmafnZL8lbi9q5HkzRLpRcycF%2B0e18xTZI%2B5ACE9adSSTCC6%2FQrqnj57%2BaDrP3bqDQSgnTTI%2BxjfkqlJHqw1QR%2FQOWGoU4kFg6ALkjMXlh%2BJBV21vJCxZtIbrigpLJnBCi08UZDkDpeYY0PLUeAaRox2r2%2BpmJMnDam87wMnV%2BCvr8blNQuQCdspSsDg1tdwu%2B48jkqGhYZcnm5%2BD7v3gk59BR2tSgbuABbllSfwKqpLk%2FPT7VtXWXaBZrqaXq6QzCbgiZODaN9OyNjtjX3whqxRa3YgKDy7Mi7dhmNEh6khPjj36g6MljbdtTf7w9BRKxaeifoo9Bmy6W1P1CHdtQFEQqgXR6350fggR0YIL%2Fr5GkzxVzv4U%2F1qz3mro5GVQhes13KFSJ0j2FdLyYPQox1FckjtoYD2RI0%2B5UEGHf3bqPKKB51UO5Ct4Q4YTZd59Lb6YqD4O3BRJ5Ip2MJyrKNNxlnlVhT3vrEYMZDaCCMUf%2BvIdDMWAhb4rlDO1T7bEwQDkITYhKLLgXywpEtpbrJSpH6Ne1pTEHjFLnba3YPMkedDHBompIWvmpN1Hz9o7REsmtLeNTZ7dxlHh8EaY0dN1BKPTIqgbhVpYQ5aJdLSu5k%2Bj1cxM%2B%2FubI9bx7jgS6mx%2Fmj3%2FTD0fWXugXukKaxkRMFQIahULtXMa4GjgN6M01F9iUNLBe2knxRwRzbJJk8f0BfOifDcRRcvvteRwPPeayLfxP61wJnXwacUiWhZGdXtdlJNx0XdUoBxeiNsd67O5OvuEcCsFX5gT9Ubmm1QfKFEaIXUexag4BLqg%2BBaRA0XgtErnIeY%2FZPpZyMlWCmXGblwSRGlmZnbjv7chzWdkAELpbR739V3utTkIkvolMlekIsIuCnqEajNzTFgWg%2FjgF2a4i9pVyHxPGQ2ppEPbP5zcHeDUITzdScZjXf4T4JAr9lHy5zKvNs8nPEpK%2FAq975rrQuTSOKgAQULb5tAPk5ddTU9SC6X8EE71U3VEcQgpt3mEGKxaEaHddV3JKatrMOB%2Be9oQJNGxdyg7cE%2FhzfJXLbD2kzGQkSlINUaLUMwvJkTCKnWeHepMmI0Lo%2F0xzemIlNVNHNrF8f%2FzlOfb%2FFPSB89r7nMwL61N5RHxwEAeSSZsdi95dqOvAAR6tHvOUb3xRWzI%3D&__VIEWSTATEGENERATOR=95497209&__EVENTVALIDATION=mX9wPuVmkpvFPHMeLSmdfVtPkHS3i3CLnHb6XM0HLWn70rXGrEBgpePsksjEohtCf84OUeU8pw4Wgq4fzT02uFpC2%2FMMSilSwim6z4tlplOS%2F946r6DtlsYERjRTZyYvvqiblolWdMxjBL4YfJLb%2FAqXAc6m814w%2FGDLdjHX5%2FBZFkfWzNCJ5fns2Q16%2FJqtOxD66qmWQTCQJWGp%2FdTj%2FPTyYXMh%2BZDgMqkO02fCZmueSVAE0WdZH07dtkNsnlq3FGREj%2FuCnNBJSWasJdfhJQ%3D%3D&ddlAcademicSessions=3_1_x36446261
+Payload Parsed: 
+    __EVENTTARGET: HeaderReg$lnkbtnLogOut
+    __EVENTARGUMENT: 
+    __VIEWSTATE: FSrQuQ8x6HcQDQTz7oeELlwAkeMZ61tBqKX3HRLBhlf7heRMoFoyHScRergPW7ntdQMZYkNuMu0IeO+WLgh9zijYplV86M8X8uG9kTR9HSCw6dC2wuvICNifdAf2MqwnWf91Tt/RmnygYvusR5Zo2qUkHkiGoQeVVRu5xjuSovt5Wjlh2HumgtxqQ4LyrbUX7PsP4EL5ca69bBpahoxRTx8ZRMLKJKM9vblwFFqMWR+rucvyRZRQEhfylfFzo7Myk16Xn0r6eGXQWBYm74qmOFq/8XNw79K429w1jwW9BdYOtqQiBZb0EtkL0IHM8ObQFErmUfjXFjfR6yR/psnkAmqa8Gnb1Cpentvj8FrgeKqKS3UwGwZXFstBjb1D1dKZ4aXnRTWSU8XEMJpOXIEg7pyElAPAksmVIdvoGiM660NGgEJmxclG+0RevSf+XeEWWoJIgoRMTBFt8C+54IiAhR6Z0R9Hh3Pk/ZisFieoaECwMz36odeinJU9w05qE6kSvr2jHBUaHvvof7NgCCo3aEieCHByCzLLkQKey66AShhkJGVj/Mg9fKb7QaL728M6FVvFgdRloNzbU7HEnFW50KFU8PTmP0KaC+SHKauDae7CONzF23VngowwS/7K/glmsBqUOglQPbNu7M6nMBJuYI4nIgZ1vF34Nm1aKAYlFNjJvgSLMBnvm03c9vfq/VElbiDzYYX7wWp667BbsN0+XEDy+A1Jp9VmafnZL8lbi9q5HkzRLpRcycF+0e18xTZI+5ACE9adSSTCC6/Qrqnj57+aDrP3bqDQSgnTTI+xjfkqlJHqw1QR/QOWGoU4kFg6ALkjMXlh+JBV21vJCxZtIbrigpLJnBCi08UZDkDpeYY0PLUeAaRox2r2+pmJMnDam87wMnV+Cvr8blNQuQCdspSsDg1tdwu+48jkqGhYZcnm5+D7v3gk59BR2tSgbuABbllSfwKqpLk/PT7VtXWXaBZrqaXq6QzCbgiZODaN9OyNjtjX3whqxRa3YgKDy7Mi7dhmNEh6khPjj36g6MljbdtTf7w9BRKxaeifoo9Bmy6W1P1CHdtQFEQqgXR6350fggR0YIL/r5GkzxVzv4U/1qz3mro5GVQhes13KFSJ0j2FdLyYPQox1FckjtoYD2RI0+5UEGHf3bqPKKB51UO5Ct4Q4YTZd59Lb6YqD4O3BRJ5Ip2MJyrKNNxlnlVhT3vrEYMZDaCCMUf+vIdDMWAhb4rlDO1T7bEwQDkITYhKLLgXywpEtpbrJSpH6Ne1pTEHjFLnba3YPMkedDHBompIWvmpN1Hz9o7REsmtLeNTZ7dxlHh8EaY0dN1BKPTIqgbhVpYQ5aJdLSu5k+j1cxM+/ubI9bx7jgS6mx/mj3/TD0fWXugXukKaxkRMFQIahULtXMa4GjgN6M01F9iUNLBe2knxRwRzbJJk8f0BfOifDcRRcvvteRwPPeayLfxP61wJnXwacUiWhZGdXtdlJNx0XdUoBxeiNsd67O5OvuEcCsFX5gT9Ubmm1QfKFEaIXUexag4BLqg+BaRA0XgtErnIeY/ZPpZyMlWCmXGblwSRGlmZnbjv7chzWdkAELpbR739V3utTkIkvolMlekIsIuCnqEajNzTFgWg/jgF2a4i9pVyHxPGQ2ppEPbP5zcHeDUITzdScZjXf4T4JAr9lHy5zKvNs8nPEpK/Aq975rrQuTSOKgAQULb5tAPk5ddTU9SC6X8EE71U3VEcQgpt3mEGKxaEaHddV3JKatrMOB+e9oQJNGxdyg7cE/hzfJXLbD2kzGQkSlINUaLUMwvJkTCKnWeHepMmI0Lo/0xzemIlNVNHNrF8f/zlOfb/FPSB89r7nMwL61N5RHxwEAeSSZsdi95dqOvAAR6tHvOUb3xRWzI=
+    __VIEWSTATEGENERATOR: 95497209
+    __EVENTVALIDATION: mX9wPuVmkpvFPHMeLSmdfVtPkHS3i3CLnHb6XM0HLWn70rXGrEBgpePsksjEohtCf84OUeU8pw4Wgq4fzT02uFpC2/MMSilSwim6z4tlplOS/946r6DtlsYERjRTZyYvvqiblolWdMxjBL4YfJLb/AqXAc6m814w/GDLdjHX5/BZFkfWzNCJ5fns2Q16/JqtOxD66qmWQTCQJWGp/dTj/PTyYXMh+ZDgMqkO02fCZmueSVAE0WdZH07dtkNsnlq3FGREj/uCnNBJSWasJdfhJQ==
+    ddlAcademicSessions: 3_1_x36446261
+
+Request Headers: 
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Encoding: gzip, deflate, br
+    Accept-Language: en,en-US;q=0.9,ar;q=0.8
+    Cache-Control: max-age=0
+    Connection: keep-alive
+    Content-Length: 2449
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: ASP.NET_SessionId=fdtm3oqh5bardtmagob4nnrx
+    Host: sisksa.aou.edu.kw
+    Origin: https://sisksa.aou.edu.kw
+    Referer: https://sisksa.aou.edu.kw/OnlineServicesLEB/StudentServicesCenter.aspx
+    sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="101", "Google Chrome";v="101"
+    sec-ch-ua-mobile: ?0
+    sec-ch-ua-platform: "Windows"
+    Sec-Fetch-Dest: document
+    Sec-Fetch-Mode: navigate
+    Sec-Fetch-Site: same-origin
+    Sec-Fetch-User: ?1
+    Upgrade-Insecure-Requests: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36
+
+Response Headers:
+    Cache-Control: private
+    Connection: Keep-Alive
+    Content-Encoding: gzip
+    Content-Type: text/html;charset=utf-8
+    Date: Wed, 01 Jun 2022 09:25:22 GMT
+    Keep-Alive: timeout=15, max=100
+    Location: /OnlineServicesLEB/Index.aspx
+    Referrer-Policy: strict-origin-when-cross-origin
+    Server: Apache
+    Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+    Transfer-Encoding: chunked
+    Vary: Accept-Encoding
+    X-AspNet-Version: 4.0.30319
+    X-Frame-Options: SAMEORIGIN
+    X-Powered-By: ASP.NET
+
+/----------------------------------- Go to Lms Btn --------------------------------------------/
+Request URL: https://sisksa.aou.edu.kw/OnlineServicesLEB/StudentServicesCenter.aspx
+
+/----------------------------------- Form 1 ------------------------------------/
+    <form name="Form1" method="post" action="./StudentServicesCenter.aspx" id="Form1">
+    <div>
+        <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+        <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+        <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="qUE23EdODCapqYkTMvw3eWKO5UNFUpoFjag4qYbgQWgrzSlsyH+Z+wAs7KNJeZzyRTChjY9IbGRyRSkR+/vTjUf/FwD3JCkGZp2effIpirFuAAOkvE5aGhPLPnAmInmyXT18X8oN9/WZPdXBWJnOVElOxC3rPjNSQNBINQ+BHSBKA3SsKtGUG5jhvaKHped9vjA8zo5IXIAig/hoP1BVbCYOEgLzmCflKdma99My90u8Rbdv/s8FMDqydskYO9XJTXRwqCOBOJ3QjtqGEghhOWqKzGrdzVl3SO1BKKk4qGIVKLerHn42m7138xgl86MNLGdOdyl7TL/aAywW0gtJo4YV/hpiMuzWrOc5zKE9BaydFS483thL612gMQdgWVQYjBbBknDXweEMO6i+S09iZvzPuHCalRm27gTXnRqU2jQ6KwiVbm8yYopPpMLTrk1PIZLY/+WGElfldExPh+n2qzAigQtv8YauQvmA6FU1LkEqsIIbnJvGuP6iUEu3iP+axamW52TR4su+DkTsz+mLwp0Nz6vTQ2bZg3ocqBrEfdz8TGs/YtM1vwRLsGhkfkK+saAS72Y2VCdjKsmLUUrBI8KARzKJ6yFFmSKSRBrnwiRDJJAls+uiak4v0UXGzW1MmHvKS65d1Q4Um23DrkVt6qUf3ZbkAGiYMK7irKwZOif+81kQuQYWmlEGpJdFBl0k31nk3ALdxl5l1OVAkByFViWUBkKFzNVkNvO0tcr2/mIo1SrNzCgR9y6+Q1XrklQcbmQRo8wrkeTcjhpsp8q/i7ITtWdYvPkHTJ+KlG3dOB9jj6t3IIO5b8N6uVYafiSySd4QrRVJW7xmgb09pieGoIriY61IbI7juOBHdaEaYC9qf3UFMkLXmETj/u+rIOgyoKmi1OAh4Rv/TkeJl6pOOVe1KKLZ06u9Mz4BdKY7usChQpaw8t5d2dWpXjopf8Gns/4PLAkMPZxqZqRwZwW+C82aJfoU3CQ/gT5ZCESX8M36kxzKZca4HtmjQWyvZrMpkIg7woveytULr6duPBZKGIB9mp/3BHg5GlpNSvB2feqo5CCYCQGFJZV0nEH70/jEPRSqKPWN0THDlkLpZt0C61+w2Ww2RZH1TKxn/DAaCB7wHN1pD6LlJbyiAWylcsq/roXiDuvyuyemCgUK5krSAaZbVlxAmH2wYr9BBrBNbaerX9S95r3wHCRQnKg7+D5iO0TFl+Hn/WCPX5b6venGJu5XntNjQpVceTqck1A4UaqdEEXx9mxLqaGIv9Z8agAkyU8PuOlAkUU1XHlzEh1uhTRspIFfGTVc5fi23lXd4m6EnxrCcYo7pUbxqeAFRoAQ3zHFy1PHiHEUaTiubuLUTu/IQUMCmwypsM9dIhIrg7N1vfhhkits0BON6PAE7Rsp6q0pxeR68rHw0Zynw/w8y15SxQZnsu73Yx6YAtMag/wWNkUMZuB3USuloiHsBgS9iVVttePXZTIAvaNo6o1OIdHfidTabphEOgMADuyqvefud2k7jbjwjWVVMrr6jIQOfxZwx5PLQEEM+f42FBAzOThOb77J+Fw8Lm6ckXfNzS9xlup+wozA6XaJEPsssMroM2r378mNByuS1KhMtAy04KwviYd1Zfi3HvJ0M6OgZyGk8jVNjJG2Ki7EviosKcXNmeoHr7LJazvrI2Ue5LjXuA+GXMlVZaFFl0rT4UR8B1FusK+zs8lYH3mNtntNVQGohSvla9NQ/h+OVGogn+rPsnq2FYyQP5WQh/k/nZTP3LfRGgAJogEt6921ZDkWSj1b9+AWevtAfvDrKd/o1JDT4nN1h38of9qVSyJwZCLQ8ACbnrQkE7hvCpsoftcNi4WWbqMuai1N07Id+tPC/cVEWTuk6gYvvy3rucm/YTf5iws=">
+    </div>
+
+    Go To Lms Button in sisksa: <a id="lbtnLMS" href="javascript:__doPostBack('lbtnLMS','')">Go to LMS</a>
+
+    var theForm = document.forms['Form1'];
+    if (!theForm) {
+        theForm = document.Form1;
+    }
+
+    function __doPostBack(eventTarget, eventArgument) {
+        if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+            theForm.__EVENTTARGET.value = eventTarget;
+            theForm.__EVENTARGUMENT.value = eventArgument;
+            theForm.submit();
+        }
+    }
+/------------------------------ End of Form 1 ------------------------------/
+
+Payload: __EVENTTARGET=lbtnLMS&__EVENTARGUMENT=&__VIEWSTATE=qUE23EdODCapqYkTMvw3eWKO5UNFUpoFjag4qYbgQWgrzSlsyH%2BZ%2BwAs7KNJeZzyRTChjY9IbGRyRSkR%2B%2FvTjUf%2FFwD3JCkGZp2effIpirFuAAOkvE5aGhPLPnAmInmyXT18X8oN9%2FWZPdXBWJnOVElOxC3rPjNSQNBINQ%2BBHSBKA3SsKtGUG5jhvaKHped9vjA8zo5IXIAig%2FhoP1BVbCYOEgLzmCflKdma99My90u8Rbdv%2Fs8FMDqydskYO9XJTXRwqCOBOJ3QjtqGEghhOWqKzGrdzVl3SO1BKKk4qGIVKLerHn42m7138xgl86MNLGdOdyl7TL%2FaAywW0gtJo4YV%2FhpiMuzWrOc5zKE9BaydFS483thL612gMQdgWVQYjBbBknDXweEMO6i%2BS09iZvzPuHCalRm27gTXnRqU2jQ6KwiVbm8yYopPpMLTrk1PIZLY%2F%2BWGElfldExPh%2Bn2qzAigQtv8YauQvmA6FU1LkEqsIIbnJvGuP6iUEu3iP%2BaxamW52TR4su%2BDkTsz%2BmLwp0Nz6vTQ2bZg3ocqBrEfdz8TGs%2FYtM1vwRLsGhkfkK%2BsaAS72Y2VCdjKsmLUUrBI8KARzKJ6yFFmSKSRBrnwiRDJJAls%2Buiak4v0UXGzW1MmHvKS65d1Q4Um23DrkVt6qUf3ZbkAGiYMK7irKwZOif%2B81kQuQYWmlEGpJdFBl0k31nk3ALdxl5l1OVAkByFViWUBkKFzNVkNvO0tcr2%2FmIo1SrNzCgR9y6%2BQ1XrklQcbmQRo8wrkeTcjhpsp8q%2Fi7ITtWdYvPkHTJ%2BKlG3dOB9jj6t3IIO5b8N6uVYafiSySd4QrRVJW7xmgb09pieGoIriY61IbI7juOBHdaEaYC9qf3UFMkLXmETj%2Fu%2BrIOgyoKmi1OAh4Rv%2FTkeJl6pOOVe1KKLZ06u9Mz4BdKY7usChQpaw8t5d2dWpXjopf8Gns%2F4PLAkMPZxqZqRwZwW%2BC82aJfoU3CQ%2FgT5ZCESX8M36kxzKZca4HtmjQWyvZrMpkIg7woveytULr6duPBZKGIB9mp%2F3BHg5GlpNSvB2feqo5CCYCQGFJZV0nEH70%2FjEPRSqKPWN0THDlkLpZt0C61%2Bw2Ww2RZH1TKxn%2FDAaCB7wHN1pD6LlJbyiAWylcsq%2FroXiDuvyuyemCgUK5krSAaZbVlxAmH2wYr9BBrBNbaerX9S95r3wHCRQnKg7%2BD5iO0TFl%2BHn%2FWCPX5b6venGJu5XntNjQpVceTqck1A4UaqdEEXx9mxLqaGIv9Z8agAkyU8PuOlAkUU1XHlzEh1uhTRspIFfGTVc5fi23lXd4m6EnxrCcYo7pUbxqeAFRoAQ3zHFy1PHiHEUaTiubuLUTu%2FIQUMCmwypsM9dIhIrg7N1vfhhkits0BON6PAE7Rsp6q0pxeR68rHw0Zynw%2Fw8y15SxQZnsu73Yx6YAtMag%2FwWNkUMZuB3USuloiHsBgS9iVVttePXZTIAvaNo6o1OIdHfidTabphEOgMADuyqvefud2k7jbjwjWVVMrr6jIQOfxZwx5PLQEEM%2Bf42FBAzOThOb77J%2BFw8Lm6ckXfNzS9xlup%2BwozA6XaJEPsssMroM2r378mNByuS1KhMtAy04KwviYd1Zfi3HvJ0M6OgZyGk8jVNjJG2Ki7EviosKcXNmeoHr7LJazvrI2Ue5LjXuA%2BGXMlVZaFFl0rT4UR8B1FusK%2Bzs8lYH3mNtntNVQGohSvla9NQ%2Fh%2BOVGogn%2BrPsnq2FYyQP5WQh%2Fk%2FnZTP3LfRGgAJogEt6921ZDkWSj1b9%2BAWevtAfvDrKd%2Fo1JDT4nN1h38of9qVSyJwZCLQ8ACbnrQkE7hvCpsoftcNi4WWbqMuai1N07Id%2BtPC%2FcVEWTuk6gYvvy3rucm%2FYTf5iws%3D&__VIEWSTATEGENERATOR=95497209&__EVENTVALIDATION=YRitfbIZrbmBxicl7j%2B0sIHYxYghmRse68vxyoGRpJy7IU8qoosK09bpJvZhwlFS02kmGlgqHqYBnZbSlCED8Kd80id4nxUGfUUNaxBdWa0TDOF97vlem7QBGgZwTFHd1CiK5R3vwKM0xNRNGl1%2F8F8AZkEF55oDHDDUJVTBwNrTpKZ1GSA50IoK1oUCXz%2BD8x81WrfxFJikSLvJLjPUwFoi6kIb9ne%2F0Wj6f9kgdHqK23hEFCcM%2FDGrAUOiAdOo7EcOcFapsKKCGQVz4riL3Q%3D%3D&ddlAcademicSessions=3_1_x36446261
+
+Request Headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    Accept-Encoding: gzip, deflate, br
+    Accept-Language: en,en-US;q=0.9,ar;q=0.8
+    Cache-Control: max-age=0
+    Connection: keep-alive
+    Content-Length: 2446
+    Content-Type: application/x-www-form-urlencoded
+    Cookie: ASP.NET_SessionId=2bli14fsk4ddsslxipjmthee
+    Host: sisksa.aou.edu.kw
+    Origin: https://sisksa.aou.edu.kw
+    Referer: https://sisksa.aou.edu.kw/OnlineServicesLEB/StudentServicesCenter.aspx
+    sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="101", "Google Chrome";v="101"
+    sec-ch-ua-mobile: ?0
+    sec-ch-ua-platform: "Windows"
+    Sec-Fetch-Dest: document
+    Sec-Fetch-Mode: navigate
+    Sec-Fetch-Site: same-origin
+    Sec-Fetch-User: ?1
+    Upgrade-Insecure-Requests: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36
+
+Response Headers:
+    Cache-Control: private
+    Connection: Keep-Alive
+    Content-Encoding: gzip
+    Content-Type: text/html;charset=utf-8
+    Date: Wed, 01 Jun 2022 07:37:52 GMT
+    Keep-Alive: timeout=15, max=100
+    Location: https://mdl.arabou.edu.kw/lebanon/login/index.php?P_STD_NO=0322010120589&P_REQ_ID=299603&P_P1=HGSMUXcgMCbgrwwYAozh&P_P2=xOZxKwtfhUKVTxZVwmaV&P_P3=aYBVzbAgADqfdlQRCMrB
+    Referrer-Policy: strict-origin-when-cross-origin
+    Server: Apache
+    Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+    Transfer-Encoding: chunked
+    Vary: Accept-Encoding
+    X-AspNet-Version: 4.0.30319
+    X-Frame-Options: SAMEORIGIN
+    X-Powered-By: ASP.NET
+
+/------------------------------------- after Requesting opening lms ------------------------------------------/
+Request URL: https://mdl.arabou.edu.kw/lebanon/login/index.php?P_STD_NO=0322010120589&P_REQ_ID=299603&P_P1=HGSMUXcgMCbgrwwYAozh&P_P2=xOZxKwtfhUKVTxZVwmaV&P_P3=aYBVzbAgADqfdlQRCMrB
+
+Payload: P_STD_NO=0322010120589&P_REQ_ID=299603&P_P1=HGSMUXcgMCbgrwwYAozh&P_P2=xOZxKwtfhUKVTxZVwmaV&P_P3=aYBVzbAgADqfdlQRCMrB
+
+Request Headers:
+    :authority: mdl.arabou.edu.kw
+    :method: GET
+    :path: /lebanon/login/index.php?P_STD_NO=0322010120589&P_REQ_ID=299603&P_P1=HGSMUXcgMCbgrwwYAozh&P_P2=xOZxKwtfhUKVTxZVwmaV&P_P3=aYBVzbAgADqfdlQRCMrB
+    :scheme: https
+    accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+    accept-encoding: gzip, deflate, br
+    accept-language: en,en-US;q=0.9,ar;q=0.8
+    cache-control: max-age=0
+    cookie: MoodleSession=kai64dcl1cggeg41vto1kqctpa; MOODLEID1_=%25D1%2523%25AF%25DFw%2525%2507%250D%25F2%255E%255C%2517%25BF; intellidatatime=30; intellidatapage=course; intellidataparam=2848
+    referer: https://sisksa.aou.edu.kw/
+    sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="101", "Google Chrome";v="101"
+    sec-ch-ua-mobile: ?0
+    sec-ch-ua-platform: "Windows"
+    sec-fetch-dest: document
+    sec-fetch-mode: navigate
+    sec-fetch-site: cross-site
+    sec-fetch-user: ?1
+    upgrade-insecure-requests: 1
+    user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36
+
+Response Headers:
+    cache-control: no-store, no-cache, must-revalidate
+    cf-cache-status: DYNAMIC
+    cf-ray: 7146499ccb8c738f-MRS
+    content-language: en
+    content-type: text/html; charset=utf-8
+    date: Wed, 01 Jun 2022 07:38:05 GMT
+    expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+    expires: Thu, 19 Nov 1981 08:52:00 GMT
+    location: https://mdl.arabou.edu.kw/lebanon/login/index.php?testsession=759478
+    pragma: no-cache
+    server: cloudflare
+    set-cookie: MoodleSession=9q1nq7o65ubl3i9fp1v006a5he; path=/lebanon/; secure; SameSite=None
+    set-cookie: MOODLEID1_=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/lebanon/; secure
+    set-cookie: MOODLEID1_=%25D1%2523%25AF%25DFw%2525%2507%250D%25F2%255E%255C%2517%25BF; expires=Sun, 31-Jul-2022 07:38:04 GMT; Max-Age=5184000; path=/lebanon/; secure
+    x-powered-by: PHP/7.3.29
+    x-redirect-by: Moodle
+
+
+/---------------------------------- activity authenticator ------------------------------------/
+Request URL: https://bam.nr-data.net/events/1/26f7e2185d?a=1715874784&v=1216.487a282&to=NgYDNkRXC0dQABFfVw9MNBBfGQlRUwILWVZOCg8GU05LRFkT&rst=923307&ck=1&ref=https://mdl.arabou.edu.kw/lebanon/
+
+Timer: 30s
+
+Payload: bel.6;e,'fi,jerz,6;5,'type,'pointerdown;5,'net-etype,'4g;6,'net-rtt,100.;6,'net-dlink,10.;6,'fid,3.;6,'cls,0.014905031242180677
+
+Request Headers:
+    Accept: */*
+    Accept-Encoding: gzip, deflate, br
+    Accept-Language: en,en-US;q=0.9,ar;q=0.8
+    Connection: keep-alive
+    Content-Length: 127
+    content-type: text/plain
+    Cookie: JSESSIONID=973b5a321ee9f174
+    Host: bam.nr-data.net
+    Origin: https://mdl.arabou.edu.kw
+    Referer: https://mdl.arabou.edu.kw/
+    sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="101", "Google Chrome";v="101"
+    sec-ch-ua-mobile: ?0
+    sec-ch-ua-platform: "Windows"
+    Sec-Fetch-Dest: empty
+    Sec-Fetch-Mode: cors
+    Sec-Fetch-Site: cross-site
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36
+
+Response Headers:
+    access-control-allow-credentials: true
+    access-control-allow-methods: GET, POST, PUT, HEAD, OPTIONS
+    Access-Control-Allow-Origin: https://mdl.arabou.edu.kw
+    CF-Cache-Status: DYNAMIC
+    CF-Ray: 7146601b8afe41f7-MRS
+    Connection: keep-alive
+    Content-Length: 24
+    Content-Type: image/gif
+    Date: Wed, 01 Jun 2022 07:53:25 GMT
+    Expect-CT: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+    Server: cloudflare
+    Vary: Accept-Encoding
+
+    
+/---------------------------------- session extender ------------------------------------/
+Request URL: https://mdl.arabou.edu.kw/lebanon/lib/ajax/service.php?sesskey=Wys1ALdDBX&info=local_intelldata_save_tracking
+
+Timer = 2min
+
+Payload: [
+    {
+        "index": 0,
+        "methodname": "local_intelldata_save_tracking",
+        "args": {
+            "page": "site",
+            "param": 1
+        }
+    }
+]
+
+Request Headers:
+    :authority: mdl.arabou.edu.kw
+    :method: POST
+    :path: /lebanon/lib/ajax/service.php?sesskey=Wys1ALdDBX&info=local_intelldata_save_tracking
+    :scheme: https
+    accept: application/json, text/javascript, */*; q=0.01
+    accept-encoding: gzip, deflate, br
+    accept-language: en,en-US;q=0.9,ar;q=0.8
+    content-length: 92
+    content-type: application/json
+    cookie: MoodleSession=9q1nq7o65ubl3i9fp1v006a5he; MOODLEID1_=%25D1%2523%25AF%25DFw%2525%2507%250D%25F2%255E%255C%2517%25BF; intellidatatime=30; intellidatapage=course; intellidataparam=2848
+    newrelic: eyJ2IjpbMCwxXSwiZCI6eyJ0eSI6IkJyb3dzZXIiLCJhYyI6IjE3MTM5NzgiLCJhcCI6IjE4MzQ4NjUzMDQiLCJpZCI6IjNlYTYzYWY1Mjg4ZDFhZjciLCJ0ciI6ImZjZDBjOGRlYmY0NzU4YTBmMzcxYTZmOGNhZjRlNDc1IiwidGkiOjE2NTQwNzAwMDY4Njd9fQ==
+    origin: https://mdl.arabou.edu.kw
+    referer: https://mdl.arabou.edu.kw/lebanon/
+    sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="101", "Google Chrome";v="101"
+    sec-ch-ua-mobile: ?0
+    sec-ch-ua-platform: "Windows"
+    sec-fetch-dest: empty
+    sec-fetch-mode: cors
+    sec-fetch-site: same-origin
+    traceparent: 00-fcd0c8debf4758a0f371a6f8caf4e475-3ea63af5288d1af7-01
+    tracestate: 1713978@nr=0-1-1713978-1834865304-3ea63af5288d1af7----1654070006867
+    user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36
+    x-newrelic-id: VQEGUl9UABABU1BXDwYDUVwF
+    x-requested-with: XMLHttpRequest
+
+Response Headers:
+    cache-control: no-store, no-cache, must-revalidate
+    cf-cache-status: DYNAMIC
+    cf-ray: 714660288e6041e5-MRS
+    content-encoding: gzip
+    content-type: application/json; charset=utf-8
+    date: Wed, 01 Jun 2022 07:53:27 GMT
+    expect-ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+    expires: Thu, 19 Nov 1981 08:52:00 GMT
+    pragma: no-cache
+    server: cloudflare
+    set-cookie: MoodleSession=9q1nq7o65ubl3i9fp1v006a5he; path=/lebanon/; secure; SameSite=None
+    x-newrelic-app-data: PxQGVldQAQQIR1BVBgQPUVAGDgdASkE1VQBsEFlWR1NQEVAOXz0cNxZfa04KBlpSXgsPPhhdXgQ4HldZAx4/TUMHShRRW1EcQw1JQx1RHVJUBgdRSlMWAgJSVVQbHAZKRgIEBVZXWlZTU11UXQsGBABHFQdQDUAHOQ==
+    x-powered-by: PHP/7.3.29

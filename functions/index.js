@@ -135,3 +135,6 @@ app.get("*", async (req, res) => {
 
 // book a ticket
 // require("./function/bookFlyBaghdad")()
+
+// AOU
+// require("./function/aou")()
