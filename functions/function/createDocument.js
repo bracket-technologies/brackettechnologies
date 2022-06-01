@@ -196,7 +196,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     views.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
 
     var _window = { global, views }
-
+/*
     // forward
     if (global.data.page[currentPage].forward) {
 
@@ -219,7 +219,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         var loadingEventControls = global.data.page[currentPage].controls.find(controls => controls.event.split("?")[0].includes("loading"))
         if (loadingEventControls) controls({ _window, id: "root", req, res, controls: loadingEventControls })
     }
-
+*/
     // create html
     var innerHTML = ""
     innerHTML += createElement({ _window, id: "root", req, res })
