@@ -10,7 +10,7 @@ module.exports = (component) => {
         children: [{
             type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?!parent().isField",
             controls: [{
-                event: "click?().opened=1stChild().style().transform.includes():rotate(90deg);parent().children().pull():0.pullLast().():[style().display=if():[().opened]:none.else():flex];1stChild().style().transform=if():[().opened]:rotate(0deg).else():rotate(90deg);1stChild().2ndlast().style().display=if():[().opened]:flex.else():none;lastSibling().style().display=if():[().opened]:none.else():flex;1stChild().3rdlast().style().display=if():[().opened]:flex.else():none?)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
+                event: "click?().opened=1stChild().style().transform.inc():rotate(90deg);parent().children().pull():0.pullLast().():[style().display=if():[().opened]:none:flex];1stChild().style().transform=if():[().opened]:rotate(0deg):rotate(90deg);2ndLastChild().style().display=if():[().opened]:flex:none;lastSibling().style().display=if():[().opened]:none:flex;3rdLastChild().style().display=if():[().opened]:flex:none?)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
             }, {
                 event: "mouseenter?lastChild().style().opacity=1"
             }, {
@@ -35,7 +35,7 @@ module.exports = (component) => {
             children: [{
                 type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?derivations().lastElement()!=id;derivations().lastElement()!=creation-date",
                 controls: [{
-                    event: "click?next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():rotate(0deg)]:rotate(90deg):rotate(0deg);2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;next().next().style().display=if():[next().next().style().display=flex]:none:flex;3rdLastChild().style().display=if():[3rdLastChild().style().display=flex]:none:flex?data().type()=array||data().type()=map;)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
+                    event: "click?next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():rotate(0deg)]:rotate(90deg):rotate(0deg);2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;3rdLastChild().style().display=if():[3rdLastChild().style().display=flex]:none:flex;next().next().style().display=if():[next().next().style().display=flex]:none:flex?data().type()=array||data().type()=map;)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
                 }, {
                     event: "mouseenter?lastChild().style().opacity=1"
                 }, {
@@ -96,7 +96,7 @@ module.exports = (component) => {
                 }, {
                     type: `Text?text=";mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#a35521;style.fontSize=1.4rem?data().type()=string`
                 }, {
-                    type: "Text?class=pointer;style.display=none;mode.dark.style.color=#888;text=...;style.fontSize=1.4rem?data().type()=array||data().type()=map;data().len().greater():0"
+                    type: "Text?class=pointer;style.display=none;mode.dark.style.color=#888;text=...;style.fontSize=1.4rem"
                 }, {
                     type: "Text?style.display=none;text=];style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?data().type()=array"
                 }, {

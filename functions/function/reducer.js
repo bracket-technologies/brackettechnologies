@@ -54,7 +54,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path[0]) args = path[0].toString().split(":")
 
     // function
-    if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
+    if (path0.slice(-2) === "()" && path0.slice(0, 2) !== ")(" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
             
         var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
         if (_params.length > 0) {
@@ -215,7 +215,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseenter()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -250,7 +250,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (path0 === "desktop()") return global.device.type === "desktop"
             else if (path0 === "tablet()") return global.device.type === "tablet"
             else if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
-            else if (path0 === "clickedElement()") object = global["clickedElement()"]
+            else if (path0 === "clickedElement()" || path0 === "clicked()") object = global["clickedElement()"]
 
             else if (path0 === "log()") {
 
@@ -695,7 +695,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-
+            
             if (!_o.element) return
             if (!_o.element.children[0]) return
             var _id = _o.element.children[0].id
@@ -732,7 +732,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = views[_id]
 
-        } else if (k0 === "3rdlastChild()") { // o could be a string or element or view
+        } else if (k0 === "3rdLastChild()") { // o could be a string or element or view
             
             var _o
             if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
@@ -747,7 +747,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = views[_id]
 
-        } else if (k0 === "2ndlastChild()" || k0 === "2ndLastChild()") { // o could be a string or element or view
+        } else if (k0 === "2ndLastChild()") { // o could be a string or element or view
             
             var _o
             if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
@@ -924,6 +924,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = answer.map(o => window.views[o.id])
 
+        } else if (k0 === "classlist()" || k0 === "classList()") {
+            
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            if (typeof _o === "object" && _o.element) answer = [..._o.element.classList]
+            else if (_o.nodeType === Node.ELEMENT_NODE) answer = [..._o.classList]
+            
         } else if (k0 === "getElementsByClassName()") {
 
             var args = k.split(":")
@@ -970,31 +981,55 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "mousedown()") {
 
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
             var mousedownEvent = new Event("mousedown")
 
-            if (o.nodeType === Node.ELEMENT_NODE) o.dispatchEvent(mousedownEvent)
-            else if (typeof o === "object" && o.element) o.element.dispatchEvent(mousedownEvent)
+            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(mousedownEvent)
+            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(mousedownEvent)
 
         } else if (k0 === "mouseup()") {
 
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
             var mouseupEvent = new Event("mouseup")
 
-            if (o.nodeType === Node.ELEMENT_NODE) o.dispatchEvent(mouseupEvent)
-            else if (typeof o === "object" && o.element) o.element.dispatchEvent(mouseupEvent)
+            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(mouseupEvent)
+            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(mouseupEvent)
 
         } else if (k0 === "mouseenter()") {
 
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
             var mouseenterEvent = new Event("mouseenter")
 
-            if (o.nodeType === Node.ELEMENT_NODE) o.dispatchEvent(mouseenterEvent)
-            else if (typeof o === "object" && o.element) o.element.dispatchEvent(mouseenterEvent)
+            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(mouseenterEvent)
+            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(mouseenterEvent)
 
         } else if (k0 === "mouseleave()") {
 
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
             var mouseleaveEvent = new Event("mouseleave")
 
-            if (o.nodeType === Node.ELEMENT_NODE) o.dispatchEvent(mouseleaveEvent)
-            else if (typeof o === "object" && o.element) o.element.dispatchEvent(mouseleaveEvent)
+            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(mouseleaveEvent)
+            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(mouseleaveEvent)
 
         } else if (k0 === "device()") {
 
@@ -1014,7 +1049,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "child()") {
 
-            var args = k.split(":")
             var child = toValue({ req, res, _window, id, e, value: args[1], params, _ })
             answer = o.child(child)
             
