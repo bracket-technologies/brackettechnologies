@@ -100,8 +100,8 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (key === "desktop()") view[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
     else if (key === "_") view[keygen] = _
-    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, req, res, object })
-    else view[keygen] = reducer({ _window, id, path, e, _, req, res, object: object ? object : view })
+    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, req, res, object, condition: true })
+    else view[keygen] = reducer({ _window, id, path, e, _, req, res, object: object ? object : view, condition: true })
     // else view[keygen] = key
 
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !view[keygen] : (view[keygen] === 0 ? true : view[keygen])

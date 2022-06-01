@@ -20,7 +20,7 @@ const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
 const { note } = require("./note")
 
-const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount }) => {
+const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount, condition }) => {
     
     const { remove } = require("./remove")
     const { toValue, calcSubs } = require("./toValue")
@@ -130,7 +130,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         if (!approved) {
             
-            if (args[3]) return toValue({ req, res, _window, id, value: args[3], params, index, _, e, object, mount })
+            if (args[3]) {
+                if (condition) return toApproval({ _window, e, string: args[3], id, _, req, res, object })
+                return toValue({ req, res, _window, id, value: args[3], params, index, _, e, object, mount })
+            }
 
             if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e, object, mount })
 
@@ -145,7 +148,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else {
 
+            if (condition) return toApproval({ _window, e, string: args[2], id, _, req, res, object })
             object = toValue({ req, res, _window, id, value: args[2], params, index, _, e, object, mount })
+
             // console.log(args[2], global.codes[args[2]], object);
             path.shift()
             while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
@@ -1066,6 +1071,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "derivations()") {
 
+            if (args[1]) { // view.derivations():index
+                var index = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+                return answer = o.derivations[index]
+            }
             answer = o.derivations
 
         } else if (k0 === "replaceState()") {
@@ -2572,7 +2581,8 @@ const getDeepChildren = ({ _window, id }) => {
     if ([...view.element.children].length > 0) 
     ([...view.element.children]).map(el => {
 
-        var _view = _window ? _window.views[el.id] : window.views[el.id]
+        var _view = views[el.id]
+        if (!_view) return
         
         if ([..._view.element.children].length > 0) 
             all.push(...getDeepChildren({ id: el.id }))
@@ -2593,7 +2603,8 @@ const getDeepChildrenId = ({ _window, id }) => {
     if ([...view.element.children].length > 0) 
     ([...view.element.children]).map(el => {
         
-        var _view = _window ? _window.views[el.id] : window.views[el.id]
+        var _view = views[el.id]
+        if (!_view) return
 
         if ([..._view.element.children].length > 0) 
             all.push(...getDeepChildrenId({ id: el.id }))

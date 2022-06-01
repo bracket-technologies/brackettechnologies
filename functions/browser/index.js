@@ -631,11 +631,11 @@ module.exports = (component) => {
                 }]
             }]
         }, {
-            type: "[View]?class=flex column;sort;arrange=parent().arrange;style.marginLeft=if():[!parent().isField]:2rem:0?data().isdefined()",
+            type: "[View]?class=flex column;sort;arrange=parent().arrange;style.marginLeft=if():[!parent().isField]:2rem:0?data().isdefined();data()!=_array;data()!=_map",
             children: [{
                 type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?derivations().lastElement()!=id;derivations().lastElement()!=creation-date",
                 controls: [{
-                    event: "click?():[next().id].style().display=if():[next().style().display=flex]:none.else():flex;():[1stChild().id].style().transform=if():[1stChild().style().transform.includes():rotate(0deg)]:rotate(90deg).else():rotate(0deg);1stChild().2ndlast().style().display=if():[1stChild().2ndlast().style().display=flex]:none.else():flex;next().next().style().display=if():[next().next().style().display=flex]:none.else():flex;1stChild().3rdlast().style().display=if():[1stChild().3rdlast().style().display=flex||data().len()=0]:none.else():flex?data().type()=array||data().type()=map;)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
+                    event: "click?next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():rotate(0deg)]:rotate(90deg):rotate(0deg);2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;next().next().style().display=if():[next().next().style().display=flex]:none:flex;3rdLastChild().style().display=if():[3rdLastChild().style().display=flex]:none:flex?data().type()=array||data().type()=map;)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
                 }, {
                     event: "mouseenter?lastChild().style().opacity=1"
                 }, {
@@ -1567,7 +1567,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     views.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
 
     var _window = { global, views }
-
+/*
     // forward
     if (global.data.page[currentPage].forward) {
 
@@ -1590,7 +1590,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         var loadingEventControls = global.data.page[currentPage].controls.find(controls => controls.event.split("?")[0].includes("loading"))
         if (loadingEventControls) controls({ _window, id: "root", req, res, controls: loadingEventControls })
     }
-
+*/
     // create html
     var innerHTML = ""
     innerHTML += createElement({ _window, id: "root", req, res })
@@ -3113,7 +3113,8 @@ const { toParam } = require("./toParam")
 module.exports = {
   insert: ({ id, insert }) => {
     
-    var { index, value = {}, el, elementId, component, replace, path, data } = insert
+    var { index, value = {}, el, elementId, component, view, replace, path, data } = insert
+    if (view) component = view
     var views = window.views
     var view = views[id], lDiv
     
@@ -3798,7 +3799,7 @@ const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
 const { note } = require("./note")
 
-const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount }) => {
+const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount, condition }) => {
     
     const { remove } = require("./remove")
     const { toValue, calcSubs } = require("./toValue")
@@ -3908,7 +3909,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         if (!approved) {
             
-            if (args[3]) return toValue({ req, res, _window, id, value: args[3], params, index, _, e, object, mount })
+            if (args[3]) {
+                if (condition) return toApproval({ _window, e, string: args[3], id, _, req, res, object })
+                return toValue({ req, res, _window, id, value: args[3], params, index, _, e, object, mount })
+            }
 
             if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], index, params, _, e, object, mount })
 
@@ -3923,7 +3927,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else {
 
+            if (condition) return toApproval({ _window, e, string: args[2], id, _, req, res, object })
             object = toValue({ req, res, _window, id, value: args[2], params, index, _, e, object, mount })
+
             // console.log(args[2], global.codes[args[2]], object);
             path.shift()
             while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
@@ -4844,6 +4850,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "derivations()") {
 
+            if (args[1]) { // view.derivations():index
+                var index = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+                return answer = o.derivations[index]
+            }
             answer = o.derivations
 
         } else if (k0 === "replaceState()") {
@@ -6350,7 +6360,8 @@ const getDeepChildren = ({ _window, id }) => {
     if ([...view.element.children].length > 0) 
     ([...view.element.children]).map(el => {
 
-        var _view = _window ? _window.views[el.id] : window.views[el.id]
+        var _view = views[el.id]
+        if (!_view) return
         
         if ([..._view.element.children].length > 0) 
             all.push(...getDeepChildren({ id: el.id }))
@@ -6371,7 +6382,8 @@ const getDeepChildrenId = ({ _window, id }) => {
     if ([...view.element.children].length > 0) 
     ([...view.element.children]).map(el => {
         
-        var _view = _window ? _window.views[el.id] : window.views[el.id]
+        var _view = views[el.id]
+        if (!_view) return
 
         if ([..._view.element.children].length > 0) 
             all.push(...getDeepChildrenId({ id: el.id }))
@@ -7547,8 +7559,8 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (key === "desktop()") view[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
     else if (key === "_") view[keygen] = _
-    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, req, res, object })
-    else view[keygen] = reducer({ _window, id, path, e, _, req, res, object: object ? object : view })
+    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, req, res, object, condition: true })
+    else view[keygen] = reducer({ _window, id, path, e, _, req, res, object: object ? object : view, condition: true })
     // else view[keygen] = key
 
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !view[keygen] : (view[keygen] === 0 ? true : view[keygen])
@@ -8432,7 +8444,8 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   }
 
   // value is a param it has key=value
-  if (value.includes("=") || value.includes(";") || value.includes(">") || value.includes("<")) return toParam({ req, res, _window, id, e, string: value, _, object, mount })
+  if (value.includes("=") || value.includes(";") || value.slice(0, 1) === "!" || value.includes(">") || value.includes("<")) 
+  return toParam({ req, res, _window, id, e, string: value, _, object, mount })
 
   // multiplication
   if (value.includes("*")) {

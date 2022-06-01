@@ -9,7 +9,8 @@ const { toParam } = require("./toParam")
 module.exports = {
   insert: ({ id, insert }) => {
     
-    var { index, value = {}, el, elementId, component, replace, path, data } = insert
+    var { index, value = {}, el, elementId, component, view, replace, path, data } = insert
+    if (view) component = view
     var views = window.views
     var view = views[id], lDiv
     

@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser')
 var firebase = require("firebase-admin")
 // require("firebase/firestore")
 
-var bracketDomains = [ "bracketjs.com", "localhost", "bracket.localhost" ]
+var bracketDomains = ["bracketjs.com", "localhost", "bracket.localhost"]
 
 // config
 require('dotenv').config({ path: '.env' })
@@ -40,15 +40,15 @@ app.use((req, res, next) => {
 
   // Website you wish to allow to connect
   res.setHeader("Access-Control-Allow-Origin", "*")
-/*
-  // Request methods you wish to allow
-  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
-
-  // Request headers you wish to allow
-  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, project")
-
-  res.setHeader("Access-Control-Allow-Credentials", "true")
-*/
+  /*
+    // Request methods you wish to allow
+    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
+  
+    // Request headers you wish to allow
+    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, project")
+  
+    res.setHeader("Access-Control-Allow-Credentials", "true")
+  */
   // Pass to next layer of middleware
   next()
 })
@@ -103,32 +103,32 @@ app.delete("*", (req, res) => {
 app.get("*", async (req, res) => {
   var path = req.url.split("/")
 
-/*
-  // var host = req.headers["x-forwarded-host"] || req.headers["host"]
-
-  // bracket
-  if (req.headers.project === "bracket") {
+  /*
+    // var host = req.headers["x-forwarded-host"] || req.headers["host"]
   
-    // storage & resources
-    if (path[1] === "storage" || path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
-
-    // database
-    if (path[1] === "database") return require("./function/databaseLocal").getdb({ req, res })
-  }
-*/
+    // bracket
+    if (req.headers.project === "bracket") {
+    
+      // storage & resources
+      if (path[1] === "storage" || path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
+  
+      // database
+      if (path[1] === "database") return require("./function/databaseLocal").getdb({ req, res })
+    }
+  */
 
   // resources
   if (path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
-  
+
   // storage
   if (path[1] === "storage") return getFile({ req, res, storage })
-  
+
   // database
   if (path[1] === "database") return getdb({ req, res, db, realtimedb })
 
   // favicon
   if (req.url === "/favicon.ico") return res.sendStatus(204)
-  
+
   // respond
   return createDocument({ req, res, db, realtimedb })
 })
