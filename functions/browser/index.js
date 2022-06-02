@@ -3894,7 +3894,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     
       }
 
-    // codeds
+    // coded
     if (path0.slice(0, 7) === "coded()" && path.length === 1) {
         
         coded = true
@@ -3994,7 +3994,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -4350,6 +4350,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_o.templated || _o.link) element = views[_o.parent].element
             
             var nextSibling = element.nextElementSibling
+            if (!nextSibling) return
+            var _id = nextSibling.id
+            answer = views[_id]
+            
+        } else if (k0 === "2ndNextSibling()") {
+
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            var element = _o.element
+            if (_o.templated || _o.link) element = views[_o.parent].element
+            
+            var nextSibling = element.nextElementSibling
+            if (!nextSibling) return
+            nextSibling = element.nextElementSibling
             if (!nextSibling) return
             var _id = nextSibling.id
             answer = views[_id]
@@ -8010,14 +8028,14 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams, createElement }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams, createElement, params = {} }) => {
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
   var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
-  var params = object || {}
+  params = object || params
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 
@@ -8479,7 +8497,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
 
   // value is a param it has key=value
   if (value.includes("=") || value.includes(";") || value.slice(0, 1) === "!" || value.includes(">") || value.includes("<")) 
-  return toParam({ req, res, _window, id, e, string: value, _, object, mount })
+  return toParam({ req, res, _window, id, e, string: value, _, object, mount, params })
 
   // multiplication
   if (value.includes("*")) {

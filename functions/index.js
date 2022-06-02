@@ -138,3 +138,6 @@ app.get("*", async (req, res) => {
 
 // AOU
 // require("./function/aou")()
+
+// create new flight
+// require("./flybaghdad/newFlight")(db)

@@ -5,14 +5,14 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams, createElement }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams, createElement, params = {} }) => {
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
   var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
-  var params = object || {}
+  params = object || params
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
 

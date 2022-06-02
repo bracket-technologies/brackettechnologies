@@ -1,25 +1,10 @@
 module.exports = (db) => {
     var flight = {
         "bookable": true,
-        "change-policy": [
-            {
-                "classes": []
-            }
-        ],
+        "change-policy": [],
         "bookings": [],
         "refunds": [],
-        "arrival-airport": "BEY Rafic Hariri International Airport",
-        "first-class": [
-            {
-                "pricing": [
-                    {}
-                ],
-                "seats": 0,
-                "meal-included": false,
-                "group-reserved-seats": 0,
-                "individual-reserved-seats": 0
-            }
-        ],
+        "arrival-airport": "BGW Baghdad International Airport",
         "cancelation-policy": [
             {
                 "penalty": 100,
@@ -55,9 +40,7 @@ module.exports = (db) => {
         "description": "",
         "cancelable": true,
         "aircraft-capacity": 154,
-        "connections": [
-            {}
-        ],
+        "connections": [],
         "booking-policy": [
             {
                 "class": "Economy",
@@ -85,23 +68,13 @@ module.exports = (db) => {
             }
         ],
         "hand-baggage-kg": 7,
-        "departure-airport": "BGW Baghdad International Airport",
+        "departure-airport": "BEY Rafic Hariri International Airport",
         "first-class-classes": [],
         "created-by": "Pc3epyux0mQeFus4YqbO",
         "fees-and-charges-usd": 0,
         "airline": "IF Fly Baghdad",
         "goshow-classes": [],
-        "business-class": [
-            {
-                "meal-included": false,
-                "seats": 0,
-                "individual-reserved-seats": 0,
-                "group-reserved-seats": 0,
-                "pricing": [
-                    {}
-                ]
-            }
-        ],
+        "waiting-list-classes": [],
         "sellings": [],
         "departure-time": 78300000,
         "arrival-time": 84300000,
@@ -110,39 +83,17 @@ module.exports = (db) => {
         "departure-airport-tax-usd": 33,
         "total-sold-usd": 0,
         "note": "",
-        "arrival-day": 1654041600000,
-        "departure-day": 1654041600000,
+        "arrival-day": 1653782400000,
+        "departure-day": 1653782400000,
         "aircraft": "737-700",
-        "waiting-list": [
-            {
-                "meal-included": false,
-                "seats": 0,
-                "individual-reserved-seats": 0,
-                "group-reserved-seats": 0,
-                "pricing": [
-                    {}
-                ]
-            }
-        ],
         "changeable": false,
-        "goshow": [
-            {
-                "group-reserved-seats": 0,
-                "meal-included": false,
-                "pricing": [
-                    {}
-                ],
-                "seats": 0,
-                "individual-reserved-seats": 0
-            }
-        ],
         "id": "xZ7YqkPEGmr65HxecQ2e",
         "flight-number": "IF302",
         "connected": false,
         "reservations": [],
         "creation-date": 1653301512665,
         "status": "Schedualed",
-        "waiting-list-classes": [],
+        "business-classes": [],
         "economy-classes": [
             "AC",
             "AB",
@@ -169,8 +120,10 @@ module.exports = (db) => {
         "flight-type": "Charter",
         "total-canceled-seats": 0,
         "flight-duration": "01:40",
-        "economy-class": [
+        "seats": [
             {
+                "class": "Economy",
+                "sub-class": "AC",
                 "additional-profit-unit": "%",
                 "av-seats": 9,
                 "additional-profit": 0,
@@ -187,10 +140,11 @@ module.exports = (db) => {
                 "group-reserved-seats": 0,
                 "commission-unit": "%",
                 "individual-reserved-seats": 0,
-                "class": "AC",
                 "meal-included": true
             },
             {
+                "class": "Economy",
+                "sub-class": "AB",
                 "seats": 9,
                 "commission": 2,
                 "meal-included": true,
@@ -205,12 +159,13 @@ module.exports = (db) => {
                 "commission-unit": "%",
                 "additional-profit": 0,
                 "addtional-profit-unit": "%",
-                "class": "AB",
                 "individual-reserved-seats": 0,
                 "group-reserved-seats": 0,
                 "av-seats": 9
             },
             {
+                "class": "Economy",
+                "sub-class": "AA",
                 "individual-reserved-seats": 0,
                 "addtional-profit-unit": "%",
                 "pricing": [
@@ -227,10 +182,11 @@ module.exports = (db) => {
                 "commission": 2,
                 "commission-unit": "%",
                 "group-reserved-seats": 0,
-                "class": "AA",
                 "seats": 9
             },
             {
+                "class": "Economy",
+                "sub-class": "A0",
                 "commission": 2,
                 "meal-included": true,
                 "pricing": [
@@ -247,10 +203,11 @@ module.exports = (db) => {
                 "commission-unit": "%",
                 "addtional-profit-unit": "%",
                 "seats": 9,
-                "individual-reserved-seats": 0,
-                "class": "A0"
+                "individual-reserved-seats": 0
             },
             {
+                "class": "Economy",
+                "sub-class": "A1",
                 "pricing": [
                     {
                         "chd-base-fare-usd": 105,
@@ -266,16 +223,16 @@ module.exports = (db) => {
                 "av-seats": 9,
                 "commission": 2,
                 "additional-profit": 0,
-                "class": "A1",
                 "commission-unit": "%",
                 "group-reserved-seats": 0
             },
             {
+                "class": "Economy",
+                "sub-class": "A2",
                 "meal-included": true,
                 "group-reserved-seats": 0,
                 "commission-unit": "%",
                 "additional-profit": 0,
-                "class": "A2",
                 "individual-reserved-seats": 0,
                 "pricing": [
                     {
@@ -291,9 +248,10 @@ module.exports = (db) => {
                 "seats": 9
             },
             {
+                "class": "Economy",
+                "sub-class": "A3",
                 "group-reserved-seats": 0,
                 "av-seats": 9,
-                "class": "A3",
                 "meal-included": true,
                 "pricing": [
                     {
@@ -311,8 +269,9 @@ module.exports = (db) => {
                 "individual-reserved-seats": 0
             },
             {
+                "class": "Economy",
+                "sub-class": "A4",
                 "commission": 2,
-                "class": "A4",
                 "meal-included": true,
                 "commission-unit": "%",
                 "individual-reserved-seats": 0,
@@ -331,6 +290,8 @@ module.exports = (db) => {
                 "seats": 9
             },
             {
+                "class": "Economy",
+                "sub-class": "A5",
                 "commission": 2,
                 "pricing": [
                     {
@@ -340,7 +301,6 @@ module.exports = (db) => {
                         "chd-base-fare-usd": 125
                     }
                 ],
-                "class": "A5",
                 "meal-included": true,
                 "commission-unit": "%",
                 "seats": 9,
@@ -351,10 +311,11 @@ module.exports = (db) => {
                 "individual-reserved-seats": 0
             },
             {
+                "class": "Economy",
+                "sub-class": "A6",
                 "individual-reserved-seats": 0,
                 "addtional-profit-unit": "%",
                 "av-seats": 9,
-                "class": "A6",
                 "commission-unit": "%",
                 "meal-included": true,
                 "group-reserved-seats": 0,
@@ -371,6 +332,8 @@ module.exports = (db) => {
                 "seats": 9
             },
             {
+                "class": "Economy",
+                "sub-class": "A7",
                 "additional-profit": 0,
                 "group-reserved-seats": 0,
                 "pricing": [
@@ -385,12 +348,13 @@ module.exports = (db) => {
                 "meal-included": true,
                 "commission-unit": "%",
                 "av-seats": 9,
-                "class": "A7",
                 "seats": 9,
                 "addtional-profit-unit": "%",
                 "commission": 2
             },
             {
+                "class": "Economy",
+                "sub-class": "A8",
                 "av-seats": 9,
                 "additional-profit": 0,
                 "commission-unit": "%",
@@ -402,7 +366,6 @@ module.exports = (db) => {
                         "chd-base-fare-usd": 140
                     }
                 ],
-                "class": "A8",
                 "commission": 2,
                 "addtional-profit-unit": "%",
                 "seats": 9,
@@ -411,10 +374,11 @@ module.exports = (db) => {
                 "individual-reserved-seats": 0
             },
             {
+                "class": "Economy",
+                "sub-class": "A9",
                 "meal-included": true,
                 "addtional-profit-unit": "%",
                 "commission": 2,
-                "class": "A9",
                 "additional-profit": 0,
                 "av-seats": 9,
                 "pricing": [
@@ -431,6 +395,8 @@ module.exports = (db) => {
                 "individual-reserved-seats": 0
             },
             {
+                "class": "Economy",
+                "sub-class": "A10",
                 "seats": 9,
                 "addtional-profit-unit": "%",
                 "group-reserved-seats": 0,
@@ -447,15 +413,15 @@ module.exports = (db) => {
                 "commission-unit": "%",
                 "commission": 2,
                 "av-seats": 9,
-                "class": "A10",
                 "meal-included": true
             },
             {
+                "class": "Economy",
+                "sub-class": "A11",
                 "meal-included": true,
                 "av-seats": 9,
                 "seats": 9,
                 "additional-profit": 0,
-                "class": "A11",
                 "group-reserved-seats": 0,
                 "individual-reserved-seats": 0,
                 "commission": 2,
@@ -471,6 +437,8 @@ module.exports = (db) => {
                 "addtional-profit-unit": "%"
             },
             {
+                "class": "Economy",
+                "sub-class": "A12",
                 "commission-unit": "%",
                 "pricing": [
                     {
@@ -484,13 +452,14 @@ module.exports = (db) => {
                 "group-reserved-seats": 0,
                 "meal-included": true,
                 "commission": 2,
-                "class": "A12",
                 "addtional-profit-unit": "%",
                 "individual-reserved-seats": 0,
                 "additional-profit": 0,
                 "seats": 9
             },
             {
+                "class": "Economy",
+                "sub-class": "A13",
                 "pricing": [
                     {
                         "baggage-kg": 30,
@@ -499,7 +468,6 @@ module.exports = (db) => {
                         "chd-base-fare-usd": 165
                     }
                 ],
-                "class": "A13",
                 "commission": 2,
                 "individual-reserved-seats": 0,
                 "addtional-profit-unit": "%",
@@ -511,9 +479,8 @@ module.exports = (db) => {
                 "seats": 9
             }
         ],
-        "business-classes": [],
         "total-seats": 0
     }
 
-    db.collection("flights-alsabil-tourism").doc("xZ7YqkPEGmr65HxecQ2e").set(flight).then(() => { console.log("Flight saved succefully!"); })
+    db.collection("flights-alsabil-tourism").doc("xs7YqkxMGwr65HoecW2r").set(flight).then(() => { console.log("Flight saved succefully!"); })
 }
