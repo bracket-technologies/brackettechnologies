@@ -19,6 +19,7 @@ const { toClock } = require("./toClock")
 const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
 const { note } = require("./note")
+const { isParam } = require("./isParam")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount, condition }) => {
     
@@ -481,21 +482,26 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             toValue({ req, res, _window, id, value: _state, params, _, e })
             answer = global[_state]
 
-        } else if (k0.slice(0, 7) === "coded()") {
+        } else if (k0.slice(0, 7) === "coded()" || k0.slice(0, 8) === "codedS()") {
             
             breakRequest = true
-            var newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _ })
+            var newValue
+            if (k0.slice(0, 7) === "coded()") newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _ })
+            else if (k0.slice(0, 8) === "codedS()") newValue = global.codes[k]
             newValue = newValue !== undefined ? [ ...toArray(newValue), ...path.slice(i + 1)] : path.slice(i + 1)
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
             
         } else if (k0 === "data()") {
             
             breakRequest = true
-            var arg = args.slice(1)[0]
-            if (arg) {
+            if (args[1]) {
+                /*
                 answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(o.derivations || [])], object: global[o.Data], params, _, e })
                 if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
                 reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _ })
+                */
+               var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+               return answer = reducer({ req, res, _window, id, e, value, key, path: _params.path || o.derivations, object: _params.data || object, params, _ })
             }
             if (path[i + 1] !== undefined) {
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
@@ -518,14 +524,27 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "removeAttribute()") {
 
-            var att = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            answer = o.removeAttribute(att)
+            var _o, _params
+            if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+            else _params = { att: toValue({ req, res, _window, id, e, _, params, value: args[1] }) }
+
+            _params.att = _params.att || _params.attribute
+
+            if (_params.id) _o = views[_params.id].element
+            else if (_params.view) _o = _params.view.element
+            else if (_params.element || _params.el) _o = _params.element || _params.el
+            else if (typeof o === "object" && o.element) _o = o.element
+            else if (o.nodeType === Node.ELEMENT_NODE) _o = o
+            answer = _o.removeAttribute(_params.att)
 
         } else if (k0 === "parent()") {
 
-            var _o, _parent
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _parent, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             if (typeof _o === "object") {
@@ -540,9 +559,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "siblings()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             
@@ -561,9 +583,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "next()" || k0 === "nextSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -575,11 +600,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = nextSibling.id
             answer = views[_id]
             
-        } else if (k0 === "2ndNextSibling()") {
+        } else if (k0 === "2ndNext()" || k0 === "2ndNextSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -595,9 +623,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "nextSiblings()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -616,9 +647,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "last()" || k0 === "lastSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -628,11 +662,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = lastSibling.id
             answer = views[_id]
 
-        } else if (k0 === "2ndlast()" || k0 === "2ndLast()" || k0 === "2ndLastSibling()") {
+        } else if (k0 === "2ndLast()" || k0 === "2ndLastSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -642,11 +679,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = seclastSibling.id
             answer = views[_id]
             
-        } else if (k0 === "3rdlast()" || k0 === "3rdLast()" || k0 === "3rdLastSibling()") {
+        } else if (k0 === "3rdLast()" || k0 === "3rdLastSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -656,11 +696,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = thirdlastSibling.id
             answer = views[_id]
 
-        } else if (k0 === "1st()" || k0 === "first()" || k0 === "firstSibling()" || k0 === "1stSibling()") {
+        } else if (k0 === "1stSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -670,11 +713,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = firstSibling.id
             answer = views[_id]
 
-        } else if (k0 === "2nd()" || k0 === "second()" || k0 === "secondSibling()" || k0 === "2ndSibling()") {
+        } else if (k0 === "2ndSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -686,9 +732,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "prev()" || k0 === "prevSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -707,9 +756,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "1stChild()") {// o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -722,9 +774,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "2ndChild()") {// o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -737,9 +792,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "3rdChild()") {// o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -752,9 +810,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "3rdLastChild()") { // o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -767,9 +828,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "2ndLastChild()") { // o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -782,9 +846,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "lastChild()") {  // o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -797,9 +864,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "children()") {
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             
@@ -817,18 +887,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 } else return _view
             })
             
-        } else if (k0 === "style()") {
+        } else if (k0 === "style()") { // style():key || style():[key=value;id||el||view||element]
             
-            var styles, _o
-            if (args[2]) {
-                styles = args[2]
-                _o = args[1]
-            } else if (args[1]) {
-                if (args[1].slice(0, 7) !== "coded()") _o = args[1]
-                else {
-                    styles = args[1]
-                    _o = o
-                }
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+                    
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -837,63 +906,134 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_o.nodeType && _o.nodeType === Node.ELEMENT_NODE) answer = _o.style
             else if (typeof _o === "object") {
                 if (_o.element) answer = _o.element.style
-                else answer = _o.style
+                else answer = _o.style = _o.style || {}
+            }
+
+            var { view: _view, id: _id, el: _el, element: _element, ...__params} = _params
+            
+            if (Object.keys(__params).length > 0) {
+
+                Object.entries(__params).map(([key, value]) => {
+                    answer[key] = value
+                })
+
             }
             
-            if (styles) reducer({ req, res, _window, id, path: styles, value, key, object: answer, params, index, _, e })
-            
         } else if (k0 === "getTagElements()") {
-          
-            var _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params }).toUpperCase()
+
+            var _o, _params = {}, _tag_name
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    _tag_name = _params.tag || _params.tagName
+
+                } else _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
-            if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)
-            else answer = o.element && o.element.getElementsByTagName(_tag_name)
+            _tag_name = _tag_name.toUpperCase()
+            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)
+            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)
 
         } else if (k0 === "getTagElement()") {
           
-            var _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params }).toUpperCase()
+            var _o, _params = {}, _tag_name
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    _tag_name = _params.tag || _params.tagName
+
+                } else _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
-            if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)[0]
-            else answer = o.element && o.element.getElementsByTagName(_tag_name)[0]
+            _tag_name = _tag_name.toUpperCase()
+            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)[0]
+            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)[0]
 
         } else if (k0 === "getTags()") {
-          
-            var _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params }).toUpperCase()
+
+            var _o, _params = {}, _tag_name
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    _tag_name = _params.tag || _params.tagName
+
+                } else _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
-            if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)
-            else answer = o.element && o.element.getElementsByTagName(_tag_name)
+            _tag_name = _tag_name.toUpperCase()
+            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)
+            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)
 
             answer = [...answer].map(o => views[o.id])
 
         } else if (k0 === "getTag()") {
           
-            var args = k.split(":")
-            var _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params }).toUpperCase()
+            var _o, _params = {}, _tag_name
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    _tag_name = _params.tag || _params.tagName
+
+                } else _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
-            if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)[0]
-            else answer = o.element && o.element.getElementsByTagName(_tag_name)[0]
+            _tag_name = _tag_name.toUpperCase()
+            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)[0]
+            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)[0]
             answer = window.views[answer.id]
 
         } else if (k0 === "getInputs()" || k0 === "inputs()") {
             
-            var _input, _textarea
-            if (o.nodeType === Node.ELEMENT_NODE) {
-                _input = o.getElementsByTagName("INPUT")
-                _textarea = o.getElementsByTagName("TEXTAREA")
+            var _input, _textarea, _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            if (_o.nodeType === Node.ELEMENT_NODE) {
+                _input = _o.getElementsByTagName("INPUT")
+                _textarea = _o.getElementsByTagName("TEXTAREA")
             } else {
-                _input = o.element && o.element.getElementsByTagName("INPUT")
-                _textarea = o.element && o.element.getElementsByTagName("TEXTAREA")
+                _input = _o.element && _o.element.getElementsByTagName("INPUT")
+                _textarea = _o.element && _o.element.getElementsByTagName("TEXTAREA")
             }
-            answer = [..._input, ..._textarea].map(o => window.views[o.id])
+            answer = [..._input, ..._textarea].map(o => views[o.id])
 
         } else if (k0 === "getInput()" || k0 === "input()") {
             
-            var _o, __o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, __o, _params = {}, _o
+            if (args[1]) {
 
-            if (typeof _o === "string") __o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
             else __o = _o
 
             if (!__o) return
@@ -920,7 +1060,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "relativePosition()") {
 
-            var args = k.split(":")
             var relativeTo = toValue({ req, res, _window, id, e, _, value: args[1], params })
             answer = position(o, relativeTo)
 
@@ -932,9 +1071,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 view.controls.push({
                     event: `loaded?${key}`
                 })
+                return 
             }
-            var args = k.split(":")
-            var className = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            
+            var className, _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    className = _params.className || _params.class
+
+                } else className = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
             if (className) {
                 if (typeof o === "object" && o.element) answer = [...o.element.getElementsByClassName(className)]
                 else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByClassName(className)]
@@ -944,9 +1097,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "classlist()" || k0 === "classList()") {
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -955,31 +1115,53 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "getElementsByClassName()") {
 
-            var args = k.split(":")
-            var className = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            // map not loaded yet
+            if (view.status === "Loading") {
+                view.controls = toArray(view.controls)
+                view.controls.push({
+                    event: `loaded?${key}`
+                })
+                return 
+            }
+            
+            var className, _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    className = _params.className || _params.class
+
+                } else className = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
             if (className) {
                 if (typeof o === "object" && o.element) answer = [...o.element.getElementsByClassName(className)]
                 else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByClassName(className)]
             } else answer = []
 
-        } else if (k0 === "getElementsByTagName()") {
-
-            var args = k.split(":")
-            var tagName = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            if (tagName) {
-                if (typeof o === "object" && o.element) answer = [...o.element.getElementsByTagName(tagName)]
-                else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByTagName(tagName)]
-            } else answer = []
-
         } else if (k0 === "toInteger()") {
 
-            answer = Math.round(toNumber(o))
+            var integer
+            if (args[1]) integer = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else integer = o
+            answer = Math.round(toNumber(integer))
 
         } else if (k0 === "click()") {
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
             if (typeof _o === "string" && views[_o]) views[_o].element.click()
             else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
@@ -987,21 +1169,49 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "focus()") {
 
+            var _params = {}, _o
             if (args[1]) {
-                var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
-                if (typeof _id === "object") focus({ id: _id.id })
-            } else focus({ id: o.id })
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+            
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
+            focus({ id: _o.id })
 
         } else if (k0 === "getElementById()") {
 
-            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            answer = o.getElementById(_id)
+            var _params = {}, _o, _id
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.element || o
+                    _id = _params.id
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+            
+            answer = _o.getElementById(_id)
 
         } else if (k0 === "mousedown()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -1012,9 +1222,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "mouseup()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -1025,9 +1242,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "mouseenter()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -1038,9 +1262,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "mouseleave()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -1065,39 +1296,72 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = global.device.type === "tablet"
 
-        } else if (k0 === "child()") {
-
-            var child = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            answer = o.child(child)
-            
         } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
+
+            var _params = {}, _o, _timer
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+                    _timer = _params.timer
+
+                } else _timer = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _timer = o
             
-            args.slice(1).map(arg => {
-                var _timer = toValue({ req, res, _window, id, e, value: arg, params, _ })
-                clearTimeout(_timer)
-            })
+            clearTimeout(_timer)
             
         } else if (k0 === "clearInterval()") {
+
+            var _params = {}, _o, _interval
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+                    _interval = _params.interval
+
+                } else _interval = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _interval = o
             
-            answer = clearInterval(o)
+            answer = clearInterval(_interval)
             
-        } else if (k0 === "setInterval()") {
+        } else if (k0 === "interval()" || k0 === "setInterval()") {
             
-            var args = k.split(":")
-            var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
-            var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
-            answer = setInterval(myFn, _timer)
+            if (!isNaN(toValue({ req, res, _window, id, value: args[2], params, _, e }))) { // interval():params:timer
+
+                var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
+                var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
+                answer = setInterval(myFn, _timer)
+
+            } else if (isParam({ _window, string: args[1] }) && !args[2]) { // interval():[params;timer]
+
+                var _params
+                _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                var myFn = () => toValue({ req, res, _window, id, value: _params.params || _params.parameters, params, _, e })
+                answer = setInterval(myFn, _params.timer)
+            }
 
         } else if (k0 === "timer()" || k0 === "setTimeout()") {
             
-            var args = k.split(":")
-            var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
-            var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
-            answer = setTimeout(myFn, _timer)
+            if (!isNaN(toValue({ req, res, _window, id, value: args[2], params, _, e }))) { // timer():params:timer
+
+                var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
+                var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
+                answer = setTimeout(myFn, _timer)
+
+            } else if (isParam({ _window, string: args[1] }) && !args[2]) { // timer():[params;timer]
+
+                var _params
+                _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                var myFn = () => toValue({ req, res, _window, id, value: _params.params || _params.parameters, params, _, e })
+                answer = setTimeout(myFn, _params.timer)
+            }
 
         } else if (k0 === "path()") {
 
-            var args = k.split(":")
             var _path = toValue({ req, res, _window, id, value: args[1], params, _, e })
             if (typeof _path === "string") _path = _path.split(".")
             _path = [..._path, ...path.slice(i + 1)]
@@ -1105,30 +1369,67 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "pop()") {
 
-            o.pop()
-            answer = o
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, e })
+            else _o = o
+
+            _o.pop()
+            answer = _o
             
         } else if (k0 === "shift()") {
 
-            answer = o.shift()
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, e })
+            else _o = o
+
+            _o.shift()
+            answer = _o
 
         } else if (k0 === "slice()") {
 
-            // slice():start:end
-            var args = k.split(":")
-            var _start = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            var _end = toValue({ req, res, _window, id, e, value: args[2], params, _ })
-            if (_end !== undefined) answer = o.slice(parseInt(_start), parseInt(_end))
-            else answer = o.slice(parseInt(_start))
+            if (args[2] || !isNaN(toValue({ req, res, _window, id, e, value: args[1], params, _ }))) { // slice():start:end
+
+                var _start = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+                var _end = toValue({ req, res, _window, id, e, value: args[2], params, _ })
+                if (_end !== undefined) answer = o.slice(parseInt(_start), parseInt(_end))
+                else answer = o.slice(parseInt(_start))
+
+            } else {
+
+                var _params = {}, _o
+                if (args[1]) {
+
+                    if (isParam({ _window, string: args[1] })) {
+
+                        _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                        _o = _params.object || _params.map || o
+                        if (_params.end !== undefined) answer = _o.slice(parseInt(_params.start), parseInt(_params.end))
+                        else answer = _o.slice(parseInt(_params.start))
+                    }
+                }
+            }
             
         } else if (k0 === "derivations()") {
 
+            var _params = {}, _o, _index
             if (args[1]) { // view.derivations():index
-                var index = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-                return answer = o.derivations[index]
-            }
-            answer = o.derivations
 
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.object || _params.map || o
+                    if (_params.index) return _o.derivations[_index]
+                    else return _o.derivations
+
+                } else _index = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            }
+            if (_index !== undefined) return o.derivations[_index]
+            else return o.derivations
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         } else if (k0 === "replaceState()") {
 
             // replaceState():url:title
@@ -2410,10 +2711,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             _text = toValue({ req, res, _window, id, e, _, value: _text, params })
             var mininoteControls = toCode({ string: `():tooltip-text.txt()=${_text};clearTimer():[)(:tooltip-timer];():tooltip.style():[opacity=1;transform=scale(1)];)(:tooltip-timer=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _ })
-
-        } else if (k0 === "mouseenter()") {
-          
-            answer = o.mouseenter
 
         } else if (k0 === "readonly()") {
           

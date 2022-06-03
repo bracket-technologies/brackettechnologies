@@ -87,7 +87,7 @@ module.exports = (db) => {
         "departure-day": 1653782400000,
         "aircraft": "737-700",
         "changeable": false,
-        "id": "xZ7YqkPEGmr65HxecQ2e",
+        "id": "xs7YqkxMGwr65HoecW2r",
         "flight-number": "IF302",
         "connected": false,
         "reservations": [],

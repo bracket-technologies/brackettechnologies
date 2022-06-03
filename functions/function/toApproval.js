@@ -14,6 +14,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
   // no string
   if (!string || typeof string !== "string") return true
 
+  var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
   var mainId = id, approval = true
 
@@ -30,7 +31,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     if (!approval) return false
 
     id = mainId
-    var view = _window ? _window.views[id] : window.views[id] || {}
+    var view = views[id] || {}
 
     if (condition.includes("#()")) {
       view["#"] = toArray(view["#"])

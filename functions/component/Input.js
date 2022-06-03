@@ -241,9 +241,9 @@ const Input = (component) => {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
             }, {
-                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
+                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
             }, {
-                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[():${id}-input.val()]:[prev().data().copyToClipBoard();prev().focus()]];mininote.text='copied!'?parent().copyable`,
+                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-input.val()]:[prev().data().copyToClipBoard();prev().focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{

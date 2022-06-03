@@ -149,7 +149,7 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     // execute
     if (controls.actions || controls.action) await execute({ controls, id, e })
 }
-},{"../function/cookie":38,"../function/execute":51,"../function/setElement":86,"../function/starter":89,"../function/toApproval":93,"../function/toCode":98,"../function/toParam":105}],2:[function(require,module,exports){
+},{"../function/cookie":38,"../function/execute":51,"../function/setElement":87,"../function/starter":90,"../function/toApproval":94,"../function/toCode":99,"../function/toParam":106}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -169,7 +169,7 @@ module.exports = (component) => {
     }]
   }
 }
-},{"../function/toComponent":99}],3:[function(require,module,exports){
+},{"../function/toComponent":100}],3:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
@@ -413,9 +413,9 @@ const Input = (component) => {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
             }, {
-                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
+                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
             }, {
-                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=#fff;borderRadius=.5rem];click:[if():[():${id}-input.val()]:[prev().data().copyToClipBoard();prev().focus()]];mininote.text='copied!'?parent().copyable`,
+                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-input.val()]:[prev().data().copyToClipBoard();prev().focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
@@ -458,7 +458,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":34,"../function/merge":70,"../function/toComponent":99,"../function/toString":108}],4:[function(require,module,exports){
+},{"../function/clone":34,"../function/merge":71,"../function/toComponent":100,"../function/toString":109}],4:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -597,7 +597,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":99}],5:[function(require,module,exports){
+},{"../function/toComponent":100}],5:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -722,7 +722,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":99}],6:[function(require,module,exports){
+},{"../function/toComponent":100}],6:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -749,7 +749,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":99}],7:[function(require,module,exports){
+},{"../function/toComponent":100}],7:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 const { toString } = require("../function/toString")
 
@@ -781,7 +781,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":99,"../function/toString":108}],8:[function(require,module,exports){
+},{"../function/toComponent":100,"../function/toString":109}],8:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Item : require("./Item"),
@@ -1258,7 +1258,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":50,"./toArray":94,"./watch":114}],38:[function(require,module,exports){
+},{"./event":50,"./toArray":95,"./watch":115}],38:[function(require,module,exports){
 const setCookie = ({ name = "", value, expiry = 360 }) => {
 
   var d = new Date()
@@ -1368,7 +1368,7 @@ module.exports = {
   }
 }
 
-},{"../component/component":8,"./clone":34,"./generate":57,"./toApproval":93,"./toCode":98,"./toParam":105}],41:[function(require,module,exports){
+},{"../component/component":8,"./clone":34,"./generate":57,"./toApproval":94,"./toCode":99,"./toParam":106}],41:[function(require,module,exports){
 const { createElement } = require("./createElement")
 const { toArray } = require("./toArray")
 const { controls } = require("./controls")
@@ -1641,7 +1641,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 }
 
 module.exports = { createDocument }
-},{"./controls":37,"./createElement":42,"./jsonFiles":67,"./toApproval":93,"./toArray":94,"./toCode":98,"dotenv":145}],42:[function(require,module,exports){
+},{"./controls":37,"./createElement":42,"./jsonFiles":68,"./toApproval":94,"./toArray":95,"./toCode":99,"dotenv":146}],42:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -1764,7 +1764,7 @@ var createElement = ({ _window, id, req, res }) => {
 
 module.exports = { createElement }
 
-},{"./clone":34,"./createTags":43,"./generate":57,"./reducer":76,"./toApproval":93,"./toCode":98,"./toParam":105,"./toValue":110}],43:[function(require,module,exports){
+},{"./clone":34,"./createTags":43,"./generate":57,"./reducer":77,"./toApproval":94,"./toCode":99,"./toParam":106,"./toValue":111}],43:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -1934,7 +1934,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":34,"./createComponent":40,"./createElement":42,"./execute":51,"./generate":57,"./toArray":94,"./toHtml":101}],44:[function(require,module,exports){
+},{"./clone":34,"./createComponent":40,"./createElement":42,"./execute":51,"./generate":57,"./toArray":95,"./toHtml":102}],44:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -1954,7 +1954,7 @@ const createView = ({ view, id }) => {
 
 module.exports = {createView}
 
-},{"./clone":34,"./toArray":94,"./update":112}],45:[function(require,module,exports){
+},{"./clone":34,"./toArray":95,"./update":113}],45:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -1992,7 +1992,7 @@ const clearData = ({ id, e, clear = {} }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":34,"./reducer":76,"./setContent":84,"./setData":85}],46:[function(require,module,exports){
+},{"./clone":34,"./reducer":77,"./setContent":85,"./setData":86}],46:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -2161,7 +2161,7 @@ const defaultInputHandler = ({ id }) => {
 }
 
 module.exports = { defaultInputHandler }
-},{"./data":45,"./isArabic":64,"./resize":80}],48:[function(require,module,exports){
+},{"./data":45,"./isArabic":64,"./resize":81}],48:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -2226,7 +2226,7 @@ const droplist = ({ id, e }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":34,"./toString":108,"./toValue":110,"./update":112}],49:[function(require,module,exports){
+},{"./clone":34,"./toString":109,"./toValue":111,"./update":113}],49:[function(require,module,exports){
 const axios = require("axios");
 const { toString } = require("./toString")
 const { toAwait } = require("./toAwait")
@@ -2265,7 +2265,7 @@ const erase = async ({ id, e, ...params }) => {
 }
 
 module.exports = { erase }
-},{"./toAwait":95,"./toString":108,"axios":115}],50:[function(require,module,exports){
+},{"./toAwait":96,"./toString":109,"axios":116}],50:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -2527,7 +2527,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":34,"./execute":51,"./toApproval":93,"./toArray":94,"./toCode":98,"./toParam":105,"./toValue":110}],51:[function(require,module,exports){
+},{"./clone":34,"./execute":51,"./toApproval":94,"./toArray":95,"./toCode":99,"./toParam":106,"./toValue":111}],51:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -2673,7 +2673,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
 module.exports = { execute }
 
-},{"./function":56,"./toApproval":93,"./toArray":94,"./toAwait":95,"./toCode":98,"./toParam":105,"./toValue":110}],52:[function(require,module,exports){
+},{"./function":56,"./toApproval":94,"./toArray":95,"./toAwait":96,"./toCode":99,"./toParam":106,"./toValue":111}],52:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -2763,7 +2763,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":34,"./compare":35,"./isEqual":65,"./toArray":94,"./toOperator":104}],55:[function(require,module,exports){
+},{"./clone":34,"./compare":35,"./isEqual":65,"./toArray":95,"./toOperator":105}],55:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -2971,7 +2971,7 @@ module.exports = {
   toggleView,
   insert
 }
-},{"./blur":31,"./capitalize":32,"./clearValues":33,"./clone":34,"./compare":35,"./contentful":36,"./controls":37,"./cookie":38,"./createActions":39,"./createComponent":40,"./createDocument":41,"./createElement":42,"./createView":44,"./data":45,"./decode":46,"./defaultInputHandler":47,"./droplist":48,"./erase":49,"./event":50,"./execute":51,"./exportJson":52,"./fileReader":53,"./filter":54,"./focus":55,"./generate":57,"./getDateTime":58,"./getDaysInMonth":59,"./getParam":60,"./importJson":62,"./insert":63,"./isArabic":64,"./isEqual":65,"./isPath":66,"./jsonFiles":67,"./keys":68,"./log":69,"./merge":70,"./note":71,"./overflow":72,"./popup":73,"./position":74,"./preventDefault":75,"./reducer":76,"./refresh":77,"./reload":78,"./remove":79,"./resize":80,"./route":81,"./save":82,"./search":83,"./setContent":84,"./setData":85,"./setElement":86,"./setPosition":87,"./sort":88,"./starter":89,"./state":90,"./style":91,"./switchMode":92,"./toApproval":93,"./toArray":94,"./toAwait":95,"./toCSV":96,"./toCode":98,"./toComponent":99,"./toControls":100,"./toHtml":101,"./toId":102,"./toNumber":103,"./toOperator":104,"./toParam":105,"./toString":108,"./toStyle":109,"./toValue":110,"./toggleView":111,"./update":112,"./upload":113}],57:[function(require,module,exports){
+},{"./blur":31,"./capitalize":32,"./clearValues":33,"./clone":34,"./compare":35,"./contentful":36,"./controls":37,"./cookie":38,"./createActions":39,"./createComponent":40,"./createDocument":41,"./createElement":42,"./createView":44,"./data":45,"./decode":46,"./defaultInputHandler":47,"./droplist":48,"./erase":49,"./event":50,"./execute":51,"./exportJson":52,"./fileReader":53,"./filter":54,"./focus":55,"./generate":57,"./getDateTime":58,"./getDaysInMonth":59,"./getParam":60,"./importJson":62,"./insert":63,"./isArabic":64,"./isEqual":65,"./isPath":67,"./jsonFiles":68,"./keys":69,"./log":70,"./merge":71,"./note":72,"./overflow":73,"./popup":74,"./position":75,"./preventDefault":76,"./reducer":77,"./refresh":78,"./reload":79,"./remove":80,"./resize":81,"./route":82,"./save":83,"./search":84,"./setContent":85,"./setData":86,"./setElement":87,"./setPosition":88,"./sort":89,"./starter":90,"./state":91,"./style":92,"./switchMode":93,"./toApproval":94,"./toArray":95,"./toAwait":96,"./toCSV":97,"./toCode":99,"./toComponent":100,"./toControls":101,"./toHtml":102,"./toId":103,"./toNumber":104,"./toOperator":105,"./toParam":106,"./toString":109,"./toStyle":110,"./toValue":111,"./toggleView":112,"./update":113,"./upload":114}],57:[function(require,module,exports){
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -3041,7 +3041,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":105}],61:[function(require,module,exports){
+},{"./toParam":106}],61:[function(require,module,exports){
 module.exports = {
     getType: (value) => {
         if (typeof value === "string") {
@@ -3101,7 +3101,7 @@ const importJson = ({ id, e, ...params }) => {
 
 module.exports = {importJson, getJson}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":95}],63:[function(require,module,exports){
+},{"./toAwait":96}],63:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
 const { starter } = require("./starter")
@@ -3194,7 +3194,7 @@ module.exports = {
     }
   }
 }
-},{"./clone":34,"./createElement":42,"./generate":57,"./setElement":86,"./starter":89,"./toArray":94,"./toParam":105}],64:[function(require,module,exports){
+},{"./clone":34,"./createElement":42,"./generate":57,"./setElement":87,"./starter":90,"./toArray":95,"./toParam":106}],64:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -3323,6 +3323,18 @@ module.exports = {isEqual}
 
 },{}],66:[function(require,module,exports){
 module.exports = {
+    isParam: ({ _window, string }) => {
+        
+        if (typeof string !== "string") return false
+        var global = _window ? _window.global : window.global
+        if (string.slice(0, 7) === "coded()") string = global.codes[string]
+
+        if (string.includes("=") || string.includes(";") || string.includes("?")) return true
+        else return false
+    }
+}
+},{}],67:[function(require,module,exports){
+module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
 
@@ -3338,7 +3350,7 @@ module.exports = {
   },
 };
 
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -3512,20 +3524,20 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":94,"./toOperator":104,"fs":144}],68:[function(require,module,exports){
+},{"./toArray":95,"./toOperator":105,"fs":145}],69:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -3590,7 +3602,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":34,"./toArray":94}],71:[function(require,module,exports){
+},{"./clone":34,"./toArray":95}],72:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -3625,7 +3637,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":64}],72:[function(require,module,exports){
+},{"./isArabic":64}],73:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var view = window.views[id]
@@ -3682,7 +3694,7 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],73:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 const {controls} = require("./controls")
 const {update} = require("./update")
 
@@ -3722,7 +3734,7 @@ const popup = ({ id }) => {
 
 module.exports = {popup}
 
-},{"./controls":37,"./update":112}],74:[function(require,module,exports){
+},{"./controls":37,"./update":113}],75:[function(require,module,exports){
 const { converter } = require("./resize")
 
 const getPadding = (el) => {
@@ -3769,14 +3781,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":80}],75:[function(require,module,exports){
+},{"./resize":81}],76:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -3798,6 +3810,7 @@ const { toClock } = require("./toClock")
 const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
 const { note } = require("./note")
+const { isParam } = require("./isParam")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount, condition }) => {
     
@@ -4260,21 +4273,26 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             toValue({ req, res, _window, id, value: _state, params, _, e })
             answer = global[_state]
 
-        } else if (k0.slice(0, 7) === "coded()") {
+        } else if (k0.slice(0, 7) === "coded()" || k0.slice(0, 8) === "codedS()") {
             
             breakRequest = true
-            var newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _ })
+            var newValue
+            if (k0.slice(0, 7) === "coded()") newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _ })
+            else if (k0.slice(0, 8) === "codedS()") newValue = global.codes[k]
             newValue = newValue !== undefined ? [ ...toArray(newValue), ...path.slice(i + 1)] : path.slice(i + 1)
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
             
         } else if (k0 === "data()") {
             
             breakRequest = true
-            var arg = args.slice(1)[0]
-            if (arg) {
+            if (args[1]) {
+                /*
                 answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(o.derivations || [])], object: global[o.Data], params, _, e })
                 if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
                 reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _ })
+                */
+               var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+               return answer = reducer({ req, res, _window, id, e, value, key, path: _params.path || o.derivations, object: _params.data || object, params, _ })
             }
             if (path[i + 1] !== undefined) {
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
@@ -4297,14 +4315,27 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "removeAttribute()") {
 
-            var att = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            answer = o.removeAttribute(att)
+            var _o, _params
+            if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+            else _params = { att: toValue({ req, res, _window, id, e, _, params, value: args[1] }) }
+
+            _params.att = _params.att || _params.attribute
+
+            if (_params.id) _o = views[_params.id].element
+            else if (_params.view) _o = _params.view.element
+            else if (_params.element || _params.el) _o = _params.element || _params.el
+            else if (typeof o === "object" && o.element) _o = o.element
+            else if (o.nodeType === Node.ELEMENT_NODE) _o = o
+            answer = _o.removeAttribute(_params.att)
 
         } else if (k0 === "parent()") {
 
-            var _o, _parent
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _parent, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             if (typeof _o === "object") {
@@ -4319,9 +4350,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "siblings()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             
@@ -4340,9 +4374,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "next()" || k0 === "nextSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4354,11 +4391,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = nextSibling.id
             answer = views[_id]
             
-        } else if (k0 === "2ndNextSibling()") {
+        } else if (k0 === "2ndNext()" || k0 === "2ndNextSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4374,9 +4414,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "nextSiblings()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4395,9 +4438,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "last()" || k0 === "lastSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4407,11 +4453,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = lastSibling.id
             answer = views[_id]
 
-        } else if (k0 === "2ndlast()" || k0 === "2ndLast()" || k0 === "2ndLastSibling()") {
+        } else if (k0 === "2ndLast()" || k0 === "2ndLastSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4421,11 +4470,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = seclastSibling.id
             answer = views[_id]
             
-        } else if (k0 === "3rdlast()" || k0 === "3rdLast()" || k0 === "3rdLastSibling()") {
+        } else if (k0 === "3rdLast()" || k0 === "3rdLastSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4435,11 +4487,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = thirdlastSibling.id
             answer = views[_id]
 
-        } else if (k0 === "1st()" || k0 === "first()" || k0 === "firstSibling()" || k0 === "1stSibling()") {
+        } else if (k0 === "1stSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4449,11 +4504,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = firstSibling.id
             answer = views[_id]
 
-        } else if (k0 === "2nd()" || k0 === "second()" || k0 === "secondSibling()" || k0 === "2ndSibling()") {
+        } else if (k0 === "2ndSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4465,9 +4523,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "prev()" || k0 === "prevSibling()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4486,9 +4547,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "1stChild()") {// o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -4501,9 +4565,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "2ndChild()") {// o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -4516,9 +4583,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "3rdChild()") {// o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -4531,9 +4601,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "3rdLastChild()") { // o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -4546,9 +4619,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "2ndLastChild()") { // o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -4561,9 +4637,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "lastChild()") {  // o could be a string or element or view
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
@@ -4576,9 +4655,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "children()") {
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             
@@ -4596,18 +4678,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 } else return _view
             })
             
-        } else if (k0 === "style()") {
+        } else if (k0 === "style()") { // style():key || style():[key=value;id||el||view||element]
             
-            var styles, _o
-            if (args[2]) {
-                styles = args[2]
-                _o = args[1]
-            } else if (args[1]) {
-                if (args[1].slice(0, 7) !== "coded()") _o = args[1]
-                else {
-                    styles = args[1]
-                    _o = o
-                }
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+                    
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -4616,63 +4697,134 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_o.nodeType && _o.nodeType === Node.ELEMENT_NODE) answer = _o.style
             else if (typeof _o === "object") {
                 if (_o.element) answer = _o.element.style
-                else answer = _o.style
+                else answer = _o.style = _o.style || {}
+            }
+
+            var { view: _view, id: _id, el: _el, element: _element, ...__params} = _params
+            
+            if (Object.keys(__params).length > 0) {
+
+                Object.entries(__params).map(([key, value]) => {
+                    answer[key] = value
+                })
+
             }
             
-            if (styles) reducer({ req, res, _window, id, path: styles, value, key, object: answer, params, index, _, e })
-            
         } else if (k0 === "getTagElements()") {
-          
-            var _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params }).toUpperCase()
+
+            var _o, _params = {}, _tag_name
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    _tag_name = _params.tag || _params.tagName
+
+                } else _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
-            if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)
-            else answer = o.element && o.element.getElementsByTagName(_tag_name)
+            _tag_name = _tag_name.toUpperCase()
+            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)
+            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)
 
         } else if (k0 === "getTagElement()") {
           
-            var _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params }).toUpperCase()
+            var _o, _params = {}, _tag_name
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    _tag_name = _params.tag || _params.tagName
+
+                } else _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
-            if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)[0]
-            else answer = o.element && o.element.getElementsByTagName(_tag_name)[0]
+            _tag_name = _tag_name.toUpperCase()
+            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)[0]
+            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)[0]
 
         } else if (k0 === "getTags()") {
-          
-            var _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params }).toUpperCase()
+
+            var _o, _params = {}, _tag_name
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    _tag_name = _params.tag || _params.tagName
+
+                } else _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
-            if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)
-            else answer = o.element && o.element.getElementsByTagName(_tag_name)
+            _tag_name = _tag_name.toUpperCase()
+            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)
+            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)
 
             answer = [...answer].map(o => views[o.id])
 
         } else if (k0 === "getTag()") {
           
-            var args = k.split(":")
-            var _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params }).toUpperCase()
+            var _o, _params = {}, _tag_name
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    _tag_name = _params.tag || _params.tagName
+
+                } else _tag_name = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
-            if (o.nodeType === Node.ELEMENT_NODE) answer = o.getElementsByTagName(_tag_name)[0]
-            else answer = o.element && o.element.getElementsByTagName(_tag_name)[0]
+            _tag_name = _tag_name.toUpperCase()
+            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)[0]
+            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)[0]
             answer = window.views[answer.id]
 
         } else if (k0 === "getInputs()" || k0 === "inputs()") {
             
-            var _input, _textarea
-            if (o.nodeType === Node.ELEMENT_NODE) {
-                _input = o.getElementsByTagName("INPUT")
-                _textarea = o.getElementsByTagName("TEXTAREA")
+            var _input, _textarea, _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            if (_o.nodeType === Node.ELEMENT_NODE) {
+                _input = _o.getElementsByTagName("INPUT")
+                _textarea = _o.getElementsByTagName("TEXTAREA")
             } else {
-                _input = o.element && o.element.getElementsByTagName("INPUT")
-                _textarea = o.element && o.element.getElementsByTagName("TEXTAREA")
+                _input = _o.element && _o.element.getElementsByTagName("INPUT")
+                _textarea = _o.element && _o.element.getElementsByTagName("TEXTAREA")
             }
-            answer = [..._input, ..._textarea].map(o => window.views[o.id])
+            answer = [..._input, ..._textarea].map(o => views[o.id])
 
         } else if (k0 === "getInput()" || k0 === "input()") {
             
-            var _o, __o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _o, __o, _params = {}, _o
+            if (args[1]) {
 
-            if (typeof _o === "string") __o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
             else __o = _o
 
             if (!__o) return
@@ -4699,7 +4851,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "relativePosition()") {
 
-            var args = k.split(":")
             var relativeTo = toValue({ req, res, _window, id, e, _, value: args[1], params })
             answer = position(o, relativeTo)
 
@@ -4711,9 +4862,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 view.controls.push({
                     event: `loaded?${key}`
                 })
+                return 
             }
-            var args = k.split(":")
-            var className = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            
+            var className, _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    className = _params.className || _params.class
+
+                } else className = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
             if (className) {
                 if (typeof o === "object" && o.element) answer = [...o.element.getElementsByClassName(className)]
                 else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByClassName(className)]
@@ -4723,9 +4888,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "classlist()" || k0 === "classList()") {
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4734,31 +4906,53 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "getElementsByClassName()") {
 
-            var args = k.split(":")
-            var className = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            // map not loaded yet
+            if (view.status === "Loading") {
+                view.controls = toArray(view.controls)
+                view.controls.push({
+                    event: `loaded?${key}`
+                })
+                return 
+            }
+            
+            var className, _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+                    className = _params.className || _params.class
+
+                } else className = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
             if (className) {
                 if (typeof o === "object" && o.element) answer = [...o.element.getElementsByClassName(className)]
                 else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByClassName(className)]
             } else answer = []
 
-        } else if (k0 === "getElementsByTagName()") {
-
-            var args = k.split(":")
-            var tagName = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            if (tagName) {
-                if (typeof o === "object" && o.element) answer = [...o.element.getElementsByTagName(tagName)]
-                else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByTagName(tagName)]
-            } else answer = []
-
         } else if (k0 === "toInteger()") {
 
-            answer = Math.round(toNumber(o))
+            var integer
+            if (args[1]) integer = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            else integer = o
+            answer = Math.round(toNumber(integer))
 
         } else if (k0 === "click()") {
             
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
             
             if (typeof _o === "string" && views[_o]) views[_o].element.click()
             else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
@@ -4766,21 +4960,49 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "focus()") {
 
+            var _params = {}, _o
             if (args[1]) {
-                var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
-                if (typeof _id === "object") focus({ id: _id.id })
-            } else focus({ id: o.id })
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+            
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
+            focus({ id: _o.id })
 
         } else if (k0 === "getElementById()") {
 
-            var _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            answer = o.getElementById(_id)
+            var _params = {}, _o, _id
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.element || o
+                    _id = _params.id
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
+            
+            answer = _o.getElementById(_id)
 
         } else if (k0 === "mousedown()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4791,9 +5013,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "mouseup()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4804,9 +5033,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "mouseenter()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4817,9 +5053,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "mouseleave()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            else _o = o
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+
+                } else _id = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
@@ -4844,39 +5087,72 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = global.device.type === "tablet"
 
-        } else if (k0 === "child()") {
-
-            var child = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            answer = o.child(child)
-            
         } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
+
+            var _params = {}, _o, _timer
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+                    _timer = _params.timer
+
+                } else _timer = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _timer = o
             
-            args.slice(1).map(arg => {
-                var _timer = toValue({ req, res, _window, id, e, value: arg, params, _ })
-                clearTimeout(_timer)
-            })
+            clearTimeout(_timer)
             
         } else if (k0 === "clearInterval()") {
+
+            var _params = {}, _o, _interval
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
+                    _interval = _params.interval
+
+                } else _interval = toValue({ req, res, _window, id, e, _, value: args[1], params })
+            } else _interval = o
             
-            answer = clearInterval(o)
+            answer = clearInterval(_interval)
             
-        } else if (k0 === "setInterval()") {
+        } else if (k0 === "interval()" || k0 === "setInterval()") {
             
-            var args = k.split(":")
-            var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
-            var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
-            answer = setInterval(myFn, _timer)
+            if (!isNaN(toValue({ req, res, _window, id, value: args[2], params, _, e }))) { // interval():params:timer
+
+                var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
+                var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
+                answer = setInterval(myFn, _timer)
+
+            } else if (isParam({ _window, string: args[1] }) && !args[2]) { // interval():[params;timer]
+
+                var _params
+                _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                var myFn = () => toValue({ req, res, _window, id, value: _params.params || _params.parameters, params, _, e })
+                answer = setInterval(myFn, _params.timer)
+            }
 
         } else if (k0 === "timer()" || k0 === "setTimeout()") {
             
-            var args = k.split(":")
-            var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
-            var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
-            answer = setTimeout(myFn, _timer)
+            if (!isNaN(toValue({ req, res, _window, id, value: args[2], params, _, e }))) { // timer():params:timer
+
+                var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, e }))
+                var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, e })
+                answer = setTimeout(myFn, _timer)
+
+            } else if (isParam({ _window, string: args[1] }) && !args[2]) { // timer():[params;timer]
+
+                var _params
+                _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                var myFn = () => toValue({ req, res, _window, id, value: _params.params || _params.parameters, params, _, e })
+                answer = setTimeout(myFn, _params.timer)
+            }
 
         } else if (k0 === "path()") {
 
-            var args = k.split(":")
             var _path = toValue({ req, res, _window, id, value: args[1], params, _, e })
             if (typeof _path === "string") _path = _path.split(".")
             _path = [..._path, ...path.slice(i + 1)]
@@ -4884,30 +5160,67 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "pop()") {
 
-            o.pop()
-            answer = o
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, e })
+            else _o = o
+
+            _o.pop()
+            answer = _o
             
         } else if (k0 === "shift()") {
 
-            answer = o.shift()
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, e })
+            else _o = o
+
+            _o.shift()
+            answer = _o
 
         } else if (k0 === "slice()") {
 
-            // slice():start:end
-            var args = k.split(":")
-            var _start = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-            var _end = toValue({ req, res, _window, id, e, value: args[2], params, _ })
-            if (_end !== undefined) answer = o.slice(parseInt(_start), parseInt(_end))
-            else answer = o.slice(parseInt(_start))
+            if (args[2] || !isNaN(toValue({ req, res, _window, id, e, value: args[1], params, _ }))) { // slice():start:end
+
+                var _start = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+                var _end = toValue({ req, res, _window, id, e, value: args[2], params, _ })
+                if (_end !== undefined) answer = o.slice(parseInt(_start), parseInt(_end))
+                else answer = o.slice(parseInt(_start))
+
+            } else {
+
+                var _params = {}, _o
+                if (args[1]) {
+
+                    if (isParam({ _window, string: args[1] })) {
+
+                        _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                        _o = _params.object || _params.map || o
+                        if (_params.end !== undefined) answer = _o.slice(parseInt(_params.start), parseInt(_params.end))
+                        else answer = _o.slice(parseInt(_params.start))
+                    }
+                }
+            }
             
         } else if (k0 === "derivations()") {
 
+            var _params = {}, _o, _index
             if (args[1]) { // view.derivations():index
-                var index = toValue({ req, res, _window, id, e, value: args[1], params, _ })
-                return answer = o.derivations[index]
-            }
-            answer = o.derivations
 
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                    _o = _params.object || _params.map || o
+                    if (_params.index) return _o.derivations[_index]
+                    else return _o.derivations
+
+                } else _index = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            }
+            if (_index !== undefined) return o.derivations[_index]
+            else return o.derivations
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         } else if (k0 === "replaceState()") {
 
             // replaceState():url:title
@@ -6190,10 +6503,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var mininoteControls = toCode({ string: `():tooltip-text.txt()=${_text};clearTimer():[)(:tooltip-timer];():tooltip.style():[opacity=1;transform=scale(1)];)(:tooltip-timer=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _ })
 
-        } else if (k0 === "mouseenter()") {
-          
-            answer = o.mouseenter
-
         } else if (k0 === "readonly()") {
           
             if (typeof o === "object") {
@@ -6501,7 +6810,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./capitalize":32,"./clone":34,"./cookie":38,"./decode":46,"./execute":51,"./exportJson":52,"./focus":55,"./generate":57,"./getDateTime":58,"./getDaysInMonth":59,"./getType":61,"./importJson":62,"./isEqual":65,"./note":71,"./refresh":77,"./remove":79,"./route":81,"./save":82,"./setPosition":87,"./toApproval":93,"./toArray":94,"./toClock":97,"./toCode":98,"./toId":102,"./toNumber":103,"./toParam":105,"./toPrice":106,"./toSimplifiedDate":107,"./toValue":110,"./toggleView":111,"./update":112,"uuid":149}],77:[function(require,module,exports){
+},{"./capitalize":32,"./clone":34,"./cookie":38,"./decode":46,"./execute":51,"./exportJson":52,"./focus":55,"./generate":57,"./getDateTime":58,"./getDaysInMonth":59,"./getType":61,"./importJson":62,"./isEqual":65,"./isParam":66,"./note":72,"./refresh":78,"./remove":80,"./route":82,"./save":83,"./setPosition":88,"./toApproval":94,"./toArray":95,"./toClock":98,"./toCode":99,"./toId":103,"./toNumber":104,"./toParam":106,"./toPrice":107,"./toSimplifiedDate":108,"./toValue":111,"./toggleView":112,"./update":113,"uuid":150}],78:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -6588,13 +6897,13 @@ const refresh = ({ id, update = {} }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":34,"./createElement":42,"./generate":57,"./setElement":86,"./starter":89,"./toArray":94,"./update":112}],78:[function(require,module,exports){
+},{"./clone":34,"./createElement":42,"./generate":57,"./setElement":87,"./starter":90,"./toArray":95,"./update":113}],79:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -6680,7 +6989,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":34,"./reducer":76,"./toCode":98,"./toParam":105,"./update":112}],80:[function(require,module,exports){
+},{"./clone":34,"./reducer":77,"./toCode":99,"./toParam":106,"./update":113}],81:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -6773,7 +7082,7 @@ var converter = (dimension) => {
 
 module.exports = {resize, dimensions, converter}
 
-},{}],81:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 const { update } = require("./update")
 
 module.exports = {
@@ -6796,7 +7105,7 @@ module.exports = {
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
 }
-},{"./update":112}],82:[function(require,module,exports){
+},{"./update":113}],83:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { toAwait } = require("./toAwait")
@@ -6834,7 +7143,7 @@ const save = async ({ id, e, ...params }) => {
 }
 
 module.exports = { save }
-},{"./clone":34,"./toAwait":95,"axios":115}],83:[function(require,module,exports){
+},{"./clone":34,"./toAwait":96,"axios":116}],84:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { toAwait } = require('./toAwait')
@@ -6869,7 +7178,7 @@ module.exports = {
         toAwait({ id, e, params })
     }
 }
-},{"./clone":34,"./toAwait":95,"./toString":108,"axios":115}],84:[function(require,module,exports){
+},{"./clone":34,"./toAwait":96,"./toString":109,"axios":116}],85:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -6892,7 +7201,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":64}],85:[function(require,module,exports){
+},{"./isArabic":64}],86:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
@@ -6936,7 +7245,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":34,"./reducer":76}],86:[function(require,module,exports){
+},{"./clone":34,"./reducer":77}],87:[function(require,module,exports){
 (function (global){(function (){
 const { controls } = require("./controls")
 // const { starter } = require("./starter")
@@ -6972,7 +7281,7 @@ const setElement = ({ id }) => {
     
 module.exports = { setElement }
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./controls":37,"./toArray":94}],87:[function(require,module,exports){
+},{"./controls":37,"./toArray":95}],88:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
   
   var value = window.views
@@ -7145,7 +7454,7 @@ const setPosition = ({ position, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
@@ -7262,7 +7571,7 @@ const sort = ({ sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":76,"./toArray":94,"./toNumber":103}],89:[function(require,module,exports){
+},{"./reducer":77,"./toArray":95,"./toNumber":104}],90:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -7319,12 +7628,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":13,"./controls":37,"./defaultInputHandler":47,"./event":50,"./isArabic":64,"./resize":80,"./toArray":94,"./toParam":105}],90:[function(require,module,exports){
+},{"../control/control":13,"./controls":37,"./defaultInputHandler":47,"./event":50,"./isArabic":64,"./resize":81,"./toArray":95,"./toParam":106}],91:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -7444,7 +7753,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":80,"./toArray":94}],92:[function(require,module,exports){
+},{"./resize":81,"./toArray":95}],93:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -7508,7 +7817,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":32,"./clone":34,"./style":91}],93:[function(require,module,exports){
+},{"./capitalize":32,"./clone":34,"./style":92}],94:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 
@@ -7525,6 +7834,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
   // no string
   if (!string || typeof string !== "string") return true
 
+  var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
   var mainId = id, approval = true
 
@@ -7541,7 +7851,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     if (!approval) return false
 
     id = mainId
-    var view = _window ? _window.views[id] : window.views[id] || {}
+    var view = views[id] || {}
 
     if (condition.includes("#()")) {
       view["#"] = toArray(view["#"])
@@ -7630,14 +7940,14 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
 
 module.exports = { toApproval }
 
-},{"./generate":57,"./isEqual":65,"./reducer":76,"./toValue":110}],94:[function(require,module,exports){
+},{"./generate":57,"./isEqual":65,"./reducer":77,"./toValue":111}],95:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? [...data] : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 module.exports = {
   toAwait: ({ id, e, params = {} }) => {
 
@@ -7661,7 +7971,7 @@ module.exports = {
   }
 }
 
-},{"./execute":51,"./toParam":105}],96:[function(require,module,exports){
+},{"./execute":51,"./toParam":106}],97:[function(require,module,exports){
 module.exports = {
     toCSV: ({ file = {} }) => {
 
@@ -7735,7 +8045,7 @@ module.exports = {
         }
     }
 }
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -7756,7 +8066,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
@@ -7810,7 +8120,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
 module.exports = { toCode }
 
-},{"./generate":57}],99:[function(require,module,exports){
+},{"./generate":57}],100:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -7843,12 +8153,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":57,"./toArray":94}],100:[function(require,module,exports){
+},{"./generate":57,"./toArray":95}],101:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],101:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
@@ -7957,7 +8267,7 @@ module.exports = {
     return tag
   }
 }
-},{"./clone":34,"./createElement":42,"./generate":57,"./toArray":94,"./toStyle":109}],102:[function(require,module,exports){
+},{"./clone":34,"./createElement":42,"./generate":57,"./toArray":95,"./toStyle":110}],103:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -7986,7 +8296,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":57}],103:[function(require,module,exports){
+},{"./generate":57}],104:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -8004,7 +8314,7 @@ module.exports = {
   },
 };
 
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -8020,7 +8330,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -8303,14 +8613,14 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
 
 module.exports = { toParam }
 
-},{"./clone":34,"./decode":46,"./generate":57,"./reducer":76,"./toApproval":93,"./toCode":98,"./toValue":110}],106:[function(require,module,exports){
+},{"./clone":34,"./decode":46,"./generate":57,"./reducer":77,"./toApproval":94,"./toCode":99,"./toValue":111}],107:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 };
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -8358,7 +8668,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -8392,7 +8702,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],109:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -8464,7 +8774,7 @@ module.exports = {
   }
 }
 
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 const { generate } = require("./generate")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
@@ -8661,7 +8971,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
 module.exports = { toValue, calcSubs }
 
-},{"./generate":57,"./reducer":76,"./toCode":98,"./toParam":105}],111:[function(require,module,exports){
+},{"./generate":57,"./reducer":77,"./toCode":99,"./toParam":106}],112:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -8776,7 +9086,7 @@ const toggleView = ({ toggle, id }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":34,"./createElement":42,"./generate":57,"./setElement":86,"./starter":89,"./toArray":94,"./update":112}],112:[function(require,module,exports){
+},{"./clone":34,"./createElement":42,"./generate":57,"./setElement":87,"./starter":90,"./toArray":95,"./update":113}],113:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -8898,7 +9208,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":34,"./controls":37,"./createElement":42,"./generate":57,"./setElement":86,"./starter":89,"./toArray":94,"./toCode":98,"./toParam":105}],113:[function(require,module,exports){
+},{"./clone":34,"./controls":37,"./createElement":42,"./generate":57,"./setElement":87,"./starter":90,"./toArray":95,"./toCode":99,"./toParam":106}],114:[function(require,module,exports){
 (function (global){(function (){
 const axios = require("axios")
 const { toAwait } = require("./toAwait")
@@ -8983,7 +9293,7 @@ module.exports = {
     }
 }*/
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":95,"axios":115}],114:[function(require,module,exports){
+},{"./toAwait":96,"axios":116}],115:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -9047,9 +9357,9 @@ const watch = ({ controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":34,"./execute":51,"./isEqual":65,"./toApproval":93,"./toCode":98,"./toParam":105,"./toValue":110}],115:[function(require,module,exports){
+},{"./clone":34,"./execute":51,"./isEqual":65,"./toApproval":94,"./toCode":99,"./toParam":106,"./toValue":111}],116:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":117}],116:[function(require,module,exports){
+},{"./lib/axios":118}],117:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9240,7 +9550,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":123,"../core/createError":124,"./../core/settle":128,"./../helpers/buildURL":132,"./../helpers/cookies":134,"./../helpers/isURLSameOrigin":137,"./../helpers/parseHeaders":139,"./../utils":142}],117:[function(require,module,exports){
+},{"../core/buildFullPath":124,"../core/createError":125,"./../core/settle":129,"./../helpers/buildURL":133,"./../helpers/cookies":135,"./../helpers/isURLSameOrigin":138,"./../helpers/parseHeaders":140,"./../utils":143}],118:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -9298,7 +9608,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":118,"./cancel/CancelToken":119,"./cancel/isCancel":120,"./core/Axios":121,"./core/mergeConfig":127,"./defaults":130,"./helpers/bind":131,"./helpers/isAxiosError":136,"./helpers/spread":140,"./utils":142}],118:[function(require,module,exports){
+},{"./cancel/Cancel":119,"./cancel/CancelToken":120,"./cancel/isCancel":121,"./core/Axios":122,"./core/mergeConfig":128,"./defaults":131,"./helpers/bind":132,"./helpers/isAxiosError":137,"./helpers/spread":141,"./utils":143}],119:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9319,7 +9629,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -9378,14 +9688,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":118}],120:[function(require,module,exports){
+},{"./Cancel":119}],121:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],121:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9535,7 +9845,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":132,"../helpers/validator":141,"./../utils":142,"./InterceptorManager":122,"./dispatchRequest":125,"./mergeConfig":127}],122:[function(require,module,exports){
+},{"../helpers/buildURL":133,"../helpers/validator":142,"./../utils":143,"./InterceptorManager":123,"./dispatchRequest":126,"./mergeConfig":128}],123:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9591,7 +9901,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":142}],123:[function(require,module,exports){
+},{"./../utils":143}],124:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -9613,7 +9923,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":133,"../helpers/isAbsoluteURL":135}],124:[function(require,module,exports){
+},{"../helpers/combineURLs":134,"../helpers/isAbsoluteURL":136}],125:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -9633,7 +9943,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":126}],125:[function(require,module,exports){
+},{"./enhanceError":127}],126:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9717,7 +10027,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":120,"../defaults":130,"./../utils":142,"./transformData":129}],126:[function(require,module,exports){
+},{"../cancel/isCancel":121,"../defaults":131,"./../utils":143,"./transformData":130}],127:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9761,7 +10071,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],127:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -9850,7 +10160,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":142}],128:[function(require,module,exports){
+},{"../utils":143}],129:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -9877,7 +10187,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":124}],129:[function(require,module,exports){
+},{"./createError":125}],130:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9901,7 +10211,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":130,"./../utils":142}],130:[function(require,module,exports){
+},{"./../defaults":131,"./../utils":143}],131:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -10039,7 +10349,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":116,"./adapters/xhr":116,"./core/enhanceError":126,"./helpers/normalizeHeaderName":138,"./utils":142,"_process":148}],131:[function(require,module,exports){
+},{"./adapters/http":117,"./adapters/xhr":117,"./core/enhanceError":127,"./helpers/normalizeHeaderName":139,"./utils":143,"_process":149}],132:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -10052,7 +10362,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],132:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10124,7 +10434,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":142}],133:[function(require,module,exports){
+},{"./../utils":143}],134:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10140,7 +10450,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],134:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10195,7 +10505,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":142}],135:[function(require,module,exports){
+},{"./../utils":143}],136:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10211,7 +10521,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],136:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10224,7 +10534,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],137:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10294,7 +10604,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":142}],138:[function(require,module,exports){
+},{"./../utils":143}],139:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10308,7 +10618,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":142}],139:[function(require,module,exports){
+},{"../utils":143}],140:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10363,7 +10673,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":142}],140:[function(require,module,exports){
+},{"./../utils":143}],141:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10392,7 +10702,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],141:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -10499,7 +10809,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":143}],142:[function(require,module,exports){
+},{"./../../package.json":144}],143:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -10850,7 +11160,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":131}],143:[function(require,module,exports){
+},{"./helpers/bind":132}],144:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -10936,9 +11246,9 @@ module.exports={
   ]
 }
 
-},{}],144:[function(require,module,exports){
-
 },{}],145:[function(require,module,exports){
+
+},{}],146:[function(require,module,exports){
 (function (process){(function (){
 /* @flow */
 /*::
@@ -11060,7 +11370,7 @@ module.exports.config = config
 module.exports.parse = parse
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":148,"fs":144,"os":146,"path":147}],146:[function(require,module,exports){
+},{"_process":149,"fs":145,"os":147,"path":148}],147:[function(require,module,exports){
 exports.endianness = function () { return 'LE' };
 
 exports.hostname = function () {
@@ -11111,7 +11421,7 @@ exports.homedir = function () {
 	return '/'
 };
 
-},{}],147:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -11644,7 +11954,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":148}],148:[function(require,module,exports){
+},{"_process":149}],149:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -11830,7 +12140,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],149:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11910,7 +12220,7 @@ var _stringify = _interopRequireDefault(require("./stringify.js"));
 var _parse = _interopRequireDefault(require("./parse.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./nil.js":151,"./parse.js":152,"./stringify.js":156,"./v1.js":157,"./v3.js":158,"./v4.js":160,"./v5.js":161,"./validate.js":162,"./version.js":163}],150:[function(require,module,exports){
+},{"./nil.js":152,"./parse.js":153,"./stringify.js":157,"./v1.js":158,"./v3.js":159,"./v4.js":161,"./v5.js":162,"./validate.js":163,"./version.js":164}],151:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12134,7 +12444,7 @@ function md5ii(a, b, c, d, x, s, t) {
 
 var _default = md5;
 exports.default = _default;
-},{}],151:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12143,7 +12453,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _default = '00000000-0000-0000-0000-000000000000';
 exports.default = _default;
-},{}],152:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12189,7 +12499,7 @@ function parse(uuid) {
 
 var _default = parse;
 exports.default = _default;
-},{"./validate.js":162}],153:[function(require,module,exports){
+},{"./validate.js":163}],154:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12198,7 +12508,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
 exports.default = _default;
-},{}],154:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12225,7 +12535,7 @@ function rng() {
 
   return getRandomValues(rnds8);
 }
-},{}],155:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12330,7 +12640,7 @@ function sha1(bytes) {
 
 var _default = sha1;
 exports.default = _default;
-},{}],156:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12370,7 +12680,7 @@ function stringify(arr, offset = 0) {
 
 var _default = stringify;
 exports.default = _default;
-},{"./validate.js":162}],157:[function(require,module,exports){
+},{"./validate.js":163}],158:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12478,7 +12788,7 @@ function v1(options, buf, offset) {
 
 var _default = v1;
 exports.default = _default;
-},{"./rng.js":154,"./stringify.js":156}],158:[function(require,module,exports){
+},{"./rng.js":155,"./stringify.js":157}],159:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12495,7 +12805,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const v3 = (0, _v.default)('v3', 0x30, _md.default);
 var _default = v3;
 exports.default = _default;
-},{"./md5.js":150,"./v35.js":159}],159:[function(require,module,exports){
+},{"./md5.js":151,"./v35.js":160}],160:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12574,7 +12884,7 @@ function _default(name, version, hashfunc) {
   generateUUID.URL = URL;
   return generateUUID;
 }
-},{"./parse.js":152,"./stringify.js":156}],160:[function(require,module,exports){
+},{"./parse.js":153,"./stringify.js":157}],161:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12612,7 +12922,7 @@ function v4(options, buf, offset) {
 
 var _default = v4;
 exports.default = _default;
-},{"./rng.js":154,"./stringify.js":156}],161:[function(require,module,exports){
+},{"./rng.js":155,"./stringify.js":157}],162:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12629,7 +12939,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const v5 = (0, _v.default)('v5', 0x50, _sha.default);
 var _default = v5;
 exports.default = _default;
-},{"./sha1.js":155,"./v35.js":159}],162:[function(require,module,exports){
+},{"./sha1.js":156,"./v35.js":160}],163:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12647,7 +12957,7 @@ function validate(uuid) {
 
 var _default = validate;
 exports.default = _default;
-},{"./regex.js":153}],163:[function(require,module,exports){
+},{"./regex.js":154}],164:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12669,4 +12979,4 @@ function version(uuid) {
 
 var _default = version;
 exports.default = _default;
-},{"./validate.js":162}]},{},[1]);
+},{"./validate.js":163}]},{},[1]);
