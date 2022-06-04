@@ -33,6 +33,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         currentPage,
         path: req.url,
         device: req.device,
+        unloadedViews: [],
         public: getJsonFiles({ search: { collection: "public" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
@@ -116,13 +117,13 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         console.log("before page", new Date().getTime() - global.timer);
 
         // get page
-        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
+        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}`, doc: currentPage } })
         console.log("after page", new Date().getTime() - global.timer);
         
         console.log("before view", new Date().getTime() - global.timer);
 
         // get view
-        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
+        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}`, doc: currentPage } })
         console.log("after view", new Date().getTime() - global.timer);
         
     } else {
@@ -146,10 +147,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         */
         page = db
         .collection(`page-${project.id}`)
-        .get().then(q => {
-                q.forEach(doc => {
-                global.data.page[doc.id] = doc.data() 
-            })
+        .doc(currentPage)
+        .get().then(doc => {
+            global.data.page[doc.id] = doc.data()
             console.log("after page", new Date().getTime() - global.timer);
         })
 
@@ -164,10 +164,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         */
         view = db
         .collection(`view-${project.id}`)
-        .get().then(q => {
-                q.forEach(doc => {
-                global.data.view[doc.id] = doc.data()
-            })
+        .doc(currentPage)
+        .get().then(doc => {
+            global.data.view[doc.id] = doc.data()
             console.log("after view", new Date().getTime() - global.timer);
         })
     }
@@ -195,7 +194,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     views.root.controls = global.data.page[currentPage].controls
     views.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
 
-    var _window = { global, views }
+    var _window = { global, views, db }
 /*
     // forward
     if (global.data.page[currentPage].forward) {
@@ -262,6 +261,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         </head>
         <body>
             ${innerHTML}
+            <div class="loader-container"><div class="loader"></div></div>
             <script id="views" type="application/json">${JSON.stringify(views)}</script>
             <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>

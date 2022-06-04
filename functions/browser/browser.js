@@ -23,7 +23,6 @@ global["body-mouseup-events"] = {}
 views.document = document
 views.document.element = document
 views.body.element = document.body
-// views.window = { element: window }
 
 // lunch arabic text
 var _ar = document.createElement("P")
@@ -77,6 +76,12 @@ document.addEventListener("mouseup", (e) => {
     Object.values(window.global["body-mouseup-events"]).flat().map(o => bodyEventListener(o, e))
 })
 
+/*
+// unloaded views
+const myPromise = new Promise(res => require("../function/loadViews").loadViews(res))
+myPromise.then(() => {
+*/
+
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
@@ -110,7 +115,7 @@ document.addEventListener('scroll', () => {
         var closeDroplist = toCode({ string: "if():[!mouseenter]:[clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]" })
         toParam({ string: closeDroplist, id: "droplist" })
     }
-  
+
     // close actionlist
     if (views.actionlist.element.style.pointerEvents === "auto") {
 
@@ -119,6 +124,7 @@ document.addEventListener('scroll', () => {
     }
 }, true)
 
+//})
         
 // body clicked
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {

@@ -24,7 +24,6 @@ global["body-mouseup-events"] = {}
 views.document = document
 views.document.element = document
 views.body.element = document.body
-// views.window = { element: window }
 
 // lunch arabic text
 var _ar = document.createElement("P")
@@ -77,49 +76,54 @@ document.addEventListener("mouseup", (e) => {
     window.global.mousedown = false
     Object.values(window.global["body-mouseup-events"]).flat().map(o => bodyEventListener(o, e))
 })
+/*
+// unloaded views
+const myPromise = new Promise(res => require("../function/loadViews").loadViews(res))
+myPromise.then(() => {
+    */
+    // default global mode
+    global.mode = global["default-mode"] = global["default-mode"] || "Light"
+    global.idList.map(id => setElement({ id }))
+    global.idList.map(id => starter({ id }))
 
-// default global mode
-global.mode = global["default-mode"] = global["default-mode"] || "Light"
-global.idList.map(id => setElement({ id }))
-global.idList.map(id => starter({ id }))
+    var icons = global.idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id])
+    window.onload = () => {
+        icons.map(map => {
+            map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
+            map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
+        })
+    }
 
-var icons = global.idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id])
-window.onload = () => {
-    icons.map(map => {
-        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
-        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
-    })
-}
-
-window.onmousedown = (e) => {
-    // e.preventDefault()
-    
-    var global = window.global
-    global["clickedElement()"] = views[(e || window.event).target.id]
-    global.clickedElement = (e || window.event).target
-}
-
-Object.entries(views).map(([id, views]) => {
-    if (views.status === "Loading") delete views[id]
-})
-
-document.addEventListener('scroll', () => {
-    
-    // close droplist
-    if (views.droplist.element.style.pointerEvents === "auto") {
+    window.onmousedown = (e) => {
+        // e.preventDefault()
         
-        var closeDroplist = toCode({ string: "if():[!mouseenter]:[clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]" })
-        toParam({ string: closeDroplist, id: "droplist" })
+        var global = window.global
+        global["clickedElement()"] = views[(e || window.event).target.id]
+        global.clickedElement = (e || window.event).target
     }
-  
-    // close actionlist
-    if (views.actionlist.element.style.pointerEvents === "auto") {
 
-        var closeActionlist = toCode({ string: "if():[!mouseenter]:[clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]" })
-        toParam({ string: closeActionlist, id: "actionlist" })
-    }
-}, true)
+    Object.entries(views).map(([id, views]) => {
+        if (views.status === "Loading") delete views[id]
+    })
 
+    document.addEventListener('scroll', () => {
+        
+        // close droplist
+        if (views.droplist.element.style.pointerEvents === "auto") {
+            
+            var closeDroplist = toCode({ string: "if():[!mouseenter]:[clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]" })
+            toParam({ string: closeDroplist, id: "droplist" })
+        }
+    
+        // close actionlist
+        if (views.actionlist.element.style.pointerEvents === "auto") {
+
+            var closeActionlist = toCode({ string: "if():[!mouseenter]:[clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]" })
+            toParam({ string: closeActionlist, id: "actionlist" })
+        }
+    }, true)
+
+//})
         
 // body clicked
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
@@ -1404,6 +1408,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         currentPage,
         path: req.url,
         device: req.device,
+        unloadedViews: [],
         public: getJsonFiles({ search: { collection: "public" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
@@ -1487,13 +1492,13 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         console.log("before page", new Date().getTime() - global.timer);
 
         // get page
-        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
+        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}`, doc: currentPage } })
         console.log("after page", new Date().getTime() - global.timer);
         
         console.log("before view", new Date().getTime() - global.timer);
 
         // get view
-        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
+        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}`, doc: currentPage } })
         console.log("after view", new Date().getTime() - global.timer);
         
     } else {
@@ -1517,10 +1522,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         */
         page = db
         .collection(`page-${project.id}`)
-        .get().then(q => {
-                q.forEach(doc => {
-                global.data.page[doc.id] = doc.data() 
-            })
+        .doc(currentPage)
+        .get().then(doc => {
+            global.data.page[doc.id] = doc.data()
             console.log("after page", new Date().getTime() - global.timer);
         })
 
@@ -1535,10 +1539,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         */
         view = db
         .collection(`view-${project.id}`)
-        .get().then(q => {
-                q.forEach(doc => {
-                global.data.view[doc.id] = doc.data()
-            })
+        .doc(currentPage)
+        .get().then(doc => {
+            global.data.view[doc.id] = doc.data()
             console.log("after view", new Date().getTime() - global.timer);
         })
     }
@@ -1566,7 +1569,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     views.root.controls = global.data.page[currentPage].controls
     views.root.children = global.data.page[currentPage]["views"].map(view => global.data.view[view])
 
-    var _window = { global, views }
+    var _window = { global, views, db }
 /*
     // forward
     if (global.data.page[currentPage].forward) {
@@ -1633,6 +1636,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         </head>
         <body>
             ${innerHTML}
+            <div class="loader-container"><div class="loader"></div></div>
             <script id="views" type="application/json">${JSON.stringify(views)}</script>
             <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>
@@ -1651,7 +1655,7 @@ const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 const { toValue } = require("./toValue")
 
-var createElement = ({ _window, id, req, res }) => {
+const createElement = async ({ _window, id, req, res }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id]
@@ -1662,7 +1666,27 @@ var createElement = ({ _window, id, req, res }) => {
   if (view.html) return view.html
 
   // merge to another view
-  if (view.view && global.data.view[view.view]) view = clone(global.data.view[view.view])
+  if (view.view) {
+    
+    if (_window) {
+
+      var promise = _window.db.collection(`view-${global.projectId}`).doc(global.currentPage).get().then(doc => {
+
+        global.data.view[doc.id] = doc.data()
+        console.log("view", new Date().getTime() - global.timer);
+      })
+
+      await Promise.resolve(promise)
+
+    } else {
+      
+      await require("./search").search({ id: "root", search: { collection: "view", doc: view.view } })
+      global.data.view[views.root.search.data.id] = view = views.root.search.data
+    }
+    
+    delete view.view
+    view = { ...view, ...clone(global.data.view[view.view]) }
+  }
 
   // view is empty
   if (!view.type) return
@@ -1739,13 +1763,30 @@ var createElement = ({ _window, id, req, res }) => {
     // view
     if (params.view) {
 
-      var _view = clone(global.data.view[view.view])
-      if (_view) {
+      // merge to another view
+      if (view.view) {
 
-        delete view.type
+        if (!global.data.view[view.view]) {
+
+          if (_window) {
+
+            var promise = _window.db.collection(`view-${global.projectId}`).doc(global.currentPage).get().then(doc => {
+              
+              global.data.view[doc.id] = doc.data()
+              console.log("view", new Date().getTime() - global.timer);
+            })
+
+            await Promise.resolve(promise)
+            
+          } else {
+
+            await require("./search").search({ id: "root", search: { collection: "view", doc: view.view } })
+            global.data.view[views.root.search.data.id] = views.root.search.data
+          }
+        }
+
         delete view.view
-        
-        views[id] = { ...view, ..._view}
+        views[id] = view = { ...view, ...clone(global.data.view[view.view]) }
         return createElement({ _window, id, req, res })
       }
     }
@@ -1764,7 +1805,7 @@ var createElement = ({ _window, id, req, res }) => {
 
 module.exports = { createElement }
 
-},{"./clone":34,"./createTags":43,"./generate":57,"./reducer":77,"./toApproval":94,"./toCode":99,"./toParam":106,"./toValue":111}],43:[function(require,module,exports){
+},{"./clone":34,"./createTags":43,"./generate":57,"./reducer":77,"./search":84,"./toApproval":94,"./toCode":99,"./toParam":106,"./toValue":111}],43:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -7150,7 +7191,7 @@ const { toAwait } = require('./toAwait')
 const { clone } = require('./clone')
 
 module.exports = {
-    search: async ({ id, e, ...params }) => {
+    search: async ({ id = "", e, ...params }) => {
         
         var global = window.global
         var search = params.search || {}
@@ -7171,6 +7212,7 @@ module.exports = {
                 ...headers
             }
         })
+        
         view.search = clone(data)
         console.log(data)
         
@@ -8503,6 +8545,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
       return view.loaded += `${param};`
     }
   }
+
+    // show loader
+    if (param === "loader.show") return document.getElementsByClassName("loader-container")[0].style.display = "flex"
+    
+    // hide loader
+    if (param === "loader.hide") return document.getElementsByClassName("loader-container")[0].style.display = "none"
 
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _ })

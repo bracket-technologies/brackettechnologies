@@ -7,7 +7,7 @@ const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 const { toValue } = require("./toValue")
 
-var createElement = ({ _window, id, req, res }) => {
+const createElement = async ({ _window, id, req, res }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id]
@@ -18,7 +18,27 @@ var createElement = ({ _window, id, req, res }) => {
   if (view.html) return view.html
 
   // merge to another view
-  if (view.view && global.data.view[view.view]) view = clone(global.data.view[view.view])
+  if (view.view) {
+    
+    if (_window) {
+
+      var promise = _window.db.collection(`view-${global.projectId}`).doc(global.currentPage).get().then(doc => {
+
+        global.data.view[doc.id] = doc.data()
+        console.log("view", new Date().getTime() - global.timer);
+      })
+
+      await Promise.resolve(promise)
+
+    } else {
+      
+      await require("./search").search({ id: "root", search: { collection: "view", doc: view.view } })
+      global.data.view[views.root.search.data.id] = view = views.root.search.data
+    }
+    
+    delete view.view
+    view = { ...view, ...clone(global.data.view[view.view]) }
+  }
 
   // view is empty
   if (!view.type) return
@@ -95,13 +115,30 @@ var createElement = ({ _window, id, req, res }) => {
     // view
     if (params.view) {
 
-      var _view = clone(global.data.view[view.view])
-      if (_view) {
+      // merge to another view
+      if (view.view) {
 
-        delete view.type
+        if (!global.data.view[view.view]) {
+
+          if (_window) {
+
+            var promise = _window.db.collection(`view-${global.projectId}`).doc(global.currentPage).get().then(doc => {
+              
+              global.data.view[doc.id] = doc.data()
+              console.log("view", new Date().getTime() - global.timer);
+            })
+
+            await Promise.resolve(promise)
+            
+          } else {
+
+            await require("./search").search({ id: "root", search: { collection: "view", doc: view.view } })
+            global.data.view[views.root.search.data.id] = views.root.search.data
+          }
+        }
+
         delete view.view
-        
-        views[id] = { ...view, ..._view}
+        views[id] = view = { ...view, ...clone(global.data.view[view.view]) }
         return createElement({ _window, id, req, res })
       }
     }

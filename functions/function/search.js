@@ -4,7 +4,7 @@ const { toAwait } = require('./toAwait')
 const { clone } = require('./clone')
 
 module.exports = {
-    search: async ({ id, e, ...params }) => {
+    search: async ({ id = "", e, ...params }) => {
         
         var global = window.global
         var search = params.search || {}
@@ -25,6 +25,7 @@ module.exports = {
                 ...headers
             }
         })
+        
         view.search = clone(data)
         console.log(data)
         

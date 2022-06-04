@@ -171,6 +171,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     }
   }
 
+    // show loader
+    if (param === "loader.show") return document.getElementsByClassName("loader-container")[0].style.display = "flex"
+    
+    // hide loader
+    if (param === "loader.hide") return document.getElementsByClassName("loader-container")[0].style.display = "none"
+
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _ })
 

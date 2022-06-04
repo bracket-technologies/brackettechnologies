@@ -479,3 +479,37 @@ i {
 .horizontal {
   display: flex;
 }
+
+/*  loader  */
+.loader-container {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.loader {
+  border: .75rem solid #f3f3f3;
+  border-radius: 50%;
+  border-top: .75rem solid #3498db;
+  width: 4rem;
+  height: 4rem;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
