@@ -7,7 +7,7 @@ const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 const { toValue } = require("./toValue")
 
-const createElement = async ({ _window, id, req, res }) => {
+const createElement = ({ _window, id, req, res }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id]
@@ -19,25 +19,16 @@ const createElement = async ({ _window, id, req, res }) => {
 
   // merge to another view
   if (view.view) {
-    
-    if (_window) {
 
-      var promise = _window.db.collection(`view-${global.projectId}`).doc(global.currentPage).get().then(doc => {
-
-        global.data.view[doc.id] = doc.data()
-        console.log("view", new Date().getTime() - global.timer);
-      })
-
-      await Promise.resolve(promise)
-
-    } else {
+    if (!global.data.view[view.view]) {
       
-      await require("./search").search({ id: "root", search: { collection: "view", doc: view.view } })
-      global.data.view[views.root.search.data.id] = view = views.root.search.data
+      global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
+      return ""
     }
-    
+
+    var viewId = view.view
     delete view.view
-    view = { ...view, ...clone(global.data.view[view.view]) }
+    view = { ...view, ...clone(global.data.view[viewId]) }
   }
 
   // view is empty
@@ -120,25 +111,14 @@ const createElement = async ({ _window, id, req, res }) => {
 
         if (!global.data.view[view.view]) {
 
-          if (_window) {
-
-            var promise = _window.db.collection(`view-${global.projectId}`).doc(global.currentPage).get().then(doc => {
-              
-              global.data.view[doc.id] = doc.data()
-              console.log("view", new Date().getTime() - global.timer);
-            })
-
-            await Promise.resolve(promise)
-            
-          } else {
-
-            await require("./search").search({ id: "root", search: { collection: "view", doc: view.view } })
-            global.data.view[views.root.search.data.id] = views.root.search.data
-          }
+          global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
+          return ""
         }
 
+        var viewId = view.view
         delete view.view
-        views[id] = view = { ...view, ...clone(global.data.view[view.view]) }
+        views[id] = { ...view, ...clone(global.data.view[viewId]) }
+        
         return createElement({ _window, id, req, res })
       }
     }

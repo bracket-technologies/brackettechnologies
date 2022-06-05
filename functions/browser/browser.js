@@ -76,17 +76,12 @@ document.addEventListener("mouseup", (e) => {
     Object.values(window.global["body-mouseup-events"]).flat().map(o => bodyEventListener(o, e))
 })
 
-/*
-// unloaded views
-const myPromise = new Promise(res => require("../function/loadViews").loadViews(res))
-myPromise.then(() => {
-*/
-
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
 global.idList.map(id => starter({ id }))
 
+// show icons
 var icons = global.idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id])
 window.onload = () => {
     icons.map(map => {
@@ -124,8 +119,10 @@ document.addEventListener('scroll', () => {
     }
 }, true)
 
-//})
-        
+// unloaded views
+require("../function/loadViews").loadViews(true)
+// new Promise(res => require("../function/loadViews").loadViews(res)).then(() => {})
+
 // body clicked
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
     

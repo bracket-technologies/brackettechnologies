@@ -34,6 +34,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         path: req.url,
         device: req.device,
         unloadedViews: [],
+        ["lazy-load-views"]: [],
         public: getJsonFiles({ search: { collection: "public" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
@@ -114,16 +115,15 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             })
         }*/
         
-        console.log("before page", new Date().getTime() - global.timer);
 
         // get page
-        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}`, doc: currentPage } })
+        console.log("before page", new Date().getTime() - global.timer);
+        global.data.page = page = getJsonFiles({ search: { collection: `page-${project.id}` } })
         console.log("after page", new Date().getTime() - global.timer);
         
-        console.log("before view", new Date().getTime() - global.timer);
-
         // get view
-        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}`, doc: currentPage } })
+        console.log("before view", new Date().getTime() - global.timer);
+        global.data.view = view = getJsonFiles({ search: { collection: `view-${project.id}` } })
         console.log("after view", new Date().getTime() - global.timer);
         
     } else {
@@ -169,6 +169,36 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             global.data.view[doc.id] = doc.data()
             console.log("after view", new Date().getTime() - global.timer);
         })
+
+        // fast load views
+        global["fast-load-views"] = project["fast-load-views"] = project["fast-load-views"] || []
+
+        if (project["fast-load-views"].length > 0) {
+
+            var docs = project["fast-load-views"], _docs = [], index = 1, length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0)
+
+            while (index <= length) {
+                _docs.push(docs.slice((index - 1) * 10, index * 10))
+                index += 1
+            }
+
+            await Promise.all(
+                _docs.map(async docList => {
+                    await db.collection(`view-${project.id}`).where("id", "in", docList).get().then(docs => {
+
+                        success = true
+                        docs.forEach(doc => global.data.view[doc.id] = doc.data())
+                        message = `Documents mounted successfuly!`
+
+                    }).catch(error => {
+
+                        success = false
+                        message = `An error Occured!`
+                    })
+                })
+            )
+        }
+        global["lazy-load-views"] = project.views.filter(view => !project["fast-load-views"].includes(view) && view !== "main")
     }
     
     await Promise.resolve(page)

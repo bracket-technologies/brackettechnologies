@@ -62,7 +62,7 @@ var getdb = async ({ req, res, db }) => {
       _docs.push(search.docs.slice((index - 1) * 10, index * 10))
       index += 1
     }
-
+    
     await Promise.all(
       _docs.map(async docList => {
         await ref.where("id", "in", docList).get().then(docs => {
@@ -80,13 +80,15 @@ var getdb = async ({ req, res, db }) => {
     )
     
     await Promise.all(promises)
+    
+    /*
     if (project["access-key"] !== req.headers["access-key"]) {
 
       success = false
       message = `Your are not verified!`
       return res.send({ success, message })
     }
-
+    */
     return res.send({ data, success, message })
   }
 
