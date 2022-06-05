@@ -129,7 +129,7 @@
               "type": "View?id=data-viewer-bar;class=flex;style.height=3.5rem;style.width=100%;style.backgroundColor=#f0f0f0;style.display=if():[)(:open-docs.len()=0]:none:flex"
             },
             {
-              "type": "View?class=data-viewer;data=)(:open-map.clone();style.width=calc(100vw - 23.5rem);style.maxHeight=calc(100vh - 7.5rem);style.overflowY=auto?)(:open-map",
+              "type": "View?class=data-viewer;data=)(:open-map.clone();style.width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);style.maxHeight=calc(100vh - 7.5rem);style.overflowY=auto?)(:open-map",
               "children": [
                 {
                   "type": "View?class=flex column;style.width=100%",

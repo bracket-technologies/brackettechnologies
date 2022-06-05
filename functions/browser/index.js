@@ -83,7 +83,7 @@ global.idList.map(id => setElement({ id }))
 global.idList.map(id => starter({ id }))
 
 // show icons
-var icons = global.idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id])
+var icons = global.idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id])
 window.onload = () => {
     icons.map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
@@ -3231,12 +3231,12 @@ module.exports = {
     delete views[el.id].reservedStyles
     view.insert = { view: views[el.id], message: "Map inserted succefully!", success: true }
     
-    setTimeout(() => {
-      idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+    /*setTimeout(() => {
+      idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
-    }, 0)
+    }, 0)*/
     
     if (lDiv) {
       document.body.removeChild(lDiv)
@@ -3641,13 +3641,13 @@ const loadViews = async (first) => {
         idList.map(id => setElement({ id }))
         idList.map(id => starter({ id }))
         
-        setTimeout(() => {
-          idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+        /*setTimeout(() => {
+          idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
               
             map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
             map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
           })
-        }, 0)
+        }, 0)*/
 
         // remove lDiv
         if (lDiv) {
@@ -8367,7 +8367,7 @@ module.exports = {
         tag = `<p class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${text}</p>`
       }
     } else if (view.type === "Icon") {
-      tag = `<i ${view.draggable ? "draggable='true'" : ""} class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${view.google ? "; opacity:0; transition:.2s" : ""}' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
+      tag = `<i ${view.draggable ? "draggable='true'" : ""} class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
     } else if (view.type === "Textarea") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${view.data || view.input.value || ""}</textarea>`
     } else if (view.type === "Input") {
@@ -9212,12 +9212,12 @@ const toggleView = ({ toggle, id }) => {
       views[id].style.opacity = el.style.opacity = toggle.fadein.after.opacity || "1"
     })
   
-    setTimeout(() => {
-      idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+    /*setTimeout(() => {
+      idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
         map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
-    }, 0)
+    }, 0)*/
     
   }, timer)
 }
@@ -9308,12 +9308,12 @@ const update = ({ id, update = {} }) => {
     views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
   })
   
-  setTimeout(() => {
-    idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+  /*setTimeout(() => {
+    idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
       map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
       map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })
-  }, 0)
+  }, 0)*/
 }
 
 const removeChildren = ({ id }) => {

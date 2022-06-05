@@ -96,12 +96,12 @@ const updateSelf = ({ id, update = {} }) => {
     lDiv = null
   }
   
-  setTimeout(() => {
-    idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+  /*setTimeout(() => {
+    idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
       map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
       map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })
-  }, 0)
+  }, 0)*/
 }
 
 module.exports = {updateSelf}

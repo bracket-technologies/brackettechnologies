@@ -82,12 +82,12 @@ const update = ({ id, update = {} }) => {
     views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
   })
   
-  setTimeout(() => {
-    idList.filter(id => views[id] && views[id].type === "Icon" && views[id].google).map(id => views[id]).map(map => {
+  /*setTimeout(() => {
+    idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
       map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
       map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
     })
-  }, 0)
+  }, 0)*/
 }
 
 const removeChildren = ({ id }) => {

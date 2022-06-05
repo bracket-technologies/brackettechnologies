@@ -122,7 +122,7 @@
                                         {
                                             "actions": [
                                                 "wait():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
-                                                "wait():save:note:[update:page-list]?save.collection=page;save.doc=txt();save.data=)(:data.editor.page.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!;if():[!)(:open-doc]:[)(:new-file-created=true]"
+                                                "wait():save:save:note:[update:page-list]?save.collection=page;save.doc=txt();save.data=)(:data.editor.page.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!;if():[!)(:open-doc]:[)(:new-file-created=true];wait():[)(:data.editor.project.pages=)(:data.editor.project.pages||[];)(:data.editor.project.pages.push():txt();search.collection=_project_;search.doc=)(:data.editor.project.id;search.data=)(:data.editor.project]"
                                             ],
                                             "event": "keyup?)(:data.editor.page.txt()=if():[)(:open-doc]:[)(:data.editor.page.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:txt():title:[txt().split():-.join(): .capitalize()]:name:[txt().split():-.join(): .capitalize()]:views:_array:path:[/+txt()]]?e().key=Enter||e().key=Tab;txt();txt()!=)(:open-doc;!)(:data.editor.page.keys().inc():txt();!txt().inc(): "
                                         }
@@ -152,10 +152,10 @@
                                     "event": "click?)(:open-doc=().data;)(:open-collection=page;)(:open-map=)(:data.editor.page.[)(:open-doc];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[page/+().data]"
                                 },
                                 {
-                                    "event": "click?)(:open-doc=().data;)(:open-docs.push():[page/+)(:open-doc];)(:open-collection=page;)(:open-map=)(:data.editor.page.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[page/+().data]",
+                                    "event": "click?loader.show;)(:open-doc=().data;)(:open-docs.push():[page/+)(:open-doc];)(:open-collection=page;)(:open-map=)(:data.editor.page.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[page/+().data]",
                                     "actions": [
                                         "wait():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=page/+)(:open-doc;wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
-                                        "wait():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
+                                        "wait():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection];loader.hide]"
                                     ]
                                 }
                             ]
@@ -217,7 +217,7 @@
                                         {
                                             "actions": [
                                                 "wait():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
-                                                "wait():save:note:[update:view-list]?save.collection=view;save.doc=txt();save.data=)(:data.editor.view.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!;if():[!)(:open-doc]:[)(:new-file-created=true]"
+                                                "wait():save:save:note:[update:view-list]?save.collection=view;save.doc=txt();save.data=)(:data.editor.view.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!;if():[!)(:open-doc]:[)(:new-file-created=true];wait():[)(:data.editor.project.views=)(:data.editor.project.views||[];)(:data.editor.project.views.push():txt();search.collection=_project_;search.doc=)(:data.editor.project.id;search.data=)(:data.editor.project]"
                                             ],
                                             "event": "keyup?)(:data.editor.view.txt()=if():[)(:open-doc]:[)(:data.editor.view.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:txt():type:['View?id='+txt()]]?txt();txt()!=)(:open-doc;e().key=Enter||e().key=Tab;!)(:data.editor.view.keys().inc():txt();!txt().inc(): "
                                         }
@@ -247,10 +247,10 @@
                                     "event": "loaded?if():[)(:new-file-created;mapIndex=)(:data.editor.view.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
                                 },
                                 {
-                                    "event": "click?)(:open-doc=().data;)(:open-docs.push():[view/+)(:open-doc];)(:open-collection=view;)(:open-map=)(:data.editor.view.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[view/+().data]",
+                                    "event": "click?loader.show;)(:open-doc=().data;)(:open-docs.push():[view/+)(:open-doc];)(:open-collection=view;)(:open-map=)(:data.editor.view.[)(:open-doc];():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[view/+().data]",
                                     "actions": [
-                                        "wait():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=view/+)(:open-doc;wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
-                                        "wait():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
+                                        "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=view/+)(:open-doc;wait():[():data-viewer-bar.style().display=flex;().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
+                                        "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection];loader.hide]"
                                     ]
                                 }
                             ]
