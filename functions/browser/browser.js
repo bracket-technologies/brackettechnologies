@@ -143,10 +143,10 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     if (once) window.global[`body-${event}-events`][id].splice(index, 1)
     
     // params
-    await toParam({ string: events[1], id, mount: true, eventParams: true, e })
+    await toParam({ string: events[1], id, mount: true, e })
     
     // approval
-    if (viewEventParams) await toParam({ string: viewEventParams, id, mount: true, eventParams: true, e })
+    if (viewEventParams) await toParam({ string: viewEventParams, id, mount: true, e })
     
     // execute
     if (controls.actions || controls.action) await execute({ controls, id, e })

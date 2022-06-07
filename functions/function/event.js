@@ -129,10 +129,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (once) e.target.removeEventListener(event, myFn)
           
           // params
-          await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true, eventParams: true })
+          await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true })
           
           // approval
-          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
+          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
           
           // execute
           if (controls.actions || controls.action) await execute({ _window, req, res, controls, e, id: mainID })
@@ -182,10 +182,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (!approved) return
 
           // params
-          await toParam({ string: events[1], e, id: mainID, mount: true, eventParams: true })
+          await toParam({ string: events[1], e, id: mainID, mount: true })
         
           // approval
-          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true, eventParams: true })
+          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
           
           if (controls.actions || controls.action) await execute({ controls, e, id: mainID })
           

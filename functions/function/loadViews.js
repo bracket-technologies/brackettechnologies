@@ -13,6 +13,7 @@ const loadViews = async (first) => {
     // get all views
     if (first) {
 
+      document.getElementsByClassName("loader-container")[0].style.display = "flex"
       var view, page, docs = global["lazy-load-views"].filter(doc => !global["fast-load-views"].includes(doc))
       page = await search({ id: "public", search: { collection: "page", limit: 100 } })
       view = await search({ id: "root", search: { collection: "view", docs } })
@@ -74,6 +75,8 @@ const loadViews = async (first) => {
 
         if (i === unloadedViews.length - 1 && global.unloadedViews.length > 0) loadViews()
     })
+
+    if (first) document.getElementsByClassName("loader-container")[0].style.display = "none"
 }
 
 module.exports = { loadViews }

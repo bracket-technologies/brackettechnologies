@@ -34,7 +34,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         path: req.url,
         device: req.device,
         unloadedViews: [],
-        ["lazy-load-views"]: [],
+        "lazy-load-views": [],
+        "fast-load-views": [],
         public: getJsonFiles({ search: { collection: "public" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
@@ -171,11 +172,11 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         })
 
         // fast load views
-        global["fast-load-views"] = project["fast-load-views"] = project["fast-load-views"] || []
+        global["fast-load-views"] = (project["fast-load-views"] || {})[currentPage] || []
+        
+        if (Object.keys(project["fast-load-views"]).length > 0) {
 
-        if (project["fast-load-views"].length > 0) {
-
-            var docs = project["fast-load-views"], _docs = [], index = 1, length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0)
+            var docs = global["fast-load-views"], _docs = [], index = 1, length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0)
 
             while (index <= length) {
                 _docs.push(docs.slice((index - 1) * 10, index * 10))
@@ -184,12 +185,13 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
             await Promise.all(
                 _docs.map(async docList => {
+
                     await db.collection(`view-${project.id}`).where("id", "in", docList).get().then(docs => {
 
                         success = true
                         docs.forEach(doc => global.data.view[doc.id] = doc.data())
                         message = `Documents mounted successfuly!`
-
+                        
                     }).catch(error => {
 
                         success = false
@@ -198,7 +200,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
                 })
             )
         }
-        global["lazy-load-views"] = project.views.filter(view => !project["fast-load-views"].includes(view) && view !== "main")
+        global["lazy-load-views"] = project.views.filter(view => !global["fast-load-views"].includes(view) && view !== currentPage)
     }
     
     await Promise.resolve(page)

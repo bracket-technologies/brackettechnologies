@@ -5,7 +5,7 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, eventParams, createElement, params = {} }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, createElement, params = {} }) => {
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
@@ -42,31 +42,17 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     // await
     if (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():") {
 
-      if (eventParams) {
-
-        var asyncers = param.split(":").slice(1)
-        var promises = []
-        asyncers.map(async asyncer => {
-          promises.push(await toParam({ _window, string: asyncer, e, id, req, res, mount }))
-          await Promise.all(promises)
-        })
-
-        return
-
-      } else {
-
-        var awaiter = param.split(":").slice(1)
-        if (asyncer) {
-          if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
-          var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount })
-          params = { ...params, ..._params }
-          awaiter = awaiter.slice(1)
-        }
-
-        params.await = params.await || ""
-        if (awaiter[0]) return params.await += `wait():${awaiter.join(":")};`
-        else if (awaiter.length === 0) return
+      var awaiter = param.split(":").slice(1)
+      if (asyncer) {
+        if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
+        var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount })
+        params = { ...params, ..._params }
+        awaiter = awaiter.slice(1)
       }
+
+      params.await = params.await || ""
+      if (awaiter[0]) return params.await += `wait():${awaiter.join(":")};`
+      else if (awaiter.length === 0) return
     }
 
     // await

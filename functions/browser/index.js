@@ -1408,7 +1408,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         path: req.url,
         device: req.device,
         unloadedViews: [],
-        ["lazy-load-views"]: [],
+        "lazy-load-views": [],
+        "fast-load-views": [],
         public: getJsonFiles({ search: { collection: "public" } }),
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
@@ -1545,11 +1546,11 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         })
 
         // fast load views
-        global["fast-load-views"] = project["fast-load-views"] = project["fast-load-views"] || []
+        global["fast-load-views"] = (project["fast-load-views"] || {})[currentPage] || []
+        
+        if (Object.keys(project["fast-load-views"]).length > 0) {
 
-        if (project["fast-load-views"].length > 0) {
-
-            var docs = project["fast-load-views"], _docs = [], index = 1, length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0)
+            var docs = global["fast-load-views"], _docs = [], index = 1, length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0)
 
             while (index <= length) {
                 _docs.push(docs.slice((index - 1) * 10, index * 10))
@@ -1558,12 +1559,13 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
             await Promise.all(
                 _docs.map(async docList => {
+
                     await db.collection(`view-${project.id}`).where("id", "in", docList).get().then(docs => {
 
                         success = true
                         docs.forEach(doc => global.data.view[doc.id] = doc.data())
                         message = `Documents mounted successfuly!`
-
+                        
                     }).catch(error => {
 
                         success = false
@@ -1572,7 +1574,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
                 })
             )
         }
-        global["lazy-load-views"] = project.views.filter(view => !project["fast-load-views"].includes(view) && view !== "main")
+        global["lazy-load-views"] = project.views.filter(view => !global["fast-load-views"].includes(view) && view !== currentPage)
     }
     
     await Promise.resolve(page)
@@ -2585,6 +2587,7 @@ const _method = require("./function")
 const { toCode } = require("./toCode")
 const { toAwait } = require("./toAwait")
 const { toValue } = require("./toValue")
+const { isParam } = require("./isParam")
 
 const execute = ({ _window, controls, actions, e, id, params }) => {
 
@@ -2636,29 +2639,32 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       // action is coded
       if (action.slice(0, 7) === "coded()") return execute({ _window, actions: global.codes[action], e, id, params })
       
-      // action === name:id:timer:condition
-      var name = action.split(':')[0]
-      var caseCondition = action.split(":")[3]
+      var name, caseCondition, timer = "", isInterval = false, actionid, args = action.split(':'), name = args[0], __params = {}
 
-      params.action = params.action || {}
-      
-      // timer
-      var isInterval = false
-      var timer = params.action.timer
-      if (timer === undefined || timer === false) timer = action.split(":")[2] || ""
+      if (isParam({ _window, string: args[1] }) || (args[2] && isNaN(args[2].split("i")[0]) && !args[3])) { // action:[params]:[conditions]
+
+        __params = toParam({ _window, id: viewId, e, string: args[1] })
+        actionid = toArray(__params.id || viewId) // id
+        if (__params.timer !== undefined) timer = __params.timer.toString() // timer
+        if (args[2]) caseCondition = args[2]
+
+      } else { // action:id:timer:condition
+
+        actionid = toArray(args[1] ? toValue({ _window, value: args[1], params, id: viewId, e }) : viewId) // timer
+        if (args[2]) timer = args[2] // timer
+        if (args[3]) caseCondition = args[3] // conditions
+      }
+
+      // is interval
       if (timer.includes("i")) isInterval = params.isInterval = true
       timer = timer.split("i")[0]
       if (timer) timer = parseInt(timer)
       
-
-      var actionid = params.action.id
-      actionid = toArray(action.split(":")[1] ? toValue({ _window, value: action.split(":")[1], params, id: viewId, e }) : viewId)
-    
       actionid = toArray(actionid).map(id => {
         if (typeof id === "object" && id.id) return id.id
         else return id
       })
-      
+
       const myFn = () => {
         var approved = true
 
@@ -2695,7 +2701,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
             params.asyncer = isAsyncer
           }
           
-          await _method[name]({ _window, ...params, e, id })
+          await _method[name]({ _window, ...params, ...__params, e, id })
           if (name !== "search" && name !== "save" && name !== "erase" && name !== "importJson" && name !== "upload") toAwait({ id, e, params })
         })
       }
@@ -2723,7 +2729,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
 module.exports = { execute }
 
-},{"./function":56,"./toApproval":95,"./toArray":96,"./toAwait":97,"./toCode":100,"./toParam":107,"./toValue":112}],52:[function(require,module,exports){
+},{"./function":56,"./isParam":66,"./toApproval":95,"./toArray":96,"./toAwait":97,"./toCode":100,"./toParam":107,"./toValue":112}],52:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -3596,6 +3602,7 @@ const loadViews = async (first) => {
     // get all views
     if (first) {
 
+      document.getElementsByClassName("loader-container")[0].style.display = "flex"
       var view, page, docs = global["lazy-load-views"].filter(doc => !global["fast-load-views"].includes(doc))
       page = await search({ id: "public", search: { collection: "page", limit: 100 } })
       view = await search({ id: "root", search: { collection: "view", docs } })
@@ -3657,6 +3664,8 @@ const loadViews = async (first) => {
 
         if (i === unloadedViews.length - 1 && global.unloadedViews.length > 0) loadViews()
     })
+
+    if (first) document.getElementsByClassName("loader-container")[0].style.display = "none"
 }
 
 module.exports = { loadViews }

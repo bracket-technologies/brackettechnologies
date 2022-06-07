@@ -16,6 +16,7 @@ const {toControls} = require("./toControls")
 const {toArray} = require("./toArray")
 const {generate} = require("./generate")
 const {refresh} = require("./refresh")
+const {axios} = require("./axios")
 const {createElement} = require("./createElement")
 const {addEventListener} = require("./event")
 const {execute} = require("./execute")
@@ -167,5 +168,6 @@ module.exports = {
   toOperator,
   upload,
   toggleView,
-  insert
+  insert,
+  axios
 }
