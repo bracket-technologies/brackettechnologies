@@ -70,7 +70,51 @@
                   ]
                 },
                 {
-                  "type": "Icon?name=bi-check2;tooltip.text=save;class=flex-box pointer;style.fontSize=2.3rem;style.padding=0 1rem;hover.style.color=blue;style.height=100%",
+                  "type": "View?class=flexbox pointer;tooltip.text=undo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "children": [
+                    {
+                      "type": "Icon?name=undo;google.outlined;style.fontSize=2.5rem;hover.style.color=#000;hover.id=parent().id;style.width=100%;style.borderRight=1px solid #ddd"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click"
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flexbox pointer;tooltip.text=redo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "children": [
+                    {
+                      "type": "Icon?name=redo;google.outlined;style.fontSize=2.5rem;hover.style.color=#000;hover.id=parent().id;style.width=100%;style.borderRight=1px solid #ddd"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click"
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flexbox pointer;tooltip.text=my website;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "children": [
+                    {
+                      "type": "Icon?name=public;google.outlined;style.fontSize=2.5rem;hover.style.color=red;hover.id=parent().id;style.width=100%;style.borderRight=1px solid #ddd"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?newTab():[url=if():[)(:host.inc():'localhost']:['http://'+)(:data.editor.project.domains.find():[inc():'localhost']].elif():[)(:host.inc():'bracketjs.com']:['https://'+)(:data.editor.project.domains.find():[inc():'bracketjs.com']];name='_blank']"
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flexbox pointer;tooltip.text=save;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "children": [
+                    {
+                      "type": "Icon?name=save;google.outlined;style.fontSize=2.5rem;hover.style.color=blue;hover.id=parent().id"
+                    }
+                  ],
                   "controls": [
                     {
                       "event": "click??!)(:open-map.hasNestedArray();!)(:open-map.hasEmptyField()",

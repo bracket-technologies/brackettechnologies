@@ -84,9 +84,11 @@ global.idList.map(id => starter({ id }))
 // show icons
 var icons = global.idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id])
 window.onload = () => {
-    icons.map(map => {
-        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
-        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
+    icons.map(view => {
+        if (view.element) {
+            view.element.style.opacity = view.style.opacity !== undefined ? view.style.opacity : "1"
+            view.element.style.transition = view.style.transition !== undefined ? view.style.transition : "none"
+        }
     })
 }
 
