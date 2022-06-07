@@ -874,7 +874,7 @@ module.exports = ({ controls, id }) => {
     event: `click?)(:droplist-search-txt.del();if():[getInput().txt()]:[)(:droplist-search-txt=getInput().txt()];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
     actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?)(:droplist-positioner!=().id`
   }, {
-    event: "input:input()?)(:droplist-search-txt=getInput().txt()?().droplist.searchable",
+    event: "input:input()?)(:droplist-search-txt=getInput().txt()?droplist.searchable",
     actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
   }]
 }
@@ -1418,11 +1418,7 @@ module.exports = {
 
 },{"../component/component":8,"./clone":35,"./generate":58,"./toApproval":96,"./toCode":101,"./toParam":108}],42:[function(require,module,exports){
 const { createElement } = require("./createElement")
-const { toArray } = require("./toArray")
-const { controls } = require("./controls")
 const { getJsonFiles } = require("./jsonFiles")
-const { toApproval } = require("./toApproval")
-const { toCode } = require("./toCode")
 //
 require('dotenv').config()
 
@@ -1721,7 +1717,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 }
 
 module.exports = { createDocument }
-},{"./controls":38,"./createElement":43,"./jsonFiles":69,"./toApproval":96,"./toArray":97,"./toCode":101,"dotenv":148}],43:[function(require,module,exports){
+},{"./createElement":43,"./jsonFiles":69,"dotenv":148}],43:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -2195,6 +2191,11 @@ const defaultInputHandler = ({ id }) => {
       // contentfull
       if (view.input.type === "text") {
         
+        if (value.includes("&amp;")) {
+          value = value.replace('&amp;','&')
+          e.target.value = value
+        }
+
         if (e.data === "[") {
           var _prev = value.slice(0, e.target.selectionStart - 1)
           var _next = value.slice(e.target.selectionStart)
@@ -2218,8 +2219,8 @@ const defaultInputHandler = ({ id }) => {
           var _next = value.slice(e.target.selectionStart + 1)
           e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
-/*
-        } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
+
+        } /*else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Text?class=flexbox;text=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
@@ -2238,8 +2239,8 @@ const defaultInputHandler = ({ id }) => {
         } else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "View?class=vertical;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
-*/
-        }
+
+        }*/
       }
 
       if (view.Data && (view.input ? !view.input.preventDefault : true)) setData({ id, data: { value } })
@@ -2264,8 +2265,9 @@ const { clone } = require("./clone")
 const { toValue } = require("./toValue")
 const { toString } = require("./toString")
 
-const droplist = ({ id, e }) => {
-
+const droplist = ({ id, e, droplist: params = {} }) => {
+  
+  if (params.positioner || params.id) id = params.positioner || params.id
   var views = window.views
   var global = window.global
   var view = window.views[id]
@@ -2306,7 +2308,7 @@ const droplist = ({ id, e }) => {
         controls: [...(view.droplist.controls || []), {
           event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
-            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[input():${input_id}]:[():${input_id}.data()=txt();txt():${input_id}=txt()]:[():${id}.data()=txt();():${id}.txt()=txt()]?!():${id}.droplist.isMap`,
+            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[input():${input_id}]:[():${input_id}.data()=txt().replace():'&amp;':'&';txt():${input_id}=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
             `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
             `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
           ]
@@ -2389,10 +2391,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   var view = views[id]
   var mainID = id
 
-  var events = toCode({ _window, id, string: controls.event })
-
   // 'string'
+  var events = controls.event
   if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
+  events = toCode({ _window, id, string: events })
   
   events = events.split("?")
   var _idList = toValue({ id, value: events[3] || id })
@@ -4193,7 +4195,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -6008,6 +6010,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _index = toValue({ req, res, _window, e, id, value: args[1], _, params })
             answer = o.charAt(0)
 
+        } else if (k0 === "droplist()") {
+            
+            var _params = toParam({ req, res, _window, e, id, string: args[1], _, params })
+            require("./droplist").droplist({ id, e, droplist: _params })
+            
         } else if (k0 === "keys()") {
             
             answer = Object.keys(o)
@@ -6039,13 +6046,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "generate()" || k0 === "gen()") {
             
-            var args = k.split(":")
             var length = toValue({ req, res, _window, id, e, _, value: args[1], params }) || 5
             answer = generate(length)
 
         } else if (k0 === "includes()" || k0 === "inc()") {
             
-            var args = k.split(":")
             var _include = toValue({ req, res, _window, id, e, value: args[1], params, _ })
             answer = o.includes(_include)
             
@@ -6067,14 +6072,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = capitalize(o, true)
             
-        } else if (k0 === "uppercase()" || k0 === "toUpperCase()" && k0 === "touppercase()") {
+        } else if (k0 === "uppercase()" || k0 === "toUpperCase()" || k0 === "touppercase()") {
             
             var _o
             if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
             else _o = o
             answer = _o.toUpperCase()
             
-        } else if (k0 === "lowercase()" || k0 === "toLowerCase()" && k0 === "tolowercase()") {
+        } else if (k0 === "lowercase()" || k0 === "toLowerCase()" || k0 === "tolowercase()") {
             
             answer = o.toLowerCase()
             
@@ -7006,7 +7011,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./axios":31,"./capitalize":33,"./clone":35,"./cookie":39,"./decode":47,"./execute":52,"./exportJson":53,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getType":62,"./importJson":63,"./isEqual":66,"./isParam":67,"./note":74,"./refresh":80,"./remove":82,"./route":84,"./save":85,"./setPosition":90,"./toApproval":96,"./toArray":97,"./toClock":100,"./toCode":101,"./toId":105,"./toNumber":106,"./toParam":108,"./toPrice":109,"./toSimplifiedDate":110,"./toValue":113,"./toggleView":114,"./update":115,"uuid":152}],80:[function(require,module,exports){
+},{"./axios":31,"./capitalize":33,"./clone":35,"./cookie":39,"./decode":47,"./droplist":49,"./execute":52,"./exportJson":53,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getType":62,"./importJson":63,"./isEqual":66,"./isParam":67,"./note":74,"./refresh":80,"./remove":82,"./route":84,"./save":85,"./setPosition":90,"./toApproval":96,"./toArray":97,"./toClock":100,"./toCode":101,"./toId":105,"./toNumber":106,"./toParam":108,"./toPrice":109,"./toSimplifiedDate":110,"./toValue":113,"./toggleView":114,"./update":115,"uuid":152}],80:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")

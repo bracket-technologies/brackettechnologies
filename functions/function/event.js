@@ -24,10 +24,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   var view = views[id]
   var mainID = id
 
-  var events = toCode({ _window, id, string: controls.event })
-
   // 'string'
+  var events = controls.event
   if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
+  events = toCode({ _window, id, string: events })
   
   events = events.split("?")
   var _idList = toValue({ id, value: events[3] || id })
