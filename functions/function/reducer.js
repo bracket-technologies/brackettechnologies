@@ -2633,15 +2633,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } */else if (k0 === "split()") {
             
-            var args = k.split(":")
             var splited = toValue({ req, res, _window, id, e, _, value: args[1], params })
             answer = o.split(splited)
 
         } else if (k0 === "join()") {
             
-            var args = k.split(":")
-            var joiner = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
-            answer = o.join(joiner)
+            if (isParam({ _window, string: args[1] })) { // join():[1=[''];2='']
+
+                var _params = toParam({ req, res, _window, id, e, string: args[1] || "", params, _ })
+                answer = _params["1"].join(_params["2"])
+            } else {
+
+                var joiner = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
+                answer = o.join(joiner)
+            }
 
         } else if (k0 === "clean()") {
             
@@ -2656,12 +2661,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "route()") {
 
             // route():page:path
-            var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, _ })
-            /*
-            var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
-            var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
-            */
-            require("./route").route({ route })
+            if (isParam({ _window, string: args[1] })) {
+
+                var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, _ })
+                require("./route").route({ route })
+            } else {
+                
+                var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _ })
+                var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, _ })
+                require("./route").route({ route: { path: _path, page: _page } })
+            }
 
         } else if (k0 === "toggleView()") {
           
