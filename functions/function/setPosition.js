@@ -1,14 +1,14 @@
 const setPosition = ({ position, id, e }) => {
   
-  var value = window.views
+  var views = window.views
   var leftDeviation = position.left
   var topDeviation = position.top
   var align = position.align
-  var element = value[position.id || id].element
+  var element = views[position.id || id].element
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
 
-  if (!value[position.positioner] && !mousePos) return
+  if (!views[position.positioner] && !mousePos) return
 
   var positioner, topPos, bottomPos, rightPos, leftPos, heightPos, widthPos
 
@@ -23,7 +23,7 @@ const setPosition = ({ position, id, e }) => {
     
   } else {
 
-    positioner = value[position.positioner].element
+    positioner = views[position.positioner].element
     topPos = positioner.getBoundingClientRect().top
     bottomPos = positioner.getBoundingClientRect().bottom
     rightPos = positioner.getBoundingClientRect().right
@@ -32,7 +32,7 @@ const setPosition = ({ position, id, e }) => {
     widthPos = positioner.clientWidth
 
     // set height to fit content
-    element.style.height = value[element.id].style.height
+    element.style.height = views[element.id].style.height
   }
 
   var top 

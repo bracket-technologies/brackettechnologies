@@ -7,8 +7,8 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   var global = {}
   if (!codes) global = _window ? _window.global : window.global
-  string = string.split("[]").join("_array")
-  string = string.split("{}").join("_map")
+  // string = string.split("[]").join("_array")
+  // string = string.split("{}").join("_map")
   
   var keys = string.split(start)
   

@@ -55,7 +55,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path[0]) args = path[0].toString().split(":")
 
     // function
-    if (path0.slice(-2) === "()" && path0.slice(0, 2) !== ")(" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
+    if (path0.slice(-2) === "()" && path0.slice(0, 2) !== ")(" && args[1] !== "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0])) {
             
         var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
         if (_params.length > 0) {
@@ -161,6 +161,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
     
+    // global store
     if (path0 === ")(") {
 
         var args = path[0].split(":")
@@ -175,9 +176,30 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         if (state === undefined) state = args[1]
         if (state) path.splice(1, 0, state)
         path[0] = ")("
+
+    } else if (path0 && args[1] === "()") {
+        
+        if (args[2]) {
+
+            var _timer = parseInt(args[2])
+            path[0] = `${args.slice(0, -1).join(":")}`
+            return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, e, req, res }), _timer)
+        }
+
+        var state = toValue({ req, res, _window, id, e, value: args[0], params, _, object })
+        if (state === undefined) state = args[0]
+        if (state !== undefined && state !== null) object = global[state]
+        else if (state === "") object = global
+
+        // state:()
+        if (path.length === 1 && key && state) return object = global[state] = value
+        
+        if (state) path.splice(1, 0, state)
+        path[0] = path0 = ")("
+        
     }
     
-    // ():id:timer:conditions
+    // view => ():id:timer:conditions
     if (path0.slice(0, 2) === "()") {
 
         var args = path[0].split(":")
@@ -206,6 +228,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
     
+    // while
     if (path0 === "while()") {
             
         var args = path[0].split(":")
@@ -302,11 +325,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (path0 === "_number") object = 0
             else if (path0 === "_index") object = index
             else if (path0 === "_boolearn") object = true
-            else if (path0 === "_array" || path0 === "_list" || path0 === "_arr") {
+            else if (path0 === "_array" || path0 === "_list") {
 
                 object = []
-                var args = path[0].split(":").slice(1)
-                args.map(el => {
+                path[0].split(":").slice(1).map(el => {
                     el = toValue({ req, res, _window, id, _, e, value: el, params })
                     object.push(el)
                 })
@@ -478,8 +500,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === ")(") {
 
-            var _state = k.split(":").slice(1)
-            toValue({ req, res, _window, id, value: _state, params, _, e })
+            var _state = toValue({ req, res, _window, id, value: args[1], params, _, e })
             answer = global[_state]
 
         } else if (k0.slice(0, 7) === "coded()" || k0.slice(0, 8) === "codedS()") {
@@ -1312,7 +1333,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     _o = _params.view || _params.el || _params.id || _params.element || o
                     _timer = _params.timer
 
-                } else _timer = toValue({ req, res, _window, id, e, _, value: args[1], params })
+                } else {
+                    return args.slice(1).map(arg => { 
+
+                        _timer = toValue({ req, res, _window, id, e, _, value: arg, params })
+                        clearTimeout(_timer)
+                    })
+                }
             } else _timer = o
             
             clearTimeout(_timer)
@@ -1328,7 +1355,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     _o = _params.view || _params.el || _params.id || _params.element || o
                     _interval = _params.interval
 
-                } else _interval = toValue({ req, res, _window, id, e, _, value: args[1], params })
+                } else {
+                    return args.slice(1).map(arg => { 
+
+                        _timer = toValue({ req, res, _window, id, e, _, value: arg, params })
+                        clearInterval(_timer)
+                    })
+                }
             } else _interval = o
             
             answer = clearInterval(_interval)
@@ -1463,8 +1496,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "_array" || k0 === "_list") {
             
             answer = []
-            var args = k.split(":").slice(1)
-            args.map(el => {
+            k.split(":").slice(1).map(el => {
                 el = toValue({ req, res, _window, id, _, e, value: el, params })
                 answer.push(el)
             })
@@ -1472,8 +1504,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "_object" || k0 === "_map" || k0 === "{}") {
             
             answer = {}
-            var args = k.split(":").slice(1)
-            args.map((el, i) => {
+            k.split(":").slice(1).map((el, i) => {
 
                 if (i % 2) return
                 var f = toValue({ req, res, _window, id, _, e, value: el, params })

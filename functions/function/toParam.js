@@ -201,10 +201,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
       
       // mount state & value
       if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
-        
-        var _object
-        if (path[0].split(":")[0] === "if()") _object = params
-        else _object = object
 
         var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object, mount })
         if (timer) {

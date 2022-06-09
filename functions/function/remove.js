@@ -18,8 +18,8 @@ const remove = ({ remove: _remove, id }) => {
   
   if (!_remove.onlyChild && keys.length > 0 && !_remove.keepData) {
 
-    keys.unshift(view.Data)
-    keys.unshift(")(")
+    keys.unshift(`${view.Data}:()`)
+    // keys.unshift(")(")
     keys.push("delete()")
 
     reducer({ id, path: keys })
