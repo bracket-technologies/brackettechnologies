@@ -81,7 +81,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
   else if (object) value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
   else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
-  else if ((path[0].includes("()")) && path.length === 1) {
+  else if (path[0].includes("()") && path.length === 1) {
 
     var val0 = value.split("coded()")[0]
     if (value.includes('coded()') && !val0.includes("()") && !val0.includes("_map") && !val0.includes("_array") && !val0.includes("_list")) {

@@ -145,7 +145,7 @@ app.get("*", async (req, res) => {
 
 // create new flight
 // require("./flybaghdad/newFlight")(db)
-
+/*
 var whatsapp = async () => {
 
   const { Client, LocalAuth } = require('whatsapp-web.js');
@@ -322,8 +322,9 @@ var whatsapp = async () => {
   const media = MessageMedia.fromUrl('https://via.placeholder.com/350x150.png');
   chat.sendMessage(media);
   */
-
+/*
   client.initialize();
 }
 
 whatsapp()
+*/
