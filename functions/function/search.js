@@ -1,6 +1,5 @@
 const axios = require('axios')
 const { toString } = require('./toString')
-const { toAwait } = require('./toAwait')
 const { clone } = require('./clone')
 
 module.exports = {
@@ -9,7 +8,6 @@ module.exports = {
         var global = window.global
         var search = params.search || {}
         var view = window.views[id]
-        var collection = search.collection || search.path || ""
         var headers = search.headers || {}
         headers.project = headers.project || global.projectId
         
@@ -19,7 +17,7 @@ module.exports = {
         // search
         headers.search = encodeURI(toString({ search }))
         
-        var { data } = await axios.get(`/database/${collection}`, {
+        var { data } = await axios.get(`/database`, {
             headers: {
                 "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
                 ...headers
@@ -30,6 +28,6 @@ module.exports = {
         console.log(data)
         
         // await params
-        toAwait({ id, e, params })
+        require("./toAwait").toAwait({ id, e, params })
     }
 }

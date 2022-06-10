@@ -1,13 +1,11 @@
 const axios = require("axios");
 const { toString } = require("./toString")
-const { toAwait } = require("./toAwait")
 
 const erase = async ({ id, e, ...params }) => {
 
   var global = window.global
   var erase = params.erase || {}
   var view = window.views[id]
-  var collection = erase.collection = erase.collection || erase.path
   var headers = erase.headers || {}
   headers.project = headers.project || global.projectId
 
@@ -22,7 +20,7 @@ const erase = async ({ id, e, ...params }) => {
   erase.doc = erase.doc || erase.id
   if (erase.doc === undefined) delete erase.doc
 
-  var { data } = await axios.delete(`/database/${collection}`, {
+  var { data } = await axios.delete(`/database`, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...headers
@@ -32,7 +30,7 @@ const erase = async ({ id, e, ...params }) => {
   view.erase = data
   console.log(data)
 
-  toAwait({ id, e, params })
+  require("./toAwait").toAwait({ id, e, params })
 }
 
 module.exports = { erase }

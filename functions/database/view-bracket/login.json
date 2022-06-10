@@ -24,20 +24,20 @@
                 },
                 {
                   "event": "click",
-                  "actions": "route?route.path=/store-login/+)(:data.editor.user.id"
+                  "actions": "route?route.path=/store-login/+data:().editor.user.id"
                 }
               ],
               "children": [
                 {
-                  "type": "Text?class=flexbox;text=)(:data.editor.user.first-name.capitalize().slice():0:1+)(:data.editor.user.last-name.capitalize().slice():0:1;style.fontSize=1.5rem;style.borderRadius=2rem;style.height=4rem;style.width=4rem;style.backgroundColor=#96BF48;style.color=#fff"
+                  "type": "Text?class=flexbox;text=data:().editor.user.first-name.capitalize().slice():0:1+data:().editor.user.last-name.capitalize().slice():0:1;style.fontSize=1.5rem;style.borderRadius=2rem;style.height=4rem;style.width=4rem;style.backgroundColor=#96BF48;style.color=#fff"
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?text=)(:data.editor.user.first-name+ +)(:data.editor.user.last-name;style.color=#111;style.fontSize=1.6rem"
+                      "type": "Text?text=data:().editor.user.first-name+ +data:().editor.user.last-name;style.color=#111;style.fontSize=1.6rem"
                     },
                     {
-                      "type": "Text?text=)(:data.editor.user.email;style.color=#555;style.fontSize=1.3rem"
+                      "type": "Text?text=data:().editor.user.email;style.color=#555;style.fontSize=1.3rem"
                     }
                   ],
                   "type": "View?class=flex column;style.alignItems=flex-start;style.gap=.5rem;style.flex=1"
@@ -68,10 +68,10 @@
               "type": "View?class=flexbox flex-start pointer;style.gap=1.5rem;style.width=100%;style.padding=0 1rem;style.height=10rem;hover.style.backgroundColor=#f9f9f9;style.borderTop=1px solid #f0f0f0;style.borderRadius=.75rem"
             }
           ],
-          "type": "View?style.display=if():[)(:data.editor.user;)(:data.editor.password]:flex:none;class=column"
+          "type": "View?style.display=if():[data:().editor.user;data:().editor.password]:flex:none;class=column"
         },
         {
-          "type": "View?class=flex column;style.display=if():[)(:data.editor.user]:none:flex",
+          "type": "View?class=flex column;style.display=if():[data:().editor.user]:none:flex",
           "children": [
             {
               "type": "Text?text=Log in;style.fontSize=2.3rem;style.color=#000;style.marginBottom=.5rem"
@@ -85,10 +85,10 @@
           ]
         },
         {
-          "type": "View?style.display=if():[)(:data.editor.user;!)(:data.editor.password]:flex:none;class=column",
+          "type": "View?style.display=if():[data:().editor.user;!data:().editor.password]:flex:none;class=column",
           "children": [
             {
-              "type": "Text?text=Welcome,+ +)(:data.editor.user.first-name;style.fontSize=2.3rem;style.color=#000;style.marginBottom=.5rem"
+              "type": "Text?text=Welcome,+ +data:().editor.user.first-name;style.fontSize=2.3rem;style.color=#000;style.marginBottom=.5rem"
             },
             {
               "type": "Text?text=Continue To Bracket account;style.fontSize=1.6rem;style.marginBottom=3.75rem;style.color=#888"
@@ -96,15 +96,15 @@
             {
               "children": [
                 {
-                  "type": "Text?class=flexbox;style.fontSize=1.5rem;style.borderRadius=2rem;style.height=4rem;style.width=4rem;style.backgroundColor=#96BF48;text=)(:data.editor.user.first-name.0.capitalize()+)(:data.editor.user.last-name.0.capitalize();style.color=#fff"
+                  "type": "Text?class=flexbox;style.fontSize=1.5rem;style.borderRadius=2rem;style.height=4rem;style.width=4rem;style.backgroundColor=#96BF48;text=data:().editor.user.first-name.0.capitalize()+data:().editor.user.last-name.0.capitalize();style.color=#fff"
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?text=)(:data.editor.user.first-name+ +)(:data.editor.user.last-name;style.color=#111;style.fontSize=1.3rem"
+                      "type": "Text?text=data:().editor.user.first-name+ +data:().editor.user.last-name;style.color=#111;style.fontSize=1.3rem"
                     },
                     {
-                      "type": "Text?text=)(:data.editor.user.email;style.color=#555;style.fontSize=1.3rem"
+                      "type": "Text?text=data:().editor.user.email;style.color=#555;style.fontSize=1.3rem"
                     }
                   ],
                   "type": "View?class=flex column;style.alignItems=flex-start;style.gap=.5rem;style.flex=1"
@@ -112,7 +112,7 @@
                 {
                   "controls": [
                     {
-                      "event": "click?)(:data.editor.user.del();parent().parent().prev().style().display=flex;parent().parent().style().display=none;parent().parent().getInput().val()=_string;parent().parent().prev().getInput().val()=_string"
+                      "event": "click?data:().editor.user.del();parent().parent().prev().style().display=flex;parent().parent().style().display=none;parent().parent().getInput().val()=_string;parent().parent().prev().getInput().val()=_string"
                     }
                   ],
                   "type": "Text?text=Change email;style.color=#008060;link.path=login;hover.style.textDecoration=underline;style.fontSize=1.3rem"
@@ -129,17 +129,17 @@
           "controls": [
             {
               "event": "click;keyup:[prev().prev().getInput().id]??if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display=none;prev().prev().getInput().val()",
-              "actions": "async():search:[note??!)(:data.editor.user]:[update:[():login.1stChild().id]??)(:data.editor.user]?search.collection=_user_;search.field.email.equal=prev().prev().getInput().val();note.text=User email does not exist!;note.type=danger;async():[)(:data.editor.user=().search.data.value()]"
+              "actions": "async():search:[note??!data:().editor.user]:[update:[():login.1stChild().id]??data:().editor.user]?search.collection=_user_;search.field.email.equal=prev().prev().getInput().val();note.text=User email does not exist!;note.type=danger;async():[data:().editor.user=().search.data.value()]"
             },
             {
               "event": "click;keyup:[prev().getInput().id]??if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display!=none;prev().getInput().val()",
-              "actions": "async():search:[note??!)(:data.editor.password]:[route??)(:data.editor.password]?search.collection=_password_;search.field.user.equal=)(:data.editor.user.id;search.field.password.equal=prev().getInput().val();async():[)(:data.editor.password=().search.data.value();if():[)(:data.editor.password]:[setCookie():[)(:data.editor.password.password]:user_pass;setCookie():[)(:data.editor.user.id]:user_id];route.path=/store-login/+)(:data.editor.user.id];note.text=Password is incorrect!;note.type=danger"
+              "actions": "async():search:[note??!data:().editor.password]:[route??data:().editor.password]?search.collection=_password_;search.field.user.equal=data:().editor.user.id;search.field.password.equal=prev().getInput().val();async():[data:().editor.password=().search.data.value();if():[data:().editor.password]:[setCookie():[data:().editor.password.password]:user_pass;setCookie():[data:().editor.user.id]:user_id];route.path=/store-login/+data:().editor.user.id];note.text=Password is incorrect!;note.type=danger"
             }
           ],
-          "type": "Text?style.display=if():[)(:data.editor.user]:none:flex;text=Next;style.fontWeigt=bold;style.color=#fff;style.padding=2rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#008060;class=flex-box pointer;hover.style.backgroundColor=#084C3F"
+          "type": "Text?style.display=if():[data:().editor.user]:none:flex;text=Next;style.fontWeigt=bold;style.color=#fff;style.padding=2rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#008060;class=flex-box pointer;hover.style.backgroundColor=#084C3F"
         },
         {
-          "type": "View?style.display=if():[)(:data.editor.user]:none:flex;style.marginTop=2.5rem;class=flexbox;style.gap=.5rem;style.justifyContent=flex-start",
+          "type": "View?style.display=if():[data:().editor.user]:none:flex;style.marginTop=2.5rem;class=flexbox;style.gap=.5rem;style.justifyContent=flex-start",
           "children": [
             {
               "type": "Text?text='New to Bracket?';style.color=#666;style.fontSize=1.4rem"
@@ -222,12 +222,12 @@
   "controls": [
     {
       "event": "loaded??getCookie():user_id;!getCookie():user_pass",
-      "actions": "async():search:[update:[1stChild().id]]?search.collection=_user_;search.doc=getCookie():user-id;async():[)(:data.editor.user=().search.data.value()]"
+      "actions": "async():search:[update:[1stChild().id]]?search.collection=_user_;search.doc=getCookie():user-id;async():[data:().editor.user=().search.data.value()]"
     },
     {
       "actions": [
-        "async():search:[update:[().1stChild().id]??)(:data.editor.password]?search.collection=_user_;search.doc=getCookie():user_id;async():[])(:data.editor.user=().search.data.value()]",
-        "async():search:[update:[().1stChild().id]??)(:data.editor.user]?search.collection=_password_;search.doc=getCookie():user_pass;async()[)(:data.editor.password=().search.data.value()]"
+        "async():search:[update:[().1stChild().id]??data:().editor.password]?search.collection=_user_;search.doc=getCookie():user_id;async():[data:().editor.user=().search.data.value()]",
+        "async():search:[update:[().1stChild().id]??data:().editor.user]?search.collection=_password_;search.doc=getCookie():user_pass;async()[data:().editor.password=().search.data.value()]"
       ],
       "event": "loaded??getCookie():user_pass;getCookie():user_id"
     }

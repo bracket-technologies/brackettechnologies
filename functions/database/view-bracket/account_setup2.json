@@ -105,10 +105,10 @@
             {
               "children": [
                 {
-                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=First name;label.style.fontSize=1.4rem;path=business-owner-first-name;data=)(:data.editor.user.first-name"
+                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=First name;label.style.fontSize=1.4rem;path=business-owner-first-name;data=data:().editor.user.first-name"
                 },
                 {
-                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Last name;label.style.fontSize=1.4rem;path=business-owner-last-name;data=)(:data.editor.user.last-name"
+                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Last name;label.style.fontSize=1.4rem;path=business-owner-last-name;data=data:().editor.user.last-name"
                 }
               ],
               "type": "View?class=grid;style.gap=2rem;style.gridTemplateColumns=1fr 1fr;style.width=100%"
@@ -187,8 +187,8 @@
               "type": "Text?class=pointer;text=Enter my store;style.fontSize=1.5rem;style.color=#fff;style.padding=1rem 2.5rem;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.borderRadius=.5rem",
               "controls": [
                 {
-                  "event": "click??)(:data.editor.project.id;)(:account-setup-data.business-address;)(:account-setup-data.business-city;)(:account-setup-data.business-postal-code;)(:account-setup-data.business-phone",
-                  "actions": "wait():save:route?route.path=/developer-editor/+)(:data.editor.project.id;)(:data.editor.project.override():[)(:account-setup-data];save.collection=_project_;save.doc=)(:data.editor.project.id;save.data=)(:data.editor.project"
+                  "event": "click??data:().editor.project.id;)(:account-setup-data.business-address;)(:account-setup-data.business-city;)(:account-setup-data.business-postal-code;)(:account-setup-data.business-phone",
+                  "actions": "wait():save:route?route.path=/developer-editor/+data:().editor.project.id;data:().editor.project.override():[)(:account-setup-data];save.collection=_project_;save.doc=data:().editor.project.id;save.data=data:().editor.project"
                 },
                 {
                   "event": "click?parent().parent().prev().style().display=flex;():address.required.mount=true;():address.click();():city.required.mount=true;():city.click();():postal-code.required.mount=true;():postal-code.click();():phone.required.mount=true;():phone.click()?!)(:account-setup-data.business-address||!)(:account-setup-data.business-city||!)(:account-setup-data.business-postal-code||!)(:account-setup-data.business-phone"

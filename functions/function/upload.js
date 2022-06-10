@@ -1,11 +1,9 @@
 const axios = require("axios")
-const { toAwait } = require("./toAwait")
 
 const upload = async ({ id, e, ...params }) => {
         
   var upload = params.upload
   var view = window.views[id]
-  var collection = upload.collection = upload.collection || upload.path
 
   var headers = clone(upload.headers) || {}
   headers.project = headers.project || global.projectId
@@ -28,7 +26,7 @@ const upload = async ({ id, e, ...params }) => {
   // access key
   if (global["access-key"]) headers["access-key"] = global["access-key"]
   
-  var { data } = await axios.post(`/storage/${collection}`, { upload, file }, {
+  var { data } = await axios.post(`/storage`, { upload, file }, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...headers
@@ -39,7 +37,7 @@ const upload = async ({ id, e, ...params }) => {
   console.log(data)
 
   // await params
-  toAwait({ id, e, params })
+  require("./toAwait").toAwait({ id, e, params })
 }
   
 const readFile = (file) => {

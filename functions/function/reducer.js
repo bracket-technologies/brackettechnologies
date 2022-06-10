@@ -126,7 +126,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // if
     if (path0 === "if()") {
         
-        var args = path[0].split(":")
         var approved = toApproval({ _window, e, string: args[1], id, _, req, res })
         
         if (!approved) {
@@ -152,7 +151,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (condition) return toApproval({ _window, e, string: args[2], id, _, req, res, object })
             object = toValue({ req, res, _window, id, value: args[2], params, index, _, e, object, mount })
 
-            // console.log(args[2], global.codes[args[2]], object);
             path.shift()
             while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
                 path.shift()
@@ -239,7 +237,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -509,7 +507,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var newValue
             if (k0.slice(0, 7) === "coded()") newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _ })
             else if (k0.slice(0, 8) === "codedS()") newValue = global.codes[k]
-            newValue = newValue !== undefined ? [ ...toArray(newValue), ...path.slice(i + 1)] : path.slice(i + 1)
+            newValue = newValue !== undefined ? [...toArray(newValue), ...path.slice(i + 1)] : path.slice(i + 1)
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
             
         } else if (k0 === "data()") {
@@ -1208,7 +1206,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "axios()") {
 
             var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
-            require("./axios").axios({ id, params: _params })
+            require("./axios").axios({ id, e, _, params: _params })
 
         } else if (k0 === "getElementById()") {
 
@@ -1832,17 +1830,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "src()") {
             
-            if (o.element) {
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, e })
+            else _o = o
 
-                if (key && value !== undefined) answer = o.element.src = value
-                else answer = o.element.src
+            if (_o.element) {
 
-            } else if (o.nodeType === Node.ELEMENT_NODE) answer = o.src = value
+                if (key && value !== undefined) answer = _o.element.src = value
+                else answer = _o.element.src
 
-        } else if (k0 === "FileReader()" || k0 === "fileReader()") {
+            } else if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.src = value
+
+        } else if (k0 === "fileReader()" || k0 === "fileReader()") {
             
             // fileReader():file:function
-            var args = k.split(":")
             var _file = toValue({ req, res, _window, id, value: args[1], params, _, e })
 
             var reader = new FileReader()
@@ -2108,7 +2109,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "notInclude()" || k0 === "doesnotInclude()") {
             
-            var args = k.split(":")
             var _include = toValue({ req, res, _window, id, e, value: args[1], params, _ })
             answer = !o.includes(_include)
             
@@ -2197,8 +2197,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "date()" || k0 === "toDate()") {
 
-            if (!isNaN(o) && typeof o === "string") o = parseInt(o)
-            answer = new Date(o)
+            var _o
+            if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _ })
+            else _o = o
+
+            if (!isNaN(_o) && typeof _o === "string") _o = parseInt(_o)
+            answer = new Date(_o)
 
         } else if (k0 === "toDateFormat()") { // returns date for input
 
@@ -2446,11 +2450,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             answer = o
             
-        } else if (k0 === "replace()") { // replaces a word in a string
+        } else if (k0 === "replace()") { //replace():prev:new
+
+            var rec0, rec1
             
-            var args = k.split(":") //replace():prev:new
-            var rec0 = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            var rec1 = toValue({ req, res, _window, id, e, _, value: args[2], params })
+            if (isParam({ _window, string: args[1] })) {
+
+                var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                rec0 = _params["1"]
+                rec1 = _params["2"]
+
+            } else {
+
+                rec0 = toValue({ req, res, _window, id, e, _, value: args[1], params })
+                rec1 = toValue({ req, res, _window, id, e, _, value: args[2], params })
+            }
+
+            
             if (rec1) answer = o.replace(rec0, rec1)
             else answer = o.replace(rec0)
             
@@ -2460,7 +2476,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         } else if (k0 === "exportJson()") {
             
-            var args = k.split(":")
             var _name = toValue({ req, res, _window, id, e, _, value: args[1], params })
             exportJson({ data: o, filename: _name})
             
@@ -2803,7 +2818,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "save()") {
           
-            var args = k.split(":")
+            if (isParam({ _window, string: args[1] })) {
+
+                var _save = toParam({ req, res, _window, id, e, _, string: args[1] })
+                return require("./save").save({ id, e, _, save: _save })
+            }
+
             var _collection = toValue({ req, res, _window, id, e, _, value: args[1], params })
             var _doc = toValue({ req, res, _window, id, e, _, value: args[2], params })
             var _data = toValue({ req, res, _window, id, e, _, value: args[3], params })

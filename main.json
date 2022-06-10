@@ -320,12 +320,10 @@
                                                                 {
                                                                     "children": [
                                                                         {
-                                                                            "children": [],
                                                                             "type": "View?class=flexbox;style.padding=0 1rem;style.height=3rem;style.paddingRight=1.5rem;style.backgroundColor=#FF4F5A;style.borderRadius=0 .25rem .25rem 0;style.position=relative"
                                                                         },
                                                                         {
-                                                                            "type": "View?class=flexbox;style.height=3rem;style.width=3rem;style.backgroundColor=#EC424B;style.borderRadius=.25rem 0 0 .25rem",
-                                                                            "children": []
+                                                                            "type": "View?class=flexbox;style.height=3rem;style.width=3rem;style.backgroundColor=#EC424B;style.borderRadius=.25rem 0 0 .25rem"
                                                                         }
                                                                     ],
                                                                     "type": "View?class=flexbox;style.width=fit-content"
@@ -475,12 +473,10 @@
                                                                     "type": "View?class=flexbox;style.width=fit-content",
                                                                     "children": [
                                                                         {
-                                                                            "children": [],
                                                                             "type": "View?class=flexbox;style.paddingRight=.5rem;style.height=3rem;style.backgroundColor=#FF4F5A;style.position=relative"
                                                                         },
                                                                         {
-                                                                            "type": "View?class=flexbox;style.height=3rem;style.width=3rem;style.backgroundColor=#FF4F5A",
-                                                                            "children": []
+                                                                            "type": "View?class=flexbox;style.height=3rem;style.width=3rem;style.backgroundColor=#FF4F5A"
                                                                         }
                                                                     ]
                                                                 }

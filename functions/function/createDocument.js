@@ -168,9 +168,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         })
 
         // fast load views
-        global["fast-load-views"] = (project["fast-load-views"] || {})[currentPage] || []
-        
-        if (Object.keys(project["fast-load-views"]).length > 0) {
+        if (Object.keys(project["fast-load-views"] || {}).length > 0) {
 
             var docs = global["fast-load-views"], _docs = [], index = 1, length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0)
 

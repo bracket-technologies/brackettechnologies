@@ -13,7 +13,7 @@
                     ]
                 },
                 {
-                    "type": "Icon?id=view-product-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true:false;name=bi-boxes;tooltip.text=products;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem?)(:data.editor.project.which-industry-will-you-be-operating-in=Food & Beverages",
+                    "type": "Icon?id=view-product-icon;class=flexbox;open=if():[)(:sidebar-item-open=().id]:true:false;name=bi-boxes;tooltip.text=products;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem?data:().editor.project.which-industry-will-you-be-operating-in=Food & Beverages",
                     "controls": [
                         {
                             "event": "click?)(:sidebar-open-manager=product-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];if():open:[style():[borderRight=2px solid #000;color=#000;)(:sidebar-item-open=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];():product-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
@@ -56,7 +56,7 @@
                                     "type": "Icon?name=apartment;google;outlined;style.color=#999;style.fontSize=2.7rem;style.transition=.3s"
                                 }
                             ],
-                            "type": "View?class=flexbox pointer column;tooltip.text=hotels;style.fontSize=2rem;style.height=4.5rem;style.width=100%;style.position=relative?)(:data.editor.project.which-industry-will-you-be-operating-in=Travel & Tourism"
+                            "type": "View?class=flexbox pointer column;tooltip.text=hotels;style.fontSize=2rem;style.height=4.5rem;style.width=100%;style.position=relative?data:().editor.project.which-industry-will-you-be-operating-in=Travel & Tourism"
                         }
                     ]
                 },

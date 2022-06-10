@@ -16,8 +16,8 @@ const loadViews = async (first) => {
       document.getElementsByClassName("loader-container")[0].style.display = "flex"
       var view, page, docs = global["lazy-load-views"].filter(doc => !global["fast-load-views"].includes(doc))
       page = await search({ id: "public", search: { collection: "page", limit: 100 } })
-      view = await search({ id: "root", search: { collection: "view", docs } })
-
+      view = await search({ id: "root", search: { collection: "view", docs, limit: 100 } })
+      
       // view
       global.data.page = views.public.search.data
       Object.entries(views.root.search.data).map(([id, doc]) => {
@@ -28,10 +28,10 @@ const loadViews = async (first) => {
     unloadedViews.map((unloadedView, i) => {
         
         var { id, parent, view, index } = unloadedView
-
+        
         // view
         global.unloadedViews = global.unloadedViews.filter(unloadedView => unloadedView.view !== view)
-        
+        console.log(id, global.data.view[view], view);
         views[id] = clone(global.data.view[view])
         views[id].id = id
         views[id].index = index

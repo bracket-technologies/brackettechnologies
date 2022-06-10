@@ -33,7 +33,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     id = mainId
     var view = views[id] || {}
 
-    if (condition.includes("#()")) {
+    if (condition.includes("#()") || condition.includes("#:")) {
       view["#"] = toArray(view["#"])
       return view["#"].push(condition.slice(4))
     }

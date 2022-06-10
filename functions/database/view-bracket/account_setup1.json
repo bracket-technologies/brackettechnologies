@@ -116,8 +116,8 @@
           "type": "Text?class=pointer;text=Next;style.fontSize=1.5rem;style.color=#fff;style.padding=1rem 2.5rem;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.borderRadius=.5rem",
           "controls": [
             {
-              "event": "click?)(:data.editor.project.override():[)(:account-setup-data]?)(:data.editor.project.id;)(:account-setup-data.keys().len()>0",
-              "actions": "wait():save:[toggleView:[parent().parent().id]]?toggle.view=account_setup2;save.collection=_project_;save.doc=)(:data.editor.project.id;save.data=)(:data.editor.project"
+              "event": "click?data:().editor.project.override():[)(:account-setup-data]?data:().editor.project.id;)(:account-setup-data.keys().len()>0",
+              "actions": "wait():save:[toggleView:[parent().parent().id]]?toggle.view=account_setup2;save.collection=_project_;save.doc=data:().editor.project.id;save.data=data:().editor.project"
             }
           ]
         }

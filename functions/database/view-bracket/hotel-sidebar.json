@@ -12,13 +12,13 @@
                     "type": "Icon?style.display=none;tooltip.text=create new hotel;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                     "controls": [
                         {
-                            "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);)(:open-doc.del();)(:open-collection=hotel",
+                            "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=hotel",
                             "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
                         }
                     ]
                 }
             ],
-            "type": "View?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "type": "View?id=hotel;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
             "controls": [
                 {
                     "event": "mouseenter?lastChild().style().display=flex"
@@ -27,7 +27,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:rotate(0):rotate(90deg)?)(:data.editor.hotel.keys().len()>0;!3rdChild().contains():[)(:clickedElement]"
+                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[)(:clickedElement]]:rotate(0):rotate(90deg)?!3rdChild().contains():[)(:clickedElement]"
                 }
             ]
         },
@@ -35,7 +35,7 @@
             "type": "View?id=hotel-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
             "children": [
                 {
-                    "type": "[View]?data=)(:data.editor.hotel.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?)(:data.editor.hotel.keys().len()>0||[!)(:open-doc;)(:open-collection=hotel]",
+                    "type": "[View]?data=data:().editor.hotel.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel.keys().len()>0||[!open-doc:();open-collection:()=hotel]",
                     "children": [
                         {
                             "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
@@ -46,18 +46,18 @@
                         {
                             "controls": [
                                 {
-                                    "event": "keyup?txt()=)(:open-doc;style().display=none;prev().style().display=flex;if():[!)(:open-doc||!)(:data.editor.hotel.[)(:open-doc]]:[parent().rem()]?e().key=Escape"
+                                    "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[)(:data.editor.hotel.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
-                                    "event": "keyup??e().key=Enter||e().key=Tab;)(:data.editor.hotel.keys().inc():txt()||!txt()||txt().inc(): "
+                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.hotel.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
+                                    "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.hotel.keys().inc():txt()||!txt()||txt().inc(): "
                                 },
                                 {
                                     "actions": [
-                                        "wait():erase?erase.collection=)(:open-collection;erase.doc=)(:open-doc?)(:open-doc",
-                                        "wait():save:note:[update:hotel-list]?save.collection=hotel;save.doc=txt();save.data=)(:data.editor.hotel.txt();save.headers.project=)(:project;note.text=if():[)(:open-doc]:File name has been changed!:File has been created!;if():[!)(:open-doc]:[)(:new-file-created=true]"
+                                        "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                                        "wait():save:note:[update:hotel-list]?save.collection=hotel;save.doc=txt();save.data=data:().editor.hotel.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];duplicate-doc:().del()"
                                     ],
-                                    "event": "keyup?)(:data.editor.hotel.txt()=if():[)(:open-doc]:[)(:data.editor.hotel.[)(:open-doc].clone()]:[_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=)(:open-doc;!)(:data.editor.hotel.keys().inc():txt();!txt().inc(): "
+                                    "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel.txt()=data:().editor.hotel.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel.[txt()].id=txt()]:[data:().editor.hotel.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
                             "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -65,7 +65,7 @@
                         {
                             "controls": [
                                 {
-                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];)(:open-doc=().data;)(:open-collection=hotel;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=hotel;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                                 }
                             ],
                             "type": "Icon?open-doc=data();open-collection=hotel;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
@@ -79,16 +79,16 @@
                             "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                         },
                         {
-                            "event": "loaded?if():[)(:new-file-created;mapIndex=)(:data.editor.hotel.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                            "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.hotel.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
                         },
                         {
-                            "event": "click?)(:open-doc=().data;)(:open-collection=hotel;)(:open-map=)(:data.editor.hotel.[)(:open-doc];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=)(:open-doc;open-collection=)(:open-collection].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=)(:open-doc;open-collection=)(:open-collection].style().display=flex?)(:clickedElement().id!=lastChild().id;)(:open-docs.inc():[hotel/+().data]"
+                            "event": "click?open-doc:()=().data;open-collection:()=hotel;)(:open-map=data:().editor.hotel.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?)(:clickedElement().id!=lastChild().id;open-docs:().inc():[hotel/+().data]"
                         },
                         {
-                            "event": "click?)(:open-doc=().data;)(:open-docs.push():[hotel/+)(:open-doc];)(:open-collection=hotel;)(:open-map=)(:data.editor.hotel.[)(:open-doc];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!)(:open-docs.inc():[hotel/+().data]",
+                            "event": "click?open-doc:()=().data;open-docs:().push():[hotel/+open-doc:()];open-collection:()=hotel;)(:open-map=data:().editor.hotel.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!open-docs:().inc():[hotel/+().data]",
                             "actions": [
-                                "wait():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=hotel/+)(:open-doc;wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=)(:open-doc;open-collection=)(:open-collection]]",
-                                "wait():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=)(:open-doc;open-collection=)(:open-collection]]"
+                                "wait():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=hotel/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                "wait():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]"
                             ]
                         }
                     ]

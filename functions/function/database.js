@@ -6,14 +6,16 @@ var _window = { global: {}, views: {} }
 
 var getdb = async ({ req, res, db }) => {
   
-  var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
   
   if (string) params = toParam({ _window, string, id: "" })
-  var search = params.search || {},
-    doc = search.document || search.doc,
+  var search = params.search || {}
+
+  var collection = search.collection
+  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+
+  var doc = search.document || search.doc,
     docs = search.documents || search.docs,
     field = search.field || search.fields,
     limit = search.limit || 25,
@@ -57,30 +59,28 @@ var getdb = async ({ req, res, db }) => {
 
   if (docs) {
 
-    var _docs = [], index = 1, length = Math.floor(search.docs.length / 10) + (search.docs.length % 10 > 0 ? 1 : 0)
+    var _docs = [], index = 1, length = Math.floor(search.docs.length / 10) + (search.docs.length % 10 > 0 ? 1 : 0), promises = []
     while (index <= length) {
       _docs.push(search.docs.slice((index - 1) * 10, index * 10))
       index += 1
     }
     
-    await Promise.all(
-      _docs.map(async docList => {
-        await ref.where("id", "in", docList).get().then(docs => {
+    _docs.map(docList => {
+      promises.push(ref.where("id", "in", docList).get().then(docs => {
 
-          success = true
-          docs.forEach(doc => data[doc.id] = doc.data())
-          message = `Documents mounted successfuly!`
+        success = true
+        docs.forEach(doc => data[doc.id] = doc.data())
+        message = `Documents mounted successfuly!`
 
-        }).catch(error => {
+      }).catch(error => {
 
-          success = false
-          message = `An error Occured!`
-        })
-      })
-    )
+        success = false
+        message = `An error Occured!`
+
+      }))
+    })
     
     await Promise.all(promises)
-    
     /*
     if (project["access-key"] !== req.headers["access-key"]) {
 
@@ -188,11 +188,13 @@ var getdb = async ({ req, res, db }) => {
 }
 
 var postdb = async ({ req, res, db }) => {
-
-  var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  
   var data = req.body.data
-  var save = req.body.save
+  var save = req.body.save || {}
+
+  var collection = save.collection
+  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+
   var ref = db.collection(collection)
   var success, message, promises = [], project
 
@@ -223,13 +225,16 @@ var postdb = async ({ req, res, db }) => {
 }
 
 var deletedb = async ({ req, res, db }) => {
-
-  var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  
   var string = decodeURI(req.headers.erase), params = {}
+  string = toCode({ _window, string })
+  
   if (string) params = toParam({ _window, string, id: "" })
+  var erase = params.erase || {}
 
-  var erase = params.erase
+  var collection = erase.collection
+  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  
   var ref = db.collection(collection)
   var success, message, promises = [], project
 

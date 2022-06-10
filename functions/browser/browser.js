@@ -38,7 +38,7 @@ history.pushState(null, global.data.page[global.currentPage].title, global.path)
 document.addEventListener('click', e => {
 
     var global = window.global
-    global["clickedElement()"] = views[(e || window.event).target.id]
+    global["clickedElement()"] = global["clicked"] = views[(e || window.event).target.id]
     global.clickedElement = (e || window.event).target
 
     // droplist

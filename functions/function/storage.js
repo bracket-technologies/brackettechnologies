@@ -22,11 +22,10 @@ var getFile = ({ req, res, storage }) => {
 
 const postFile = async ({ req, res, storage }) => {
 
-  var collection = req.url.split("/")[2]
-  // if (collection !== "_user_" && collection !== "_password_" && collection !== "_project_") collection += `-${req.headers["project"]}`
-  collection += `-${req.headers["project"]}`
   var file = req.body.file, url
   var upload = req.body.upload
+  var collection = upload.collection
+  collection += `-${req.headers["project"]}`
   var ref = db.collection(collection)
 
   // file Type
@@ -48,12 +47,14 @@ const postFile = async ({ req, res, storage }) => {
   // post api
   var data = {
     url,
-    id: upload.doc,
+    id: require("./generate").generate(20),
+    "file-id": upload.doc,
     name: upload.name,
     description: upload.description || "",
     type: upload.type,
     tags: upload.tags,
-    title: upload.title
+    title: upload.title,
+    "creation-date": (new Date).getTime()
   }
 
   await ref.doc(data.id).set(data).then(() => {

@@ -69,10 +69,10 @@ app.post("*", (req, res) => {
   if (req.headers.project === "bracket") {
 
     // storage
-    if (path[1] === "storage") require("./function/storageLocal").postFile({ req, res })
+    if (path[1] === "storage") return require("./function/storageLocal").postFile({ req, res })
 
     // database
-    if (path[1] === "database") require("./function/databaseLocal").postdb({ req, res })
+    if (path[1] === "database") return require("./function/databaseLocal").postdb({ req, res })
   }
 
   // storage
@@ -90,10 +90,10 @@ app.delete("*", (req, res) => {
   if (req.headers.project === "bracket") {
 
     // storage
-    if (path[1] === "storage") require("./function/storageLocal").deleteFile({ req, res })
+    if (path[1] === "storage") return require("./function/storageLocal").deleteFile({ req, res })
 
     // database
-    if (path[1] === "database") require("./function/databaseLocal").deletedb({ req, res })
+    if (path[1] === "database") return require("./function/databaseLocal").deletedb({ req, res })
   }
 
   // storage

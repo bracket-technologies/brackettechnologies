@@ -11,10 +11,10 @@
                                 {
                                     "controls": [
                                         {
-                                            "event": "mouseenter?().1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                            "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
                                         },
                                         {
-                                            "event": "mouseleave?().1stChild().style().transform=scaleX(1)"
+                                            "event": "mouseleave?1stChild().style().transform=scaleX(1)"
                                         }
                                     ],
                                     "children": [
@@ -28,43 +28,43 @@
                                     "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0"
                                 },
                                 {
-                                    "type": "Image?src=)(:gallery-images.0.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "type": "Image?src=gallery-images:().0.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                                 }
                             ],
-                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?)(:gallery-images.0",
+                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().0",
                             "controls": [
                                 {
-                                    "event": "mouseenter?().1stChild().style().opacity=1"
+                                    "event": "mouseenter?1stChild().style().opacity=1"
                                 },
                                 {
-                                    "event": "mouseleave?().1stChild().style().opacity=0"
+                                    "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?)(:new-image-data=().data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[val().equal():_string];():new-image-tags.children().pull():0.():remove();():image-window-img.src()=().2ndChild().src();)(:new-image-data.name=)(:gallery-images.0.name;():new-image-name.val()=)(:gallery-images.0.name"
+                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().0.name;():new-image-name.txt()=gallery-images:().0.name"
                                 }
                             ]
                         },
                         {
                             "controls": [
                                 {
-                                    "event": "mouseenter?().1stChild().style().opacity=1"
+                                    "event": "mouseenter?1stChild().style().opacity=1"
                                 },
                                 {
-                                    "event": "mouseleave?().1stChild().style().opacity=0"
+                                    "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?)(:new-image-data=().data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[val().equal():_string];():new-image-tags.children().pull():0.():remove();():image-window-img.src()=().2ndChild().src();)(:new-image-data.name=)(:gallery-images.1.name;():new-image-name.val()=)(:gallery-images.1.name"
+                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().1.name;():new-image-name.txt()=gallery-images:().1.name"
                                 }
                             ],
-                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?)(:gallery-images.1",
+                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().1",
                             "children": [
                                 {
                                     "controls": [
                                         {
-                                            "event": "mouseenter?().1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                            "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
                                         },
                                         {
-                                            "event": "mouseleave?().1stChild().style().transform=scaleX(1)"
+                                            "event": "mouseleave?1stChild().style().transform=scaleX(1)"
                                         }
                                     ],
                                     "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
@@ -78,21 +78,21 @@
                                     ]
                                 },
                                 {
-                                    "type": "Image?src=)(:gallery-images.1.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "type": "Image?src=gallery-images:().1.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                                 }
                             ]
                         },
                         {
-                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?)(:gallery-images.2",
+                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().2",
                             "controls": [
                                 {
-                                    "event": "mouseenter?().1stChild().style().opacity=1"
+                                    "event": "mouseenter?1stChild().style().opacity=1"
                                 },
                                 {
-                                    "event": "mouseleave?().1stChild().style().opacity=0"
+                                    "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?)(:new-image-data=().data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[val().equal():_string];():new-image-tags.children().pull():0.():remove();():image-window-img.src()=().2ndChild().src();)(:new-image-data.name=)(:gallery-images.2.name;():new-image-name.val()=)(:gallery-images.2.name"
+                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().2.name;():new-image-name.txt()=gallery-images:().2.name"
                                 }
                             ],
                             "children": [
@@ -100,10 +100,10 @@
                                     "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
                                     "controls": [
                                         {
-                                            "event": "mouseenter?().1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                            "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
                                         },
                                         {
-                                            "event": "mouseleave?().1stChild().style().transform=scaleX(1)"
+                                            "event": "mouseleave?1stChild().style().transform=scaleX(1)"
                                         }
                                     ],
                                     "children": [
@@ -116,7 +116,7 @@
                                     ]
                                 },
                                 {
-                                    "type": "Image?src=)(:gallery-images.2.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "type": "Image?src=gallery-images:().2.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                                 }
                             ]
                         },
@@ -125,10 +125,10 @@
                                 {
                                     "controls": [
                                         {
-                                            "event": "mouseenter?().1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                            "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
                                         },
                                         {
-                                            "event": "mouseleave?().1stChild().style().transform=scaleX(1)"
+                                            "event": "mouseleave?1stChild().style().transform=scaleX(1)"
                                         }
                                     ],
                                     "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
@@ -142,19 +142,19 @@
                                     ]
                                 },
                                 {
-                                    "type": "Image?src=)(:gallery-images.3.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "type": "Image?src=gallery-images:().3.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                                 }
                             ],
-                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?)(:gallery-images.3",
+                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().3",
                             "controls": [
                                 {
-                                    "event": "mouseenter?().1stChild().style().opacity=1"
+                                    "event": "mouseenter?1stChild().style().opacity=1"
                                 },
                                 {
-                                    "event": "mouseleave?().1stChild().style().opacity=0"
+                                    "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?)(:new-image-data=().data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[val().equal():_string];():new-image-tags.children().pull():0.():remove();():image-window-img.src()=().2ndChild().src();)(:new-image-data.name=)(:gallery-images.3.name;():new-image-name.val()=)(:gallery-images.3.name"
+                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().3.name;():new-image-name.txt()=gallery-images:().3.name"
                                 }
                             ]
                         }
@@ -170,7 +170,7 @@
                         {
                             "controls": [
                                 {
-                                    "event": "change?)(:new-image=true;():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[val().eq():_string];():new-image-tags.children().pull():0.():remove();().fileReader():[e().target.files.0]:[():image-window-img.src().eq():[e().target.result]];)(:upload.file=e().target.files.0;)(:new-image-data.name=e().target.files.0.name;():new-image-name.val()=e().target.files.0.name"
+                                    "event": "change?new-image:()=true;():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();fileReader():[e().target.files.0]:[():image-window-img.src()=[e().target.result]];upload.file:()=e().target.files.0;new-image-data:().name=e().target.files.0.name;txt():new-image-name=e().target.files.0.name"
                                 }
                             ],
                             "type": "Input?id=gallery-view-input;input.type=file;style.cursor=pointer;style.position=absolute;style.top=-100px;style.left=-100px;style.height=200%;style.width=200%;style.opacity=0"
@@ -184,13 +184,13 @@
                 {
                     "controls": [
                         {
-                            "event": "mouseenter?().1stChild().style().opacity=1"
+                            "event": "mouseenter?1stChild().style().opacity=1"
                         },
                         {
-                            "event": "mouseleave?().1stChild().style().opacity=0"
+                            "event": "mouseleave?1stChild().style().opacity=0"
                         },
                         {
-                            "event": "click?)(:new-image-data=().data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[val().equal():_string];():new-image-tags.children().pull():0.():remove();():image-window-img.src()=().2ndChild().src();)(:new-image-data.name=().data().name;():new-image-name.val()=().data().name"
+                            "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=data().name;():new-image-name.txt()=data().name"
                         }
                     ],
                     "type": "[View]?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer",
@@ -207,21 +207,22 @@
                             "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
                             "controls": [
                                 {
-                                    "event": "mouseenter?().1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                    "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
                                 },
                                 {
-                                    "event": "mouseleave?().1stChild().style().transform=scaleX(1)"
+                                    "event": "mouseleave?1stChild().style().transform=scaleX(1)"
                                 }
                             ]
                         },
                         {
-                            "type": "Image?src=().data().url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                            "type": "Image?src=data().url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                         }
                     ]
                 }
             ],
-            "type": "View?data=)(:gallery-images.slice():4;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;style.gap=2rem;style.width=100%?)(:gallery-images.length().greater():4"
+            "type": "View?data=gallery-images:().slice():4;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;style.gap=2rem;style.width=100%?gallery-images:().len()>4"
         }
     ],
+    "id": "gallery-view",
     "creation-date": 1643578421619
 }
