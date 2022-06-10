@@ -122,6 +122,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         coded = true
         return toValue({ req, res, _window, object, id, value: global.codes[path[0]], params, _, e })
     }
+
+    // codeds (string)
+    if (path0.slice(0, 8) === "codedS()") {
+        
+        object = global.codes[path[0]]
+        path.shift()
+        path0 = ""
+    }
     
     // if
     if (path0 === "if()") {
@@ -194,7 +202,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         if (state) path.splice(1, 0, state)
         path[0] = path0 = ")("
-        
     }
     
     // view => ():id:timer:conditions
@@ -275,9 +282,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (path0 === "clickedElement()" || path0 === "clicked()") object = global["clickedElement()"]
 
             else if (path0 === "log()") {
-
-                var args = path[0].split(":").slice(1)
-                _log = args.map(arg => toValue({ req, res, _window, id, value: arg, params, _, e }))
+                
+                _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg, params, _, e }))
                 console.log(..._log)
             }
 
@@ -474,6 +480,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var el = k
             breakRequest = i + 1
             el = toValue({ req, res, _window, id, e, _, value: k, params })
+            
             if (Array.isArray(o)) {
                 if (isNaN(el)) {
                     if (o[0] && o[0][el]) {
@@ -2003,15 +2010,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "pullItems()") {
 
-            var args = k.split(":")
             var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
             answer = o = o.filter(item => item !== _item)
             
         } else if (k0 === "pullItem()") {
 
-            var args = k.split(":")
             var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
-            var _index = o.findIndex(item => item === _item)
+            console.log(o);
+            var _index = o.findIndex(item => isEqual(item, _item))
             o.splice(_index,1)
             answer = o
             

@@ -34,9 +34,10 @@ const createElement = ({ _window, id, req, res }) => {
   // view is empty
   if (!view.type) return
 
+  // code []
   view.type = toCode({ _window, string: view.type })
   
-  // 'string'
+  // code ''
   if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
 
   // destructure type, params, & conditions from type
