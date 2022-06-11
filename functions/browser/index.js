@@ -1590,7 +1590,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         // fast load views
         if (Object.keys(project["fast-load-views"] || {}).length > 0) {
 
-            var docs = global["fast-load-views"], _docs = [], index = 1, length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0)
+            var docs = Object.values(project["fast-load-views"]).flat(), _docs = [], index = 1, length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0)
 
             while (index <= length) {
                 _docs.push(docs.slice((index - 1) * 10, index * 10))
@@ -3438,8 +3438,8 @@ module.exports = {
         var global = _window ? _window.global : window.global
         if (string.slice(0, 7) === "coded()") string = global.codes[string]
 
-        if (string.includes("=") || string.includes(";") || string.includes("?") || string === "break()" || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) return true
-        else return false
+        if (string) if (string.includes("=") || string.includes(";") || string.includes("?") || string === "break()" || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) return true
+        return false
     }
 }
 },{}],68:[function(require,module,exports){
@@ -5985,7 +5985,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "pull()") {
 
             // if no index, it pulls the last element
-            var args = k.split(":")
             var _pull = args[1] !== undefined ? toValue({ req, res, _window, id, value: args[1], params, _ ,e }) : o.length - 1
             if (_pull === undefined) return undefined
             o.splice(_pull,1)
