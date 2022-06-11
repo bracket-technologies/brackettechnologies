@@ -130,6 +130,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           
           // params
           await toParam({ _window, req, res, string: events[1], e, id: mainID, mount: true })
+
+          // break
+          if (view.break) return delete view.break
           
           // approval
           if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
@@ -183,6 +186,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           // params
           await toParam({ string: events[1], e, id: mainID, mount: true })
+
+          // break
+          if (view.break) return delete view.break
         
           // approval
           if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })

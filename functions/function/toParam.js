@@ -24,9 +24,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     
     var key, value, id = viewId
     var view = _window ? _window.views[id] : window.views[id]
-
+    
     // break
-    //if (params.break || view && view.break) return
+    if (view && view.break) return
 
     if (param.slice(0, 2) === "#:") return
     
@@ -178,6 +178,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     // implemented function
     if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[underscored ? path0.slice(1) : path0] || view[path0])) {
       
+      console.log("function");
+
       var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
       if (_params.length > 0) {
         _params.map((param, index) => {
@@ -191,7 +193,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
         })
       }
       string = toCode({ _window, string })
-      console.log(string);
+      
       if (view[path0]) return toParam({ _window, ...view[path0], string, object  })
       else if (underscored && view[path0.slice(1)]) return toParam({ _window, ...view[path0], string, _: object })
     }
@@ -199,6 +201,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
       
+      // break
+      if (key === "break()" && value !== false) return view.break = true
+
       // mount state & value
       if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
 

@@ -20,35 +20,26 @@ var getFile = ({ req, res, storage }) => {
   //
 }
 
-const postFile = async ({ req, res, storage }) => {
+const postFile = async ({ req, res, storage, db }) => {
 
   var file = req.body.file, url
   var upload = req.body.upload
   var collection = upload.collection
   collection += `-${req.headers["project"]}`
-  var ref = db.collection(collection)
 
   // file Type
   upload.type = upload.type.split("-").join("/")
   // convert base64 to buffer
   var buffer = Buffer.from(file, "base64")
 
-  await storage.ref().child(`${collection}/${upload.doc}`).put(buffer, { contentType: upload.type })
-    .then(async snapshot => {
-
-      url = await snapshot.ref.getDownloadURL()
-
-    }).catch(error => {
-
-      success = false
-      message = error
-    })
-
+  await storage.bucket().file(`${collection}/${upload.doc}`).save(buffer, { contentType: upload.type }, async () => {
+    url = await storage.bucket().file(`${collection}/${upload.doc}`).getSignedUrl({ action: 'read', expires: '03-09-3000' })
+  })
+  
   // post api
   var data = {
-    url,
-    id: require("./generate").generate(20),
-    "file-id": upload.doc,
+    url: url[0],
+    id: upload.doc,
     name: upload.name,
     description: upload.description || "",
     type: upload.type,
@@ -56,11 +47,11 @@ const postFile = async ({ req, res, storage }) => {
     title: upload.title,
     "creation-date": (new Date).getTime()
   }
-
-  await ref.doc(data.id).set(data).then(() => {
+  
+  await db.collection(collection).doc(data.id).set(data).then(() => {
 
     success = true
-    message = `${collection} saved successfuly!`
+    message = `Document saved successfuly!`
 
   }).catch(error => {
 
@@ -71,8 +62,31 @@ const postFile = async ({ req, res, storage }) => {
   return res.send({ data, success, message })
 }
 
-const deleteFile = ({ erase = {} }) => {
-  //
+const deleteFile = async ({ req, res, storage, db }) => {
+  
+  var string = decodeURI(req.headers.erase), params = {}
+  string = toCode({ _window, string })
+  
+  if (string) params = toParam({ _window, string, id: "" })
+  var erase = params.erase || {}
+
+  var collection = erase.collection
+  collection += `-${req.headers["project"]}`
+
+  await storage.bucket().file(`${collection}/${erase.doc}`).delete()
+
+  await db.collection(collection).doc(erase.doc.toString()).delete().then(() => {
+
+    success = true,
+    message = `Document erased successfuly!`
+
+  }).catch(error => {
+
+    success = false
+    message = error
+  })
+
+  return res.send({ success, message })
 }
 
 module.exports = { getFile, postFile, deleteFile }

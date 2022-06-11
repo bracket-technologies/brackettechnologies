@@ -22,7 +22,7 @@
             "type": "View?class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
             "children": [
                 {
-                    "type": "View?id=user-file;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
+                    "type": "View?id=user-file;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%?false",
                     "children": [
                         {
                             "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
@@ -33,12 +33,12 @@
                     ],
                     "controls": [
                         {
-                            "event": "click?open-doc:()=data:().editor.user.id;open-collection:()=_user_;)(:open-map=data:().editor.user;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():[data:().editor.user.id]"
+                            "event": "click?loader.show;open-doc:()=data:().editor.user.id;open-collection:()=_user_;)(:open-map=data:().editor.user;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():[data:().editor.user.id]"
                         },
                         {
                             "actions": [
-                                "wait():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=user/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
-                                "wait():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]"
+                                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=user/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
                             ],
                             "event": "click?open-doc:()=data:().editor.user.id;open-docs:().push():[open-doc:()];open-collection:()=_user_;)(:open-map=data:().editor.user;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():open-view.className():data-viewer.():[style().display=none]?!open-docs:().inc():[data:().editor.user.id]"
                         }
@@ -59,10 +59,10 @@
                             "event": "click?open-doc:()=)(:project;open-collection:()=_project_;)(:open-map=data:().editor.project;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():[project:()]"
                         },
                         {
-                            "event": "click?open-doc:()=)(:project;open-docs:().push():[open-doc:()];open-collection:()=_project_;)(:open-map=data:().editor.project;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():open-view.className():data-viewer.():[style().display=none]?!open-docs:().inc():[project:()]",
+                            "event": "click?loader.show;open-doc:()=)(:project;open-docs:().push():[open-doc:()];open-collection:()=_project_;)(:open-map=data:().editor.project;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():open-view.className():data-viewer.():[style().display=none]?!open-docs:().inc():[project:()]",
                             "actions": [
-                                "wait():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=project/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
-                                "wait():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]"
+                                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=project/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
                             ]
                         }
                     ]
@@ -154,8 +154,8 @@
                                 {
                                     "event": "click?loader.show;open-doc:()=().data;open-docs:().push():[page/+open-doc:()];open-collection:()=page;)(:open-map=data:().editor.page.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[)(:clickedElement];!lastChild().contains():[)(:clickedElement];!open-docs:().inc():[page/+().data]",
                                     "actions": [
-                                        "wait():[insert:data-viewer-bar]?insert.component=():data-viewer-bar.children.0;insert.data=page/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
-                                        "wait():[insert:open-view]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
+                                        "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=page/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                        "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
                                     ]
                                 }
                             ]

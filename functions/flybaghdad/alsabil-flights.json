@@ -1,0 +1,1454 @@
+{
+    "xZ7YqkPEGmr65HxecQ2e": {
+        "aircraft": "737-700",
+        "flight-type": "Charter",
+        "created-by-name": "Ibrahim Dakdouk",
+        "total-flown-seats": 0,
+        "hand-baggage-kg": 7,
+        "additional-profit-usd": 0,
+        "created-by": "Pc3epyux0mQeFus4YqbO",
+        "bookable": true,
+        "arrival-airport": "BEY Rafic Hariri International Airport",
+        "fees-and-charges-usd": 0,
+        "departure-airport": "BGW Baghdad International Airport",
+        "arrival-day": 1654041600000,
+        "economy-classes": [
+            "AC",
+            "AB",
+            "AA",
+            "A0",
+            "A1",
+            "A2",
+            "A3",
+            "A4",
+            "A5",
+            "A6",
+            "A7",
+            "A8",
+            "A9",
+            "A10",
+            "A11",
+            "A12",
+            "A13"
+        ],
+        "goshow-classes": [],
+        "arrival-airport-tax-usd": 7,
+        "seats": [
+            {
+                "group-reserved-seats": 0,
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 85,
+                        "trip": "One Way",
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 100
+                    },
+                    {
+                        "chd-base-fare-usd": "70",
+                        "baggage-kg": 30,
+                        "trip": "Round Trip",
+                        "adt-base-fare-usd": 85
+                    }
+                ],
+                "commission-unit": "%",
+                "meal-included": true,
+                "seats": 9,
+                "additional-profit": 0,
+                "sub-class": "AC",
+                "av-seats": 1,
+                "individual-reserved-seats": 0,
+                "commission": 2,
+                "class": "Economy",
+                "additional-profit-unit": "%"
+            },
+            {
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 105,
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 90,
+                        "trip": "One Way"
+                    }
+                ],
+                "class": "Economy",
+                "commission-unit": "%",
+                "meal-included": true,
+                "seats": 9,
+                "individual-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "av-seats": 9,
+                "group-reserved-seats": 0,
+                "additional-profit": 0,
+                "commission": 2,
+                "sub-class": "AB"
+            },
+            {
+                "class": "Economy",
+                "commission": 2,
+                "additional-profit": 0,
+                "addtional-profit-unit": "%",
+                "av-seats": 9,
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 95,
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 110,
+                        "trip": "One Way"
+                    }
+                ],
+                "commission-unit": "%",
+                "meal-included": true,
+                "sub-class": "AA",
+                "individual-reserved-seats": 0,
+                "seats": 9,
+                "group-reserved-seats": 0
+            },
+            {
+                "addtional-profit-unit": "%",
+                "av-seats": 9,
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 115,
+                        "chd-base-fare-usd": 100,
+                        "trip": "One Way",
+                        "baggage-kg": 30
+                    }
+                ],
+                "additional-profit": 0,
+                "group-reserved-seats": 0,
+                "commission": 2,
+                "meal-included": true,
+                "sub-class": "A0",
+                "commission-unit": "%",
+                "individual-reserved-seats": 0,
+                "class": "Economy",
+                "seats": 9
+            },
+            {
+                "additional-profit": 0,
+                "addtional-profit-unit": "%",
+                "av-seats": 9,
+                "class": "Economy",
+                "sub-class": "A1",
+                "group-reserved-seats": 0,
+                "meal-included": true,
+                "commission-unit": "%",
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 105,
+                        "adt-base-fare-usd": 120
+                    }
+                ],
+                "seats": 9,
+                "individual-reserved-seats": 0,
+                "commission": 2
+            },
+            {
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 110,
+                        "adt-base-fare-usd": 125,
+                        "trip": "One Way"
+                    }
+                ],
+                "commission-unit": "%",
+                "individual-reserved-seats": 0,
+                "commission": 2,
+                "group-reserved-seats": 0,
+                "additional-profit": 0,
+                "addtional-profit-unit": "%",
+                "class": "Economy",
+                "av-seats": 9,
+                "sub-class": "A2",
+                "meal-included": true,
+                "seats": 9
+            },
+            {
+                "commission-unit": "%",
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 115,
+                        "adt-base-fare-usd": 130,
+                        "baggage-kg": 30,
+                        "trip": "One Way"
+                    }
+                ],
+                "sub-class": "A3",
+                "seats": 9,
+                "meal-included": true,
+                "av-seats": 9,
+                "group-reserved-seats": 0,
+                "commission": 2,
+                "individual-reserved-seats": 0,
+                "additional-profit": 0,
+                "class": "Economy",
+                "addtional-profit-unit": "%"
+            },
+            {
+                "addtional-profit-unit": "%",
+                "commission": 2,
+                "class": "Economy",
+                "individual-reserved-seats": 0,
+                "sub-class": "A4",
+                "meal-included": true,
+                "group-reserved-seats": 0,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 120,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 135
+                    }
+                ],
+                "additional-profit": 0,
+                "commission-unit": "%",
+                "av-seats": 9,
+                "seats": 9
+            },
+            {
+                "individual-reserved-seats": 0,
+                "meal-included": true,
+                "addtional-profit-unit": "%",
+                "additional-profit": 0,
+                "seats": 9,
+                "commission-unit": "%",
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 125,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 140,
+                        "baggage-kg": 30
+                    }
+                ],
+                "group-reserved-seats": 0,
+                "commission": 2,
+                "av-seats": 9,
+                "class": "Economy",
+                "sub-class": "A5"
+            },
+            {
+                "meal-included": true,
+                "individual-reserved-seats": 0,
+                "group-reserved-seats": 0,
+                "av-seats": 9,
+                "seats": 9,
+                "class": "Economy",
+                "commission": 2,
+                "addtional-profit-unit": "%",
+                "commission-unit": "%",
+                "sub-class": "A6",
+                "additional-profit": 0,
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 145,
+                        "chd-base-fare-usd": 130,
+                        "baggage-kg": 30
+                    }
+                ]
+            },
+            {
+                "av-seats": 9,
+                "group-reserved-seats": 0,
+                "additional-profit": 0,
+                "addtional-profit-unit": "%",
+                "meal-included": true,
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 135,
+                        "adt-base-fare-usd": 150,
+                        "trip": "One Way",
+                        "baggage-kg": 30
+                    }
+                ],
+                "commission-unit": "%",
+                "sub-class": "A7",
+                "seats": 9,
+                "class": "Economy",
+                "individual-reserved-seats": 0,
+                "commission": 2
+            },
+            {
+                "commission-unit": "%",
+                "av-seats": 9,
+                "commission": 2,
+                "additional-profit": 0,
+                "seats": 9,
+                "sub-class": "A8",
+                "individual-reserved-seats": 0,
+                "class": "Economy",
+                "meal-included": true,
+                "addtional-profit-unit": "%",
+                "group-reserved-seats": 0,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 140,
+                        "adt-base-fare-usd": 155,
+                        "trip": "One Way"
+                    }
+                ]
+            },
+            {
+                "additional-profit": 0,
+                "addtional-profit-unit": "%",
+                "commission-unit": "%",
+                "seats": 9,
+                "class": "Economy",
+                "meal-included": true,
+                "group-reserved-seats": 0,
+                "individual-reserved-seats": 0,
+                "av-seats": 9,
+                "sub-class": "A9",
+                "commission": 2,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 145,
+                        "adt-base-fare-usd": 160,
+                        "trip": "One Way"
+                    }
+                ]
+            },
+            {
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 150,
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 165,
+                        "trip": "One Way"
+                    }
+                ],
+                "additional-profit": 0,
+                "meal-included": true,
+                "individual-reserved-seats": 0,
+                "commission": 2,
+                "seats": 9,
+                "av-seats": 9,
+                "commission-unit": "%",
+                "group-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "sub-class": "A10",
+                "class": "Economy"
+            },
+            {
+                "addtional-profit-unit": "%",
+                "class": "Economy",
+                "individual-reserved-seats": 0,
+                "sub-class": "A11",
+                "commission": 2,
+                "seats": 9,
+                "av-seats": 9,
+                "meal-included": true,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 170,
+                        "chd-base-fare-usd": 155
+                    }
+                ],
+                "commission-unit": "%",
+                "group-reserved-seats": 0,
+                "additional-profit": 0
+            },
+            {
+                "individual-reserved-seats": 0,
+                "av-seats": 9,
+                "additional-profit": 0,
+                "meal-included": true,
+                "commission": 2,
+                "class": "Economy",
+                "seats": 9,
+                "sub-class": "A12",
+                "addtional-profit-unit": "%",
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 175,
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 160
+                    }
+                ],
+                "group-reserved-seats": 0,
+                "commission-unit": "%"
+            },
+            {
+                "class": "Economy",
+                "sub-class": "A13",
+                "commission": 2,
+                "seats": 9,
+                "individual-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "group-reserved-seats": 0,
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 180,
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 165
+                    }
+                ],
+                "meal-included": true,
+                "additional-profit": 0,
+                "commission-unit": "%",
+                "av-seats": 9
+            }
+        ],
+        "business-classes": [],
+        "change-policy": [],
+        "connected": false,
+        "active": true,
+        "booking-policy": [
+            {
+                "classes": [
+                    "AC",
+                    "AB",
+                    "AA",
+                    "A0",
+                    "A1",
+                    "A2",
+                    "A3",
+                    "A4",
+                    "A5",
+                    "A6",
+                    "A7",
+                    "A8",
+                    "A9",
+                    "A10",
+                    "A11",
+                    "A12",
+                    "A13"
+                ],
+                "reference-date": "Booking Date",
+                "class": "Economy",
+                "before-after": "After"
+            }
+        ],
+        "flight-duration": "01:40",
+        "canceled-reservations": [],
+        "departure-airport-tax-usd": 33,
+        "total-booked-seats": 0,
+        "cancelable": true,
+        "total-canceled-seats": 0,
+        "waiting-list-classes": [],
+        "departure-day": 1654041600000,
+        "refunds": [],
+        "note": "",
+        "canceled-bookings": [],
+        "id": "xZ7YqkPEGmr65HxecQ2e",
+        "bookings": [],
+        "arrival-time": 84300000,
+        "departure-time": 78300000,
+        "sellings": [],
+        "description": "",
+        "connections": [],
+        "aircraft-capacity": 154,
+        "total-seats": 0,
+        "changeable": false,
+        "total-reserved-seats": 0,
+        "total-sold-usd": 0,
+        "airline": "IF Fly Baghdad",
+        "creation-date": 1653301512665,
+        "status": "Schedualed",
+        "total-noshow-seats": 0,
+        "flight-number": "IF302",
+        "cancelation-policy": [
+            {
+                "before-after": "After",
+                "reference-date": "Reservation Date",
+                "class": "Economy",
+                "penalty-unit": "%",
+                "classes": [
+                    "AC",
+                    "AB",
+                    "AA",
+                    "A0",
+                    "A1",
+                    "A2",
+                    "A3",
+                    "A4",
+                    "A5",
+                    "A6",
+                    "A7",
+                    "A8",
+                    "A9",
+                    "A10",
+                    "A11",
+                    "A12",
+                    "A13"
+                ],
+                "penalty": 100
+            }
+        ],
+        "first-class-classes": [],
+        "reservations": []
+    },
+    "xZ7YqkPEGmr65HxecQ2r": {
+        "bookable": true,
+        "status": "Schedualed",
+        "sellings": [],
+        "business-classes": [],
+        "created-by": "Pc3epyux0mQeFus4YqbO",
+        "first-class-classes": [],
+        "note": "",
+        "total-canceled-seats": 0,
+        "booking-policy": [
+            {
+                "reference-date": "Booking Date",
+                "class": "Economy",
+                "classes": [
+                    "AC",
+                    "AB",
+                    "AA",
+                    "A0",
+                    "A1",
+                    "A2",
+                    "A3",
+                    "A4",
+                    "A5",
+                    "A6",
+                    "A7",
+                    "A8",
+                    "A9",
+                    "A10",
+                    "A11",
+                    "A12",
+                    "A13"
+                ],
+                "before-after": "After"
+            }
+        ],
+        "cancelable": true,
+        "total-booked-seats": 0,
+        "waiting-list-classes": [],
+        "canceled-bookings": [],
+        "additional-profit-usd": 0,
+        "id": "xZ7YqkPEGmr65HxecQ2r",
+        "total-flown-seats": 0,
+        "arrival-airport": "BGW Baghdad International Airport",
+        "seats": [
+            {
+                "av-seats": 9,
+                "individual-reserved-seats": 0,
+                "seats": 9,
+                "meal-included": true,
+                "commission": 2,
+                "additional-profit-unit": "%",
+                "commission-unit": "%",
+                "additional-profit": 0,
+                "sub-class": "AC",
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 100,
+                        "chd-base-fare-usd": 85
+                    }
+                ],
+                "class": "Economy",
+                "group-reserved-seats": 0
+            },
+            {
+                "meal-included": true,
+                "addtional-profit-unit": "%",
+                "class": "Economy",
+                "sub-class": "AB",
+                "seats": 9,
+                "commission": 2,
+                "group-reserved-seats": 0,
+                "av-seats": 9,
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 105,
+                        "trip": "One Way",
+                        "chd-base-fare-usd": 90,
+                        "baggage-kg": 30
+                    }
+                ],
+                "commission-unit": "%",
+                "individual-reserved-seats": 0,
+                "additional-profit": 0
+            },
+            {
+                "additional-profit": 0,
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 110,
+                        "baggage-kg": 30,
+                        "trip": "One Way",
+                        "chd-base-fare-usd": 95
+                    }
+                ],
+                "commission": 2,
+                "commission-unit": "%",
+                "class": "Economy",
+                "seats": 9,
+                "group-reserved-seats": 0,
+                "individual-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "sub-class": "AA",
+                "av-seats": 9,
+                "meal-included": true
+            },
+            {
+                "seats": 9,
+                "sub-class": "A0",
+                "meal-included": true,
+                "additional-profit": 0,
+                "class": "Economy",
+                "group-reserved-seats": 0,
+                "av-seats": 9,
+                "commission": 2,
+                "commission-unit": "%",
+                "individual-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "chd-base-fare-usd": 100,
+                        "adt-base-fare-usd": 115,
+                        "baggage-kg": 30
+                    }
+                ]
+            },
+            {
+                "commission-unit": "%",
+                "meal-included": true,
+                "seats": 9,
+                "av-seats": 9,
+                "class": "Economy",
+                "sub-class": "A1",
+                "group-reserved-seats": 0,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 120,
+                        "chd-base-fare-usd": 105,
+                        "trip": "One Way"
+                    }
+                ],
+                "addtional-profit-unit": "%",
+                "additional-profit": 0,
+                "individual-reserved-seats": 0,
+                "commission": 2
+            },
+            {
+                "commission-unit": "%",
+                "sub-class": "A2",
+                "commission": 2,
+                "group-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "seats": 9,
+                "additional-profit": 0,
+                "individual-reserved-seats": 0,
+                "meal-included": true,
+                "av-seats": 9,
+                "class": "Economy",
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "trip": "One Way",
+                        "chd-base-fare-usd": 110,
+                        "adt-base-fare-usd": 125
+                    }
+                ]
+            },
+            {
+                "sub-class": "A3",
+                "av-seats": 9,
+                "additional-profit": 0,
+                "commission": 2,
+                "commission-unit": "%",
+                "class": "Economy",
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 130,
+                        "trip": "One Way",
+                        "chd-base-fare-usd": 115,
+                        "baggage-kg": 30
+                    }
+                ],
+                "individual-reserved-seats": 0,
+                "seats": 9,
+                "group-reserved-seats": 0,
+                "meal-included": true,
+                "addtional-profit-unit": "%"
+            },
+            {
+                "class": "Economy",
+                "meal-included": true,
+                "seats": 9,
+                "av-seats": 9,
+                "group-reserved-seats": 0,
+                "commission": 2,
+                "individual-reserved-seats": 0,
+                "additional-profit": 0,
+                "addtional-profit-unit": "%",
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "chd-base-fare-usd": 120,
+                        "adt-base-fare-usd": 135,
+                        "baggage-kg": 30
+                    }
+                ],
+                "sub-class": "A4",
+                "commission-unit": "%"
+            },
+            {
+                "meal-included": true,
+                "commission-unit": "%",
+                "individual-reserved-seats": 0,
+                "av-seats": 9,
+                "sub-class": "A5",
+                "commission": 2,
+                "group-reserved-seats": 0,
+                "seats": 9,
+                "addtional-profit-unit": "%",
+                "additional-profit": 0,
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 125,
+                        "adt-base-fare-usd": 140,
+                        "baggage-kg": 30,
+                        "trip": "One Way"
+                    }
+                ],
+                "class": "Economy"
+            },
+            {
+                "seats": 9,
+                "group-reserved-seats": 0,
+                "additional-profit": 0,
+                "av-seats": 9,
+                "addtional-profit-unit": "%",
+                "sub-class": "A6",
+                "individual-reserved-seats": 0,
+                "meal-included": true,
+                "commission": 2,
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 145,
+                        "chd-base-fare-usd": 130,
+                        "baggage-kg": 30,
+                        "trip": "One Way"
+                    }
+                ],
+                "class": "Economy",
+                "commission-unit": "%"
+            },
+            {
+                "meal-included": true,
+                "additional-profit": 0,
+                "sub-class": "A7",
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 135,
+                        "trip": "One Way",
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 150
+                    }
+                ],
+                "addtional-profit-unit": "%",
+                "class": "Economy",
+                "commission-unit": "%",
+                "individual-reserved-seats": 0,
+                "group-reserved-seats": 0,
+                "av-seats": 9,
+                "seats": 9,
+                "commission": 2
+            },
+            {
+                "meal-included": true,
+                "commission-unit": "%",
+                "seats": 9,
+                "additional-profit": 0,
+                "sub-class": "A8",
+                "group-reserved-seats": 0,
+                "commission": 2,
+                "individual-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 155,
+                        "trip": "One Way",
+                        "chd-base-fare-usd": 140
+                    }
+                ],
+                "av-seats": 9,
+                "class": "Economy"
+            },
+            {
+                "commission-unit": "%",
+                "group-reserved-seats": 0,
+                "additional-profit": 0,
+                "av-seats": 9,
+                "class": "Economy",
+                "meal-included": true,
+                "addtional-profit-unit": "%",
+                "sub-class": "A9",
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 160,
+                        "trip": "One Way",
+                        "chd-base-fare-usd": 145
+                    }
+                ],
+                "individual-reserved-seats": 0,
+                "commission": 2,
+                "seats": 9
+            },
+            {
+                "individual-reserved-seats": 0,
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 150,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 165,
+                        "baggage-kg": 30
+                    }
+                ],
+                "additional-profit": 0,
+                "commission": 2,
+                "av-seats": 9,
+                "group-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "meal-included": true,
+                "commission-unit": "%",
+                "class": "Economy",
+                "seats": 9,
+                "sub-class": "A10"
+            },
+            {
+                "addtional-profit-unit": "%",
+                "additional-profit": 0,
+                "av-seats": 9,
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 155,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 170,
+                        "baggage-kg": 30
+                    }
+                ],
+                "sub-class": "A11",
+                "meal-included": true,
+                "commission-unit": "%",
+                "seats": 9,
+                "class": "Economy",
+                "individual-reserved-seats": 0,
+                "commission": 2,
+                "group-reserved-seats": 0
+            },
+            {
+                "meal-included": true,
+                "commission": 2,
+                "class": "Economy",
+                "commission-unit": "%",
+                "addtional-profit-unit": "%",
+                "individual-reserved-seats": 0,
+                "seats": 9,
+                "additional-profit": 0,
+                "group-reserved-seats": 0,
+                "sub-class": "A12",
+                "av-seats": 9,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 175,
+                        "chd-base-fare-usd": 160,
+                        "trip": "One Way"
+                    }
+                ]
+            },
+            {
+                "sub-class": "A13",
+                "addtional-profit-unit": "%",
+                "class": "Economy",
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 180,
+                        "chd-base-fare-usd": 165
+                    }
+                ],
+                "commission-unit": "%",
+                "individual-reserved-seats": 0,
+                "commission": 2,
+                "meal-included": true,
+                "seats": 9,
+                "av-seats": 9,
+                "additional-profit": 0,
+                "group-reserved-seats": 0
+            }
+        ],
+        "hand-baggage-kg": 7,
+        "total-reserved-seats": 0,
+        "created-by-name": "Ibrahim Dakdouk",
+        "description": "",
+        "economy-classes": [
+            "AC",
+            "AB",
+            "AA",
+            "A0",
+            "A1",
+            "A2",
+            "A3",
+            "A4",
+            "A5",
+            "A6",
+            "A7",
+            "A8",
+            "A9",
+            "A10",
+            "A11",
+            "A12",
+            "A13"
+        ],
+        "arrival-airport-tax-usd": 7,
+        "arrival-time": 84300000,
+        "flight-number": "IF302",
+        "total-noshow-seats": 0,
+        "arrival-day": 1653782400000,
+        "goshow-classes": [],
+        "flight-duration": "01:40",
+        "connections": [],
+        "aircraft": "737-700",
+        "change-policy": [],
+        "canceled-reservations": [],
+        "reservations": [],
+        "creation-date": 1653301512665,
+        "total-sold-usd": 0,
+        "fees-and-charges-usd": 0,
+        "departure-airport": "BEY Rafic Hariri International Airport",
+        "departure-day": 1653782400000,
+        "aircraft-capacity": 154,
+        "flight-type": "Charter",
+        "bookings": [],
+        "departure-time": 78300000,
+        "airline": "IF Fly Baghdad",
+        "departure-airport-tax-usd": 33,
+        "cancelation-policy": [
+            {
+                "penalty-unit": "%",
+                "classes": [
+                    "AC",
+                    "AB",
+                    "AA",
+                    "A0",
+                    "A1",
+                    "A2",
+                    "A3",
+                    "A4",
+                    "A5",
+                    "A6",
+                    "A7",
+                    "A8",
+                    "A9",
+                    "A10",
+                    "A11",
+                    "A12",
+                    "A13"
+                ],
+                "reference-date": "Reservation Date",
+                "class": "Economy",
+                "penalty": 100,
+                "before-after": "After"
+            }
+        ],
+        "active": true,
+        "connected": false,
+        "refunds": [],
+        "changeable": false,
+        "total-seats": 0
+    },
+    "xs7YqkxMGwr65HoecW2r": {
+        "creation-date": 1653301512665,
+        "departure-airport-tax-usd": 33,
+        "sellings": [],
+        "canceled-bookings": [],
+        "change-policy": [],
+        "id": "xs7YqkxMGwr65HoecW2r",
+        "total-flown-seats": 0,
+        "reservations": [],
+        "connections": [],
+        "additional-profit-usd": 0,
+        "changeable": false,
+        "active": true,
+        "status": "Schedualed",
+        "total-booked-seats": 0,
+        "created-by-name": "Ibrahim Dakdouk",
+        "waiting-list-classes": [],
+        "note": "",
+        "arrival-day": 1653782400000,
+        "aircraft": "737-700",
+        "arrival-airport-tax-usd": 7,
+        "first-class-classes": [],
+        "arrival-time": 84300000,
+        "total-seats": 0,
+        "business-classes": [],
+        "booking-policy": [
+            {
+                "class": "Economy",
+                "before-after": "After",
+                "reference-date": "Booking Date",
+                "classes": [
+                    "AC",
+                    "AB",
+                    "AA",
+                    "A0",
+                    "A1",
+                    "A2",
+                    "A3",
+                    "A4",
+                    "A5",
+                    "A6",
+                    "A7",
+                    "A8",
+                    "A9",
+                    "A10",
+                    "A11",
+                    "A12",
+                    "A13"
+                ]
+            }
+        ],
+        "fees-and-charges-usd": 0,
+        "goshow-classes": [],
+        "bookable": true,
+        "refunds": [],
+        "arrival-airport": "BGW Baghdad International Airport",
+        "aircraft-capacity": 154,
+        "flight-type": "Charter",
+        "flight-number": "IF302",
+        "total-noshow-seats": 0,
+        "total-reserved-seats": 0,
+        "departure-airport": "BEY Rafic Hariri International Airport",
+        "departure-day": 1653782400000,
+        "bookings": [],
+        "seats": [
+            {
+                "additional-profit-unit": "%",
+                "group-reserved-seats": 0,
+                "individual-reserved-seats": 0,
+                "seats": 9,
+                "class": "Economy",
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 85,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 100
+                    }
+                ],
+                "av-seats": 9,
+                "commission-unit": "%",
+                "sub-class": "AC",
+                "commission": 2,
+                "meal-included": true,
+                "additional-profit": 0
+            },
+            {
+                "commission": 2,
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 90,
+                        "adt-base-fare-usd": 105,
+                        "trip": "One Way",
+                        "baggage-kg": 30
+                    }
+                ],
+                "addtional-profit-unit": "%",
+                "class": "Economy",
+                "individual-reserved-seats": 0,
+                "sub-class": "AB",
+                "additional-profit": 0,
+                "commission-unit": "%",
+                "av-seats": 9,
+                "meal-included": true,
+                "group-reserved-seats": 0,
+                "seats": 9
+            },
+            {
+                "class": "Economy",
+                "individual-reserved-seats": 0,
+                "sub-class": "AA",
+                "meal-included": true,
+                "av-seats": 9,
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 110,
+                        "chd-base-fare-usd": 95,
+                        "baggage-kg": 30,
+                        "trip": "One Way"
+                    }
+                ],
+                "group-reserved-seats": 0,
+                "commission": 2,
+                "seats": 9,
+                "additional-profit": 0,
+                "addtional-profit-unit": "%",
+                "commission-unit": "%"
+            },
+            {
+                "av-seats": 9,
+                "additional-profit": 0,
+                "commission": 2,
+                "commission-unit": "%",
+                "group-reserved-seats": 0,
+                "class": "Economy",
+                "seats": 9,
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 115,
+                        "chd-base-fare-usd": 100,
+                        "baggage-kg": 30,
+                        "trip": "One Way"
+                    }
+                ],
+                "individual-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "sub-class": "A0",
+                "meal-included": true
+            },
+            {
+                "av-seats": 9,
+                "meal-included": true,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 120,
+                        "chd-base-fare-usd": 105
+                    }
+                ],
+                "commission": 2,
+                "class": "Economy",
+                "individual-reserved-seats": 0,
+                "sub-class": "A1",
+                "group-reserved-seats": 0,
+                "commission-unit": "%",
+                "addtional-profit-unit": "%",
+                "seats": 9,
+                "additional-profit": 0
+            },
+            {
+                "addtional-profit-unit": "%",
+                "commission": 2,
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 110,
+                        "adt-base-fare-usd": 125,
+                        "trip": "One Way",
+                        "baggage-kg": 30
+                    }
+                ],
+                "commission-unit": "%",
+                "additional-profit": 0,
+                "class": "Economy",
+                "individual-reserved-seats": 0,
+                "av-seats": 9,
+                "group-reserved-seats": 0,
+                "sub-class": "A2",
+                "seats": 9,
+                "meal-included": true
+            },
+            {
+                "additional-profit": 0,
+                "group-reserved-seats": 0,
+                "sub-class": "A3",
+                "meal-included": true,
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 115,
+                        "baggage-kg": 30,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 130
+                    }
+                ],
+                "addtional-profit-unit": "%",
+                "commission": 2,
+                "seats": 9,
+                "individual-reserved-seats": 0,
+                "av-seats": 9,
+                "class": "Economy",
+                "commission-unit": "%"
+            },
+            {
+                "sub-class": "A4",
+                "class": "Economy",
+                "av-seats": 9,
+                "commission-unit": "%",
+                "addtional-profit-unit": "%",
+                "additional-profit": 0,
+                "group-reserved-seats": 0,
+                "commission": 2,
+                "individual-reserved-seats": 0,
+                "meal-included": true,
+                "seats": 9,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "trip": "One Way",
+                        "chd-base-fare-usd": 120,
+                        "adt-base-fare-usd": 135
+                    }
+                ]
+            },
+            {
+                "individual-reserved-seats": 0,
+                "av-seats": 9,
+                "class": "Economy",
+                "sub-class": "A5",
+                "addtional-profit-unit": "%",
+                "meal-included": true,
+                "seats": 9,
+                "group-reserved-seats": 0,
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 140,
+                        "chd-base-fare-usd": 125
+                    }
+                ],
+                "commission": 2,
+                "commission-unit": "%",
+                "additional-profit": 0
+            },
+            {
+                "group-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "commission": 2,
+                "seats": 9,
+                "class": "Economy",
+                "commission-unit": "%",
+                "sub-class": "A6",
+                "additional-profit": 0,
+                "individual-reserved-seats": 0,
+                "av-seats": 9,
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 145,
+                        "trip": "One Way",
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 130
+                    }
+                ],
+                "meal-included": true
+            },
+            {
+                "av-seats": 9,
+                "seats": 9,
+                "group-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "commission-unit": "%",
+                "pricing": [
+                    {
+                        "adt-base-fare-usd": 150,
+                        "chd-base-fare-usd": 135,
+                        "trip": "One Way",
+                        "baggage-kg": 30
+                    }
+                ],
+                "commission": 2,
+                "sub-class": "A7",
+                "individual-reserved-seats": 0,
+                "additional-profit": 0,
+                "meal-included": true,
+                "class": "Economy"
+            },
+            {
+                "pricing": [
+                    {
+                        "chd-base-fare-usd": 140,
+                        "baggage-kg": 30,
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 155
+                    }
+                ],
+                "commission-unit": "%",
+                "addtional-profit-unit": "%",
+                "meal-included": true,
+                "individual-reserved-seats": 0,
+                "additional-profit": 0,
+                "av-seats": 9,
+                "commission": 2,
+                "class": "Economy",
+                "sub-class": "A8",
+                "group-reserved-seats": 0,
+                "seats": 9
+            },
+            {
+                "commission": 2,
+                "addtional-profit-unit": "%",
+                "individual-reserved-seats": 0,
+                "additional-profit": 0,
+                "class": "Economy",
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 160,
+                        "chd-base-fare-usd": 145
+                    }
+                ],
+                "seats": 9,
+                "av-seats": 9,
+                "commission-unit": "%",
+                "group-reserved-seats": 0,
+                "sub-class": "A9",
+                "meal-included": true
+            },
+            {
+                "seats": 9,
+                "addtional-profit-unit": "%",
+                "commission-unit": "%",
+                "commission": 2,
+                "group-reserved-seats": 0,
+                "class": "Economy",
+                "sub-class": "A10",
+                "av-seats": 9,
+                "individual-reserved-seats": 0,
+                "additional-profit": 0,
+                "meal-included": true,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 150,
+                        "adt-base-fare-usd": 165,
+                        "trip": "One Way"
+                    }
+                ]
+            },
+            {
+                "commission": 2,
+                "pricing": [
+                    {
+                        "baggage-kg": 30,
+                        "adt-base-fare-usd": 170,
+                        "chd-base-fare-usd": 155,
+                        "trip": "One Way"
+                    }
+                ],
+                "commission-unit": "%",
+                "seats": 9,
+                "addtional-profit-unit": "%",
+                "class": "Economy",
+                "group-reserved-seats": 0,
+                "sub-class": "A11",
+                "av-seats": 9,
+                "additional-profit": 0,
+                "meal-included": true,
+                "individual-reserved-seats": 0
+            },
+            {
+                "individual-reserved-seats": 0,
+                "seats": 9,
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 175,
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 160
+                    }
+                ],
+                "additional-profit": 0,
+                "class": "Economy",
+                "meal-included": true,
+                "group-reserved-seats": 0,
+                "sub-class": "A12",
+                "commission": 2,
+                "commission-unit": "%",
+                "av-seats": 9,
+                "addtional-profit-unit": "%"
+            },
+            {
+                "sub-class": "A13",
+                "pricing": [
+                    {
+                        "trip": "One Way",
+                        "adt-base-fare-usd": 180,
+                        "baggage-kg": 30,
+                        "chd-base-fare-usd": 165
+                    }
+                ],
+                "commission-unit": "%",
+                "av-seats": 9,
+                "commission": 2,
+                "individual-reserved-seats": 0,
+                "addtional-profit-unit": "%",
+                "seats": 9,
+                "class": "Economy",
+                "additional-profit": 0,
+                "group-reserved-seats": 0,
+                "meal-included": true
+            }
+        ],
+        "departure-time": 78300000,
+        "airline": "IF Fly Baghdad",
+        "hand-baggage-kg": 7,
+        "total-canceled-seats": 0,
+        "cancelation-policy": [
+            {
+                "reference-date": "Reservation Date",
+                "before-after": "After",
+                "penalty-unit": "%",
+                "classes": [
+                    "AC",
+                    "AB",
+                    "AA",
+                    "A0",
+                    "A1",
+                    "A2",
+                    "A3",
+                    "A4",
+                    "A5",
+                    "A6",
+                    "A7",
+                    "A8",
+                    "A9",
+                    "A10",
+                    "A11",
+                    "A12",
+                    "A13"
+                ],
+                "class": "Economy",
+                "penalty": 100
+            }
+        ],
+        "canceled-reservations": [],
+        "cancelable": true,
+        "created-by": "Pc3epyux0mQeFus4YqbO",
+        "economy-classes": [
+            "AC",
+            "AB",
+            "AA",
+            "A0",
+            "A1",
+            "A2",
+            "A3",
+            "A4",
+            "A5",
+            "A6",
+            "A7",
+            "A8",
+            "A9",
+            "A10",
+            "A11",
+            "A12",
+            "A13"
+        ],
+        "total-sold-usd": 0,
+        "description": "",
+        "flight-duration": "01:40",
+        "connected": false
+    }
+}

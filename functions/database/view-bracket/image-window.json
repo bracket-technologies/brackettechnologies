@@ -125,12 +125,12 @@
                                 {
                                     "controls": [
                                         {
-                                            "actions": "wait():upload:[update:gallery-view]:[update:storage-sidebar]:note?note.text=Image saved succefully!;upload=new-image-data:();upload.collection=storage;upload.doc=new-image-data:().name.split(): .join():'-'.split():'.'.join():'-'+'-':[today().timestamp()];upload.file=)(:upload.file;wait():[data:().editor.storage.[().uplaod.data.id]=().uplaod.data;if():[!gallery-images:().find():[id=().uplaod.data.id]]:[gallery-images:().push:[().uplaod.data]];():image-window-background.click()]",
-                                            "event": "click??new-image:()"
+                                            "actions": "wait():[upload::0]:[update:gallery-view]:[update:storage-sidebar]:note?note.text=Image saved succefully!;upload=new-image-data:();upload.collection=storage;upload.doc=new-image-data:().name.split(): .join():'-'.split():'.'.join():'-'+'-'+today().timestamp();upload.headers.project=project:();upload.file=upload-file:();wait():[data:().editor.storage.[().upload.data.id]=().upload.data;if():[!gallery-images:().find():[id=().upload.data.id]]:[gallery-images:().push():[().upload.data]];():image-window-background.click();loader.hide]",
+                                            "event": "click?loader.show?new-image:()"
                                         },
                                         {
-                                            "actions": "wait():save:[update:gallery-view]:[update:storage-sidebar]:note?note.text=File updated successfuly!;save.headers.project=project:();save.collection=storage;save.doc=new-image-data:().id;save.data=new-image-data:();wait():[():image-window-background.click()]",
-                                            "event": "click??!new-image:()"
+                                            "actions": "wait():[save::0]:[update:gallery-view]:[update:storage-sidebar]:note?note.text=File updated successfuly!;save.headers.project=project:();save.collection=storage;save.doc=new-image-data:().id;save.data=new-image-data:();wait():[():image-window-background.click();loader.hide]",
+                                            "event": "click?loader.show?!new-image:()"
                                         }
                                     ],
                                     "type": "View?class=flexbox pointer;style.gap=1rem;style.height=3.5rem;style.width=10rem;style.borderRadius=.5rem;style.border=1px solid #32c74d;style.backgroundColor=#32c74d;hover.style.backgroundColor=#2ca842;hover.style.border=1px solid #2ca842;style.transition=.3s",

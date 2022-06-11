@@ -1,0 +1,116 @@
+{
+    "airlines": {
+        "id": "airlines",
+        "airlines": [
+            {
+                "fees-and-charges-usd": 0,
+                "code": "IF",
+                "name": "Fly Baghdad"
+            },
+            {
+                "name": "Middle East",
+                "code": "ME",
+                "fees-and-charges-usd": 0
+            }
+        ]
+    },
+    "countries": {
+        "countries": [
+            "Lebanon",
+            "Iraq",
+            "Iran",
+            "Syria",
+            "Palestine",
+            "Saudi Arabia",
+            "Jordan"
+        ],
+        "id": "countries"
+    },
+    "flight-status": {
+        "status": [
+            "Scheduled",
+            "Delayed",
+            "Canceled"
+        ],
+        "id": "flight-status"
+    },
+    "international-airports": {
+        "id": "international-airports",
+        "airports": [
+            {
+                "time-zone": 3,
+                "city": "Beirut",
+                "country-code": 961,
+                "name": "Rafic Hariri International Airport",
+                "tax-usd": 33,
+                "code": "BEY",
+                "no-visa-needed": [
+                    "Turkish"
+                ]
+            },
+            {
+                "city": "Baghdad",
+                "country": "Iraq",
+                "code": "BGW",
+                "tax-usd": 0,
+                "time-zone": 3,
+                "name": "Baghdad International Airport"
+            },
+            {
+                "name": "Istanbul International Airport",
+                "country": "Turkey",
+                "city": "Istanbul",
+                "time-zone": 3,
+                "tax-usd": 0,
+                "code": "IST"
+            },
+            {
+                "tax-usd": 0,
+                "time-zone": "+4:30",
+                "code": "IKA",
+                "country": "Iran",
+                "city": "Tehran",
+                "name": "Imam Khomeini International Airport"
+            },
+            {
+                "name": "Najaf International Airport",
+                "country": "Iraq",
+                "code": "NJF",
+                "city": "Najaf",
+                "tax-usd": 0,
+                "time-zone": "+3"
+            }
+        ]
+    },
+    "nationalities": {
+        "nationalities": [
+            "Lebanese",
+            "Iraqi",
+            "Palestinian",
+            "Syrian",
+            "Jordanian",
+            "Saudi Arabian",
+            "Iranian"
+        ],
+        "id": "nationalities"
+    },
+    "reference-dates": {
+        "references": [
+            "Booking Date",
+            "Reservation Date",
+            "Travel Date",
+            "Return Date",
+            "Void Date",
+            "Cancelation Date"
+        ],
+        "id": "reference-dates"
+    },
+    "seat-classes": {
+        "classes": [
+            "Economy",
+            "Business",
+            "First Class"
+        ],
+        "id": "seat-classes"
+    }
+}

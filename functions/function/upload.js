@@ -1,8 +1,10 @@
 const axios = require("axios")
+const { clone } = require("./clone")
 
 const upload = async ({ id, e, ...params }) => {
         
   var upload = params.upload
+  var global = window.global
   var view = window.views[id]
 
   var headers = clone(upload.headers) || {}

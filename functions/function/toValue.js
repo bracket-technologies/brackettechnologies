@@ -1,4 +1,5 @@
 const { generate } = require("./generate")
+const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 
@@ -20,8 +21,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   if (value.includes('codedS()') && value.length === 13) return value = global.codes[value]
 
   // value is a param it has key=value
-  if (value.includes("=") || value.includes(";") || value.slice(0, 1) === "!" || value.includes(">") || value.includes("<")) 
-  return toParam({ req, res, _window, id, e, string: value, _, object, mount, params })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, object, mount, params })
 
   // or
   if (value.includes("||")) {

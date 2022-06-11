@@ -31,7 +31,7 @@ const loadViews = async (first) => {
         
         // view
         global.unloadedViews = global.unloadedViews.filter(unloadedView => unloadedView.view !== view)
-        console.log(id, global.data.view[view], view);
+        
         views[id] = clone(global.data.view[view])
         views[id].id = id
         views[id].index = index
