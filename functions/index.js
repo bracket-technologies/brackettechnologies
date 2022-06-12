@@ -332,7 +332,7 @@ var whatsapp = async () => {
   client.initialize();
 }
 
-whatsapp()
+// whatsapp()
 
 /*
 Object.entries(require("./flybaghdad/alsabil-flights.json")).map(([doc, data]) => {
