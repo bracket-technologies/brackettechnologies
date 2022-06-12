@@ -1058,7 +1058,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-
+            
             if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
             else __o = _o
 

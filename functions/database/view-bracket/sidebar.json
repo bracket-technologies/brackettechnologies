@@ -5,55 +5,77 @@
         {
             "children": [
                 {
-                    "type": "Icon?id=user-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-person;tooltip.text=user;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2.4rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "Icon?id=user-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-person;tooltip.text=user;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2.4rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem?false",
                     "controls": [
                         {
                             "actions": [
                                 "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=user/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
                                 "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=open-map:();insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
                             ],
-                            "event": "click?if():[!open-docs:().inc():[data:().editor.user.id]]:[loader.show;open-doc:()=data:().editor.user.id;open-docs:().push():[open-doc:()];open-collection:()=_user_;open-map:()=data:().editor.user;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():open-view.className():data-viewer.():[style().display=none]]:[():data-viewer-bar.children().find():[open-doc=data:().editor.user.id].lastChild().click();break()]?data:().editor.user"
+                            "event": "click?if():[!open-docs:().inc():[data:().editor.account.id]]:[loader.show;open-doc:()=data:().editor.account.id;open-docs:().push():[open-doc:()];open-collection:()=_account_;open-map:()=data:().editor.account;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():open-view.className():data-viewer.():[style().display=none]]:[():data-viewer-bar.children().find():[open-doc=data:().editor.account.id].lastChild().click();break()]?data:().editor.account"
                         },
                         {
-                            "event": "click?sidebar-open-manager:()=user-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]?data:().editor.user"
+                            "event": "click?sidebar-open-manager:()=user-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]?data:().editor.account"
                         },
                         {
-                            "event": "click?open-doc:()=data:().editor.user.id;open-collection:()=_user_;open-map:()=data:().editor.user;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():[data:().editor.user.id];data:().editor.user"
+                            "event": "click?open-doc:()=data:().editor.account.id;open-collection:()=_account_;open-map:()=data:().editor.account;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():[data:().editor.account.id];data:().editor.account"
                         }
                     ]
                 },
                 {
-                    "type": "Icon?id=view-page-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-code-slash;tooltip.text=pages & views;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "View?id=page-view-btn;tooltip.text=bracket;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "children": [
+                        {
+                            "type": "Icon?class=flexbox;name=data_array;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
+                        }
+                    ],
                     "controls": [
                         {
-                            "event": "click?sidebar-open-manager:()=page-view-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];():page-view-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]",
-                            "actions": [
-                                "wait():search:[update:view-list]?search.collection=view;search.headers.project=project:();wait():[data:().editor.view=().search.data]?!data:().editor.view",
-                                "wait():search:[update:page-list]?search.collection=page;search.headers.project=project:();wait():[data:().editor.page=().search.data]?!data:().editor.page"
-                            ]
+                            "event": "click?sidebar-open-manager:()=page-view-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;1stChild().style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id];1stChild().style().color=#000];parent().parent().children().slice():1:-1.():[style().width=0px];():page-view-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
                         }
                     ]
                 },
                 {
-                    "type": "Icon?id=view-collection-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-collection;tooltip.text=collection;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "View?id=account-btn;tooltip.text=accounts;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "children": [
+                        {
+                            "type": "Icon?class=flexbox;name=badge;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
+                        }
+                    ],
                     "controls": [
                         {
-                            "event": "click?sidebar-open-manager:()=collection-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];():collection-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]",
-                            "actions": "wait():search:[update:collection-list]?search.collection=collection;search.headers.project=project:();wait():[data:().editor.collection=().search.data]?!data:().editor.collection"
+                            "event": "click?sidebar-open-manager:()=account-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():collection-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():flight-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;1stChild().style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id];1stChild().style().color=#000];parent().parent().children().slice():1:-1.():[style().width=0px];():account-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
                         }
                     ]
                 },
                 {
-                    "type": "Icon?id=view-product-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-boxes;tooltip.text=products;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem?data:().editor.project.which-industry-will-you-be-operating-in=Food & Beverages",
+                    "type": "View?id=collection-btn;tooltip.text=collections;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "children": [
+                        {
+                            "type": "Icon?class=flexbox;name=category;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
+                        }
+                    ],
                     "controls": [
                         {
-                            "event": "click?sidebar-open-manager:()=product-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];():product-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]",
-                            "actions": "wait():search:[update:product-list]?search.collection=product;search.headers.project=project:();search.limit=25;wait():[data:().editor.product=().search.data]?!data:().editor.product"
+                            "event": "click?sidebar-open-manager:()=collection-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;1stChild().style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id];1stChild().style().color=#000];parent().parent().children().slice():1:-1.():[style().width=0px];():collection-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
                         }
                     ]
                 },
                 {
-                    "type": "View?id=flight-btn;tooltip.text=flights;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]?data:().editor.project.which-industry-will-you-be-operating-in=Travel & Tourism",
+                    "type": "View?id=store-btn;tooltip.text=store;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "children": [
+                        {
+                            "type": "Icon?class=flexbox;name=store;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "click?sidebar-open-manager:()=store-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;1stChild().style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id];1stChild().style().color=#000];parent().parent().children().slice():1:-1.():[style().width=0px];():store-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
+                        }
+                    ]
+                },
+                {
+                    "type": "View?id=flight-btn;tooltip.text=flights;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
                             "type": "Icon?class=flexbox;name=flight;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
@@ -61,16 +83,14 @@
                     ],
                     "controls": [
                         {
-                            "event": "click?sidebar-open-manager:()=flight-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild().style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id];1stChild().style().color=#000];parent().parent().children().slice():1:-1.():[style().width=0px];():flight-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]",
-                            "actions": "wait():search:[update:flight-list]?search.collection=flight;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight=().search.data]?!data:().editor.flight"
+                            "event": "click?sidebar-open-manager:()=flight-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():review-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;1stChild().style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id];1stChild().style().color=#000];parent().parent().children().slice():1:-1.():[style().width=0px];():flight-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
                         }
                     ]
                 },
                 {
                     "controls": [
                         {
-                            "event": "click?sidebar-open-manager:()=hotel-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];if():open:[():hotels-btn.deepChildren().():[style().color=#000];1stChild():flight-btn.style().color=#888;style().borderRight=2px solid #000;deepChildren().():[style().color=#000];sidebar-item-open:()=().id];parent().parent().children().slice():1:-1.():[style().width=0px];():hotel-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.().[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]",
-                            "actions": "wait():search:[update:hotel-list]?search.collection=hotel;search.headers.project=project:();search.limit=25;wait():[data:().editor.hotel=().search.data]?!data:().editor.hotel"
+                            "event": "click?sidebar-open-manager:()=hotel-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];if():open:[():hotels-btn.deepChildren().():[style().color=#000];1stChild():flight-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;style().borderRight=2px solid #000;deepChildren().():[style().color=#000];sidebar-item-open:()=().id];parent().parent().children().slice():1:-1.():[style().width=0px];():hotel-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.().[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
                         }
                     ],
                     "type": "View?id=hotels-btn;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox;style.color=if():open:#000:#888;style.borderLeft=2px solid #ffffff00;style.borderRight=if():open:2px solid #000:2px solid #ffffff00",
@@ -95,7 +115,33 @@
                                     "type": "Icon?name=apartment;google;outlined;style.color=#999;style.fontSize=2.7rem;style.transition=.3s"
                                 }
                             ],
-                            "type": "View?class=flexbox pointer column;tooltip.text=hotels;style.fontSize=2rem;style.height=4.5rem;style.width=100%;style.position=relative?data:().editor.project.which-industry-will-you-be-operating-in=Travel & Tourism"
+                            "type": "View?class=flexbox pointer column;tooltip.text=hotels;style.fontSize=2rem;style.height=4.5rem;style.width=100%;style.position=relative"
+                        }
+                    ]
+                },
+                {
+                    "type": "View?id=accounting-btn;tooltip.text=accounting;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "children": [
+                        {
+                            "type": "Icon?class=flexbox;name=account_balance;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "click?sidebar-open-manager:()=accounting-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():store-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():flight-btn.style().color=#888;1stChild().style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id];1stChild().style().color=#000];parent().parent().children().slice():1:-1.():[style().width=0px];():accounting-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
+                        }
+                    ]
+                },
+                {
+                    "type": "View?id=review-btn;tooltip.text=reviews;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "children": [
+                        {
+                            "type": "Icon?class=flexbox;name=rate_review;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.5rem"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "click?sidebar-open-manager:()=review-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():store-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():flight-btn.style().color=#888;1stChild().style().color=#888;1stChild():accounting-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id];1stChild().style().color=#000];parent().parent().children().slice():1:-1.():[style().width=0px];():review-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
                         }
                     ]
                 },
@@ -103,17 +149,7 @@
                     "type": "Icon?id=view-storage-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-menu-button-wide-fill;tooltip.text=storage;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
                     "controls": [
                         {
-                            "event": "click?sidebar-open-manager:()=storage-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];():storage-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]",
-                            "actions": "wait():search:[update:storage-list]?search.collection=storage;search.headers.project=project:();wait():[data:().editor.storage=().search.data]?!data:().editor.storage"
-                        }
-                    ]
-                },
-                {
-                    "type": "Icon?id=review-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-chat-left-text;tooltip.text=reviews;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
-                    "controls": [
-                        {
-                            "event": "click?sidebar-open-manager:()=review-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];():review-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]",
-                            "actions": "wait():search:[update:review-list]?search.collection=review;search.headers.project=project:();wait():[data:().editor.review=().search.data]?!data:().editor.review"
+                            "event": "click?sidebar-open-manager:()=storage-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];():storage-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.():[style().display=flex];if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
                         }
                     ]
                 },
@@ -121,7 +157,7 @@
                     "type": "Icon?id=gallery-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-images;tooltip.text=gallery;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
                     "controls": [
                         {
-                            "event": "click?parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;if():open:[style().borderRight=2px solid #000;style().color=#000;sidebar-item-open:()=().id];parent().parent().children().slice():1:-1.():[style().width=0px];():gallery-view.style().display=if():open:grid:none;():data-viewer-bar.style().display=none;():open-view.className():data-viewer.():[style().display=none];():gallery-view.style().display=grid;style():[borderRight=2px solid #000;color=#000];open=true",
+                            "event": "click?parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;if():open:[style().borderRight=2px solid #000;style().color=#000;sidebar-item-open:()=().id];parent().parent().children().slice():1:-1.():[style().width=0px];():gallery-view.style().display=if():open:grid:none;():data-viewer-bar.style().display=none;():open-view.className():data-viewer.():[style().display=none];():gallery-view.style().display=grid;style():[borderRight=2px solid #000;color=#000];open=true",
                             "actions": "wait():search:[update:gallery-view]?search.collection=storage;search.headers.project=project:();search.field.title.equals=image;search.limit=25;wait():[gallery-images:()=().search.data.values()]?!gallery-images:()"
                         }
                     ]
@@ -133,8 +169,14 @@
             "type": "View?view=page-view-sidebar"
         },
         {
+            "type": "View?view=account-sidebar"
+        },
+        {
             "type": "View?view=collection-sidebar"
         },
+        {
+            "type": "View?view=store-sidebar"
+        }, 
         {
             "type": "View?view=flight-sidebar"
         },
@@ -142,14 +184,14 @@
             "type": "View?view=hotel-sidebar"
         },
         {
-            "type": "View?view=storage-sidebar"
+            "type": "View?view=accounting-sidebar"
         },
         {
             "type": "View?view=review-sidebar"
         },
         {
-            "type": "View?view=product-sidebar"
-        }, 
+            "type": "View?view=storage-sidebar"
+        },
         {
             "type": "View?id=sidebar-width-controller;style:[minHeight=100%;width=6px;backgroundColor=#34aeeb;cursor=ew-resize;position=absolute;right=0;top=0;zIndex=100;opacity=0;transition=.2s];mouseenter:[style().opacity=1];mouseleave:[style().opacity=0]",
             "controls": [

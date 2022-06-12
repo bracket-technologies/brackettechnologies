@@ -13,7 +13,7 @@ var getdb = async ({ req, res, db }) => {
   var search = params.search || {}
 
   var collection = search.collection
-  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   var doc = search.document || search.doc,
     docs = search.documents || search.docs,
@@ -193,7 +193,7 @@ var postdb = async ({ req, res, db }) => {
   var save = req.body.save || {}
 
   var collection = save.collection
-  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   var ref = db.collection(collection)
   var success, message, promises = [], project
@@ -234,7 +234,7 @@ var deletedb = async ({ req, res, db, storage }) => {
   var erase = params.erase || {}
 
   var collection = erase.collection
-  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   
   var ref = db.collection(collection)
   var success, message, promises = [], project

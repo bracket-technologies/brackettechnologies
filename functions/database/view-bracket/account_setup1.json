@@ -36,7 +36,7 @@
           "type": "View?class=flex column;style.gap=.5rem;style.width=100%;style.alignItems=flex-start;style.display=none",
           "children": [
             {
-              "type": "Text?text='In addition to your Shopify store, where else would you like to sell online?';style.fontSize=1.4rem"
+              "type": "Text?text='In addition to your store, where else would you like to sell online?';style.fontSize=1.4rem"
             },
             {
               "type": "Text?text='We'll pre-install these sales channels for you. You can always add more later.';style.color=#888;style.fontSize=1.4rem"
@@ -67,10 +67,10 @@
               "type": "View?class=flex align-center;style.gap=1rem;style.marginTop=1rem",
               "children": [
                 {
-                  "type": "Checkbox?path=sell-online-platforms.shopify-buy-btn"
+                  "type": "Checkbox?path=sell-online-platforms.bracket-buy-btn"
                 },
                 {
-                  "type": "Text?text=Shopify Buy Button;style.fontSize=1.4rem"
+                  "type": "Text?text=Bracket Buy Button;style.fontSize=1.4rem"
                 }
               ]
             },
@@ -97,7 +97,7 @@
           "type": "Input?path=what-is-your-current-revenue;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='What is your current revenue?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:'0$ (I'm just getting started)':'Up to 5,000$':'5,000$ to 50,000$':'50,000$ to 250,000$':'250,000$ to 1,000,000$':'1,000,000$+'"
         },
         {
-          "type": "Input?path=which-industry-will-you-be-operating-in;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='Which industry will you be operating in?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Beauty:Clothing:Electronics:Furniture:Handcrafts:Jewelry:Painting:Photography:Restaurants:Groceries:Other food & drink:Sports:Toys:Services:Virtual services:Other"
+          "type": "Input?path=which-industry-will-you-be-operating-in;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='Which industry will you be operating in?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Beauty:Clothing:Electronics:Furniture:Handcrafts:Jewelry:Painting:Photography:Restaurants:Groceries:Food & Beverages:Sports:Toys:Services:Virtual services:Travel & Tourism:Other"
         }
       ]
     },

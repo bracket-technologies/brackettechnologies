@@ -92,7 +92,7 @@
             },
             {
               "actions": [
-                "async():save:route?save.doc=Data().id;save.collection=_user_;save.data=Data();route.path=/login/+Data().id",
+                "async():save:route?save.doc=Data().id;save.collection=_account_;save.data=Data();route.path=/login/+Data().id",
                 "save?save.doc=Data().id;save.collection=_password_;save.data=_map:creation-date:[today().timestamp()]:user:[Data().id]:password:[)(:user-password]"
               ],
               "event": "click?)(:user-password=Data().password;Data().password.del();Data().confirm-password.del();Data().id=[Data().first-name+ +Data().last-name].toId();Data().projects=_array?)(:create-user"

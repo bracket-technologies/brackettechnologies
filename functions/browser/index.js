@@ -39,7 +39,7 @@ history.pushState(null, global.data.page[global.currentPage].title, global.path)
 document.addEventListener('click', e => {
 
     var global = window.global
-    global["clickedElement()"] = global["clicked"] = views[(e || window.event).target.id]
+    global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[(e || window.event).target.id]
     global.clickedElement = (e || window.event).target
 
     // droplist
@@ -283,7 +283,7 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": "click:body?style().border=if():[)(:clickedElement.outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[)(:clickedElement];!droplist.contains():[)(:clickedElement]"
+                "event": "click:body?style().border=if():[clicked:().outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked:()];!droplist.contains():[clicked:()]"
             }, {
                 "event": "click?getInput().focus()?!getInput().focus"
             }]
@@ -326,7 +326,7 @@ const Input = (component) => {
             "controls": [{
                 "event": `click:1stChild();click:2ndChild()?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
             }, {
-                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[)(:clickedElement];!droplist.contains():[)(:clickedElement]`
+                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
             }]
         }
     }
@@ -615,7 +615,7 @@ module.exports = (component) => {
         children: [{
             type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?!parent().isField",
             controls: [{
-                event: "click?().opened=1stChild().style().transform.inc():rotate(90deg);parent().children().pull():0.pullLast().():[style().display=if():[().opened]:none:flex];1stChild().style().transform=if():[().opened]:rotate(0deg):rotate(90deg);2ndLastChild().style().display=if():[().opened]:flex:none;lastSibling().style().display=if():[().opened]:none:flex;3rdLastChild().style().display=if():[().opened]:flex:none?)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
+                event: "click?().opened=1stChild().style().transform.inc():rotate(90deg);parent().children().pull():0.pullLast().():[style().display=if():[().opened]:none:flex];1stChild().style().transform=if():[().opened]:rotate(0deg):rotate(90deg);2ndLastChild().style().display=if():[().opened]:flex:none;lastSibling().style().display=if():[().opened]:none:flex;3rdLastChild().style().display=if():[().opened]:flex:none?clicked:().id!=2ndChild().id;clicked:().id!=3rdChild().id;clicked:().id!=lastChild().1stChild().id"
             }, {
                 event: "mouseenter?lastChild().style().opacity=1"
             }, {
@@ -640,7 +640,7 @@ module.exports = (component) => {
             children: [{
                 type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem",
                 controls: [{
-                    event: "click?next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():rotate(0deg)]:rotate(90deg):rotate(0deg);2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;3rdLastChild().style().display=if():[3rdLastChild().style().display=flex||data().len()=0]:none:flex;next().next().style().display=if():[next().next().style().display=flex]:none:flex?data().type()=array||data().type()=map;)(:clickedElement.id!=2ndChild().id;)(:clickedElement.id!=3rdChild().id;)(:clickedElement.id!=lastChild().1stChild().id"
+                    event: "click?next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():rotate(0deg)]:rotate(90deg):rotate(0deg);2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;3rdLastChild().style().display=if():[3rdLastChild().style().display=flex||data().len()=0]:none:flex;next().next().style().display=if():[next().next().style().display=flex]:none:flex?data().type()=array||data().type()=map;clicked:().id!=2ndChild().id;clicked:().id!=3rdChild().id;clicked:().id!=lastChild().1stChild().id"
                 }, {
                     event: "mouseenter?lastChild().style().opacity=1"
                 }, {
@@ -837,7 +837,7 @@ module.exports = ({ controls, id }) => {
     }, {
         "event": `click:${_id}?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().clicked.style._]]?!required.mount;!parent().required.mount;!clicked.disable`
     }, {
-        "event": "click:body?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().style._||null]]?!required.mount;!parent().required.mount;!clicked.disable;!element.contains():[)(:clickedElement];!():droplist.element.contains():[)(:clickedElement]"
+        "event": "click:body?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().style._||null]]?!required.mount;!parent().required.mount;!clicked.disable;!element.contains():[clicked:()];!():droplist.element.contains():[clicked:()]"
     }]
 }
 },{}],13:[function(require,module,exports){
@@ -871,10 +871,10 @@ module.exports = ({ controls, id }) => {
   window.views[id].droplist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?)(:droplist-search-txt.del();if():[getInput().txt()]:[)(:droplist-search-txt=getInput().txt()];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
+    event: `click?)(:droplist-search-txt.del();if():[input().txt()]:[)(:droplist-search-txt=input().txt()];clearTimer():[)(:droplist-timer];if():[)(:droplist-positioner!=${id}]:[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[)(:droplist-positioner=${id}]:[timer():[():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]:0]`,
     actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?)(:droplist-positioner!=().id`
   }, {
-    event: "input:input()?)(:droplist-search-txt=getInput().txt()?droplist.searchable",
+    event: "input:input()?)(:droplist-search-txt=input().txt()?input();droplist.searchable",
     actions: `droplist:${id};setPosition:droplist?)(:droplist-positioner=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
   }]
 }
@@ -1432,13 +1432,13 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     var currentPage = req.url.split("/")[1] || ""
     currentPage = currentPage || "main"
     
-    var user, page, view, project
+    var account, page, view, project
     
     // get assets & views
     var global = {
         timer: new Date().getTime(),
         data: {
-            user: {},
+            account: {},
             view: {},
             page: {},
             editor: {},
@@ -1490,18 +1490,14 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     console.log("before project", new Date().getTime() - global.timer);
     
     // get project
-    if (isBracket) global.data.project = project = Object.values(getJsonFiles({ search: { collection: "_project_", fields: { domains: { "array-contains": host } } } }))[0]    
-    else {
-        // get project data
-        project = db
-        .collection("_project_").where("domains", "array-contains", host)
-        .get().then(doc => {
+    project = db
+    .collection("_project_").where("domains", "array-contains", host)
+    .get().then(doc => {
 
-            if (doc.docs[0] && doc.docs[0].exists)
-            global.data.project = project = doc.docs[0].data()
-            console.log("after project", new Date().getTime() - global.timer);
-        })
-    }
+        if (doc.docs[0] && doc.docs[0].exists)
+        global.data.project = project = doc.docs[0].data()
+        console.log("after project", new Date().getTime() - global.timer);
+    })
 
     await Promise.resolve(project)
     
@@ -1510,28 +1506,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     global.projectId = project.id
     
     if (isBracket) {
-        
-        if (isBracket) {
-
-            console.log("before user", new Date().getTime() - global.timer);
-            global.data.user = user = Object.values(getJsonFiles({ search: { collection: "_user_", fields: { projects: { "array-contains": project.id } } } }))[0]
-            console.log("after user", new Date().getTime() - global.timer);
-
-        }/* else {
-
-            // get user (for bracket users only)
-            console.log("before user / firestore", new Date().getTime() - global.timer);
-
-            user = db
-            .collection("_user_").where("projects", "array-contains", project.id)
-            .get().then(doc => {
-                
-                if (doc.docs[0].exists)
-                global.data.user = user = doc.docs[0].data()
-                console.log("after user", new Date().getTime() - global.timer);
-            })
-        }*/
-        
 
         // get page
         console.log("before page", new Date().getTime() - global.timer);
@@ -1548,13 +1522,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         // do not send project details
         delete global.data.project
 
-        console.log("before user", new Date().getTime() - global.timer);
-
-        // do not send user details
-        console.log("after user", new Date().getTime() - global.timer);
-        
-        console.log("before page / firestore", new Date().getTime() - global.timer);
-
         // get page
         /*
         page = realtimedb.ref(`page-${project.id}`).once("value").then(snapshot => {
@@ -1562,6 +1529,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             console.log("after page", new Date().getTime() - global.timer);
         })
         */
+        console.log("before page / firestore", new Date().getTime() - global.timer);
+
         page = db
         .collection(`page-${project.id}`)
         .doc(currentPage)
@@ -1619,15 +1588,15 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     
     await Promise.resolve(page)
     await Promise.resolve(view)
-    await Promise.resolve(user)
+    await Promise.resolve(account)
     
     console.log("Document Ready.");
     // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
     // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
     
-    // user not found
-    if (!global.data.user) return res.send("User not found!")
-    user = global.data.user
+    // account not found
+    if (!global.data.account) return res.send("account not found!")
+    account = global.data.account
     
     // page doesnot exist
     if (!global.data.page[currentPage]) return res.send("Page not found!")
@@ -2308,7 +2277,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
         controls: [...(view.droplist.controls || []), {
           event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
-            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[input():${input_id}]:[():${input_id}.data()=txt().replace():'&amp;':'&';txt():${input_id}=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
+            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():${input_id}:[():${input_id}.data()=txt().replace():'&amp;':'&';txt():${input_id}=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
             `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
             `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
           ]
@@ -5041,7 +5010,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-
+            
             if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
             else __o = _o
 
@@ -7400,7 +7369,7 @@ module.exports = {
 
         var global = window.global
         var path = route.path || global.path
-        var currentPage = route.page || path.split("/")[1].split("?")[0] || "main"
+        var currentPage = route.page || path.split("/")[1] || "main"
         var title = route.title || global.data.page[currentPage].title
         
         if (!global.data.page[currentPage]) return

@@ -105,10 +105,10 @@
             {
               "children": [
                 {
-                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=First name;label.style.fontSize=1.4rem;path=business-owner-first-name;data=data:().editor.user.first-name"
+                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=First name;label.style.fontSize=1.4rem;path=business-owner-first-name;data=data:().editor.account.first-name"
                 },
                 {
-                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Last name;label.style.fontSize=1.4rem;path=business-owner-last-name;data=data:().editor.user.last-name"
+                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Last name;label.style.fontSize=1.4rem;path=business-owner-last-name;data=data:().editor.account.last-name"
                 }
               ],
               "type": "View?class=grid;style.gap=2rem;style.gridTemplateColumns=1fr 1fr;style.width=100%"

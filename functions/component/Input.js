@@ -106,7 +106,7 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": "click:body?style().border=if():[)(:clickedElement.outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[)(:clickedElement];!droplist.contains():[)(:clickedElement]"
+                "event": "click:body?style().border=if():[clicked:().outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked:()];!droplist.contains():[clicked:()]"
             }, {
                 "event": "click?getInput().focus()?!getInput().focus"
             }]
@@ -149,7 +149,7 @@ const Input = (component) => {
             "controls": [{
                 "event": `click:1stChild();click:2ndChild()?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
             }, {
-                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[)(:clickedElement];!droplist.contains():[)(:clickedElement]`
+                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
             }]
         }
     }

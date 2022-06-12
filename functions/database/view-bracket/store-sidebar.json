@@ -1,0 +1,582 @@
+{
+    "children": [
+        {
+            "children": [
+                {
+                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                },
+                {
+                    "type": "Text?class=dots;text=Products;style.fontSize=1.3rem"
+                },
+                {
+                    "type": "Icon?style.display=none;tooltip.text=create new product;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=product",
+                            "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                        }
+                    ]
+                }
+            ],
+            "type": "View?id=product;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "controls": [
+                {
+                    "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                    "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "actions": "wait():search:[update:product-list]?search.collection=product;search.headers.project=project:();search.limit=25;wait():[data:().editor.product=().search.data]?!data:().editor.product"
+                }
+            ]
+        },
+        {
+            "type": "View?id=product-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "children": [
+                {
+                    "type": "[View]?data=data:().editor.product.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.product.keys().len()>0||[!open-doc:();open-collection:()=product]",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                        },
+                        {
+                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.product.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                                },
+                                {
+                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.product.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
+                                    "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.product.keys().inc():txt()||!txt()||txt().inc(): "
+                                },
+                                {
+                                    "actions": [
+                                        "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                                        "wait():save:note:[update:product-list]?save.collection=product;save.doc=txt();save.data=data:().editor.product.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];duplicate-doc:().del()"
+                                    ],
+                                    "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.product.txt()=data:().editor.product.[open-doc:()||duplicate-doc:()].clone();data:().editor.product.[txt()].id=txt()]:[data:().editor.product.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.product.keys().inc():txt();!txt().inc(): "
+                                }
+                            ],
+                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=product;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                                }
+                            ],
+                            "type": "Icon?open-doc=data();open-collection=product;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                        },
+                        {
+                            "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                        },
+                        {
+                            "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.product.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                        },
+                        {
+                            "event": "click?open-doc:()=().data;open-collection:()=product;)(:open-map=data:().editor.product.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:()().id!=lastChild().id;open-docs:().inc():[product/+().data]"
+                        },
+                        {
+                            "event": "click?loader.show;open-doc:()=().data;open-docs:().push():[product/+open-doc:()];open-collection:()=product;)(:open-map=data:().editor.product.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[product/+().data]",
+                            "actions": [
+                                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=product/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "children": [
+                {
+                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                },
+                {
+                    "type": "Text?class=dots;text=Categories;style.fontSize=1.3rem"
+                },
+                {
+                    "type": "Icon?style.display=none;tooltip.text=create new category;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=category",
+                            "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                        }
+                    ]
+                }
+            ],
+            "type": "View?id=category;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "controls": [
+                {
+                    "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                    "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "actions": "wait():search:[update:category-list]?search.collection=category;search.headers.project=project:();search.limit=25;wait():[data:().editor.category=().search.data]?!data:().editor.category"
+                }
+            ]
+        },
+        {
+            "type": "View?id=category-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "children": [
+                {
+                    "type": "[View]?data=data:().editor.category.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.category.keys().len()>0||[!open-doc:();open-collection:()=category]",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                        },
+                        {
+                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.category.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                                },
+                                {
+                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.category.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
+                                    "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.category.keys().inc():txt()||!txt()||txt().inc(): "
+                                },
+                                {
+                                    "actions": [
+                                        "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                                        "wait():save:note:[update:category-list]?save.collection=category;save.doc=txt();save.data=data:().editor.category.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];duplicate-doc:().del()"
+                                    ],
+                                    "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.category.txt()=data:().editor.category.[open-doc:()||duplicate-doc:()].clone();data:().editor.category.[txt()].id=txt()]:[data:().editor.category.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.category.keys().inc():txt();!txt().inc(): "
+                                }
+                            ],
+                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=category;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                                }
+                            ],
+                            "type": "Icon?open-doc=data();open-collection=category;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                        },
+                        {
+                            "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                        },
+                        {
+                            "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.category.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                        },
+                        {
+                            "event": "click?open-doc:()=().data;open-collection:()=category;)(:open-map=data:().editor.category.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:()().id!=lastChild().id;open-docs:().inc():[category/+().data]"
+                        },
+                        {
+                            "event": "click?loader.show;open-doc:()=().data;open-docs:().push():[category/+open-doc:()];open-collection:()=category;)(:open-map=data:().editor.category.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[category/+().data]",
+                            "actions": [
+                                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=category/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "children": [
+                {
+                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                },
+                {
+                    "type": "Text?class=dots;text=Orders;style.fontSize=1.3rem"
+                },
+                {
+                    "type": "Icon?style.display=none;tooltip.text=create new order;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=order",
+                            "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                        }
+                    ]
+                }
+            ],
+            "type": "View?id=order;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "controls": [
+                {
+                    "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                    "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "actions": "wait():search:[update:order-list]?search.collection=order;search.headers.project=project:();search.limit=25;wait():[data:().editor.order=().search.data]?!data:().editor.order"
+                }
+            ]
+        },
+        {
+            "type": "View?id=order-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "children": [
+                {
+                    "type": "[View]?data=data:().editor.order.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.order.keys().len()>0||[!open-doc:();open-collection:()=order]",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                        },
+                        {
+                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.order.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                                },
+                                {
+                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.order.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
+                                    "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.order.keys().inc():txt()||!txt()||txt().inc(): "
+                                },
+                                {
+                                    "actions": [
+                                        "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                                        "wait():save:note:[update:order-list]?save.collection=order;save.doc=txt();save.data=data:().editor.order.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];duplicate-doc:().del()"
+                                    ],
+                                    "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.order.txt()=data:().editor.order.[open-doc:()||duplicate-doc:()].clone();data:().editor.order.[txt()].id=txt()]:[data:().editor.order.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.order.keys().inc():txt();!txt().inc(): "
+                                }
+                            ],
+                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=order;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                                }
+                            ],
+                            "type": "Icon?open-doc=data();open-collection=order;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                        },
+                        {
+                            "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                        },
+                        {
+                            "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.order.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                        },
+                        {
+                            "event": "click?open-doc:()=().data;open-collection:()=order;)(:open-map=data:().editor.order.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:()().id!=lastChild().id;open-docs:().inc():[order/+().data]"
+                        },
+                        {
+                            "event": "click?loader.show;open-doc:()=().data;open-docs:().push():[order/+open-doc:()];open-collection:()=order;)(:open-map=data:().editor.order.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[order/+().data]",
+                            "actions": [
+                                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=order/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "children": [
+                {
+                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                },
+                {
+                    "type": "Text?class=dots;text=Deliveries;style.fontSize=1.3rem"
+                },
+                {
+                    "type": "Icon?style.display=none;tooltip.text=create new delivery;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=delivery",
+                            "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                        }
+                    ]
+                }
+            ],
+            "type": "View?id=delivery;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "controls": [
+                {
+                    "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                    "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "actions": "wait():search:[update:delivery-list]?search.collection=delivery;search.headers.project=project:();search.limit=25;wait():[data:().editor.delivery=().search.data]?!data:().editor.delivery"
+                }
+            ]
+        },
+        {
+            "type": "View?id=delivery-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "children": [
+                {
+                    "type": "[View]?data=data:().editor.delivery.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.delivery.keys().len()>0||[!open-doc:();open-collection:()=delivery]",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                        },
+                        {
+                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.delivery.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                                },
+                                {
+                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.delivery.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
+                                    "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.delivery.keys().inc():txt()||!txt()||txt().inc(): "
+                                },
+                                {
+                                    "actions": [
+                                        "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                                        "wait():save:note:[update:delivery-list]?save.collection=delivery;save.doc=txt();save.data=data:().editor.delivery.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];duplicate-doc:().del()"
+                                    ],
+                                    "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.delivery.txt()=data:().editor.delivery.[open-doc:()||duplicate-doc:()].clone();data:().editor.delivery.[txt()].id=txt()]:[data:().editor.delivery.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.delivery.keys().inc():txt();!txt().inc(): "
+                                }
+                            ],
+                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=delivery;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                                }
+                            ],
+                            "type": "Icon?open-doc=data();open-collection=delivery;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                        },
+                        {
+                            "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                        },
+                        {
+                            "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.delivery.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                        },
+                        {
+                            "event": "click?open-doc:()=().data;open-collection:()=delivery;)(:open-map=data:().editor.delivery.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:()().id!=lastChild().id;open-docs:().inc():[delivery/+().data]"
+                        },
+                        {
+                            "event": "click?loader.show;open-doc:()=().data;open-docs:().push():[delivery/+open-doc:()];open-collection:()=delivery;)(:open-map=data:().editor.delivery.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[delivery/+().data]",
+                            "actions": [
+                                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=delivery/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "children": [
+                {
+                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                },
+                {
+                    "type": "Text?class=dots;text=Canceled Order;style.fontSize=1.3rem"
+                },
+                {
+                    "type": "Icon?style.display=none;tooltip.text=create new canceled order;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=canceled-order",
+                            "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                        }
+                    ]
+                }
+            ],
+            "type": "View?id=canceled-order;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "controls": [
+                {
+                    "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                    "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "actions": "wait():search:[update:canceled-order-list]?search.collection=canceled-order;search.headers.project=project:();search.limit=25;wait():[data:().editor.canceled-order=().search.data]?!data:().editor.canceled-order"
+                }
+            ]
+        },
+        {
+            "type": "View?id=canceled-order-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "children": [
+                {
+                    "type": "[View]?data=data:().editor.canceled-order.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.canceled-order.keys().len()>0||[!open-doc:();open-collection:()=canceled-order]",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                        },
+                        {
+                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.canceled-order.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                                },
+                                {
+                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.canceled-order.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
+                                    "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.canceled-order.keys().inc():txt()||!txt()||txt().inc(): "
+                                },
+                                {
+                                    "actions": [
+                                        "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                                        "wait():save:note:[update:canceled-order-list]?save.collection=canceled-order;save.doc=txt();save.data=data:().editor.canceled-order.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];duplicate-doc:().del()"
+                                    ],
+                                    "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.canceled-order.txt()=data:().editor.canceled-order.[open-doc:()||duplicate-doc:()].clone();data:().editor.canceled-order.[txt()].id=txt()]:[data:().editor.canceled-order.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.canceled-order.keys().inc():txt();!txt().inc(): "
+                                }
+                            ],
+                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;bcanceled-order=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=canceled-order;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                                }
+                            ],
+                            "type": "Icon?open-doc=data();open-collection=canceled-order;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                        },
+                        {
+                            "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                        },
+                        {
+                            "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.canceled-order.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                        },
+                        {
+                            "event": "click?open-doc:()=().data;open-collection:()=canceled-order;)(:open-map=data:().editor.canceled-order.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:()().id!=lastChild().id;open-docs:().inc():[canceled-order/+().data]"
+                        },
+                        {
+                            "event": "click?loader.show;open-doc:()=().data;open-docs:().push():[canceled-order/+open-doc:()];open-collection:()=canceled-order;)(:open-map=data:().editor.canceled-order.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[canceled-order/+().data]",
+                            "actions": [
+                                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=canceled-order/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "children": [
+                {
+                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                },
+                {
+                    "type": "Text?class=dots;text=Canceled Deliveries;style.fontSize=1.3rem"
+                },
+                {
+                    "type": "Icon?style.display=none;tooltip.text=create new canceled delivery;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=canceled-delivery",
+                            "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                        }
+                    ]
+                }
+            ],
+            "type": "View?id=canceled-delivery;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "controls": [
+                {
+                    "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                    "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "actions": "wait():search:[update:canceled-delivery-list]?search.collection=canceled-delivery;search.headers.project=project:();search.limit=25;wait():[data:().editor.canceled-delivery=().search.data]?!data:().editor.canceled-delivery"
+                }
+            ]
+        },
+        {
+            "type": "View?id=canceled-delivery-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "children": [
+                {
+                    "type": "[View]?data=data:().editor.canceled-delivery.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.canceled-delivery.keys().len()>0||[!open-doc:();open-collection:()=canceled-delivery]",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                        },
+                        {
+                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.canceled-delivery.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                                },
+                                {
+                                    "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.canceled-delivery.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
+                                    "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.canceled-delivery.keys().inc():txt()||!txt()||txt().inc(): "
+                                },
+                                {
+                                    "actions": [
+                                        "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                                        "wait():save:note:[update:canceled-delivery-list]?save.collection=canceled-delivery;save.doc=txt();save.data=data:().editor.canceled-delivery.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];duplicate-doc:().del()"
+                                    ],
+                                    "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.canceled-delivery.txt()=data:().editor.canceled-delivery.[open-doc:()||duplicate-doc:()].clone();data:().editor.canceled-delivery.[txt()].id=txt()]:[data:().editor.canceled-delivery.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.canceled-delivery.keys().inc():txt();!txt().inc(): "
+                                }
+                            ],
+                            "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;bcanceled-delivery=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=canceled-delivery;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                                }
+                            ],
+                            "type": "Icon?open-doc=data();open-collection=canceled-delivery;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                        },
+                        {
+                            "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                        },
+                        {
+                            "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.canceled-delivery.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                        },
+                        {
+                            "event": "click?open-doc:()=().data;open-collection:()=canceled-delivery;)(:open-map=data:().editor.canceled-delivery.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:()().id!=lastChild().id;open-docs:().inc():[canceled-delivery/+().data]"
+                        },
+                        {
+                            "event": "click?loader.show;open-doc:()=().data;open-docs:().push():[canceled-delivery/+open-doc:()];open-collection:()=canceled-delivery;)(:open-map=data:().editor.canceled-delivery.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[canceled-delivery/+().data]",
+                            "actions": [
+                                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=canceled-delivery/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "creation-date": 1643562122803,
+    "type": "View?id=store-sidebar;class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0px;style.zIndex=2"
+}

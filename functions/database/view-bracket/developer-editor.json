@@ -1,12 +1,12 @@
 {
-  "type": "View?id=developer-editor;style.overflowX=hidden;style.minHeight=100vh;mode.dark.style.backgroundColor=#131313;project:()=path:().split():/.2;)(:access-key=getCookie():_key;if():[project:()=bracket]:[data:().editor.page=data:().page;data:().editor.view=data:().view]",
+  "type": "View?id=developer-editor;style.overflowX=hidden;style.minHeight=100vh;mode.dark.style.backgroundColor=#131313;project:()=path:().split():/.2;)(:access-key=getCookie():_key;if():[project:()=bracket]:[data:().editor=data:().clone()]:[data:().editor=_map]",
   "controls": [
     {
       "actions": [
-        "wait():search:[update:user-file]?search.collection=_user_;search.field.projects.contains=project:();search.headers.project=project:();wait():[data:().editor.user=().search.data.value()]?!data:().editor.user",
+        "wait():search:[update:user-file]?search.collection=_account_;search.field.projects.contains=project:();search.headers.project=project:();wait():[data:().editor.account=().search.data.value()]?!data:().editor.account",
         "wait():search:[update:project-file:0]:[update:sidebar-items]?search.collection=_project_;search.doc=project:();search.headers.project=project:();wait():[data:().editor.project=().search.data;loader.hide]?!data:().editor.project"
       ],
-      "event": "loaded?loader.show"
+      "event": "loaded?loader.show?!data:().editor.account||!data:().editor.project"
     }
   ],
   "creation-date": 1637494484000,
@@ -88,25 +88,24 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #ddd;style.borderLeft=1px solid #ddd;droplist.items=data:().editor.user.project;droplist.readonly",
+                  "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #ddd;style.borderLeft=1px solid #ddd;style.transition=.2s;droplist.items='data:().editor.account.projects';droplist.preventDefault",
                   "children": [
                     {
-                      "type": "Text?text=Project;style.fontSize=1.5rem;style.marginRight=.5rem;style.color=#888"
+                      "type": "Text?text=project;style.fontSize=1.5rem;style.marginRight=.5rem;style.color=#888"
                     },
                     {
                       "type": "Text?text=:;style.marginRight=1rem;style.fontSize=1.5rem"
                     },
                     {
-                      "type": "Text?text=project:();style.fontSize=1.5rem;style.marginRight=.75rem"
+                      "type": "Text?text=project:();style.fontSize=1.5rem"
                     },
                     {
-                      "type": "Icon?name=arrow_drop_down;google.rounded;style.fontSize=1.1rem;style.transition=transform .2s;style.transform=rotate(0deg)"
+                      "type": "Icon?name=arrow_drop_down;google.rounded;style.fontSize=3rem"
                     }
                   ],
                   "controls": [
                     {
-                      "event": "click?droplist()?project:()!=txt()",
-                      "actions": "route?route.project=/developer-editor/+txt()"
+                      "event": "click:droplist?route():[path=/developer-editor/+clicked:().txt()]?project:()!=clicked:().txt()"
                     }
                   ]
                 },
@@ -203,10 +202,10 @@
                   ],
                   "controls": [
                     {
-                      "event": "click?if():[]:[];parent().children().():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=().open-doc;open-collection=().open-collection]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;)(:open-map=_.data()]?)(:clickedElement().id!=lastChild().id"
+                      "event": "click?if():[]:[];parent().children().():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=().open-doc;open-collection=().open-collection]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;)(:open-map=_.data()]?clicked:()().id!=lastChild().id"
                     },
                     {
-                      "event": "mousedown:window?e().preventDefault();lastChild().click()?e().button=1||e().buttons=4;contains():[)(:clickedElement]"
+                      "event": "mousedown:window?e().preventDefault();lastChild().click()?e().button=1||e().buttons=4;contains():[e().target]"
                     }
                   ]
                 }
@@ -251,7 +250,7 @@
               "event": "click?():[parent().caller].prev().prev().style().display=none;():[parent().caller].prev().style().display=flex;():[parent().caller].prev().focus();parent().style():[opacity=0;pointerEvents=none;transform=scale(0)]"
             },
             {
-              "event": "click:body?():[parent().caller].prev().txt()=open-doc:();():[parent().caller].prev().style().display=none;():[parent().caller].prev().prev().style().display=flex?)(:clickedElement!=el();)(:clickedElement.id!=[():[parent().caller].prev().id];():[parent().caller].prev().style().display=flex"
+              "event": "click:body?():[parent().caller].prev().txt()=open-doc:();():[parent().caller].prev().style().display=none;():[parent().caller].prev().prev().style().display=flex?clicked:()!=el();clicked:().id!=[():[parent().caller].prev().id];():[parent().caller].prev().style().display=flex"
             }
           ],
           "type": "Icon?class=pointer;tooltip.text=rename;name=bi-input-cursor-text;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#f0f0f0"

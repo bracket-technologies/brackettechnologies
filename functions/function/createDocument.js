@@ -12,13 +12,13 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     var currentPage = req.url.split("/")[1] || ""
     currentPage = currentPage || "main"
     
-    var user, page, view, project
+    var account, page, view, project
     
     // get assets & views
     var global = {
         timer: new Date().getTime(),
         data: {
-            user: {},
+            account: {},
             view: {},
             page: {},
             editor: {},
@@ -70,18 +70,14 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     console.log("before project", new Date().getTime() - global.timer);
     
     // get project
-    if (isBracket) global.data.project = project = Object.values(getJsonFiles({ search: { collection: "_project_", fields: { domains: { "array-contains": host } } } }))[0]    
-    else {
-        // get project data
-        project = db
-        .collection("_project_").where("domains", "array-contains", host)
-        .get().then(doc => {
+    project = db
+    .collection("_project_").where("domains", "array-contains", host)
+    .get().then(doc => {
 
-            if (doc.docs[0] && doc.docs[0].exists)
-            global.data.project = project = doc.docs[0].data()
-            console.log("after project", new Date().getTime() - global.timer);
-        })
-    }
+        if (doc.docs[0] && doc.docs[0].exists)
+        global.data.project = project = doc.docs[0].data()
+        console.log("after project", new Date().getTime() - global.timer);
+    })
 
     await Promise.resolve(project)
     
@@ -90,28 +86,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     global.projectId = project.id
     
     if (isBracket) {
-        
-        if (isBracket) {
-
-            console.log("before user", new Date().getTime() - global.timer);
-            global.data.user = user = Object.values(getJsonFiles({ search: { collection: "_user_", fields: { projects: { "array-contains": project.id } } } }))[0]
-            console.log("after user", new Date().getTime() - global.timer);
-
-        }/* else {
-
-            // get user (for bracket users only)
-            console.log("before user / firestore", new Date().getTime() - global.timer);
-
-            user = db
-            .collection("_user_").where("projects", "array-contains", project.id)
-            .get().then(doc => {
-                
-                if (doc.docs[0].exists)
-                global.data.user = user = doc.docs[0].data()
-                console.log("after user", new Date().getTime() - global.timer);
-            })
-        }*/
-        
 
         // get page
         console.log("before page", new Date().getTime() - global.timer);
@@ -128,13 +102,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         // do not send project details
         delete global.data.project
 
-        console.log("before user", new Date().getTime() - global.timer);
-
-        // do not send user details
-        console.log("after user", new Date().getTime() - global.timer);
-        
-        console.log("before page / firestore", new Date().getTime() - global.timer);
-
         // get page
         /*
         page = realtimedb.ref(`page-${project.id}`).once("value").then(snapshot => {
@@ -142,6 +109,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             console.log("after page", new Date().getTime() - global.timer);
         })
         */
+        console.log("before page / firestore", new Date().getTime() - global.timer);
+
         page = db
         .collection(`page-${project.id}`)
         .doc(currentPage)
@@ -199,15 +168,15 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     
     await Promise.resolve(page)
     await Promise.resolve(view)
-    await Promise.resolve(user)
+    await Promise.resolve(account)
     
     console.log("Document Ready.");
     // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
     // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
     
-    // user not found
-    if (!global.data.user) return res.send("User not found!")
-    user = global.data.user
+    // account not found
+    if (!global.data.account) return res.send("account not found!")
+    account = global.data.account
     
     // page doesnot exist
     if (!global.data.page[currentPage]) return res.send("Page not found!")

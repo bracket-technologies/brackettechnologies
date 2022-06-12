@@ -20,7 +20,7 @@ var getdb = async ({ req, res }) => {
   */
   
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   // string => search
   var string = decodeURI(req.headers.search), params = {}
@@ -64,7 +64,7 @@ var postdb = async ({ req, res }) => {
 
   var data = req.body.data
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   var save = req.body.save
   var success, message
 
@@ -81,7 +81,7 @@ var postdb = async ({ req, res }) => {
 var deletedb = async ({ req, res }) => {
 
   var collection = req.url.split("/")[2]
-  if (collection !== "_user_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   if (string) params = toParam({ _window, string, id: "" })
