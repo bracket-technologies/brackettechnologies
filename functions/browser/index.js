@@ -77,6 +77,14 @@ document.addEventListener("mouseup", (e) => {
     Object.values(window.global["body-mouseup-events"]).flat().map(o => bodyEventListener(o, e))
 })
 
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey) global.ctrlKey = true
+})
+
+document.addEventListener('keyup', e => {
+    if (!e.ctrlKey) global.ctrlKey = false
+})
+
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))
@@ -213,12 +221,14 @@ const Input = (component) => {
     component = toComponent(component)
 
     var { id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
-        placeholder, textarea, clearable, removable, day, disabled, label, password, copyable,
-        duplicatable, lang, unit, currency, google, key, minlength , children, container
+        placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
+        duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
+
     } = component
     
     if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
     if (clearable && typeof clearable !== "object") clearable = {}
+    if (generator && typeof generator !== "object") component.generator = generator = {}
 
     readonly = readonly ? true : false
     removable = removable !== undefined ? (removable === false ? false : true) : false
@@ -266,7 +276,7 @@ const Input = (component) => {
                     "controls": [{
                         "event": "click?next().getInput().focus()"
                     }]
-                }, Input({ ...component, component: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
+                }, Input({ ...component, component: true, labeled: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
                 ]
             }, {
                 "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${toString(password)}?${password}`,
@@ -314,7 +324,7 @@ const Input = (component) => {
             "children": [{
                 "type": `Text?id=${id}-label;text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
-                Input({ ...component, component: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
+                Input({ ...component, component: true, labeled: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
                 "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
                 "children": [{
@@ -331,7 +341,7 @@ const Input = (component) => {
         }
     }
 
-    if (model === 'featured' || password || clearable || removable || copyable) {
+    if (model === 'featured' || password || clearable || removable || copyable || generator) {
         
         return {
             ...component,
@@ -339,9 +349,9 @@ const Input = (component) => {
             class: 'flex-box unselectable',
             // remove from comp
             controls: [{
-                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1]`
+                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]`
             }, {
-                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0]`
+                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():generator:[():[${id}+'-generate'].style().opacity=0]`
             }],
             style: {
                 cursor: readonly ? "pointer" : "auto",
@@ -382,6 +392,7 @@ const Input = (component) => {
                 duration,
                 textarea,
                 readonly,
+                labeled,
                 placeholder,
                 duplicated,
                 disabled,
@@ -397,7 +408,7 @@ const Input = (component) => {
                     }
                 },
                 style: {
-                    width: password || clearable || removable || copyable ? "100%" : "fit-content",
+                    width: password || clearable || removable || copyable || generator ? "100%" : "fit-content",
                     height: 'fit-content',
                     borderRadius: style.borderRadius || '0.25rem',
                     backgroundColor: style.backgroundColor || 'inherit',
@@ -418,9 +429,11 @@ const Input = (component) => {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
             }, {
-                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
+                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();():${id}-input.txt()=;():${id}-input.focus()].elif():[parent().clearable]:[():${id}-input.focus()].elif():[parent().removable;!():${id}-input.txt();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
             }, {
-                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-input.val()]:[prev().data().copyToClipBoard();prev().focus()]];mininote.text='copied!'?parent().copyable`,
+                type: `Text?class=pointer;id=${id}+-generate;text=ID;style:[position=absolute;color=blue;right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
+            }, {
+                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
@@ -678,8 +691,12 @@ module.exports = (component) => {
                         children: [{
                             type: "Input?mode.dark.style.color=#c39178;if():[derivations().lastElement()=id]:[input.readonly=true];style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#a35521",
                             controls: [{
-                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter",
-                                actions: "async():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index;async():[().insert.view.getInput().focus()]"
+                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;!ctrlKey:()",
+                                actions: "wait():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index;wait():[().insert.view.getInput().focus()]"
+                            },
+                            {
+                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().parent().parent().parent().id]+1;parent().parent().parent().parent().parent().parent().parent().parent().data().splice():[if():[derivations().lastEl()=type]:[_map:type:_string].elif():[derivations().lastEl()=event||derivations().lastEl()=actions]:[_map:event:_string]]:[)(:insert-index];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().parent().parent().parent().data().len()+1]]:[parent().parent().parent().parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;ctrlKey:();derivations().lastEl()=type||derivations().lastEl()=event||derivations().lastEl()=actions",
+                                actions: "wait():[insert:[parent().parent().parent().parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().parent().parent().parent().children.1;insert.path=parent().parent().parent().parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index];insert.index=)(:insert-index;wait():[().insert.view.inputs().1.focus()]"
                             }]
                         }]
                     }]
@@ -4203,8 +4220,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             path0 = "doc()"
 
         } else {
+
+            if (path0 !== "txt()" || path0 !== "val()") {
+
+                if (view.labeled) path = ["parent()", "parent()", ...path]
+                else if (view.templated || view.link) path.unshift("parent()")
+            }
             path.unshift("()")
             path0 = "()"
+        }
+    }
+
+    if (path[0] === "()" && path[1] && !path[1].includes("()")) {
+        if (path[1] !== "txt()" || path[1] !== "val()") {
+            
+            if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
+            else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
         }
     }
     
@@ -4532,7 +4563,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             if (!_parent) return
 
-            if (_parent.templated || _parent.link) return views[_parent.element.parentNode.id]
+            // if (_parent.templated || view.link || _parent.link) return views[_parent.element.parentNode.id]
             else return _parent
             
         } else if (k0 === "siblings()") {
@@ -4571,7 +4602,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[_o.parent].element
+            // if (_o.templated || _o.link) element = views[_o.parent].element
             
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
@@ -4590,7 +4621,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[_o.parent].element
+            // if (_o.templated || _o.link) element = views[_o.parent].element
             
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
@@ -4612,7 +4643,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var nextSiblings = [], nextSibling
             var element = _o.element
-            if (_o.templated || _o.link) element = views[_o.parent].element
+            // if (_o.templated || _o.link) element = views[_o.parent].element
 
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
@@ -4635,7 +4666,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var lastSibling = element.parentNode.children[element.parentNode.children.length - 1]
             var _id = lastSibling.id
             answer = views[_id]
@@ -4652,7 +4683,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var seclastSibling = element.parentNode.children[element.parentNode.children.length - 2]
             var _id = seclastSibling.id
             answer = views[_id]
@@ -4669,7 +4700,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var thirdlastSibling = element.parentNode.children[element.parentNode.children.length - 3]
             var _id = thirdlastSibling.id
             answer = views[_id]
@@ -4686,7 +4717,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var firstSibling = element.parentNode.children[0]
             var _id = firstSibling.id
             answer = views[_id]
@@ -4703,7 +4734,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var secondSibling = element.parentNode.children[1]
             var _id = secondSibling.id
             answer = views[_id]
@@ -4720,7 +4751,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element, _el = _o.element
-            if (_o.templated || _o.link) _el = views[_o.parent]
+            // if (_o.templated || _o.link) _el = views[_o.parent]
             
             if (!_el) return
             if (_el.nodeType === Node.ELEMENT_NODE) element = _el
@@ -5867,13 +5898,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) el = views[_o].element
             else if (_o.nodeType === Node.ELEMENT_NODE) el = _o
             else if (_o.element) el = _o.element
+
+            if ((view.templated || view.labeled) && el) if (views[el.id].type !== "Input") el = el.getElementsByTagName("INPUT")[0]
             
             if (el) {
                 if (window.views[el.id].type === "Input") {
 
                     answer = el.value
-                    if (i === lastIndex && key && value !== undefined) el.value = value
-
+                    if (i === lastIndex && key && value !== undefined && o.element) answer = el.value = value
+                    
                 } else {
 
                     answer = el.innerHTML
@@ -8526,9 +8559,7 @@ module.exports = {
     // linkable
     if (view.link) {
 
-      var id = generate(), style = ''
-      var _view = views[id]
-      views[id] = {}
+      var id = generate(), style = '', _view
 
       _view = { id, parent: view.id }
       _view.style = view.link.style

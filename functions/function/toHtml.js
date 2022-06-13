@@ -91,9 +91,7 @@ module.exports = {
     // linkable
     if (view.link) {
 
-      var id = generate(), style = ''
-      var _view = views[id]
-      views[id] = {}
+      var id = generate(), style = '', _view
 
       _view = { id, parent: view.id }
       _view.style = view.link.style

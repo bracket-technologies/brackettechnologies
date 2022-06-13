@@ -76,6 +76,14 @@ document.addEventListener("mouseup", (e) => {
     Object.values(window.global["body-mouseup-events"]).flat().map(o => bodyEventListener(o, e))
 })
 
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey) global.ctrlKey = true
+})
+
+document.addEventListener('keyup', e => {
+    if (!e.ctrlKey) global.ctrlKey = false
+})
+
 // default global mode
 global.mode = global["default-mode"] = global["default-mode"] || "Light"
 global.idList.map(id => setElement({ id }))

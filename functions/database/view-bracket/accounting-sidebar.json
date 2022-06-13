@@ -80,7 +80,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.expense.txt()=data:().editor.expense.[open-doc:()||duplicate-doc:()].clone();data:().editor.expense.[txt()].id=txt()]:[data:().editor.expense.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.expense.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -176,7 +176,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.purchase.txt()=data:().editor.purchase.[open-doc:()||duplicate-doc:()].clone();data:().editor.purchase.[txt()].id=txt()]:[data:().editor.purchase.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.purchase.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -272,7 +272,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.payment.txt()=data:().editor.payment.[open-doc:()||duplicate-doc:()].clone();data:().editor.payment.[txt()].id=txt()]:[data:().editor.payment.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.payment.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -368,7 +368,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.payment-return.txt()=data:().editor.payment-return.[open-doc:()||duplicate-doc:()].clone();data:().editor.payment-return.[txt()].id=txt()]:[data:().editor.payment-return.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.payment-return.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -430,19 +430,19 @@
                             "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                         },
                         {
-                            "type": "Text?class=dots;text=Quotes;style.fontSize=1.3rem"
+                            "type": "Text?class=dots;text=Draft Invoices;style.fontSize=1.3rem"
                         },
                         {
-                            "type": "Icon?style.display=none;tooltip.text=create new quote;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                            "type": "Icon?style.display=none;tooltip.text=create new draft invoice;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                             "controls": [
                                 {
-                                    "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=quote",
+                                    "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=draft-invoice",
                                     "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
                                 }
                             ]
                         }
                     ],
-                    "type": "View?id=quote;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+                    "type": "View?id=draft-invoice;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
                     "controls": [
                         {
                             "event": "mouseenter?lastChild().style().display=flex"
@@ -452,15 +452,15 @@
                         },
                         {
                             "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                            "actions": "wait():search:[update:quote-list]?search.collection=quote;search.headers.project=project:();wait():[data:().editor.quote=().search.data]?!data:().editor.quote"
+                            "actions": "wait():search:[update:draft-invoice-list]?search.collection=draft-invoice;search.headers.project=project:();wait():[data:().editor.draft-invoice=().search.data]?!data:().editor.draft-invoice"
                         }
                     ]
                 },
                 {
-                    "type": "View?id=quote-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+                    "type": "View?id=draft-invoice-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
                     "children": [
                         {
-                            "type": "[View]?data=data:().editor.quote.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.quote.keys().len()>0||[!open-doc:();open-collection:()=quote]",
+                            "type": "[View]?data=data:().editor.draft-invoice.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.draft-invoice.keys().len()>0||[!open-doc:();open-collection:()=draft-invoice]",
                             "children": [
                                 {
                                     "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
@@ -471,29 +471,29 @@
                                 {
                                     "controls": [
                                         {
-                                            "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.quote.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                                            "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.draft-invoice.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                         },
                                         {
-                                            "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.quote.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
-                                            "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.quote.keys().inc():txt()||!txt()||txt().inc(): "
+                                            "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.draft-invoice.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
+                                            "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.draft-invoice.keys().inc():txt()||!txt()||txt().inc(): "
                                         },
                                         {
                                             "actions": [
                                                 "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
-                                                "wait():save:save:note:[update:quote-list]?save.collection=quote;save.doc=txt();save.data=data:().editor.quote.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];wait():[data:().editor.project.quotes=data:().editor.project.quotes||_list;if():[open-doc:()]:[data:().editor.project.quotes.pullItem():[open-doc:()]];data:().editor.project.quotes.push():txt();duplicate-doc:().del();save.collection=_project_;save.doc=project:();save.data=data:().editor.project;save.headers.project=project:()]"
+                                                "wait():save:save:note:[update:draft-invoice-list]?save.collection=draft-invoice;save.doc=txt();save.data=data:().editor.draft-invoice.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];wait():[data:().editor.project.draft-invoices=data:().editor.project.draft-invoices||_list;if():[open-doc:()]:[data:().editor.project.draft-invoices.pullItem():[open-doc:()]];data:().editor.project.draft-invoices.push():txt();duplicate-doc:().del();save.collection=_project_;save.doc=project:();save.data=data:().editor.project;save.headers.project=project:()]"
                                             ],
-                                            "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.quote.txt()=data:().editor.quote.[open-doc:()||duplicate-doc:()].clone();data:().editor.quote.[txt()].id=txt()]:[data:().editor.quote.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.quote.keys().inc():txt();!txt().inc(): "
+                                            "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.draft-invoice.txt()=data:().editor.draft-invoice.[open-doc:()||duplicate-doc:()].clone();data:().editor.draft-invoice.[txt()].id=txt()]:[data:().editor.draft-invoice.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.draft-invoice.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
                                         {
-                                            "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=quote;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                                            "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=draft-invoice;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                                         }
                                     ],
-                                    "type": "Icon?open-doc=data();open-collection=quote;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                                    "type": "Icon?open-doc=data();open-collection=draft-invoice;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
                                 }
                             ],
                             "controls": [
@@ -504,15 +504,15 @@
                                     "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                                 },
                                 {
-                                    "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.quote.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                                    "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.draft-invoice.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
                                 },
                                 {
-                                    "event": "click?open-doc:()=().data;open-collection:()=quote;)(:open-map=data:().editor.quote.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:()().id!=lastChild().id;open-docs:().inc():[quote/+().data]"
+                                    "event": "click?open-doc:()=().data;open-collection:()=draft-invoice;)(:open-map=data:().editor.draft-invoice.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];():open-view.className():data-viewer.():[style().display=none];():open-view.className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:()().id!=lastChild().id;open-docs:().inc():[draft-invoice/+().data]"
                                 },
                                 {
-                                    "event": "click?loader.show;open-doc:()=().data;open-docs:().push():[quote/+open-doc:()];open-collection:()=quote;)(:open-map=data:().editor.quote.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[quote/+().data]",
+                                    "event": "click?loader.show;open-doc:()=().data;open-docs:().push():[draft-invoice/+open-doc:()];open-collection:()=draft-invoice;)(:open-map=data:().editor.draft-invoice.[open-doc:()];():data-viewer-bar.style().display=flex;():open-view.className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[draft-invoice/+().data]",
                                     "actions": [
-                                        "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=quote/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                                        "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=draft-invoice/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
                                         "wait():[insert:open-view:0]?insert.component=():open-view.children.1;insert.data=)(:open-map;insert.index=():open-view.children().len()-1;wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
                                     ]
                                 }
@@ -581,7 +581,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.invoice.txt()=data:().editor.invoice.[open-doc:()||duplicate-doc:()].clone();data:().editor.invoice.[txt()].id=txt()]:[data:().editor.invoice.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.invoice.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -677,7 +677,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.receipt.txt()=data:().editor.receipt.[open-doc:()||duplicate-doc:()].clone();data:().editor.receipt.[txt()].id=txt()]:[data:().editor.receipt.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.receipt.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -773,7 +773,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.refund.txt()=data:().editor.refund.[open-doc:()||duplicate-doc:()].clone();data:().editor.refund.[txt()].id=txt()]:[data:().editor.refund.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.refund.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;style():[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [

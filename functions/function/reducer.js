@@ -251,8 +251,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             path0 = "doc()"
 
         } else {
+
+            if (path0 !== "txt()" || path0 !== "val()") {
+
+                if (view.labeled) path = ["parent()", "parent()", ...path]
+                else if (view.templated || view.link) path.unshift("parent()")
+            }
             path.unshift("()")
             path0 = "()"
+        }
+    }
+
+    if (path[0] === "()" && path[1] && !path[1].includes("()")) {
+        if (path[1] !== "txt()" || path[1] !== "val()") {
+            
+            if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
+            else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
         }
     }
     
@@ -580,7 +594,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             if (!_parent) return
 
-            if (_parent.templated || _parent.link) return views[_parent.element.parentNode.id]
+            // if (_parent.templated || view.link || _parent.link) return views[_parent.element.parentNode.id]
             else return _parent
             
         } else if (k0 === "siblings()") {
@@ -619,7 +633,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[_o.parent].element
+            // if (_o.templated || _o.link) element = views[_o.parent].element
             
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
@@ -638,7 +652,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[_o.parent].element
+            // if (_o.templated || _o.link) element = views[_o.parent].element
             
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
@@ -660,7 +674,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var nextSiblings = [], nextSibling
             var element = _o.element
-            if (_o.templated || _o.link) element = views[_o.parent].element
+            // if (_o.templated || _o.link) element = views[_o.parent].element
 
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
@@ -683,7 +697,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var lastSibling = element.parentNode.children[element.parentNode.children.length - 1]
             var _id = lastSibling.id
             answer = views[_id]
@@ -700,7 +714,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var seclastSibling = element.parentNode.children[element.parentNode.children.length - 2]
             var _id = seclastSibling.id
             answer = views[_id]
@@ -717,7 +731,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var thirdlastSibling = element.parentNode.children[element.parentNode.children.length - 3]
             var _id = thirdlastSibling.id
             answer = views[_id]
@@ -734,7 +748,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var firstSibling = element.parentNode.children[0]
             var _id = firstSibling.id
             answer = views[_id]
@@ -751,7 +765,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
-            if (_o.templated || _o.link) element = views[o.parent].element
+            // if (_o.templated || _o.link) element = views[o.parent].element
             var secondSibling = element.parentNode.children[1]
             var _id = secondSibling.id
             answer = views[_id]
@@ -768,7 +782,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element, _el = _o.element
-            if (_o.templated || _o.link) _el = views[_o.parent]
+            // if (_o.templated || _o.link) _el = views[_o.parent]
             
             if (!_el) return
             if (_el.nodeType === Node.ELEMENT_NODE) element = _el
@@ -1915,13 +1929,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) el = views[_o].element
             else if (_o.nodeType === Node.ELEMENT_NODE) el = _o
             else if (_o.element) el = _o.element
+
+            if ((view.templated || view.labeled) && el) if (views[el.id].type !== "Input") el = el.getElementsByTagName("INPUT")[0]
             
             if (el) {
                 if (window.views[el.id].type === "Input") {
 
                     answer = el.value
-                    if (i === lastIndex && key && value !== undefined) el.value = value
-
+                    if (i === lastIndex && key && value !== undefined && o.element) answer = el.value = value
+                    
                 } else {
 
                     answer = el.innerHTML

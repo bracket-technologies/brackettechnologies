@@ -36,12 +36,14 @@ const Input = (component) => {
     component = toComponent(component)
 
     var { id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
-        placeholder, textarea, clearable, removable, day, disabled, label, password, copyable,
-        duplicatable, lang, unit, currency, google, key, minlength , children, container
+        placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
+        duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
+
     } = component
     
     if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
     if (clearable && typeof clearable !== "object") clearable = {}
+    if (generator && typeof generator !== "object") component.generator = generator = {}
 
     readonly = readonly ? true : false
     removable = removable !== undefined ? (removable === false ? false : true) : false
@@ -89,7 +91,7 @@ const Input = (component) => {
                     "controls": [{
                         "event": "click?next().getInput().focus()"
                     }]
-                }, Input({ ...component, component: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
+                }, Input({ ...component, component: true, labeled: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
                 ]
             }, {
                 "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${toString(password)}?${password}`,
@@ -137,7 +139,7 @@ const Input = (component) => {
             "children": [{
                 "type": `Text?id=${id}-label;text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
-                Input({ ...component, component: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
+                Input({ ...component, component: true, labeled: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
                 "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
                 "children": [{
@@ -154,7 +156,7 @@ const Input = (component) => {
         }
     }
 
-    if (model === 'featured' || password || clearable || removable || copyable) {
+    if (model === 'featured' || password || clearable || removable || copyable || generator) {
         
         return {
             ...component,
@@ -162,9 +164,9 @@ const Input = (component) => {
             class: 'flex-box unselectable',
             // remove from comp
             controls: [{
-                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1]`
+                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]`
             }, {
-                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0]`
+                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():generator:[():[${id}+'-generate'].style().opacity=0]`
             }],
             style: {
                 cursor: readonly ? "pointer" : "auto",
@@ -205,6 +207,7 @@ const Input = (component) => {
                 duration,
                 textarea,
                 readonly,
+                labeled,
                 placeholder,
                 duplicated,
                 disabled,
@@ -220,7 +223,7 @@ const Input = (component) => {
                     }
                 },
                 style: {
-                    width: password || clearable || removable || copyable ? "100%" : "fit-content",
+                    width: password || clearable || removable || copyable || generator ? "100%" : "fit-content",
                     height: 'fit-content',
                     borderRadius: style.borderRadius || '0.25rem',
                     backgroundColor: style.backgroundColor || 'inherit',
@@ -241,9 +244,11 @@ const Input = (component) => {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
             }, {
-                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().val()]:[prev().data().del();prev().val()=;prev().focus()].elif():[parent().clearable]:[prev().focus()].elif():[parent().removable;!prev().val();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
+                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();():${id}-input.txt()=;():${id}-input.focus()].elif():[parent().clearable]:[():${id}-input.focus()].elif():[parent().removable;!():${id}-input.txt();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
             }, {
-                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-input.val()]:[prev().data().copyToClipBoard();prev().focus()]];mininote.text='copied!'?parent().copyable`,
+                type: `Text?class=pointer;id=${id}+-generate;text=ID;style:[position=absolute;color=blue;right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
+            }, {
+                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
