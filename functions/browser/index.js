@@ -5823,12 +5823,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, e })
             else _o = o
 
-            if (_o.element) {
+            if (typeof _o === "object" && views[_o]) _o = views[_o]
 
-                if (key && value !== undefined) answer = _o.element.src = value
-                else answer = _o.element.src
+            var __o
+            if (_o.type !== "Image") {
+                var imageEl = _o.element.getElementsByTagName("IMAGE")[0]
+                if (imageEl) __o = views[imageEl.id]
+                else return
+            } else __o = _o
 
-            } else if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.src = value
+            if (__o.element) {
+
+                if (key && value !== undefined) answer = __o.element.src = value
+                else answer = __o.element.src
+
+            } else if (__o.nodeType === Node.ELEMENT_NODE) answer = __o.src = value
 
         } else if (k0 === "fileReader()" || k0 === "fileReader()") {
             
