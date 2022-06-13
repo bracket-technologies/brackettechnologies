@@ -6,8 +6,9 @@ module.exports = {
         var global = window.global
         var path = route.path || global.path
         var currentPage = route.page || path.split("/")[1] || "main"
+        console.log(currentPage, route);
         var title = route.title || global.data.page[currentPage].title
-        
+
         if (!global.data.page[currentPage]) return
         global.data.page[currentPage]["views"] = global.data.page[currentPage]["views"] || []
         global.currentPage = currentPage

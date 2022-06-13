@@ -180,7 +180,7 @@
             {
               "children": [
                 {
-                  "type": "View?style.height=100%;style.width=fit-content;class=flexbox pointer;style.position=relative;hover.style.backgroundColor=#f9f9f9?().data",
+                  "type": "View?style.height=100%;style.width=fit-content;class=flexbox pointer;style.position=relative;style.maxWidth=22rem;hover.style.backgroundColor=#f9f9f9?().data",
                   "children": [
                     {
                       "type": "View?style.width=1px;style.position=absolute;style.height=50%;style.left=0;style.backgroundColor=#ddd"
@@ -189,7 +189,7 @@
                       "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.padding=0 1rem"
                     },
                     {
-                      "type": "Text?text=data();style.fontSize=1.3rem;style.paddingRight=3.5rem"
+                      "type": "Text?class=dots;text=data();style.fontSize=1.3rem;style.paddingRight=3.5rem"
                     },
                     {
                       "type": "Icon?class=pointer;name=bi-x;style.fontSize=2rem;style.position=absolute;style.right=.5rem;hover.style.backgroundColor=#e9e9e9;style.borderRadius=.5rem;style.height=2.5rem;style.width=2.5rem",
@@ -210,7 +210,7 @@
                   ]
                 }
               ],
-              "type": "View?id=data-viewer-bar;class=flex;style.height=3.5rem;style.width=100%;style.backgroundColor=#f0f0f0;style.display=if():[open-docs:().len()=0]:none:flex"
+              "type": "View?id=data-viewer-bar;class=inline-flex;style.height=3.5rem;style.backgroundColor=#f0f0f0;style.display=if():[open-docs:().len()=0]:none:flex"
             },
             {
               "type": "View?class=data-viewer;data=)(:open-map.clone();style.width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);style.maxHeight=calc(100vh - 7.5rem);style.overflowY=auto?)(:open-map",

@@ -1,6 +1,5 @@
 const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
-const { capitalize } = require("./capitalize")
 const { toCode } = require("./toCode")
 var _window = { global: {}, views: {} }
 
