@@ -6,13 +6,13 @@
       "type": "View?class=flexbox column;style.gap=.4rem;style.padding=5rem",
       "children": [
         {
-          "type": "Text?text=Step 1 of 2;style.fontSize=1.3rem;style.color=#222"
+          "type": "Text?text='Step 1 of 2';style.fontSize=1.3rem;style.color=#222"
         },
         {
-          "type": "Text?text=Tell us a little about yourself;style.fontSize=2.6rem;style.color=#222;style.fontWeight=bold"
+          "type": "Text?text='Tell us a little about yourself';style.fontSize=2.6rem;style.color=#222;style.fontWeight=bold"
         },
         {
-          "type": "Text?text=We’ll help you get started based on your responses;style.fontSize=1.75rem;style.color=#888"
+          "type": "Text?text='We’ll help you get started based on your responses';style.fontSize=1.75rem;style.color=#888"
         }
       ]
     },
@@ -20,19 +20,14 @@
       "type": "View?Data=account-setup-data;data=_map;class=flexbox column;style.width=100%;style.gap=2rem;style.padding=3rem 5rem;style.borderBottom=1px solid #f0f0f0;style.alignSelf=start",
       "children": [
         {
-          "type": "Input?id=are-you-already-selling;path=are-you-already-selling;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='Are you already selling?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style:[height=100%;fontSize=1.4rem;width=100%];style.height=5rem;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:I'm just playing around:I'm not selling products yet:I'm selling just not online:I sell with a different system",
+          "type": "Input?id=are-you-already-selling;path=are-you-already-selling;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='Are you already selling?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style:[height=100%;fontSize=1.4rem;width=100%];style.height=5rem;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:[I'm just playing around]:[I'm not selling products yet]:[I'm selling just not online]:[I sell with a different system]",
           "controls": [
             {
-              "event": "change:[are-you-already-selling.getInput()]?():are-you-already-selling.next().lastChild().style().display=if():[data()=I'm selling just not online]:flex:none;():are-you-already-selling.next().2ndlastChild().style().display=if():[data()=I sell with a different system]:flex:none"
+              "event": "click:droplist?next().style().display=flex;next().lastChild().style().display=if():[droplist-txt:()=I'm selling just not online]:flex:none;next().2ndlastChild().style().display=if():[droplist-txt:()=I sell with a different system]:flex:none"
             }
           ]
         },
         {
-          "controls": [
-            {
-              "event": "change:[are-you-already-selling.getInput()]?style().display=flex"
-            }
-          ],
           "type": "View?class=flex column;style.gap=.5rem;style.width=100%;style.alignItems=flex-start;style.display=none",
           "children": [
             {
@@ -107,7 +102,7 @@
           "controls": [
             {
               "actions": "toggleView:[parent().parent().id]?toggle.view=account_setup2",
-              "event": "click?)(:account-setup-data=_map"
+              "event": "click?account-setup-data:()=_map"
             }
           ],
           "type": "Text?class=pointer;text=Skip;style.fontSize=1.5rem;style.color=#222;style.padding=1rem 2.5rem;style.border=1px solid #ccc;style.backgroundColor=#fff;hover.style.backgroundColor=#eee;style.borderRadius=.5rem"
@@ -116,7 +111,7 @@
           "type": "Text?class=pointer;text=Next;style.fontSize=1.5rem;style.color=#fff;style.padding=1rem 2.5rem;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.borderRadius=.5rem",
           "controls": [
             {
-              "event": "click?data:().editor.project.override():[)(:account-setup-data]?data:().editor.project.id;)(:account-setup-data.keys().len()>0",
+              "event": "click?data:().editor.project.override():[account-setup-data:()]?data:().editor.project.id;account-setup-data:().keys().len()>0",
               "actions": "wait():save:[toggleView:[parent().parent().id]]?toggle.view=account_setup2;save.collection=_project_;save.doc=data:().editor.project.id;save.data=data:().editor.project"
             }
           ]

@@ -12,7 +12,7 @@
                     "type": "View?class=flex-box;style.width=fit-content",
                     "children": [
                         {
-                            "type": "Text?text=BracketB;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.transform=skew(-7.5deg)"
+                            "type": "Text?text=Bracket;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.transform=skew(-7.5deg)"
                         }
                     ]
                 },
@@ -183,7 +183,7 @@
                             "type": "Text?text=The platform commerce is built on;style.fontSize=4.4rem;style.fontWeight=bolder;style.lineHeight=6rem;style.paddingRight=1rem;style.color=#004C3F"
                         },
                         {
-                            "type": "Text?text=More than a million of the world's most successful brands trust BracketB to sell, ship and process payments anywhere.;style.fontSize=1.9rem;style.color=#888"
+                            "type": "Text?text=More than a million of the world's most successful brands trust Bracket to sell, ship and process payments anywhere.;style.fontSize=1.9rem;style.color=#888"
                         },
                         {
                             "children": [
@@ -197,7 +197,7 @@
                             "type": "View?style.width=100%;style.display=flex;style.flexDirection=column;style.gap=.75rem"
                         },
                         {
-                            "type": "Text?text=Try BracketB free for 14 days, no credit card required. By entering your email, you agree to receive marketing emails from BracketB.;style.fontSize=1.2rem"
+                            "type": "Text?text=Try Bracket free for 14 days, no credit card required. By entering your email, you agree to receive marketing emails from Bracket.;style.fontSize=1.2rem"
                         }
                     ],
                     "type": "View?style.padding=0 2rem;style.display=flex;style.flexDirection=column;style.gap=3rem"
@@ -366,10 +366,10 @@
                                     "type": "Icon?name=bi-toggle2-on;style.color=#C1F0D0;style.fontSize=3.2rem;style.justifySelf=flex-start;style.width=fit-content"
                                 },
                                 {
-                                    "type": "Text?text=Switch to Shopify;style.color=#fff;style.fontSize=1.7rem;style.fontWeight=bold;style.marginTop=1rem"
+                                    "type": "Text?text=Switch to Bracket;style.color=#fff;style.fontSize=1.7rem;style.fontWeight=bold;style.marginTop=1rem"
                                 },
                                 {
-                                    "type": "Text?text=Bring your business to Shopify, no matter which ecommerce platform you’re currently using.;style.color=#fff;style.fontSize=1.5rem"
+                                    "type": "Text?text=Bring your business to Bracket, no matter which ecommerce platform you’re currently using.;style.color=#fff;style.fontSize=1.5rem"
                                 }
                             ],
                             "type": "View?class=flex-column;style.gap=2rem;style.width=100%"
@@ -380,10 +380,10 @@
                                     "type": "Icon?name=bi-members;style.color=#C1F0D0;style.fontSize=3.2rem;style.justifySelf=flex-start;style.width=fit-content"
                                 },
                                 {
-                                    "type": "Text?text=Hire a Shopify expert;style.color=#fff;style.fontSize=1.7rem;style.fontWeight=bold;style.marginTop=1rem"
+                                    "type": "Text?text=Hire a Bracket expert;style.color=#fff;style.fontSize=1.7rem;style.fontWeight=bold;style.marginTop=1rem"
                                 },
                                 {
-                                    "type": "Text?text=Get set up with the help of a trusted freelancer or agency from the Shopify Experts Marketplace.;style.color=#fff;style.fontSize=1.5rem"
+                                    "type": "Text?text=Get set up with the help of a trusted freelancer or agency from the Bracket Experts Marketplace.;style.color=#fff;style.fontSize=1.5rem"
                                 }
                             ],
                             "type": "View?class=flex-column;style.gap=2rem;style.width=100%"
@@ -550,13 +550,13 @@
                             "type": "Text?text=Empowering independent business owners everywhere;style.color=#222;style.fontSize=2.9rem;style.width=50rem"
                         },
                         {
-                            "type": "Text?style.paddingRight=10rem;style.width=100%;text=Over 1,700,000 businesses in 175 countries around the world have made over $200 billion USD in sales using BracketB.;style.color=#444;style.fontSize=2.2rem;style.width=80rem"
+                            "type": "Text?style.paddingRight=10rem;style.width=100%;text=Over 1,700,000 businesses in 175 countries around the world have made over $200 billion USD in sales using Bracket.;style.color=#444;style.fontSize=2.2rem;style.width=80rem"
                         },
                         {
                             "type": "View?class=flex-box pointer;style.gap=.25rem",
                             "children": [
                                 {
-                                    "type": "Text?text=Learn more about BracketB;style.color=#008060;style.fontSize=1.7rem;style.fontWeight=bold"
+                                    "type": "Text?text=Learn more about Bracket;style.color=#008060;style.fontSize=1.7rem;style.fontWeight=bold"
                                 },
                                 {
                                     "type": "Icon?name=bi-arrow-right-short;style.color=#008060;style.fontSize=3rem;style.marginBottom=-0.25rem;style.transition=.3s"
@@ -665,7 +665,7 @@
                                     "type": "View?class=flex-column;style.width=100%;style.height=100%;style.gap=2rem;style.alignItems=flex-start;style.justifyContent=center",
                                     "children": [
                                         {
-                                            "type": "Text?text=BracketB Support;style.color=#222;style.fontSize=1.6rem"
+                                            "type": "Text?text=Bracket Support;style.color=#222;style.fontSize=1.6rem"
                                         },
                                         {
                                             "type": "Text?style.width=100%;text=Contact support 24/7, whether you’re troubleshooting issues or looking for business advice.;style.color=#888;style.fontSize=1.5rem"
@@ -695,16 +695,16 @@
                                     "type": "View?class=flex-column;style.width=100%;style.height=100%;style.gap=2rem;style.alignItems=flex-start;style.justifyContent=center",
                                     "children": [
                                         {
-                                            "type": "Text?text=BracketB App Store;style.color=#222;style.fontSize=1.6rem"
+                                            "type": "Text?text=Bracket App Store;style.color=#222;style.fontSize=1.6rem"
                                         },
                                         {
-                                            "type": "Text?style.width=100%;text=Add features and functionality to your business with 6,000+ apps that integrate directly with Shopify.;style.color=#888;style.fontSize=1.5rem"
+                                            "type": "Text?style.width=100%;text=Add features and functionality to your business with 6,000+ apps that integrate directly with Bracket.;style.color=#888;style.fontSize=1.5rem"
                                         },
                                         {
                                             "type": "View?class=flex-box pointer;style.gap=.25rem",
                                             "children": [
                                                 {
-                                                    "type": "Text?class=flex-start;text=Visit the BracketB App Store;style.color=#008060;style.fontSize=1.5rem;style.fontWeight=bold"
+                                                    "type": "Text?class=flex-start;text=Visit the Bracket App Store;style.color=#008060;style.fontSize=1.5rem;style.fontWeight=bold"
                                                 },
                                                 {
                                                     "type": "Icon?name=bi-arrow-right-short;style.color=#008060;style.fontSize=2.5rem;style.marginBottom=-0.25rem;style.transition=.3s"
@@ -728,10 +728,10 @@
                             "type": "View?class=flex-column;style.width=100%;style.height=100%;style.gap=2rem;style.alignItems=flex-start;style.justifyContent=center;style.width=30rem",
                             "children": [
                                 {
-                                    "type": "Text?text=BracketB Experts Marketplace;style.color=#222;style.fontSize=1.6rem"
+                                    "type": "Text?text=Bracket Experts Marketplace;style.color=#222;style.fontSize=1.6rem"
                                 },
                                 {
-                                    "type": "Text?style.width=100%;text=Hire a Shopify expert to help you with everything from store setup to SEO.;style.color=#888;style.fontSize=1.5rem"
+                                    "type": "Text?style.width=100%;text=Hire a Bracket expert to help you with everything from store setup to SEO.;style.color=#888;style.fontSize=1.5rem"
                                 },
                                 {
                                     "type": "View?class=flex-box pointer;style.justifyContent=flex-start;style.gap=.25rem;style.width=40rem",
@@ -745,7 +745,7 @@
                                     ],
                                     "children": [
                                         {
-                                            "type": "Text?text=Explore the Shopify Experts Marketplace;style.color=#008060;style.fontSize=1.5rem;style.fontWeight=bold"
+                                            "type": "Text?text=Explore the Bracket Experts Marketplace;style.color=#008060;style.fontSize=1.5rem;style.fontWeight=bold"
                                         },
                                         {
                                             "type": "Icon?name=bi-arrow-right-short;style.color=#008060;style.fontSize=2.5rem;style.marginBottom=-0.25rem;style.transition=.3s"
@@ -771,10 +771,10 @@
             "type": "View?class=flex-column;style.alignItems=center;style.gap=2rem;style.padding=8rem;style.paddingBottom=12rem;style.position=relative",
             "children": [
                 {
-                    "type": "Text?text=Start your business journey with BracketB;style.fontSize=3rem;style.color=#222"
+                    "type": "Text?text=Start your business journey with Bracket;style.fontSize=3rem;style.color=#222"
                 },
                 {
-                    "type": "Text?class=flex-box;style.width=60%;text=Try BracketB for free, and explore all the tools and services you need to start, run, and grow your business.;style.fontSize=1.6rem;style.color=#666"
+                    "type": "Text?class=flex-box;style.width=60%;text=Try Bracket for free, and explore all the tools and services you need to start, run, and grow your business.;style.fontSize=1.6rem;style.color=#666"
                 },
                 {
                     "type": "Text?class=pointer;text=Start free trial;style.fontSize=1.6rem;style.color=#fff;style.transition=.2s;style.padding=1.5rem 2.75rem;style.borderRadius=.5rem;style.boxShadow=0 0 5px 0 rgba(0, 0, 0, 0.2);hover.style.boxShadow=0 0 20px 0 rgba(0, 0, 0, 0.2);style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F"
@@ -865,7 +865,7 @@
                         {
                             "children": [
                                 {
-                                    "type": "Text?class=flex-box;text=BracketB Plus;style.color=#fff;style.fontSize=1.6rem"
+                                    "type": "Text?class=flex-box;text=Bracket Plus;style.color=#fff;style.fontSize=1.6rem"
                                 },
                                 {
                                     "type": "View?style.backgroundColor=#fff;style.height=.2rem;style.borderRadius=1rem 1rem 0 0;style.position=absolute;style.bottom=0;style.width=100%;style.opacity=0"
@@ -1002,10 +1002,10 @@
                                     "type": "Text?class=pointer;text=24/7 support;style.fontSize=1.4rem;style.color=#bbb;hover.style.color=#fff;style.transition=.3s"
                                 },
                                 {
-                                    "type": "Text?class=pointer;text=BracketB help center;style.fontSize=1.4rem;style.color=#bbb;hover.style.color=#fff;style.transition=.3s"
+                                    "type": "Text?class=pointer;text=Bracket help center;style.fontSize=1.4rem;style.color=#bbb;hover.style.color=#fff;style.transition=.3s"
                                 },
                                 {
-                                    "type": "Text?class=pointer;text=BracketB community;style.fontSize=1.4rem;style.color=#bbb;hover.style.color=#fff;style.transition=.3s"
+                                    "type": "Text?class=pointer;text=Bracket community;style.fontSize=1.4rem;style.color=#bbb;hover.style.color=#fff;style.transition=.3s"
                                 },
                                 {
                                     "type": "Text?class=pointer;text=API documentation;style.fontSize=1.4rem;style.color=#bbb;hover.style.color=#fff;style.transition=.3s"

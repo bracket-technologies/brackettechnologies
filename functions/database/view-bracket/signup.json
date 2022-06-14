@@ -17,7 +17,7 @@
           "type": "Text?text=Bracket;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.marginBottom=6rem"
         },
         {
-          "type": "Text?text=Create a Shopify ID;style.fontSize=2.3rem;style.color=#000"
+          "type": "Text?text=Create a Bracket ID;style.fontSize=2.3rem;style.color=#000"
         },
         {
           "type": "Text?text=The ecommerce platform made for you;style.fontSize=1.7rem;style.marginBottom=2rem;style.color=#888"
@@ -92,7 +92,7 @@
             },
             {
               "actions": [
-                "async():save:route?save.doc=Data().id;save.collection=_account_;save.data=Data();route.path=/login/+Data().id",
+                "wait():save:route?save.doc=Data().id;save.collection=_account_;save.data=Data();route.path=/login/+Data().id",
                 "save?save.doc=Data().id;save.collection=_password_;save.data=_map:creation-date:[today().timestamp()]:user:[Data().id]:password:[)(:user-password]"
               ],
               "event": "click?)(:user-password=Data().password;Data().password.del();Data().confirm-password.del();Data().id=[Data().first-name+ +Data().last-name].toId();Data().projects=_array?)(:create-user"
@@ -104,7 +104,7 @@
           "type": "View?style.marginTop=2.5rem;class=flexbox;style.gap=.5rem;style.justifyContent=flex-start",
           "children": [
             {
-              "type": "Text?text='Already have a Shopify ID?';style.color=#666;style.fontSize=1.4rem"
+              "type": "Text?text='Already have a Bracket ID?';style.color=#666;style.fontSize=1.4rem"
             },
             {
               "controls": [

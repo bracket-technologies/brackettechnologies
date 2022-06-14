@@ -4,7 +4,7 @@
       "type": "View?style.backgroundColor=#fff;style.borderRadius=1rem;style.width=38%;style.margin=2% 10%;style.padding=8rem 4rem;class=column;style.display=flex;style.paddingBottom=3rem;style.zIndex=1",
       "children": [
         {
-          "type": "Text?text=BracketJs;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.marginBottom=6rem"
+          "type": "Text?text=Bracket;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.marginBottom=6rem"
         },
         {
           "children": [
@@ -12,7 +12,7 @@
               "type": "Text?text=Choose an account;style.fontSize=2.3rem;style.color=#000;style.marginBottom=.5rem"
             },
             {
-              "type": "Text?text=to continue to Shopify;style.fontSize=1.6rem;style.marginBottom=3.75rem;style.color=#888"
+              "type": "Text?text=to continue to Bracket;style.fontSize=1.6rem;style.marginBottom=3.75rem;style.color=#888"
             },
             {
               "controls": [

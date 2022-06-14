@@ -532,6 +532,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _ })
             
         } else if (k0 === "data()") {
+
+            var _o
+            if (o.type) _o = o
+            else _o = views[id]
             
             breakRequest = true
             if (args[1]) {
@@ -541,12 +545,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _ })
                 */
                var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
-               return answer = reducer({ req, res, _window, id, e, value, key, path: _params.path || o.derivations, object: _params.data || object, params, _ })
+               return answer = reducer({ req, res, _window, id, e, value, key, path: _params.path || _o.derivations, object: _params.data || object, params, _ })
             }
             if (path[i + 1] !== undefined) {
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, e })
-                answer = reducer({ req, res, _window, id, e, value, key, path: [...(o.derivations || []), ...path.slice(i + 1)], object: global[o.Data], params, _ })
-            } else answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(o.derivations || [])], object: global[o.Data], params, _, e })
+                answer = reducer({ req, res, _window, id, e, value, key, path: [...(_o.derivations || []), ...path.slice(i + 1)], object: global[_o.Data], params, _ })
+            } else answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(_o.derivations || [])], object: global[_o.Data], params, _, e })
 
         } else if (k0 === "Data()") {
 
@@ -2964,7 +2968,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 req, res, 
             }
             
-        } else if (k0.slice(-2) === "()" && k0 !== "()" && (o[k0.charAt(0) === "_" ? k0.slice(1) : k0] || o[k0])) { // function
+        } /*else if (k0.slice(-2) === "()" && k0 !== "()" && (o[k0.charAt(0) === "_" ? k0.slice(1) : k0] || o[k0])) { // function
             
             var string = decode({ _window, string: o[k0].string }), _params = o[k0].params
             console.log(string, k0);
@@ -2984,7 +2988,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (o[k0]) return toParam({ _window, ...o[k0], string, object: o })
             else if (o[k0.slice(1)]) return toParam({ _window, ...o[k0], string, _: o })
             
-        } else if (k.includes(":coded()")) {
+        } */else if (k.includes(":coded()")) {
             
             breakRequest = true
             o[k0] = o[k0] || {}

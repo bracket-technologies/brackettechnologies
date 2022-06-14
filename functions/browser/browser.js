@@ -34,6 +34,35 @@ views.body.element.appendChild(_ar)
 
 history.pushState(null, global.data.page[global.currentPage].title, global.path)
 
+// body clicked
+var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
+    
+    if (!views[id]) return
+    e.target = views[id].element
+    
+    // approval
+    if (viewEventConditions) {
+        var approved = toApproval({ string: viewEventConditions, id, e })
+        if (!approved) return
+    }
+
+    // approval
+    var approved = toApproval({ string: events[2], id, e })
+    if (!approved) return
+
+    // once
+    if (once) window.global[`body-${event}-events`][id].splice(index, 1)
+    
+    // params
+    await toParam({ string: events[1], id, mount: true, e })
+    
+    // approval
+    if (viewEventParams) await toParam({ string: viewEventParams, id, mount: true, e })
+    
+    // execute
+    if (controls.actions || controls.action) await execute({ controls, id, e })
+}
+
 // clicked element
 document.addEventListener('click', e => {
 
@@ -132,32 +161,3 @@ document.addEventListener('scroll', () => {
 // unloaded views
 require("../function/loadViews").loadViews(true)
 // new Promise(res => require("../function/loadViews").loadViews(res)).then(() => {})
-
-// body clicked
-var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
-    
-    if (!views[id]) return
-    e.target = views[id].element
-    
-    // approval
-    if (viewEventConditions) {
-        var approved = toApproval({ string: viewEventConditions, id, e })
-        if (!approved) return
-    }
-
-    // approval
-    var approved = toApproval({ string: events[2], id, e })
-    if (!approved) return
-
-    // once
-    if (once) window.global[`body-${event}-events`][id].splice(index, 1)
-    
-    // params
-    await toParam({ string: events[1], id, mount: true, e })
-    
-    // approval
-    if (viewEventParams) await toParam({ string: viewEventParams, id, mount: true, e })
-    
-    // execute
-    if (controls.actions || controls.action) await execute({ controls, id, e })
-}

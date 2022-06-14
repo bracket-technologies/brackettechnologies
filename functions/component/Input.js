@@ -72,6 +72,7 @@ const Input = (component) => {
         var parent = component.parent
         var Data = component.Data
         var password = component.password && true
+        var text = label.text
         component.controls = component.controls || []
         
         delete component.parent
@@ -80,6 +81,7 @@ const Input = (component) => {
         delete component.id
         delete component.password
         delete component.derivations
+        delete label.text
 
         return {
             id, path, Data, parent, derivations, tooltip: component.tooltip,
@@ -87,7 +89,7 @@ const Input = (component) => {
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
                 "children": [{
-                    "type": `Text?text=${label.text || "Label"};style.color=#888;style.fontSize=1.1rem;style.width=fit-content;${toString(label)}`,
+                    "type": `Text?text='${text || "Label"}';style.color=#888;style.fontSize=1.1rem;style.width=fit-content;${toString(label)}`,
                     "controls": [{
                         "event": "click?next().getInput().focus()"
                     }]
@@ -123,6 +125,7 @@ const Input = (component) => {
         var parent = component.parent
         var Data = component.Data
         var tooltip = component.tooltip
+        var text = label.text
         var clicked = component.clicked = component.clicked || { style: {} }
         component.clicked.preventDefault = true
         component.controls = component.controls || []
@@ -131,13 +134,14 @@ const Input = (component) => {
         delete component.path
         delete component.id
         delete component.tooltip
+        delete label.text
         label.tooltip = tooltip
 
         return {
             id, Data, parent, derivations, required, path,
             "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
             "children": [{
-                "type": `Text?id=${id}-label;text=${label.text || "Label"};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
+                "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
                 Input({ ...component, component: true, labeled: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
