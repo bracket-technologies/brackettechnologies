@@ -71,6 +71,7 @@ const {switchMode} = require("./switchMode")
 const {setCookie, getCookie} = require("./cookie")
 const {getDaysInMonth} = require("./getDaysInMonth")
 const {reload} = require("./reload")
+const {nothing} = { nothing: () => {} }
 const {fileReader} = require("./fileReader")
 const {position, getPadding} = require("./position")
 const {
@@ -85,6 +86,7 @@ const {createData, clearData} = require("./data")
 module.exports = {
   switchMode,
   refresh,
+  nothing,
   getDaysInMonth,
   importJson,
   converter,

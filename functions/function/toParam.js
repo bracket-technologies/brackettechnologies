@@ -5,7 +5,7 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, createElement, params = {} }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, createElement, params = {}, executer }) => {
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
@@ -40,7 +40,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     } else key = param
 
     // await
-    if (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():") {
+    if ((asyncer || executer) && (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():")) {
 
       var awaiter = param.split(":").slice(1)
       if (asyncer) {

@@ -20,6 +20,7 @@ const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
 const { note } = require("./note")
 const { isParam } = require("./isParam")
+const toAwait = require("./toAwait")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount, condition }) => {
     
@@ -244,7 +245,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -2042,7 +2043,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "pullItems()") {
 
             var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
-            answer = o = o.filter(item => item !== _item)
+            answer = o = o.filter(item => !isEqual(item, _item))
             
         } else if (k0 === "pullItem()") {
 
@@ -2057,10 +2058,29 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             o.splice(o.length - 1, 1)
             answer = o
             
+        } else if (k0 === "findItems()") {
+
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            answer = o.filter(item => isEqual(item, _item))
+            
+        } else if (k0 === "findItem()") {
+
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            answer = o.find(item => isEqual(item, _item))
+            
+        } else if (k0 === "findItemIndex()") {
+
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            answer = o.findIndex(item => isEqual(item, _item))
+            
+        } else if (k0 === "findItems()") {
+
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            answer = o.filter(item => isEqual(item, _item))
+            
         } else if (k0 === "splice()") {
 
             // push at a specific index / splice():value:index
-            var args = k.split(":")
             var _value = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
             var _index = toValue({ req, res, _window, id, value: args[2], params,_ ,e })
             if (_index === undefined) _index = o.length - 1
@@ -2080,9 +2100,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!views[_id]) return console.log("Element doesnot exist!")
             remove({ id: o.id })
 
-        } else if (k0 === "removeChild()" || k0 === "remChild()") { // remove only child without removing data
+        } else if (k0 === "removeChild()" || k0 === "remChild()" || k0 === "removeView()" || k0 === "remView()") { // remove only view without removing data
 
-            var args = k.split(":")
             if (args[1]) {
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
                 if (!views[_id]) return console.log("Element doesnot exist!")
@@ -2553,6 +2572,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _: o, req, res, object }) )
             else answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _, req, res, object: o }) )
             
+        } else if (k0 === "sort()") {
+            
+            var _array, _params
+            if (Array.isArray(o)) _array = o
+            if (isParam({ _window, string: args[1] })) {
+                
+                _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _params.data = _params.map || _params.array || _params.object || _params.list || _array
+            }
+            return require("./sort").sort({ sort: _params, id, e })
+            
         } else if (k0.includes("findIndex()")) {
             
             if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: args[1], id, _: o, req, res, object }) )
@@ -2844,6 +2874,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_lang === "ar") _range = _range.map(num => num.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d]))
             answer = _range
             
+        } else if (k0 === "wait()") {
+            
+            var _params = { await: args.join(":"), awaiter: `wait():${args.slice(1).map(() => "nothing").join(":")}` }
+            toAwait({ id, e, params: _params })
+
         } else if (k0 === "update()") {
           
             var _id

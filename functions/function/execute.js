@@ -36,7 +36,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     if (!approved) return toAwait({ id, e, params: _params })
 
     // params
-    params = toParam({ _window, string: params, e, id: viewId })
+    params = toParam({ _window, string: params, e, id: viewId, executer: true })
     if (_params) params = {..._params, ...params}
 
     // break

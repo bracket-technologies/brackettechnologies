@@ -320,6 +320,7 @@ const Input = (component) => {
         delete component.id
         delete component.tooltip
         delete label.text
+        delete component.clicked
         label.tooltip = tooltip
 
         return {
@@ -337,11 +338,11 @@ const Input = (component) => {
                     "type": `Text?text=Input is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
                 }]
             }],
-            "controls": [{
+            "controls": [/*{
                 "event": `click:1stChild();click:2ndChild()?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
             }, {
                 "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
-            }]
+            }*/]
         }
     }
 
@@ -671,11 +672,13 @@ module.exports = (component) => {
                     controls: [{
                         event: "input?Data().path():[derivations().clone().pull():[derivations().lastIndex()].push():val()]=data().clone();data().del();parent().parent().deepChildren().():[derivations.[derivations().lastIndex()]=val()]"
                     }, {
-                        event: "keyup?if():[)(:droplist-positioner;)(:keyup-index]:[():droplist.children().[)(:keyup-index].click();timer():[)(:keyup-index.del()]:200;().break=true];)(:keyup-index=0;if():[)(:droplist-positioner!=next().id]:[next().click()];timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter"
+                        event: "keyup?if():[)(:droplist-positioner;)(:keyup-index]:[():droplist.children().[)(:keyup-index].click();timer():[)(:keyup-index.del()]:200;().break=true];)(:keyup-index=0;if():[)(:droplist-positioner!=next().id]:[next().click()];timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter;!ctrlKey:()"
                     }, {
                         event: "keyup?():droplist.mouseleave()?e().key=Escape"
                     }, {
                         event: "keyup?():droplist.children().[)(:keyup-index].mouseleave();)(:keyup-index=if():[e().keyCode=40]:[)(:keyup-index+1]:[)(:keyup-index-1];():droplist.children().[)(:keyup-index].mouseenter()?e().keyCode=40||e().keyCode=38;)(:droplist-positioner;if():[e().keyCode=38]:[)(:keyup-index>0].elif():[e().keyCode=40]:[)(:keyup-index<next().droplist.items.lastIndex()]"
+                    }, {
+                        event: "keyup?insert-index:()=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;if():[data().type()=string]:[data()=_array];if():[derivations().lastEl()=children]:[data().push():[_map:type:_string];log():data():derivations()];if():[derivations().lastEl()=controls]:[data().push():[_map:event:_string]];parent-id:()=parent().parent().id;timer():[():[parent-id:()].update.view.inputs().2.focus()]:0;update():[parent().parent()]?e().key=Enter;ctrlKey:();derivations().lastEl()=controls||derivations().lastEl()=children"
                     }]
                 }, {
                     type: "Text?text=derivations().lastElement();class=flex-box;mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?derivations().lastElement().num().type()=number"
@@ -694,20 +697,20 @@ module.exports = (component) => {
                         children: [{
                             type: "Input?mode.dark.style.color=#c39178;if():[derivations().lastElement()=id]:[input.readonly=true];style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#a35521",
                             controls: [{
-                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;!ctrlKey:()",
-                                actions: "wait():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index;wait():[().insert.view.getInput().focus()]"
+                                event: "keyup?insert-index:()=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;!ctrlKey:()",
+                                actions: "wait():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[insert-index:()]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.getInput().focus()]"
                             },
                             {
-                                event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().parent().parent().parent().id]+1;parent().parent().parent().parent().parent().parent().parent().parent().data().splice():[if():[derivations().lastEl()=type]:[_map:type:_string].elif():[derivations().lastEl()=event||derivations().lastEl()=actions]:[_map:event:_string]]:[)(:insert-index];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().parent().parent().parent().data().len()+1]]:[parent().parent().parent().parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;ctrlKey:();derivations().lastEl()=type||derivations().lastEl()=event||derivations().lastEl()=actions",
-                                actions: "wait():[insert:[parent().parent().parent().parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().parent().parent().parent().children.1;insert.path=parent().parent().parent().parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index];insert.index=)(:insert-index;wait():[().insert.view.inputs().1.focus()]"
+                                event: "keyup?insert-index:()=parent().parent().parent().parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().parent().parent().parent().id]+1;parent().parent().parent().parent().parent().parent().parent().parent().data().splice():[if():[derivations().lastEl()=type]:[_map:type:_string].elif():[derivations().lastEl()=event||derivations().lastEl()=actions]:[_map:event:_string]]:[insert-index:()];if():[insert-index:().less():[parent().parent().parent().parent().parent().parent().parent().parent().data().len()+1]]:[parent().parent().parent().parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;ctrlKey:();derivations().lastEl()=type||derivations().lastEl()=event||derivations().lastEl()=actions",
+                                actions: "wait():[insert:[parent().parent().parent().parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().parent().parent().parent().children.1;insert.path=parent().parent().parent().parent().parent().parent().parent().parent().derivations.clone().push():[insert-index:()];insert.index=insert-index:();wait():[().insert.view.inputs().1.focus()]"
                             }]
                         }]
                     }]
                 }, {
                     type: "Input?style.height=3.2rem;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.type=number;input.style.color=olive;style.width=fit-content;style.borderRadius=.5rem?data().type()=number",
                     controls: [{
-                        event: "keyup?)(:insert-index=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[)(:insert-index]];if():[)(:insert-index.less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[)(:insert-index]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;!ctrlKey:()",
-                        actions: "wait():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[)(:insert-index]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=)(:insert-index;wait():[().insert.view.getInput().focus()]"
+                        event: "keyup?insert-index:()=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;!ctrlKey:()",
+                        actions: "wait():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[insert-index:()]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.getInput().focus()]"
                     }]
                 }, {
                     type: "Input?style.height=3.2rem;readonly;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.color=purple;style.width=fit-content;style.borderRadius=.5rem;droplist.items=_array:true:false?data().type()=boolean"
@@ -721,7 +724,7 @@ module.exports = (component) => {
                 }, {
                     type: `Text?text=";mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#a35521;style.fontSize=1.4rem?data().type()=string`
                 }, {
-                    type: "Text?class=pointer;style.display=none;mode.dark.style.color=#888;text='...';style.fontSize=1.4rem"
+                    type: "Text?=flexbox;=pointer;style.display=none;mode.dark.style.color=#888;text='...';style.fontSize=1.4rem"
                 }, {
                     type: "Text?style.display=none;text=];style.paddingBottom=.25rem;mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?data().type()=array"
                 }, {
@@ -853,11 +856,11 @@ module.exports = ({ controls, id }) => {
     )
 
     return [{
-        "event": `loaded:${_id}?clicked.disable=true;if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().clicked.style._]]?clicked.mount||clicked.disable`
+        "event": `loaded:${_id}?clicked.disable=true;if():[mode:()=default-mode:()]:[clicked.style.keys()._():[style()._=().clicked.style._]]?clicked.mount||clicked.disable`
     }, {
-        "event": `click:${_id}?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().clicked.style._]]?!required.mount;!parent().required.mount;!clicked.disable`
+        "event": `click:${_id}?if():[mode:()=default-mode:()]:[clicked.style.keys()._():[style()._=().clicked.style._]]?!required.mount;!parent().required.mount;!clicked.disable`
     }, {
-        "event": "click:body?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().style._||null]]?!required.mount;!parent().required.mount;!clicked.disable;!contains():[clicked:()];!droplist.contains():[clicked:()]"
+        "event": "click:body?if():[mode:()=default-mode:()]:[clicked.style.keys()._():[style()._=().style._||null]]?!required.mount;!parent().required.mount;!clicked.disable;!contains():[clicked:()];!droplist.contains():[clicked:()]"
     }]
 }
 },{}],13:[function(require,module,exports){
@@ -2659,7 +2662,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     if (!approved) return toAwait({ id, e, params: _params })
 
     // params
-    params = toParam({ _window, string: params, e, id: viewId })
+    params = toParam({ _window, string: params, e, id: viewId, executer: true })
     if (_params) params = {..._params, ...params}
 
     // break
@@ -2970,6 +2973,7 @@ const {switchMode} = require("./switchMode")
 const {setCookie, getCookie} = require("./cookie")
 const {getDaysInMonth} = require("./getDaysInMonth")
 const {reload} = require("./reload")
+const {nothing} = { nothing: () => {} }
 const {fileReader} = require("./fileReader")
 const {position, getPadding} = require("./position")
 const {
@@ -2984,6 +2988,7 @@ const {createData, clearData} = require("./data")
 module.exports = {
   switchMode,
   refresh,
+  nothing,
   getDaysInMonth,
   importJson,
   converter,
@@ -3278,14 +3283,7 @@ module.exports = {
     views[el.id].style.transition = views[el.id].element.style.transition = views[el.id].reservedStyles.transition || null
     views[el.id].style.opacity = views[el.id].element.style.opacity = views[el.id].reservedStyles.opacity || "1"
     delete views[el.id].reservedStyles
-    view.insert = { view: views[el.id], message: "Map inserted succefully!", success: true }
-    
-    /*setTimeout(() => {
-      idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
-        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
-        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
-      })
-    }, 0)*/
+    view.insert = { view: views[el.id], message: "View inserted succefully!", success: true }
     
     if (lDiv) {
       document.body.removeChild(lDiv)
@@ -3993,6 +3991,7 @@ const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
 const { note } = require("./note")
 const { isParam } = require("./isParam")
+const toAwait = require("./toAwait")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, e, req, res, mount, condition }) => {
     
@@ -4217,7 +4216,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -6015,7 +6014,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "pullItems()") {
 
             var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
-            answer = o = o.filter(item => item !== _item)
+            answer = o = o.filter(item => !isEqual(item, _item))
             
         } else if (k0 === "pullItem()") {
 
@@ -6030,10 +6029,29 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             o.splice(o.length - 1, 1)
             answer = o
             
+        } else if (k0 === "findItems()") {
+
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            answer = o.filter(item => isEqual(item, _item))
+            
+        } else if (k0 === "findItem()") {
+
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            answer = o.find(item => isEqual(item, _item))
+            
+        } else if (k0 === "findItemIndex()") {
+
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            answer = o.findIndex(item => isEqual(item, _item))
+            
+        } else if (k0 === "findItems()") {
+
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
+            answer = o.filter(item => isEqual(item, _item))
+            
         } else if (k0 === "splice()") {
 
             // push at a specific index / splice():value:index
-            var args = k.split(":")
             var _value = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
             var _index = toValue({ req, res, _window, id, value: args[2], params,_ ,e })
             if (_index === undefined) _index = o.length - 1
@@ -6053,9 +6071,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!views[_id]) return console.log("Element doesnot exist!")
             remove({ id: o.id })
 
-        } else if (k0 === "removeChild()" || k0 === "remChild()") { // remove only child without removing data
+        } else if (k0 === "removeChild()" || k0 === "remChild()" || k0 === "removeView()" || k0 === "remView()") { // remove only view without removing data
 
-            var args = k.split(":")
             if (args[1]) {
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
                 if (!views[_id]) return console.log("Element doesnot exist!")
@@ -6526,6 +6543,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _: o, req, res, object }) )
             else answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _, req, res, object: o }) )
             
+        } else if (k0 === "sort()") {
+            
+            var _array, _params
+            if (Array.isArray(o)) _array = o
+            if (isParam({ _window, string: args[1] })) {
+                
+                _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _params.data = _params.map || _params.array || _params.object || _params.list || _array
+            }
+            return require("./sort").sort({ sort: _params, id, e })
+            
         } else if (k0.includes("findIndex()")) {
             
             if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: args[1], id, _: o, req, res, object }) )
@@ -6817,6 +6845,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_lang === "ar") _range = _range.map(num => num.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d]))
             answer = _range
             
+        } else if (k0 === "wait()") {
+            
+            var _params = { await: args.join(":"), awaiter: `wait():${args.slice(1).map(() => "nothing").join(":")}` }
+            toAwait({ id, e, params: _params })
+
         } else if (k0 === "update()") {
           
             var _id
@@ -7142,7 +7175,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./axios":31,"./capitalize":33,"./clone":35,"./cookie":39,"./decode":47,"./droplist":49,"./execute":52,"./exportJson":53,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getType":62,"./importJson":63,"./isEqual":66,"./isParam":67,"./note":74,"./refresh":80,"./remove":82,"./route":84,"./save":85,"./search":86,"./setPosition":90,"./toApproval":96,"./toArray":97,"./toClock":100,"./toCode":101,"./toId":105,"./toNumber":106,"./toParam":108,"./toPrice":109,"./toSimplifiedDate":110,"./toValue":113,"./toggleView":114,"./update":115,"uuid":152}],80:[function(require,module,exports){
+},{"./axios":31,"./capitalize":33,"./clone":35,"./cookie":39,"./decode":47,"./droplist":49,"./execute":52,"./exportJson":53,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getType":62,"./importJson":63,"./isEqual":66,"./isParam":67,"./note":74,"./refresh":80,"./remove":82,"./route":84,"./save":85,"./search":86,"./setPosition":90,"./sort":91,"./toApproval":96,"./toArray":97,"./toAwait":98,"./toClock":100,"./toCode":101,"./toId":105,"./toNumber":106,"./toParam":108,"./toPrice":109,"./toSimplifiedDate":110,"./toValue":113,"./toggleView":114,"./update":115,"uuid":152}],80:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -7784,8 +7817,10 @@ module.exports = {setPosition}
 
 },{}],91:[function(require,module,exports){
 (function (global){(function (){
+const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
+const { toCode } = require("./toCode")
 const { toNumber } = require("./toNumber")
 
 const sort = ({ sort = {}, id, e }) => {
@@ -7793,12 +7828,21 @@ const sort = ({ sort = {}, id, e }) => {
   var view = window.views[id]
   if (!view) return
 
+  // data
   var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
 
-  options.sort = options.sort === "ascending" ? "descending" : "ascending"
-  var path = typeof sort.path === "string" ? (sort.path || "").split(".") : typeof sort.path !== undefined ? toArray(sort.path) : [""]
+  // sort by
+  options.sortBy = options.sortBy === "ascending" ? "descending" : "ascending"
+  if (sort.ascending) options.sortBy = "ascending"
+  else if (sort.descending) options.sortBy = "descending"
+  else if (sort.sortBy || sort.sortby || sort.by) options.sortBy = sort.sortBy || sort.sortby || sort.by
+
+  // path
+  var path = sort.path
+  if (typeof sort.path === "string") path = toArray(toCode({ string: path, e }).split("."))
+  if (!path) path = []
   var isDate = false
   
   if (!Array.isArray(data) && typeof data === "object") data = Object.values(data)
@@ -7806,6 +7850,7 @@ const sort = ({ sort = {}, id, e }) => {
   data.sort((a, b) => {
     
     a = reducer({ id, path, object: a, e }) || "!"
+    
     if (a !== undefined) {
       a = a.toString()
 
@@ -7894,12 +7939,13 @@ const sort = ({ sort = {}, id, e }) => {
     }
   })
 
-  global[Data] = data
+  if (Data) global[Data] = data
+  return data
 }
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":79,"./toArray":97,"./toNumber":106}],92:[function(require,module,exports){
+},{"./clone":35,"./reducer":79,"./toArray":97,"./toCode":101,"./toNumber":106}],92:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -8562,7 +8608,7 @@ module.exports = {
       } else if (view.span) {
         tag = `<span ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</span>`
       } else {
-        tag = `<p class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${text}</p>`
+        tag = `<p ${view.editable || view.contenteditable ? "contenteditable ": ""}class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${text}</p>`
       }
     } else if (view.type === "Icon") {
       tag = `<i ${view.draggable ? "draggable='true'" : ""} class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
@@ -8665,7 +8711,7 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, createElement, params = {} }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, createElement, params = {}, executer }) => {
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
@@ -8700,7 +8746,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     } else key = param
 
     // await
-    if (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():") {
+    if ((asyncer || executer) && (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():")) {
 
       var awaiter = param.split(":").slice(1)
       if (asyncer) {
@@ -9490,13 +9536,8 @@ const update = ({ id, update = {} }) => {
     
     views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
   })
-  
-  /*setTimeout(() => {
-    idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
-      map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
-      map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
-    })
-  }, 0)*/
+
+  view.update = { view: views[id], message: "View updated succefully!", success: true }
 }
 
 const removeChildren = ({ id }) => {

@@ -1,5 +1,7 @@
+const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
+const { toCode } = require("./toCode")
 const { toNumber } = require("./toNumber")
 
 const sort = ({ sort = {}, id, e }) => {
@@ -7,12 +9,21 @@ const sort = ({ sort = {}, id, e }) => {
   var view = window.views[id]
   if (!view) return
 
+  // data
   var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
 
-  options.sort = options.sort === "ascending" ? "descending" : "ascending"
-  var path = typeof sort.path === "string" ? (sort.path || "").split(".") : typeof sort.path !== undefined ? toArray(sort.path) : [""]
+  // sort by
+  options.sortBy = options.sortBy === "ascending" ? "descending" : "ascending"
+  if (sort.ascending) options.sortBy = "ascending"
+  else if (sort.descending) options.sortBy = "descending"
+  else if (sort.sortBy || sort.sortby || sort.by) options.sortBy = sort.sortBy || sort.sortby || sort.by
+
+  // path
+  var path = sort.path
+  if (typeof sort.path === "string") path = toArray(toCode({ string: path, e }).split("."))
+  if (!path) path = []
   var isDate = false
   
   if (!Array.isArray(data) && typeof data === "object") data = Object.values(data)
@@ -20,6 +31,7 @@ const sort = ({ sort = {}, id, e }) => {
   data.sort((a, b) => {
     
     a = reducer({ id, path, object: a, e }) || "!"
+    
     if (a !== undefined) {
       a = a.toString()
 
@@ -108,7 +120,8 @@ const sort = ({ sort = {}, id, e }) => {
     }
   })
 
-  global[Data] = data
+  if (Data) global[Data] = data
+  return data
 }
 
 module.exports = {sort}

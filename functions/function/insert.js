@@ -75,14 +75,7 @@ module.exports = {
     views[el.id].style.transition = views[el.id].element.style.transition = views[el.id].reservedStyles.transition || null
     views[el.id].style.opacity = views[el.id].element.style.opacity = views[el.id].reservedStyles.opacity || "1"
     delete views[el.id].reservedStyles
-    view.insert = { view: views[el.id], message: "Map inserted succefully!", success: true }
-    
-    /*setTimeout(() => {
-      idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
-        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
-        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
-      })
-    }, 0)*/
+    view.insert = { view: views[el.id], message: "View inserted succefully!", success: true }
     
     if (lDiv) {
       document.body.removeChild(lDiv)
