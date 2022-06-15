@@ -20,10 +20,10 @@
       "type": "View?Data=account-setup-data;data=_map;class=flexbox column;style.width=100%;style.gap=2rem;style.padding=3rem 5rem;style.borderBottom=1px solid #f0f0f0;style.alignSelf=start",
       "children": [
         {
-          "type": "Input?id=are-you-already-selling;path=are-you-already-selling;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='Are you already selling?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style:[height=100%;fontSize=1.4rem;width=100%];style.height=5rem;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:[I'm just playing around]:[I'm not selling products yet]:[I'm selling just not online]:[I sell with a different system]",
+          "type": "Input?id=are-you-already-selling;path=are-you-already-selling;label.location=outside;label.text='Are you already selling?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style:[height=100%;fontSize=1.4rem;width=100%];style.height=5rem;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:[I'm just playing around]:[I'm not selling products yet]:[I'm selling just not online]:[I sell with a different system]",
           "controls": [
             {
-              "event": "click:droplist?next().style().display=flex;next().lastChild().style().display=if():[droplist-txt:()=I'm selling just not online]:flex:none;next().2ndlastChild().style().display=if():[droplist-txt:()=I sell with a different system]:flex:none"
+              "event": "click:droplist?next().style().display=flex;next().lastChild().style().display=if():[droplist-txt:()=I'm selling just not online]:flex:none;next().2ndLastChild().style().display=if():[droplist-txt:()=I sell with a different system]:flex:none"
             }
           ]
         },
@@ -81,18 +81,18 @@
               ]
             },
             {
-              "type": "Input?container.style.display=none;path=which-system-do-you-use-the-most;container.style.marginTop=2rem;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='What is your current revenue?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Amazon:Big Cartel:BigCommerce:Clover:eBay:Etsy:GoDaddy:IndieGogo:Kickstarter:Lightspeed:Magento:OpenCart:PrestaShop:Revel:ShopKeep:Square:Squarespace:Tictail:Vend:Volusion:Wix:WooCommerce:WordPress"
+              "type": "Input?container.style.display=none;path=which-system-do-you-use-the-most;container.style.marginTop=2rem;label.location=outside;label.text='What is your current revenue?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Amazon:Big Cartel:BigCommerce:Clover:eBay:Etsy:GoDaddy:IndieGogo:Kickstarter:Lightspeed:Magento:OpenCart:PrestaShop:Revel:ShopKeep:Square:Squarespace:Tictail:Vend:Volusion:Wix:WooCommerce:WordPress"
             },
             {
-              "type": "Input?container.style.display=none;path=how-do-you-want-to-sell;container.style.marginTop=2rem;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='How do you want to sell?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Online only:In person only:Both online and in person"
+              "type": "Input?container.style.display=none;path=how-do-you-want-to-sell;container.style.marginTop=2rem;label.location=outside;label.text='How do you want to sell?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Online only:In person only:Both online and in person"
             }
           ]
         },
         {
-          "type": "Input?path=what-is-your-current-revenue;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='What is your current revenue?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:'0$ (I'm just getting started)':'Up to 5,000$':'5,000$ to 50,000$':'50,000$ to 250,000$':'250,000$ to 1,000,000$':'1,000,000$+'"
+          "type": "Input?path=what-is-your-current-revenue;label.location=outside;label.text='What is your current revenue?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:[0$ (I'm just getting started)]:'Up to 5,000$':'5,000$ to 50,000$':'50,000$ to 250,000$':'250,000$ to 1,000,000$':'1,000,000$+'"
         },
         {
-          "type": "Input?path=which-industry-will-you-be-operating-in;clicked.style.border=2px solid #0099ee;label.location=outside;label.text='Which industry will you be operating in?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Beauty:Clothing:Electronics:Furniture:Handcrafts:Jewelry:Painting:Photography:Restaurants:Groceries:Food & Beverages:Sports:Toys:Services:Virtual services:Travel & Tourism:Other"
+          "type": "Input?path=which-industry-will-you-be-operating-in;label.location=outside;label.text='Which industry will you be operating in?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Beauty:Clothing:Electronics:Furniture:Handcrafts:Jewelry:Painting:Photography:Restaurants:Groceries:Food & Beverages:Sports:Toys:Services:Virtual services:Travel & Tourism:Other"
         }
       ]
     },

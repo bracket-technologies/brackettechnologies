@@ -173,12 +173,12 @@ module.exports = (component) => {
 
   return {
     ...component,
-    "type": `View?class=flexbox pointer;style.height=2rem;style.width=2rem;style.borderRadius=.25rem;style.transition=.1s;style.backgroundColor=#fff;style.border=1px solid #ccc;clicked.style.backgroundColor=#2C6ECB;clicked.style.border=1px solid #ffffff00;clicked.mount=true;${toString({ style })}`,
+    "type": `View?class=flexbox pointer;style.height=2rem;style.width=2rem;style.borderRadius=.25rem;style.transition=.1s;style.backgroundColor=#fff;style.border=1px solid #ccc;${toString({ style })}`,
     "children": [{
       "type": `Icon?name=bi-check;style.color=#fff;style.fontSize=2rem;style.opacity=0;style.transition=.1s;${toString(icon)}`
     }],
     "controls": [{
-      "event": "click?checked()=if():checked():false:true;1stChild().style().opacity=if():checked():1:0;data()=if():checked():true:false"
+      "event": "click?checked()=if():checked():false:true;if():checked():[1stChild().style().opacity=1;data()=true;style().backgroundColor=#2C6ECB;style().border=1px solid #ffffff00]:[1stChild().style().opacity=0;data()=false;style().backgroundColor=#fff;style().border=1px solid #ccc]"
     }]
   }
 }
@@ -857,7 +857,7 @@ module.exports = ({ controls, id }) => {
     }, {
         "event": `click:${_id}?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().clicked.style._]]?!required.mount;!parent().required.mount;!clicked.disable`
     }, {
-        "event": "click:body?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().style._||null]]?!required.mount;!parent().required.mount;!clicked.disable;!element.contains():[clicked:()];!():droplist.element.contains():[clicked:()]"
+        "event": "click:body?if():[)(:mode=)(:default-mode]:[clicked.style.keys()._():[style()._=().style._||null]]?!required.mount;!parent().required.mount;!clicked.disable;!contains():[clicked:()];!droplist.contains():[clicked:()]"
     }]
 }
 },{}],13:[function(require,module,exports){
@@ -2297,7 +2297,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
         controls: [...(view.droplist.controls || []), {
           event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
-            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():${input_id}:[():${input_id}.data()=txt().replace():'&amp;':'&';txt():${input_id}=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
+            `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[():${input_id}]:[():${input_id}.data()=txt().replace():'&amp;':'&';():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
             `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
             `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
           ]
@@ -2516,8 +2516,8 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           
           // body
           if (eventid === "droplist" || eventid === "actionlist") id = mainID
-          if (eventid === "droplist" && id !== global["droplist-positioner"]) return
-          if (eventid === "actionlist" && id !== global["actionlist-caller"]) return
+          if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
+          if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
           
           var __view = views[id]
 
@@ -4915,7 +4915,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     _o = _params.view || _params.id || _params.el || _params.element || o
 
                 } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            } else _o = o
+            } else {
+                if (!o.type) _o = views[id]
+                else _o = o
+            }
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             

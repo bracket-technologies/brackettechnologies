@@ -942,7 +942,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     _o = _params.view || _params.id || _params.el || _params.element || o
 
                 } else _o = toValue({ req, res, _window, id, e, _, value: args[1], params })
-            } else _o = o
+            } else {
+                if (!o.type) _o = views[id]
+                else _o = o
+            }
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             
