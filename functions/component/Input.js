@@ -126,7 +126,8 @@ const Input = (component) => {
         var Data = component.Data
         var tooltip = component.tooltip
         var text = label.text
-        var clicked = component.clicked = component.clicked || { style: {} }
+        clickedBorder = component.clicked.style.border || "2px solid #008060"
+        if (component.clicked.style.border) delete component.clicked.style.border
         component.clicked.preventDefault = true
         component.controls = component.controls || []
         
@@ -135,7 +136,6 @@ const Input = (component) => {
         delete component.id
         delete component.tooltip
         delete label.text
-        delete component.clicked
         label.tooltip = tooltip
 
         return {
@@ -153,11 +153,11 @@ const Input = (component) => {
                     "type": `Text?text=Input is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
                 }]
             }],
-            "controls": [/*{
-                "event": `click:1stChild();click:2ndChild()?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
+            "controls": [{
+                "event": `click:1stChild();click:2ndChild()?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clickedBorder}`
             }, {
                 "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
-            }*/]
+            }]
         }
     }
 

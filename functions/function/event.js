@@ -162,18 +162,18 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           
           // body
           if (eventid === "droplist" || eventid === "actionlist") id = mainID
-          if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
-          if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
-          
-          var __view = views[id]
-
-          if (once) e.target.removeEventListener(event, myFn)
 
           // view doesnot exist
+          var __view = views[id]
           if (!__view) {
             if (e.target) e.target.removeEventListener(event, myFn)
             return 
           }
+
+          if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
+          if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
+
+          if (once) e.target.removeEventListener(event, myFn)
         
           // approval
           if (viewEventConditions) {

@@ -311,7 +311,8 @@ const Input = (component) => {
         var Data = component.Data
         var tooltip = component.tooltip
         var text = label.text
-        var clicked = component.clicked = component.clicked || { style: {} }
+        clickedBorder = component.clicked.style.border || "2px solid #008060"
+        if (component.clicked.style.border) delete component.clicked.style.border
         component.clicked.preventDefault = true
         component.controls = component.controls || []
         
@@ -320,7 +321,6 @@ const Input = (component) => {
         delete component.id
         delete component.tooltip
         delete label.text
-        delete component.clicked
         label.tooltip = tooltip
 
         return {
@@ -338,11 +338,11 @@ const Input = (component) => {
                     "type": `Text?text=Input is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
                 }]
             }],
-            "controls": [/*{
-                "event": `click:1stChild();click:2ndChild()?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clicked.style.border || "2px solid #008060"}`
+            "controls": [{
+                "event": `click:1stChild();click:2ndChild()?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clickedBorder}`
             }, {
                 "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
-            }*/]
+            }]
         }
     }
 
@@ -2519,18 +2519,18 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           
           // body
           if (eventid === "droplist" || eventid === "actionlist") id = mainID
-          if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
-          if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
-          
-          var __view = views[id]
-
-          if (once) e.target.removeEventListener(event, myFn)
 
           // view doesnot exist
+          var __view = views[id]
           if (!__view) {
             if (e.target) e.target.removeEventListener(event, myFn)
             return 
           }
+
+          if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
+          if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
+
+          if (once) e.target.removeEventListener(event, myFn)
         
           // approval
           if (viewEventConditions) {
@@ -4019,7 +4019,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         return answer
     }
 
-    if (path.join(".").includes("=") || path.join(".").includes(";")) return toParam({ req, res, _window, id, e, string: path.join("."), _, object, mount })
+    if (isParam({ _window, string: path.join(".") })) return toParam({ req, res, _window, id, e, string: path.join("."), _, object, mount })
 
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
@@ -5917,8 +5917,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) el = views[_o].element
             else if (_o.nodeType === Node.ELEMENT_NODE) el = _o
             else if (_o.element) el = _o.element
+            
+            var _view = views[el.id]
 
-            if ((view.templated || view.labeled) && el) if (views[el.id].type !== "Input") el = el.getElementsByTagName("INPUT")[0]
+            if ((_view.templated || _view.labeled) && el) if (_view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
             
             if (el) {
                 if (window.views[el.id].type === "Input") {
@@ -6023,7 +6025,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             o.splice(_index,1)
             answer = o
             
-        } else if (k0 === "pullLastElement()" || k0 === "pullLast()") {
+        } else if (k0 === "pullLastItem()" || k0 === "pullLast()") {
             
             // if no index, it pulls the last element
             o.splice(o.length - 1, 1)
@@ -6044,10 +6046,41 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
             answer = o.findIndex(item => isEqual(item, _item))
             
-        } else if (k0 === "findItems()") {
+        } else if (k0 === "filterItems()") {
+            
+            var args = k.split(":").slice(1), isnot
+            if (!args[0]) isnot = true
+            
+            if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
+            else args.map(arg => {
+                
+                if (k[0] === "_") answer = toArray(o).filter(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
+                else answer = toArray(o).filter(o => toApproval({ _window, e, string: arg, id, object: o, req, res, _ }))
+            })
+console.log(answer);
+            answer.map(_item => {
+                var _index = o.findIndex(item => isEqual(item, _item))
+                o.splice(_index, 1)
+            })
 
-            var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
-            answer = o.filter(item => isEqual(item, _item))
+            console.log(o);
+            answer = o
+
+        } else if (k0 === "filterItem()") {
+            
+            var args = k.split(":").slice(1), isnot
+            if (!args[0]) isnot = true
+            
+            if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
+            else args.map(arg => {
+                
+                var _index
+                if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
+                else _index = toArray(o).findIndex(o => toApproval({ _window, e, string: arg, id, object: o, req, res, _ }))
+
+                if (!isNaN(o)) o.splice(_index , 1)
+                answer = o
+            })
             
         } else if (k0 === "splice()") {
 
@@ -6563,6 +6596,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             args.slice(1).map(arg => {
 
+                if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
                 if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, value, key, params, index, _: o, e, object }) )
                 else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, object: o, value, key, params, index, _, e }) )
             })
@@ -6854,8 +6888,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             var _id
             if (args[1]) _id = toValue({ req, res, _window, id, e, _, value: args[1], params }) || id
+            if (typeof _id === "object" && views[_id]) _id = _id.id
 
-            if (typeof _id === "object") _id = _id.id
             return require("./update").update({ id: _id })
 
         } else if (k0 === "save()") {
@@ -8937,7 +8971,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
     // mount data directly when found
-    if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view && view.data !== undefined && !view.Data))) {
+    if (mount && !mountDataUsed && ((params.data !== undefined && (!view.Data || !global[view.Data])) || params.Data || (view && view.data !== undefined && !view.Data))) {
 
       if (params.Data || (params.data !== undefined && !view.Data)) view.derivations = []
       mountDataUsed = true
@@ -9265,11 +9299,12 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
     var allAreNumbers = true
     var values = value.split("-").map(value => {
-      if (value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true)) return allAreNumbers = false
+      if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : true)) return allAreNumbers = false
 
       if (allAreNumbers) {
+        
         var num = toValue({ _window, value, params, _, id, e, req, res, object })
-        if (typeof num !== "number") allAreNumbers = false
+        if (typeof num !== "number" || num === "") allAreNumbers = false
         return num
       }
     })
@@ -9289,11 +9324,11 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true)) return allAreNumbers = false
+        if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true)) return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, id, e, req, res, object })
-          if (typeof num !== "number") allAreNumbers = false
+          if (typeof num !== "number" || num === "") allAreNumbers = false
           return num
         }
       })
@@ -9312,11 +9347,11 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
         var _values = value.split("-").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true) ) return allAreNumbers = false
+          if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true) ) return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, id, e, req, res, object })
-            if (typeof num !== "number") allAreNumbers = false
+            if (typeof num !== "number" || num === "") allAreNumbers = false
             return num
           }
         })

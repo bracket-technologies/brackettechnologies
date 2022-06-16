@@ -122,11 +122,12 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
     var allAreNumbers = true
     var values = value.split("-").map(value => {
-      if (value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true)) return allAreNumbers = false
+      if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : true)) return allAreNumbers = false
 
       if (allAreNumbers) {
+        
         var num = toValue({ _window, value, params, _, id, e, req, res, object })
-        if (typeof num !== "number") allAreNumbers = false
+        if (typeof num !== "number" || num === "") allAreNumbers = false
         return num
       }
     })
@@ -146,11 +147,11 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true)) return allAreNumbers = false
+        if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true)) return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, id, e, req, res, object })
-          if (typeof num !== "number") allAreNumbers = false
+          if (typeof num !== "number" || num === "") allAreNumbers = false
           return num
         }
       })
@@ -169,11 +170,11 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
         var _values = value.split("-").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true) ) return allAreNumbers = false
+          if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true) ) return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, id, e, req, res, object })
-            if (typeof num !== "number") allAreNumbers = false
+            if (typeof num !== "number" || num === "") allAreNumbers = false
             return num
           }
         })

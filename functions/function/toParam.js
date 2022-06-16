@@ -231,7 +231,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
     // mount data directly when found
-    if (mount && !mountDataUsed && ((params.data !== undefined && !view.Data) || params.Data || (view && view.data !== undefined && !view.Data))) {
+    if (mount && !mountDataUsed && ((params.data !== undefined && (!view.Data || !global[view.Data])) || params.Data || (view && view.data !== undefined && !view.Data))) {
 
       if (params.Data || (params.data !== undefined && !view.Data)) view.derivations = []
       mountDataUsed = true
