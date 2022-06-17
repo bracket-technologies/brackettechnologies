@@ -269,7 +269,7 @@ const Input = (component) => {
         delete label.text
 
         return {
-            id, path, Data, parent, derivations, tooltip: component.tooltip,
+            id, path, Data, parent, derivations, tooltip: component.tooltip, labeled: true,
             "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
@@ -325,7 +325,7 @@ const Input = (component) => {
         label.tooltip = tooltip
 
         return {
-            id, Data, parent, derivations, required, path,
+            id, Data, parent, derivations, required, path, labeled: true,
             "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
             "children": [{
                 "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
@@ -385,7 +385,7 @@ const Input = (component) => {
             }, {
                 type: `Input`,
                 id: `${id}-input`,
-                class: `${input.class} ${component.class.includes("ar") ? "ar" : ""}`,
+                class: `${component.class.includes("ar") ? "ar " : ""}${input.class}`,
                 // droplist,
                 input,
                 currency, 
@@ -4225,11 +4225,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else {
 
-            if (path0 !== "txt()" || path0 !== "val()") {
+            if (path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()") {
 
                 if (view.labeled) path = ["parent()", "parent()", ...path]
                 else if (view.templated || view.link) path.unshift("parent()")
+
+            } else if (path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
+
+                if (view.labeled || view.templated || view.link) path.unshift("input()")
             }
+
             path.unshift("()")
             path0 = "()"
         }
@@ -5920,7 +5925,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (_o.element) el = _o.element
             
             var _view = views[el.id]
-
+            
             if ((_view.templated || _view.labeled) && el) if (_view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
             
             if (el) {

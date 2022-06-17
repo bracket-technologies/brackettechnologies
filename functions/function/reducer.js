@@ -253,11 +253,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else {
 
-            if (path0 !== "txt()" || path0 !== "val()") {
+            if (path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()") {
 
                 if (view.labeled) path = ["parent()", "parent()", ...path]
                 else if (view.templated || view.link) path.unshift("parent()")
+
+            } else if (path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
+
+                if (view.labeled || view.templated || view.link) path.unshift("input()")
             }
+
             path.unshift("()")
             path0 = "()"
         }
@@ -1948,7 +1953,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (_o.element) el = _o.element
             
             var _view = views[el.id]
-
+            
             if ((_view.templated || _view.labeled) && el) if (_view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
             
             if (el) {

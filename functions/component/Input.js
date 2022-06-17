@@ -84,7 +84,7 @@ const Input = (component) => {
         delete label.text
 
         return {
-            id, path, Data, parent, derivations, tooltip: component.tooltip,
+            id, path, Data, parent, derivations, tooltip: component.tooltip, labeled: true,
             "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
@@ -140,7 +140,7 @@ const Input = (component) => {
         label.tooltip = tooltip
 
         return {
-            id, Data, parent, derivations, required, path,
+            id, Data, parent, derivations, required, path, labeled: true,
             "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
             "children": [{
                 "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
@@ -200,7 +200,7 @@ const Input = (component) => {
             }, {
                 type: `Input`,
                 id: `${id}-input`,
-                class: `${input.class} ${component.class.includes("ar") ? "ar" : ""}`,
+                class: `${component.class.includes("ar") ? "ar " : ""}${input.class}`,
                 // droplist,
                 input,
                 currency, 
