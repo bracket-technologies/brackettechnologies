@@ -12,17 +12,15 @@ var getdb = async ({ req, res, db }) => {
   var search = params.search || {}
 
   var collection = search.collection
-  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && !search.url) collection += `-${req.headers["project"]}`
 
   var doc = search.document || search.doc,
     docs = search.documents || search.docs,
     field = search.field || search.fields,
     limit = search.limit || 25,
     data = {}, success, message,
-    ref = db.collection(collection),
+    ref = collection && db.collection(collection),
     promises = [], project
-
-  if (search) search.collection = collection
   
   /////////////////// verify access key ///////////////////// access key is stopped
   // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
@@ -32,26 +30,37 @@ var getdb = async ({ req, res, db }) => {
 
     var url = search.url
     delete search.url
-    url += `/${toString(search)}`
+
     if (url.slice(-1) === "/") url = url.slice(0, -1)
-    data = await axios.get(url, {
-      timeout: 1000 * 10
-    })
-    data = data.data
-    if (typeof data === "string") {
-      data = `{ ${data.split("{").slice(1).join("{")}`
-      data = JSON.parse(data)
-    }
-    success = true
-    message = `Document/s mounted successfuly!`
     
+    try {
+      data = await require("axios").get(url, {
+        timeout: 1000 * 10
+      })
+      .then(res => res.doesNotExist.throwAnError)
+      .catch(err => err);
+
+      data = data.data
+      if (typeof data === "string") {
+        data = `{ ${data.split("{").slice(1).join("{")}`
+        data = JSON.parse(data)
+      }
+      success = true
+      message = `Document/s mounted successfuly!`
+
+    } catch (err) {
+      data = {}
+      success = false
+      message = `Error!`
+    }
+    /*
     await Promise.all(promises)
     if (project["access-key"] !== req.headers["access-key"]) {
 
       success = false
       message = `Your are not verified!`
       return res.send({ success, message })
-    }
+    }*/
 
     return res.send({ data, success, message })
   }

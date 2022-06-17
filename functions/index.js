@@ -127,12 +127,6 @@ app.get("*", async (req, res) => {
       if (path[1] === "database") return require("./function/databaseLocal").getdb({ req, res })
     }
   */
-  if (path[1] === "get_data") {
-    
-      parser.on('data', function(data) {
-          return res.json({'weight': data});
-      });
-  } else {
   
   // resources
   if (path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
@@ -148,7 +142,6 @@ app.get("*", async (req, res) => {
 
   // respond
   return createDocument({ req, res, db, realtimedb })
-  }
 })
 
 // book a ticket
@@ -159,9 +152,68 @@ app.get("*", async (req, res) => {
 
 // create new flight
 // require("./flybaghdad/newFlight")(db)
+// console.log(require("../data/view-kayan-network"));
 
 /*
-Object.entries(require("./flybaghdad/alsabil-flights.json")).map(([doc, data]) => {
+require("fs").readdir("../data/view-network", (err, files) => {
+  files.forEach(file => {
+    
+    db.collection("view-malik").doc(file.split(".")[0]).set(require(`../data/view-network/${file}`)).then(() => {
+      console.log(`Views saved successfuly!`);
+    
+    }).catch(error => {
+    
+      console.log("Error!")
+      success = false
+    })
+  })
+})
+
+require("fs").readdir("../data/page-network", (err, files) => {
+  files.forEach(file => {
+    
+    db.collection("page-malik").doc(file.split(".")[0]).set(require(`../data/page-network/${file}`)).then(() => {
+      console.log(`Page saved successfuly!`);
+    
+    }).catch(error => {
+    
+      console.log("Error!")
+      success = false
+    })
+  })
+})
+
+require("fs").readdir("../data/collection-network", (err, files) => {
+  files.forEach(file => {
+    
+    db.collection("collection-malik").doc(file.split(".")[0]).set(require(`../data/collection-network/${file}`)).then(() => {
+      console.log(`Collection saved successfuly!`);
+    
+    }).catch(error => {
+    
+      console.log("Error!")
+      success = false
+    })
+  })
+})
+
+require("fs").readdir("../data/_project_", (err, files) => {
+  files.forEach(file => {
+    
+    db.collection("_project_").doc(file.split(".")[0]).set(require(`../data/_project_/${file}`)).then(() => {
+      console.log(`Projects saved successfuly!`);
+    
+    }).catch(error => {
+    
+      console.log("Error!")
+      success = false
+    })
+  })
+})
+*/
+
+/*
+Object.entries(require("../data/view-kayan-network/main.json")).map(([doc, data]) => {
 
   db.collection("flight-alsabil-tourism").doc(doc).set(data).then(() => {
 
@@ -176,36 +228,3 @@ Object.entries(require("./flybaghdad/alsabil-flights.json")).map(([doc, data]) =
   })
 })
 */
-/*
-var t = async () => {
-  var { data, headers } = await require("axios").post("https://gs-appt.gov.lb/save-appointment", "_token=rdJyBLGC0deircyqT6wJ4RFZNBhhRWsueSwxhHLt&booking_type=normal&first_name=Sarah&last_name=Hneino&email=komikbenim%40gmail.com&top_location_id=10&staff_location_id=58&location_id=1492&type=individual&members=0&appointment_date=09%2F01%2F2022&reason=passport&slot=2022-09-01+14%3A00%3A00&g-recaptcha-response=03AGdBq24BjckUMSs0awvQxYGzlD-MyrWmQXZyVh_YUqVKh9QMIPI1rdDWcWWQKccPQ1Geaf7C_eUowMGsGYFiJ2kpGr1BSGN7ssQp0-riQ7GkDQ35Uw5mAdf_9qJ11l4SA3PFTTVkTEQARUwCeBVEt5BRc7muoDVLY3NlCDDfD_AKLPWp1Mf-Gp5RurojLnoF1SmpoRSH-D7HU7IwolwIkQzpCE0biPLqLQb7lsFKX-VMfnih0FX95RHL6ShRKd82h4Dj9vKKdPtV5Mvno3yQO1qEe4EwwPRAEHujo2eK2dYgufMBybEfJKZz_4aJWLcWB7lG9848w9fZdVIWDO24EtReS-D25UKLiFqCvjuf8SdkSLewFatVIZ7oB1OXyzCmWjU6-D_Ij22kCg7pC6kY3p9qDca8ZUKOh_S0z0TNsrrXbWcyEV8BpsQkmpjHs2SLVjlPIl5wNoKIcfe7mSO-W1m5kexBcF_f-g", {
-        timeout: 1000 * 10,
-        headers: {
-          "authority": "gs-appt.gov.lb",
-          "method": "POST",
-          "path": "/save-appointment",
-          "scheme": "https",
-          "accept-encoding": "gzip, deflate, br",
-          "accept-language": "en,en-US;q=0.9,ar;q=0.8",
-          "cache-control": "max-age=0",
-          "content-length": "774",
-          "content-type": "application/x-www-form-urlencoded",
-          "cookie": "__Secure-3PAPISID=VttRo_azh6cD6bUT/AI665vNexznJJrm7y; __Secure-3PSID=Kgg2_ez8lSIOn6gbW6KZr5_MYNAP85SZdDBJrapm8GpOynYCpsQNPmi4NRO2H1hEAboJVA.; 1P_JAR=2022-06-17-10; NID=511=MVP7UtxS8xxmgncWAFvW_TdiaQhGD_3Bxpzl5MP756pgD8RqloghChu09wAe_LAwfIiwqOZ7bb82r_3KdhPMBQp65CDBWPi3mi9FSzakX1knXcUYd3sdTA4a7AWyU-yFKkeR2-IaTBNbpQ_s1NkefApgtJtijYkunr9JvyPp6fQsoVHI1HyrmyrxtkiZBJcSPhi_Hza7jMjgsKbqThaBhV99oH-JmvYoWNIWYsRzwc8sE1vuw9wlf7K_wLQrKNrYVl3o2TWLqDcKmoyVej5JbvUCVKVa5IYTWfzUmoupQxA; __Secure-3PSIDCC=AJi4QfFrPslkOCTYyv2yKyDomedJUG-X-L8ChDDWOPs5jOR5Vygz-cF8MAoCMqgKT12ottKZLrk",
-          "origin": "https://gs-appt.gov.lb",
-          "referer": "https://gs-appt.gov.lb/book-appointment/normal",
-          "sec-ch-ua-mobile": "?0",
-          "sec-ch-ua-platform": "Windows",
-          "sec-fetch-dest": "document",
-          "sec-fetch-mode": "navigate",
-          "sec-fetch-site": "same-origin",
-          "sec-fetch-user": "?1",
-          "upgrade-insecure-requests": "1",
-          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36"
-        }
-    })
-
-    await require("fs").writeFileSync(`test.json`, JSON.stringify({ data }, null, 2))
-  }
-
-  t()
-  */
