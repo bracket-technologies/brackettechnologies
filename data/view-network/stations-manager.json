@@ -1,0 +1,692 @@
+{
+    "type": "View?id=stations-manager;class=flex column;)(:stations-view-type=list",
+    "creation-date": 1647944630899,
+    "id": "stations-manager",
+    "children": [
+        {
+            "type": "View?id=stations-manager-list;class=flex column;style.gap=2rem",
+            "children": [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "type": "View?id=all-stations;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder.is():all-stations]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0",
+                                    "children": [
+                                        {
+                                            "type": "Icon?id=test;class=flexbox;name=bi-list-ul;style.fontSize=1.8rem;style.color=if():[parent().parent().open-folder.is():all-stations]:blue.else():#888"
+                                        },
+                                        {
+                                            "type": "Text?id=test1;class=ar;text=جميع المحطات;style.fontSize=1.3rem;style.color=if():[parent().parent().open-folder.is():all-stations]:blue.else():#888;style.fontWeight=bold"
+                                        },
+                                        {
+                                            "type": "Text?class=ar;text=)(:stations.len();style.display=if():[parent().parent().open-folder.is():all-stations]:flex.else():none;style.fontSize=1.2rem;style.color=if():[parent().parent().open-folder.is():all-stations]:#fff.else():#888;style.backgroundColor=if():[parent().parent().open-folder.is():all-stations]:blue.else():#ddd;style.padding=0 .55rem;style.height=1.75rem;style.borderRadius=1.5rem"
+                                        }
+                                    ],
+                                    "controls": [
+                                        {
+                                            "actions": "async():search:[update:[parent().id]]:[update:stations-views]?search.collection=resources-stations;search.limit=25;async():[)(:stations=().search.data]:[().lastChild().text()=().search.data.len()]",
+                                            "event": "click?parent().open-folder=all-stations?parent().open-folder!=all-stations"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "children": [
+                                        {
+                                            "type": "Icon?class=flexbox;name=bi-activity;style.fontSize=1.8rem;style.color=if():[parent().parent().open-folder.is():active-stations]:blue.else():#888"
+                                        },
+                                        {
+                                            "type": "Text?class=ar;text=المحطات الفعالة;style.fontSize=1.3rem;style.color=if():[parent().parent().open-folder.is():active-stations]:blue.else():#888;style.fontWeight=bold"
+                                        },
+                                        {
+                                            "type": "Text?class=ar;text=)(:stations.len();style.display=if():[parent().parent().open-folder.is():active-stations]:flex.else():none;style.fontSize=1.2rem;style.color=if():[parent().parent().open-folder.is():active-stations]:#fff.else():#888;style.backgroundColor=if():[parent().parent().open-folder.is():active-stations]:blue.else():#ddd;style.padding=0 .55rem;style.height=1.75rem;style.borderRadius=1.5rem"
+                                        }
+                                    ],
+                                    "controls": [
+                                        {
+                                            "event": "click?parent().open-folder=active-stations?parent().open-folder!=active-stations",
+                                            "actions": "async():search:[update:[parent().id]]:[update:stations-views]?search.collection=resources-stations;search.limit=25;search.field.active.equal=true;async():[)(:stations=().search.data]:[().lastChild().text()=().search.data.len()]"
+                                        }
+                                    ],
+                                    "type": "View?id=active-stations;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder.is():active-stations]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0"
+                                }
+                            ],
+                            "type": "View?id=station-file-ear;class=flex;style.gap=0.1rem;().open-folder=all-stations;style.width=100%;style.marginBottom=-0.1rem;style.zIndex=1"
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "type": "View?class=flexbox;style.border=1px solid #ddd;style.borderRadius=2rem;style.padding=.1rem;style.width=40rem;style.height=4rem",
+                                            "children": [
+                                                {
+                                                    "type": "Icon?class=flexbox;style.color=#888;style.fontSize=2rem;style.width=3rem;name=bi-funnel"
+                                                },
+                                                {
+                                                    "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، منطقة، وصف محطة...",
+                                                    "controls": [
+                                                        {
+                                                            "event": "input",
+                                                            "actions": "async():search:[update:stations-views]?search.collection=resources-stations;search.field.name.in=().val();search.field.country.in=().val();search.field.city.in=().val();search.field.address.in=().val();search.field.description.in=().val();search.field.status.in=().val();search.operator=or;async():[)(:stations=().search.data]"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Icon?class=flexbox pointer;style.color=blue;style.fontSize=2rem;style.width=5rem;name=bi-sliders;style.borderRadius=2rem;style.backgroundColor=#f9f9f9;style.height=100%;style.transition=.2s;hover.style.backgroundColor=#eee"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "View?class=flexbox;style.gap=2rem",
+                                            "children": [
+                                                {
+                                                    "type": "View?id=stations-view-type;class=flexbox;style.height=4rem;style.border=1px solid #ddd;style.borderRadius=.5rem",
+                                                    "children": [
+                                                        {
+                                                            "type": "Icon?class=flexbox pointer;style.height=100%;style.width=4rem;style.borderLeft=1px solid #ddd;name=bi-list-task;style.color=if():[)(:stations-view-type=list]:blue.else():#888;style.fontSize=2.2rem;hover.style.backgroundColor=#f8f8f8;style.transition=.2s",
+                                                            "controls": [
+                                                                {
+                                                                    "actions": "update:[parent().id];update:stations-views",
+                                                                    "event": "click?)(:stations-view-type=list?)(:stations-view-type=grid"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "Icon?class=flexbox pointer;style.height=100%;style.width=4rem;style.borderRight=1px solid #ddd;name=bi-grid-3x3-gap;style.color=if():[)(:stations-view-type=grid]:blue.else():#888;style.fontSize=1.8rem;hover.style.backgroundColor=#f8f8f8;style.transition=.2s",
+                                                            "controls": [
+                                                                {
+                                                                    "event": "click?)(:stations-view-type=grid?)(:stations-view-type=list",
+                                                                    "actions": "update:[parent().id];update:stations-views"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "children": [
+                                                        {
+                                                            "type": "Text?class=flexbox ar;style.color=#fff;style.fontSize=1.2rem;text=إضافة محطة جديدة"
+                                                        }
+                                                    ],
+                                                    "type": "View?class=flexbox pointer;style.gap=1rem;style.backgroundColor=blue;style.transition=.3s;style.borderRadius=2rem;style.padding=0 1rem;style.height=3.25rem;hover.style.backgroundColor=#0000bf",
+                                                    "controls": [
+                                                        {
+                                                            "event": "click?():stations-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];)(:new-station=true;)(:stations-data=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:note:_string:status:تعمل:devices:_array:networks:_array;)(:station-copied.del();)(:stations-edit-readonly=false",
+                                                            "actions": "update:stations-mini-window"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "type": "View?class=flex align-center;style.width=100%;style.justifyContent=space-between;style.padding=2rem;style.height=8rem"
+                                },
+                                {
+                                    "type": "View?id=stations-views;class=flex column;style.gap=.2rem",
+                                    "children": [
+                                        {
+                                            "type": "View?id=stations-list-view;class=flex column;style.gap=.2rem;style.display=if():[)(:stations-view-type=list]:flex.else():none?)(:stations-view-type=list",
+                                            "children": [
+                                                {
+                                                    "children": [
+                                                        {
+                                                            "children": [
+                                                                {
+                                                                    "controls": [
+                                                                        {
+                                                                            "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;():stations-views.getChildrenByClassName():checker.slice():1._map():[_.checked.eq():[().checked]]:[_.1stChild().style().opacity.eq():[if():[_.checked]:1.else():0]];():delete-all.style().display=if():[():stations-views.getChildrenByClassName():checker.find():[checked.isTrue()]]:flex.else():none"
+                                                                        }
+                                                                    ],
+                                                                    "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "type": "View?class=flexbox;style.height=100%;style.width=100%"
+                                                        },
+                                                        {
+                                                            "type": "View?class=flex align-center",
+                                                            "children": [
+                                                                {
+                                                                    "type": "Text?class=ar pointer;text=فعّالة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                                                    "controls": [
+                                                                        {
+                                                                            "event": "click",
+                                                                            "actions": "sort;update:stations-list-view?sort.Data=stations;sort.path=active"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "View?class=flex align-center",
+                                                            "children": [
+                                                                {
+                                                                    "type": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "children": [
+                                                                {
+                                                                    "type": "Text?class=ar pointer;text=إسم المحطة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                                                    "controls": [
+                                                                        {
+                                                                            "event": "click",
+                                                                            "actions": "sort;update:stations-list-view?sort.Data=stations;sort.path=name"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "type": "View?class=flex align-center"
+                                                        },
+                                                        {
+                                                            "type": "View?class=flex align-center",
+                                                            "children": [
+                                                                {
+                                                                    "type": "Text?class=flexbox pointer;style.color=#888;style.fontWeight=bold;style.fontSize=1.3rem;text=الحالة",
+                                                                    "controls": [
+                                                                        {
+                                                                            "event": "click",
+                                                                            "actions": "sort;update:stations-list-view?sort.Data=stations;sort.path=status"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "View?class=flex align-center",
+                                                            "children": [
+                                                                {
+                                                                    "type": "Text?class=ar pointer;text=المركز;tooltip.text=المحطة موجودة داخل مركز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "View?class=flex align-center",
+                                                            "children": [
+                                                                {
+                                                                    "type": "Text?class=ar pointer;text=الشبكات;tooltip.text=الشبكات التي تتواجد على المحطة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "View?class=flex align-center",
+                                                            "children": [
+                                                                {
+                                                                    "type": "Text?class=ar pointer;text=الأجهزة;tooltip.text=الأجهزة التي تتواجد على المحطة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "View?class=flex align-center",
+                                                            "children": [
+                                                                {
+                                                                    "type": "Text?class=ar pointer;text=موقع المحطة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                                                                    "controls": [
+                                                                        {
+                                                                            "event": "click",
+                                                                            "actions": "async():sort:sort:sort:[update:stations-list-view]?sort.Data=stations;sort.path=country;async():[sort.Data=stations;sort.path=city]:[sort.Data=stations;sort.path=address]"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
+                                                            "children": [
+                                                                {
+                                                                    "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
+                                                                    "controls": [
+                                                                        {
+                                                                            "event": "click?if():[():station-remove-all-popup.style().pointerEvents=none]:[():station-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():station-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                                                                            "actions": "setPosition:station-remove-all-popup?position.placement=right;position.positioner=().id"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 10rem 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden"
+                                                },
+                                                {
+                                                    "children": [
+                                                        {
+                                                            "children": [
+                                                                {
+                                                                    "type": "View?class=flexbox;style.width=100%;style.height=100%",
+                                                                    "children": [
+                                                                        {
+                                                                            "controls": [
+                                                                                {
+                                                                                    "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker._():[_.checked=false;_.1stChild().style().opacity=0]];():delete-all.style().display=if():[():stations-views.getChildrenByClassName():checker.find():[checked.isTrue()]]:flex.else():none"
+                                                                                }
+                                                                            ],
+                                                                            "children": [
+                                                                                {
+                                                                                    "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                                                                                }
+                                                                            ],
+                                                                            "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[().data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
+                                                                            "controls": [
+                                                                                {
+                                                                                    "event": "click?style().backgroundColor=if():[().data().active]:#ddd.else():#15ff00;().data().active=data().active.opp();().style().transform=scale(1.1);timer():[().style().transform=scale(1)]:50",
+                                                                                    "actions": "save?save.collection=resources-stations;save.doc=data().id;save.data=data()"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ],
+                                                                    "type": "View?class=flex align-center"
+                                                                },
+                                                                {
+                                                                    "type": "View?class=flex align-center pointer;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "Text?style.fontSize=1.4rem;text=data().id"
+                                                                        }
+                                                                    ],
+                                                                    "controls": [
+                                                                        {
+                                                                            "event": "mouseenter?1stChild().style().fontWeight=bold"
+                                                                        },
+                                                                        {
+                                                                            "event": "mouseleave?1stChild().style().fontWeight=normal"
+                                                                        },
+                                                                        {
+                                                                            "event": "click?)(:stations-data=data().clone();)(:stations-edit-readonly=true;)(:new-station.del();)(:station-copied.del()",
+                                                                            "actions": "update:stations-mini-window?():stations-mini-window.style().opacity=1;():stations-mini-window.style().pointerEvents=auto"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "Text?style.fontSize=1.4rem;text=data().name"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
+                                                                    "children": [
+                                                                        {
+                                                                            "children": [
+                                                                                {
+                                                                                    "type": "View?class=flexbox;style.backgroundColor=if():[data()=معطّلة]:red.elif():[data()=ممتلئة]:#db8f00.elif():[data()=فارغة]:#c2b800.elif():[data()=تعمل]:#00c206;style.height=1rem;style.width=1rem;style.borderRadius=1rem"
+                                                                                },
+                                                                                {
+                                                                                    "type": "Text?style.color=if():[data()=معطّلة]:red.elif():[data()=ممتلئة]:#db8f00.elif():[data()=فارغة]:#c2b800.elif():[data()=تعمل]:#00c206;style.fontSize=1.2rem;style.fontWeight=bold;text=data()"
+                                                                                }
+                                                                            ],
+                                                                            "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=معطّلة]:#ffdbdb.elif():[data()=ممتلئة]:#ffe3b0.elif():[data()=فارغة]:#fffbb8.elif():[data()=تعمل]:#c2ffc4;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "Text?style.fontSize=1.4rem;text=)(:centers.[data().center].name.else():_string",
+                                                                            "controls": [
+                                                                                {
+                                                                                    "event": "click?)(:centers-data=)(:centers.values().find():[centers-managing.inc():[parent().data().id]];)(:centers-edit-readonly=true;)(:new-centers.del();)(:centers-copied.del()?text()",
+                                                                                    "actions": "update:centers-mini-window?():centers-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "View?class=flex align-center networks;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "Text?style.fontSize=1.4rem;text=(+data().networks.len().ar()+)"
+                                                                        },
+                                                                        {
+                                                                            "type": "[Text]?style.fontSize=1.4rem;data=data().networks._map():[)(:networks.values().filter():[id=_]].flat().map():name;Data;tooltip.text=عرض الشبكة;hover.style.color=#000;hover.style.fontWeight=bold;style.transition=.3s;style.cursor=pointer?data().networks.len()>0",
+                                                                            "controls": [
+                                                                                {
+                                                                                    "event": "click?)(:networks-data=)(:networks.values().find():[stations.inc():[parent().data().id]];)(:networks-edit-readonly=true;)(:new-networks.del();)(:networks-copied.del()?text()",
+                                                                                    "actions": "update:networks-mini-window?():networks-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "View?class=flex align-center devices;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "Text?style.fontSize=1.4rem;text=(+data().devices.len().ar()+)"
+                                                                        },
+                                                                        {
+                                                                            "type": "[Text]?style.fontSize=1.4rem;data=data().devices._map():[)(:devices.values().filter():[id=_]].flat().map():name;Data;tooltip.text=عرض الجهاز;hover.style.color=#000;hover.style.fontWeight=bold;style.transition=.3s;style.cursor=pointer?data().devices.len()>0",
+                                                                            "controls": [
+                                                                                {
+                                                                                    "event": "click?)(:devices-data=)(:devices.values().find():[devices-managing.inc():[parent().data().id]];)(:devices-edit-readonly=true;)(:new-devices.del();)(:devices-copied.del()?text()",
+                                                                                    "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "Text?style.fontSize=1.4rem;text=data().country+, +data().city+, +data().address"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
+                                                                            "controls": [
+                                                                                {
+                                                                                    "event": "click?if():[)(:stations-data.is():[().data()].and():[():stations-actions.style().pointerEvents.is():auto]]:[():stations-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:stations-data.delete()]].else():[():stations-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:stations-data=data().clone()]];)(:new-station.del();)(:station-copied.del();():station-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+                                                                                    "actions": "setPosition:stations-actions?position.placement=right;position.positioner=().id"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "type": "[View]?data=)(:stations;style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:stations-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 10rem 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa"
+                                                        }
+                                                    ],
+                                                    "type": "View?class=flex column;style.width=100%;style.gap=.2rem;style.height=calc(100vh - 27rem);style.overflowY=auto?)(:stations.len().greater():0"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "View?id=stations-grid-view;class=flex column;style.gap=1rem;style.display=if():[)(:stations-view-type=grid]:flex.else():none?)(:stations-view-type=grid",
+                                            "children": [
+                                                {
+                                                    "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;class=flex align-center;style.borderRadius=1rem;style.overflow=hidden",
+                                                    "children": [
+                                                        {
+                                                            "type": "View?class=flexbox;style.height=100%;style.width=6rem",
+                                                            "children": [
+                                                                {
+                                                                    "controls": [
+                                                                        {
+                                                                            "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;():stations-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked]:[_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():stations-views.getChildrenByClassName():checker.find():[checked.isTrue()]]:flex.else():none"
+                                                                        }
+                                                                    ],
+                                                                    "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "View?class=flexbox;style.padding=0 .5rem;style.marginRight=auto",
+                                                            "children": [
+                                                                {
+                                                                    "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
+                                                                    "controls": [
+                                                                        {
+                                                                            "event": "click?if():[():station-remove-all-popup.style().pointerEvents=none]:[():station-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():station-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                                                                            "actions": "setPosition:station-remove-all-popup?position.placement=right;position.positioner=().id"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "View?style.overflow=auto;style.height=calc(100vh - 27.8rem)",
+                                                    "children": [
+                                                        {
+                                                            "type": "View?style.padding=1rem;style.gap=1rem;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr?)(:stations.len().greater():0",
+                                                            "children": [
+                                                                {
+                                                                    "type": "[View]?data=)(:stations;class=flex;style.borderRadius=1.5rem;style.border=1px solid #e5e5e5;style.padding=1rem;hover.style.border=1px solid #ddd",
+                                                                    "children": [
+                                                                        {
+                                                                            "type": "View?class=flex align-center column;style.gap=1rem;style.width=fit-content",
+                                                                            "children": [
+                                                                                {
+                                                                                    "controls": [
+                                                                                        {
+                                                                                            "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():stations-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                                                                                        }
+                                                                                    ],
+                                                                                    "children": [
+                                                                                        {
+                                                                                            "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                                                                                        }
+                                                                                    ],
+                                                                                    "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                                                                                },
+                                                                                {
+                                                                                    "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[().data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
+                                                                                    "controls": [
+                                                                                        {
+                                                                                            "event": "click?().style().backgroundColor=if():[().data().active]:#ddd.else():#15ff00;().data().active=data().active.opp();().style().transform=scale(1.1);timer():[().style().transform=scale(1)]:50",
+                                                                                            "actions": "save?save.collection=resources-stations;save.doc=data().id;save.data=data()"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "type": "View?style.flex=1;class=flex column;style.gap=1rem;style.padding=0 2rem",
+                                                                            "children": [
+                                                                                {
+                                                                                    "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                                                                    "children": [
+                                                                                        {
+                                                                                            "type": "Text?style.fontSize=1.4rem;text=data().name"
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                {
+                                                                                    "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
+                                                                                    "children": [
+                                                                                        {
+                                                                                            "children": [
+                                                                                                {
+                                                                                                    "type": "View?class=flexbox;style.backgroundColor=if():[data()=معطّلة]:red.elif():[data()=ممتلئة]:#db8f00.elif():[data()=فارغة]:#c2b800.elif():[data()=تعمل]:#00c206;style.height=1rem;style.width=1rem;style.borderRadius=1rem"
+                                                                                                },
+                                                                                                {
+                                                                                                    "type": "Text?style.color=if():[data()=معطّلة]:red.elif():[data()=ممتلئة]:#db8f00.elif():[data()=فارغة]:#c2b800.elif():[data()=تعمل]:#00c206;style.fontSize=1.2rem;style.fontWeight=bold;text=data()"
+                                                                                                }
+                                                                                            ],
+                                                                                            "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=معطّلة]:#ffdbdb.elif():[data()=ممتلئة]:#ffe3b0.elif():[data()=فارغة]:#fffbb8.elif():[data()=تعمل]:#c2ffc4;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem"
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                {
+                                                                                    "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                                                                                    "children": [
+                                                                                        {
+                                                                                            "type": "Text?style.fontSize=1.4rem;text=data().country+, +data().city+, +data().address"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem;style.height=fit-content",
+                                                                            "children": [
+                                                                                {
+                                                                                    "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3rem;style.borderRadius=3rem;style.width=3rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
+                                                                                    "controls": [
+                                                                                        {
+                                                                                            "event": "click?if():[)(:stations-data.is():[().data()].and():[():stations-actions.style().pointerEvents.is():auto]]:[():stations-actions.style().map():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:stations-data.delete()]].else():[():stations-actions.map():[style().opacity=1;style().pointerEvents=auto;style().transform=scale(1);)(:stations-data=data().clone()]];)(:new-station.del();)(:station-copied.del();():station-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+                                                                                            "actions": "setPosition:stations-actions?position.placement=right;position.positioner=().id"
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "type": "View?class=flex column;style.backgroundColor=#fff;style.minWidth=100%;style.padding=.5rem;style.borderRadius=1rem 0 1rem 1rem;style.border=1px solid #ddd"
+                        }
+                    ],
+                    "type": "View?class=flex column;style.borderRadius=1rem;style.minHeight=100%;style.width=100%"
+                }
+            ]
+        },
+        {
+            "type": "View?id=stations-actions;class=flexbox column box-shadow-1;style.padding=.2rem;style.backgroundColor=#fff;style.borderRadius=.5rem;style.position=absolute;style.opacity=0;style.pointerEvents=none;style.transition=opacity .2s, transform .2s;style.transform=scale(0.8);style.zIndex=1",
+            "children": [
+                {
+                    "type": "View?tooltip.text=عرض;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-eye;style.fontSize=1.6rem;style.color=#666"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "click?)(:stations-edit-readonly=true",
+                            "actions": "update:stations-mini-window?():stations-mini-window.style().opacity=1;():stations-mini-window.style().pointerEvents=auto"
+                        }
+                    ]
+                },
+                {
+                    "type": "View?tooltip.text=تعديل;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-pencil-square;style.fontSize=1.6rem;style.color=#666"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "click?)(:stations-edit-readonly=false;)(:stations-edit=true",
+                            "actions": "async():[update:stations-mini-window]?():stations-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];async():[)(:stations-edit=false]"
+                        }
+                    ]
+                },
+                {
+                    "type": "View?tooltip.text=نسخ;class=flexbox pointer;style.height=4rem;style.width=3.5rem;hover.style.backgroundColor=#eee",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-files;style.fontSize=1.6rem;style.color=#666"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "click?)(:stations-edit-readonly=false;)(:stations-data.id=generate():20;)(:stations-data.creation-date=today().timestamp();)(:station-copied",
+                            "actions": "update:stations-mini-window?():stations-mini-window.style().opacity=1;():stations-mini-window.style().pointerEvents=auto"
+                        }
+                    ]
+                },
+                {
+                    "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee",
+                    "children": [
+                        {
+                            "type": "Icon?name=bi-trash;style.fontSize=1.6rem;style.color=#666"
+                        }
+                    ],
+                    "controls": [
+                        {
+                            "event": "click?if():[():station-remove-popup.style().pointerEvents.is():none]:[():station-remove-popup.style():[opacity=1;transform=scale(1);pointerEvents=auto]].else():[():station-remove-popup.style():[opacity=0;transform=scale(0.5);pointerEvents=none]]",
+                            "actions": "setPosition:station-remove-popup?position.positioner=().id;position.placement=right"
+                        }
+                    ]
+                }
+            ],
+            "controls": [
+                {
+                    "event": "mouseleave?()::200.if():[().mouseenter.isfalse()]:[().style().opacity.eq():0.then():[().style().pointerEvents.eq():none]:[().style().transform.eq():[scale(0.8)]]]"
+                }
+            ]
+        },
+        {
+            "type": "View?class=box-shadow;id=station-remove-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
+            "children": [
+                {
+                    "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().style().opacity=0;parent().style().pointerEvents=none;parent().style().transform=scale(0.5);)(:stations.[)(:stations-data.id].del()",
+                            "actions": "async():erase:[update:stations-manager-list]?erase.collection=resources-stations;erase.doc=)(:stations-data.id;async():[():stations-mini-window.style().opacity=0;():stations-mini-window.style().pointerEvents=none;)(:new-station.delete()]"
+                        }
+                    ]
+                },
+                {
+                    "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().style().opacity=0;parent().style().pointerEvents=none;parent().style().transform=scale(0.5)"
+                        }
+                    ]
+                }
+            ],
+            "controls": [
+                {
+                    "event": "mouseleave::200?().style().pointerEvents=none;().style().opacity=0;().style().transform=scale(0.5)?!().mouseenter"
+                }
+            ]
+        },
+        {
+            "type": "View?class=box-shadow;id=station-remove-all-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
+            "children": [
+                {
+                    "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
+                    "controls": [
+                        {
+                            "event": "click?().clicked-stations-id=():stations-views.getChildrenByClassName():checker.slice():1.filter():checked.map():[data().id];parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+                            "actions": "async():erase:[update:stations-manager-list]?erase.collection=resources-stations;erase.docs=().clicked-stations-id;async():[().clicked-stations-id._map():[)(:stations._.del()];().clicked-stations-id.del()]"
+                        }
+                    ]
+                },
+                {
+                    "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
+                    "controls": [
+                        {
+                            "event": "click?parent().style().opacity=0;parent().style().pointerEvents=none;parent().style().transform=scale(0.5)"
+                        }
+                    ]
+                }
+            ],
+            "controls": [
+                {
+                    "event": "mouseleave::200?().style().pointerEvents=none;().style().opacity=0;().style().transform=scale(0.5)?!().mouseenter"
+                }
+            ]
+        }
+    ],
+    "controls": [
+        {
+            "event": "loaded",
+            "actions": "async():search:search:search:[update:stations-manager-list]?search.collection=resources-stations;search.limit=25;async():[)(:stations=().search.data;search.collection=resources-devices;search.docs=)(:stations.values().map():devices.flat().removeDuplicates().filter()]:[().search.data.values()._map():[)(:devices.[_.id]=_];search.collection=resources-networks;search.docs=)(:stations.values().map():networks.flat().removeDuplicates().filter()]:[().search.data.values()._map():[)(:networks.[_.id]=_];search.collection=resources-centers;search.docs=)(:stations.values().map():center.filter().removeDuplicates()]:[().search.data.values()._map():[)(:centers.[_.id]=_];():all-stations.lastChild().text()=().search.data.len()]"
+        },
+        {
+            "event": "loaded??!)(:resources",
+            "actions": [
+                "async():search?search.collection=resources;async():[)(:resources=().search.data]"
+            ]
+        }
+    ]
+}

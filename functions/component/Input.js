@@ -126,6 +126,7 @@ const Input = (component) => {
         var Data = component.Data
         var tooltip = component.tooltip
         var text = label.text
+        component.clicked = component.clicked || { style: {} }
         clickedBorder = component.clicked.style.border || "2px solid #008060"
         if (component.clicked.style.border) delete component.clicked.style.border
         component.clicked.preventDefault = true

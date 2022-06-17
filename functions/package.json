@@ -28,6 +28,9 @@
     "firebase-admin": "^10.2.0",
     "firebase-functions": "*",
     "qrcode-terminal": "^0.12.0",
+    "serialport": "^10.4.0",
+    "socket.io": "^4.5.1",
+    "usb": "^2.4.2",
     "uuid": "^8.3.2",
     "whatsapp-web.js": "^1.16.7"
   },

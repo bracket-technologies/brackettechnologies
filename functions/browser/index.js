@@ -311,6 +311,7 @@ const Input = (component) => {
         var Data = component.Data
         var tooltip = component.tooltip
         var text = label.text
+        component.clicked = component.clicked || { style: {} }
         clickedBorder = component.clicked.style.border || "2px solid #008060"
         if (component.clicked.style.border) delete component.clicked.style.border
         component.clicked.preventDefault = true
@@ -6057,13 +6058,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (k[0] === "_") answer = toArray(o).filter(o => toApproval({ _window, e, string: arg, id, _: o, req, res }) )
                 else answer = toArray(o).filter(o => toApproval({ _window, e, string: arg, id, object: o, req, res, _ }))
             })
-console.log(answer);
+            
             answer.map(_item => {
                 var _index = o.findIndex(item => isEqual(item, _item))
                 o.splice(_index, 1)
             })
 
-            console.log(o);
             answer = o
 
         } else if (k0 === "filterItem()") {

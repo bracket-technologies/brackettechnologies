@@ -1,0 +1,392 @@
+{
+  "type": "View?class=flexbox;style:[height=100vh;width=100vw;overflow=hidden]",
+  "children": [
+    {
+      "type": "View?style:[maxWidth=100%;maxHeight=100%;position=absolute;top=0;left=0;overflow=hidden]",
+      "children": [
+        {
+          "type": "Image?src='http://192.168.25.150/storage/kayan-network/background.jpg'"
+        }
+      ]
+    },
+    {
+      "type": "View?class=flex box-shadow-2;style:[width=80vw;borderRadius=1rem;backgroundColor=#f3f3f3;zIndex=1]",
+      "children": [
+        {
+          "type": "View?id=sidebar;class=flex column box-shadow-2;style:[padding=2rem 0;width=11rem;backgroundColor=#eee;borderRadius=1rem 0 0 1rem]",
+          "children": [
+            {
+              "type": "View?id=station-btn;class=flexbox column pointer;style:[gap=0.5rem;height=10rem]",
+              "children": [
+                {
+                  "type": "Icon?name=cell_tower;google.outlined;style:[fontSize=4.25rem;color=#888;transition=0.3s]"
+                },
+                {
+                  "type": "Text?text=Stations;style:[fontSize=1.4rem;color=#888;transition=0.3s]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "mouseenter?children().():[style().color=#444]"
+                },
+                {
+                  "event": "mouseleave?children().():[style().color=#888]"
+                }
+              ]
+            },
+            {
+              "type": "View?id=thermometer-btn;class=flexbox column pointer;style:[gap=0.5rem;height=10rem]",
+              "children": [
+                {
+                  "type": "Icon?name=bi-thermometer;style:[fontSize=4.25rem;color=#888;transition=0.3s]"
+                },
+                {
+                  "type": "Text?text=Temperature;style:[fontSize=1.4rem;color=#888;transition=0.3s]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "mouseenter?children().():[style().color=#444]"
+                },
+                {
+                  "event": "mouseleave?children().():[style().color=#888]"
+                }
+              ]
+            },
+            {
+              "type": "View?id=moisture-btn;class=flexbox column pointer;style:[gap=0.5rem;height=10rem]",
+              "children": [
+                {
+                  "type": "Icon?name=bi-moisture;style:[fontSize=4.25rem;color=#888;transition=0.3s]"
+                },
+                {
+                  "type": "Text?text=Moisture;style:[fontSize=1.4rem;color=#888;transition=0.3s]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "mouseenter?children().():[style().color=#444]"
+                },
+                {
+                  "event": "mouseleave?children().():[style().color=#888]"
+                }
+              ]
+            },
+            {
+              "type": "View?id=door-btn;class=flexbox column pointer;style:[gap=0.5rem;height=10rem]",
+              "children": [
+                {
+                  "type": "Icon?name=bi-door-open;style:[fontSize=4.25rem;color=#888;transition=0.3s]"
+                },
+                {
+                  "type": "Text?text=Doors;style:[fontSize=1.4rem;color=#888;transition=0.3s]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "mouseenter?children().():[style().color=#444]"
+                },
+                {
+                  "event": "mouseleave?children().():[style().color=#888]"
+                }
+              ]
+            },
+            {
+              "type": "View?id=droplet-btn;class=flexbox column pointer;style:[gap=0.5rem;height=10rem]",
+              "children": [
+                {
+                  "type": "Icon?name=bi-droplet;style:[fontSize=4.25rem;color=#888;transition=0.3s]"
+                },
+                {
+                  "type": "Text?text=Water;style:[fontSize=1.4rem;color=#888;transition=0.3s]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "mouseenter?children().():[style().color=#444]"
+                },
+                {
+                  "event": "mouseleave?children().():[style().color=#888]"
+                }
+              ]
+            },
+            {
+              "type": "View?id=power-btn;class=flexbox column pointer;style:[gap=0.5rem;height=10rem]",
+              "children": [
+                {
+                  "type": "Icon?name=power;google.outlined;style:[fontSize=4.5rem;color=#888;transition=0.3s]"
+                },
+                {
+                  "type": "Text?text=Power;style:[fontSize=1.4rem;color=#888;transition=0.3s]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "mouseenter?children().():[style().color=#444]"
+                },
+                {
+                  "event": "mouseleave?children().():[style().color=#888]"
+                }
+              ]
+            },
+            {
+              "type": "View?id=switch-btn;class=flexbox column pointer;style:[gap=0.5rem;height=10rem]",
+              "children": [
+                {
+                  "type": "Icon?name=bi-nintendo-switch;style:[fontSize=3.75rem;color=#888;transition=0.3s]"
+                },
+                {
+                  "type": "Text?text=Switch;style:[fontSize=1.4rem;color=#888;transition=0.3s]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "mouseenter?children().():[style().color=#444]"
+                },
+                {
+                  "event": "mouseleave?children().():[style().color=#888]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "View?id=board;class=flex column;style:[gap=2rem;padding=2rem;width=calc(100% - 11rem)];)(:clicked-station=)(:clicked-station||Office",
+          "children": [
+            {
+              "type": "View?id=stations-bar;class=flex;style:[width=100%;overflowX=auto;gap=2rem]",
+              "children": [
+                {
+                  "type": "Text?text=Office;style:[fontSize=3rem;color=#888;cursor=pointer;transition=.2s];hover:[style.color=#444;mount;disable];click:[siblings().():[style().color=#888;hover.disable=false];style().color=#444;hover.disable=true]"
+                },
+                {
+                  "type": "Text?text=Habib;style:[fontSize=3rem;color=#888;cursor=pointer;transition=.2s];hover.style.color=#444;click:[siblings().():[style().color=#888;hover.disable=false];style().color=#444;hover.disable=true]"
+                },
+                {
+                  "type": "Text?text=Rami;style:[fontSize=3rem;color=#888;cursor=pointer;transition=.2s];hover.style.color=#444;click:[siblings().():[style().color=#888;hover.disable=false];style().color=#444;hover.disable=true]"
+                },
+                {
+                  "type": "Text?text=Diamond;style:[fontSize=3rem;color=#888;cursor=pointer;transition=.2s];hover.style.color=#444;click:[siblings().():[style().color=#888;hover.disable=false];style().color=#444;hover.disable=true]"
+                }
+              ]
+            },
+            {
+              "type": "View?id=monitoring-view;class=flex;style:[gap=2rem;flex=1;width=100%]",
+              "children": [
+                {
+                  "type": "View?id=powerBoard;class=flex column box-shadow-2;style:[gap=1rem;backgroundColor=#fff;width=20%;padding=2rem]",
+                  "children": [
+                    {
+                      "type": "View?class=flex;style:[gap=.5rem;color=#888]",
+                      "children": [
+                        {
+                          "type": "Icon?name=power;google.outlined;style:[fontSize=3rem]"
+                        },
+                        {
+                          "type": "Text?text=Power;style:[fontSize=2rem]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=grid;style:[gap=4rem;padding=1rem;height=100%]",
+                      "children": [
+                        {
+                          "type": "View:AC-Current?class=flexbox column box-shadow-1;style:[width=100%;height=100%;gap=1rem;padding=1rem;borderRadius=1rem;backgroundColor=#f6f6f6]",
+                          "children": [
+                            {
+                              "type": "View?class=flex ;style:[gap=1rem]",
+                              "children": [
+                                {
+                                  "type": "Icon?name=bi-activity;style:[fontSize=4rem]"
+                                },
+                                {
+                                  "type": "Text?text=AC-Current;style.fontSize=2.5rem"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Text?text=)(:arduino-data.AC_Current+A;style:[fontSize=2rem]"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "View:AC-Voltage?class=flexbox column box-shadow-1;style:[width=100%;height=100%;gap=1rem;padding=1rem;borderRadius=1rem;backgroundColor=#f6f6f6]",
+                          "children": [
+                            {
+                              "type": "View?class=flex ;style:[gap=1rem]",
+                              "children": [
+                                {
+                                  "type": "Icon?name=bi-activity;style:[fontSize=4rem]"
+                                },
+                                {
+                                  "type": "Text?text=AC-Voltage;style.fontSize=2.5rem"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Text?text=)(:arduino-data.AC_voltage+V;style:[fontSize=2rem]"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "View:DC-Current?class=flexbox column box-shadow-1;style:[width=100%;height=100%;gap=1rem;padding=1rem;borderRadius=1rem;backgroundColor=#f6f6f6]",
+                          "children": [
+                            {
+                              "type": "View?class=flex ;style:[gap=1rem]",
+                              "children": [
+                                {
+                                  "type": "Icon?name=power-input;googlzoutlined;style:[fontSize=4rem]"
+                                },
+                                {
+                                  "type": "Text?text=DC-Current;style.fontSize=2.5rem"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Text?text=)(:arduino-data.DC_current+A;style:[fontSize=2rem]"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "View:DC-Voltage?class=flexbox column box-shadow-1;style:[width=100%;height=100%;gap=1rem;padding=1rem;borderRadius=1rem;backgroundColor=#f6f6f6]",
+                          "children": [
+                            {
+                              "type": "View?class=flex ;style:[gap=1rem]",
+                              "children": [
+                                {
+                                  "type": "Icon?name=bi-activity;style:[fontSize=4rem]"
+                                },
+                                {
+                                  "type": "Text?text=DC-Voltage;style.fontSize=2.5rem"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Text?text=)(:arduino-data.DC_voltage+V;style:[fontSize=2rem]"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "View?id=enviromentBoard;class=flex column;style:[gap=3rem;flex=1]",
+                  "children": [
+                    {
+                      "type": "View?id=1stline;class=flex align-center;style:[gap=2rem;height=50%]",
+                      "children": [
+                        {
+                          "type": "View?id=temperature;class=flex column box-shadow-1;style:[gap=5rem;backgroundColor=#fff;width=33%;padding=2rem;height=100%]",
+                          "children": [
+                            {
+                              "type": "Text?text=Temperature;style:[fontSize=2rem;display=flex]"
+                            },
+                            {
+                              "type": "Icon?name=bi-thermometer;style:[fontSize=6rem]"
+                            },
+                            {
+                              "type": "Text?text=[)(:arduino-data.temperature||'--']+C;style:[fontSize=3.5rem;color=#888]"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "View?id=humidity;class=flex column box-shadow-1;style:[gap=5rem;backgroundColor=#fff;width=33%;padding=2rem;height=100%]",
+                          "children": [
+                            {
+                              "type": "Text?text=Humidity;style:[fontSize=2rem;display=flex]"
+                            },
+                            {
+                              "type": "Icon?name=bi-moisture;style:[fontSize=6rem]"
+                            },
+                            {
+                              "type": "Text?text=[)(:arduino-data.humidity||'--']H;style:[color=#888;fontSize=3.5rem]"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "View?id=water;class=flex column box-shadow-1;style:[gap=5rem;backgroundColor=#fff;width=33%;padding=2rem;height=100%]",
+                          "children": [
+                            {
+                              "type": "Text?text=water;style:[fontSize=2rem;display=flex]"
+                            },
+                            {
+                              "type": "Icon?name=bi-droplet;style:[fontSize=6rem]"
+                            },
+                            {
+                              "type": "Text?text=[)(:arduino-data.water-exists||'--'];style:[color=#888;fontSize=3.5rem]"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?id=doors;class=flex column box-shadow-1;style:[gap=5rem;backgroundColor=#fff;width=33%;padding=2rem;height=50%]",
+                      "children": [
+                        {
+                          "type": "Text?text=Nock Door;style:[fontSize=2rem;display=flex]"
+                        },
+                        {
+                          "type": "Icon?name=bi-door-closed;style:[fontSize=6rem]"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "View?id=switchBoard;class=flex column box-shadow-2;style:[gap=1rem;backgroundColor=#fff;width=20%;padding=2rem]",
+                  "children": [
+                    {
+                      "type": "View:AC-Current?class=flexbox column box-shadow-1;style:[width=100%;height=100%;gap=1rem;padding=1rem;borderRadius=1rem;backgroundColor=#f6f6f6]",
+                      "children": [
+                        {
+                          "type": "View?class=flex ;style:[gap=1rem]",
+                          "children": [
+                            {
+                              "type": "Icon?name=bi-activity;style:[fontSize=4rem]"
+                            },
+                            {
+                              "type": "Text?text=AC-Current;style.fontSize=2.5rem"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Text?text=)(:arduino-data.AC_Current+A;style:[fontSize=2rem]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View:AC-Current?class=flexbox column box-shadow-1;style:[width=100%;height=100%;gap=1rem;padding=1rem;borderRadius=1rem;backgroundColor=#f6f6f6]",
+                      "children": [
+                        {
+                          "type": "View?class=flex ;style:[gap=1rem]",
+                          "children": [
+                            {
+                              "type": "Icon?name=bi-activity;style:[fontSize=4rem]"
+                            },
+                            {
+                              "type": "Text?text=AC-Current;style.fontSize=2.5rem"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Text?text=)(:arduino-data.AC_Current+A;style:[fontSize=2rem]"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "event": "loaded",
+      "actions": "wait():[search::5000i]?search.url='http://192.168.25.161';wait():[if():[[search.data;!)(:arduino-data]||[search.data!=)(:arduino-data]]:[log():here;)(:arduino-data=().search.data;update():1stline;update():powerBoard]]"
+    }
+  ]
+}
