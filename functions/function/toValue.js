@@ -19,7 +19,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   // string
   if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
   if (value.includes('codedS()') && value.length === 13) return value = global.codes[value]
-
+  
   // value is a param it has key=value
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, object, mount, params })
 

@@ -170,6 +170,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
             return 
           }
 
+          if (eventid === "droplist" && !global["droplist-positioner"]) return
           if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
           if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
 

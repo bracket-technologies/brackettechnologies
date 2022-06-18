@@ -698,11 +698,11 @@ module.exports = (component) => {
                         children: [{
                             type: "Input?mode.dark.style.color=#c39178;if():[derivations().lastElement()=id]:[input.readonly=true];style.maxHeight=3.2rem;style.height=3.2rem;mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#a35521",
                             controls: [{
-                                event: "keyup?insert-index:()=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;!ctrlKey:()",
+                                event: "keyup?insert-index:()=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
                                 actions: "wait():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[insert-index:()]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.getInput().focus()]"
                             },
                             {
-                                event: "keyup?insert-index:()=parent().parent().parent().parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().parent().parent().parent().id]+1;parent().parent().parent().parent().parent().parent().parent().parent().data().splice():[if():[derivations().lastEl()=type]:[_map:type:_string].elif():[derivations().lastEl()=event||derivations().lastEl()=actions]:[_map:event:_string]]:[insert-index:()];if():[insert-index:().less():[parent().parent().parent().parent().parent().parent().parent().parent().data().len()+1]]:[parent().parent().parent().parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;ctrlKey:();derivations().lastEl()=type||derivations().lastEl()=event||derivations().lastEl()=actions",
+                                event: "keyup?insert-index:()=parent().parent().parent().parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().parent().parent().parent().id]+1;parent().parent().parent().parent().parent().parent().parent().parent().data().splice():[if():[derivations().lastEl()=type]:[_map:type:_string].elif():[derivations().lastEl()=event||derivations().lastEl()=actions]:[_map:event:_string]]:[insert-index:()];if():[insert-index:().less():[parent().parent().parent().parent().parent().parent().parent().parent().data().len()+1]]:[parent().parent().parent().parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;ctrlKey:();derivations().lastEl()=type||derivations().lastEl()=event||derivations().lastEl()=actions",
                                 actions: "wait():[insert:[parent().parent().parent().parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().parent().parent().parent().children.1;insert.path=parent().parent().parent().parent().parent().parent().parent().parent().derivations.clone().push():[insert-index:()];insert.index=insert-index:();wait():[().insert.view.inputs().1.focus()]"
                             }]
                         }]
@@ -710,8 +710,8 @@ module.exports = (component) => {
                 }, {
                     type: "Input?style.height=3.2rem;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.type=number;input.style.color=olive;style.width=fit-content;style.borderRadius=.5rem?data().type()=number",
                     controls: [{
-                        event: "keyup?insert-index:()=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.lastIndex();)(:el-index=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[)(:last-index]=)(:el-index]]]?e().key=Enter;!ctrlKey:()",
-                        actions: "wait():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[insert-index:()]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.getInput().focus()]"
+                        event: "keyup?insert-index:()=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;if():[parent().parent().parent().data().type()=map]:[parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[parent().parent().parent().data().len()+1];parent().parent().parent().data().type()=array]:[parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
+                        actions: "wait():[insert:[parent().parent().parent().id]]?insert.component=parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().derivations.clone().push():[insert-index:()]]:[parent().parent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.input().focus()]"
                     }]
                 }, {
                     type: "Input?style.height=3.2rem;readonly;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.color=purple;style.width=fit-content;style.borderRadius=.5rem;droplist.items=_array:true:false?data().type()=boolean"
@@ -2335,7 +2335,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
           event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
           actions: [
             `async():[resize:${input_id}]:[isArabic:${input_id}]:[focus:${input_id}]?if():[():${input_id}]:[():${input_id}.data()=txt().replace():'&amp;':'&';():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
+            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()||_.txt().num()=0]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
             `droplist:${id};setPosition:droplist?)(:droplist-search-txt=():${id}.getInput().txt();position.positioner=${`():${id}.droplist.positioner` || id};position.placement=${`():${id}.droplist.placement` || "bottom"};position.distance=():${id}.droplist.distance;position.align=():${id}.droplist.align;():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable`
           ]
         }]
@@ -2561,6 +2561,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
             return 
           }
 
+          if (eventid === "droplist" && !global["droplist-positioner"]) return
           if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
           if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
 
@@ -4273,7 +4274,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
 
-    if (path[0] === "()" && path[1] && !path[1].includes("()")) {
+    if (view && path[0] === "()" && path[1] && !path[1].includes("()")) {
         if (path[1] !== "txt()" || path[1] !== "val()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
@@ -5957,9 +5958,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (_o.nodeType === Node.ELEMENT_NODE) el = _o
             else if (_o.element) el = _o.element
             
-            var _view = views[el.id]
+            var _view
+            if (el) _view = views[el.id]
             
-            if ((_view.templated || _view.labeled) && el) if (_view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
+            if (_view && (_view.templated || _view.labeled) && el) if (_view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
             
             if (el) {
                 if (window.views[el.id].type === "Input") {
@@ -8787,6 +8789,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
+  var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
@@ -8801,7 +8804,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
   string.split(";").map(param => {
     
     var key, value, id = viewId
-    var view = _window ? _window.views[id] : window.views[id]
+    var view = views[id]
     
     // break
     if (view && view.break) return
@@ -9234,7 +9237,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   // string
   if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
   if (value.includes('codedS()') && value.length === 13) return value = global.codes[value]
-
+  
   // value is a param it has key=value
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, object, mount, params })
 

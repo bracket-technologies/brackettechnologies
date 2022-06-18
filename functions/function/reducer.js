@@ -268,7 +268,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
 
-    if (path[0] === "()" && path[1] && !path[1].includes("()")) {
+    if (view && path[0] === "()" && path[1] && !path[1].includes("()")) {
         if (path[1] !== "txt()" || path[1] !== "val()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
@@ -1952,9 +1952,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (_o.nodeType === Node.ELEMENT_NODE) el = _o
             else if (_o.element) el = _o.element
             
-            var _view = views[el.id]
+            var _view
+            if (el) _view = views[el.id]
             
-            if ((_view.templated || _view.labeled) && el) if (_view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
+            if (_view && (_view.templated || _view.labeled) && el) if (_view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
             
             if (el) {
                 if (window.views[el.id].type === "Input") {

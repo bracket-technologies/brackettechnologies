@@ -9,6 +9,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
+  var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
 
   if (typeof string !== "string" || !string) return string || {}
@@ -23,7 +24,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
   string.split(";").map(param => {
     
     var key, value, id = viewId
-    var view = _window ? _window.views[id] : window.views[id]
+    var view = views[id]
     
     // break
     if (view && view.break) return
