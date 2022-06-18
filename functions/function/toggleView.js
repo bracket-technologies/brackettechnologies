@@ -5,8 +5,9 @@ const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 const { toArray } = require("./toArray")
+const { search } = require("./search")
 
-const toggleView = ({ toggle, id }) => {
+const toggleView = async ({ toggle, id }) => {
 
   var views = window.views
   var global = window.global
@@ -33,15 +34,41 @@ const toggleView = ({ toggle, id }) => {
   if (togglePage) {
 
     global.currentPage = togglePage.split("/")[0]
+    
+    // view doesnot exist? => get from database
+    if (!global.data.page[global.currentPage]) {
+
+      await search({ id, search: { collection: "page", doc: global.currentPage } })
+      global.data.page[global.currentPage] = views[id].search.data
+    }
+    
     var title = global.data.page[global.currentPage].title
     global.path = togglePage = togglePage === "main" ? "/" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title
     view = views.root
-    children = global.data.page[global.currentPage]["views"].map(view => global.data.view[view])
+
+    await global.data.page[global.currentPage]["views"].map(async view => {
+
+    // view doesnot exist? => get from database
+      if (!global.data.view[view]) {
+
+        await search({ id, search: { collection: "view", doc: view } })
+        global.data.view[view] = views[id].search.data
+      }
+
+      children.push(global.data.view[view])
+    })
 
   } else {
+    
+    // view doesnot exist? => get from database
+    if (!global.data.view[viewId]) {
+
+      await search({ id, search: { collection: "view", doc: viewId } })
+      global.data.view[viewId] = views[id].search.data
+    }
 
     children = toArray(global.data.view[viewId])
     view = views[parentId]

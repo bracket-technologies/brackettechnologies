@@ -155,7 +155,7 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": `click:1stChild();click:2ndChild()?if():[!getInput().focus]:[getInput().focus()];2ndChild().style().border=${clickedBorder}`
+                "event": `click:1stChild();click:2ndChild()?2ndChild().style().border=${clickedBorder}`
             }, {
                 "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
             }]

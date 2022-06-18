@@ -5,7 +5,7 @@
         {
             "children": [
                 {
-                    "type": "Icon?id=user-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-person;tooltip.text=user;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2.4rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem?false",
+                    "type": "Icon?id=user-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-person;tooltip.text=user;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2.4rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.minHeight=4.5rem?false",
                     "controls": [
                         {
                             "actions": [
@@ -23,7 +23,7 @@
                     ]
                 },
                 {
-                    "type": "View?id=page-view-btn;tooltip.text=bracket;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "type": "View?id=page-view-btn;tooltip.text=bracket;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
                             "type": "Icon?class=flexbox;name=data_array;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
@@ -36,7 +36,7 @@
                     ]
                 },
                 {
-                    "type": "View?id=account-btn;tooltip.text=accounts;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "type": "View?id=account-btn;tooltip.text=accounts;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
                             "type": "Icon?class=flexbox;name=badge;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
@@ -49,7 +49,7 @@
                     ]
                 },
                 {
-                    "type": "View?id=collection-btn;tooltip.text=collections;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "type": "View?id=collection-btn;tooltip.text=collections;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
                             "type": "Icon?class=flexbox;name=category;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
@@ -62,7 +62,7 @@
                     ]
                 },
                 {
-                    "type": "View?id=store-btn;tooltip.text=store;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "type": "View?id=store-btn;tooltip.text=store;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
                             "type": "Icon?class=flexbox;name=store;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
@@ -75,7 +75,7 @@
                     ]
                 },
                 {
-                    "type": "View?id=flight-btn;tooltip.text=flights;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "type": "View?id=flight-btn;tooltip.text=flights;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
                             "type": "Icon?class=flexbox;name=flight;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
@@ -115,12 +115,12 @@
                                     "type": "Icon?name=apartment;google;outlined;style.color=#999;style.fontSize=2.7rem;style.transition=.3s"
                                 }
                             ],
-                            "type": "View?class=flexbox pointer column;tooltip.text=hotels;style.fontSize=2rem;style.height=4.5rem;style.width=100%;style.position=relative"
+                            "type": "View?class=flexbox pointer column;tooltip.text=hotels;style.fontSize=2rem;style.minHeight=4.5rem;style.width=100%;style.position=relative"
                         }
                     ]
                 },
                 {
-                    "type": "View?id=accounting-btn;tooltip.text=accounting;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "type": "View?id=accounting-btn;tooltip.text=accounting;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
                             "type": "Icon?class=flexbox;name=account_balance;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
@@ -133,7 +133,7 @@
                     ]
                 },
                 {
-                    "type": "View?id=review-btn;tooltip.text=reviews;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "type": "View?id=review-btn;tooltip.text=reviews;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
                             "type": "Icon?class=flexbox;name=rate_review;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.5rem"
@@ -146,7 +146,7 @@
                     ]
                 },
                 {
-                    "type": "View?id=letter-btn;tooltip.text=letters;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[height=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "type": "View?id=letter-btn;tooltip.text=letters;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
                             "type": "Icon?class=flexbox;name=history_edu;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.6rem"
@@ -159,7 +159,7 @@
                     ]
                 },
                 {
-                    "type": "Icon?id=view-storage-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-menu-button-wide-fill;tooltip.text=storage;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "Icon?id=view-storage-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-menu-button-wide-fill;tooltip.text=storage;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.minHeight=4.5rem",
                     "controls": [
                         {
                             "event": "click?sidebar-open-manager:()=storage-sidebar;():gallery-view.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():letter-btn.style().color=#888;1stChild():flight-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;if():open:[style():[borderRight=2px solid #000;color=#000;sidebar-item-open:()=().id]];parent().parent().children().slice():1:-1.():[style().width=0px];():storage-sidebar.style().width=if():open:[if():[():sidebar-width-controller.width>5]:[():sidebar-width-controller.width+():sidebar-width-controller.diff+rem]:19rem]:0px;className():data-viewer.find():[open-doc=open-doc:()].style().display=flex;():gallery-view.style().display=none;if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex]"
@@ -167,7 +167,7 @@
                     ]
                 },
                 {
-                    "type": "Icon?id=gallery-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-images;tooltip.text=gallery;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.height=4.5rem",
+                    "type": "Icon?id=gallery-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-images;tooltip.text=gallery;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.minHeight=4.5rem",
                     "controls": [
                         {
                             "event": "click?parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():letter-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;if():open:[style().borderRight=2px solid #000;style().color=#000;sidebar-item-open:()=().id];parent().parent().children().slice():1:-1.():[style().width=0px];():gallery-view.style().display=if():open:grid:none;():open-view.children().():[style().display=none];():gallery-view.style().display=grid;style():[borderRight=2px solid #000;color=#000];open=true",

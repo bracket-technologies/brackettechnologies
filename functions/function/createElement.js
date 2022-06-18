@@ -63,7 +63,7 @@ const createElement = ({ _window, id, req, res }) => {
 
   // class
   view.class = view.class || ""
-
+  
   // Data
   view.Data = view.Data || parent.Data
 
@@ -95,10 +95,12 @@ const createElement = ({ _window, id, req, res }) => {
     
     if (params.id && params.id !== id && !priorityId) {
 
-      if (view[params.id]) {
+      if (view[params.id] && typeof view[params.id] === "object") {
+        
         view[params.id]["id-repetition-counter"] = (view[params.id]["id-repetition-counter"] || 0) + 1
         params.id = params.id + `-${view[params.id]["id-repetition-counter"]}`
       }
+      
       delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
 
