@@ -1225,10 +1225,9 @@ module.exports = {clearValues};
 const clone = (obj) => {
 
   var copy
-  if (typeof obj !== "object") copy = obj
+  if (!obj || typeof obj === "string" || typeof obj === "number") return obj
   else if (Array.isArray(obj)) copy = [...obj.map(obj => clone(obj))]
   else if (Object.keys(obj).length === 0) copy = {}
-  else if (!obj) return obj
   else {
     copy = {}
     Object.entries(obj).map(([key, value]) => {
@@ -2222,7 +2221,7 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value
         }
 
-        if (e.data === "[") {
+        /*if (e.data === "[") {
           var _prev = value.slice(0, e.target.selectionStart - 1)
           var _next = value.slice(e.target.selectionStart)
           e.target.value = value = _prev + "[]" + _next
@@ -2234,7 +2233,7 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = _prev + "()" + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
-        } else if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
+        } else */if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
           var _prev = value.slice(0, e.target.selectionStart - 1)
           var _next = value.slice(e.target.selectionStart)
           e.target.value = value = _prev + _next
@@ -4082,22 +4081,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         else if (view[path0.slice(1)]) return toParam({ _window, ...view[path0], string })
     }
 
-    // addition
-    if (path.join(".").includes("+")) {
-  
-      var values = path.join(".").split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object }))
-      var answer = values[0]
-      values.slice(1).map(val => answer += val)
-      return answer
-    }
-
-    // subtraction
-    if (path.join(".").includes("-")) {
-  
-        var _value = calcSubs({ _window, value: path.join("."), params, _, id, e, req, res, object })
-        if (_value !== path.join(".")) return _value
-    }
-
     // multiplication
     if (path.join(".").includes("*")) {
 
@@ -4120,8 +4103,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           }
         })
         return newVal
-    
-      }
+    }
+
+    // addition
+    if (path.join(".").includes("+")) {
+  
+      var values = path.join(".").split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object }))
+      var answer = values[0]
+      values.slice(1).map(val => answer += val)
+      return answer
+    }
+
+    // subtraction
+    if (path.join(".").includes("-")) {
+  
+        var _value = calcSubs({ _window, value: path.join("."), params, _, id, e, req, res, object })
+        if (_value !== path.join(".")) return _value
+    }
 
     // coded
     if (path0.slice(0, 7) === "coded()" && path.length === 1) {
@@ -4211,6 +4209,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         path[0] = path0 = ")("
     }
     
+    var view
     // view => ():id:timer:conditions
     if (path0.slice(0, 2) === "()") {
 
@@ -4234,12 +4233,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             // id
             var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, object })
-            if (_id) view = views[_id]
+            if (_id || args[1]) view = views[_id || args[1]]
             
             path[0] = path0 = "()"
         }
     }
-    
+
+    if (!view) view = views[id]
+
     // while
     if (path0 === "while()") {
             
@@ -4259,7 +4260,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else {
 
-            if (path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()") {
+            if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()") {
 
                 if (view.labeled) path = ["parent()", "parent()", ...path]
                 else if (view.templated || view.link) path.unshift("parent()")
@@ -4510,16 +4511,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (Array.isArray(o)) {
                 if (isNaN(el)) {
                     if (o[0] && o[0][el]) {
-                        return delete o[0][el]
-                    } else return
+                        delete o[0][el]
+                        return o
+                    } else return o
                 }
                 o.splice(el, 1)
             } else delete o[el]
-            return
+            
+            return o
             
         } else if (k0 === "while()") {
             
-            var args = k.split(":")
             while (toValue({ req, res, _window, id, value: args[1], params, _, e })) {
                 toValue({ req, res, _window, id, value: args[2], params, _, e })
             }
@@ -6039,10 +6041,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "push()") {
             
-            var args = k.split(":")
             var _item = toValue({ req, res, _window, id, value: args[1], params, _ ,e })
             var _index = toValue({ req, res, _window, id, value: args[2], params, _ ,e })
             if (_index === undefined) _index = o.length
+            
             o.splice(_index, 0, _item)
             answer = o
             
@@ -6133,7 +6135,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = o
             
         } else if (k0 === "remove()" || k0 === "rem()") { // remove child with data
-
+            
             if (args[1]) {
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
                 if (!views[_id]) return console.log("Element doesnot exist!")
@@ -6873,6 +6875,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "note()") { // note
             
+            if (isParam({ _window, string: args[1] })) {
+                _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                return note({ note: _params })
+            }
             var text = toValue({ req, res, _window, id, e, _, value: args[1], params })
             var type = toValue({ req, res, _window, id, e, _, value: args[2], params })
             return note({ note: { text, type } })
@@ -9250,8 +9256,19 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     return answer
   }
 
-  // multiplication
-  if (value.includes("*")) {
+  if (value.includes("+")) { // addition
+    
+    var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
+    var newVal = values[0]
+    values.slice(1).map(val => newVal += val)
+    return value = newVal
+
+  } else if (value.includes("-")) { // subtraction
+
+    var _value = calcSubs({ _window, value, params, _, id, e, req, res, object })
+    if (_value !== value) return _value
+
+  } else if (value.includes("*")) { // multiplication
 
     var values = value.split("*").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
     var newVal = values[0]
@@ -9273,18 +9290,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     })
     return value = newVal
 
-  } else if (value.includes("+")) { // addition
-    
-    var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
-    var newVal = values[0]
-    values.slice(1).map(val => newVal += val)
-    return value = newVal
-
-  } else if (value.includes("-")) { // subtraction
-
-    var _value = calcSubs({ _window, value, params, _, id, e, req, res, object })
-    if (_value !== value) return _value
-  }
+  } 
 
   // return await value
   if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]

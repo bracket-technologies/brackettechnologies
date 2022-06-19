@@ -32,8 +32,19 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     return answer
   }
 
-  // multiplication
-  if (value.includes("*")) {
+  if (value.includes("+")) { // addition
+    
+    var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
+    var newVal = values[0]
+    values.slice(1).map(val => newVal += val)
+    return value = newVal
+
+  } else if (value.includes("-")) { // subtraction
+
+    var _value = calcSubs({ _window, value, params, _, id, e, req, res, object })
+    if (_value !== value) return _value
+
+  } else if (value.includes("*")) { // multiplication
 
     var values = value.split("*").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
     var newVal = values[0]
@@ -55,18 +66,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     })
     return value = newVal
 
-  } else if (value.includes("+")) { // addition
-    
-    var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
-    var newVal = values[0]
-    values.slice(1).map(val => newVal += val)
-    return value = newVal
-
-  } else if (value.includes("-")) { // subtraction
-
-    var _value = calcSubs({ _window, value, params, _, id, e, req, res, object })
-    if (_value !== value) return _value
-  }
+  } 
 
   // return await value
   if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]

@@ -1,10 +1,9 @@
 const clone = (obj) => {
 
   var copy
-  if (typeof obj !== "object") copy = obj
+  if (!obj || typeof obj === "string" || typeof obj === "number") return obj
   else if (Array.isArray(obj)) copy = [...obj.map(obj => clone(obj))]
   else if (Object.keys(obj).length === 0) copy = {}
-  else if (!obj) return obj
   else {
     copy = {}
     Object.entries(obj).map(([key, value]) => {

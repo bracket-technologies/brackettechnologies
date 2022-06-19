@@ -82,7 +82,7 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value
         }
 
-        if (e.data === "[") {
+        /*if (e.data === "[") {
           var _prev = value.slice(0, e.target.selectionStart - 1)
           var _next = value.slice(e.target.selectionStart)
           e.target.value = value = _prev + "[]" + _next
@@ -94,7 +94,7 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = _prev + "()" + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
-        } else if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
+        } else */if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
           var _prev = value.slice(0, e.target.selectionStart - 1)
           var _next = value.slice(e.target.selectionStart)
           e.target.value = value = _prev + _next
