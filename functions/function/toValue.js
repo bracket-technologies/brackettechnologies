@@ -3,7 +3,7 @@ const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 
-const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) => {
+const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount }) => {
 
   const { toParam } = require("./toParam")
 
@@ -21,32 +21,32 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   if (value.includes('codedS()') && value.length === 13) return value = global.codes[value]
   
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, object, mount, params })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, object, mount, params })
 
   // or
   if (value.includes("||")) {
     var answer
     value.split("||").map(value => {
-      if (!answer) answer = toValue({ _window, value, params, _, id, e, req, res, object, mount })
+      if (!answer) answer = toValue({ _window, value, params, _, __, id, e, req, res, object, mount })
     })
     return answer
   }
 
   if (value.includes("+")) { // addition
     
-    var values = value.split("+").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
+    var values = value.split("+").map(value => toValue({ _window, value, params, _, __, id, e, req, res, object, mount }))
     var newVal = values[0]
     values.slice(1).map(val => newVal += val)
     return value = newVal
 
   } else if (value.includes("-")) { // subtraction
 
-    var _value = calcSubs({ _window, value, params, _, id, e, req, res, object })
+    var _value = calcSubs({ _window, value, params, _, __, id, e, req, res, object })
     if (_value !== value) return _value
 
   } else if (value.includes("*")) { // multiplication
 
-    var values = value.split("*").map(value => toValue({ _window, value, params, _, id, e, req, res, object, mount }))
+    var values = value.split("*").map(value => toValue({ _window, value, params, _, __, id, e, req, res, object, mount }))
     var newVal = values[0]
     values.slice(1).map(val => {
       if (!isNaN(newVal) && !isNaN(val)) newVal *= val
@@ -65,7 +65,6 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
       }
     })
     return value = newVal
-
   } 
 
   // return await value
@@ -79,22 +78,22 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
-  else if (object) value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
-  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
+  else if (object) value = reducer({ _window, id, object, path, value, params, _, __, e, req, res, mount })
+  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, e, req, res, mount })
   else if (path[0].includes("()") && path.length === 1) {
 
     var val0 = value.split("coded()")[0]
     if (value.includes('coded()') && !val0.includes("()") && !val0.includes("_map") && !val0.includes("_array") && !val0.includes("_list")) {
 
       value.split("coded()").slice(1).map(val => {
-        val0 += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, id, e, req, res, object, mount })
+        val0 += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, __, id, e, req, res, object, mount })
         val0 += val.slice(5)
       })
       value = val0
 
-    } else value = reducer({ _window, id, e, path, params, object, _, req, res })
-  } else if (path[1] || path[0].includes(")(") || path[0].includes("()")) value = reducer({ _window, id, object, path, value, params, _, e, req, res, mount })
-  else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, id, e, path, params, object, _, req, res, mount })
+    } else value = reducer({ _window, id, e, path, params, object, _, __, req, res })
+  } else if (path[1] || path[0].includes(")(") || path[0].includes("()")) value = reducer({ _window, id, object, path, value, params, _, __, e, req, res, mount })
+  else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, id, e, path, params, object, _, __, req, res, mount })
   else if (value === "()") value = view
   else if (typeof value === "boolean") { }
   else if (value === undefined || value === "generate") value = generate()
@@ -108,7 +107,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
     var args = value.split(":")
     var key = args[0]
 
-    value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _, mount }))
+    value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _, __, mount }))
   }
 
   // _string
@@ -116,7 +115,7 @@ const toValue = ({ _window, value, params, _, id, e, req, res, object, mount }) 
   return value
 }
 
-const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
+const calcSubs = ({ _window, value, params, _, __, id, e, req, res, object }) => {
   
   if (value.split("-").length > 1) {
 
@@ -126,7 +125,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
 
       if (allAreNumbers) {
         
-        var num = toValue({ _window, value, params, _, id, e, req, res, object })
+        var num = toValue({ _window, value, params, _, __, id, e, req, res, object })
         if (typeof num !== "number" || num === "") allAreNumbers = false
         return num
       }
@@ -150,7 +149,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
         if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true)) return allAreNumbers = false
 
         if (allAreNumbers) {
-          var num = toValue({ _window, value, params, _, id, e, req, res, object })
+          var num = toValue({ _window, value, params, _, __, id, e, req, res, object })
           if (typeof num !== "number" || num === "") allAreNumbers = false
           return num
         }
@@ -173,7 +172,7 @@ const calcSubs = ({ _window, value, params, _, id, e, req, res, object }) => {
           if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true) ) return allAreNumbers = false
   
           if (allAreNumbers) {
-            var num = toValue({ _window, value, params, _, id, e, req, res, object })
+            var num = toValue({ _window, value, params, _, __, id, e, req, res, object })
             if (typeof num !== "number" || num === "") allAreNumbers = false
             return num
           }

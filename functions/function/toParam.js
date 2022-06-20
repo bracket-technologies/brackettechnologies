@@ -5,7 +5,7 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyncer, createElement, params = {}, executer }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, asyncer, createElement, params = {}, executer }) => {
   const { toApproval } = require("./toApproval")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
@@ -19,7 +19,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
 
   // condition not param
   if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
-  return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, object })
+  return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, __, object })
 
   string.split(";").map(param => {
     
@@ -165,7 +165,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
     if (param === "loader.hide") return document.getElementsByClassName("loader-container")[0].style.display = "none"
 
     if (value === undefined) value = generate()
-    else value = toValue({ _window, id, e, value, params, req, res, _ })
+    else value = toValue({ _window, id, e, value, params, req, res, _, __ })
 
     // condition not approved
     if (value === "*return*") return
@@ -195,8 +195,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
       }
       string = toCode({ _window, string })
       
-      if (view[path0]) return toParam({ _window, ...view[path0], string, object  })
-      else if (underscored && view[path0.slice(1)]) return toParam({ _window, ...view[path0], string, _: object })
+      if (view[path0]) return toParam({ _window, ...view[path0], string, object, _, __ })
+      else if (underscored && view[path0.slice(1)]) return toParam({ _window, ...view[path0], string, _, __, _: object })
     }
 
     // object structure
@@ -208,7 +208,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
       // mount state & value
       if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
 
-        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, object, mount })
+        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, __, object, mount })
         if (timer) {
           
           timer = parseInt(timer)
@@ -219,8 +219,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, asyn
 
       } else {
         
-        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, mount })
-        reducer({ _window, id, path, value, key, params, e, req, res, _, mount, object: params })
+        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, mount })
+        reducer({ _window, id, path, value, key, params, e, req, res, _, __, mount, object: params })
       }
       
     } else if (key) {

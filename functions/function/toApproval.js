@@ -1,7 +1,7 @@
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 
-const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
+const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
@@ -43,7 +43,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
       var conditions = condition.split("||"), _i = 0
       approval = false
       while (!approval && conditions[_i] !== undefined) {
-        approval = toApproval({ _window, e, string: conditions[_i], id, _, req, res, object })
+        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, req, res, object })
         _i += 1
       }
       return approval
@@ -68,7 +68,7 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
 
     // /////////////////// value /////////////////////
 
-    if (value) value = toValue({ _window, id: mainId, value, e, _, req, res })
+    if (value) value = toValue({ _window, id: mainId, value, e, _, __, req, res })
 
     // /////////////////// key /////////////////////
 
@@ -101,8 +101,9 @@ const toApproval = ({ _window, e, string, id, _, req, res, object }) => {
     else if (key === "desktop()") view[keygen] = global.device.type === "desktop"
     else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
     else if (key === "_") view[keygen] = _
-    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, req, res, object, condition: true })
-    else view[keygen] = reducer({ _window, id, path, e, _, req, res, object: object ? object : view, condition: true })
+    else if (key === "__") view[keygen] = __
+    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, __, req, res, object, condition: true })
+    else view[keygen] = reducer({ _window, id, path, e, _, __, req, res, object: object ? object : view, condition: true })
     // else view[keygen] = key
 
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !view[keygen] : (view[keygen] === 0 ? true : view[keygen])
