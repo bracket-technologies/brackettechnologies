@@ -895,10 +895,10 @@ module.exports = ({ controls, id }) => {
   window.views[id].droplist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?)(:droplist-search-txt.del();if():[input().txt()]:[)(:droplist-search-txt=input().txt()];clearTimer():[)(:droplist-timer];if():[droplist-positioner:()!=${id}]:[():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0]`,
+    event: `click?droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[)(:droplist-timer];if():[droplist-positioner:()!=${id}]:[():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0]`,
     actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?droplist-positioner:()!=().id`
   }, {
-    event: "input:input()?)(:droplist-search-txt=input().txt()?input();droplist.searchable",
+    event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
     actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
   }]
 }
@@ -1225,7 +1225,7 @@ module.exports = {clearValues};
 const clone = (obj) => {
 
   var copy
-  if (!obj || typeof obj === "string" || typeof obj === "number") return obj
+  if (!obj || typeof obj === "string" || typeof obj === "number" || typeof obj === "boolean") return obj
   else if (Array.isArray(obj)) copy = [...obj.map(obj => clone(obj))]
   else if (Object.keys(obj).length === 0) copy = {}
   else {
@@ -1709,9 +1709,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             }">
             <title>${global.data.page[currentPage].title}</title>
             <link rel="stylesheet" href="/resources/index.css"/>
-            <link rel="icon" type="image/x-icon" href="${
-              project.favicon || ""
-            }"/>
+            <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
             <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
             <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
             <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
@@ -1724,13 +1722,10 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         <body>
             ${innerHTML}
             <div class="loader-container"><div class="loader"></div></div>
-            <script id="views" type="application/json">${JSON.stringify(
-              views
-            )}</script>
-            <script id="global" type="application/json">${JSON.stringify(
-              global
-            )}</script>
+            <script id="views" type="application/json">${JSON.stringify(views)}</script>
+            <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>
+            <script src="/resources/html2pdf/html2pdf.js"></script>
         </body>
     </html>`
   );
@@ -1820,7 +1815,7 @@ const createElement = ({ _window, id, req, res }) => {
   // first mount of view
   views[id] = view
 
-  // ///////////////// approval & params /////////////////////
+  /////////////////// approval & params /////////////////////
 
   // approval
   var approved = toApproval({ _window, string: conditions, id, req, res })
@@ -2241,13 +2236,13 @@ const defaultInputHandler = ({ id }) => {
           e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
 
-        } else if (e.data === "]" && value[e.target.selectionStart - 2] === "[" && value[e.target.selectionStart] === "]") {
+        } /*else if (e.data === "]" && value[e.target.selectionStart - 2] === "[" && value[e.target.selectionStart] === "]") {
           var _prev = value.slice(0, e.target.selectionStart)
           var _next = value.slice(e.target.selectionStart + 1)
           e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
 
-        } /*else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
+        } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
           e.target.value = value = "Text?class=flexbox;text=;style:[]"
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
@@ -2314,14 +2309,19 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   if (!input_id) {
     
     input_id = view.element.getElementsByTagName("INPUT")[0]
-    if (input_id) input_id = input_id.id
+    if (input_id) {
+
+      input_id = input_id.id
+      global["droplist-search-txt"] = views[input_id].element.value
+
+    } else global["droplist-search-txt"] = views[view.id].element.innerHTML
   }
   
   // items
   if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
   
   // searchable
-  if (view.droplist.searchable && global["droplist-search-txt"] !== undefined) 
+  if (view.droplist.searchable && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") 
   items = items.filter(item => item.includes(global["droplist-search-txt"]))
   
   // children
@@ -2344,7 +2344,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
     })
     
   } else dropList.children = []
-
+  
   dropList.positioner = dropList.caller = id
   dropList.unDeriveData = true
 
@@ -3672,15 +3672,18 @@ const { search } = require("./search")
 
 const loadViews = async (first) => {
 
-    var global = window.global, views = window.views
+    var global = window.global, views = window.views, promises = []
     if (global.unloadedViews.length === 0) return
     var unloadedViews = clone(global["unloadedViews"])
+
+    // display loader
+    document.getElementsByClassName("loader-container")[0].style.display = "flex"
     
     // get all views
     if (first) {
 
       document.getElementsByClassName("loader-container")[0].style.display = "flex"
-      var docs = (global["lazy-load-views"] || []).filter(doc => !(global["fast-load-views"] || []).includes(doc)), promises = []
+      var docs = (global["lazy-load-views"] || []).filter(doc => !(global["fast-load-views"] || []).includes(doc))
       
       promises.push(search({ id: "root", search: { collection: "page", limit: 100 } }))
       promises.push(search({ id: "public", search: { collection: "view", docs, limit: 100 } }))
@@ -3691,13 +3694,19 @@ const loadViews = async (first) => {
       Object.entries(views.public.search.data).map(([doc, data]) => global.data.view[doc] = data)
     }
 
-    unloadedViews.map((unloadedView, i) => {
+    await unloadedViews.map(async (unloadedView, i) => {
         
       var { id, parent, view, index } = unloadedView
       
       // view
       global.unloadedViews = global.unloadedViews.filter(unloadedView => unloadedView.view !== view)
-      console.log(view);
+
+      // view doesnot exist
+      if (!global.data.view[view]) {
+        promises.push(search({ id: "root", search: { collection: "view", doc: view }, await: `data:().view.${view}=().search.data`, asyncer: true }))
+        await Promise.all(promises)
+      }
+      
       if (!views[id] || !views[parent]) return
       views[id] = clone(global.data.view[view])
       views[id].id = id
@@ -3736,14 +3745,15 @@ const loadViews = async (first) => {
 
       // remove lDiv
       if (lDiv) {
-          document.body.removeChild(lDiv)
-          lDiv = null
+        document.body.removeChild(lDiv)
+        lDiv = null
       }
 
       if (i === unloadedViews.length - 1 && global.unloadedViews.length > 0) loadViews()
     })
 
-    if (first) document.getElementsByClassName("loader-container")[0].style.display = "none"
+    // hide loader
+    document.getElementsByClassName("loader-container")[0].style.display = "none"
 }
 
 module.exports = { loadViews }
@@ -4028,7 +4038,7 @@ const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
 const { note } = require("./note")
 const { isParam } = require("./isParam")
-const toAwait = require("./toAwait")
+const { toAwait } = require("./toAwait")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, __, e, req, res, mount, condition }) => {
     
@@ -4255,7 +4265,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -4269,7 +4279,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else if (view.templated || view.link) path.unshift("parent()")
 
             } else if (path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
-
+                
                 if (view.islabel || view.templated || view.link) path.unshift("input()")
             }
 
@@ -5142,11 +5152,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             // map not loaded yet
             if (view.status === "Loading") {
-                view.controls = toArray(view.controls)
+
+                /*view.controls = toArray(view.controls)
                 view.controls.push({
                     event: `loaded?${key}`
                 })
-                return 
+                return */
+                
             }
             
             var className, _params = {}, _o
@@ -5159,6 +5171,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     className = _params.className || _params.class
 
                 } else className = toValue({ req, res, _window, id, e, _, __,value: args[1], params })
+
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -5169,7 +5182,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else answer = []
 
             answer = answer.map(o => window.views[o.id])
-
+            
         } else if (k0 === "classlist()" || k0 === "classList()") {
             
             var _params = {}, _o
@@ -7002,9 +7015,26 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "refresh()") {
           
-            var args = k.split(":")
             var _id = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || id
             return require("./refresh").refresh({ id: _id })
+
+        } else if (k0 === "print()") {
+          
+            var _options = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || id, element
+            if (!_options.id && !_options.view) _options.id = o.id
+            if (_options.view) _options.id = _options.view.id
+            if (_options.id) element = document.getElementById(_options.id)
+            element.style.transform = "scale(0.7)"
+
+            _options = {
+                margin:       _options.margin || 0,
+                filename:     (_options.name || _options.filename || 'myfile') + ".pdf",
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { scale: _options.scale || 1, dpi: 300, letterRendering: true },
+                jsPDF:        { unit: 'in', format: _options.format || 'a4', orientation: _options.orientation || 'portrait' }
+            }
+            
+            if (element) html2pdf().set(_options).from(element).save().then(() => element.style.transform = "scale(1)")
 
         } else if (k0 === "copyToClipBoard()") {
           
@@ -9547,6 +9577,9 @@ const toggleView = async ({ toggle, id }) => {
       return createElement({ id })
 
     }).join("")
+    
+  // unloaded views
+  require("../function/loadViews").loadViews()  
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
@@ -9580,7 +9613,7 @@ const toggleView = async ({ toggle, id }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":35,"./createElement":43,"./generate":58,"./search":86,"./setElement":89,"./starter":92,"./toArray":97,"./update":115}],115:[function(require,module,exports){
+},{"../function/loadViews":71,"./clone":35,"./createElement":43,"./generate":58,"./search":86,"./setElement":89,"./starter":92,"./toArray":97,"./update":115}],115:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")

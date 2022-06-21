@@ -97,7 +97,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:page-list]?search.collection=page;search.headers.project=project:();wait():[data:().editor.page=().search.data]?!data:().editor.page"
+                    "actions": "wait():search:[update:page-list]?search.collection=page;search.limit=100;search.headers.project=project:();wait():[data:().editor.page=().search.data]?!data:().editor.page"
                 }
             ]
         },
@@ -193,7 +193,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:view-list]?search.collection=view;search.headers.project=project:();wait():[data:().editor.view=().search.data]?!data:().editor.view"
+                    "actions": "wait():search:[update:view-list]?search.collection=view;search.limit=100;search.headers.project=project:();wait():[data:().editor.view=().search.data]?!data:().editor.view"
                 }
             ]
         },

@@ -25,14 +25,19 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   if (!input_id) {
     
     input_id = view.element.getElementsByTagName("INPUT")[0]
-    if (input_id) input_id = input_id.id
+    if (input_id) {
+
+      input_id = input_id.id
+      global["droplist-search-txt"] = views[input_id].element.value
+
+    } else global["droplist-search-txt"] = views[view.id].element.innerHTML
   }
   
   // items
   if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
   
   // searchable
-  if (view.droplist.searchable && global["droplist-search-txt"] !== undefined) 
+  if (view.droplist.searchable && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") 
   items = items.filter(item => item.includes(global["droplist-search-txt"]))
   
   // children
@@ -55,7 +60,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
     })
     
   } else dropList.children = []
-
+  
   dropList.positioner = dropList.caller = id
   dropList.unDeriveData = true
 

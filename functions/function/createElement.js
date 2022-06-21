@@ -79,7 +79,7 @@ const createElement = ({ _window, id, req, res }) => {
   // first mount of view
   views[id] = view
 
-  // ///////////////// approval & params /////////////////////
+  /////////////////// approval & params /////////////////////
 
   // approval
   var approved = toApproval({ _window, string: conditions, id, req, res })

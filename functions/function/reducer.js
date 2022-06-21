@@ -20,7 +20,7 @@ const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
 const { note } = require("./note")
 const { isParam } = require("./isParam")
-const toAwait = require("./toAwait")
+const { toAwait } = require("./toAwait")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, __, e, req, res, mount, condition }) => {
     
@@ -247,7 +247,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -261,7 +261,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else if (view.templated || view.link) path.unshift("parent()")
 
             } else if (path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
-
+                
                 if (view.islabel || view.templated || view.link) path.unshift("input()")
             }
 
@@ -1134,11 +1134,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             // map not loaded yet
             if (view.status === "Loading") {
-                view.controls = toArray(view.controls)
+
+                /*view.controls = toArray(view.controls)
                 view.controls.push({
                     event: `loaded?${key}`
                 })
-                return 
+                return */
+                
             }
             
             var className, _params = {}, _o
@@ -1151,6 +1153,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     className = _params.className || _params.class
 
                 } else className = toValue({ req, res, _window, id, e, _, __,value: args[1], params })
+
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -1161,7 +1164,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else answer = []
 
             answer = answer.map(o => window.views[o.id])
-
+            
         } else if (k0 === "classlist()" || k0 === "classList()") {
             
             var _params = {}, _o
@@ -2994,9 +2997,25 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "refresh()") {
           
-            var args = k.split(":")
             var _id = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || id
             return require("./refresh").refresh({ id: _id })
+
+        } else if (k0 === "print()") {
+          
+            var _options = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || id, element
+            if (!_options.id && !_options.view) _options.id = o.id
+            if (_options.view) _options.id = _options.view.id
+            if (_options.id) element = document.getElementById(_options.id)
+
+            _options = {
+                margin:       _options.margin || 0,
+                filename:     (_options.name || _options.filename || 'myfile') + ".pdf",
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { scale: _options.scale || 1, dpi: 300, letterRendering: true },
+                jsPDF:        { unit: 'in', format: _options.format || 'a4', orientation: _options.orientation || 'portrait' }
+            }
+            
+            if (element) html2pdf().set(_options).from(element).save()
 
         } else if (k0 === "copyToClipBoard()") {
           

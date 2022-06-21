@@ -1,7 +1,7 @@
 const clone = (obj) => {
 
   var copy
-  if (!obj || typeof obj === "string" || typeof obj === "number") return obj
+  if (!obj || typeof obj === "string" || typeof obj === "number" || typeof obj === "boolean") return obj
   else if (Array.isArray(obj)) copy = [...obj.map(obj => clone(obj))]
   else if (Object.keys(obj).length === 0) copy = {}
   else {

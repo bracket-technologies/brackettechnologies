@@ -21,8 +21,8 @@ var getFile = ({ req, res }) => {
   var path = req.url.split(folder)[1]
   var docType = path.split(".").slice(-1)[0].split("?")[0]
   var type = mime[docType]
-  
   var file = fs.createReadStream(`${folder}/${path}`)
+  
   file.on("open", () => {
     res.set("Content-Type", type)
     file.pipe(res)

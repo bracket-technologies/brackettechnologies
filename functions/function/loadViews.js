@@ -6,15 +6,18 @@ const { search } = require("./search")
 
 const loadViews = async (first) => {
 
-    var global = window.global, views = window.views
+    var global = window.global, views = window.views, promises = []
     if (global.unloadedViews.length === 0) return
     var unloadedViews = clone(global["unloadedViews"])
+
+    // display loader
+    document.getElementsByClassName("loader-container")[0].style.display = "flex"
     
     // get all views
     if (first) {
 
       document.getElementsByClassName("loader-container")[0].style.display = "flex"
-      var docs = (global["lazy-load-views"] || []).filter(doc => !(global["fast-load-views"] || []).includes(doc)), promises = []
+      var docs = (global["lazy-load-views"] || []).filter(doc => !(global["fast-load-views"] || []).includes(doc))
       
       promises.push(search({ id: "root", search: { collection: "page", limit: 100 } }))
       promises.push(search({ id: "public", search: { collection: "view", docs, limit: 100 } }))
@@ -25,13 +28,19 @@ const loadViews = async (first) => {
       Object.entries(views.public.search.data).map(([doc, data]) => global.data.view[doc] = data)
     }
 
-    unloadedViews.map((unloadedView, i) => {
+    await unloadedViews.map(async (unloadedView, i) => {
         
       var { id, parent, view, index } = unloadedView
       
       // view
       global.unloadedViews = global.unloadedViews.filter(unloadedView => unloadedView.view !== view)
-      console.log(view);
+
+      // view doesnot exist
+      if (!global.data.view[view]) {
+        promises.push(search({ id: "root", search: { collection: "view", doc: view }, await: `data:().view.${view}=().search.data`, asyncer: true }))
+        await Promise.all(promises)
+      }
+      
       if (!views[id] || !views[parent]) return
       views[id] = clone(global.data.view[view])
       views[id].id = id
@@ -70,14 +79,15 @@ const loadViews = async (first) => {
 
       // remove lDiv
       if (lDiv) {
-          document.body.removeChild(lDiv)
-          lDiv = null
+        document.body.removeChild(lDiv)
+        lDiv = null
       }
 
       if (i === unloadedViews.length - 1 && global.unloadedViews.length > 0) loadViews()
     })
 
-    if (first) document.getElementsByClassName("loader-container")[0].style.display = "none"
+    // hide loader
+    document.getElementsByClassName("loader-container")[0].style.display = "none"
 }
 
 module.exports = { loadViews }

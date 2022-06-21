@@ -266,9 +266,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             }">
             <title>${global.data.page[currentPage].title}</title>
             <link rel="stylesheet" href="/resources/index.css"/>
-            <link rel="icon" type="image/x-icon" href="${
-              project.favicon || ""
-            }"/>
+            <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
             <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
             <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
             <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
@@ -281,13 +279,10 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         <body>
             ${innerHTML}
             <div class="loader-container"><div class="loader"></div></div>
-            <script id="views" type="application/json">${JSON.stringify(
-              views
-            )}</script>
-            <script id="global" type="application/json">${JSON.stringify(
-              global
-            )}</script>
+            <script id="views" type="application/json">${JSON.stringify(views)}</script>
+            <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>
+            <script src="/resources/html2pdf/html2pdf.js"></script>
         </body>
     </html>`
   );

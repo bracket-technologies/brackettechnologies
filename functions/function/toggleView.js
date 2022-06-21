@@ -102,6 +102,9 @@ const toggleView = async ({ toggle, id }) => {
       return createElement({ id })
 
     }).join("")
+    
+  // unloaded views
+  require("../function/loadViews").loadViews()  
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
