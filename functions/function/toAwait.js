@@ -3,7 +3,7 @@ module.exports = {
 
     const { execute } = require("./execute")
     const { toParam } = require("./toParam")
-
+    
     if (!params.asyncer) return
     var awaiter = params.awaiter, awaits = params.await, _params
 
@@ -12,6 +12,7 @@ module.exports = {
     delete params.await
     
     // get params
+    awaits = require("./toCode").toCode({ string: awaits, e })
     if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true })
     if (_params && _params.break) return
 

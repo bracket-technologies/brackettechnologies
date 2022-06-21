@@ -523,7 +523,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             
         } else if (k0 === "_") {
-            
+          
             if (value !== undefined && key && i === lastIndex) answer = o[_] = value
             else if (typeof o === "object") answer = o[_]
 
@@ -2834,12 +2834,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __})
-                require("./route").route({ route })
+                require("./route").route({ id, route })
             } else {
                 
                 var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __})
                 var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, _, __})
-                require("./route").route({ route: { path: _path, page: _page } })
+                require("./route").route({ id, route: { path: _path, page: _page } })
             }
 
         } else if (k0 === "toggleView()") {

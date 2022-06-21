@@ -30,7 +30,7 @@ const erase = async ({ id, e, ...params }) => {
   view.erase = data
   console.log(data)
 
-  require("./toAwait").toAwait({ id, e, params })
+  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
 }
 
 module.exports = { erase }

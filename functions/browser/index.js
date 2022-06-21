@@ -1548,11 +1548,11 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
     // get page
     /*
-        page = realtimedb.ref(`page-${project.id}`).once("value").then(snapshot => {
-            global.data.page = snapshot.val()
-            console.log("after page", new Date().getTime() - global.timer);
-        })
-        */
+      page = realtimedb.ref(`page-${project.id}`).once("value").then(snapshot => {
+          global.data.page = snapshot.val()
+          console.log("after page", new Date().getTime() - global.timer);
+      })
+    */
     console.log("before page / firestore", new Date().getTime() - global.timer);
 
     page = db
@@ -1613,9 +1613,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         })
       );
     }
-    global["lazy-load-views"] = project.views.filter(
-      (view) => !global["fast-load-views"].includes(view) && view !== currentPage
-    );
+    
+    global["lazy-load-views"] = project.views.filter(view => !global["fast-load-views"].includes(view) && view !== currentPage)
   }
 
   await Promise.resolve(page);
@@ -2386,7 +2385,7 @@ const erase = async ({ id, e, ...params }) => {
   view.erase = data
   console.log(data)
 
-  require("./toAwait").toAwait({ id, e, params })
+  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
 }
 
 module.exports = { erase }
@@ -3675,72 +3674,73 @@ const loadViews = async (first) => {
 
     var global = window.global, views = window.views
     if (global.unloadedViews.length === 0) return
-    var unloadedViews = clone(global.unloadedViews)
+    var unloadedViews = clone(global["unloadedViews"])
     
     // get all views
     if (first) {
 
       document.getElementsByClassName("loader-container")[0].style.display = "flex"
-      var view, page, docs = global["lazy-load-views"].filter(doc => !global["fast-load-views"].includes(doc))
-      page = await search({ id: "public", search: { collection: "page", limit: 100 } })
-      view = await search({ id: "root", search: { collection: "view", docs, limit: 100 } })
+      var docs = (global["lazy-load-views"] || []).filter(doc => !(global["fast-load-views"] || []).includes(doc)), promises = []
       
-      // view
-      global.data.page = views.public.search.data
-      Object.entries(views.root.search.data).map(([id, doc]) => {
-        global.data.view[id] = doc
-      })
+      promises.push(search({ id: "root", search: { collection: "page", limit: 100 } }))
+      promises.push(search({ id: "public", search: { collection: "view", docs, limit: 100 } }))
+      
+      await Promise.all(promises)
+      
+      Object.entries(views.root.search.data).map(([doc, data]) => global.data.page[doc] = data)
+      Object.entries(views.public.search.data).map(([doc, data]) => global.data.view[doc] = data)
     }
 
     unloadedViews.map((unloadedView, i) => {
         
-        var { id, parent, view, index } = unloadedView
-        
-        // view
-        global.unloadedViews = global.unloadedViews.filter(unloadedView => unloadedView.view !== view)
-        
-        views[id] = clone(global.data.view[view])
-        views[id].id = id
-        views[id].index = index
-        views[id].parent = parent
+      var { id, parent, view, index } = unloadedView
+      
+      // view
+      global.unloadedViews = global.unloadedViews.filter(unloadedView => unloadedView.view !== view)
+      console.log(view);
+      if (!views[id] || !views[parent]) return
+      views[id] = clone(global.data.view[view])
+      views[id].id = id
+      views[id].index = index
+      views[id].parent = parent
 
-        // create html
-        var innerHTML = createElement({ id })
-        
-        lDiv = document.createElement("div")
-        document.body.appendChild(lDiv)
-        lDiv.style.position = "absolute"
-        lDiv.style.opacity = "0"
-        lDiv.style.left = -1000
-        lDiv.style.top = -1000
-        lDiv.innerHTML = innerHTML
-        var el = lDiv.children[0]
+      // create html
+      var innerHTML = createElement({ id })
+      
+      lDiv = document.createElement("div")
+      document.body.appendChild(lDiv)
+      lDiv.style.position = "absolute"
+      lDiv.style.opacity = "0"
+      lDiv.style.left = -1000
+      lDiv.style.top = -1000
+      lDiv.innerHTML = innerHTML
+      var el = lDiv.children[0]
 
-        // append html
-        var parentEl = document.getElementById(parent)
-        if (index >= parentEl.children.length) parentEl.appendChild(el)
-        else parentEl.insertBefore(el, parentEl.children[index])
+      // append html
+      var parentEl = document.getElementById(parent)
+      if (index >= parentEl.children.length) parentEl.appendChild(el)
+      else parentEl.insertBefore(el, parentEl.children[index])
 
-        var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  
-        idList.map(id => setElement({ id }))
-        idList.map(id => starter({ id }))
-        
-        /*setTimeout(() => {
-          idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
-              
-            map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
-            map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
-          })
-        }, 0)*/
+      var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 
-        // remove lDiv
-        if (lDiv) {
-            document.body.removeChild(lDiv)
-            lDiv = null
-        }
+      idList.map(id => setElement({ id }))
+      idList.map(id => starter({ id }))
+      
+      /*setTimeout(() => {
+        idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
+            
+          map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
+          map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
+        })
+      }, 0)*/
 
-        if (i === unloadedViews.length - 1 && global.unloadedViews.length > 0) loadViews()
+      // remove lDiv
+      if (lDiv) {
+          document.body.removeChild(lDiv)
+          lDiv = null
+      }
+
+      if (i === unloadedViews.length - 1 && global.unloadedViews.length > 0) loadViews()
     })
 
     if (first) document.getElementsByClassName("loader-container")[0].style.display = "none"
@@ -4531,7 +4531,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             
         } else if (k0 === "_") {
-            
+          
             if (value !== undefined && key && i === lastIndex) answer = o[_] = value
             else if (typeof o === "object") answer = o[_]
 
@@ -6842,12 +6842,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __})
-                require("./route").route({ route })
+                require("./route").route({ id, route })
             } else {
                 
                 var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __})
                 var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, _, __})
-                require("./route").route({ route: { path: _path, page: _page } })
+                require("./route").route({ id, route: { path: _path, page: _page } })
             }
 
         } else if (k0 === "toggleView()") {
@@ -7547,15 +7547,18 @@ var converter = (dimension) => {
 module.exports = {resize, dimensions, converter}
 
 },{}],84:[function(require,module,exports){
+const { search } = require("./search")
 const { update } = require("./update")
 
 module.exports = {
-    route: ({ route = {} }) => {
+    route: async ({ id, route = {} }) => {
 
         var global = window.global
         var path = route.path || global.path
         var currentPage = route.page || path.split("/")[1] || "main"
-        console.log(currentPage, route);
+        
+        if (!global.data.view[currentPage]) await search({ id, search: { collection: "page", doc: currentPage }, await: `data:().page.${currentPage}=().search.data`, asyncer: true })
+
         var title = route.title || global.data.page[currentPage].title
 
         if (!global.data.page[currentPage]) return
@@ -7570,7 +7573,7 @@ module.exports = {
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
 }
-},{"./update":115}],85:[function(require,module,exports){
+},{"./search":86,"./update":115}],85:[function(require,module,exports){
 const save = async ({ id, e, ...params }) => {
 
   var global = window.global
@@ -7600,7 +7603,7 @@ const save = async ({ id, e, ...params }) => {
   console.log(data)
 
   // await params
-  require("./toAwait").toAwait({ id, e, params })
+  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
 }
 
 module.exports = { save }
@@ -7610,33 +7613,33 @@ const { toString } = require('./toString')
 const { clone } = require('./clone')
 
 module.exports = {
-    search: async ({ id = "", e, ...params }) => {
-        
-        var global = window.global
-        var search = params.search || {}
-        var view = window.views[id]
-        var headers = search.headers || {}
-        headers.project = headers.project || global.projectId
-        
-        if (global["access-key"]) headers["access-key"] = global["access-key"]
-        delete search.headers
+  search: async ({ id = "", e, ...params }) => {
+      
+    var global = window.global
+    var search = params.search || {}
+    var view = window.views[id]
+    var headers = search.headers || {}
+    headers.project = headers.project || global.projectId
+    
+    if (global["access-key"]) headers["access-key"] = global["access-key"]
+    delete search.headers
 
-        // search
-        headers.search = encodeURI(toString({ search }))
-        
-        var { data } = await axios.get(`/database`, {
-            headers: {
-                "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-                ...headers
-            }
-        })
-        
-        view.search = clone(data)
-        console.log(data)
-        
-        // await params
-        require("./toAwait").toAwait({ id, e, params })
-    }
+    // search
+    headers.search = encodeURI(toString({ search }))
+    
+    var { data } = await axios.get(`/database`, {
+      headers: {
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+        ...headers
+      }
+    })
+    
+    view.search = clone(data)
+    console.log(data)
+    
+    // await params
+    if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
+  }
 }
 },{"./clone":35,"./toAwait":98,"./toString":111,"axios":118}],87:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
@@ -8428,7 +8431,7 @@ module.exports = {
 
     const { execute } = require("./execute")
     const { toParam } = require("./toParam")
-
+    
     if (!params.asyncer) return
     var awaiter = params.awaiter, awaits = params.await, _params
 
@@ -8437,6 +8440,7 @@ module.exports = {
     delete params.await
     
     // get params
+    awaits = require("./toCode").toCode({ string: awaits, e })
     if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true })
     if (_params && _params.break) return
 
@@ -8446,7 +8450,7 @@ module.exports = {
   }
 }
 
-},{"./execute":52,"./toParam":108}],99:[function(require,module,exports){
+},{"./execute":52,"./toCode":101,"./toParam":108}],99:[function(require,module,exports){
 module.exports = {
     toCSV: ({ file = {} }) => {
 
@@ -9477,45 +9481,41 @@ const toggleView = async ({ toggle, id }) => {
     global.currentPage = togglePage.split("/")[0]
     
     // view doesnot exist? => get from database
-    if (!global.data.page[global.currentPage]) {
+    var promises = []
+    viewId = global.currentPage
 
-      await search({ id, search: { collection: "page", doc: global.currentPage } })
-      global.data.page[global.currentPage] = views[id].search.data
-    }
-    
+    if (!global.data.page[global.currentPage]) promises.push(search({ id, search: { collection: "page", doc: viewId }, await: `data:().page.${viewId}=().search.data`, asyncer: true }))
+    if (!global.data.view[global.currentPage]) promises.push(search({ id, search: { collection: "view", doc: viewId }, await: `data:().view.${viewId}=().search.data`, asyncer: true }))
+
+    await Promise.all(promises)
+
     var title = global.data.page[global.currentPage].title
     global.path = togglePage = togglePage === "main" ? "/" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title
     view = views.root
-
+/*
     await global.data.page[global.currentPage]["views"].map(async view => {
 
     // view doesnot exist? => get from database
       if (!global.data.view[view]) {
 
-        await search({ id, search: { collection: "view", doc: view } })
-        global.data.view[view] = views[id].search.data
+        
       }
 
       children.push(global.data.view[view])
     })
-
-  } else {
-    
-    // view doesnot exist? => get from database
-    if (!global.data.view[viewId]) {
-
-      await search({ id, search: { collection: "view", doc: viewId } })
-      global.data.view[viewId] = views[id].search.data
-    }
-
-    children = toArray(global.data.view[viewId])
-    view = views[parentId]
+*/
   }
+    
+  // view doesnot exist? => get from database
+  if (!global.data.view[viewId]) await search({ id, search: { collection: "view", doc: viewId }, await: `data:().view.${viewId}=().search.data`, asyncer: true })
 
-  if (!children) return
+  children = toArray(global.data.view[viewId])
+  view = views[parentId]
+
+  if (children.length === 0) return
   if (!view || !view.element) return
 
   // fadeout
@@ -9739,7 +9739,7 @@ const upload = async ({ id, e, ...params }) => {
   console.log(data)
 
   // await params
-  require("./toAwait").toAwait({ id, e, params })
+  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
 }
   
 const readFile = (file) => {

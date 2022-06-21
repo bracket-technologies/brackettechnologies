@@ -105,11 +105,11 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
     // get page
     /*
-        page = realtimedb.ref(`page-${project.id}`).once("value").then(snapshot => {
-            global.data.page = snapshot.val()
-            console.log("after page", new Date().getTime() - global.timer);
-        })
-        */
+      page = realtimedb.ref(`page-${project.id}`).once("value").then(snapshot => {
+          global.data.page = snapshot.val()
+          console.log("after page", new Date().getTime() - global.timer);
+      })
+    */
     console.log("before page / firestore", new Date().getTime() - global.timer);
 
     page = db
@@ -170,9 +170,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         })
       );
     }
-    global["lazy-load-views"] = project.views.filter(
-      (view) => !global["fast-load-views"].includes(view) && view !== currentPage
-    );
+    
+    global["lazy-load-views"] = project.views.filter(view => !global["fast-load-views"].includes(view) && view !== currentPage)
   }
 
   await Promise.resolve(page);

@@ -39,7 +39,7 @@ const upload = async ({ id, e, ...params }) => {
   console.log(data)
 
   // await params
-  require("./toAwait").toAwait({ id, e, params })
+  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
 }
   
 const readFile = (file) => {

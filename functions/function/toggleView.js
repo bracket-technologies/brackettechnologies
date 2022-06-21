@@ -36,45 +36,41 @@ const toggleView = async ({ toggle, id }) => {
     global.currentPage = togglePage.split("/")[0]
     
     // view doesnot exist? => get from database
-    if (!global.data.page[global.currentPage]) {
+    var promises = []
+    viewId = global.currentPage
 
-      await search({ id, search: { collection: "page", doc: global.currentPage } })
-      global.data.page[global.currentPage] = views[id].search.data
-    }
-    
+    if (!global.data.page[global.currentPage]) promises.push(search({ id, search: { collection: "page", doc: viewId }, await: `data:().page.${viewId}=().search.data`, asyncer: true }))
+    if (!global.data.view[global.currentPage]) promises.push(search({ id, search: { collection: "view", doc: viewId }, await: `data:().view.${viewId}=().search.data`, asyncer: true }))
+
+    await Promise.all(promises)
+
     var title = global.data.page[global.currentPage].title
     global.path = togglePage = togglePage === "main" ? "/" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title
     view = views.root
-
+/*
     await global.data.page[global.currentPage]["views"].map(async view => {
 
     // view doesnot exist? => get from database
       if (!global.data.view[view]) {
 
-        await search({ id, search: { collection: "view", doc: view } })
-        global.data.view[view] = views[id].search.data
+        
       }
 
       children.push(global.data.view[view])
     })
-
-  } else {
-    
-    // view doesnot exist? => get from database
-    if (!global.data.view[viewId]) {
-
-      await search({ id, search: { collection: "view", doc: viewId } })
-      global.data.view[viewId] = views[id].search.data
-    }
-
-    children = toArray(global.data.view[viewId])
-    view = views[parentId]
+*/
   }
+    
+  // view doesnot exist? => get from database
+  if (!global.data.view[viewId]) await search({ id, search: { collection: "view", doc: viewId }, await: `data:().view.${viewId}=().search.data`, asyncer: true })
 
-  if (!children) return
+  children = toArray(global.data.view[viewId])
+  view = views[parentId]
+
+  if (children.length === 0) return
   if (!view || !view.element) return
 
   // fadeout
