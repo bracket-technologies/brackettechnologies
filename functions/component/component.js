@@ -4,5 +4,6 @@ module.exports = {
   Switch : require("./Switch"),
   Checkbox : require("./Checkbox"),
   Map : require("./Map"),
-  Swiper : require("./Swiper")
+  Swiper : require("./Swiper"),
+  Entry : require("./Entry")
 }

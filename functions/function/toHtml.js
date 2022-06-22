@@ -31,11 +31,15 @@ module.exports = {
       
     }).join("\n")
     
-    var value = (view.input && view.input.value) !== undefined ?
-        view.input.value : view.data !== undefined ? view.data : ""
+    var value = ""
+
+    if (view.type === "Input") value = (view.input && view.input.value) !== undefined ?
+    view.input.value : view.data !== undefined ? view.data : ""
+    else if (view.type === "Entry") value = (view.entry && view.entry.value) !== undefined ?
+    view.entry.value : view.data !== undefined ? view.data : ""
 
     var tag, style = toStyle({ _window, id })
-        
+    
     if (typeof value === 'object') value = ''
     
     if (view.type === "View") {
@@ -74,6 +78,8 @@ module.exports = {
       } else {
         tag = `<p ${view.editable || view.contenteditable ? "contenteditable ": ""}class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${text}</p>`
       }
+    } else if (view.type === "Entry") {
+      tag = `<p ${view.readonly ? "" : "contenteditable"} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${value}</p>`
     } else if (view.type === "Icon") {
       tag = `<i ${view.draggable ? "draggable='true'" : ""} class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
     } else if (view.type === "Textarea") {

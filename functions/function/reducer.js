@@ -31,7 +31,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
     var views = _window ? _window.views : window.views
     var view = views[id], breakRequest, coded, mainId = id
-    var global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global, _object
 
     // path is a string
     if (typeof path === "string") path = path.split(".")
@@ -48,7 +48,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         return answer
     }
 
-    if (isParam({ _window, string: path.join(".") })) return toParam({ req, res, _window, id, e, string: path.join("."), _, __,object, mount })
+    if (isParam({ _window, string: path.join(".") })) return toParam({ req, res, _window, id, e, string: path.join("."), _, __, object, mount })
 
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : ""
@@ -126,7 +126,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // codeds (string)
     if (path0.slice(0, 8) === "codedS()") {
         
-        object = global.codes[path[0]]
+        _object = global.codes[path[0]]
         path.shift()
         path0 = ""
     }
@@ -134,7 +134,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // if
     if (path0 === "if()") {
         
-        var approved = toApproval({ _window, e, string: args[1], id, _, __,req, res, object })
+        var approved = toApproval({ _window, e, string: args[1], id, _, __, req, res, object })
         
         if (!approved) {
             
@@ -157,7 +157,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else {
 
             if (condition) return toApproval({ _window, e, string: args[2], id, _, __,req, res, object })
-            object = toValue({ req, res, _window, id, value: args[2], params, index, _, __,e, object, mount })
+            _object = toValue({ req, res, _window, id, value: args[2], params, index, _, __,e, object, mount })
 
             path.shift()
             while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
@@ -170,18 +170,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // global store
     if (path0 === ")(") {
 
-        var args = path[0].split(":")
-
         if (args[2]) {
             var _timer = parseInt(args[2])
             path[0] = `${args.slice(0, -1).join(":")}`
             return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, __,e, req, res }), _timer)
         }
 
-        var state = toValue({ req, res, _window, id, e, value: args[1], params, _, __,object })
+        var state = toValue({ req, res, _window, id, e, value: args[1], params, _, __, object })
         if (state === undefined) state = args[1]
         if (state) path.splice(1, 0, state)
-        path[0] = ")("
+        path0 = path[0] = ")("
 
     } else if (path0 && args[1] === "()") {
         
@@ -192,13 +190,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, __,e, req, res }), _timer)
         }
 
-        var state = toValue({ req, res, _window, id, e, value: args[0], params, _, __,object })
+        var state = toValue({ req, res, _window, id, e, value: args[0], params, _, __, object })
         if (state === undefined) state = args[0]
-        if (state !== undefined && state !== null) object = global[state]
-        else if (state === "") object = global
+        // if (state !== undefined && state !== null) _object = global[state]
+        // else if (state === "") _object = global
 
         // state:()
-        if (path.length === 1 && key && state) return object = global[state] = value
+        if (path.length === 1 && key && state) return global[state] = value
         
         if (state) path.splice(1, 0, state)
         path[0] = path0 = ")("
@@ -227,7 +225,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
 
             // id
-            var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, __,object })
+            var _id = toValue({ req, res, _window, id, e, value: args[1], params, _, __, object })
             if (_id || args[1]) view = views[_id || args[1]]
             
             path[0] = path0 = "()"
@@ -239,7 +237,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // while
     if (path0 === "while()") {
             
-        var args = path[0].split(":")
         while (toValue({ req, res, _window, id, value: args[1], params, _, __,e, object, mount })) {
             toValue({ req, res, _window, id, value: args[2], params, _, __,e, object, mount })
         }
@@ -278,7 +275,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
     
-    object = path0 === "()" ? view
+    _object = _object !== undefined ? _object : path0 === "()" ? view
     : path0 === "index()" ? index
     : (path0 === "global()" || path0 === ")(")? _window ? _window.global : window.global
     : path0 === "e()" ? e
@@ -292,7 +289,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
     if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
         
-    if (!object && object !== 0 && object !== false) {
+    if (!_object && _object !== 0 && _object !== false) {
 
         if (path[0]) {
 
@@ -302,26 +299,26 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (path0 === "desktop()") return global.device.type === "desktop"
             else if (path0 === "tablet()") return global.device.type === "tablet"
             else if (path0 === "mobile()" || path0 === "phone()") return global.device.type === "phone"
-            else if (path0 === "clickedElement()" || path0 === "clicked()") object = global["clickedElement()"]
+            else if (path0 === "clickedElement()" || path0 === "clicked()") _object = global["clickedElement()"]
 
             else if (path0 === "log()") {
                 
-                _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg, params, _, __,e }))
+                _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg, params, _, __,e, object }))
                 console.log(..._log)
             }
 
             else if (path0.slice(0, 7) === "coded()") {
 
                 coded = true
-                object = toValue({ req, res, _window, object, id, value: global.codes[path0], params, _, __,e })
+                _object = toValue({ req, res, _window, object, id, value: global.codes[path0], params, _, __,e })
             }
 
             else if (path0 === "getCookie()") {
 
                 // getCookie():name
                 var _params = toParam({ req, res, _window, id, e, _, __,params, string: args[1] })
-                object = getCookie({ ..._params, req, res })
-                if (!object) return
+                _object = getCookie({ ..._params, req, res })
+                if (!_object) return
                 
             } else if (path0 === "eraseCookie()") {
 
@@ -343,48 +340,48 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (params.method === "get") return getCookie({ ..._params, req, res })
             }
             
-            else if (path0 === "today()") object = new Date()
-            else if (path0 === "" || path0 === "_dots") object = "..."
-            else if (path0 === "" || path0 === "_string") object = ""
-            else if (path0 === "'" || path0 === "_quotation") object = "'"
-            else if (path0 === `"` || path0 === "_quotations") object = `"`
-            else if (path0 === ` ` || path0 === "_space") object = " "
-            else if (path0 === "_number") object = 0
-            else if (path0 === "_index") object = index
-            else if (path0 === "_boolearn") object = true
+            else if (path0 === "today()") _object = new Date()
+            else if (path0 === "" || path0 === "_dots") _object = "..."
+            else if (path0 === "" || path0 === "_string") _object = ""
+            else if (path0 === "'" || path0 === "_quotation") _object = "'"
+            else if (path0 === `"` || path0 === "_quotations") _object = `"`
+            else if (path0 === ` ` || path0 === "_space") _object = " "
+            else if (path0 === "_number") _object = 0
+            else if (path0 === "_index") _object = index
+            else if (path0 === "_boolearn") _object = true
             else if (path0 === "_array" || path0 === "_list") {
 
-                object = []
+                _object = []
                 path[0].split(":").slice(1).map(el => {
                     el = toValue({ req, res, _window, id, _, __,e, value: el, params })
-                    object.push(el)
+                    _object.push(el)
                 })
                 
-            } else if (path0 === "{}" || path0 === "_map" || path0 === "_object") {
+            } else if (path0 === "_map") {
 
-                object = {}
+                _object = {}
                 var args = path[0].split(":").slice(1)
                 args.map((arg, i) => {
 
                     if (i % 2) return
                     var f = toValue({ req, res, _window, id, _, __,e, value: arg, params })
                     var v = toValue({ req, res, _window, id, _, __,e, value: args[i + 1], params })
-                    object[f] = v
+                    _object[f] = v
 
                 })
                 
             } else if (mount) {
-                object = view
+                _object = view
                 path.unshift("()")
             }
         }
 
-        if (object || object === "" || object === 0 || coded) path = path.slice(1)
+        if (_object || _object === "" || _object === 0 || coded) path = path.slice(1)
         else {
 
             if (path[1] && path[1].includes("()")) {
                 
-                object = path[0]
+                _object = path[0]
                 path = path.slice(1)
 
             } else return decode({ _window, string: path.join(".") })
@@ -565,7 +562,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (path[i + 1] !== undefined) {
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, __,e })
                 answer = reducer({ req, res, _window, id, e, value, key, path: [...(_o.derivations || []), ...path.slice(i + 1)], object: global[_o.Data], params, _, __})
-            } else answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(_o.derivations || [])], object: global[_o.Data], params, _, __,e })
+            } else {
+                // console.log("here", clone(_o), clone(global[_o.Data]));
+                answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(_o.derivations || [])], object: global[_o.Data], params, _, __,e })
+            }
 
         } else if (k0 === "Data()") {
 
@@ -820,6 +820,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
                 _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __,value: args[1], params })
+
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -829,8 +830,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!_o.element.children[0]) return
             var _id = _o.element.children[0].id
             
-            answer = views[_id]
-
+            if (views[_id]) answer = views[_id]
+            else answer = views[_id] = { id: _id, element: _o.element.children[0] }
+            
         } else if (k0 === "2ndChild()") {// o could be a string or element or view
             
             var _o, _params = {}
@@ -847,7 +849,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!_o.element.children[1]) return
             var _id = _o.element.children[1].id
             
-            answer = views[_id]
+            if (views[_id]) answer = views[_id]
+            else answer = views[_id] = { id: _id, element: _o.element.children[1] }
 
         } else if (k0 === "3rdChild()") {// o could be a string or element or view
             
@@ -865,7 +868,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!_o.element.children[2]) return
             var _id = _o.element.children[2].id
             
-            answer = views[_id]
+            if (views[_id]) answer = views[_id]
+            else answer = views[_id] = { id: _id, element: _o.element.children[2] }
 
         } else if (k0 === "3rdLastChild()") { // o could be a string or element or view
             
@@ -883,7 +887,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!_o.element.children[_o.element.children.length - 3]) return
             var _id = _o.element.children[_o.element.children.length - 3].id
             
-            answer = views[_id]
+            if (views[_id]) answer = views[_id]
+            else answer = views[_id] = { id: _id, element: _o.element.children[_o.element.children.length - 3] }
 
         } else if (k0 === "2ndLastChild()") { // o could be a string or element or view
             
@@ -901,7 +906,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!_o.element.children[_o.element.children.length - 2]) return
             var _id = _o.element.children[_o.element.children.length - 2].id
             
-            answer = views[_id]
+            if (views[_id]) answer = views[_id]
+            else answer = views[_id] = { id: _id, element: _o.element.children[_o.element.children.length - 2] }
 
         } else if (k0 === "lastChild()") {  // o could be a string or element or view
             
@@ -919,7 +925,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!_o.element.children[_o.element.children.length - 1]) return
             var _id = _o.element.children[_o.element.children.length - 1].id
             
-            answer = views[_id]
+            if (views[_id]) answer = views[_id]
+            else answer = views[_id] = { id: _id, element: _o.element.children[_o.element.children.length - 1] }
 
         } else if (k0 === "children()") {
             
@@ -963,7 +970,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             } else {
 
-                if (!o.type) _o = views[id]
+                if (!o.element) _o = views[id]
                 else _o = o
             }
 
@@ -1476,8 +1483,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             if (args[2] || !isNaN(toValue({ req, res, _window, id, e, value: args[1], params, _, __}))) { // slice():start:end
 
-                var _start = toValue({ req, res, _window, id, e, value: args[1], params, _, __})
-                var _end = toValue({ req, res, _window, id, e, value: args[2], params, _, __})
+                var _start = toValue({ req, res, _window, id, e, value: args[1], params, _, __, object })
+                var _end = toValue({ req, res, _window, id, e, value: args[2], params, _, __, object })
                 if (_end !== undefined) answer = o.slice(parseInt(_start), parseInt(_end))
                 else answer = o.slice(parseInt(_start))
 
@@ -1983,7 +1990,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 } else {
 
                     answer = el.innerHTML
-                    if (i === lastIndex && key && value !== undefined) el.innerHTML = value
+                    if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
                 }
             } else if (view && view.type === "Input") {
 
@@ -3007,15 +3014,55 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_options.view) _options.id = _options.view.id
             if (_options.id) element = document.getElementById(_options.id)
 
+            lDiv = document.createElement("div")
+            views.root.element.appendChild(lDiv)
+            lDiv.style.position = "absolute"
+            lDiv.style.opacity = "0"
+            var innerHTML = element.parentNode.innerHTML
+
+            innerHTML.split(`id="`).slice(1).map(id => id.split(`"`)[0]).map(id => {
+                innerHTML = innerHTML.replace(id, generate())
+            })
+            
+            lDiv.innerHTML = innerHTML
+            var _id = generate()
+            lDiv.children[0].id = _id
+            views[_id] = {
+                id: _id,
+                element: lDiv.children[0]
+            }
+
+            if (_options.styleAll) {
+
+                var styleAllChildren = (el) => {
+                    Array.from(el.children).map(el => {
+                        Object.entries(_options.styleAll).map(([key, value]) => {
+
+                            el.style[key] = value
+                        })
+
+                        if ([...el.children].length > 0) styleAllChildren(el)
+                    })
+                }
+                styleAllChildren(lDiv)
+            }
+
+            if (_options.params) toParam({ req, res, _window, id: _id, e, _, __, string: _options.params })
+            
             _options = {
                 margin:       _options.margin || 0,
-                filename:     (_options.name || _options.filename || 'myfile') + ".pdf",
+                filename:     (_options.name || _options.filename || `Bracket-${(new Date()).getTime()}`) + ".pdf",
                 image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: _options.scale || 1, dpi: 300, letterRendering: true },
+                html2canvas:  { scale: _options.scale || 1, ppi: _options.ppi || 150 },
                 jsPDF:        { unit: 'in', format: _options.format || 'a4', orientation: _options.orientation || 'portrait' }
             }
             
-            if (element) html2pdf().set(_options).from(element).save()
+            if (lDiv) html2pdf().set(_options).from(lDiv.children[0]).save().then(() => {
+
+                views.root.element.removeChild(lDiv)
+                lDiv = null
+                require("./update").removeChildren({ id: _id })
+            })
 
         } else if (k0 === "copyToClipBoard()") {
           
@@ -3181,7 +3228,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         return answer
 
-    }, object)
+    }, _object)
     
     return answer
 }

@@ -30,7 +30,7 @@ const starter = ({ id }) => {
   /* End of default handlers */
 
   // resize
-  if (view.type === "Input") resize({ id })
+  if (view.type === "Input" || view.type === "Entry") resize({ id })
 
   // lunch auto controls
   Object.entries(control).map(([type, control]) => {
