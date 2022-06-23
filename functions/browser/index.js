@@ -4827,28 +4827,28 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "data()") {
 
-            var _o
-            if (o.type) _o = o
-            else _o = views[id]
+            var _o = o, _params = {}
             
-            breakRequest = true
-            if (args[1]) {
-                /*
-                answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(o.derivations || [])], object: global[o.Data], params, _, __,e })
-                if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
-                reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _, __})
-                */
-               var _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
-               return answer = reducer({ req, res, _window, id, e, value, key, path: _params.path || _o.derivations, object: _params.data || object, params, _, __})
-            }
-            if (path[i + 1] !== undefined) {
-                if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, __,e })
-                answer = reducer({ req, res, _window, id, e, value, key, path: [...(_o.derivations || []), ...path.slice(i + 1)], object: global[_o.Data], params, _, __})
-            } else {
-                // console.log("here", clone(_o), clone(global[_o.Data]));
-                answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [...(_o.derivations || [])], object: global[_o.Data], params, _, __,e })
+            if (_o.type) breakRequest = true
+
+            if (args[1]) _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
+
+            // just get data()
+            if (!_o.derivations) {
+              var _data = reducer({ req, res, _window, id, e, value, key, path: _params.path || views[id].derivations, object: _params.data || global[views[id].Data], params, _, __ })
+              return answer = _o[_data]
             }
 
+            var _derivations = _params.path || _o.derivations || []
+            if (_params.path) return answer = reducer({ req, res, _window, id, e, value, key, path: _derivations, object: _params.data || object, params, _, __ })
+
+            if (path[i + 1] !== undefined) {
+
+                if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, __,e })
+                answer = reducer({ req, res, _window, id, e, value, key, path: [..._derivations, ...path.slice(i + 1)], object: global[_o.Data], params, _, __})
+
+            } else answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [..._derivations], object: global[_o.Data], params, _, __,e })
+            
         } else if (k0 === "Data()") {
 
             breakRequest = true
@@ -6356,8 +6356,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "pullItems()") {
 
-            var _item = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
-            answer = o = o.filter(item => !isEqual(item, _item))
+            var _items = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
+            answer = o = o.filter(item => !_items.find(_item => isEqual(item, _item)))
             
         } else if (k0 === "pullItem()") {
 

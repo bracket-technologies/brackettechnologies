@@ -4,7 +4,7 @@
     {
       "actions": [
         "wait():search:[update:user-file]?search.collection=_account_;search.field.projects.contains=project:();search.headers.project=project:();wait():[data:().editor.account=().search.data.value()]?!data:().editor.account",
-        "wait():search:[update:project-file:0]:[update:sidebar-items]?search.collection=_project_;search.doc=project:();search.headers.project=project:();wait():[data:().editor.project=().search.data;loader.hide]?!data:().editor.project"
+        "wait():search:[update:project-file:0]:[update:sidebar-items]:[update:other-collections]?search.collection=_project_;search.doc=project:();search.headers.project=project:();wait():[data:().editor.project=().search.data;loader.hide]?!data:().editor.project"
       ],
       "event": "loaded?loader.show?!data:().editor.account||!data:().editor.project"
     }
