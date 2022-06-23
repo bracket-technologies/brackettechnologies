@@ -283,6 +283,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             <script id="global" type="application/json">${JSON.stringify(global)}</script>
             <script src="/index.js"></script>
             <script src="/resources/html2pdf/html2pdf.js"></script>
+            <script src="/resources/html2canvas/html2canvas.js"></script>
         </body>
     </html>`
   );

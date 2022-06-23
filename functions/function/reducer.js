@@ -206,8 +206,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // view => ():id:timer:conditions
     if (path0.slice(0, 2) === "()") {
 
-        var args = path[0].split(":")
-
         if (args[1] || args[2] || args[3]) {
 
             // timer
@@ -275,7 +273,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
     }
     
-    _object = _object !== undefined ? _object : path0 === "()" ? view
+    _object = path0 === "()" ? view
     : path0 === "index()" ? index
     : (path0 === "global()" || path0 === ")(")? _window ? _window.global : window.global
     : path0 === "e()" ? e
@@ -285,7 +283,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     : (path0 === "window()" || path0 === "win()") ? _window || window
     : path0 === "history()" ? history
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
-    : object
+    : _object !== undefined ? _object : object
 
     if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
         
@@ -2074,7 +2072,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "pullItems()") {
 
-            var _items = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
+            var _items = toArray(toValue({ req, res, _window, id, value: args[1], params, _, __,e }))
             answer = o = o.filter(item => !_items.find(_item => isEqual(item, _item)))
             
         } else if (k0 === "pullItem()") {
@@ -2705,6 +2703,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "round()") {
 
             var nth = toValue({ req, res, _window, id, e, _, __,params, value: args[1] }) || 2
+            console.log(o, path);
             answer = (o || 0).toFixed(nth)
             
         } else if (k0 === "toString()" || k0 === "string()" || k0 === "str()") {
@@ -3024,6 +3023,29 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 innerHTML = innerHTML.replace(id, generate())
             })
             
+            if (innerHTML.split(`src="`).length > 0) {
+
+                innerHTML.split(`src="`).slice(1).map(src => src.split(`"`)[0]).map(src => {
+
+                    const toDataURL = url => fetch(url, { headers: { "Access-Control-Allow-Origin": "*" } })
+                    .then(response => response.blob())
+                    .then(blob => new Promise((resolve, reject) => {
+                        const reader = new FileReader()
+                        reader.onloadend = () => resolve(reader.result)
+                        reader.onerror = reject
+                        reader.readAsDataURL(blob)
+                    }))
+
+
+                    toDataURL(src)
+                    .then(dataUrl => {
+                        innerHTML = innerHTML.replace(src, dataUrl)
+                        console.log(dataUrl);
+                    })
+                })
+            }
+            
+            console.log("here");
             lDiv.innerHTML = innerHTML
             var _id = generate()
             lDiv.children[0].id = _id
@@ -3053,16 +3075,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 margin:       _options.margin || 0,
                 filename:     (_options.name || _options.filename || `Bracket-${(new Date()).getTime()}`) + ".pdf",
                 image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: _options.scale || 1, ppi: _options.ppi || 150 },
+                html2canvas:  { scale: _options.scale || 1, ppi: _options.ppi || 150, letterRendering: true, useCORS: false },
                 jsPDF:        { unit: 'in', format: _options.format || 'a4', orientation: _options.orientation || 'portrait' }
             }
-            
-            if (lDiv) html2pdf().set(_options).from(lDiv.children[0]).save().then(() => {
 
-                views.root.element.removeChild(lDiv)
-                lDiv = null
-                require("./update").removeChildren({ id: _id })
-            })
+            if (lDiv) {
+                html2pdf().set(_options).from(lDiv.children[0]).save().then(() => {
+
+                    views.root.element.removeChild(lDiv)
+                    lDiv = null
+                    require("./update").removeChildren({ id: _id })
+                })
+            }
 
         } else if (k0 === "copyToClipBoard()") {
           

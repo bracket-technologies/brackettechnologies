@@ -9,6 +9,7 @@ const { toCode } = require("../function/toCode")
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
 
+navigator.serviceWorker.register('sw.js')
 //
 var views = window.views
 var global = window.global
