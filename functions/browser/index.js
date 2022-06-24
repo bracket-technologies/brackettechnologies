@@ -10,7 +10,7 @@ const { toCode } = require("../function/toCode")
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
 
-navigator.serviceWorker.register('sw.js')
+// navigator.serviceWorker.register('sw.js')
 //
 var views = window.views
 var global = window.global
@@ -7308,28 +7308,26 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             })
             
             if (innerHTML.split(`src="`).length > 0) {
+                
+                const toDataURL = url => fetch("image", { search: { url } })
+                .then(response => response.blob())
+                .then(blob => new Promise((resolve, reject) => {
+                    console.log("here");
+                    const reader = new FileReader()
+                    reader.onloadend = () => resolve(reader.result)
+                    reader.onerror = reject
+                    reader.readAsDataURL(blob)
+                }))
 
                 innerHTML.split(`src="`).slice(1).map(src => src.split(`"`)[0]).map(src => {
 
-                    const toDataURL = url => fetch(url, { headers: { "Access-Control-Allow-Origin": "*" } })
-                    .then(response => response.blob())
-                    .then(blob => new Promise((resolve, reject) => {
-                        const reader = new FileReader()
-                        reader.onloadend = () => resolve(reader.result)
-                        reader.onerror = reject
-                        reader.readAsDataURL(blob)
-                    }))
-
-
-                    toDataURL(src)
-                    .then(dataUrl => {
+                    toDataURL(src.slice(0, -1)).then(dataUrl => {
                         innerHTML = innerHTML.replace(src, dataUrl)
                         console.log(dataUrl);
                     })
                 })
             }
             
-            console.log("here");
             lDiv.innerHTML = innerHTML
             var _id = generate()
             lDiv.children[0].id = _id
