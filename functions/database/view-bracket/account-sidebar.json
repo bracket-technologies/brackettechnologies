@@ -28,7 +28,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:user-list]?search.collection=user;search.headers.project=project:();wait():[data:().editor.user=().search.data]?!data:().editor.user"
+                    "actions": "wait():search:[update:user-list]?search.collection=user;search.headers.project=project:();wait():[data:().editor.user=().search.data]"
                 }
             ]
         },
@@ -124,7 +124,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:customer-list]?search.collection=customer;search.headers.project=project:();wait():[data:().editor.customer=().search.data]?!data:().editor.customer"
+                    "actions": "wait():search:[update:customer-list]?search.collection=customer;search.headers.project=project:();wait():[data:().editor.customer=().search.data]"
                 }
             ]
         },
@@ -220,7 +220,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:supplier-list]?search.collection=supplier;search.headers.project=project:();wait():[data:().editor.supplier=().search.data]?!data:().editor.supplier"
+                    "actions": "wait():search:[update:supplier-list]?search.collection=supplier;search.headers.project=project:();wait():[data:().editor.supplier=().search.data]"
                 }
             ]
         },
@@ -316,7 +316,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:agent-list]?search.collection=agent;search.headers.project=project:();wait():[data:().editor.agent=().search.data]?!data:().editor.agent"
+                    "actions": "wait():search:[update:agent-list]?search.collection=agent;search.headers.project=project:();wait():[data:().editor.agent=().search.data]"
                 }
             ]
         },

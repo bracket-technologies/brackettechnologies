@@ -38,7 +38,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   
   // searchable
   if (view.droplist.searchable && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") 
-  items = items.filter(item => item.includes(global["droplist-search-txt"]))
+  items = items.filter(item => item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase()))
   
   // children
   if (items && items.length > 0) {

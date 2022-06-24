@@ -28,7 +28,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:flight-list]?search.collection=flight;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight=().search.data]?!data:().editor.flight"
+                    "actions": "wait():search:[update:flight-list]?search.collection=flight;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight=().search.data]"
                 }
             ]
         },
@@ -124,7 +124,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:flight-booking-list]?search.collection=flight-booking;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-booking=().search.data]?!data:().editor.flight-booking"
+                    "actions": "wait():search:[update:flight-booking-list]?search.collection=flight-booking;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-booking=().search.data]"
                 }
             ]
         },
@@ -220,7 +220,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:flight-reservation-list]?search.collection=flight-reservation;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-reservation=().search.data]?!data:().editor.flight-reservation"
+                    "actions": "wait():search:[update:flight-reservation-list]?search.collection=flight-reservation;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-reservation=().search.data]"
                 }
             ]
         },
@@ -316,7 +316,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:flight-canceled-booking-list]?search.collection=flight-canceled-booking;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-canceled-booking=().search.data]?!data:().editor.flight-canceled-booking"
+                    "actions": "wait():search:[update:flight-canceled-booking-list]?search.collection=flight-canceled-booking;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-canceled-booking=().search.data]"
                 }
             ]
         },
@@ -412,7 +412,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:flight-canceled-reservation-list]?search.collection=flight-canceled-reservation;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-canceled-reservation=().search.data]?!data:().editor.flight-canceled-reservation"
+                    "actions": "wait():search:[update:flight-canceled-reservation-list]?search.collection=flight-canceled-reservation;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-canceled-reservation=().search.data]"
                 }
             ]
         },

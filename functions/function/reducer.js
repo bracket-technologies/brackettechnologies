@@ -227,6 +227,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_id || args[1]) view = views[_id || args[1]]
             
             path[0] = path0 = "()"
+            object = views[id]
         }
     }
 
@@ -2072,8 +2073,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "pullItems()") {
 
-            var _items = toArray(toValue({ req, res, _window, id, value: args[1], params, _, __,e }))
-            answer = o = o.filter(item => !_items.find(_item => isEqual(item, _item)))
+            if (!isParam({ _window, string: args[1] })) {
+                
+                var _items = toArray(toValue({ req, res, _window, id, value: args[1], params, _, __,e }))
+                answer = o = o.filter(item => !_items.find(_item => isEqual(item, _item)))
+
+            } else {
+
+                var args = args.slice(1)
+                args.map(arg => {
+                
+                    if (k[0] === "_") answer = o = toArray(o).filter(o => !toApproval({ _window, e, string: arg, id, __: _, _: o, req, res }) )
+                    else answer = o = toArray(o).filter(o => !toApproval({ _window, e, string: arg, id, object: o, req, res, _, __}))
+                })
+
+            }
             
         } else if (k0 === "pullItem()") {
 
@@ -2703,7 +2717,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "round()") {
 
             var nth = toValue({ req, res, _window, id, e, _, __,params, value: args[1] }) || 2
-            console.log(o, path);
             answer = (o || 0).toFixed(nth)
             
         } else if (k0 === "toString()" || k0 === "string()" || k0 === "str()") {
@@ -3008,7 +3021,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "print()") {
           
-            var _options = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || id, element
+            var _options = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || id, element, images = []
             if (!_options.id && !_options.view) _options.id = o.id
             if (_options.view) _options.id = _options.view.id
             if (_options.id) element = document.getElementById(_options.id)
@@ -3023,9 +3036,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 innerHTML = innerHTML.replace(id, generate())
             })
             
-            if (innerHTML.split(`src="`).length > 0) {
+            /*if (innerHTML.split(`src="`).length > 0) { 
                 
-                const toDataURL = url => fetch("image", { search: { url } })
+                const toDataURL = url => require("axios").get(url, { headers: { "Access-Control-Allow-Origin": "*" } })
                 .then(response => response.blob())
                 .then(blob => new Promise((resolve, reject) => {
                     console.log("here");
@@ -3034,15 +3047,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     reader.onerror = reject
                     reader.readAsDataURL(blob)
                 }))
-
+                
                 innerHTML.split(`src="`).slice(1).map(src => src.split(`"`)[0]).map(src => {
-
-                    toDataURL(src.slice(0, -1)).then(dataUrl => {
-                        innerHTML = innerHTML.replace(src, dataUrl)
-                        console.log(dataUrl);
-                    })
+                    // images.push(src)
+                    toDataURL(src)
                 })
-            }
+            }*/
             
             lDiv.innerHTML = innerHTML
             var _id = generate()
@@ -3072,19 +3082,73 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             _options = {
                 margin:       _options.margin || 0,
                 filename:     (_options.name || _options.filename || `Bracket-${(new Date()).getTime()}`) + ".pdf",
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: _options.scale || 1, ppi: _options.ppi || 150, letterRendering: true, useCORS: false },
+                image:        { type: 'png', quality: 1 },
+                html2canvas:  { scale: _options.scale || 2, dpi: 300, letterRendering: true, allowTaint : false, logging: true, useCORS: true },
                 jsPDF:        { unit: 'in', format: _options.format || 'a4', orientation: _options.orientation || 'portrait' }
             }
+            
+            /*var a = window.open("", "")
+            a.document.write(`<!DOCTYPE html>
+            <html lang="en" dir="ltr" class="html">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <link rel="stylesheet" href="https://bracketjs.com/resources/index.css"/>
+                    <link rel="stylesheet" href="https://bracketjs.com/resources/Tajawal/index.css"/>
+                    <link rel="stylesheet" href="https://bracketjs.com/resources/Lexend+Deca/index.css"/>
+                    <link rel="stylesheet" href="https://bracketjs.com/resources/bootstrap-icons/font/bootstrap-icons.css"/>
+                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons/material-icons.css"/>
+                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
+                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-round/material-icons-round.css"/>
+                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
+                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
+                </head>
+                <body>${lDiv.innerHTML}</body>
+                <script>
+                    window.addEventListener('load', (event) => {
+                        window.print()
+                    })
+                </script>
+            </html>`)
+            window.close()*/
+            // index.js
+            
+            /*var fakeImageElements = [...lDiv.getElementsByTagName("IMG")]
+            var mainImageElements = [...element.getElementsByTagName("IMG")]
 
-            if (lDiv) {
-                html2pdf().set(_options).from(lDiv.children[0]).save().then(() => {
+            mainImageElements.map((element, index) => {
 
-                    views.root.element.removeChild(lDiv)
-                    lDiv = null
-                    require("./update").removeChildren({ id: _id })
-                })
-            }
+                fakeImageElements[index].src = element.src
+                var input = document.createElement("input")
+                input.style.position = "absolute"
+                input.style.opacity = "0"
+                views.root.element.appendChild(input)
+                
+                input.value = element.src
+                console.log("1", element);
+                
+                var reader = new FileReader()
+                
+                reader.onload = function() {
+        
+                    var imageDataUrl = reader.result;
+                    console.log("2", imageDataUrl);  
+                    fakeImageElements[index].setAttribute("src", imageDataUrl);
+
+                    
+                }
+                
+                reader.readAsDataURL(input.files[0])
+            })
+                    
+            html2canvas(lDiv.children[0], {useCORS: true})*/
+            html2pdf().set(_options).from(lDiv.children[0]).save().then(() => {
+
+                views.root.element.removeChild(lDiv)
+                lDiv = null
+                require("./update").removeChildren({ id: _id })
+            })
 
         } else if (k0 === "copyToClipBoard()") {
           

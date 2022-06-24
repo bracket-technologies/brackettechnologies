@@ -132,7 +132,7 @@ app.get("*", async (req, res) => {
   if (path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
 
   // storage
-  if (path[1] === "image") return require("./function/getImage").getImage({ req, res })
+  // if (path[1] === "image") return require("./function/getImage").getImage({ req, res })
 
   // storage
   if (path[1] === "storage") return getFile({ req, res, db, storage })

@@ -28,7 +28,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:product-list]?search.collection=product;search.headers.project=project:();search.limit=25;wait():[data:().editor.product=().search.data]?!data:().editor.product"
+                    "actions": "wait():search:[update:product-list]?search.collection=product;search.headers.project=project:();search.limit=25;wait():[data:().editor.product=().search.data]"
                 }
             ]
         },
@@ -124,7 +124,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:category-list]?search.collection=category;search.headers.project=project:();search.limit=25;wait():[data:().editor.category=().search.data]?!data:().editor.category"
+                    "actions": "wait():search:[update:category-list]?search.collection=category;search.headers.project=project:();search.limit=25;wait():[data:().editor.category=().search.data]"
                 }
             ]
         },
@@ -220,7 +220,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:order-list]?search.collection=order;search.headers.project=project:();search.limit=25;wait():[data:().editor.order=().search.data]?!data:().editor.order"
+                    "actions": "wait():search:[update:order-list]?search.collection=order;search.headers.project=project:();search.limit=25;wait():[data:().editor.order=().search.data]"
                 }
             ]
         },
@@ -316,7 +316,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:delivery-list]?search.collection=delivery;search.headers.project=project:();search.limit=25;wait():[data:().editor.delivery=().search.data]?!data:().editor.delivery"
+                    "actions": "wait():search:[update:delivery-list]?search.collection=delivery;search.headers.project=project:();search.limit=25;wait():[data:().editor.delivery=().search.data]"
                 }
             ]
         },
@@ -412,7 +412,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:canceled-order-list]?search.collection=canceled-order;search.headers.project=project:();search.limit=25;wait():[data:().editor.canceled-order=().search.data]?!data:().editor.canceled-order"
+                    "actions": "wait():search:[update:canceled-order-list]?search.collection=canceled-order;search.headers.project=project:();search.limit=25;wait():[data:().editor.canceled-order=().search.data]"
                 }
             ]
         },
@@ -508,7 +508,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:canceled-delivery-list]?search.collection=canceled-delivery;search.headers.project=project:();search.limit=25;wait():[data:().editor.canceled-delivery=().search.data]?!data:().editor.canceled-delivery"
+                    "actions": "wait():search:[update:canceled-delivery-list]?search.collection=canceled-delivery;search.headers.project=project:();search.limit=25;wait():[data:().editor.canceled-delivery=().search.data]"
                 }
             ]
         },

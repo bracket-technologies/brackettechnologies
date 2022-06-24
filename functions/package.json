@@ -20,6 +20,7 @@
     "axios": "*",
     "body-parser": "*",
     "cookie-parser": "*",
+    "dom-to-image": "^2.6.0",
     "dotenv": "*",
     "express": "*",
     "express-device": "*",
