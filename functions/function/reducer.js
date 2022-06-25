@@ -190,10 +190,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return setTimeout(() => reducer({ _window, id, path, value, key, params, object, index, _, __,e, req, res }), _timer)
         }
 
-        var state = toValue({ req, res, _window, id, e, value: args[0], params, _, __, object })
-        if (state === undefined) state = args[0]
-        // if (state !== undefined && state !== null) _object = global[state]
-        // else if (state === "") _object = global
+        var state = args[0]
+        if (state.slice(0, 7) === "coded()" && state.length === 12) state = toValue({ req, res, _window, id, e, value: state, params, _, __, object })
 
         // state:()
         if (path.length === 1 && key && state) return global[state] = value
@@ -243,7 +241,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" || path0 === "getEntries()" || path0 === "entries()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()")) {
         if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
             path.unshift("doc()")
@@ -568,17 +566,36 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "Data()") {
 
+            var _path = args[1], _o
+
             breakRequest = true
-            answer = global[o.Data]
-            var arg = k.split(":").slice(1)[0]
-            if (arg) {
-                if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
-                reducer({ req, res, _window, id, e, value, key, path: arg, object: answer, params, _, __})
+            if (o.derivations) _o = global[o.Data]
+            else _o = global[views[id].Data]
+
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, __,string: _path })
+                    _path = _params.path || _params.derivations || _o.derivations
+                    if (typeof _path === "string") _path = _path.split(".")
+
+                    return answer = reducer({ req, res, _window, id, e, value, key, path: [..._path, ...path.slice(i + 1)], object: _o, params, _, __})
+                }
+
+                if (_path.slice(0, 7) === "coded()") _path = global.codes[_path]
+                _path = toValue({ req, res, _window, id, value: _path, params, _, __, e })
+                if (typeof _path === "string") _path = _path.split(".")
+
+                return answer = reducer({ req, res, _window, id, e, value, key, path: [..._path, ...path.slice(i + 1)], object: _o, params, _, __})
             }
+
             if (path[i + 1] !== undefined) {
+
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, __,e })
-                answer = reducer({ req, res, _window, id, e, value, key, path: path.slice(i + 1), object: answer, params, _, __})
-            }
+                answer = reducer({ req, res, _window, id, e, value, key, path: path.slice(i + 1), object: _o, params, _, __})
+
+            } else answer = _o
 
         } else if (k0 === "removeAttribute()") {
 
@@ -1115,6 +1132,61 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else return
             } else answer = __o
 
+        } else if (k0 === "getEntry()" || k0 === "entry()") {
+            
+            var _o, __o, _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, __,value: args[1], params })
+
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
+            if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
+            else __o = _o
+
+            if (!__o) return
+            if (__o.type !== "Entry") {
+                
+                var _elements, _entry
+                if (__o.element.getElementsByTagName("P")[0]) _elements = [...__o.element.getElementsByTagName("P")]
+                answer = _entry = _elements.find(el => views[el.id].type === "Entry")
+
+            } else answer = __o
+
+        } else if (k0 === "getEntries()" || k0 === "entries()") {
+            
+            var _o, __o, _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, __,value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
+            if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
+            else __o = _o
+
+            if (!__o) return
+            if (__o.type !== "Entry") {
+                
+                var _elements, _entry
+                if (__o.element.getElementsByTagName("P")[0]) _elements = [...__o.element.getElementsByTagName("P")]
+                answer = _entry = _elements.filter(el => views[el.id].type === "Entry")
+
+            } else answer = [__o]
+
         } /*else if (k0 === "position()") {
 
             var args = k.split(":")
@@ -1453,14 +1525,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 answer = setTimeout(myFn, _params.timer)
             }
 
-        } else if (k0 === "path()") {
+        } /*else if (k0 === "path()") {
 
             var _path = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
             if (typeof _path === "string") _path = _path.split(".")
             _path = [..._path, ...path.slice(i + 1)]
             answer = reducer({ req, res, _window, id, path: _path, value, key, params, object: o, _, __,e })
             
-        } else if (k0 === "pop()") {
+        } */else if (k0 === "pop()") {
 
             var _o
             if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
@@ -1502,7 +1574,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 }
             }
             
-        } else if (k0 === "derivations()") {
+        } else if (k0 === "derivations()" || k0 === "path()") {
 
             var _params = {}, _o, _index
             if (args[1]) { // view.derivations():index
@@ -1978,7 +2050,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _view
             if (el) _view = views[el.id]
             
-            if (_view && (_view.templated || _view.islabel) && el) if (_view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
+            if (_view && _view.islabel && el && _view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
             
             if (el) {
                 if (window.views[el.id].type === "Input") {
@@ -2216,10 +2288,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (i === lastIndex && value !== undefined && key) answer = o[Object.keys(o)[0]] = value
             else answer = Object.values(o)[0]
             
-        } else if (k0 === "entries()") {
-            
-            answer = Object.entries(o)
-
         } else if (k0 === "toId()") {
             
             var args = k.split(":")
@@ -2595,10 +2663,54 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 rec1 = toValue({ req, res, _window, id, e, _, __,value: args[2], params })
             }
 
+            if (typeof o === "string") {
+
+                if (rec1) answer = o.replace(rec0, rec1)
+                else answer = o.replace(rec0)
+
+            } else if (Array.isArray(o)) {
+
+                var _itemIndex = o.findIndex(item => isEqual(item, rec0))
+                if (_itemIndex >= 0) o[_itemIndex] = rec1
+                return o
+            }
             
-            if (rec1) answer = o.replace(rec0, rec1)
-            else answer = o.replace(rec0)
-            
+        } else if (k0 === "replaceLast()") {
+        
+            var _item = toValue({ req, res, _window, id, e, _, __,value: args[1] || "", params })
+            if (Array.isArray(o)) {
+
+                o[o.length - 1] = _item
+                return o
+            }
+        
+        } else if (k0 === "replaceSecondLast()" || k0 === "replace2ndLast()") {
+        
+            var _item = toValue({ req, res, _window, id, e, _, __,value: args[1] || "", params })
+            if (Array.isArray(o)) {
+
+                o[o.length - 2] = _item
+                return o
+            }
+        
+        } else if (k0 === "replaceFirst()" || k0 === "replace1st()") {
+        
+            var _item = toValue({ req, res, _window, id, e, _, __,value: args[1] || "", params })
+            if (Array.isArray(o)) {
+
+                o[0] = _item
+                return o
+            }
+        
+        } else if (k0 === "replaceSecond()" || k0 === "replace2nd()") {
+        
+            var _item = toValue({ req, res, _window, id, e, _, __,value: args[1] || "", params })
+            if (Array.isArray(o)) {
+
+                o[1] = _item
+                return o
+            }
+        
         } else if (k0 === "importJson()") {
         
             answer = importJson()
@@ -2834,6 +2946,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 var _params = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __})
                 answer = _params["1"].join(_params["2"])
+                
             } else {
 
                 var joiner = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __})

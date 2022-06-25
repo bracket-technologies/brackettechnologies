@@ -1103,7 +1103,7 @@
                                     "event": "click?().3rdChild().style().transform.equal():rotate(180deg)"
                                 },
                                 {
-                                    "event": "click:body?().3rdChild().style().transform.equal():rotate(0)?clicked:()().isnot():()"
+                                    "event": "click:body?().3rdChild().style().transform.equal():rotate(0)?clicked:().isnot():()"
                                 }
                             ],
                             "type": "View?class=flex-box pointer;style.gap=1rem",

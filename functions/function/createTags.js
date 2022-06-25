@@ -9,9 +9,12 @@ const createTags = ({ _window, id, req, res }) => {
   const { createElement } = require("./createElement")
   var views = _window ? _window.views : window.views, view = views[id]
   if (!view) return
-  
-  if (view.mapType) {
 
+  // null data
+  if (view.data === null) view.data = 0
+
+  if (view.mapType) {
+    
     // data mapType
     var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
     var isObject = (typeof view.data === "object" && !Array.isArray(view.data)) ? true : false

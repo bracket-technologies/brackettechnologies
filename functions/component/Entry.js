@@ -35,7 +35,7 @@ const Entry = (component) => {
     
     component = toComponent(component)
 
-    var { id, entry, model, droplist, readonly, style, controls, duplicated, duration, required,
+    var { id, entry, droplist, readonly, style, controls, duplicated, duration, required,
         placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
         duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
 
@@ -149,7 +149,7 @@ const Entry = (component) => {
             }]
         }
     }
-        
+    
     return {
         ...component,
         type: 'View',
@@ -195,6 +195,7 @@ const Entry = (component) => {
             placeholder,
             duplicated,
             disabled,
+            controls,
             templated: true,
             'placeholder-ar': component['placeholer-ar'],
             hover: {
@@ -224,12 +225,7 @@ const Entry = (component) => {
                 outline: 'none',
                 userSelect: password ? "none" : "initial",
                 ...entry.style
-            },
-            controls: [...controls, {
-                event: "select;mousedown?e().preventDefault()"
-            }/*, {
-                event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
-            }*/]
+            }
         }, {
             type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();():${id}-entry.txt()=;():${id}-entry.focus()].elif():[parent().clearable]:[():${id}-entry.focus()].elif():[parent().removable;!():${id}-entry.txt();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
         }, {
