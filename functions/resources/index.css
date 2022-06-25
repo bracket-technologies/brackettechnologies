@@ -406,6 +406,10 @@ i {
   white-space: nowrap;
 }
 
+[contenteditable] {
+  outline: 0px solid transparent;
+}
+
 .left {
   text-align: left;
 }

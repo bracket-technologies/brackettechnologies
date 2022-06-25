@@ -223,8 +223,7 @@ const Entry = (component) => {
 
     var { id, entry, droplist, readonly, style, controls, duplicated, duration, required,
         placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
-        duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
-
+        duplicatable, lang, unit, currency, google, key, minlength , children, container, generator
     } = component
     
     if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
@@ -369,6 +368,7 @@ const Entry = (component) => {
             // droplist,
             entry,
             currency, 
+            readonly,
             day,
             unit,
             key,

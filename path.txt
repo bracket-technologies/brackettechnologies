@@ -1,1 +1,0 @@
-:departure-airport:[_.departure-airport]:arrival-airport:[_.arrival-airport]:departure-day:[_.departure-day]:arrival-day:[_.arrival-day]:departure-time:[_.departure-time]:arrival-time:[_.arrival-time]
