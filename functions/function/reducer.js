@@ -192,6 +192,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         var state = toValue({ req, res, _window, id, e, value: args[0], params, _, __, object })
         if (state === undefined) state = args[0]
+        
         // if (state !== undefined && state !== null) _object = global[state]
         // else if (state === "") _object = global
 
