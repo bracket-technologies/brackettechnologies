@@ -11,11 +11,11 @@ module.exports = ({ controls, id }) => {
     )
     
     return [{
-        "event": `loaded:${_id}?if():[().state=().hover.id]:[)(:[().state]=generate()]?hover.mount`,
-        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style]:[().mode.[)(:mode].hover.style]||_map"
+        "event": `loaded:${_id}?if():[().state=().hover.id]:[[().state]:()=generate()]?hover.mount`,
+        "actions": "setStyle?style=if():[mode:()=default-mode:()]:[().hover.style]:[().mode.[mode:()].hover.style]||_map"
     }, {
         "event": `mouseenter:${_id}??!clicked.disable;!hover.disable`,
-        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style]:[().mode.[)(:mode].hover.style]||_map"
+        "actions": "setStyle?style=if():[mode:()=default-mode:()]:[().hover.style]:[().mode.[mode:()].hover.style]||_map"
     }, {
         "event": `mouseleave:${_id}??!clicked.disable;!hover.disable`,
         "actions": "setStyle?style=().hover.default.style"

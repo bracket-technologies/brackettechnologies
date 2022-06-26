@@ -566,36 +566,36 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "Data()") {
 
-            var _path = args[1], _o
+            var _path = args[1], _Data
 
             breakRequest = true
-            if (o.derivations) _o = global[o.Data]
-            else _o = global[views[id].Data]
+            if (o.derivations) _Data = o.Data
+            else _Data = views[id].Data
 
             if (args[1]) {
 
                 if (isParam({ _window, string: args[1] })) {
 
                     _params = toParam({ req, res, _window, id, e, _, __,string: _path })
-                    _path = _params.path || _params.derivations || _o.derivations
+                    _path = _params.path || _params.derivations || []
                     if (typeof _path === "string") _path = _path.split(".")
 
-                    return answer = reducer({ req, res, _window, id, e, value, key, path: [..._path, ...path.slice(i + 1)], object: _o, params, _, __})
+                    return answer = reducer({ req, res, _window, id, e, value, key, path: [`${_Data}:()`, ..._path, ...path.slice(i + 1)], object, params, _, __})
                 }
 
                 if (_path.slice(0, 7) === "coded()") _path = global.codes[_path]
                 _path = toValue({ req, res, _window, id, value: _path, params, _, __, e })
                 if (typeof _path === "string") _path = _path.split(".")
 
-                return answer = reducer({ req, res, _window, id, e, value, key, path: [..._path, ...path.slice(i + 1)], object: _o, params, _, __})
+                return answer = reducer({ req, res, _window, id, e, value, key, path: [`${_Data}:()`, ..._path, ...path.slice(i + 1)], object, params, _, __})
             }
 
             if (path[i + 1] !== undefined) {
 
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, __,e })
-                answer = reducer({ req, res, _window, id, e, value, key, path: path.slice(i + 1), object: _o, params, _, __})
+                answer = reducer({ req, res, _window, id, e, value, key, path: [`${_Data}:()`, ...path.slice(i + 1)], object, params, _, __})
 
-            } else answer = _o
+            } else answer = global[_Data]
 
         } else if (k0 === "removeAttribute()") {
 

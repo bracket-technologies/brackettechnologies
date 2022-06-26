@@ -376,7 +376,6 @@ const Entry = (component) => {
             google,
             duration,
             textarea,
-            readonly,
             labeled,
             placeholder,
             duplicated,
@@ -1171,11 +1170,11 @@ module.exports = ({ controls, id }) => {
     )
     
     return [{
-        "event": `loaded:${_id}?if():[().state=().hover.id]:[)(:[().state]=generate()]?hover.mount`,
-        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style]:[().mode.[)(:mode].hover.style]||_map"
+        "event": `loaded:${_id}?if():[().state=().hover.id]:[[().state]:()=generate()]?hover.mount`,
+        "actions": "setStyle?style=if():[mode:()=default-mode:()]:[().hover.style]:[().mode.[mode:()].hover.style]||_map"
     }, {
         "event": `mouseenter:${_id}??!clicked.disable;!hover.disable`,
-        "actions": "setStyle?style=if():[)(:mode=)(:default-mode]:[().hover.style]:[().mode.[)(:mode].hover.style]||_map"
+        "actions": "setStyle?style=if():[mode:()=default-mode:()]:[().hover.style]:[().mode.[mode:()].hover.style]||_map"
     }, {
         "event": `mouseleave:${_id}??!clicked.disable;!hover.disable`,
         "actions": "setStyle?style=().hover.default.style"
@@ -3537,7 +3536,7 @@ module.exports = {
       
       if (data) _view.data = clone(data)
       if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
-      
+      console.log(index);
       var innerHTML = toArray(_view)
       .map((child, i) => {
 
@@ -4849,36 +4848,36 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "Data()") {
 
-            var _path = args[1], _o
+            var _path = args[1], _Data
 
             breakRequest = true
-            if (o.derivations) _o = global[o.Data]
-            else _o = global[views[id].Data]
+            if (o.derivations) _Data = o.Data
+            else _Data = views[id].Data
 
             if (args[1]) {
 
                 if (isParam({ _window, string: args[1] })) {
 
                     _params = toParam({ req, res, _window, id, e, _, __,string: _path })
-                    _path = _params.path || _params.derivations || _o.derivations
+                    _path = _params.path || _params.derivations || []
                     if (typeof _path === "string") _path = _path.split(".")
 
-                    return answer = reducer({ req, res, _window, id, e, value, key, path: [..._path, ...path.slice(i + 1)], object: _o, params, _, __})
+                    return answer = reducer({ req, res, _window, id, e, value, key, path: [`${_Data}:()`, ..._path, ...path.slice(i + 1)], object, params, _, __})
                 }
 
                 if (_path.slice(0, 7) === "coded()") _path = global.codes[_path]
                 _path = toValue({ req, res, _window, id, value: _path, params, _, __, e })
                 if (typeof _path === "string") _path = _path.split(".")
 
-                return answer = reducer({ req, res, _window, id, e, value, key, path: [..._path, ...path.slice(i + 1)], object: _o, params, _, __})
+                return answer = reducer({ req, res, _window, id, e, value, key, path: [`${_Data}:()`, ..._path, ...path.slice(i + 1)], object, params, _, __})
             }
 
             if (path[i + 1] !== undefined) {
 
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, __,e })
-                answer = reducer({ req, res, _window, id, e, value, key, path: path.slice(i + 1), object: _o, params, _, __})
+                answer = reducer({ req, res, _window, id, e, value, key, path: [`${_Data}:()`, ...path.slice(i + 1)], object, params, _, __})
 
-            } else answer = _o
+            } else answer = global[_Data]
 
         } else if (k0 === "removeAttribute()") {
 
@@ -9095,7 +9094,11 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
   var global = {}
   if (!codes) global = _window ? _window.global : window.global
   // string = string.split("[]").join("_array")
-  // string = string.split("{}").join("_map")
+  /*if (start === "(") {
+    
+    string = string.split("()").join("___action___")
+    string = string.split(")(").join("___global___")
+  }*/
   
   var keys = string.split(start)
   
@@ -9108,6 +9111,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
     // ex. [ [ [] [] ] ]
     while (subKey[0] === keys[1] && keys[2] !== undefined) {
+
       keys[1] += `${start}${keys[2]}`
       if (keys[1].includes(end) && keys[2]) keys[1] = toCode({ _window, string: keys[1], e, start, end })
       keys.splice(2, 1)
@@ -9115,8 +9119,21 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
     }
 
     // ex. 1.2.3.[4.5.6
-    if (subKey[0] === keys[1] && keys.length === 2) 
-    return keys.join(start)
+    /*if (start === "(") {
+      subKey[0] = subKey[0].split("___action___").join("()")
+      subKey[0] = subKey[0].split("___global___").join(")(")
+    }*/
+    
+    if (subKey[0] === keys[1] && keys.length === 2) return keys.join(start)
+
+    // (...)
+    //if (subKey[0].includes("(") && subKey[0].includes(")") && subKey[0].split("(").slice(1).find(string => string.split(")")[0] && string.split(")")[0].length > 1)) 
+    //subKey[0] = toCode({ _window, string: subKey[0], e, start: "(", end: ")" })
+
+    // '...'
+    //if (subKey[0].split("'").length > 2) subKey[0] = toCode({ _window, string: subKey[0], e, start: "'", end: "'" })
+
+    
 
     if (codes) codes[key] = subKey[0]
     else global.codes[key] = subKey[0]
@@ -9133,6 +9150,12 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
   if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0)
   string = toCode({ _window, string, e, start, end })
 
+  // 
+  /*if (start === "(") {
+    subKey[0] = subKey[0].split("___action___").join("()")
+    subKey[0] = subKey[0].split("___global___").join(")(")
+  }*/
+  
   return string
 }
 
