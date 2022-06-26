@@ -1741,7 +1741,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "in()" || k0 === "inside()") {
             
-            var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __,e })
             if (typeof o === "string" || Array.isArray(o)) return answer = _next.includes(o)
             else if (typeof o === "object") answer = _next[o] !== undefined

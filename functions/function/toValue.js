@@ -77,6 +77,7 @@ const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount
 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)
+  else if (value.slice(0, 4) === "calc" && value.slice(4, 11) === "coded()") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
   else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
   else if (object) value = reducer({ _window, id, object, path, value, params, _, __, e, req, res, mount })
   else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, e, req, res, mount })
