@@ -19,6 +19,13 @@ const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount
   // string
   if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
   if (value.includes('codedS()') && value.length === 13) return value = global.codes[value]
+
+  // (...)
+  var valueParanthes = value.split("()").join("")
+  if (valueParanthes.includes("(") && valueParanthes.includes(")") && valueParanthes.split("(").slice(1).find(string => string.split(")")[0] && string.split(")")[0].length > 0 && (string.split(")")[0].includes("-") || string.split(")")[0].includes("+") || string.split(")")[0].includes("*")))) { // (...)
+    
+    value = toCode({ _window, string: value, e, start: "(", end: ")" })
+  } 
   
   // value is a param it has key=value
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, object, mount, params })
@@ -31,7 +38,7 @@ const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount
     })
     return answer
   }
-
+  
   if (value.includes("+")) { // addition
     
     var values = value.split("+").map(value => toValue({ _window, value, params, _, __, id, e, req, res, object, mount }))
@@ -77,6 +84,7 @@ const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount
 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)
+  else if (value === " ") return value
   else if (value.slice(4, 11) === "coded()" && value.slice(0, 4) === "calc") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
   else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "scale") value = "scale(" + global.codes[value.slice(5, 17)] + ")"
   else if (value.slice(6, 13) === "coded()" && value.slice(0, 6) === "rotate") value = "rotate(" + global.codes[value.slice(6, 18)] + ")"

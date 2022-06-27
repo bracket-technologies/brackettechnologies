@@ -2580,7 +2580,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 
     } else global["droplist-search-txt"] = views[view.id].element.innerHTML
   }
-  
+
   // items
   if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
   
@@ -4544,13 +4544,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             path.unshift("()")
             path0 = "()"
         }
-    }
 
-    if (view && path[0] === "()" && path[1] && !path[1].includes("()")) {
+    } else if (view && path[0] === "()" && path[1] && !path[1].includes("()")) {
+        
         if (path[1] !== "txt()" || path[1] !== "val()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
             else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
+
+            path0 = "()"
         }
     }
     
@@ -4595,6 +4597,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (path0 === "getCookie()") {
 
                 // getCookie():name
+                if (isParam({ _window, string: args[1] })) {
+                    var _params = toParam({ req, res, _window, id, e, _, __,params, string: args[1] })
+                    return getCookie({ ..._params, req, res })
+                }
                 var _name = toValue({ req, res, _window, id, e, _, __, value: args[1] })
                 _object = getCookie({ name: _name, req, res })
                 if (!_object) return
@@ -4602,6 +4608,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else if (path0 === "eraseCookie()") {
 
                 // getCookie():name
+                if (isParam({ _window, string: args[1] })) {
+                    var _params = toParam({ req, res, _window, id, e, _, __,params, string: args[1] })
+                    return eraseCookie({ ..._params, req, res })
+                }
                 var _name = toValue({ req, res, _window, id, e, _, __, value: args[1] })
                 _object = eraseCookie({ name: _name, req, res })
                 if (!_object) return
@@ -4910,10 +4920,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
                 else _parent = views[_o.parent]
             }
-            if (!_parent) return
-
-            // if (_parent.templated || view.link || _parent.link) return views[_parent.element.parentNode.id]
-            else return _parent
+            return _parent
             
         } else if (k0 === "siblings()") {
 
@@ -6427,27 +6434,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "pullItems()") {
 
-            if (!isParam({ _window, string: args[1] })) {
-                
-                var _items = toArray(toValue({ req, res, _window, id, value: args[1], params, _, __,e }))
-                answer = o = o.filter(item => !_items.find(_item => isEqual(item, _item)))
-
-            } else {
-
-                var args = args.slice(1)
-                args.map(arg => {
-                
-                    if (k[0] === "_") answer = o = toArray(o).filter(o => !toApproval({ _window, e, string: arg, id, __: _, _: o, req, res }) )
-                    else answer = o = toArray(o).filter(o => !toApproval({ _window, e, string: arg, id, object: o, req, res, _, __}))
-                })
-
-            }
+            var _items = toArray(toValue({ req, res, _window, id, value: args[1], params, _, __,e }))
+            answer = o = o.filter(item => !_items.find(_item => isEqual(item, _item)))
             
         } else if (k0 === "pullItem()") {
 
             var _item = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
             var _index = o.findIndex(item => isEqual(item, _item))
-            o.splice(_index,1)
+            if (_index !== -1) o.splice(_index,1)
             answer = o
             
         } else if (k0 === "pullLastItem()" || k0 === "pullLast()") {
@@ -6485,7 +6479,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer.map(_item => {
                 var _index = o.findIndex(item => isEqual(item, _item))
-                o.splice(_index, 1)
+                if (_index !== -1) o.splice(_index, 1)
             })
 
             answer = o
@@ -6502,7 +6496,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, e, string: arg, id, __: _, _: o, req, res }) )
                 else _index = toArray(o).findIndex(o => toApproval({ _window, e, string: arg, id, object: o, req, res, _, __ }))
 
-                if (!isNaN(o)) o.splice(_index , 1)
+                if (!isNaN(o) && _index !== -1) o.splice(_index , 1)
                 answer = o
             })
             
@@ -7360,10 +7354,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "update()") {
           
-            var _id
-            if (args[1]) _id = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || id
-            if (typeof _id === "object" && views[_id]) _id = _id.id
-
+            var __id, _id
+            if (args[1]) __id = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || id
+            if (typeof __id === "object" && __id.id) _id = __id.id
+            else _id = __id
+            
             return require("./update").update({ id: _id })
 
         } else if (k0 === "save()") {
@@ -9093,7 +9088,8 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   var global = {}
   if (!codes) global = _window ? _window.global : window.global
-  // string = string.split("[]").join("_array")
+
+  // split () & )(
   if (start === "(") string = string.split("()").join("___action___").split(")(").join("___global___")
 
   var keys = string.split(start)
@@ -9122,13 +9118,6 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
       return keys
     }
 
-    // (...)
-    if (subKey[0].includes("(") && subKey[0].includes(")") && subKey[0].split("(").slice(1).find(string => string.split(")")[0] && string.split(")")[0].length > 0)) 
-    subKey[0] = toCode({ _window, string: subKey[0], codes, e, start: "(", end: ")" })
-
-    // '...'
-    // if (subKey[0].split("'").length > 2) subKey[0] = toCode({ _window, string: subKey[0], codes, e, start: "'", end: "'" })
-
     if (start === "(") subKey[0] = subKey[0].split("___action___").join("()").split("___global___").join(")(")
 
     if (codes) codes[key] = subKey[0]
@@ -9148,6 +9137,9 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   // 
   if (start === "(") string = string.split("___action___").join("()").split("___global___").join(")(")
+
+  // '...'
+  // if (string.split("'").length > 2) string = toCode({ _window, string, codes, e, start: "'", end: "'" })
   
   return string
 }
@@ -9564,6 +9556,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
           }
         })
       }
+      
       string = toCode({ _window, string })
       
       if (view[path0]) return toParam({ _window, ...view[path0], string, object, _, __ })
@@ -9828,6 +9821,13 @@ const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount
   // string
   if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
   if (value.includes('codedS()') && value.length === 13) return value = global.codes[value]
+
+  // (...)
+  var valueParanthes = value.split("()").join("")
+  if (valueParanthes.includes("(") && valueParanthes.includes(")") && valueParanthes.split("(").slice(1).find(string => string.split(")")[0] && string.split(")")[0].length > 0 && (string.split(")")[0].includes("-") || string.split(")")[0].includes("+") || string.split(")")[0].includes("*")))) { // (...)
+    
+    value = toCode({ _window, string: value, e, start: "(", end: ")" })
+  } 
   
   // value is a param it has key=value
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, object, mount, params })
@@ -9840,7 +9840,7 @@ const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount
     })
     return answer
   }
-
+  
   if (value.includes("+")) { // addition
     
     var values = value.split("+").map(value => toValue({ _window, value, params, _, __, id, e, req, res, object, mount }))
@@ -9886,6 +9886,7 @@ const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount
 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)
+  else if (value === " ") return value
   else if (value.slice(4, 11) === "coded()" && value.slice(0, 4) === "calc") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
   else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "scale") value = "scale(" + global.codes[value.slice(5, 17)] + ")"
   else if (value.slice(6, 13) === "coded()" && value.slice(0, 6) === "rotate") value = "rotate(" + global.codes[value.slice(6, 18)] + ")"

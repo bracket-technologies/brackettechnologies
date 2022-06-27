@@ -193,6 +193,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
           }
         })
       }
+      
       string = toCode({ _window, string })
       
       if (view[path0]) return toParam({ _window, ...view[path0], string, object, _, __ })

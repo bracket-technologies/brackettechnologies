@@ -32,7 +32,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 
     } else global["droplist-search-txt"] = views[view.id].element.innerHTML
   }
-  
+
   // items
   if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
   
