@@ -77,7 +77,12 @@ const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount
 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)
-  else if (value.slice(0, 4) === "calc" && value.slice(4, 11) === "coded()") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
+  else if (value.slice(4, 11) === "coded()" && value.slice(0, 4) === "calc") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
+  else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "scale") value = "scale(" + global.codes[value.slice(5, 17)] + ")"
+  else if (value.slice(6, 13) === "coded()" && value.slice(0, 6) === "rotate") value = "rotate(" + global.codes[value.slice(6, 18)] + ")"
+  else if (value.slice(9, 16) === "coded()" && value.slice(0, 9) === "translate") value = "translate(" + global.codes[value.slice(9, 21)] + ")"
+  else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
+  else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
   else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
   else if (object) value = reducer({ _window, id, object, path, value, params, _, __, e, req, res, mount })
   else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, e, req, res, mount })

@@ -313,15 +313,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (path0 === "getCookie()") {
 
                 // getCookie():name
-                var _params = toParam({ req, res, _window, id, e, _, __,params, string: args[1] })
-                _object = getCookie({ ..._params, req, res })
+                var _name = toValue({ req, res, _window, id, e, _, __, value: args[1] })
+                _object = getCookie({ name: _name, req, res })
                 if (!_object) return
                 
             } else if (path0 === "eraseCookie()") {
 
-                // eraseCookie():name
-                var _params = toParam({ req, res, _window, id, e, _, __,params, string: args[1] })
-                return eraseCookie({ ..._params, req, res })
+                // getCookie():name
+                var _name = toValue({ req, res, _window, id, e, _, __, value: args[1] })
+                _object = eraseCookie({ name: _name, req, res })
+                if (!_object) return
                 
             } else if (path0 === "setCookie()") {
     

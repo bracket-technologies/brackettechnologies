@@ -61,7 +61,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.flight.txt()=data:().editor.flight.[open-doc:()||duplicate-doc:()].clone();data:().editor.flight.[txt()].id=txt()]:[data:().editor.flight.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.flight.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -157,7 +157,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.flight-booking.txt()=data:().editor.flight-booking.[open-doc:()||duplicate-doc:()].clone();data:().editor.flight-booking.[txt()].id=txt()]:[data:().editor.flight-booking.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.flight-booking.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -253,7 +253,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.flight-reservation.txt()=data:().editor.flight-reservation.[open-doc:()||duplicate-doc:()].clone();data:().editor.flight-reservation.[txt()].id=txt()]:[data:().editor.flight-reservation.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.flight-reservation.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -349,7 +349,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.flight-canceled-booking.txt()=data:().editor.flight-canceled-booking.[open-doc:()||duplicate-doc:()].clone();data:().editor.flight-canceled-booking.[txt()].id=txt()]:[data:().editor.flight-canceled-booking.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.flight-canceled-booking.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -445,7 +445,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.flight-canceled-reservation.txt()=data:().editor.flight-canceled-reservation.[open-doc:()||duplicate-doc:()].clone();data:().editor.flight-canceled-reservation.[txt()].id=txt()]:[data:().editor.flight-canceled-reservation.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.flight-canceled-reservation.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [

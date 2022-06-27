@@ -61,7 +61,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.letter.txt()=data:().editor.letter.[open-doc:()||duplicate-doc:()].clone();data:().editor.letter.[txt()].id=txt()]:[data:().editor.letter.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.letter.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [

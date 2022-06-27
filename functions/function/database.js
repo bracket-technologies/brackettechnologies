@@ -12,7 +12,7 @@ var getdb = async ({ req, res, db }) => {
   var search = params.search || {}
 
   var collection = search.collection
-  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && !search.url) collection += `-${req.headers["project"]}`
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
 
   var doc = search.document || search.doc,
     docs = search.documents || search.docs,

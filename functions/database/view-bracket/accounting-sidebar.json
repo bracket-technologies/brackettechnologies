@@ -80,7 +80,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.expense.txt()=data:().editor.expense.[open-doc:()||duplicate-doc:()].clone();data:().editor.expense.[txt()].id=txt()]:[data:().editor.expense.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.expense.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -176,7 +176,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.purchase.txt()=data:().editor.purchase.[open-doc:()||duplicate-doc:()].clone();data:().editor.purchase.[txt()].id=txt()]:[data:().editor.purchase.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.purchase.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -272,7 +272,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.payment.txt()=data:().editor.payment.[open-doc:()||duplicate-doc:()].clone();data:().editor.payment.[txt()].id=txt()]:[data:().editor.payment.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.payment.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -368,7 +368,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.payment-return.txt()=data:().editor.payment-return.[open-doc:()||duplicate-doc:()].clone();data:().editor.payment-return.[txt()].id=txt()]:[data:().editor.payment-return.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.payment-return.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -485,7 +485,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.draft-invoice.txt()=data:().editor.draft-invoice.[open-doc:()||duplicate-doc:()].clone();data:().editor.draft-invoice.[txt()].id=txt()]:[data:().editor.draft-invoice.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.draft-invoice.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -581,7 +581,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.invoice.txt()=data:().editor.invoice.[open-doc:()||duplicate-doc:()].clone();data:().editor.invoice.[txt()].id=txt()]:[data:().editor.invoice.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.invoice.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -677,7 +677,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.receipt.txt()=data:().editor.receipt.[open-doc:()||duplicate-doc:()].clone();data:().editor.receipt.[txt()].id=txt()]:[data:().editor.receipt.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.receipt.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [
@@ -773,7 +773,7 @@
                                             "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.refund.txt()=data:().editor.refund.[open-doc:()||duplicate-doc:()].clone();data:().editor.refund.[txt()].id=txt()]:[data:().editor.refund.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.refund.keys().inc():txt();!txt().inc(): "
                                         }
                                     ],
-                                    "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                                    "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                                 },
                                 {
                                     "controls": [

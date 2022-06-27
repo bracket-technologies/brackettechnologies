@@ -39,10 +39,12 @@ const toggleView = async ({ toggle, id }) => {
     var promises = []
     viewId = global.currentPage
 
-    if (!global.data.page[global.currentPage]) promises.push(search({ id, search: { collection: "page", doc: viewId }, await: `data:().page.${viewId}=().search.data`, asyncer: true }))
-    if (!global.data.view[global.currentPage]) promises.push(search({ id, search: { collection: "view", doc: viewId }, await: `data:().view.${viewId}=().search.data`, asyncer: true }))
+    if (!global.data.page[global.currentPage]) promises.push(search({ id: "root", search: { collection: "page", doc: viewId } }))
+    if (!global.data.view[global.currentPage]) promises.push(search({ id: "public", search: { collection: "view", doc: viewId } }))
 
     await Promise.all(promises)
+    global.data.page[viewId] = views.root.search.data
+    global.data.view[viewId] = views.public.search.data
 
     var title = global.data.page[global.currentPage].title
     global.path = togglePage = togglePage === "main" ? "/" : togglePage

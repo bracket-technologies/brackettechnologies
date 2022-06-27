@@ -61,7 +61,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel.txt()=data:().editor.hotel.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel.[txt()].id=txt()]:[data:().editor.hotel.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -157,7 +157,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel-booking.txt()=data:().editor.hotel-booking.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel-booking.[txt()].id=txt()]:[data:().editor.hotel-booking.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel-booking.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -253,7 +253,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel-accommodation.txt()=data:().editor.hotel-accommodation.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel-accommodation.[txt()].id=txt()]:[data:().editor.hotel-accommodation.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel-accommodation.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -349,7 +349,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel-canceled-booking.txt()=data:().editor.hotel-canceled-booking.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel-canceled-booking.[txt()].id=txt()]:[data:().editor.hotel-canceled-booking.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel-canceled-booking.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -445,7 +445,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel-canceled-accommodation.txt()=data:().editor.hotel-canceled-accommodation.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel-canceled-accommodation.[txt()].id=txt()]:[data:().editor.hotel-canceled-accommodation.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel-canceled-accommodation.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [

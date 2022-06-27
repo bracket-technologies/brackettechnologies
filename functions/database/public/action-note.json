@@ -7,13 +7,13 @@
         }, {
             "type": "Icon?icon.name=bi-x;style.color=#fff;style.position=absolute;style.fontSize=1.8rem;style.right=.4rem;style.cursor=pointer",
             "controls": {
-                "event": "click?():action-note.style().transform.equal():translateY(-200%)"
+                "event": "click?():action-note.style().transform=translateY(-200%)"
             }
         }]
     }],
     "controls" : [{
-        "event": "mouseenter?().note-timer.clearTimeout()"
+        "event": "mouseenter?clearTimer():[().note-timer]"
     }, {
-        "event": "mouseleave?().note-timer=().setTimeout():[().style().transform.equal():translateY(-200%)]:5000"
+        "event": "mouseleave?note-timer=setTimer():[style().transform=translateY(-200%)]:5000"
     }]
 }

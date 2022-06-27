@@ -61,7 +61,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.user.txt()=data:().editor.user.[open-doc:()||duplicate-doc:()].clone();data:().editor.user.[txt()].id=txt()]:[data:().editor.user.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.user.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -157,7 +157,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.customer.txt()=data:().editor.customer.[open-doc:()||duplicate-doc:()].clone();data:().editor.customer.[txt()].id=txt()]:[data:().editor.customer.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.customer.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -253,7 +253,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.supplier.txt()=data:().editor.supplier.[open-doc:()||duplicate-doc:()].clone();data:().editor.supplier.[txt()].id=txt()]:[data:().editor.supplier.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.supplier.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -349,7 +349,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.agent.txt()=data:().editor.agent.[open-doc:()||duplicate-doc:()].clone();data:().editor.agent.[txt()].id=txt()]:[data:().editor.agent.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.agent.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "type": "Input?class=dots;input.value=().data;generator;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [

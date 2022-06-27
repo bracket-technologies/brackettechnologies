@@ -4595,15 +4595,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (path0 === "getCookie()") {
 
                 // getCookie():name
-                var _params = toParam({ req, res, _window, id, e, _, __,params, string: args[1] })
-                _object = getCookie({ ..._params, req, res })
+                var _name = toValue({ req, res, _window, id, e, _, __, value: args[1] })
+                _object = getCookie({ name: _name, req, res })
                 if (!_object) return
                 
             } else if (path0 === "eraseCookie()") {
 
-                // eraseCookie():name
-                var _params = toParam({ req, res, _window, id, e, _, __,params, string: args[1] })
-                return eraseCookie({ ..._params, req, res })
+                // getCookie():name
+                var _name = toValue({ req, res, _window, id, e, _, __, value: args[1] })
+                _object = eraseCookie({ name: _name, req, res })
+                if (!_object) return
                 
             } else if (path0 === "setCookie()") {
     
@@ -6023,7 +6024,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "in()" || k0 === "inside()") {
             
-            var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __,e })
             if (typeof o === "string" || Array.isArray(o)) return answer = _next.includes(o)
             else if (typeof o === "object") answer = _next[o] !== undefined
@@ -9886,7 +9886,12 @@ const toValue = ({ _window, value, params, _, __, id, e, req, res, object, mount
 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)
-  else if (value.slice(0, 4) === "calc" && value.slice(4, 11) === "coded()") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
+  else if (value.slice(4, 11) === "coded()" && value.slice(0, 4) === "calc") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
+  else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "scale") value = "scale(" + global.codes[value.slice(5, 17)] + ")"
+  else if (value.slice(6, 13) === "coded()" && value.slice(0, 6) === "rotate") value = "rotate(" + global.codes[value.slice(6, 18)] + ")"
+  else if (value.slice(9, 16) === "coded()" && value.slice(0, 9) === "translate") value = "translate(" + global.codes[value.slice(9, 21)] + ")"
+  else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
+  else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
   else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
   else if (object) value = reducer({ _window, id, object, path, value, params, _, __, e, req, res, mount })
   else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, e, req, res, mount })
@@ -10046,10 +10051,12 @@ const toggleView = async ({ toggle, id }) => {
     var promises = []
     viewId = global.currentPage
 
-    if (!global.data.page[global.currentPage]) promises.push(search({ id, search: { collection: "page", doc: viewId }, await: `data:().page.${viewId}=().search.data`, asyncer: true }))
-    if (!global.data.view[global.currentPage]) promises.push(search({ id, search: { collection: "view", doc: viewId }, await: `data:().view.${viewId}=().search.data`, asyncer: true }))
+    if (!global.data.page[global.currentPage]) promises.push(search({ id: "root", search: { collection: "page", doc: viewId } }))
+    if (!global.data.view[global.currentPage]) promises.push(search({ id: "public", search: { collection: "view", doc: viewId } }))
 
     await Promise.all(promises)
+    global.data.page[viewId] = views.root.search.data
+    global.data.view[viewId] = views.public.search.data
 
     var title = global.data.page[global.currentPage].title
     global.path = togglePage = togglePage === "main" ? "/" : togglePage
