@@ -2765,8 +2765,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0.includes("findIndex()")) {
             
-            if (k[0] === "_") answer = o.findIndex(o => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res, object }) )
-            else answer = o.findIndex(o => toApproval({ _window, e, string: args[1], id, _, __,req, res, object: o }) )
+            if (typeof o !== "object") return
+            
+            if (k[0] === "_") answer = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res, object }) )
+            else answer = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, _, __,req, res, object: o }) )
             
         } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
@@ -2814,7 +2816,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "toBoolean()" || k0 === "boolean()" || k0 === "bool()") {
 
-            answer = true ? o === "true" : false
+            answer = o === "true" ? true : o === "false" ? false : undefined
             
         } else if (k0 === "toNumber()" || k0 === "number()" || k0 === "num()") {
 

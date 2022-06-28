@@ -14,6 +14,6 @@
     "controls" : [{
         "event": "mouseenter?clearTimer():[().note-timer]"
     }, {
-        "event": "mouseleave?note-timer=setTimer():[style().transform=translateY(-200%)]:5000"
+        "event": "mouseleave?note-timer=timer():[style().transform=translateY(-200%)]:5000"
     }]
 }
