@@ -242,26 +242,26 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
     // initialize by methods
     if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" || path0 === "getEntries()" || path0 === "entries()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()")) {
-        if (path0 === "getChildrenByClassName()" || path0 === "className()") {
+      if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
-            path.unshift("doc()")
-            path0 = "doc()"
+          path.unshift("doc()")
+          path0 = "doc()"
 
-        } else {
+      } else {
 
-            if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()") {
+          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()") {
 
-                if (view.labeled) path = ["parent()", "parent()", ...path]
-                else if (view.templated || view.link) path.unshift("parent()")
+              if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
+              else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
 
-            } else if (path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
-                
-                if (view.islabel || view.templated || view.link) path.unshift("input()")
-            }
+          } else if (path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
+              
+              if (view.islabel || view.templated || view.link) path.unshift("input()")
+          }
 
-            path.unshift("()")
-            path0 = "()"
-        }
+          path.unshift("()")
+          path0 = "()"
+      }
 
     } else if (view && path[0] === "()" && path[1] && !path[1].includes("()")) {
         
@@ -630,15 +630,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
                 _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __,value: args[1], params })
+
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             if (typeof _o === "object") {
 
-                if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
-                else _parent = views[_o.parent]
+              if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
+              else _parent = views[_o.parent]
             }
-            return _parent
+
+            answer = _parent
             
         } else if (k0 === "siblings()") {
 
@@ -666,22 +668,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "next()" || k0 === "nextSibling()") {
 
-            var _o, _params = {}
-            if (args[1]) {
+          var _o, _params = {}
+          if (args[1]) {
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __,value: args[1], params })
-            } else _o = o
+              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
+              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __,value: args[1], params })
+          } else _o = o
 
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
+          if (typeof _o === "string" && views[_o]) _o = views[_o]
 
-            var element = _o.element
-            // if (_o.templated || _o.link) element = views[_o.parent].element
-            
-            var nextSibling = element.nextElementSibling
-            if (!nextSibling) return
-            var _id = nextSibling.id
-            answer = views[_id]
+          var element = _o.element
+          var nextSibling = element.nextElementSibling
+          if (!nextSibling) return
+          var _id = nextSibling.id
+          answer = views[_id]
             
         } else if (k0 === "2ndNext()" || k0 === "2ndNextSibling()") {
 

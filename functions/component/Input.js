@@ -35,10 +35,10 @@ const Input = (component) => {
     
     component = toComponent(component)
 
-    var { id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
-        placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
-        duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
-
+    var { 
+      id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
+      placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
+      duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
     } = component
     
     if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
