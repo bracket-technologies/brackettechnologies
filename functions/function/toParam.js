@@ -8,6 +8,7 @@ const { clone } = require("./clone")
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, asyncer, createElement, params = {}, executer }) => {
   const { toApproval } = require("./toApproval")
 
+  var zzz = generate()
   var viewId = id, mountDataUsed = false, mountPathUsed = false
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -249,10 +250,10 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
   
     // mount path directly when found
-    if (mount && !mountPathUsed && params.path) {
+    if (mount && !mountPathUsed && params.path && createElement) {
 
       mountPathUsed = true
-
+      
       // path & derivations
       var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : []
           
@@ -263,7 +264,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
           global[view.Data] = view.data || {}
         }
 
+        if (path[0] === "name") console.log("2", clone(view), clone(params));
         view.derivations.push(...path)
+        if (path[0] === "name") console.log("3", clone(view), clone(params));
       }
     }
   

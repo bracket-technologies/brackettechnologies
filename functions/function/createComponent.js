@@ -12,7 +12,7 @@ module.exports = {
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
     var view = views[id], parent = view.parent
-
+    
     if (!component[view.type]) return
     views[id] = view = component[view.type](view)
 
@@ -37,21 +37,13 @@ module.exports = {
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
+      params = toParam({ _window, string: params, id, req, res, mount: true })
       // views[id] = view = override(view, params)
 
       if (params.id) {
         
         delete Object.assign(views, { [params.id]: views[id] })[id]
         id = params.id
-      }
-      
-      if (params.data && (!view.Data || params.Data)) {
-
-        view.Data = view.Data || generate()
-        var state = view.Data
-        global[state] = clone(view.data || global[state])
-        global[`${state}-options`] = global[`${state}-options`] || {}
       }
     }
   }

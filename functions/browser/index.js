@@ -576,7 +576,7 @@ const Input = (component) => {
         delete component.tooltip
         delete label.text
         label.tooltip = tooltip
-
+        
         return {
             id, Data, parent, derivations, required, path, islabel: true,
             "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
@@ -687,11 +687,11 @@ const Input = (component) => {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
             }, {
-                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();():${id}-input.txt()=;():${id}-input.focus()].elif():[parent().clearable]:[():${id}-input.focus()].elif():[parent().removable;!():${id}-input.txt();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
+                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:0]:[right=if():[parent().password]:4rem:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();():${id}-input.txt()=;():${id}-input.focus()].elif():[parent().clearable]:[():${id}-input.focus()].elif():[parent().removable;!():${id}-input.txt();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
             }, {
-                type: `Text?class=flexbox pointer;id=${id}+-generate;text=ID;style:[position=absolute;color=blue;right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
+                type: `Text?class=flexbox pointer;id=${id}+-generate;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
             }, {
-                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
+                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
@@ -709,7 +709,7 @@ const Input = (component) => {
         }
     }
 
-    if (model === 'classic' && !password) {
+    if (model === 'classic') {
         return {
             ...component,
             style: {
@@ -1649,7 +1649,7 @@ module.exports = {
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
     var view = views[id], parent = view.parent
-
+    
     if (!component[view.type]) return
     views[id] = view = component[view.type](view)
 
@@ -1674,21 +1674,13 @@ module.exports = {
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
+      params = toParam({ _window, string: params, id, req, res, mount: true, kalson: true })
       // views[id] = view = override(view, params)
 
       if (params.id) {
         
         delete Object.assign(views, { [params.id]: views[id] })[id]
         id = params.id
-      }
-      
-      if (params.data && (!view.Data || params.Data)) {
-
-        view.Data = view.Data || generate()
-        var state = view.Data
-        global[state] = clone(view.data || global[state])
-        global[`${state}-options`] = global[`${state}-options`] || {}
       }
     }
   }
@@ -1898,6 +1890,17 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     (view) => global.data.view[view]
   );
 
+  // meta
+  global.data.page[currentPage].meta = global.data.page[currentPage].meta || {};
+
+  // viewport
+  var viewport = global.data.page[currentPage].meta.viewport;
+  viewport = viewport !== undefined ? viewport : "width=device-width, initial-scale=1.0";
+
+  // language
+  var language = global.language = global.data.page[currentPage].language || "en";
+  var direction = language === "ar" || language === "fa" ? "rtl" : "ltr";
+
   var _window = { global, views, db };
   /*
     // forward
@@ -1932,18 +1935,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     .split("id='")
     .slice(1)
     .map((id) => id.split("'")[0]);
-
-  // meta
-  global.data.page[currentPage].meta = global.data.page[currentPage].meta || {};
-
-  // viewport
-  var viewport = global.data.page[currentPage].meta.viewport;
-  viewport =
-    viewport !== undefined ? viewport : "width=device-width, initial-scale=1.0";
-
-  // language
-  var language = global.data.page[currentPage].language || "en";
-  var direction = language === "ar" || language === "fa" ? "rtl" : "ltr";
 
   res.send(
     `<!DOCTYPE html>
@@ -2081,9 +2072,10 @@ const createElement = ({ _window, id, req, res }) => {
 
   // push destructured params from type to view
   if (params) {
-    
+    if (params.includes("path=name"))  console.log(clone(view));
     params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
     
+  if (params.path === "name") console.log(clone(view));
     if (params.id && params.id !== id && !priorityId) {
 
       if (view[params.id] && typeof view[params.id] === "object") {
@@ -9242,7 +9234,6 @@ module.exports = {
     view.entry.value : view.data !== undefined ? view.data : ""
 
     var tag, style = toStyle({ _window, id })
-    
     if (typeof value === 'object') value = ''
     
     if (view.type === "View") {
@@ -9387,6 +9378,7 @@ const { clone } = require("./clone")
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, asyncer, createElement, params = {}, executer }) => {
   const { toApproval } = require("./toApproval")
 
+  var zzz = generate()
   var viewId = id, mountDataUsed = false, mountPathUsed = false
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -9628,10 +9620,10 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
   
     // mount path directly when found
-    if (mount && !mountPathUsed && params.path) {
+    if (mount && !mountPathUsed && params.path && createElement) {
 
       mountPathUsed = true
-
+if (view.path === "name") console.log("1",zzz, clone(view), clone(params));
       // path & derivations
       var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : []
           
@@ -9642,7 +9634,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
           global[view.Data] = view.data || {}
         }
 
+        if (path[0] === "name") console.log("2", clone(view), clone(params));
         view.derivations.push(...path)
+        if (path[0] === "name") console.log("3", clone(view), clone(params));
       }
     }
   
