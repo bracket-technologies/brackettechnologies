@@ -93,6 +93,7 @@ const createElement = ({ _window, id, req, res }) => {
     
     params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
     
+  if (params.path === "name") console.log(clone(view));
     if (params.id && params.id !== id && !priorityId) {
 
       if (view[params.id] && typeof view[params.id] === "object") {

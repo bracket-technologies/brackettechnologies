@@ -39,7 +39,6 @@ module.exports = {
     view.entry.value : view.data !== undefined ? view.data : ""
 
     var tag, style = toStyle({ _window, id })
-    
     if (typeof value === 'object') value = ''
     
     if (view.type === "View") {

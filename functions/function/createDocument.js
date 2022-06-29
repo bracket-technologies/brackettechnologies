@@ -201,6 +201,17 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     (view) => global.data.view[view]
   );
 
+  // meta
+  global.data.page[currentPage].meta = global.data.page[currentPage].meta || {};
+
+  // viewport
+  var viewport = global.data.page[currentPage].meta.viewport;
+  viewport = viewport !== undefined ? viewport : "width=device-width, initial-scale=1.0";
+
+  // language
+  var language = global.language = global.data.page[currentPage].language || "en";
+  var direction = language === "ar" || language === "fa" ? "rtl" : "ltr";
+
   var _window = { global, views, db };
   /*
     // forward
@@ -235,18 +246,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     .split("id='")
     .slice(1)
     .map((id) => id.split("'")[0]);
-
-  // meta
-  global.data.page[currentPage].meta = global.data.page[currentPage].meta || {};
-
-  // viewport
-  var viewport = global.data.page[currentPage].meta.viewport;
-  viewport =
-    viewport !== undefined ? viewport : "width=device-width, initial-scale=1.0";
-
-  // language
-  var language = global.data.page[currentPage].language || "en";
-  var direction = language === "ar" || language === "fa" ? "rtl" : "ltr";
 
   res.send(
     `<!DOCTYPE html>
