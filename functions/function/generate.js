@@ -1,14 +1,14 @@
-const characters =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+const numbers = "1234567890"
 
-const generate = (length) => {
+const generate = (length, number) => {
 
-  var result = ""
+  var result = "", chars = number ? numbers : characters
   if (!length) length = 5
 
-  var charactersLength = characters.length
+  var charactersLength = chars.length
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+    result += chars.charAt(Math.floor(Math.random() * charactersLength))
   }
   
   return result

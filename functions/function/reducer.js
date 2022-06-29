@@ -2139,7 +2139,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _index = toValue({ req, res, _window, id, value: args[2], params, _, __,e })
             if (_index === undefined) _index = o.length
             
-            o.splice(_index, 0, _item)
+            if (Array.isArray(_item)) {
+                _item.map(_item => {
+                    o.splice(_index, 0, _item)
+                    _index += 1
+                })
+            } else o.splice(_index, 0, _item)
             answer = o
             
         } else if (k0 === "pull()") {
@@ -2284,14 +2289,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "toId()") {
             
-            var args = k.split(":")
             var checklist = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || []
             answer = toId({ string: o, checklist })
 
         } else if (k0 === "generate()" || k0 === "gen()") {
             
-            var length = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || 5
-            answer = generate(length)
+            if (isParam({ _window, string: args[1] })) {
+
+                _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
+                if (_params.number || _params.numbers) answer = generate(_params.length || 5, true)
+                else answer = generate(_params.length || 5)
+
+            } else {
+
+                var length = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || 5
+                answer = generate(length)
+            }
 
         } else if (k0 === "includes()" || k0 === "inc()") {
             
@@ -3086,7 +3099,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 var _save = toParam({ req, res, _window, id, e, _, __,string: args[1] })
-                return require("./save").save({ id, e, _, __,save: _save })
+                console.log(_save);
+                return require("./save").save({ id, e, _, __, save: _save })
             }
 
             var _collection = toValue({ req, res, _window, id, e, _, __,value: args[1], params })

@@ -3376,17 +3376,17 @@ module.exports = {
   axios
 }
 },{"./axios":32,"./blur":33,"./capitalize":34,"./clearValues":35,"./clone":36,"./compare":37,"./contentful":38,"./controls":39,"./cookie":40,"./createActions":41,"./createComponent":42,"./createDocument":43,"./createElement":44,"./createView":46,"./data":47,"./decode":48,"./defaultInputHandler":49,"./droplist":50,"./erase":51,"./event":52,"./execute":53,"./exportJson":54,"./fileReader":55,"./filter":56,"./focus":57,"./generate":59,"./getDateTime":60,"./getDaysInMonth":61,"./getParam":62,"./importJson":64,"./insert":65,"./isArabic":66,"./isEqual":67,"./isPath":69,"./jsonFiles":70,"./keys":71,"./log":73,"./merge":74,"./note":75,"./overflow":76,"./popup":77,"./position":78,"./preventDefault":79,"./reducer":80,"./refresh":81,"./reload":82,"./remove":83,"./resize":84,"./route":85,"./save":86,"./search":87,"./setContent":88,"./setData":89,"./setElement":90,"./setPosition":91,"./sort":92,"./starter":93,"./state":94,"./style":95,"./switchMode":96,"./toApproval":97,"./toArray":98,"./toAwait":99,"./toCSV":100,"./toCode":102,"./toComponent":103,"./toControls":104,"./toHtml":105,"./toId":106,"./toNumber":107,"./toOperator":108,"./toParam":109,"./toString":112,"./toStyle":113,"./toValue":114,"./toggleView":115,"./update":116,"./upload":117}],59:[function(require,module,exports){
-const characters =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+const numbers = "1234567890"
 
-const generate = (length) => {
+const generate = (length, number) => {
 
-  var result = ""
+  var result = "", chars = number ? numbers : characters
   if (!length) length = 5
 
-  var charactersLength = characters.length
+  var charactersLength = chars.length
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+    result += chars.charAt(Math.floor(Math.random() * charactersLength))
   }
   
   return result
@@ -6421,7 +6421,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _index = toValue({ req, res, _window, id, value: args[2], params, _, __,e })
             if (_index === undefined) _index = o.length
             
-            o.splice(_index, 0, _item)
+            if (Array.isArray(_item)) {
+                _item.map(_item => {
+                    o.splice(_index, 0, _item)
+                    _index += 1
+                })
+            } else o.splice(_index, 0, _item)
             answer = o
             
         } else if (k0 === "pull()") {
@@ -6566,14 +6571,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "toId()") {
             
-            var args = k.split(":")
             var checklist = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || []
             answer = toId({ string: o, checklist })
 
         } else if (k0 === "generate()" || k0 === "gen()") {
             
-            var length = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || 5
-            answer = generate(length)
+            if (isParam({ _window, string: args[1] })) {
+
+                _params = toParam({ req, res, _window, id, e, _, __,string: args[1] })
+                if (_params.number || _params.numbers) answer = generate(_params.length || 5, true)
+                else answer = generate(_params.length || 5)
+
+            } else {
+
+                var length = toValue({ req, res, _window, id, e, _, __,value: args[1], params }) || 5
+                answer = generate(length)
+            }
 
         } else if (k0 === "includes()" || k0 === "inc()") {
             
@@ -7368,7 +7381,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 var _save = toParam({ req, res, _window, id, e, _, __,string: args[1] })
-                return require("./save").save({ id, e, _, __,save: _save })
+                console.log(_save);
+                return require("./save").save({ id, e, _, __, save: _save })
             }
 
             var _collection = toValue({ req, res, _window, id, e, _, __,value: args[1], params })
