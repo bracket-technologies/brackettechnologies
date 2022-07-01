@@ -119,6 +119,9 @@
                   "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.page.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                 },
                 {
+                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.page.[open-doc:()]]:[parent().rem()]"
+                },
+                {
                   "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.page.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
                   "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.page.keys().inc():txt()||!txt()||txt().inc(): "
                 },
@@ -213,6 +216,9 @@
               "controls": [
                 {
                   "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.view.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                },
+                {
+                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.view.[open-doc:()]]:[parent().rem()]"
                 },
                 {
                   "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.view.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",

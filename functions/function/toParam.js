@@ -8,7 +8,6 @@ const { clone } = require("./clone")
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, asyncer, createElement, params = {}, executer }) => {
   const { toApproval } = require("./toApproval")
 
-  var zzz = generate()
   var viewId = id, mountDataUsed = false, mountPathUsed = false
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -258,15 +257,14 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : []
           
       if (path.length > 0) {
+        
         if (!view.Data) {
 
           view.Data = generate()
           global[view.Data] = view.data || {}
         }
 
-        if (path[0] === "name") console.log("2", clone(view), clone(params));
         view.derivations.push(...path)
-        if (path[0] === "name") console.log("3", clone(view), clone(params));
       }
     }
   

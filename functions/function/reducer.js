@@ -544,12 +544,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0.slice(0, 7) === "coded()" || k0.slice(0, 8) === "codedS()") {
             
-            breakRequest = true
-            var newValue
-            if (k0.slice(0, 7) === "coded()") newValue = toValue({ req, res, _window, id, e, value: global.codes[k], params, _, __})
-            else if (k0.slice(0, 8) === "codedS()") newValue = global.codes[k]
-            newValue = newValue !== undefined ? [...toArray(newValue), ...path.slice(i + 1)] : path.slice(i + 1)
-            answer = reducer({ req, res, _window, id, e, value, key, path: newValue, object: o, params, _, __})
+            var _coded
+            if (k0.slice(0, 7) === "coded()") _coded = toValue({ req, res, _window, id, e, value: global.codes[k], params, _, __})
+            else if (k0.slice(0, 8) === "codedS()") _coded = global.codes[k]
+
+            if (i === lastIndex && key && value !== undefined) answer = o[_coded] = value
+            else answer = o[_coded]
+            /*
+            _coded = _coded !== undefined ? [...toArray(_coded), ...path.slice(i + 1)] : path.slice(i + 1)
+            answer = reducer({ req, res, _window, id, e, value, key, path: _coded, object: o, params, _, __})
+            */
             
         } else if (k0 === "data()") {
 
@@ -2138,12 +2142,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _item = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
             var _index = toValue({ req, res, _window, id, value: args[2], params, _, __,e })
             if (_index === undefined) _index = o.length
-            
+
             if (Array.isArray(_item)) {
+                
                 _item.map(_item => {
                     o.splice(_index, 0, _item)
                     _index += 1
                 })
+
             } else o.splice(_index, 0, _item)
             answer = o
             
@@ -2157,15 +2163,51 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "pullItems()") {
 
-            var _items = toArray(toValue({ req, res, _window, id, value: args[1], params, _, __,e }))
-            answer = o = o.filter(item => !_items.find(_item => isEqual(item, _item)))
+            if (isParam({ _window, string: args[1] })) {
+            
+                var _items
+    
+                if (k[0] === "_") _items = o.filter(o => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res }) )
+                else _items = o.filter(o => toApproval({ _window, e, string: args[1], id, object: o, req, res, _, __ }))
+                
+                _items.map(_item => {
+                    var _index = o.findIndex(item => isEqual(item, _item))
+                    if (_index !== -1) o.splice(_index, 1)
+                })
+    
+                answer = o
+                
+            } else {
+
+                var _items = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
+                _items.map(_item => {
+                    var _index = o.findIndex(item => isEqual(item, _item))
+                    if (_index !== -1) o.splice(_index, 1)
+                })
+
+                answer = o
+            }
             
         } else if (k0 === "pullItem()") {
 
-            var _item = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
-            var _index = o.findIndex(item => isEqual(item, _item))
-            if (_index !== -1) o.splice(_index,1)
-            answer = o
+            if (isParam({ _window, string: args[1] })) {
+
+                var _index
+
+                if (k[0] === "_") _index = o.findIndex(o => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res }) )
+                else _index = o.findIndex(o => toApproval({ _window, e, string: args[1], id, object: o, req, res, _, __ }))
+
+                if (_index !== -1) o.splice(_index , 1)
+                answer = o
+                
+            } else {
+
+                var _item = toValue({ req, res, _window, id, value: args[1], params, _, __,e })
+                var _index = o.findIndex(item => isEqual(item, _item))
+                if (_index !== -1) o.splice(_index,1)
+                answer = o
+                
+            }
             
         } else if (k0 === "pullLastItem()" || k0 === "pullLast()") {
             
@@ -2190,17 +2232,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "filterItems()") {
             
-            var args = k.split(":").slice(1), isnot
-            if (!args[0]) isnot = true
+            var _items
+
+            if (k[0] === "_") _items = o.filter(o => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res }) )
+            else _items = o.filter(o => toApproval({ _window, e, string: args[1], id, object: o, req, res, _, __ }))
             
-            if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
-            else args.map(arg => {
-                
-                if (k[0] === "_") answer = toArray(o).filter(o => toApproval({ _window, e, string: arg, id, __: _, _: o, req, res }) )
-                else answer = toArray(o).filter(o => toApproval({ _window, e, string: arg, id, object: o, req, res, _, __ }))
-            })
-            
-            answer.map(_item => {
+            _items.map(_item => {
                 var _index = o.findIndex(item => isEqual(item, _item))
                 if (_index !== -1) o.splice(_index, 1)
             })
@@ -2208,20 +2245,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = o
 
         } else if (k0 === "filterItem()") {
-            
-            var args = k.split(":").slice(1), isnot
-            if (!args[0]) isnot = true
-            
-            if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
-            else args.map(arg => {
-                
-                var _index
-                if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, e, string: arg, id, __: _, _: o, req, res }) )
-                else _index = toArray(o).findIndex(o => toApproval({ _window, e, string: arg, id, object: o, req, res, _, __ }))
 
-                if (!isNaN(o) && _index !== -1) o.splice(_index , 1)
-                answer = o
-            })
+            var _index
+
+            if (k[0] === "_") _index = o.findIndex(o => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res }) )
+            else _index = o.findIndex(o => toApproval({ _window, e, string: args[1], id, object: o, req, res, _, __ }))
+
+            if (_index !== -1) o.splice(_index , 1)
+            answer = o
             
         } else if (k0 === "splice()") {
 
@@ -2781,16 +2812,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o !== "object") return
             
             if (k[0] === "_") answer = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res, object }) )
-            else answer = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, _, __,req, res, object: o }) )
+            else answer = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, _, __, req, res, object: o }) )
             
         } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
-            args.slice(1).map(arg => {
-
-                if (arg.slice(0, 7) === "coded()") arg = global.codes[arg]
-                if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, value, key, params, index, __: _, _: o, e, object }) )
-                else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: arg, object: o, value, key, params, index, _, __, e }) )
-            })
+            if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
+            if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, index, __: _, _: o, e, object }) )
+            else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, index, _, __, e }) )
 
         } else if (k0 === "index()") {
             
@@ -2838,7 +2866,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "round()") {
 
             var nth = toValue({ req, res, _window, id, e, _, __,params, value: args[1] }) || 2
-            answer = (o || 0).toFixed(nth)
+            answer = parseFloat(o || 0).toFixed(nth)
             
         } else if (k0 === "toString()" || k0 === "string()" || k0 === "str()") {
             
@@ -3099,7 +3127,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 var _save = toParam({ req, res, _window, id, e, _, __,string: args[1] })
-                console.log(_save);
                 return require("./save").save({ id, e, _, __, save: _save })
             }
 
@@ -3344,27 +3371,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 req, res, 
             }
             
-        } /*else if (k0.slice(-2) === "()" && k0 !== "()" && (o[k0.charAt(0) === "_" ? k0.slice(1) : k0] || o[k0])) { // function
-            
-            var string = decode({ _window, string: o[k0].string }), _params = o[k0].params
-            console.log(string, k0);
-            if (_params.length > 0) {
-                _params.map((param, index) => {
-                    var _index = 0
-                    while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
-                    var _replacemenet = path[0].split(":").slice(1)[index]
-                    if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
-                    string = string.replace(param, _replacemenet)
-                    _index += 1
-                    }
-                })
-            }
-            string = toCode({ _window, string })
-            console.log(string);
-            if (o[k0]) return toParam({ _window, ...o[k0], string, object: o })
-            else if (o[k0.slice(1)]) return toParam({ _window, ...o[k0], string, _: o })
-            
-        } */else if (k.includes(":coded()")) {
+        } else if (k.includes(":coded()")) {
             
             breakRequest = true
             o[k0] = o[k0] || {}
@@ -3390,10 +3397,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             answer = o[k] = value
 
-        } else if (k0 === "target" && !o[k] && i === 0) {
-    
-            answer = o["currentTarget"]
-    
         } else if (k.includes("coded()")) {
 
             var _key = k.split("coded()")[0]
@@ -3428,9 +3431,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             if (Array.isArray(o)) {
                 if (isNaN(k)) {
+
                     if (o.length === 0) o.push({})
                     o = o[0]
-                }
+
+                } else k = parseFloat(k)
             }
             
             answer = o[k]

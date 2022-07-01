@@ -50,6 +50,9 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight.[open-doc:()]]:[parent().rem()]"
+                                },
+                                {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.flight.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
                                     "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.flight.keys().inc():txt()||!txt()||txt().inc(): "
                                 },
@@ -144,6 +147,9 @@
                             "controls": [
                                 {
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight-booking.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                                },
+                                {
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight-booking.[open-doc:()]]:[parent().rem()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.flight-booking.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
@@ -242,6 +248,9 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight-reservation.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight-reservation.[open-doc:()]]:[parent().rem()]"
+                                },
+                                {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.flight-reservation.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
                                     "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.flight-reservation.keys().inc():txt()||!txt()||txt().inc(): "
                                 },
@@ -338,6 +347,9 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight-canceled-booking.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight-canceled-booking.[open-doc:()]]:[parent().rem()]"
+                                },
+                                {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.flight-canceled-booking.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
                                     "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.flight-canceled-booking.keys().inc():txt()||!txt()||txt().inc(): "
                                 },
@@ -432,6 +444,9 @@
                             "controls": [
                                 {
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight-canceled-reservation.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                                },
+                                {
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.flight-canceled-reservation.[open-doc:()]]:[parent().rem()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.flight-canceled-reservation.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",

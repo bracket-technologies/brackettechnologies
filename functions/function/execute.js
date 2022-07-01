@@ -36,7 +36,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     if (!approved) return toAwait({ id, e, params: _params })
 
     // params
-    params = toParam({ _window, string: params, e, id: viewId, executer: true })
+    params = toParam({ _window, string: params, e, id: viewId, executer: true, mount: true })
     if (_params) params = {..._params, ...params}
 
     // break
@@ -61,7 +61,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
       if (isParam({ _window, string: args[1] }) || (args[2] && isNaN(args[2].split("i")[0]) && !args[3])) { // action:[params]:[conditions]
 
-        __params = toParam({ _window, id: viewId, e, string: args[1] })
+        __params = toParam({ _window, id: viewId, e, string: args[1], mount: true })
         actionid = toArray(__params.id || viewId) // id
         if (__params.timer !== undefined) timer = __params.timer.toString() // timer
         if (args[2]) caseCondition = args[2]

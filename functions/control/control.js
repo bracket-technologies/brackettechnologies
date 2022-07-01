@@ -6,7 +6,6 @@ module.exports = {
   actionlist: require("./actionlist"),
   tooltip: require("./tooltip"),
   mininote: require("./mininote"),
-  touchableOpacity: require("./touchableOpacity"),
   pricable: require("./pricable"),
   hover: require("./hover"),
   click: require("./click"),

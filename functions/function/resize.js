@@ -3,12 +3,13 @@ const resize = ({ id }) => {
   var view = window.views[id]
   if (!view) return
   
-  if (view.type !== "Input") return
+  if (view.type !== "Input" && view.type !== "Entry") return
 
   var results = dimensions({ id })
-  
+
   // for width
   var width = view.style.width
+  
   if (width === "fit-content" && view.element) {
     view.element.style.width = results.width + "px"
     view.element.style.minWidth = results.width + "px"
@@ -39,7 +40,10 @@ const dimensions = ({ id, text }) => {
   
   if (pStyle != null) lDiv.style = pStyle
 
-  pText = pText.split(" ").join("-")
+  // pText = pText.split(" ").join("-")
+  if (pText.charAt(pText.length - 1) === " ") pText = pText.slice(0, -1) + "-"
+  while (pText.includes("  ")) { pText = pText.replace("  ", "--") }
+  
   if (arabic.test(pText) && !english.test(pText)) {
     lDiv.style.fontFamily = "Tajawal, sans-serif"
     lDiv.style.textAlign = "right"
