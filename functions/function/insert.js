@@ -28,7 +28,7 @@ module.exports = {
       
       if (data) _view.data = clone(data)
       if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
-      console.log(index);
+
       var innerHTML = toArray(_view)
       .map((child, i) => {
 

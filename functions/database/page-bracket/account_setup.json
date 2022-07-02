@@ -8,6 +8,7 @@
         "description": "",
         "title": ""
     },
+    "view": "account_setup",
     "views": [
         "account_setup"
     ],

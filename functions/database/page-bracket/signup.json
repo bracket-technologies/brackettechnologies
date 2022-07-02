@@ -7,6 +7,7 @@
     "name": "Sign up Page",
     "title": "Sign up to Bracket",
     "path": "/signup",
+    "view": "signup",
     "meta": {
         "description": "Sign up to Bracket",
         "title": "Sign up to Bracket"

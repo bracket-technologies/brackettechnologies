@@ -1,6 +1,7 @@
 {
     "name": "Bracket developer editor",
     "title": "Developer Editor | Bracket",
+    "view": "developer-editor",
     "views": [
         "developer-editor"
     ],

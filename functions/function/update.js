@@ -36,7 +36,7 @@ const update = ({ id, update = {} }) => {
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") children = clone(global.data.page[global.currentPage]["views"].map(view => global.data.view[view]))
+  if (id === "root") views.root.children = children = clone([global.data.view[global.data.page[global.currentPage].view]])
 
   // onloading
   if (id === "root" && global.data.page[global.currentPage].controls) {

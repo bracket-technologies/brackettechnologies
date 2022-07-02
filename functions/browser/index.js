@@ -161,9 +161,9 @@ document.addEventListener('scroll', () => {
 }, true)
 
 // unloaded views
-require("../function/loadViews").loadViews(true)
+// require("../function/loadViews").loadViews(true)
 // new Promise(res => require("../function/loadViews").loadViews(res)).then(() => {})
-},{"../function/cookie":39,"../function/execute":52,"../function/loadViews":71,"../function/setElement":89,"../function/starter":92,"../function/toApproval":96,"../function/toCode":101,"../function/toParam":108}],2:[function(require,module,exports){
+},{"../function/cookie":39,"../function/execute":52,"../function/setElement":88,"../function/starter":91,"../function/toApproval":95,"../function/toCode":100,"../function/toParam":107}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -183,7 +183,7 @@ module.exports = (component) => {
     }]
   }
 }
-},{"../function/toComponent":102}],3:[function(require,module,exports){
+},{"../function/toComponent":101}],3:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
@@ -435,7 +435,7 @@ const Entry = (component) => {
 }
 
 module.exports = Entry
-},{"../function/clone":35,"../function/merge":73,"../function/toComponent":102,"../function/toString":111}],4:[function(require,module,exports){
+},{"../function/clone":35,"../function/merge":72,"../function/toComponent":101,"../function/toString":110}],4:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
@@ -734,7 +734,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":35,"../function/merge":73,"../function/toComponent":102,"../function/toString":111}],5:[function(require,module,exports){
+},{"../function/clone":35,"../function/merge":72,"../function/toComponent":101,"../function/toString":110}],5:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -873,7 +873,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":102}],6:[function(require,module,exports){
+},{"../function/toComponent":101}],6:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1004,7 +1004,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":102}],7:[function(require,module,exports){
+},{"../function/toComponent":101}],7:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1031,7 +1031,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":102}],8:[function(require,module,exports){
+},{"../function/toComponent":101}],8:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 const { toString } = require("../function/toString")
 
@@ -1063,7 +1063,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":102,"../function/toString":111}],9:[function(require,module,exports){
+},{"../function/toComponent":101,"../function/toString":110}],9:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Item : require("./Item"),
@@ -1362,7 +1362,7 @@ const axios = async ({ id, ...params }) => {
 }
 
 module.exports = { axios }
-},{"./toAwait":98,"axios":118}],32:[function(require,module,exports){
+},{"./toAwait":97,"axios":117}],32:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -1561,7 +1561,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":51,"./toArray":97,"./watch":117}],39:[function(require,module,exports){
+},{"./event":51,"./toArray":96,"./watch":116}],39:[function(require,module,exports){
 const setCookie = ({ name = "", value, expiry = 360 }) => {
 
   var d = new Date()
@@ -1663,7 +1663,7 @@ module.exports = {
   }
 }
 
-},{"../component/component":9,"./clone":35,"./generate":58,"./toApproval":96,"./toCode":101,"./toParam":108}],42:[function(require,module,exports){
+},{"../component/component":9,"./clone":35,"./generate":58,"./toApproval":95,"./toCode":100,"./toParam":107}],42:[function(require,module,exports){
 const { createElement } = require("./createElement");
 const { getJsonFiles } = require("./jsonFiles");
 //
@@ -1671,13 +1671,11 @@ require("dotenv").config();
 
 const createDocument = async ({ req, res, db, realtimedb }) => {
   // Create a cookies object
-  var host = req.headers["x-forwarded-host"] || req.headers["host"];
+  var host = req.headers["x-forwarded-host"] || req.headers["host"]
 
   // current page
-  var currentPage = req.url.split("/")[1] || "";
-  currentPage = currentPage || "main";
-
-  var account, page, view, project;
+  var currentPage = req.url.split("/")[1] || ""
+  currentPage = currentPage || "main"
 
   // get assets & views
   var global = {
@@ -1695,8 +1693,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     path: req.url,
     device: req.device,
     unloadedViews: [],
-    "lazy-load-views": [],
-    "fast-load-views": [],
     public: getJsonFiles({ search: { collection: "public" } }),
     os: req.headers["sec-ch-ua-platform"],
     browser: req.headers["sec-ch-ua"],
@@ -1735,7 +1731,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   console.log("before project", new Date().getTime() - global.timer);
 
   // get project
-  project = db
+  var project = db
     .collection("_project_")
     .where("domains", "array-contains", host)
     .get()
@@ -1765,7 +1761,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
       search: { collection: `view-${project.id}` },
     });
     console.log("after view", new Date().getTime() - global.timer);
+
   } else {
+
     // do not send project details
     delete global.data.project;
 
@@ -1778,37 +1776,31 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     */
     console.log("before page / firestore", new Date().getTime() - global.timer);
 
-    page = db
+    await db
       .collection(`page-${project.id}`)
       .doc(currentPage)
       .get()
       .then((doc) => {
         global.data.page[doc.id] = doc.data();
         console.log("after page", new Date().getTime() - global.timer);
-      });
+      })
 
+    // page doesnot exist
+    if (!global.data.page[currentPage]) return res.send("Page not found!");
+
+      /*
+      view = realtimedb.ref(`view-${project.id}`).once("value").then(snapshot => {
+          global.data.view = snapshot.val()
+          console.log("after view", new Date().getTime() - global.timer);
+      })
+      */
+
+    // load views
     console.log("before view / firestore", new Date().getTime() - global.timer);
 
-    // get view
-    /*
-        view = realtimedb.ref(`view-${project.id}`).once("value").then(snapshot => {
-            global.data.view = snapshot.val()
-            console.log("after view", new Date().getTime() - global.timer);
-        })
-        */
-    view = db
-      .collection(`view-${project.id}`)
-      .doc(currentPage)
-      .get()
-      .then((doc) => {
-        global.data.view[doc.id] = doc.data();
-        console.log("after view", new Date().getTime() - global.timer);
-      });
+    if (global.data.page[currentPage].views.length > 0) {
 
-    // fast load views
-    if (Object.keys(project["fast-load-views"] || {}).length > 0) {
-
-      var docs = Object.values(project["fast-load-views"]).flat(),
+      var docs = global.data.page[currentPage].views,
         _docs = [],
         index = 1,
         length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0);
@@ -1817,7 +1809,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         _docs.push(docs.slice((index - 1) * 10, index * 10));
         index += 1;
       }
-
+      
       await Promise.all(
         _docs.map(async (docList) => {
           await db
@@ -1825,35 +1817,25 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             .where("id", "in", docList)
             .get()
             .then((docs) => {
-              success = true;
-              docs.forEach((doc) => (global.data.view[doc.id] = doc.data()));
-              message = `Documents mounted successfuly!`;
+              success = true
+              docs.forEach((doc) => global.data.view[doc.id] = doc.data())
+              message = `Documents mounted successfuly!`
             })
             .catch((error) => {
-              success = false;
-              message = `An error Occured!`;
-            });
+              success = false
+              message = `An error Occured!`
+            })
         })
-      );
+      )
+      
+      console.log("after view", new Date().getTime() - global.timer);
     }
-    
-    global["lazy-load-views"] = project.views.filter(view => !global["fast-load-views"].includes(view) && view !== currentPage)
   }
-
-  await Promise.resolve(page);
-  await Promise.resolve(view);
-  await Promise.resolve(account);
 
   console.log("Document Ready.");
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
 
-  // account not found
-  if (!global.data.account) return res.send("account not found!");
-  account = global.data.account;
-
-  // page doesnot exist
-  if (!global.data.page[currentPage]) return res.send("Page not found!");
 
   // mount globals
   if (global.data.page[currentPage].global)
@@ -1862,101 +1844,66 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     );
 
   // controls & views
-  views.root.controls = global.data.page[currentPage].controls;
-  views.root.children = global.data.page[currentPage]["views"].map(
-    (view) => global.data.view[view]
-  );
-
+  views.root.controls = global.data.page[currentPage].controls
+  views.root.children = [global.data.view[global.data.page[currentPage].view]]
+  
   // meta
-  global.data.page[currentPage].meta = global.data.page[currentPage].meta || {};
+  global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
 
   // viewport
-  var viewport = global.data.page[currentPage].meta.viewport;
-  viewport = viewport !== undefined ? viewport : "width=device-width, initial-scale=1.0";
+  var viewport = global.data.page[currentPage].meta.viewport
+  viewport = viewport !== undefined ? viewport : "width=device-width, initial-scale=1.0"
 
-  // language
-  var language = global.language = global.data.page[currentPage].language || "en";
-  var direction = language === "ar" || language === "fa" ? "rtl" : "ltr";
+  // language & direction
+  var language = global.language = global.data.page[currentPage].language || "en"
+  var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
+  var _window = { global, views, db }
 
-  var _window = { global, views, db };
-  /*
-    // forward
-    if (global.data.page[currentPage].forward) {
-
-        var forward = global.data.page[currentPage].forward
-        forward = toCode({ _window, id, string: forward }).split("?")
-        var params = forward[1]
-        var conditions = forward[2]
-        forward = forward[0]
-
-        var approved = toApproval({ _window, string: conditions, id: "root", req, res })
-        if (approved) {
-            global.path = forward
-            global.currentPage = currentPage = global.path.split("/")[1]
-        }
-    }
-
-    // onloading
-    if (global.data.page[currentPage].controls) {
-        global.data.page[currentPage].controls = toArray(global.data.page[currentPage].controls)
-        var loadingEventControls = global.data.page[currentPage].controls.find(controls => controls.event.split("?")[0].includes("loading"))
-        if (loadingEventControls) controls({ _window, id: "root", req, res, controls: loadingEventControls })
-    }
-*/
   // create html
-  var innerHTML = "";
-  innerHTML += createElement({ _window, id: "root", req, res });
-  innerHTML += createElement({ _window, id: "public", req, res });
+  var innerHTML = ""
+  innerHTML += createElement({ _window, id: "root", req, res })
+  innerHTML += createElement({ _window, id: "public", req, res })
 
-  global.idList = innerHTML
-    .split("id='")
-    .slice(1)
-    .map((id) => id.split("'")[0]);
+  global.idList = innerHTML.split("id='").slice(1).map((id) => id.split("'")[0])
 
   res.send(
     `<!DOCTYPE html>
     <html lang="${language}" dir="${direction}" class="html">
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="${viewport}">
-            <meta name="keywords" content="${
-              global.data.page[currentPage].meta.keywords || ""
-            }">
-            <meta name="description" content="${
-              global.data.page[currentPage].meta.description || ""
-            }">
-            <meta name="title" content="${
-              global.data.page[currentPage].meta.title || ""
-            }">
-            <title>${global.data.page[currentPage].title}</title>
-            <link rel="stylesheet" href="/resources/index.css"/>
-            <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
-            <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
-            <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
-            <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
-        </head>
-        <body>
-            ${innerHTML}
-            <div class="loader-container"><div class="loader"></div></div>
-            <script id="views" type="application/json">${JSON.stringify(views)}</script>
-            <script id="global" type="application/json">${JSON.stringify(global)}</script>
-            <script src="/index.js"></script>
-            <script src="/resources/html2pdf/html2pdf.js"></script>
-            <script src="/resources/html2canvas/html2canvas.js"></script>
-        </body>
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="${viewport}">
+        <meta name="keywords" content="${global.data.page[currentPage].meta.keywords || ""}">
+        <meta name="description" content="${global.data.page[currentPage].meta.description || ""}">
+        <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
+        <title>${global.data.page[currentPage].title}</title>
+        <link rel="stylesheet" href="/resources/index.css"/>
+        <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
+        <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
+        <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
+        <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
+      </head>
+      <body>
+        ${innerHTML}
+        <div class="loader-container"><div class="loader"></div></div>
+        <script id="views" type="application/json">${JSON.stringify(views)}</script>
+        <script id="global" type="application/json">${JSON.stringify(global)}</script>
+        <script src="/index.js"></script>
+        <script src="/resources/html2pdf/html2pdf.js"></script>
+        <script src="/resources/html2canvas/html2canvas.js"></script>
+      </body>
     </html>`
   );
 };
 
 module.exports = { createDocument };
 
-},{"./createElement":43,"./jsonFiles":69,"dotenv":148}],43:[function(require,module,exports){
+},{"./createElement":43,"./jsonFiles":69,"dotenv":147}],43:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -1969,15 +1916,16 @@ const { toValue } = require("./toValue")
 const createElement = ({ _window, id, req, res }) => {
 
   var views = _window ? _window.views : window.views
-  var view = views[id]
   var global = _window ? _window.global : window.global
+  
+  var view = views[id]
   var parent = views[view.parent]
   
   // html
   if (view.html) return view.html
 
   // merge to another view
-  if (view.view) {
+  /*if (view.view) {
 
     if (!global.data.view[view.view]) {
       
@@ -1988,7 +1936,7 @@ const createElement = ({ _window, id, req, res }) => {
     var viewId = view.view
     delete view.view
     view = { ...view, ...clone(global.data.view[viewId]) }
-  }
+  }*/
 
   // view is empty
   if (!view.type) return
@@ -2071,11 +2019,11 @@ const createElement = ({ _window, id, req, res }) => {
       // merge to another view
       if (view.view) {
 
-        if (!global.data.view[view.view]) {
+        /* if (!global.data.view[view.view]) {
 
           global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
           return ""
-        }
+        } */
 
         var viewId = view.view
         delete view.view
@@ -2099,7 +2047,7 @@ const createElement = ({ _window, id, req, res }) => {
 
 module.exports = { createElement }
 
-},{"./clone":35,"./createTags":44,"./generate":58,"./reducer":79,"./toApproval":96,"./toCode":101,"./toParam":108,"./toValue":113}],44:[function(require,module,exports){
+},{"./clone":35,"./createTags":44,"./generate":58,"./reducer":78,"./toApproval":95,"./toCode":100,"./toParam":107,"./toValue":112}],44:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2275,7 +2223,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":35,"./createComponent":41,"./createElement":43,"./execute":52,"./generate":58,"./toArray":97,"./toHtml":104}],45:[function(require,module,exports){
+},{"./clone":35,"./createComponent":41,"./createElement":43,"./execute":52,"./generate":58,"./toArray":96,"./toHtml":103}],45:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -2295,7 +2243,7 @@ const createView = ({ view, id }) => {
 
 module.exports = {createView}
 
-},{"./clone":35,"./toArray":97,"./update":115}],46:[function(require,module,exports){
+},{"./clone":35,"./toArray":96,"./update":114}],46:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -2333,7 +2281,7 @@ const clearData = ({ id, e, clear = {} }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":35,"./reducer":79,"./setContent":87,"./setData":88}],47:[function(require,module,exports){
+},{"./clone":35,"./reducer":78,"./setContent":86,"./setData":87}],47:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -2513,7 +2461,7 @@ const defaultInputHandler = ({ id }) => {
 }
 
 module.exports = { defaultInputHandler }
-},{"./data":46,"./isArabic":65,"./resize":83}],49:[function(require,module,exports){
+},{"./data":46,"./isArabic":65,"./resize":82}],49:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -2584,7 +2532,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":35,"./toString":111,"./toValue":113,"./update":115}],50:[function(require,module,exports){
+},{"./clone":35,"./toString":110,"./toValue":112,"./update":114}],50:[function(require,module,exports){
 const axios = require("axios");
 const { toString } = require("./toString")
 
@@ -2621,7 +2569,7 @@ const erase = async ({ id, e, ...params }) => {
 }
 
 module.exports = { erase }
-},{"./toAwait":98,"./toString":111,"axios":118}],51:[function(require,module,exports){
+},{"./toAwait":97,"./toString":110,"axios":117}],51:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -2891,7 +2839,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":35,"./execute":52,"./toApproval":96,"./toArray":97,"./toCode":101,"./toParam":108,"./toValue":113}],52:[function(require,module,exports){
+},{"./clone":35,"./execute":52,"./toApproval":95,"./toArray":96,"./toCode":100,"./toParam":107,"./toValue":112}],52:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -3041,7 +2989,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
 module.exports = { execute }
 
-},{"./function":57,"./isParam":67,"./toApproval":96,"./toArray":97,"./toAwait":98,"./toCode":101,"./toParam":108,"./toValue":113}],53:[function(require,module,exports){
+},{"./function":57,"./isParam":67,"./toApproval":95,"./toArray":96,"./toAwait":97,"./toCode":100,"./toParam":107,"./toValue":112}],53:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -3131,7 +3079,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":35,"./compare":36,"./isEqual":66,"./toArray":97,"./toOperator":107}],56:[function(require,module,exports){
+},{"./clone":35,"./compare":36,"./isEqual":66,"./toArray":96,"./toOperator":106}],56:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -3343,7 +3291,7 @@ module.exports = {
   insert,
   axios
 }
-},{"./axios":31,"./blur":32,"./capitalize":33,"./clearValues":34,"./clone":35,"./compare":36,"./contentful":37,"./controls":38,"./cookie":39,"./createActions":40,"./createComponent":41,"./createDocument":42,"./createElement":43,"./createView":45,"./data":46,"./decode":47,"./defaultInputHandler":48,"./droplist":49,"./erase":50,"./event":51,"./execute":52,"./exportJson":53,"./fileReader":54,"./filter":55,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getParam":61,"./importJson":63,"./insert":64,"./isArabic":65,"./isEqual":66,"./isPath":68,"./jsonFiles":69,"./keys":70,"./log":72,"./merge":73,"./note":74,"./overflow":75,"./popup":76,"./position":77,"./preventDefault":78,"./reducer":79,"./refresh":80,"./reload":81,"./remove":82,"./resize":83,"./route":84,"./save":85,"./search":86,"./setContent":87,"./setData":88,"./setElement":89,"./setPosition":90,"./sort":91,"./starter":92,"./state":93,"./style":94,"./switchMode":95,"./toApproval":96,"./toArray":97,"./toAwait":98,"./toCSV":99,"./toCode":101,"./toComponent":102,"./toControls":103,"./toHtml":104,"./toId":105,"./toNumber":106,"./toOperator":107,"./toParam":108,"./toString":111,"./toStyle":112,"./toValue":113,"./toggleView":114,"./update":115,"./upload":116}],58:[function(require,module,exports){
+},{"./axios":31,"./blur":32,"./capitalize":33,"./clearValues":34,"./clone":35,"./compare":36,"./contentful":37,"./controls":38,"./cookie":39,"./createActions":40,"./createComponent":41,"./createDocument":42,"./createElement":43,"./createView":45,"./data":46,"./decode":47,"./defaultInputHandler":48,"./droplist":49,"./erase":50,"./event":51,"./execute":52,"./exportJson":53,"./fileReader":54,"./filter":55,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getParam":61,"./importJson":63,"./insert":64,"./isArabic":65,"./isEqual":66,"./isPath":68,"./jsonFiles":69,"./keys":70,"./log":71,"./merge":72,"./note":73,"./overflow":74,"./popup":75,"./position":76,"./preventDefault":77,"./reducer":78,"./refresh":79,"./reload":80,"./remove":81,"./resize":82,"./route":83,"./save":84,"./search":85,"./setContent":86,"./setData":87,"./setElement":88,"./setPosition":89,"./sort":90,"./starter":91,"./state":92,"./style":93,"./switchMode":94,"./toApproval":95,"./toArray":96,"./toAwait":97,"./toCSV":98,"./toCode":100,"./toComponent":101,"./toControls":102,"./toHtml":103,"./toId":104,"./toNumber":105,"./toOperator":106,"./toParam":107,"./toString":110,"./toStyle":111,"./toValue":112,"./toggleView":113,"./update":114,"./upload":115}],58:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -3413,7 +3361,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":108}],62:[function(require,module,exports){
+},{"./toParam":107}],62:[function(require,module,exports){
 module.exports = {
     getType: (value) => {
         if (typeof value === "string" && value !== "true" && value !== "false") {
@@ -3473,7 +3421,7 @@ const importJson = ({ id, e, ...params }) => {
 
 module.exports = {importJson, getJson}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":98}],64:[function(require,module,exports){
+},{"./toAwait":97}],64:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
 const { starter } = require("./starter")
@@ -3504,7 +3452,7 @@ module.exports = {
       
       if (data) _view.data = clone(data)
       if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
-      console.log(index);
+
       var innerHTML = toArray(_view)
       .map((child, i) => {
 
@@ -3559,7 +3507,7 @@ module.exports = {
     }
   }
 }
-},{"./clone":35,"./createElement":43,"./generate":58,"./setElement":89,"./starter":92,"./toArray":97,"./toParam":108}],65:[function(require,module,exports){
+},{"./clone":35,"./createElement":43,"./generate":58,"./setElement":88,"./starter":91,"./toArray":96,"./toParam":107}],65:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -3889,114 +3837,20 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":97,"./toOperator":107,"fs":147}],70:[function(require,module,exports){
+},{"./toArray":96,"./toOperator":106,"fs":146}],70:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
 },{}],71:[function(require,module,exports){
-const { clone } = require("./clone")
-const { createElement } = require("./createElement")
-const { setElement } = require("./setElement")
-const { starter } = require("./starter")
-const { search } = require("./search")
-
-const loadViews = async (first) => {
-
-    var global = window.global, views = window.views, promises = []
-    if (global.unloadedViews.length === 0) return
-    var unloadedViews = clone(global["unloadedViews"])
-
-    // display loader
-    document.getElementsByClassName("loader-container")[0].style.display = "flex"
-    
-    // get all views
-    if (first) {
-
-      document.getElementsByClassName("loader-container")[0].style.display = "flex"
-      var docs = (global["lazy-load-views"] || []).filter(doc => !(global["fast-load-views"] || []).includes(doc))
-      
-      promises.push(search({ id: "root", search: { collection: "page", limit: 100 } }))
-      promises.push(search({ id: "public", search: { collection: "view", docs, limit: 100 } }))
-      
-      await Promise.all(promises)
-      
-      Object.entries(views.root.search.data).map(([doc, data]) => global.data.page[doc] = data)
-      Object.entries(views.public.search.data).map(([doc, data]) => global.data.view[doc] = data)
-    }
-
-    await unloadedViews.map(async (unloadedView, i) => {
-        
-      var { id, parent, view, index } = unloadedView
-      
-      // view
-      global.unloadedViews = global.unloadedViews.filter(unloadedView => unloadedView.view !== view)
-
-      // view doesnot exist
-      if (!global.data.view[view]) {
-        promises.push(search({ id: "root", search: { collection: "view", doc: view }, await: `data:().view.${view}=().search.data`, asyncer: true }))
-        await Promise.all(promises)
-      }
-      
-      if (!views[id] || !views[parent]) return
-      views[id] = clone(global.data.view[view])
-      views[id].id = id
-      views[id].index = index
-      views[id].parent = parent
-
-      // create html
-      var innerHTML = createElement({ id })
-      
-      lDiv = document.createElement("div")
-      document.body.appendChild(lDiv)
-      lDiv.style.position = "absolute"
-      lDiv.style.opacity = "0"
-      lDiv.style.left = -1000
-      lDiv.style.top = -1000
-      lDiv.innerHTML = innerHTML
-      var el = lDiv.children[0]
-
-      // append html
-      var parentEl = document.getElementById(parent)
-      if (index >= parentEl.children.length) parentEl.appendChild(el)
-      else parentEl.insertBefore(el, parentEl.children[index])
-
-      var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-
-      idList.map(id => setElement({ id }))
-      idList.map(id => starter({ id }))
-      
-      /*setTimeout(() => {
-        idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
-            
-          map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
-          map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
-        })
-      }, 0)*/
-
-      // remove lDiv
-      if (lDiv) {
-        document.body.removeChild(lDiv)
-        lDiv = null
-      }
-
-      if (i === unloadedViews.length - 1 && global.unloadedViews.length > 0) loadViews()
-    })
-
-    // hide loader
-    document.getElementsByClassName("loader-container")[0].style.display = "none"
-}
-
-module.exports = { loadViews }
-},{"./clone":35,"./createElement":43,"./search":86,"./setElement":89,"./starter":92}],72:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],73:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -4061,7 +3915,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":35,"./toArray":97}],74:[function(require,module,exports){
+},{"./clone":35,"./toArray":96}],73:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -4096,7 +3950,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":65}],75:[function(require,module,exports){
+},{"./isArabic":65}],74:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var view = window.views[id]
@@ -4153,7 +4007,7 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],76:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 const {controls} = require("./controls")
 const {update} = require("./update")
 
@@ -4193,7 +4047,7 @@ const popup = ({ id }) => {
 
 module.exports = {popup}
 
-},{"./controls":38,"./update":115}],77:[function(require,module,exports){
+},{"./controls":38,"./update":114}],76:[function(require,module,exports){
 const { converter } = require("./resize")
 
 const getPadding = (el) => {
@@ -4240,14 +4094,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":83}],78:[function(require,module,exports){
+},{"./resize":82}],77:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],79:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -4491,7 +4345,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" || path0 === "getEntries()" || path0 === "entries()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" 
+    || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
+    || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
+    || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
+    || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" 
+    || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" 
+    || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" 
+    || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" 
+    || path0 === "getEntries()" || path0 === "entries()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" 
+    || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" 
+    || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" 
+    || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" 
+    || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" 
+    || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()" 
+    || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
+    || path0 === "yearStart()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" || path0 === "prevYearEnd()")) {
+
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
           path.unshift("doc()")
@@ -5814,10 +5684,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "slice()") {
 
+            if (!Array.isArray(o) && typeof o !== "string") return
             if (args[2] || !isNaN(toValue({ req, res, _window, id, e, value: args[1], params, _, __}))) { // slice():start:end
 
                 var _start = toValue({ req, res, _window, id, e, value: args[1], params, _, __, object })
                 var _end = toValue({ req, res, _window, id, e, value: args[2], params, _, __, object })
+                // console.log(o, path, _start, _end, k);
                 if (_end !== undefined) answer = o.slice(parseInt(_start), parseInt(_end))
                 else answer = o.slice(parseInt(_start))
 
@@ -6779,21 +6651,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = getDaysInMonth(o)
 
-        } else if (k0 === "getDayBeginning()" || k0 === "getDayStart()") {
+        } else if (k0 === "todayStart()") {
             
             answer = o.setHours(0,0,0,0)
             
-        } else if (k0 === "getDayEnd()" || k0 === "getDayEnding()") {
+        } else if (k0 === "todayEnd()") {
             
             answer = o.setHours(23,59,59,999)
             
-        } else if (k0 === "getNextMonth()" || k0 === "get1MonthLater()") {
+        } else if (k0 === "1MonthLater()") {
             
             var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
             var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "get2ndNextMonth()" || k0 === "get2MonthLater()") {
+        } else if (k0 === "2MonthLater()") {
             
             var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
             var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
@@ -6801,7 +6673,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             year = month === 1 ? year + 1 : year
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "get3rdNextMonth()" || k0 === "get3MonthLater()") {
+        } else if (k0 === "3MonthLater()") {
             
             var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
             var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
@@ -6811,13 +6683,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             year = month === 1 ? year + 1 : year
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "getPrevMonth()" || k0 === "get1MonthEarlier") {
+        } else if (k0 === "1MonthEarlier") {
             
             var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
             var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "get2ndPrevMonth()" || k0 === "get2MonthEarlier") {
+        } else if (k0 === "2MonthEarlier") {
             
             var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
             var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
@@ -6825,7 +6697,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             year = month === 11 ? year - 1 : year
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "get3rdPrevMonth()" || k0 === "get3MonthEarlier") {
+        } else if (k0 === "3MonthEarlier") {
             
             var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
             var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
@@ -6835,77 +6707,157 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             year = month === 11 ? year - 1 : year
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "getMonthBeginning()" || k0 === "getMonthStart()") {
+        } else if (k0 === "monthStart()") {
             
-            answer = new Date(o.setMonth(o.getMonth(), 1)).setHours(0,0,0,0)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
 
-        } else if (k0 === "getMonthEnding()" || k0 === "getMonthEnd()") {
-            
-            answer = new Date(o.setMonth(o.getMonth(), getDaysInMonth(o))).setHours(23,59,59,999)
+            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "getNextMonthBeginning()" || k0 === "getNextMonthStart()") {
+        } else if (k0 === "monthEnd()") {
             
-            var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
-            var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
-            
-        } else if (k0 === "getNextMonthEnding()" || k0 === "getNextMonthEnd()") {
-            
-            var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
-            var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, getDaysInMonth(o))).setHours(23,59,59,999)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
 
-        } else if (k0 === "get2ndNextMonthBeginning()" || k0 === "get2ndNextMonthStart()") {
+            answer = new Date(_date.setMonth(_date.getMonth(), getDaysInMonth(_date))).setHours(23,59,59,999)
+
+        } else if (k0 === "nextMonthStart()") {
             
-            var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
-            var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+
+            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
+            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            
+        } else if (k0 === "nextMonthEnd()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+
+            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
+            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+
+        } else if (k0 === "2ndNextMonthStart()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = o.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
+            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "get2ndNextMonthEnding()" || k0 === "get2ndNextMonthEnd()") {
+        } else if (k0 === "2ndNextMonthEnd()") {
             
-            var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
-            var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
+            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, getDaysInMonth(o))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
 
-        } else if (k0 === "getPrevMonthBeginning()" || k0 === "getPrevMonthStart()") {
+        } else if (k0 === "prevMonthStart()") {
             
-            var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
-            var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
+            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "getPrevMonthEnding()" || k0 === "getPrevMonthEnd()") {
+        } else if (k0 === "prevMonthEnd()") {
             
-            var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
-            var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, getDaysInMonth(o))).setHours(23,59,59,999)
+            var _date
+            if (typeof _date.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
+            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
 
-        } else if (k0 === "get2ndPrevMonthBeginning()" || k0 === "get2ndPrevMonthStart()") {
+        } else if (k0 === "2ndPrevMonthStart()") {
             
-            var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
-            var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
+            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "get2ndPrevMonthEnding()" || k0 === "get2ndPrevMonthEnd()") {
+        } else if (k0 === "2ndPrevMonthEnd()") {
             
-            var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
-            var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
+            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, getDaysInMonth(o))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
 
-        } else if (k0 === "getYearBeginning()" || k0 === "getYearStart()") {
+        } else if (k0 === "yearStart()") {
             
-            answer = new Date(o.setMonth(0, 1)).setHours(0,0,0,0)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "getYearEnding()" || k0 === "getYearEnd()") {
+        } else if (k0 === "yearEnd()") {
             
-            answer = new Date(o.setMonth(0, getDaysInMonth(o))).setHours(23,59,59,999)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+
+        } else if (k0 === "nextYearStart()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+
+        } else if (k0 === "nextYearEnd()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+
+        } else if (k0 === "prevYearStart()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+
+        } else if (k0 === "prevYearEnd()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
 
         } else if (k0 === "doesnotHasNestedArray()") {
             
@@ -7488,7 +7440,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 jsPDF:        { unit: 'in', format: _options.format || 'a4', orientation: _options.orientation || 'portrait' }
             }
             
-            /*var a = window.open("", "")
+            var a = window.open("", "")
             a.document.write(`<!DOCTYPE html>
             <html lang="en" dir="ltr" class="html">
                 <head>
@@ -7496,23 +7448,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     <meta http-equiv="X-UA-Compatible" content="IE=edge">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <link rel="stylesheet" href="https://bracketjs.com/resources/index.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/Tajawal/index.css"/>
                     <link rel="stylesheet" href="https://bracketjs.com/resources/Lexend+Deca/index.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons/material-icons.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-round/material-icons-round.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
                 </head>
                 <body>${lDiv.innerHTML}</body>
-                <script>
-                    window.addEventListener('load', (event) => {
-                        window.print()
-                    })
-                </script>
             </html>`)
-            window.close()*/
+            a.document.close()
+            a.print()
             // index.js
             
             /*var fakeImageElements = [...lDiv.getElementsByTagName("IMG")]
@@ -7542,14 +7483,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
                 reader.readAsDataURL(input.files[0])
             })
-                    
-            html2canvas(lDiv.children[0], {useCORS: true})*/
+        
+            html2canvas(lDiv.children[0], {useCORS: true})
             html2pdf().set(_options).from(lDiv.children[0]).save().then(() => {
 
                 views.root.element.removeChild(lDiv)
                 lDiv = null
                 require("./update").removeChildren({ id: _id })
-            })
+            })*/
 
         } else if (k0 === "copyToClipBoard()") {
           
@@ -7797,7 +7738,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./axios":31,"./capitalize":33,"./clone":35,"./cookie":39,"./decode":47,"./droplist":49,"./execute":52,"./exportJson":53,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getType":62,"./importJson":63,"./isEqual":66,"./isParam":67,"./note":74,"./refresh":80,"./remove":82,"./route":84,"./save":85,"./search":86,"./setPosition":90,"./sort":91,"./toApproval":96,"./toArray":97,"./toAwait":98,"./toClock":100,"./toCode":101,"./toId":105,"./toNumber":106,"./toParam":108,"./toPrice":109,"./toSimplifiedDate":110,"./toValue":113,"./toggleView":114,"./update":115,"uuid":152}],80:[function(require,module,exports){
+},{"./axios":31,"./capitalize":33,"./clone":35,"./cookie":39,"./decode":47,"./droplist":49,"./execute":52,"./exportJson":53,"./focus":56,"./generate":58,"./getDateTime":59,"./getDaysInMonth":60,"./getType":62,"./importJson":63,"./isEqual":66,"./isParam":67,"./note":73,"./refresh":79,"./remove":81,"./route":83,"./save":84,"./search":85,"./setPosition":89,"./sort":90,"./toApproval":95,"./toArray":96,"./toAwait":97,"./toClock":99,"./toCode":100,"./toId":104,"./toNumber":105,"./toParam":107,"./toPrice":108,"./toSimplifiedDate":109,"./toValue":112,"./toggleView":113,"./update":114,"uuid":151}],79:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -7884,13 +7825,13 @@ const refresh = ({ id, update = {} }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":35,"./createElement":43,"./generate":58,"./setElement":89,"./starter":92,"./toArray":97,"./update":115}],81:[function(require,module,exports){
+},{"./clone":35,"./createElement":43,"./generate":58,"./setElement":88,"./starter":91,"./toArray":96,"./update":114}],80:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],82:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -7976,7 +7917,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":35,"./reducer":79,"./toCode":101,"./toParam":108,"./update":115}],83:[function(require,module,exports){
+},{"./clone":35,"./reducer":78,"./toCode":100,"./toParam":107,"./update":114}],82:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -8073,23 +8014,43 @@ var converter = (dimension) => {
 
 module.exports = {resize, dimensions, converter}
 
-},{}],84:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 const { search } = require("./search")
 const { update } = require("./update")
 
 module.exports = {
     route: async ({ id, route = {} }) => {
 
+        var views = window.views
         var global = window.global
         var path = route.path || global.path
-        var currentPage = route.page || path.split("/")[1] || "main"
+        var currentPage = global.currentPage = route.page || path.split("/")[1] || "main"
+        var notAvailableViews = []
+
+        document.getElementsByClassName("loader-container")[0].style.display = "flex"
+
+        if (!global.data.page[currentPage]) {
+            
+            await search({ id: "root", search: { collection: "page", doc: currentPage } })
+            global.data.page[currentPage] = views.root.search.data
+            if (!global.data.page[currentPage]) return
+        }
         
-        if (!global.data.view[currentPage]) await search({ id, search: { collection: "page", doc: currentPage }, await: `data:().page.${currentPage}=().search.data`, asyncer: true })
+        // check availability of views
+        global.data.page[currentPage].views.map(viewId => {
+            if (!global.data.view[viewId]) notAvailableViews.push(viewId)
+        })
+        
+        if (notAvailableViews.length > 0) {
+
+            await search({ id: "root", search: { collection: "view", docs: notAvailableViews, limit: 100 } })
+            Object.entries(views.root.search.data).map(([doc, data]) => {
+                global.data.view[doc] = data
+            })
+        }
 
         var title = route.title || global.data.page[currentPage].title
 
-        if (!global.data.page[currentPage]) return
-        global.data.page[currentPage]["views"] = global.data.page[currentPage]["views"] || []
         global.currentPage = currentPage
         global.path = route.path ? path : currentPage === "main" ? "/" : currentPage
 
@@ -8098,9 +8059,11 @@ module.exports = {
         
         update({ id: "root" })
         document.body.scrollTop = document.documentElement.scrollTop = 0
+        
+        document.getElementsByClassName("loader-container")[0].style.display = "none"
     }
 }
-},{"./search":86,"./update":115}],85:[function(require,module,exports){
+},{"./search":85,"./update":114}],84:[function(require,module,exports){
 const save = async ({ id, e, ...params }) => {
 
   var global = window.global
@@ -8134,7 +8097,7 @@ const save = async ({ id, e, ...params }) => {
 }
 
 module.exports = { save }
-},{"./clone":35,"./toAwait":98,"axios":118}],86:[function(require,module,exports){
+},{"./clone":35,"./toAwait":97,"axios":117}],85:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { clone } = require('./clone')
@@ -8168,7 +8131,7 @@ module.exports = {
     if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
   }
 }
-},{"./clone":35,"./toAwait":98,"./toString":111,"axios":118}],87:[function(require,module,exports){
+},{"./clone":35,"./toAwait":97,"./toString":110,"axios":117}],86:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -8191,7 +8154,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":65}],88:[function(require,module,exports){
+},{"./isArabic":65}],87:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
@@ -8235,7 +8198,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":35,"./reducer":79}],89:[function(require,module,exports){
+},{"./clone":35,"./reducer":78}],88:[function(require,module,exports){
 (function (global){(function (){
 const { controls } = require("./controls")
 // const { starter } = require("./starter")
@@ -8271,7 +8234,7 @@ const setElement = ({ id }) => {
     
 module.exports = { setElement }
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./controls":38,"./toArray":97}],90:[function(require,module,exports){
+},{"./controls":38,"./toArray":96}],89:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
   
   var views = window.views
@@ -8444,7 +8407,7 @@ const setPosition = ({ position, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],91:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -8574,7 +8537,7 @@ const sort = ({ sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":35,"./reducer":79,"./toArray":97,"./toCode":101,"./toNumber":106}],92:[function(require,module,exports){
+},{"./clone":35,"./reducer":78,"./toArray":96,"./toCode":100,"./toNumber":105}],91:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -8631,12 +8594,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":14,"./controls":38,"./defaultInputHandler":48,"./event":51,"./isArabic":65,"./resize":83,"./toArray":97,"./toParam":108}],93:[function(require,module,exports){
+},{"../control/control":14,"./controls":38,"./defaultInputHandler":48,"./event":51,"./isArabic":65,"./resize":82,"./toArray":96,"./toParam":107}],92:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],94:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -8756,7 +8719,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":83,"./toArray":97}],95:[function(require,module,exports){
+},{"./resize":82,"./toArray":96}],94:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -8820,7 +8783,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":33,"./clone":35,"./style":94}],96:[function(require,module,exports){
+},{"./capitalize":33,"./clone":35,"./style":93}],95:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 
@@ -8944,14 +8907,14 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
 
 module.exports = { toApproval }
 
-},{"./generate":58,"./isEqual":66,"./reducer":79,"./toValue":113}],97:[function(require,module,exports){
+},{"./generate":58,"./isEqual":66,"./reducer":78,"./toValue":112}],96:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? [...data] : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],98:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 module.exports = {
   toAwait: ({ id, e, params = {} }) => {
 
@@ -8976,7 +8939,7 @@ module.exports = {
   }
 }
 
-},{"./execute":52,"./toCode":101,"./toParam":108}],99:[function(require,module,exports){
+},{"./execute":52,"./toCode":100,"./toParam":107}],98:[function(require,module,exports){
 module.exports = {
     toCSV: ({ file = {} }) => {
 
@@ -9050,7 +9013,7 @@ module.exports = {
         }
     }
 }
-},{}],100:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -9071,7 +9034,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],101:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
@@ -9139,7 +9102,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
 module.exports = { toCode }
 
-},{"./generate":58}],102:[function(require,module,exports){
+},{"./generate":58}],101:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -9172,12 +9135,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":58,"./toArray":97}],103:[function(require,module,exports){
+},{"./generate":58,"./toArray":96}],102:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],104:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
@@ -9289,7 +9252,7 @@ module.exports = {
     return tag
   }
 }
-},{"./clone":35,"./createElement":43,"./generate":58,"./toArray":97,"./toStyle":112}],105:[function(require,module,exports){
+},{"./clone":35,"./createElement":43,"./generate":58,"./toArray":96,"./toStyle":111}],104:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -9318,7 +9281,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":58}],106:[function(require,module,exports){
+},{"./generate":58}],105:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -9336,7 +9299,7 @@ module.exports = {
   },
 };
 
-},{}],107:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -9352,7 +9315,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],108:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -9631,14 +9594,14 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
 module.exports = { toParam }
 
-},{"./clone":35,"./decode":47,"./generate":58,"./reducer":79,"./toApproval":96,"./toCode":101,"./toValue":113}],109:[function(require,module,exports){
+},{"./clone":35,"./decode":47,"./generate":58,"./reducer":78,"./toApproval":95,"./toCode":100,"./toValue":112}],108:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 };
 
-},{}],110:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -9686,7 +9649,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],111:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -9720,7 +9683,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],112:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -9792,7 +9755,7 @@ module.exports = {
   }
 }
 
-},{}],113:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
@@ -10003,7 +9966,7 @@ const calcSubs = ({ _window, value, params, _, __, id, e, req, res, object }) =>
 
 module.exports = { toValue, calcSubs }
 
-},{"./generate":58,"./isParam":67,"./reducer":79,"./toCode":101,"./toParam":108}],114:[function(require,module,exports){
+},{"./generate":58,"./isParam":67,"./reducer":78,"./toCode":100,"./toParam":107}],113:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -10035,22 +9998,35 @@ const toggleView = async ({ toggle, id }) => {
   toggle.fadein.after = toggle.fadein.after || {}
   toggle.fadeout.after = toggle.fadeout.after || {}
 
+  document.getElementsByClassName("loader-container")[0].style.display = "flex"
+
   // children
   var children = []
   if (togglePage) {
 
-    global.currentPage = togglePage.split("/")[0]
+    var currentPage = global.currentPage = togglePage.split("/")[0]
+    var notAvailableViews = []
+
+    if (!global.data.page[global.currentPage]) {
+
+      await search({ id: "root", search: { collection: "page", doc: currentPage } })
+      global.data.page[currentPage] = views.root.search.data
+    }
+
+    viewId = global.data.page[currentPage].view
+
+    // check availability of views
+    global.data.page[currentPage].views.map(viewId => {
+      if (!global.data.view[viewId]) notAvailableViews.push(viewId)
+    })
     
-    // view doesnot exist? => get from database
-    var promises = []
-    viewId = global.currentPage
+    if (notAvailableViews.length > 0) {
 
-    if (!global.data.page[global.currentPage]) promises.push(search({ id: "root", search: { collection: "page", doc: viewId } }))
-    if (!global.data.view[global.currentPage]) promises.push(search({ id: "public", search: { collection: "view", doc: viewId } }))
-
-    await Promise.all(promises)
-    global.data.page[viewId] = views.root.search.data
-    global.data.view[viewId] = views.public.search.data
+      await search({ id: "root", search: { collection: "view", docs: notAvailableViews, limit: 100 } })
+      Object.entries(views.root.search.data).map(([doc, data]) => {
+        global.data.view[doc] = data
+      })
+    }
 
     var title = global.data.page[global.currentPage].title
     global.path = togglePage = togglePage === "main" ? "/" : togglePage
@@ -10058,7 +10034,7 @@ const toggleView = async ({ toggle, id }) => {
     history.pushState({}, title, togglePage)
     document.title = title
     view = views.root
-/*
+    /*
     await global.data.page[global.currentPage]["views"].map(async view => {
 
     // view doesnot exist? => get from database
@@ -10069,14 +10045,11 @@ const toggleView = async ({ toggle, id }) => {
 
       children.push(global.data.view[view])
     })
-*/
-  }
-    
-  // view doesnot exist? => get from database
-  if (!global.data.view[viewId]) await search({ id, search: { collection: "view", doc: viewId }, await: `data:().view.${viewId}=().search.data`, asyncer: true })
+    */
 
-  children = toArray(global.data.view[viewId])
-  view = views[parentId]
+  } else view = views[parentId]
+
+  children = [global.data.view[viewId]]
 
   if (children.length === 0) return
   if (!view || !view.element) return
@@ -10112,7 +10085,7 @@ const toggleView = async ({ toggle, id }) => {
     }).join("")
     
   // unloaded views
-  require("../function/loadViews").loadViews()  
+  // require("../function/loadViews").loadViews()  
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
@@ -10142,11 +10115,13 @@ const toggleView = async ({ toggle, id }) => {
       })
     }, 0)*/
     
+    document.getElementsByClassName("loader-container")[0].style.display = "none"
+    
   }, timer)
 }
 
 module.exports = { toggleView }
-},{"../function/loadViews":71,"./clone":35,"./createElement":43,"./generate":58,"./search":86,"./setElement":89,"./starter":92,"./toArray":97,"./update":115}],115:[function(require,module,exports){
+},{"./clone":35,"./createElement":43,"./generate":58,"./search":85,"./setElement":88,"./starter":91,"./toArray":96,"./update":114}],114:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -10185,7 +10160,7 @@ const update = ({ id, update = {} }) => {
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") children = clone(global.data.page[global.currentPage]["views"].map(view => global.data.view[view]))
+  if (id === "root") views.root.children = children = clone([global.data.view[global.data.page[global.currentPage].view]])
 
   // onloading
   if (id === "root" && global.data.page[global.currentPage].controls) {
@@ -10263,7 +10238,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":35,"./controls":38,"./createElement":43,"./generate":58,"./setElement":89,"./starter":92,"./toArray":97,"./toCode":101,"./toParam":108}],116:[function(require,module,exports){
+},{"./clone":35,"./controls":38,"./createElement":43,"./generate":58,"./setElement":88,"./starter":91,"./toArray":96,"./toCode":100,"./toParam":107}],115:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 
@@ -10346,7 +10321,7 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./clone":35,"./toAwait":98,"axios":118}],117:[function(require,module,exports){
+},{"./clone":35,"./toAwait":97,"axios":117}],116:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -10410,9 +10385,9 @@ const watch = ({ controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":35,"./execute":52,"./isEqual":66,"./toApproval":96,"./toCode":101,"./toParam":108,"./toValue":113}],118:[function(require,module,exports){
+},{"./clone":35,"./execute":52,"./isEqual":66,"./toApproval":95,"./toCode":100,"./toParam":107,"./toValue":112}],117:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":120}],119:[function(require,module,exports){
+},{"./lib/axios":119}],118:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10603,7 +10578,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":126,"../core/createError":127,"./../core/settle":131,"./../helpers/buildURL":135,"./../helpers/cookies":137,"./../helpers/isURLSameOrigin":140,"./../helpers/parseHeaders":142,"./../utils":145}],120:[function(require,module,exports){
+},{"../core/buildFullPath":125,"../core/createError":126,"./../core/settle":130,"./../helpers/buildURL":134,"./../helpers/cookies":136,"./../helpers/isURLSameOrigin":139,"./../helpers/parseHeaders":141,"./../utils":144}],119:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -10661,7 +10636,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":121,"./cancel/CancelToken":122,"./cancel/isCancel":123,"./core/Axios":124,"./core/mergeConfig":130,"./defaults":133,"./helpers/bind":134,"./helpers/isAxiosError":139,"./helpers/spread":143,"./utils":145}],121:[function(require,module,exports){
+},{"./cancel/Cancel":120,"./cancel/CancelToken":121,"./cancel/isCancel":122,"./core/Axios":123,"./core/mergeConfig":129,"./defaults":132,"./helpers/bind":133,"./helpers/isAxiosError":138,"./helpers/spread":142,"./utils":144}],120:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10682,7 +10657,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],122:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -10741,14 +10716,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":121}],123:[function(require,module,exports){
+},{"./Cancel":120}],122:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],124:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10898,7 +10873,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":135,"../helpers/validator":144,"./../utils":145,"./InterceptorManager":125,"./dispatchRequest":128,"./mergeConfig":130}],125:[function(require,module,exports){
+},{"../helpers/buildURL":134,"../helpers/validator":143,"./../utils":144,"./InterceptorManager":124,"./dispatchRequest":127,"./mergeConfig":129}],124:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10954,7 +10929,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":145}],126:[function(require,module,exports){
+},{"./../utils":144}],125:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -10976,7 +10951,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":136,"../helpers/isAbsoluteURL":138}],127:[function(require,module,exports){
+},{"../helpers/combineURLs":135,"../helpers/isAbsoluteURL":137}],126:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -10996,7 +10971,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":129}],128:[function(require,module,exports){
+},{"./enhanceError":128}],127:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -11080,7 +11055,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":123,"../defaults":133,"./../utils":145,"./transformData":132}],129:[function(require,module,exports){
+},{"../cancel/isCancel":122,"../defaults":132,"./../utils":144,"./transformData":131}],128:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11124,7 +11099,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],130:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -11213,7 +11188,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":145}],131:[function(require,module,exports){
+},{"../utils":144}],130:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -11240,7 +11215,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":127}],132:[function(require,module,exports){
+},{"./createError":126}],131:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -11264,7 +11239,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":133,"./../utils":145}],133:[function(require,module,exports){
+},{"./../defaults":132,"./../utils":144}],132:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -11402,7 +11377,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":119,"./adapters/xhr":119,"./core/enhanceError":129,"./helpers/normalizeHeaderName":141,"./utils":145,"_process":151}],134:[function(require,module,exports){
+},{"./adapters/http":118,"./adapters/xhr":118,"./core/enhanceError":128,"./helpers/normalizeHeaderName":140,"./utils":144,"_process":150}],133:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -11415,7 +11390,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],135:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -11487,7 +11462,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":145}],136:[function(require,module,exports){
+},{"./../utils":144}],135:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11503,7 +11478,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],137:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -11558,7 +11533,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":145}],138:[function(require,module,exports){
+},{"./../utils":144}],137:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11574,7 +11549,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],139:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11587,7 +11562,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],140:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -11657,7 +11632,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":145}],141:[function(require,module,exports){
+},{"./../utils":144}],140:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -11671,7 +11646,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":145}],142:[function(require,module,exports){
+},{"../utils":144}],141:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -11726,7 +11701,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":145}],143:[function(require,module,exports){
+},{"./../utils":144}],142:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11755,7 +11730,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],144:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -11862,7 +11837,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":146}],145:[function(require,module,exports){
+},{"./../../package.json":145}],144:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -12213,7 +12188,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":134}],146:[function(require,module,exports){
+},{"./helpers/bind":133}],145:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -12299,9 +12274,9 @@ module.exports={
   ]
 }
 
-},{}],147:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 
-},{}],148:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 (function (process){(function (){
 /* @flow */
 /*::
@@ -12423,7 +12398,7 @@ module.exports.config = config
 module.exports.parse = parse
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":151,"fs":147,"os":149,"path":150}],149:[function(require,module,exports){
+},{"_process":150,"fs":146,"os":148,"path":149}],148:[function(require,module,exports){
 exports.endianness = function () { return 'LE' };
 
 exports.hostname = function () {
@@ -12474,7 +12449,7 @@ exports.homedir = function () {
 	return '/'
 };
 
-},{}],150:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -13007,7 +12982,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":151}],151:[function(require,module,exports){
+},{"_process":150}],150:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -13193,7 +13168,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],152:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13273,7 +13248,7 @@ var _stringify = _interopRequireDefault(require("./stringify.js"));
 var _parse = _interopRequireDefault(require("./parse.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./nil.js":154,"./parse.js":155,"./stringify.js":159,"./v1.js":160,"./v3.js":161,"./v4.js":163,"./v5.js":164,"./validate.js":165,"./version.js":166}],153:[function(require,module,exports){
+},{"./nil.js":153,"./parse.js":154,"./stringify.js":158,"./v1.js":159,"./v3.js":160,"./v4.js":162,"./v5.js":163,"./validate.js":164,"./version.js":165}],152:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13497,7 +13472,7 @@ function md5ii(a, b, c, d, x, s, t) {
 
 var _default = md5;
 exports.default = _default;
-},{}],154:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13506,7 +13481,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _default = '00000000-0000-0000-0000-000000000000';
 exports.default = _default;
-},{}],155:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13552,7 +13527,7 @@ function parse(uuid) {
 
 var _default = parse;
 exports.default = _default;
-},{"./validate.js":165}],156:[function(require,module,exports){
+},{"./validate.js":164}],155:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13561,7 +13536,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
 exports.default = _default;
-},{}],157:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13588,7 +13563,7 @@ function rng() {
 
   return getRandomValues(rnds8);
 }
-},{}],158:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13693,7 +13668,7 @@ function sha1(bytes) {
 
 var _default = sha1;
 exports.default = _default;
-},{}],159:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13733,7 +13708,7 @@ function stringify(arr, offset = 0) {
 
 var _default = stringify;
 exports.default = _default;
-},{"./validate.js":165}],160:[function(require,module,exports){
+},{"./validate.js":164}],159:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13841,7 +13816,7 @@ function v1(options, buf, offset) {
 
 var _default = v1;
 exports.default = _default;
-},{"./rng.js":157,"./stringify.js":159}],161:[function(require,module,exports){
+},{"./rng.js":156,"./stringify.js":158}],160:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13858,7 +13833,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const v3 = (0, _v.default)('v3', 0x30, _md.default);
 var _default = v3;
 exports.default = _default;
-},{"./md5.js":153,"./v35.js":162}],162:[function(require,module,exports){
+},{"./md5.js":152,"./v35.js":161}],161:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13937,7 +13912,7 @@ function _default(name, version, hashfunc) {
   generateUUID.URL = URL;
   return generateUUID;
 }
-},{"./parse.js":155,"./stringify.js":159}],163:[function(require,module,exports){
+},{"./parse.js":154,"./stringify.js":158}],162:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13975,7 +13950,7 @@ function v4(options, buf, offset) {
 
 var _default = v4;
 exports.default = _default;
-},{"./rng.js":157,"./stringify.js":159}],164:[function(require,module,exports){
+},{"./rng.js":156,"./stringify.js":158}],163:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13992,7 +13967,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const v5 = (0, _v.default)('v5', 0x50, _sha.default);
 var _default = v5;
 exports.default = _default;
-},{"./sha1.js":158,"./v35.js":162}],165:[function(require,module,exports){
+},{"./sha1.js":157,"./v35.js":161}],164:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14010,7 +13985,7 @@ function validate(uuid) {
 
 var _default = validate;
 exports.default = _default;
-},{"./regex.js":156}],166:[function(require,module,exports){
+},{"./regex.js":155}],165:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14032,4 +14007,4 @@ function version(uuid) {
 
 var _default = version;
 exports.default = _default;
-},{"./validate.js":165}]},{},[1]);
+},{"./validate.js":164}]},{},[1]);

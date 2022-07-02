@@ -160,5 +160,5 @@ document.addEventListener('scroll', () => {
 }, true)
 
 // unloaded views
-require("../function/loadViews").loadViews(true)
+// require("../function/loadViews").loadViews(true)
 // new Promise(res => require("../function/loadViews").loadViews(res)).then(() => {})

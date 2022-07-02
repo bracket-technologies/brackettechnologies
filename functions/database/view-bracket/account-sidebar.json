@@ -50,7 +50,7 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.user.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                    "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.user.[open-doc:()]]:[parent().rem()]"
+                                    "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.user.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.user.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
@@ -149,7 +149,7 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.customer.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                    "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.customer.[open-doc:()]]:[parent().rem()]"
+                                    "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.customer.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.customer.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
@@ -248,7 +248,7 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.supplier.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                    "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.supplier.[open-doc:()]]:[parent().rem()]"
+                                    "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.supplier.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.supplier.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
@@ -347,7 +347,7 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.agent.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                    "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.agent.[open-doc:()]]:[parent().rem()]"
+                                    "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.agent.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.agent.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",

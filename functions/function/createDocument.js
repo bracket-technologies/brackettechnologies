@@ -5,13 +5,11 @@ require("dotenv").config();
 
 const createDocument = async ({ req, res, db, realtimedb }) => {
   // Create a cookies object
-  var host = req.headers["x-forwarded-host"] || req.headers["host"];
+  var host = req.headers["x-forwarded-host"] || req.headers["host"]
 
   // current page
-  var currentPage = req.url.split("/")[1] || "";
-  currentPage = currentPage || "main";
-
-  var account, page, view, project;
+  var currentPage = req.url.split("/")[1] || ""
+  currentPage = currentPage || "main"
 
   // get assets & views
   var global = {
@@ -29,8 +27,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     path: req.url,
     device: req.device,
     unloadedViews: [],
-    "lazy-load-views": [],
-    "fast-load-views": [],
     public: getJsonFiles({ search: { collection: "public" } }),
     os: req.headers["sec-ch-ua-platform"],
     browser: req.headers["sec-ch-ua"],
@@ -69,7 +65,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   console.log("before project", new Date().getTime() - global.timer);
 
   // get project
-  project = db
+  var project = db
     .collection("_project_")
     .where("domains", "array-contains", host)
     .get()
@@ -99,7 +95,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
       search: { collection: `view-${project.id}` },
     });
     console.log("after view", new Date().getTime() - global.timer);
+
   } else {
+
     // do not send project details
     delete global.data.project;
 
@@ -112,37 +110,31 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     */
     console.log("before page / firestore", new Date().getTime() - global.timer);
 
-    page = db
+    await db
       .collection(`page-${project.id}`)
       .doc(currentPage)
       .get()
       .then((doc) => {
         global.data.page[doc.id] = doc.data();
         console.log("after page", new Date().getTime() - global.timer);
-      });
+      })
 
+    // page doesnot exist
+    if (!global.data.page[currentPage]) return res.send("Page not found!");
+
+      /*
+      view = realtimedb.ref(`view-${project.id}`).once("value").then(snapshot => {
+          global.data.view = snapshot.val()
+          console.log("after view", new Date().getTime() - global.timer);
+      })
+      */
+
+    // load views
     console.log("before view / firestore", new Date().getTime() - global.timer);
 
-    // get view
-    /*
-        view = realtimedb.ref(`view-${project.id}`).once("value").then(snapshot => {
-            global.data.view = snapshot.val()
-            console.log("after view", new Date().getTime() - global.timer);
-        })
-        */
-    view = db
-      .collection(`view-${project.id}`)
-      .doc(currentPage)
-      .get()
-      .then((doc) => {
-        global.data.view[doc.id] = doc.data();
-        console.log("after view", new Date().getTime() - global.timer);
-      });
+    if (global.data.page[currentPage].views.length > 0) {
 
-    // fast load views
-    if (Object.keys(project["fast-load-views"] || {}).length > 0) {
-
-      var docs = Object.values(project["fast-load-views"]).flat(),
+      var docs = global.data.page[currentPage].views,
         _docs = [],
         index = 1,
         length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0);
@@ -151,7 +143,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         _docs.push(docs.slice((index - 1) * 10, index * 10));
         index += 1;
       }
-
+      
       await Promise.all(
         _docs.map(async (docList) => {
           await db
@@ -159,35 +151,25 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             .where("id", "in", docList)
             .get()
             .then((docs) => {
-              success = true;
-              docs.forEach((doc) => (global.data.view[doc.id] = doc.data()));
-              message = `Documents mounted successfuly!`;
+              success = true
+              docs.forEach((doc) => global.data.view[doc.id] = doc.data())
+              message = `Documents mounted successfuly!`
             })
             .catch((error) => {
-              success = false;
-              message = `An error Occured!`;
-            });
+              success = false
+              message = `An error Occured!`
+            })
         })
-      );
+      )
+      
+      console.log("after view", new Date().getTime() - global.timer);
     }
-    
-    global["lazy-load-views"] = project.views.filter(view => !global["fast-load-views"].includes(view) && view !== currentPage)
   }
-
-  await Promise.resolve(page);
-  await Promise.resolve(view);
-  await Promise.resolve(account);
 
   console.log("Document Ready.");
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
 
-  // account not found
-  if (!global.data.account) return res.send("account not found!");
-  account = global.data.account;
-
-  // page doesnot exist
-  if (!global.data.page[currentPage]) return res.send("Page not found!");
 
   // mount globals
   if (global.data.page[currentPage].global)
@@ -196,94 +178,59 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     );
 
   // controls & views
-  views.root.controls = global.data.page[currentPage].controls;
-  views.root.children = global.data.page[currentPage]["views"].map(
-    (view) => global.data.view[view]
-  );
-
+  views.root.controls = global.data.page[currentPage].controls
+  views.root.children = [global.data.view[global.data.page[currentPage].view]]
+  
   // meta
-  global.data.page[currentPage].meta = global.data.page[currentPage].meta || {};
+  global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
 
   // viewport
-  var viewport = global.data.page[currentPage].meta.viewport;
-  viewport = viewport !== undefined ? viewport : "width=device-width, initial-scale=1.0";
+  var viewport = global.data.page[currentPage].meta.viewport
+  viewport = viewport !== undefined ? viewport : "width=device-width, initial-scale=1.0"
 
-  // language
-  var language = global.language = global.data.page[currentPage].language || "en";
-  var direction = language === "ar" || language === "fa" ? "rtl" : "ltr";
+  // language & direction
+  var language = global.language = global.data.page[currentPage].language || "en"
+  var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
+  var _window = { global, views, db }
 
-  var _window = { global, views, db };
-  /*
-    // forward
-    if (global.data.page[currentPage].forward) {
-
-        var forward = global.data.page[currentPage].forward
-        forward = toCode({ _window, id, string: forward }).split("?")
-        var params = forward[1]
-        var conditions = forward[2]
-        forward = forward[0]
-
-        var approved = toApproval({ _window, string: conditions, id: "root", req, res })
-        if (approved) {
-            global.path = forward
-            global.currentPage = currentPage = global.path.split("/")[1]
-        }
-    }
-
-    // onloading
-    if (global.data.page[currentPage].controls) {
-        global.data.page[currentPage].controls = toArray(global.data.page[currentPage].controls)
-        var loadingEventControls = global.data.page[currentPage].controls.find(controls => controls.event.split("?")[0].includes("loading"))
-        if (loadingEventControls) controls({ _window, id: "root", req, res, controls: loadingEventControls })
-    }
-*/
   // create html
-  var innerHTML = "";
-  innerHTML += createElement({ _window, id: "root", req, res });
-  innerHTML += createElement({ _window, id: "public", req, res });
+  var innerHTML = ""
+  innerHTML += createElement({ _window, id: "root", req, res })
+  innerHTML += createElement({ _window, id: "public", req, res })
 
-  global.idList = innerHTML
-    .split("id='")
-    .slice(1)
-    .map((id) => id.split("'")[0]);
+  global.idList = innerHTML.split("id='").slice(1).map((id) => id.split("'")[0])
 
   res.send(
     `<!DOCTYPE html>
     <html lang="${language}" dir="${direction}" class="html">
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="${viewport}">
-            <meta name="keywords" content="${
-              global.data.page[currentPage].meta.keywords || ""
-            }">
-            <meta name="description" content="${
-              global.data.page[currentPage].meta.description || ""
-            }">
-            <meta name="title" content="${
-              global.data.page[currentPage].meta.title || ""
-            }">
-            <title>${global.data.page[currentPage].title}</title>
-            <link rel="stylesheet" href="/resources/index.css"/>
-            <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
-            <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
-            <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
-            <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
-            <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
-        </head>
-        <body>
-            ${innerHTML}
-            <div class="loader-container"><div class="loader"></div></div>
-            <script id="views" type="application/json">${JSON.stringify(views)}</script>
-            <script id="global" type="application/json">${JSON.stringify(global)}</script>
-            <script src="/index.js"></script>
-            <script src="/resources/html2pdf/html2pdf.js"></script>
-            <script src="/resources/html2canvas/html2canvas.js"></script>
-        </body>
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="${viewport}">
+        <meta name="keywords" content="${global.data.page[currentPage].meta.keywords || ""}">
+        <meta name="description" content="${global.data.page[currentPage].meta.description || ""}">
+        <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
+        <title>${global.data.page[currentPage].title}</title>
+        <link rel="stylesheet" href="/resources/index.css"/>
+        <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
+        <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
+        <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
+        <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
+        <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
+      </head>
+      <body>
+        ${innerHTML}
+        <div class="loader-container"><div class="loader"></div></div>
+        <script id="views" type="application/json">${JSON.stringify(views)}</script>
+        <script id="global" type="application/json">${JSON.stringify(global)}</script>
+        <script src="/index.js"></script>
+        <script src="/resources/html2pdf/html2pdf.js"></script>
+        <script src="/resources/html2canvas/html2canvas.js"></script>
+      </body>
     </html>`
   );
 };

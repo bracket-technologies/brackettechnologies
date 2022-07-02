@@ -10,15 +10,16 @@ const { toValue } = require("./toValue")
 const createElement = ({ _window, id, req, res }) => {
 
   var views = _window ? _window.views : window.views
-  var view = views[id]
   var global = _window ? _window.global : window.global
+  
+  var view = views[id]
   var parent = views[view.parent]
   
   // html
   if (view.html) return view.html
 
   // merge to another view
-  if (view.view) {
+  /*if (view.view) {
 
     if (!global.data.view[view.view]) {
       
@@ -29,7 +30,7 @@ const createElement = ({ _window, id, req, res }) => {
     var viewId = view.view
     delete view.view
     view = { ...view, ...clone(global.data.view[viewId]) }
-  }
+  }*/
 
   // view is empty
   if (!view.type) return
@@ -112,11 +113,11 @@ const createElement = ({ _window, id, req, res }) => {
       // merge to another view
       if (view.view) {
 
-        if (!global.data.view[view.view]) {
+        /* if (!global.data.view[view.view]) {
 
           global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
           return ""
-        }
+        } */
 
         var viewId = view.view
         delete view.view

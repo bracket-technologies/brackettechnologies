@@ -241,7 +241,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" || path0 === "getEntries()" || path0 === "entries()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()")) {
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" 
+    || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
+    || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
+    || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
+    || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" 
+    || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" 
+    || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" 
+    || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" 
+    || path0 === "getEntries()" || path0 === "entries()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" 
+    || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" 
+    || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" 
+    || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" 
+    || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" 
+    || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()" 
+    || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
+    || path0 === "yearStart()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" || path0 === "prevYearEnd()")) {
+
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
           path.unshift("doc()")
@@ -1564,10 +1580,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "slice()") {
 
+            if (!Array.isArray(o) && typeof o !== "string") return
             if (args[2] || !isNaN(toValue({ req, res, _window, id, e, value: args[1], params, _, __}))) { // slice():start:end
 
                 var _start = toValue({ req, res, _window, id, e, value: args[1], params, _, __, object })
                 var _end = toValue({ req, res, _window, id, e, value: args[2], params, _, __, object })
+                // console.log(o, path, _start, _end, k);
                 if (_end !== undefined) answer = o.slice(parseInt(_start), parseInt(_end))
                 else answer = o.slice(parseInt(_start))
 
@@ -2529,21 +2547,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = getDaysInMonth(o)
 
-        } else if (k0 === "getDayBeginning()" || k0 === "getDayStart()") {
+        } else if (k0 === "todayStart()") {
             
             answer = o.setHours(0,0,0,0)
             
-        } else if (k0 === "getDayEnd()" || k0 === "getDayEnding()") {
+        } else if (k0 === "todayEnd()") {
             
             answer = o.setHours(23,59,59,999)
             
-        } else if (k0 === "getNextMonth()" || k0 === "get1MonthLater()") {
+        } else if (k0 === "1MonthLater()") {
             
             var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
             var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "get2ndNextMonth()" || k0 === "get2MonthLater()") {
+        } else if (k0 === "2MonthLater()") {
             
             var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
             var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
@@ -2551,7 +2569,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             year = month === 1 ? year + 1 : year
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "get3rdNextMonth()" || k0 === "get3MonthLater()") {
+        } else if (k0 === "3MonthLater()") {
             
             var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
             var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
@@ -2561,13 +2579,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             year = month === 1 ? year + 1 : year
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "getPrevMonth()" || k0 === "get1MonthEarlier") {
+        } else if (k0 === "1MonthEarlier") {
             
             var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
             var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "get2ndPrevMonth()" || k0 === "get2MonthEarlier") {
+        } else if (k0 === "2MonthEarlier") {
             
             var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
             var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
@@ -2575,7 +2593,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             year = month === 11 ? year - 1 : year
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "get3rdPrevMonth()" || k0 === "get3MonthEarlier") {
+        } else if (k0 === "3MonthEarlier") {
             
             var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
             var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
@@ -2585,77 +2603,157 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             year = month === 11 ? year - 1 : year
             answer = new Date(o.setYear(year)).setMonth(month, o.getDays())
 
-        } else if (k0 === "getMonthBeginning()" || k0 === "getMonthStart()") {
+        } else if (k0 === "monthStart()") {
             
-            answer = new Date(o.setMonth(o.getMonth(), 1)).setHours(0,0,0,0)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
 
-        } else if (k0 === "getMonthEnding()" || k0 === "getMonthEnd()") {
-            
-            answer = new Date(o.setMonth(o.getMonth(), getDaysInMonth(o))).setHours(23,59,59,999)
+            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "getNextMonthBeginning()" || k0 === "getNextMonthStart()") {
+        } else if (k0 === "monthEnd()") {
             
-            var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
-            var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
-            
-        } else if (k0 === "getNextMonthEnding()" || k0 === "getNextMonthEnd()") {
-            
-            var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
-            var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, getDaysInMonth(o))).setHours(23,59,59,999)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
 
-        } else if (k0 === "get2ndNextMonthBeginning()" || k0 === "get2ndNextMonthStart()") {
+            answer = new Date(_date.setMonth(_date.getMonth(), getDaysInMonth(_date))).setHours(23,59,59,999)
+
+        } else if (k0 === "nextMonthStart()") {
             
-            var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
-            var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+
+            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
+            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            
+        } else if (k0 === "nextMonthEnd()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+
+            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
+            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+
+        } else if (k0 === "2ndNextMonthStart()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = o.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
+            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "get2ndNextMonthEnding()" || k0 === "get2ndNextMonthEnd()") {
+        } else if (k0 === "2ndNextMonthEnd()") {
             
-            var month = o.getMonth() + 1 > 11 ? 1 : o.getMonth() + 1
-            var year = (month === 1 ? o.getYear() + 1 : o.getYear()) + 1900
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
+            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, getDaysInMonth(o))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
 
-        } else if (k0 === "getPrevMonthBeginning()" || k0 === "getPrevMonthStart()") {
+        } else if (k0 === "prevMonthStart()") {
             
-            var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
-            var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
+            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "getPrevMonthEnding()" || k0 === "getPrevMonthEnd()") {
+        } else if (k0 === "prevMonthEnd()") {
             
-            var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
-            var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, getDaysInMonth(o))).setHours(23,59,59,999)
+            var _date
+            if (typeof _date.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
+            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
 
-        } else if (k0 === "get2ndPrevMonthBeginning()" || k0 === "get2ndPrevMonthStart()") {
+        } else if (k0 === "2ndPrevMonthStart()") {
             
-            var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
-            var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
+            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "get2ndPrevMonthEnding()" || k0 === "get2ndPrevMonthEnd()") {
+        } else if (k0 === "2ndPrevMonthEnd()") {
             
-            var month = o.getMonth() - 1 < 0 ? 11 : o.getMonth() - 1
-            var year = (month === 11 ? o.getYear() - 1 : o.getYear()) + 1900
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
+            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(o.setYear(year)).setMonth(month, getDaysInMonth(o))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
 
-        } else if (k0 === "getYearBeginning()" || k0 === "getYearStart()") {
+        } else if (k0 === "yearStart()") {
             
-            answer = new Date(o.setMonth(0, 1)).setHours(0,0,0,0)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
 
-        } else if (k0 === "getYearEnding()" || k0 === "getYearEnd()") {
+        } else if (k0 === "yearEnd()") {
             
-            answer = new Date(o.setMonth(0, getDaysInMonth(o))).setHours(23,59,59,999)
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+
+        } else if (k0 === "nextYearStart()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+
+        } else if (k0 === "nextYearEnd()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+
+        } else if (k0 === "prevYearStart()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+
+        } else if (k0 === "prevYearEnd()") {
+            
+            var _date
+            if (typeof o.getMonth === 'function') _date = o
+            else _date = new Date()
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
 
         } else if (k0 === "doesnotHasNestedArray()") {
             
@@ -3238,7 +3336,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 jsPDF:        { unit: 'in', format: _options.format || 'a4', orientation: _options.orientation || 'portrait' }
             }
             
-            /*var a = window.open("", "")
+            var a = window.open("", "")
             a.document.write(`<!DOCTYPE html>
             <html lang="en" dir="ltr" class="html">
                 <head>
@@ -3246,23 +3344,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     <meta http-equiv="X-UA-Compatible" content="IE=edge">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <link rel="stylesheet" href="https://bracketjs.com/resources/index.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/Tajawal/index.css"/>
                     <link rel="stylesheet" href="https://bracketjs.com/resources/Lexend+Deca/index.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons/material-icons.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-round/material-icons-round.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
                 </head>
                 <body>${lDiv.innerHTML}</body>
-                <script>
-                    window.addEventListener('load', (event) => {
-                        window.print()
-                    })
-                </script>
             </html>`)
-            window.close()*/
+            a.document.close()
+            a.print()
             // index.js
             
             /*var fakeImageElements = [...lDiv.getElementsByTagName("IMG")]
@@ -3292,14 +3379,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
                 reader.readAsDataURL(input.files[0])
             })
-                    
-            html2canvas(lDiv.children[0], {useCORS: true})*/
+        
+            html2canvas(lDiv.children[0], {useCORS: true})
             html2pdf().set(_options).from(lDiv.children[0]).save().then(() => {
 
                 views.root.element.removeChild(lDiv)
                 lDiv = null
                 require("./update").removeChildren({ id: _id })
-            })
+            })*/
 
         } else if (k0 === "copyToClipBoard()") {
           

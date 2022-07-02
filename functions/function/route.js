@@ -4,16 +4,36 @@ const { update } = require("./update")
 module.exports = {
     route: async ({ id, route = {} }) => {
 
+        var views = window.views
         var global = window.global
         var path = route.path || global.path
-        var currentPage = route.page || path.split("/")[1] || "main"
+        var currentPage = global.currentPage = route.page || path.split("/")[1] || "main"
+        var notAvailableViews = []
+
+        document.getElementsByClassName("loader-container")[0].style.display = "flex"
+
+        if (!global.data.page[currentPage]) {
+            
+            await search({ id: "root", search: { collection: "page", doc: currentPage } })
+            global.data.page[currentPage] = views.root.search.data
+            if (!global.data.page[currentPage]) return
+        }
         
-        if (!global.data.view[currentPage]) await search({ id, search: { collection: "page", doc: currentPage }, await: `data:().page.${currentPage}=().search.data`, asyncer: true })
+        // check availability of views
+        global.data.page[currentPage].views.map(viewId => {
+            if (!global.data.view[viewId]) notAvailableViews.push(viewId)
+        })
+        
+        if (notAvailableViews.length > 0) {
+
+            await search({ id: "root", search: { collection: "view", docs: notAvailableViews, limit: 100 } })
+            Object.entries(views.root.search.data).map(([doc, data]) => {
+                global.data.view[doc] = data
+            })
+        }
 
         var title = route.title || global.data.page[currentPage].title
 
-        if (!global.data.page[currentPage]) return
-        global.data.page[currentPage]["views"] = global.data.page[currentPage]["views"] || []
         global.currentPage = currentPage
         global.path = route.path ? path : currentPage === "main" ? "/" : currentPage
 
@@ -22,5 +42,7 @@ module.exports = {
         
         update({ id: "root" })
         document.body.scrollTop = document.documentElement.scrollTop = 0
+        
+        document.getElementsByClassName("loader-container")[0].style.display = "none"
     }
 }

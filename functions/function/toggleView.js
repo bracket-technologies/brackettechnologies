@@ -29,22 +29,35 @@ const toggleView = async ({ toggle, id }) => {
   toggle.fadein.after = toggle.fadein.after || {}
   toggle.fadeout.after = toggle.fadeout.after || {}
 
+  document.getElementsByClassName("loader-container")[0].style.display = "flex"
+
   // children
   var children = []
   if (togglePage) {
 
-    global.currentPage = togglePage.split("/")[0]
+    var currentPage = global.currentPage = togglePage.split("/")[0]
+    var notAvailableViews = []
+
+    if (!global.data.page[global.currentPage]) {
+
+      await search({ id: "root", search: { collection: "page", doc: currentPage } })
+      global.data.page[currentPage] = views.root.search.data
+    }
+
+    viewId = global.data.page[currentPage].view
+
+    // check availability of views
+    global.data.page[currentPage].views.map(viewId => {
+      if (!global.data.view[viewId]) notAvailableViews.push(viewId)
+    })
     
-    // view doesnot exist? => get from database
-    var promises = []
-    viewId = global.currentPage
+    if (notAvailableViews.length > 0) {
 
-    if (!global.data.page[global.currentPage]) promises.push(search({ id: "root", search: { collection: "page", doc: viewId } }))
-    if (!global.data.view[global.currentPage]) promises.push(search({ id: "public", search: { collection: "view", doc: viewId } }))
-
-    await Promise.all(promises)
-    global.data.page[viewId] = views.root.search.data
-    global.data.view[viewId] = views.public.search.data
+      await search({ id: "root", search: { collection: "view", docs: notAvailableViews, limit: 100 } })
+      Object.entries(views.root.search.data).map(([doc, data]) => {
+        global.data.view[doc] = data
+      })
+    }
 
     var title = global.data.page[global.currentPage].title
     global.path = togglePage = togglePage === "main" ? "/" : togglePage
@@ -52,7 +65,7 @@ const toggleView = async ({ toggle, id }) => {
     history.pushState({}, title, togglePage)
     document.title = title
     view = views.root
-/*
+    /*
     await global.data.page[global.currentPage]["views"].map(async view => {
 
     // view doesnot exist? => get from database
@@ -63,14 +76,11 @@ const toggleView = async ({ toggle, id }) => {
 
       children.push(global.data.view[view])
     })
-*/
-  }
-    
-  // view doesnot exist? => get from database
-  if (!global.data.view[viewId]) await search({ id, search: { collection: "view", doc: viewId }, await: `data:().view.${viewId}=().search.data`, asyncer: true })
+    */
 
-  children = toArray(global.data.view[viewId])
-  view = views[parentId]
+  } else view = views[parentId]
+
+  children = [global.data.view[viewId]]
 
   if (children.length === 0) return
   if (!view || !view.element) return
@@ -106,7 +116,7 @@ const toggleView = async ({ toggle, id }) => {
     }).join("")
     
   // unloaded views
-  require("../function/loadViews").loadViews()  
+  // require("../function/loadViews").loadViews()  
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
@@ -135,6 +145,8 @@ const toggleView = async ({ toggle, id }) => {
         map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
       })
     }, 0)*/
+    
+    document.getElementsByClassName("loader-container")[0].style.display = "none"
     
   }, timer)
 }

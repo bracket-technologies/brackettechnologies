@@ -50,7 +50,7 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel.[open-doc:()]]:[parent().rem()]"
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.hotel.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
@@ -149,7 +149,7 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-booking.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-booking.[open-doc:()]]:[parent().rem()]"
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-booking.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.hotel-booking.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
@@ -248,7 +248,7 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-accommodation.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-accommodation.[open-doc:()]]:[parent().rem()]"
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-accommodation.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.hotel-accommodation.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
@@ -347,7 +347,7 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-canceled-booking.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-canceled-booking.[open-doc:()]]:[parent().rem()]"
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-canceled-booking.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.hotel-canceled-booking.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
@@ -446,7 +446,7 @@
                                     "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-canceled-accommodation.[open-doc:()]]:[parent().rem()]?e().key=Escape"
                                 },
                                 {
-                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-canceled-accommodation.[open-doc:()]]:[parent().rem()]"
+                                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.hotel-canceled-accommodation.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                                 },
                                 {
                                     "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.hotel-canceled-accommodation.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
