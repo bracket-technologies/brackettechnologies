@@ -100,6 +100,13 @@ module.exports = (component) => {
                         event: "loaded?txt()=date():data().getDateTime()"
                     }]
                 }, {
+                    type: "Input?style.height=3.2rem;input.type=time;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.minWidth=25rem;style.borderRadius=.5rem?data().type()=time",
+                    controls: [{
+                        event: "change?data()=data().timestamp()"
+                    }, {
+                        event: "loaded?txt()=data().toClock():[hr;min]"
+                    }]
+                }, {
                     type: `Text?text=";mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#a35521;style.fontSize=1.4rem?data().type()=string`
                 }, {
                     type: "Text?=flexbox;=pointer;style.display=none;mode.dark.style.color=#888;text='...';style.fontSize=1.4rem"
