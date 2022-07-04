@@ -20,6 +20,8 @@ global["body-click-events"] = {}
 global["body-mousemove-events"] = {}
 global["body-mousedown-events"] = {}
 global["body-mouseup-events"] = {}
+global["before-print-events"] = {}
+global["after-print-events"] = {}
 
 views.document = document
 views.document.element = document
@@ -158,6 +160,7 @@ document.addEventListener('scroll', () => {
         toParam({ string: closeActionlist, id: "actionlist" })
     }
 }, true)
+
 
 // unloaded views
 // require("../function/loadViews").loadViews(true)

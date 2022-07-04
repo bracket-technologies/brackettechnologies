@@ -22,6 +22,7 @@ const note = ({ note: _note }) => {
   var width = note.element.offsetWidth
   note.element.style.backgroundColor = backgroundColor
   note.element.style.left = `calc(50% - ${width/2}px)`
+  note.element.style.opacity = "1"
   note.element.style.transition = "transform .2s"
   note.element.style.transform = "translateY(0)"
 

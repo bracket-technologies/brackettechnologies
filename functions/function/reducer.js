@@ -21,6 +21,7 @@ const { toCode } = require("./toCode")
 const { note } = require("./note")
 const { isParam } = require("./isParam")
 const { toAwait } = require("./toAwait")
+const toCSV = require("./toCSV")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, __, _i, e, req, res, mount, condition }) => {
     
@@ -257,7 +258,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()" 
     || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
-    || path0 === "prevYearEnd()" || path0 === "counter()")) {
+    || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -2984,11 +2985,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "action()") {
             
-            answer = o.derivations
-            
-        } else if (k0 === "action()") {
-            
             answer = execute({ _window, id, actions: path[i - 1], params, e })
+            
+        } else if (k0 === "exportCSV()") {
+            
+            var file = toParam({ req, res, _window, id, e, _, string: args[1] })
+            toCSV({ file })
             
         } else if (k0 === "toPrice()" || k0 === "price()") {
             
@@ -3314,123 +3316,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "print()") {
           
-            var _options = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params }) || id, element, images = []
+            var _options = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params }) || id
             if (!_options.id && !_options.view) _options.id = o.id
             if (_options.view) _options.id = _options.view.id
-            if (_options.id) element = document.getElementById(_options.id)
 
-            lDiv = document.createElement("div")
-            views.root.element.appendChild(lDiv)
-            lDiv.style.position = "absolute"
-            lDiv.style.opacity = "0"
-            var innerHTML = element.parentNode.innerHTML
-
-            innerHTML.split(`id="`).slice(1).map(id => id.split(`"`)[0]).map(id => {
-                innerHTML = innerHTML.replace(id, generate())
-            })
-            
-            /*if (innerHTML.split(`src="`).length > 0) { 
-                
-                const toDataURL = url => require("axios").get(url, { headers: { "Access-Control-Allow-Origin": "*" } })
-                .then(response => response.blob())
-                .then(blob => new Promise((resolve, reject) => {
-                    console.log("here");
-                    const reader = new FileReader()
-                    reader.onloadend = () => resolve(reader.result)
-                    reader.onerror = reject
-                    reader.readAsDataURL(blob)
-                }))
-                
-                innerHTML.split(`src="`).slice(1).map(src => src.split(`"`)[0]).map(src => {
-                    // images.push(src)
-                    toDataURL(src)
-                })
-            }*/
-            
-            lDiv.innerHTML = innerHTML
-            var _id = generate()
-            lDiv.children[0].id = _id
-            views[_id] = {
-                id: _id,
-                element: lDiv.children[0]
-            }
-
-            if (_options.styleAll) {
-
-                var styleAllChildren = (el) => {
-                    Array.from(el.children).map(el => {
-                        Object.entries(_options.styleAll).map(([key, value]) => {
-
-                            el.style[key] = value
-                        })
-
-                        if ([...el.children].length > 0) styleAllChildren(el)
-                    })
-                }
-                styleAllChildren(lDiv)
-            }
-
-            if (_options.params) toParam({ req, res, _window, id: _id, e, _, __, _i, string: _options.params })
-            
-            _options = {
-                margin:       _options.margin || 0,
-                filename:     (_options.name || _options.filename || `Bracket-${(new Date()).getTime()}`) + ".pdf",
-                image:        { type: 'png', quality: 1 },
-                html2canvas:  { scale: _options.scale || 2, dpi: 300, letterRendering: true, allowTaint : false, logging: true, useCORS: true },
-                jsPDF:        { unit: 'in', format: _options.format || 'a4', orientation: _options.orientation || 'portrait' }
-            }
-            
-            var a = window.open("", "")
-            a.document.write(`<!DOCTYPE html>
-            <html lang="en" dir="ltr" class="html">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/index.css"/>
-                    <link rel="stylesheet" href="https://bracketjs.com/resources/Lexend+Deca/index.css"/>
-                </head>
-                <body>${lDiv.innerHTML}</body>
-            </html>`)
-            a.document.close()
-            a.print()
-            // index.js
-            
-            /*var fakeImageElements = [...lDiv.getElementsByTagName("IMG")]
-            var mainImageElements = [...element.getElementsByTagName("IMG")]
-
-            mainImageElements.map((element, index) => {
-
-                fakeImageElements[index].src = element.src
-                var input = document.createElement("input")
-                input.style.position = "absolute"
-                input.style.opacity = "0"
-                views.root.element.appendChild(input)
-                
-                input.value = element.src
-                console.log("1", element);
-                
-                var reader = new FileReader()
-                
-                reader.onload = function() {
-        
-                    var imageDataUrl = reader.result;
-                    console.log("2", imageDataUrl);  
-                    fakeImageElements[index].setAttribute("src", imageDataUrl);
-
-                    
-                }
-                
-                reader.readAsDataURL(input.files[0])
-            })
-        
-            html2canvas(lDiv.children[0], {useCORS: true})
-            html2pdf().set(_options).from(lDiv.children[0]).save().then(() => {
-
-                views.root.element.removeChild(lDiv)
-                lDiv = null
-                require("./update").removeChildren({ id: _id })
-            })*/
+            require("./print").print({ id, options: _options })
 
         } else if (k0 === "copyToClipBoard()") {
           

@@ -458,7 +458,16 @@ i {
   color: #aaa;
 }
 
-
+@page {
+  margin: 0;
+}
+@media print{ 
+  body, html {
+      height: 100% !important;
+      width: 100% !important;
+      display: inline-block;
+  }
+}
 .ar::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: #aaa;
   opacity: 1; /* Firefox */
