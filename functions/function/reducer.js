@@ -2487,12 +2487,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "counter()") {
             
-            var _options = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
-            _options.start = _options.start || _options.counter || _options.count || 0
-            _options.length = _options.length || _options.len || _options.maxLength || 0
-            _options.end = _options.end || _options.max || _options.maximum || 99999
-            answer = require("./counter").counter({ ..._options })
-            
+          var _options = {}
+          if (isParam({ _window, string: args[1] })) _options = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+          else _options = toValue({ req, res, _window, id, e, value: args[1], params, _, __, _i })
+
+          _options.counter = _options.counter || _options.start || _options.count || 0
+          _options.length = _options.length || _options.len || _options.maxLength || 0
+          _options.end = _options.end || _options.max || _options.maximum || 99999
+          _options.timer = _options.timer || (new Date(_date.setHours(0,0,0,0))).getTime()
+
+          answer = require("./counter").counter({ ..._options })
+
         } else if (k0 === "time()") {
 
             var _o
