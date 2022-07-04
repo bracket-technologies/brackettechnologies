@@ -331,33 +331,33 @@ select {
 }
 
 .box-shadow {
-  box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.5);
 }
 
 .box-shadow-1 {
-  box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.5);
 }
 
 .box-shadow-2 {
-  box-shadow: 0 0 20px -1px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 0 20px -1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 20px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 20px -1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 20px -1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 20px -1px rgba(0, 0, 0, 0.5);
 }
 
 .box-shadow-3 {
-  box-shadow: 0 0 30px -1px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 0 30px -1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 30px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 30px -1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 30px -1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 30px -1px rgba(0, 0, 0, 0.5);
 }
 
 .box-shadow-4 {
-  box-shadow: 0 0 40px -1px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 0 40px -1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 0 40px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 40px -1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 40px -1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 40px -1px rgba(0, 0, 0, 0.5);
 }
 
 .pointer {
