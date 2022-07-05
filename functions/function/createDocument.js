@@ -170,13 +170,12 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
 
-
   // mount globals
   if (global.data.page[currentPage].global)
     Object.entries(global.data.page[currentPage].global).map(
       ([key, value]) => (global[key] = value)
-    );
-
+    )
+    
   // controls & views
   views.root.controls = global.data.page[currentPage].controls
   views.root.children = [global.data.view[global.data.page[currentPage].view]]

@@ -1,15 +1,10 @@
 module.exports = ({ controls, id }) => {
   
-  id = controls.id || id
-  var styles = toString({ style: controls.style })
+  if (typeof window.views[id].popup !== "object") window.views[id].popup = {}
+  window.views[id].popup.id = controls.id = id = controls.id || id
 
   return [{
-    event: `click?():popup.style().zIndex=-1;():popup.style().opacity=0;():popup.style().pointerEvents=none;():popup.style().transform=scale(0.5);)(:popup-positioner.delete();)(:popup=${controls.id || id}`,
-    actions: [
-      `?break?)(:popup-positioner=${id}`,
-      `popup:${id}?)(:popup-positioner=${id}`,
-      `setStyle:popup?${styles}`,
-      `setPosition:popup?():popup.style().zIndex=10;():popup.style().opacity=1;():popup.style().pointerEvents=auto;():popup.style().transform=scale(1);position.positioner=${controls.positioner || id};position.placement=${controls.placement || "left"};position.distance=${controls.distance}`
-    ]
+    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()!=${id}]:[().popup.style.keys()._():[():popup.style()._=().popup.style._]];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style()._=():popup.style._||null];():popup.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];popup-positioner:().del()]:0]`,
+    actions: `setPosition:popup?popup-positioner:()=${id};():popup.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "left"};position.distance=${controls.distance};position.align=${controls.align};().popup.style.keys()._():[():popup.style()._=().popup.style._];update():popup?popup-positioner:()!=().id`
   }]
 }

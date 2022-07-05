@@ -1290,20 +1290,14 @@ module.exports = ({ controls }) => {
 },{}],28:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
-  id = controls.id || id
-  var styles = toString({ style: controls.style })
+  if (typeof window.views[id].popup !== "object") window.views[id].popup = {}
+  window.views[id].popup.id = controls.id = id = controls.id || id
 
   return [{
-    event: `click?():popup.style().zIndex=-1;():popup.style().opacity=0;():popup.style().pointerEvents=none;():popup.style().transform=scale(0.5);)(:popup-positioner.delete();)(:popup=${controls.id || id}`,
-    actions: [
-      `?break?)(:popup-positioner=${id}`,
-      `popup:${id}?)(:popup-positioner=${id}`,
-      `setStyle:popup?${styles}`,
-      `setPosition:popup?():popup.style().zIndex=10;():popup.style().opacity=1;():popup.style().pointerEvents=auto;():popup.style().transform=scale(1);position.positioner=${controls.positioner || id};position.placement=${controls.placement || "left"};position.distance=${controls.distance}`
-    ]
+    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()!=${id}]:[().popup.style.keys()._():[():popup.style()._=().popup.style._]];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style()._=():popup.style._||null];():popup.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];popup-positioner:().del()]:0]`,
+    actions: `setPosition:popup?popup-positioner:()=${id};():popup.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "left"};position.distance=${controls.distance};position.align=${controls.align};().popup.style.keys()._():[():popup.style()._=().popup.style._];update():popup?popup-positioner:()!=().id`
   }]
 }
-
 },{}],29:[function(require,module,exports){
 module.exports = ({ id }) => {
     
@@ -1880,13 +1874,12 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
 
-
   // mount globals
   if (global.data.page[currentPage].global)
     Object.entries(global.data.page[currentPage].global).map(
       ([key, value]) => (global[key] = value)
-    );
-
+    )
+    
   // controls & views
   views.root.controls = global.data.page[currentPage].controls
   views.root.children = [global.data.view[global.data.page[currentPage].view]]
@@ -2775,7 +2768,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         view[`${event}-timer`] = setTimeout(async () => {
           
           // body
-          if (eventid === "droplist" || eventid === "actionlist") id = mainID
+          if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") id = mainID
 
           // view doesnot exist
           var __view = views[id]
@@ -2786,6 +2779,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           if (eventid === "droplist" && !global["droplist-positioner"]) return
           if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
+          
+          if (eventid === "popup" && (!global["popup-positioner"] || !global["popup-confirmed"])) return
+          if (eventid === "popup" && !views[global["popup-positioner"]].element.contains(views[id].element)) return
+          
           if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
 
           if (once) e.target.removeEventListener(event, myFn)
@@ -2823,8 +2820,8 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 const defaultEventHandler = ({ id }) => {
 
   var view = window.views[id]
-  var global = window.global
 /*
+  var global = window.global
   view.touchstart = false
   view.mouseenter = false
   view.mousedown = false
@@ -2852,6 +2849,13 @@ const defaultEventHandler = ({ id }) => {
 
     view.element.addEventListener("blur", setEventType)
   }
+
+  var setEventType = (e) => { view.mouseenter = true }
+  view.element.addEventListener("mouseenter", setEventType)
+
+  var setEventType = (e) => { view.mouseenter = false }
+  view.element.addEventListener("mouseleave", setEventType)
+
 /*
   events.map((event) => {
     
@@ -4053,46 +4057,13 @@ const overflow = ({ id }) => {
 module.exports = {overflow}
 
 },{}],76:[function(require,module,exports){
-const {controls} = require("./controls")
-const {update} = require("./update")
-
 const popup = ({ id }) => {
   
-  var view = window.views[id]
-  var popup = window.views["popup"]
-  var popUp = view.popup
-  var _controls = popUp.controls
-  popup.positioner = id
-
-  update({ id: "popup" })
-  
-  // eraser
-  if (popUp.type === "eraser") {
-
-    _controls = {
-      event: "click",
-      actions: `resetStyles:popup;await().note;await().setStyle:mini-window;await().remove:[():mini-window-view.element.children.0.id]:220${popUp.update ? `;await().update:${popUp.update}` : ""};async().erase?note.text=${popUp.note || "Data removed successfully"};()::200.style.display=none;style.opacity=0;erase.path=${popUp.path};erase.id=${popUp.id || "().data().id"};await().)(:[().Data]=().Data()._filterById().[${popUp.id ? `any.${popUp.id}` : "().data().id"}.not().[_.id]]`,
-    }
-  }
-
-
-  setTimeout(() => {
-
-    // caller
-    popup.caller = id
-    // window.views["popup-text"].caller = id
-    window.views["popup-confirm"].caller = id
-    window.views["popup-cancel"].caller = id
-
-    if (popUp.text) window.views["popup-text"].element.innerHTML = popUp.text
-    controls({ controls: _controls, id: "popup-confirm" })
-
-  }, 50)
 }
 
 module.exports = {popup}
 
-},{"./controls":38,"./update":116}],77:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 const { converter } = require("./resize")
 
 const getPadding = (el) => {

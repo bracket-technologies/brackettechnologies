@@ -161,7 +161,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         view[`${event}-timer`] = setTimeout(async () => {
           
           // body
-          if (eventid === "droplist" || eventid === "actionlist") id = mainID
+          if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") id = mainID
 
           // view doesnot exist
           var __view = views[id]
@@ -172,6 +172,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           if (eventid === "droplist" && !global["droplist-positioner"]) return
           if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
+          
+          if (eventid === "popup" && (!global["popup-positioner"] || !global["popup-confirmed"])) return
+          if (eventid === "popup" && !views[global["popup-positioner"]].element.contains(views[id].element)) return
+          
           if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
 
           if (once) e.target.removeEventListener(event, myFn)
@@ -209,8 +213,8 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 const defaultEventHandler = ({ id }) => {
 
   var view = window.views[id]
-  var global = window.global
 /*
+  var global = window.global
   view.touchstart = false
   view.mouseenter = false
   view.mousedown = false
@@ -238,6 +242,13 @@ const defaultEventHandler = ({ id }) => {
 
     view.element.addEventListener("blur", setEventType)
   }
+
+  var setEventType = (e) => { view.mouseenter = true }
+  view.element.addEventListener("mouseenter", setEventType)
+
+  var setEventType = (e) => { view.mouseenter = false }
+  view.element.addEventListener("mouseleave", setEventType)
+
 /*
   events.map((event) => {
     
