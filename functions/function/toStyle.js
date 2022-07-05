@@ -57,6 +57,9 @@ module.exports = {
         else if (k === "overflowY") k = "overflow-y";
         else if (k === "rowGap") k = "row-gap";
         else if (k === "columnGap") k = "column-gap";
+        else if (k === "pageBreakInside") k = "page-break-inside";
+        else if (k === "pageBreakBefore") k = "page-break-before";
+        else if (k === "pageBreakAfter") k = "page-break-after";
         else if (k === "gridTemplateColumns") k = "grid-template-columns";
         else if (k === "gridAutoColumns") k = "grid-auto-columns";
         else if (k === "gridTemplateRows") k = "grid-template-rows";

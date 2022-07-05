@@ -43,7 +43,7 @@
     }, {
         "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;tooltip.text=remove;popup;name=bi-trash;style.fontSize=1.7rem?!)(:actionlist-caller-id.mainMap",
         "controls": [{
-            "event": "click?popup();if():[():[)(:actionlist-caller-id].parent().parent().parent().parent().data().type()=array]:[():[)(:actionlist-caller-id].parent().parent().parent().nextSiblings()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()-1]]",
+            "event": "click:popup?if():[():[)(:actionlist-caller-id].parent().parent().parent().parent().data().type()=array]:[():[)(:actionlist-caller-id].parent().parent().parent().nextSiblings()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()-1]]",
             "actions": "remove:[():[)(:actionlist-caller-id].parent().parent().parent().id]"
         }]
     }],

@@ -2019,7 +2019,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             reader.onload = (e) => toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e })
             reader.readAsDataURL(_file)
 
-        } else if (k0 === "toArray()" || k0 === "arr()") {
+        } else if (k0 === "arr()" || k0 === "list()") {
             
             answer = toArray(o)
 

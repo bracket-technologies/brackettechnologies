@@ -12,6 +12,12 @@ body {
   box-sizing: border-box;
   font-family: "Lexend Deca", sans-serif;
   color: #444;
+  float: none;
+}
+
+.page-break {
+  page-break-after: always;
+  page-break-inside: avoid;
 }
 
 *::-webkit-scrollbar {
@@ -41,6 +47,7 @@ body {
 
 html {
   font-size: 10px;
+  float: none;
 }
 
 body {
@@ -48,6 +55,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   z-index: -1;
   min-height: 100vh;
+  float: none;
 }
 
 code {

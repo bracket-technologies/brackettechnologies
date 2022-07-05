@@ -6304,7 +6304,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             reader.onload = (e) => toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e })
             reader.readAsDataURL(_file)
 
-        } else if (k0 === "toArray()" || k0 === "arr()") {
+        } else if (k0 === "arr()" || k0 === "list()") {
             
             answer = toArray(o)
 
@@ -9858,6 +9858,9 @@ module.exports = {
         else if (k === "overflowY") k = "overflow-y";
         else if (k === "rowGap") k = "row-gap";
         else if (k === "columnGap") k = "column-gap";
+        else if (k === "pageBreakInside") k = "page-break-inside";
+        else if (k === "pageBreakBefore") k = "page-break-before";
+        else if (k === "pageBreakAfter") k = "page-break-after";
         else if (k === "gridTemplateColumns") k = "grid-template-columns";
         else if (k === "gridAutoColumns") k = "grid-auto-columns";
         else if (k === "gridTemplateRows") k = "grid-template-rows";
