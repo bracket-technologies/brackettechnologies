@@ -7231,7 +7231,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
                 
                 _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                _params.data = _params.map || _params.array || _params.object || _params.list || _array
+                _params.data = _params.data || _params.map || _params.array || _params.object || _params.list || _array
             }
             return require("./sort").sort({ sort: _params, id, e })
             
