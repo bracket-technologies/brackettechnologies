@@ -4172,7 +4172,8 @@ module.exports = {
                 if (options["after-print"]) toParam({ string: options["after-print"], id, mount: true })
             }
         });
-
+        location.reload()
+        window.stop()
         window.print()
     }
 }

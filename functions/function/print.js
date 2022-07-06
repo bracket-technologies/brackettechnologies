@@ -13,8 +13,7 @@ module.exports = {
                 // console.log('after print dialog closed');
                 if (options["after-print"]) toParam({ string: options["after-print"], id, mount: true })
             }
-        });
-
+        })
         window.print()
     }
 }
