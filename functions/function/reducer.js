@@ -253,12 +253,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "getEntries()" || path0 === "entries()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" 
     || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" 
     || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" 
-    || path0 === "timeZone()" || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" 
-    || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" 
+    || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "csvToJson()"
+    || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "sort()" 
     || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()" 
     || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
-    || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()")) {
+    || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -1541,10 +1541,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "timer()" || k0 === "setTimeout()") {
             
-            if (!isNaN(toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e }))) { // timer():params:timer
+            if (args[2]) { // timer():params:timer
 
                 var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e }))
-                var myFn = () => toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e })
+                var myFn = () => { toParam({ req, res, _window, id, string: args[1], params, _, __, _i,e }) }
                 answer = setTimeout(myFn, _timer)
 
             } else if (isParam({ _window, string: args[1] }) && !args[2]) { // timer():[params;timer]
@@ -1758,7 +1758,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "contains()" || k0 === "contain()") {
             
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, _i,e })
-
+            if (!_next) return
             if (_next.nodeType === Node.ELEMENT_NODE) {}
             else if (typeof _next === "object") _next = _next.element
             else if (typeof _next === "string" && views[_next]) _next = views[_next].element
@@ -2405,7 +2405,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = new Date()
             answer.setUTCHours(23, 59, 59, 999)
 
-        } else if (k0 === "timeZone()" || k0 === "timezone()" || k0 === "timeDifference") {
+        } else if (k0 === "timezone()") {
 
             var date = new Date()
             var timeZone = Math.abs(date.getTimezoneOffset()) * 60 * 1000
@@ -2637,7 +2637,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
-
+            
             answer = _date.setHours(0,0,0,0)
             
         } else if (k0 === "todayEnd()") {
@@ -2936,7 +2936,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } */else if (k0.includes("find()")) {
             
-            if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res, object }) )
+            if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
             else answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
             
         } else if (k0 === "sort()") {
@@ -2948,19 +2948,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
                 _params.data = _params.data || _params.map || _params.array || _params.object || _params.list || _array
             }
-            return require("./sort").sort({ sort: _params, id, e })
-            
+            answer = require("./sort").sort({ sort: _params, id, e })
+            return answer
+
         } else if (k0.includes("findIndex()")) {
             
             if (typeof o !== "object") return
             
-            if (k[0] === "_") answer = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res, object }) )
+            if (k[0] === "_") answer = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
             else answer = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
             
         } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
             if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
-            if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, object, _i: index }) )
+            if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index, object }) )
             else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, _i, e, _i: index }) )
 
         } else if (k0 === "index()") {
@@ -2990,7 +2991,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "exportCSV()") {
             
             var file = toParam({ req, res, _window, id, e, _, string: args[1] })
-            toCSV({ file })
+            require("./toCSV").toCSV({ file })
+            
+        } else if (k0 === "exportPdf()") {
+            
+            var options = toParam({ req, res, _window, id, e, _, string: args[1] })
+            require("./toPdf").toPdf({ options })
             
         } else if (k0 === "toPrice()" || k0 === "price()") {
             
@@ -3234,6 +3240,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 answer = o.readOnly
             }
 
+        } else if (k0 === "html()") {
+          
+            answer = o.element.innerHTML
+
         } else if (k0 === "range()") {
           
             var args = k.split(":").slice(1)
@@ -3316,11 +3326,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "print()") {
           
-            var _options = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params }) || id
+            var _options = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
             if (!_options.id && !_options.view) _options.id = o.id
             if (_options.view) _options.id = _options.view.id
 
             require("./print").print({ id, options: _options })
+
+        } else if (k0 === "csvToJson()") {
+          
+            var _options = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+            require("./csvToJson").csvToJson({ e, options: _options })
 
         } else if (k0 === "copyToClipBoard()") {
           

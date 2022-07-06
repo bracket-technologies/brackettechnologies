@@ -11,13 +11,13 @@ module.exports = ({ controls, id }) => {
     )
     
     return [{
-        "event": `loaded:${_id}?if():[().state=().hover.id]:[[().state]:()=generate()];().hover.style.keys()._():[style()._=().hover.style._]?hover.mount`,
+        "event": `loaded:${_id}?if():[state=().hover.id]:[[().state]:()=generate()];hover.style.keys()._():[style()._=().hover.style._]?hover.mount`,
         // "actions": "setStyle?style()=if():[mode:()=default-mode:()]:[().hover.style]:[().mode.[mode:()].hover.style]||_map"
     }, {
-        "event": `mouseenter:${_id}?().hover.style.keys()._():[style()._=().hover.style._]?!clicked.disable;!hover.disable`,
+        "event": `mouseenter:${_id}?hover.style.keys()._():[style()._=().hover.style._]?!clicked.disable;!hover.disable`,
         // "actions": "setStyle?style=if():[mode:()=default-mode:()]:[().hover.style]:[().mode.[mode:()].hover.style]||_map"
     }, {
-        "event": `mouseleave:${_id}?().hover.default.style.keys()._():[style()._=().hover.default.style._]?!clicked.disable;!hover.disable`,
+        "event": `mouseleave:${_id}?hover.default.style.keys()._():[style()._=().hover.default.style._]?!clicked.disable;!hover.disable`,
         // "actions": "setStyle?style=().hover.default.style"
     }]
 }

@@ -29,7 +29,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     // break
     if (view && view.break) return
 
-    if (param.slice(0, 2) === "#:") return
+    if (param.charAt(0) === "#") return
     
     // split
     if (param.includes("=")) {

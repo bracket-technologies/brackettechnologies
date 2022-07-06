@@ -3,13 +3,11 @@ module.exports = {
 
         var data = file.data
         var fileName = file.name
-
         var CSV = ''
+
         //Set Report title in first row or line
 
-        CSV += fileName + '\r\n\n'
-
-        //This condition will generate the Label/Header
+        // This condition will generate the Label/Header
         var row = ""
         var keys = file.fields || []
 
@@ -29,12 +27,15 @@ module.exports = {
         // line break
         CSV += row + '\r\n'
 
-        //1st loop is to extract each row
+        // extract each row
         data.map(d => {
             var row = ""
 
-            //2nd loop will extract each column and convert it in string comma-seprated
-            keys.map(k => row += '"' + d[k] + '",')
+            // extract each column and convert it in string comma-separated
+            keys.map(k => { 
+                if (d[k] !== undefined) row += `${d[k]},`
+                else row += ','
+            })
 
             row = row.slice(0, -1)
 

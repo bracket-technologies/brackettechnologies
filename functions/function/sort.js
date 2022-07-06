@@ -13,12 +13,14 @@ const sort = ({ sort = {}, id, e }) => {
   var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
+  var sortBy = options.sortBy || view.sortBy || "ascending"
 
   // sort by
-  options.sortBy = options.sortBy === "ascending" ? "descending" : "ascending"
+  options.sortBy = sortBy === "ascending" ? "descending" : "ascending"
   if (sort.ascending) options.sortBy = "ascending"
   else if (sort.descending) options.sortBy = "descending"
   else if (sort.sortBy || sort.sortby || sort.by) options.sortBy = sort.sortBy || sort.sortby || sort.by
+  view.sortBy = options.sortBy
 
   // path
   var path = sort.path
@@ -75,7 +77,7 @@ const sort = ({ sort = {}, id, e }) => {
       b = b.toString()
     }
 
-    if (options.sort === "ascending") {
+    if (options.sortBy === "ascending") {
       if (isDate) {
         if (b.year === a.year) {
           if (b.month === a.month) {

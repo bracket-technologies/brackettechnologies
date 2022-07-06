@@ -4,6 +4,7 @@ const { getJsonFiles } = require("./jsonFiles");
 require("dotenv").config();
 
 const createDocument = async ({ req, res, db, realtimedb }) => {
+  
   // Create a cookies object
   var host = req.headers["x-forwarded-host"] || req.headers["host"]
 
