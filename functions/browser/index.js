@@ -726,6 +726,7 @@ const Input = (component) => {
                 height: 'fit-content',
                 borderRadius: '0.25rem',
                 fontSize: '1.4rem',
+                transition: ".2s",
                 ...input.style,
                 ...style,
             },
@@ -4171,9 +4172,7 @@ module.exports = {
                 // console.log('after print dialog closed');
                 if (options["after-print"]) toParam({ string: options["after-print"], id, mount: true })
             }
-        });
-        location.reload()
-        window.stop()
+        })
         window.print()
     }
 }
@@ -5184,20 +5183,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _o, _params = {}
             if (args[1]) {
 
-                if (isParam({ _window, string: args[1] })) {
-                    
-                    _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
+              if (isParam({ _window, string: args[1] })) {
+                  
+                  _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                  _o = _params.view || _params.id || _params.el || _params.element || o
 
-                } else {
-                    _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-                    if (isParam({ _window, string: args[2] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[2] })
-                }
+              } else {
+                  _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+                  if (isParam({ _window, string: args[2] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[2] })
+              }
 
             } else {
 
-                if (!o.element) _o = views[id]
-                else _o = o
+              if (!o.element) _o = views[id]
+              else _o = o
             }
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -5205,18 +5204,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             // get element
             if (_o.nodeType && _o.nodeType === Node.ELEMENT_NODE) answer = _o.style
             else if (typeof _o === "object") {
-                if (_o.element) answer = _o.element.style
-                else answer = _o.style = _o.style || {}
+
+              if (_o.element) answer = _o.element.style
+              else answer = _o.style = _o.style || {}
             }
 
             var { view: _view, id: _id, el: _el, element: _element, ...__params} = _params
             
             if (Object.keys(__params).length > 0) {
 
-                Object.entries(__params).map(([key, value]) => {
-                    answer[key] = value
-                })
-
+              Object.entries(__params).map(([key, value]) => {
+                  answer[key] = value
+              })
             }
             
         } else if (k0 === "getTagElements()") {
@@ -10033,20 +10032,18 @@ const { setElement } = require("./setElement")
 const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
-const { toArray } = require("./toArray")
 const { search } = require("./search")
 
 const toggleView = async ({ toggle, id }) => {
 
   var views = window.views
   var global = window.global
-  var togglePage = toggle.page 
-  var toggleId = toggle.id
-    || togglePage && views.root && views.root.element.children[0] && views.root.element.children[0].id
-    || views[id] && views[id].element.children[0] && views[id].element.children[0].id
+  var togglePage = toggle.page, view = {}
+  var parentId = toggle.id || id
+  if (togglePage) parentId = "root"
+  // toggleId = views[id] && views[id].element.children[0] && views[id].element.children[0].id
 
-  var parentId = toggleId ? (toggleId !== "root" ? views[toggleId].parent : toggleId) : id
-  var view = {}
+  var toggleId = views[id].element.children[0] && views[id].element.children[0].id
   var viewId = toggle.viewId || toggle.view
   
   toggle.fadein = toggle.fadein || {}
@@ -10181,7 +10178,7 @@ const toggleView = async ({ toggle, id }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":35,"./createElement":44,"./generate":60,"./search":88,"./setElement":91,"./starter":94,"./toArray":99,"./update":118}],118:[function(require,module,exports){
+},{"./clone":35,"./createElement":44,"./generate":60,"./search":88,"./setElement":91,"./starter":94,"./update":118}],118:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")

@@ -1004,20 +1004,20 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _o, _params = {}
             if (args[1]) {
 
-                if (isParam({ _window, string: args[1] })) {
-                    
-                    _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
+              if (isParam({ _window, string: args[1] })) {
+                  
+                  _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                  _o = _params.view || _params.id || _params.el || _params.element || o
 
-                } else {
-                    _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-                    if (isParam({ _window, string: args[2] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[2] })
-                }
+              } else {
+                  _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+                  if (isParam({ _window, string: args[2] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[2] })
+              }
 
             } else {
 
-                if (!o.element) _o = views[id]
-                else _o = o
+              if (!o.element) _o = views[id]
+              else _o = o
             }
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -1025,18 +1025,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             // get element
             if (_o.nodeType && _o.nodeType === Node.ELEMENT_NODE) answer = _o.style
             else if (typeof _o === "object") {
-                if (_o.element) answer = _o.element.style
-                else answer = _o.style = _o.style || {}
+
+              if (_o.element) answer = _o.element.style
+              else answer = _o.style = _o.style || {}
             }
 
             var { view: _view, id: _id, el: _el, element: _element, ...__params} = _params
             
             if (Object.keys(__params).length > 0) {
 
-                Object.entries(__params).map(([key, value]) => {
-                    answer[key] = value
-                })
-
+              Object.entries(__params).map(([key, value]) => {
+                  answer[key] = value
+              })
             }
             
         } else if (k0 === "getTagElements()") {

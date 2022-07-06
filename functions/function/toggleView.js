@@ -4,20 +4,18 @@ const { setElement } = require("./setElement")
 const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
-const { toArray } = require("./toArray")
 const { search } = require("./search")
 
 const toggleView = async ({ toggle, id }) => {
 
   var views = window.views
   var global = window.global
-  var togglePage = toggle.page 
-  var toggleId = toggle.id
-    || togglePage && views.root && views.root.element.children[0] && views.root.element.children[0].id
-    || views[id] && views[id].element.children[0] && views[id].element.children[0].id
+  var togglePage = toggle.page, view = {}
+  var parentId = toggle.id || id
+  if (togglePage) parentId = "root"
+  // toggleId = views[id] && views[id].element.children[0] && views[id].element.children[0].id
 
-  var parentId = toggleId ? (toggleId !== "root" ? views[toggleId].parent : toggleId) : id
-  var view = {}
+  var toggleId = views[id].element.children[0] && views[id].element.children[0].id
   var viewId = toggle.viewId || toggle.view
   
   toggle.fadein = toggle.fadein || {}

@@ -285,6 +285,7 @@ const Input = (component) => {
                 height: 'fit-content',
                 borderRadius: '0.25rem',
                 fontSize: '1.4rem',
+                transition: ".1s",
                 ...input.style,
                 ...style,
             },
