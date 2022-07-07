@@ -5,6 +5,14 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, _i, asyncer, createElement, params = {}, executer }) => {
   const { toApproval } = require("./toApproval")
 
@@ -159,10 +167,16 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
   }
 
     // show loader
-    if (param === "loader.show") return document.getElementsByClassName("loader-container")[0].style.display = "flex"
+    if (param === "loader.show") {
+      document.getElementsByClassName("loader-container")[0].style.display = "flex"
+      return sleep(1)
+    }
     
     // hide loader
-    if (param === "loader.hide") return document.getElementsByClassName("loader-container")[0].style.display = "none"
+    if (param === "loader.hide") {
+      document.getElementsByClassName("loader-container")[0].style.display = "none"
+      return sleep(1)
+    }
 
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _, __ })

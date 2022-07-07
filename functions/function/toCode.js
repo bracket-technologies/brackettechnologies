@@ -39,6 +39,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
     if (start === "(") subKey[0] = subKey[0].split("___action___").join("()").split("___global___").join(")(")
 
+    if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, string: subKey[0], start: "'", end: "'" })
     if (codes) codes[key] = subKey[0]
     else global.codes[key] = subKey[0]
 

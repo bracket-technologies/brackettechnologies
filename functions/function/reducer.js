@@ -432,9 +432,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     
         // break
         if (breakRequest === true || breakRequest >= i) return o
-        
+
         // equal
-        if ((path[i + 1] + "") && ((path[i + 1] + "").includes("equal()") || (path[i + 1] + "").includes("equals()") || (path[i + 1] + "").includes("=()") || (path[i + 1] + "").includes("eq()"))) {
+        /*if ((path[i + 1] + "") && ((path[i + 1] + "").includes("equal()") || (path[i + 1] + "").includes("equals()") || (path[i + 1] + "").includes("=()") || (path[i + 1] + "").includes("eq()"))) {
             
             key = true
             var args = path[i + 1].split(":")
@@ -442,7 +442,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             value = toValue({ req, res, _window, id, _, __, _i,e, value: args[1], params })
             breakRequest = i + 1
             lastIndex = i
-        }
+        }*/
         
         // path[i]._
         /*if (path[i + 1] === "_") {
@@ -465,7 +465,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
         
         // if():conds:ans.else():ans || if():conds:ans.elif():conds:ans
-        if (k0 === "if()") {
+        /*if (k0 === "if()") {
         
             var args = k.split(":")
             var approved = toApproval({ req, res, _window, id, value: args[1], params, _, __, _i,e })
@@ -494,7 +494,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     breakRequest = breakRequest + 1
                 }
             }
-        }
+        }*/
         
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
         
@@ -2222,7 +2222,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
             } else {
 
-                var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e })
+                var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e })
                 var _index = o.findIndex(item => isEqual(item, _item))
                 if (_index !== -1) o.splice(_index,1)
                 answer = o
@@ -2961,7 +2961,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
             if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
-            if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index, object }) )
+            if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index/*, object*/ }) )
             else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, _i, e, _i: index }) )
 
         } else if (k0 === "index()") {
@@ -3335,7 +3335,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "csvToJson()") {
           
             var _options = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-            require("./csvToJson").csvToJson({ e, options: _options })
+            require("./csvToJson").csvToJson({ id, e, options: _options })
 
         } else if (k0 === "copyToClipBoard()") {
           

@@ -11,12 +11,17 @@ const toggleView = async ({ toggle, id }) => {
   var views = window.views
   var global = window.global
   var togglePage = toggle.page, view = {}
-  var parentId = toggle.id || id
-  if (togglePage) parentId = "root"
-  // toggleId = views[id] && views[id].element.children[0] && views[id].element.children[0].id
-
-  var toggleId = views[id].element.children[0] && views[id].element.children[0].id
   var viewId = toggle.viewId || toggle.view
+  var toggleId = toggle.id
+  var parentId = toggle.parent
+  if (togglePage) parentId = "root"
+  if (!toggleId) {
+    if (parentId) toggleId = views[parentId].element.children[0] && views[parentId].element.children[0].id
+    else {
+      toggleId = id
+      parentId = views[id].element.parentNode.id && views[id].element.parentNode.id
+    }
+  } else if (!parentId) parentId = views[toggleId].element.parentNode.id && views[toggleId].element.parentNode.id
   
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}

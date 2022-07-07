@@ -25,7 +25,7 @@ module.exports = {
         row = row.slice(0, -1)
 
         // line break
-        CSV += row + '\r\n'
+        CSV += row + '\n'
 
         // extract each row
         data.map(d => {
@@ -40,7 +40,7 @@ module.exports = {
             row = row.slice(0, -1)
 
             //add a line break after each row
-            CSV += row + '\r\n'
+            CSV += row + '\n'
         })
 
         if (CSV == '') {

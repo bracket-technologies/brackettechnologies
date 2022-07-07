@@ -726,7 +726,7 @@ const Input = (component) => {
                 height: 'fit-content',
                 borderRadius: '0.25rem',
                 fontSize: '1.4rem',
-                transition: ".2s",
+                transition: "border .1s",
                 ...input.style,
                 ...style,
             },
@@ -2281,19 +2281,16 @@ const createView = ({ view, id }) => {
 module.exports = {createView}
 
 },{"./clone":35,"./toArray":99,"./update":118}],47:[function(require,module,exports){
+const { toParam } = require("./toParam");
+
 module.exports = {
-    csvToJson: ({ e }) => {
+    csvToJson: ({ id, e, options }) => {
         
         var reader = new FileReader();
         reader.onload = function () {
             // document.getElementById('out').innerHTML = reader.result;
-            var lines = reader.result.split("\n");
+            var lines = reader.result.split("\n")
             var result = [];
-
-            // NOTE: If your columns contain commas in their values, you'll need
-            // to deal with those before doing the next step 
-            // (you might convert them to &&& or something, then covert them back later)
-            // jsfiddle showing the issue https://jsfiddle.net/
             var headers=lines[0].split(",");
 
             for(var i=1;i<lines.length;i++){
@@ -2306,18 +2303,19 @@ module.exports = {
                 }
 
                 result.push(obj);
-
             }
 
             /* Convert the final array to JSON */
             console.log(result)
+            window.views[id].csv = { data: result, message: "Data converted successfully!" }
+            toParam({ id, e, string: options.loaded, mount: true })
         };
 
         // start reading the file. When it is done, calls the onload event defined above.
         reader.readAsBinaryString(e.target.files[0]);
     }
 }
-},{}],48:[function(require,module,exports){
+},{"./toParam":110}],48:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -2672,8 +2670,8 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
   // 'string'
   var events = controls.event
-  if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   events = toCode({ _window, id, string: events })
+  // if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   
   events = events.split("?")
   var _idList = toValue({ id, value: events[3] || id })
@@ -4611,9 +4609,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     
         // break
         if (breakRequest === true || breakRequest >= i) return o
-        
+
         // equal
-        if ((path[i + 1] + "") && ((path[i + 1] + "").includes("equal()") || (path[i + 1] + "").includes("equals()") || (path[i + 1] + "").includes("=()") || (path[i + 1] + "").includes("eq()"))) {
+        /*if ((path[i + 1] + "") && ((path[i + 1] + "").includes("equal()") || (path[i + 1] + "").includes("equals()") || (path[i + 1] + "").includes("=()") || (path[i + 1] + "").includes("eq()"))) {
             
             key = true
             var args = path[i + 1].split(":")
@@ -4621,7 +4619,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             value = toValue({ req, res, _window, id, _, __, _i,e, value: args[1], params })
             breakRequest = i + 1
             lastIndex = i
-        }
+        }*/
         
         // path[i]._
         /*if (path[i + 1] === "_") {
@@ -4644,7 +4642,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         }
         
         // if():conds:ans.else():ans || if():conds:ans.elif():conds:ans
-        if (k0 === "if()") {
+        /*if (k0 === "if()") {
         
             var args = k.split(":")
             var approved = toApproval({ req, res, _window, id, value: args[1], params, _, __, _i,e })
@@ -4673,7 +4671,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     breakRequest = breakRequest + 1
                 }
             }
-        }
+        }*/
         
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
         
@@ -6401,7 +6399,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
             } else {
 
-                var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e })
+                var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e })
                 var _index = o.findIndex(item => isEqual(item, _item))
                 if (_index !== -1) o.splice(_index,1)
                 answer = o
@@ -7140,7 +7138,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
             if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
-            if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index, object }) )
+            if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index/*, object*/ }) )
             else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, _i, e, _i: index }) )
 
         } else if (k0 === "index()") {
@@ -7514,7 +7512,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "csvToJson()") {
           
             var _options = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-            require("./csvToJson").csvToJson({ e, options: _options })
+            require("./csvToJson").csvToJson({ id, e, options: _options })
 
         } else if (k0 === "copyToClipBoard()") {
           
@@ -8993,7 +8991,7 @@ module.exports = {
         row = row.slice(0, -1)
 
         // line break
-        CSV += row + '\r\n'
+        CSV += row + '\n'
 
         // extract each row
         data.map(d => {
@@ -9008,7 +9006,7 @@ module.exports = {
             row = row.slice(0, -1)
 
             //add a line break after each row
-            CSV += row + '\r\n'
+            CSV += row + '\n'
         })
 
         if (CSV == '') {
@@ -9103,6 +9101,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
     if (start === "(") subKey[0] = subKey[0].split("___action___").join("()").split("___global___").join(")(")
 
+    if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, string: subKey[0], start: "'", end: "'" })
     if (codes) codes[key] = subKey[0]
     else global.codes[key] = subKey[0]
 
@@ -9350,6 +9349,14 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, _i, asyncer, createElement, params = {}, executer }) => {
   const { toApproval } = require("./toApproval")
 
@@ -9504,10 +9511,16 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
   }
 
     // show loader
-    if (param === "loader.show") return document.getElementsByClassName("loader-container")[0].style.display = "flex"
+    if (param === "loader.show") {
+      document.getElementsByClassName("loader-container")[0].style.display = "flex"
+      return sleep(1)
+    }
     
     // hide loader
-    if (param === "loader.hide") return document.getElementsByClassName("loader-container")[0].style.display = "none"
+    if (param === "loader.hide") {
+      document.getElementsByClassName("loader-container")[0].style.display = "none"
+      return sleep(1)
+    }
 
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _, __ })
@@ -10039,12 +10052,17 @@ const toggleView = async ({ toggle, id }) => {
   var views = window.views
   var global = window.global
   var togglePage = toggle.page, view = {}
-  var parentId = toggle.id || id
-  if (togglePage) parentId = "root"
-  // toggleId = views[id] && views[id].element.children[0] && views[id].element.children[0].id
-
-  var toggleId = views[id].element.children[0] && views[id].element.children[0].id
   var viewId = toggle.viewId || toggle.view
+  var toggleId = toggle.id
+  var parentId = toggle.parent
+  if (togglePage) parentId = "root"
+  if (!toggleId) {
+    if (parentId) toggleId = views[parentId].element.children[0] && views[parentId].element.children[0].id
+    else {
+      toggleId = id
+      parentId = views[id].element.parentNode.id && views[id].element.parentNode.id
+    }
+  } else if (!parentId) parentId = views[toggleId].element.parentNode.id && views[toggleId].element.parentNode.id
   
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
