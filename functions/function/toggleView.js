@@ -16,11 +16,8 @@ const toggleView = async ({ toggle, id }) => {
   var parentId = toggle.parent
   if (togglePage) parentId = "root"
   if (!toggleId) {
-    if (parentId) toggleId = views[parentId].element.children[0] && views[parentId].element.children[0].id
-    else {
-      toggleId = id
-      parentId = views[id].element.parentNode.id && views[id].element.parentNode.id
-    }
+    if (!parentId) parentId = id
+    toggleId = views[parentId].element.children[0] && views[parentId].element.children[0].id
   } else if (!parentId) parentId = views[toggleId].element.parentNode.id && views[toggleId].element.parentNode.id
   
   toggle.fadein = toggle.fadein || {}
