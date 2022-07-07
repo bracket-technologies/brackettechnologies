@@ -2886,11 +2886,12 @@ const defaultEventHandler = ({ id }) => {
 
     view.element.addEventListener("blur", setEventType)
   }
-
-  var setEventType = (e) => { view.mouseenter = true }
+  view.mouseenter = false
+  
+  var setEventType = (e) => { e.target.mouseenter = true }
   view.element.addEventListener("mouseenter", setEventType)
 
-  var setEventType = (e) => { view.mouseenter = false }
+  var setEventType = (e) => { e.target.mouseenter = false }
   view.element.addEventListener("mouseleave", setEventType)
 
 /*
