@@ -2961,8 +2961,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
             if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
-            if (k[0] === "_") answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index/*, object*/ }) )
-            else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, _i, e, _i: index }) )
+            if (k[0] === "_") {
+
+                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index/*, object*/ }) )
+                answer = o
+            } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, _i, e, _i: index }) )
 
         } else if (k0 === "index()") {
             
