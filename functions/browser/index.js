@@ -68,8 +68,8 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
 }
 
 // clicked element
-document.addEventListener('click', e => {
-
+document.body.addEventListener('click', e => {
+    
     var global = window.global
     global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[(e || window.event).target.id]
     global.clickedElement = (e || window.event).target
@@ -443,6 +443,7 @@ const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
 const { clone } = require('../function/clone')
+const { generate } = require('../function/generate')
 
 const Input = (component) => {
 
@@ -476,7 +477,7 @@ const Input = (component) => {
     
     component = toComponent(component)
 
-    var { 
+    var {
       id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
       placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
       duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
@@ -514,6 +515,7 @@ const Input = (component) => {
         var Data = component.Data
         var password = component.password && true
         var text = label.text
+        id = id || generate()
         component.controls = component.controls || []
         
         delete component.parent
@@ -534,7 +536,7 @@ const Input = (component) => {
                     "controls": [{
                         "event": "click?next().getInput().focus()"
                     }]
-                }, Input({ ...component, component: true, labeled: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
+                }, Input({ ...component, component: true, labeled: id, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
                 ]
             }, {
                 "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${toString(password)}?${password}`,
@@ -567,6 +569,7 @@ const Input = (component) => {
         var Data = component.Data
         var tooltip = component.tooltip
         var text = label.text
+        id = id || generate()
         component.clicked = component.clicked || { style: {} }
         clickedBorder = component.clicked.style.border || "2px solid #008060"
         component.clicked.preventDefault = true
@@ -586,7 +589,7 @@ const Input = (component) => {
             "children": [{
                 "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
-                Input({ ...component, component: true, labeled: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
+                Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
                 "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
                 "children": [{
@@ -642,7 +645,6 @@ const Input = (component) => {
                 type: `Input`,
                 id: `${id}-input`,
                 class: `${component.class.includes("ar") ? "ar " : ""}${input.class}`,
-                // droplist,
                 input,
                 currency, 
                 day,
@@ -685,7 +687,9 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: "select;mousedown?e().preventDefault()"
+                    event: `focus::100?if():[labeled]:[if():[!labeled.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!parent().contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]` // for clicked event
+                }, {
+                    event: "select;mousedown?preventDefault()"
                 }/*, {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
@@ -731,6 +735,8 @@ const Input = (component) => {
                 ...style,
             },
             controls: [...controls, {
+                event: `focus::100?if():['${component.labeled}']:[if():[!['${component.labeled}'].contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
+            }, {
                 event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
             }]
         }
@@ -738,7 +744,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":35,"../function/merge":74,"../function/toComponent":104,"../function/toString":114}],5:[function(require,module,exports){
+},{"../function/clone":35,"../function/generate":60,"../function/merge":74,"../function/toComponent":104,"../function/toString":114}],5:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -1159,11 +1165,17 @@ module.exports = ({ controls, id }) => {
   window.views[id].droplist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[)(:droplist-timer];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0]`,
-    actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?droplist-positioner:()!=().id`
+    event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0]`,
+    actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];timer():[():droplist.children().0.mouseenter()]:200?droplist-positioner:()!=().id`
   }, {
     event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
     actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
+  }, {
+    event: "keyup:input()?():droplist.mouseleave()?e().key=Escape"
+  }, {
+    event: "keyup:input()?if():[droplist-positioner:();keyup-index:()]:[():droplist.children().[keyup-index:()].click();timer():[keyup-index:().del()]:200;().break=true;():droplist.mouseleave()];keyup-index:()=0;if():[droplist-positioner:()!=2ndChild().id]:[2ndChild().click()];timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter"
+  }, {
+    event: "keyup:input()?():droplist.children().[keyup-index:()].mouseleave();keyup-index:()=if():[e().keyCode=40]:[keyup-index:()+1]:[[keyup-index:()]-1];():droplist.children().[keyup-index:()].mouseenter()?e().keyCode=40||e().keyCode=38;droplist-positioner:();if():[e().keyCode=38]:[keyup-index:()>0].elif():[e().keyCode=40]:[keyup-index:()<():droplist.children.lastIndex()]"
   }]
 }
 },{}],16:[function(require,module,exports){
@@ -1317,10 +1329,10 @@ module.exports = ({ controls, id }) => {
   var text = controls.text || ""
   
   return [{
-    event: `mousemove?if():[!)(:tooltip-timer]:[)(:tooltip-timer=timer():[():tooltip.style().opacity=1]:500];():tooltip-text.txt()=${text};():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar]`,
+    event: `mousemove?if():[!tooltip-timer:()]:[tooltip-timer:()=timer():[():tooltip.style().opacity=1]:500];():tooltip-text.txt()=${text};():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar]`,
     actions: `setPosition:tooltip?position.positioner=mouse;position.placement=${controls.placement || "left"};position.distance=${controls.distance}`
   }, {
-    event: "mouseleave?clearTimer():[)(:tooltip-timer];)(:tooltip-timer.del();():tooltip.style().opacity=0"
+    event: "mouseleave?clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0"
   }]
 }
 },{}],31:[function(require,module,exports){
@@ -3521,8 +3533,10 @@ module.exports = {
     
     var { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
-    var views = window.views
-    var view = views[id], lDiv
+    var views = window.views, appendTo = insert.id
+    if (appendTo && typeof appendTo === "object") appendTo = appendTo.id
+    else if (!appendTo) appendTo = id
+    var view = views[appendTo], lDiv
     
     if (index === undefined) index = view.element.children.length
     
@@ -4424,7 +4438,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
     || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
-    || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" 
+    || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "blur()"
     || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" 
     || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" 
     || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" 
@@ -4498,7 +4512,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             else if (path0 === "log()") {
                 
-                _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg, params, _, __, _i,e, object }))
+                _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg || "here", params, _, __, _i,e, object }))
                 console.log(..._log)
             }
 
@@ -5540,6 +5554,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             focus({ id: _o.id })
 
+        } else if (k0 === "blur()") { // blur
+
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+            } else _o = o
+            
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
+            _o.element.blur()
+
         } else if (k0 === "axios()") {
 
             var _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
@@ -6464,6 +6495,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "remove()" || k0 === "rem()") { // remove child with data
             
+            clearTimeout(global["tooltip-timer"])
+            delete global["tooltip-timer"]
+            views.tooltip.element.style.opacity = "0"
+            
             if (args[1]) {
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
                 if (!views[_id]) return console.log("Element doesnot exist!")
@@ -6585,8 +6620,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "timezone()") {
 
-            var date = new Date()
-            var timeZone = Math.abs(date.getTimezoneOffset()) * 60 * 1000
+            var _date = new Date()
+            var timeZone = Math.abs(_date.getTimezoneOffset()) * 60 * 1000
             return timeZone
             
         } else if (k0 === "toClock()") { // dd:hh:mm:ss
@@ -6815,8 +6850,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = _date.setHours(0,0,0,0)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
+            answer = _date.setHours(_hrs,_min,0,0)
             
         } else if (k0 === "todayEnd()") {
             
@@ -6824,7 +6867,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
-            answer = _date.setHours(23,59,59,999)
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
+            answer = _date.setHours(23 + _hrs,59 + _min,59,999)
             
         } else if (k0 === "monthStart()" || k0 === "month()") {
             
@@ -6832,7 +6883,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
-            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(0,0,0,0)
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
+            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "monthEnd()") {
             
@@ -6840,7 +6899,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
-            answer = new Date(_date.setMonth(_date.getMonth(), getDaysInMonth(_date))).setHours(23,59,59,999)
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
+            answer = new Date(_date.setMonth(_date.getMonth(), getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "nextMonthStart()") {
             
@@ -6848,9 +6915,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
             var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
             
         } else if (k0 === "nextMonthEnd()") {
             
@@ -6858,125 +6933,229 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
             var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "2ndNextMonthStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = o.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "2ndNextMonthEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "prevMonthStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "prevMonthEnd()") {
             
             var _date
             if (typeof _date.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "2ndPrevMonthStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "2ndPrevMonthEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "yearStart()" || k0 === "year()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "yearEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "nextYearStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "nextYearEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "prevYearStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "prevYearEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "doesnotHasNestedArray()") {
             
@@ -7358,7 +7537,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "preventDefault()") {
             
-            answer = o.preventDefault()
+            if (o.target) answer = o.preventDefault()
+            else if (e) answer = e.preventDefault()
 
         } else if (k0 === "stopPropagation()") {
             

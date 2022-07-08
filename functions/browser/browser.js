@@ -67,8 +67,8 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
 }
 
 // clicked element
-document.addEventListener('click', e => {
-
+document.body.addEventListener('click', e => {
+    
     var global = window.global
     global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[(e || window.event).target.id]
     global.clickedElement = (e || window.event).target

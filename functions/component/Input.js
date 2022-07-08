@@ -2,6 +2,7 @@ const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
 const { clone } = require('../function/clone')
+const { generate } = require('../function/generate')
 
 const Input = (component) => {
 
@@ -35,7 +36,7 @@ const Input = (component) => {
     
     component = toComponent(component)
 
-    var { 
+    var {
       id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
       placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
       duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
@@ -73,6 +74,7 @@ const Input = (component) => {
         var Data = component.Data
         var password = component.password && true
         var text = label.text
+        id = id || generate()
         component.controls = component.controls || []
         
         delete component.parent
@@ -93,7 +95,7 @@ const Input = (component) => {
                     "controls": [{
                         "event": "click?next().getInput().focus()"
                     }]
-                }, Input({ ...component, component: true, labeled: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
+                }, Input({ ...component, component: true, labeled: id, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
                 ]
             }, {
                 "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${toString(password)}?${password}`,
@@ -126,6 +128,7 @@ const Input = (component) => {
         var Data = component.Data
         var tooltip = component.tooltip
         var text = label.text
+        id = id || generate()
         component.clicked = component.clicked || { style: {} }
         clickedBorder = component.clicked.style.border || "2px solid #008060"
         component.clicked.preventDefault = true
@@ -145,7 +148,7 @@ const Input = (component) => {
             "children": [{
                 "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
-                Input({ ...component, component: true, labeled: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
+                Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
                 "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
                 "children": [{
@@ -201,7 +204,6 @@ const Input = (component) => {
                 type: `Input`,
                 id: `${id}-input`,
                 class: `${component.class.includes("ar") ? "ar " : ""}${input.class}`,
-                // droplist,
                 input,
                 currency, 
                 day,
@@ -244,7 +246,9 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: "select;mousedown?e().preventDefault()"
+                    event: `focus::100?if():[labeled]:[if():[!labeled.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!parent().contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]` // for clicked event
+                }, {
+                    event: "select;mousedown?preventDefault()"
                 }/*, {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
@@ -290,6 +294,8 @@ const Input = (component) => {
                 ...style,
             },
             controls: [...controls, {
+                event: `focus::100?if():['${component.labeled}']:[if():[!['${component.labeled}'].contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
+            }, {
                 event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
             }]
         }

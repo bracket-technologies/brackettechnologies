@@ -246,7 +246,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
     || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
-    || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" 
+    || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "blur()"
     || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" 
     || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" 
     || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" 
@@ -320,7 +320,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             else if (path0 === "log()") {
                 
-                _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg, params, _, __, _i,e, object }))
+                _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg || "here", params, _, __, _i,e, object }))
                 console.log(..._log)
             }
 
@@ -1362,6 +1362,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             focus({ id: _o.id })
 
+        } else if (k0 === "blur()") { // blur
+
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+            } else _o = o
+            
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            
+            _o.element.blur()
+
         } else if (k0 === "axios()") {
 
             var _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
@@ -2286,6 +2303,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "remove()" || k0 === "rem()") { // remove child with data
             
+            clearTimeout(global["tooltip-timer"])
+            delete global["tooltip-timer"]
+            views.tooltip.element.style.opacity = "0"
+            
             if (args[1]) {
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
                 if (!views[_id]) return console.log("Element doesnot exist!")
@@ -2407,8 +2428,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "timezone()") {
 
-            var date = new Date()
-            var timeZone = Math.abs(date.getTimezoneOffset()) * 60 * 1000
+            var _date = new Date()
+            var timeZone = Math.abs(_date.getTimezoneOffset()) * 60 * 1000
             return timeZone
             
         } else if (k0 === "toClock()") { // dd:hh:mm:ss
@@ -2637,8 +2658,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = _date.setHours(0,0,0,0)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
+            answer = _date.setHours(_hrs,_min,0,0)
             
         } else if (k0 === "todayEnd()") {
             
@@ -2646,7 +2675,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
-            answer = _date.setHours(23,59,59,999)
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
+            answer = _date.setHours(23 + _hrs,59 + _min,59,999)
             
         } else if (k0 === "monthStart()" || k0 === "month()") {
             
@@ -2654,7 +2691,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
-            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(0,0,0,0)
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
+            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "monthEnd()") {
             
@@ -2662,7 +2707,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
-            answer = new Date(_date.setMonth(_date.getMonth(), getDaysInMonth(_date))).setHours(23,59,59,999)
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
+            answer = new Date(_date.setMonth(_date.getMonth(), getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "nextMonthStart()") {
             
@@ -2670,9 +2723,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
             var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
             
         } else if (k0 === "nextMonthEnd()") {
             
@@ -2680,125 +2741,229 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
             var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "2ndNextMonthStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = o.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "2ndNextMonthEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "prevMonthStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "prevMonthEnd()") {
             
             var _date
             if (typeof _date.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "2ndPrevMonthStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(0,0,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "2ndPrevMonthEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
             
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23,59,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "yearStart()" || k0 === "year()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "yearEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "nextYearStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "nextYearEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "prevYearStart()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, 1)).setHours(0,0,0,0)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
 
         } else if (k0 === "prevYearEnd()") {
             
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
+
+            var _min = _date.getTimezoneOffset() % 60
+            var _hrs = (_date.getTimezoneOffset() / 60) - _min
             
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23,59,59,999)
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+            
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
         } else if (k0 === "doesnotHasNestedArray()") {
             
@@ -3180,7 +3345,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "preventDefault()") {
             
-            answer = o.preventDefault()
+            if (o.target) answer = o.preventDefault()
+            else if (e) answer = e.preventDefault()
 
         } else if (k0 === "stopPropagation()") {
             

@@ -11,8 +11,10 @@ module.exports = {
     
     var { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
-    var views = window.views
-    var view = views[id], lDiv
+    var views = window.views, appendTo = insert.id
+    if (appendTo && typeof appendTo === "object") appendTo = appendTo.id
+    else if (!appendTo) appendTo = id
+    var view = views[appendTo], lDiv
     
     if (index === undefined) index = view.element.children.length
     
