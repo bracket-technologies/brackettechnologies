@@ -1340,7 +1340,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
             } else _o = o
-            console.log(_o);
+            
             if (typeof _o === "string" && views[_o]) views[_o].element.click()
             else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
             else if (typeof _o === "object" && _o.element) _o.element.click()
