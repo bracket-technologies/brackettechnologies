@@ -81,7 +81,9 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
 
 // clicked element
 document.body.addEventListener('click', e => {
-    
+    var global = window.global
+    global["key-events"] = []
+
     var global = window.global
     global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[(e || window.event).target.id]
     global.clickedElement = (e || window.event).target
@@ -132,8 +134,9 @@ document.addEventListener('keydown', e => {
 
 document.addEventListener('keyup', e => {
     if (!e.ctrlKey) global.ctrlKey = false
-    console.log(clone(global["key-events"]));
+    
     // key events
+    global["click-events"] = []
     global["key-events"].map(o => bodyEventListener(o, e))
     global["key-events"] = []
 })
