@@ -5,6 +5,7 @@ const { toParam } = require("../function/toParam")
 const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
 const { toCode } = require("../function/toCode")
+const { clone } = require("../function/clone")
 
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -23,6 +24,9 @@ global["body-mouseup-events"] = {}
 global["before-print-events"] = {}
 global["after-print-events"] = {}
 
+global["click-events"] = []
+global["key-events"] = []
+
 views.document = document
 views.document.element = document
 views.body.element = document.body
@@ -36,6 +40,13 @@ _ar.style.top = "-1000px"
 views.body.element.appendChild(_ar)
 
 history.pushState(null, global.data.page[global.currentPage].title, global.path)
+window.onfocus = () => {
+    
+    global["click-events"] = []
+    global["key-events"] = []
+    views.root.element.click()
+    document.activeElement.blur()
+}
 
 // body clicked
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
@@ -50,8 +61,10 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     }
 
     // approval
-    var approved = toApproval({ string: events[2], id, e })
-    if (!approved) return
+    if (events[2]) {
+        var approved = toApproval({ string: events[2], id, e })
+        if (!approved) return
+    }
 
     // once
     if (once) window.global[`body-${event}-events`][id].splice(index, 1)
@@ -89,6 +102,11 @@ document.body.addEventListener('click', e => {
     
     // body event listeners
     Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o, e))
+
+    // click events
+    global["click-events"].map(o => bodyEventListener(o, e))
+    global["click-events"] = []
+
 }, false)
 
 // mousemove
@@ -114,6 +132,10 @@ document.addEventListener('keydown', e => {
 
 document.addEventListener('keyup', e => {
     if (!e.ctrlKey) global.ctrlKey = false
+    console.log(clone(global["key-events"]));
+    // key events
+    global["key-events"].map(o => bodyEventListener(o, e))
+    global["key-events"] = []
 })
 
 // default global mode

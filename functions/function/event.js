@@ -83,8 +83,22 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     // id
     if (viewEventIdList) mainID = toValue({ _window, req, res, id, value: viewEventIdList })
     
-    var timer = 0, idList
+    var timer = 0, idList, clickEvent, keyEvent
     var once = events[1] && events[1].includes('once')
+
+    // click
+    if (event.split(":")[0].slice(0, 5) === "click" && event.split(":")[0].length > 5) {
+      clickEvent = "loaded?" + events[1] +  (events[2] ? "?" + events[2] : "")
+      clickEvent = clickEvent.split("?")
+      event = event.split("click")[1]
+    }
+
+    // key
+    if (event.split(":")[0].slice(0, 3) === "key" && event.split(":")[0] !== "keydown" && event.split(":")[0] !== "keyup") {
+      keyEvent = "loaded?" + events[1] +  (events[2] ? "?" + events[2] : "")
+      keyEvent = keyEvent.split("?")
+      event = event.split("key")[1]
+    }
 
     // action:id
     var eventid = event.split(":")[1]
@@ -160,6 +174,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         
         view[`${event}-timer`] = setTimeout(async () => {
           
+          if (clickEvent) return global["click-events"].push({ id, viewEventConditions, viewEventParams, events: clickEvent, controls })
+          if (keyEvent) return global["key-events"].push({ id, viewEventConditions, viewEventParams, events: keyEvent, controls })
+
           // body
           if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") id = mainID
 
@@ -180,6 +197,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           if (once) e.target.removeEventListener(event, myFn)
         
+          // content not editable
+          // if (event === "input" && !views[id].contenteditable) return
+
           // approval
           if (viewEventConditions) {
             var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })

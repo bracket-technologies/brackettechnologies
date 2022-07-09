@@ -158,9 +158,9 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": `click:1stChild();click:2ndChild()?2ndChild().style().border=${clickedBorder}`
+                "event": `click:1stChild();click:2ndChild()?clicked=true;2ndChild().style().border=${clickedBorder}`
             }, {
-                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
+                "event": `click:body?clicked=false;2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
             }]
         }
     }
@@ -246,7 +246,7 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: `focus::100?if():[labeled]:[if():[!labeled.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!parent().contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]` // for clicked event
+                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]` // for clicked event
                 }, {
                     event: "select;mousedown?preventDefault()"
                 }/*, {
@@ -294,7 +294,7 @@ const Input = (component) => {
                 ...style,
             },
             controls: [...controls, {
-                event: `focus::100?if():['${component.labeled}']:[if():[!['${component.labeled}'].contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
+                event: `clickfocus;keyfocus?if():[labeled]:[if():[!().labeled.contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
             }, {
                 event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
             }]

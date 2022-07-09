@@ -2,6 +2,7 @@ const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
 const { toString } = require("./toString")
+const { reducer } = require("./reducer")
 
 const droplist = ({ id, e, droplist: params = {} }) => {
   
@@ -10,15 +11,17 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   var global = window.global
   var view = window.views[id]
   var dropList = views["droplist"]
+  view.droplist.searchable = view.droplist.searchable || view.droplist.search || {}
+  if (view.droplist.searchable && typeof view.droplist.searchable !== "object") view.droplist.searchable = {}
   
   // items
   var items = clone(view.droplist.items) || []
   dropList.derivations = clone(view.derivations)
   dropList.Data = view.Data
-  
+  clearTimeout(global.droplistTimer)
+
   // path & derivations
-  if (view.droplist.path)
-  dropList.derivations.push(...view.droplist.path.split("."))
+  if (view.droplist.path) dropList.derivations.push(...view.droplist.path.split("."))
 
   // input id
   var input_id = view.type === "Input" ? view.id : ""
@@ -36,10 +39,20 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   // items
   if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
   
-  // searchable
-  if (view.droplist.searchable && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") 
-  items = items.filter(item => item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase()))
-  
+  // filterable
+  if (!view.droplist.preventDefault) {
+
+    if (view.droplist.searchable.filter && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
+
+      items = items.filter(item => view.droplist.searchable.any 
+        ? item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase())
+        : item.toString().toLowerCase().slice(0, global["droplist-search-txt"].toString().length) === global["droplist-search-txt"].toString().toLowerCase()
+      )
+
+      global["keyup-index"] = 0
+    }
+  }
+
   // children
   if (items && items.length > 0) {
     
@@ -63,8 +76,73 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   
   dropList.positioner = dropList.caller = id
   dropList.unDeriveData = true
-
   update({ id: "droplist" })
+
+  // searchable
+  var myFn = () => {
+
+    if (!view.droplist.preventDefault && view.droplist.searchable) {
+
+      if (global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
+        
+        var _index = items.findIndex(item => view.droplist.searchable.any 
+          ? item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase())
+          : item.toString().toLowerCase().slice(0, global["droplist-search-txt"].toString().length) === global["droplist-search-txt"].toString().toLowerCase()
+        )
+
+        var onlyOne = items.filter(item => view.droplist.searchable.any 
+          ? item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase())
+          : item.toString().toLowerCase().slice(0, global["droplist-search-txt"].toString().length) === global["droplist-search-txt"].toString().toLowerCase()
+        ).length === 1
+        
+        if (_index !== -1) {
+          
+          if (onlyOne) {
+            
+            if (e.inputType !== "deleteContentBackward" && e.inputType !== "deleteContentForward" && e.inputType !== "deleteWordBackward" && e.inputType !== "deleteWordForward") {
+
+              if (input_id) {
+
+                views[input_id].element.value = views[input_id].prevValue = items[_index]
+                views[input_id].contenteditable = false
+
+              } else {
+
+                view.element.innerHTML = view.prevValue = items[_index]
+                view.contenteditable = false
+              }
+              
+              reducer({ id, path: dropList.derivations, value: items[_index], object: global[dropList.Data], key: true })
+              
+            } else if (view.contenteditable === false || views[input_id].contenteditable === false) {
+              
+              if (input_id) {
+
+                views[input_id].element.value = items[_index].slice(0, -1)
+                views[input_id].contenteditable = true
+
+              } else {
+
+                view.element.innerHTML = items[_index].slice(0, -1)
+                view.contenteditable = true
+              }
+
+              reducer({ id, path: dropList.derivations, value: items[_index], object: global[dropList.Data], key: true })
+            }
+            
+          }
+
+          global["keyup-index"] = _index
+        }
+      }
+    }
+
+    // console.log(global["keyup-index"], views.droplist.element.children);
+    global["keyup-index"] = global["keyup-index"] || 0
+    views.droplist.element.children[global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
+  }
+
+  global.droplistTimer = setTimeout(myFn, 100)
 }
 
 module.exports = { droplist }

@@ -6,6 +6,7 @@ const { toParam } = require("../function/toParam")
 const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
 const { toCode } = require("../function/toCode")
+const { clone } = require("../function/clone")
 
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -24,6 +25,9 @@ global["body-mouseup-events"] = {}
 global["before-print-events"] = {}
 global["after-print-events"] = {}
 
+global["click-events"] = []
+global["key-events"] = []
+
 views.document = document
 views.document.element = document
 views.body.element = document.body
@@ -37,6 +41,13 @@ _ar.style.top = "-1000px"
 views.body.element.appendChild(_ar)
 
 history.pushState(null, global.data.page[global.currentPage].title, global.path)
+window.onfocus = () => {
+    console.log("eree");
+    global["click-events"] = []
+    global["key-events"] = []
+    views.root.element.click()
+    document.activeElement.blur()
+}
 
 // body clicked
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
@@ -51,8 +62,10 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     }
 
     // approval
-    var approved = toApproval({ string: events[2], id, e })
-    if (!approved) return
+    if (events[2]) {
+        var approved = toApproval({ string: events[2], id, e })
+        if (!approved) return
+    }
 
     // once
     if (once) window.global[`body-${event}-events`][id].splice(index, 1)
@@ -90,6 +103,11 @@ document.body.addEventListener('click', e => {
     
     // body event listeners
     Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o, e))
+
+    // click events
+    global["click-events"].map(o => bodyEventListener(o, e))
+    global["click-events"] = []
+
 }, false)
 
 // mousemove
@@ -115,6 +133,10 @@ document.addEventListener('keydown', e => {
 
 document.addEventListener('keyup', e => {
     if (!e.ctrlKey) global.ctrlKey = false
+    console.log(clone(global["key-events"]));
+    // key events
+    global["key-events"].map(o => bodyEventListener(o, e))
+    global["key-events"] = []
 })
 
 // default global mode
@@ -166,7 +188,7 @@ document.addEventListener('scroll', () => {
 // unloaded views
 // require("../function/loadViews").loadViews(true)
 // new Promise(res => require("../function/loadViews").loadViews(res)).then(() => {})
-},{"../function/cookie":39,"../function/execute":54,"../function/setElement":91,"../function/starter":94,"../function/toApproval":98,"../function/toCode":103,"../function/toParam":110}],2:[function(require,module,exports){
+},{"../function/clone":35,"../function/cookie":39,"../function/execute":54,"../function/setElement":91,"../function/starter":94,"../function/toApproval":98,"../function/toCode":103,"../function/toParam":110}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -599,9 +621,9 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": `click:1stChild();click:2ndChild()?2ndChild().style().border=${clickedBorder}`
+                "event": `click:1stChild();click:2ndChild()?clicked=true;2ndChild().style().border=${clickedBorder}`
             }, {
-                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
+                "event": `click:body?clicked=false;2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
             }]
         }
     }
@@ -687,7 +709,7 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: `focus::100?if():[labeled]:[if():[!labeled.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!parent().contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]` // for clicked event
+                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]` // for clicked event
                 }, {
                     event: "select;mousedown?preventDefault()"
                 }/*, {
@@ -735,7 +757,7 @@ const Input = (component) => {
                 ...style,
             },
             controls: [...controls, {
-                event: `focus::100?if():['${component.labeled}']:[if():[!['${component.labeled}'].contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
+                event: `clickfocus;keyfocus?if():[labeled]:[if():[!().labeled.contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
             }, {
                 event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
             }]
@@ -1165,13 +1187,13 @@ module.exports = ({ controls, id }) => {
   window.views[id].droplist.id = controls.id = id = controls.id || id
   
   return [{
+    event: "keyup:input()?clearTimer():[droplist-timer:()];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()?e().key=Escape"
+  }, {
     event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0]`,
-    actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];timer():[():droplist.children().0.mouseenter()]:200?droplist-positioner:()!=().id`
+    actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?droplist-positioner:()!=().id`
   }, {
     event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
     actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
-  }, {
-    event: "keyup:input()?():droplist.mouseleave()?e().key=Escape"
   }, {
     event: "keyup:input()?if():[droplist-positioner:();keyup-index:()]:[():droplist.children().[keyup-index:()].click();timer():[keyup-index:().del()]:200;().break=true;():droplist.mouseleave()];keyup-index:()=0;if():[droplist-positioner:()!=2ndChild().id]:[2ndChild().click()];timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter"
   }, {
@@ -2436,7 +2458,7 @@ const defaultInputHandler = ({ id }) => {
   view.element.addEventListener("keydown", (e) => {
     if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
   })
-  
+  view.contenteditable = true
   var myFn = async (e) => {
     
     e.preventDefault()
@@ -2444,7 +2466,13 @@ const defaultInputHandler = ({ id }) => {
     if (view.type === "Input") value = e.target.value
     else if (view.type === "Entry") value = e.target.innerHTML
 
-    // VAR[id] doesnot exist
+    if (!view.contenteditable) {
+      if (view.type === "Input") e.target.value = view.prevValue
+      else if (view.type === "Entry") e.target.innerHTML = view.prevValue
+      return 
+    }
+
+    // views[id] doesnot exist
     if (!window.views[id]) {
       if (e.target) e.target.removeEventListener("input", myFn)
       return 
@@ -2537,6 +2565,9 @@ const defaultInputHandler = ({ id }) => {
 
     // arabic values
     isArabic({ id, value })
+
+    // prevValuew
+    view.prevValue = value
     
     console.log(value, global[view.Data], view.derivations)
   }
@@ -2550,6 +2581,7 @@ const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
 const { toString } = require("./toString")
+const { reducer } = require("./reducer")
 
 const droplist = ({ id, e, droplist: params = {} }) => {
   
@@ -2558,15 +2590,17 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   var global = window.global
   var view = window.views[id]
   var dropList = views["droplist"]
+  view.droplist.searchable = view.droplist.searchable || view.droplist.search || {}
+  if (view.droplist.searchable && typeof view.droplist.searchable !== "object") view.droplist.searchable = {}
   
   // items
   var items = clone(view.droplist.items) || []
   dropList.derivations = clone(view.derivations)
   dropList.Data = view.Data
-  
+  clearTimeout(global.droplistTimer)
+
   // path & derivations
-  if (view.droplist.path)
-  dropList.derivations.push(...view.droplist.path.split("."))
+  if (view.droplist.path) dropList.derivations.push(...view.droplist.path.split("."))
 
   // input id
   var input_id = view.type === "Input" ? view.id : ""
@@ -2584,10 +2618,20 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   // items
   if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
   
-  // searchable
-  if (view.droplist.searchable && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") 
-  items = items.filter(item => item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase()))
-  
+  // filterable
+  if (!view.droplist.preventDefault) {
+
+    if (view.droplist.searchable.filter && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
+
+      items = items.filter(item => view.droplist.searchable.any 
+        ? item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase())
+        : item.toString().toLowerCase().slice(0, global["droplist-search-txt"].toString().length) === global["droplist-search-txt"].toString().toLowerCase()
+      )
+
+      global["keyup-index"] = 0
+    }
+  }
+
   // children
   if (items && items.length > 0) {
     
@@ -2611,12 +2655,77 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   
   dropList.positioner = dropList.caller = id
   dropList.unDeriveData = true
-
   update({ id: "droplist" })
+
+  // searchable
+  var myFn = () => {
+
+    if (!view.droplist.preventDefault && view.droplist.searchable) {
+
+      if (global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
+        
+        var _index = items.findIndex(item => view.droplist.searchable.any 
+          ? item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase())
+          : item.toString().toLowerCase().slice(0, global["droplist-search-txt"].toString().length) === global["droplist-search-txt"].toString().toLowerCase()
+        )
+
+        var onlyOne = items.filter(item => view.droplist.searchable.any 
+          ? item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase())
+          : item.toString().toLowerCase().slice(0, global["droplist-search-txt"].toString().length) === global["droplist-search-txt"].toString().toLowerCase()
+        ).length === 1
+        
+        if (_index !== -1) {
+          
+          if (onlyOne) {
+            
+            if (e.inputType !== "deleteContentBackward" && e.inputType !== "deleteContentForward" && e.inputType !== "deleteWordBackward" && e.inputType !== "deleteWordForward") {
+
+              if (input_id) {
+
+                views[input_id].element.value = views[input_id].prevValue = items[_index]
+                views[input_id].contenteditable = false
+
+              } else {
+
+                view.element.innerHTML = view.prevValue = items[_index]
+                view.contenteditable = false
+              }
+              
+              reducer({ id, path: dropList.derivations, value: items[_index], object: global[dropList.Data], key: true })
+              
+            } else if (view.contenteditable === false || views[input_id].contenteditable === false) {
+              
+              if (input_id) {
+
+                views[input_id].element.value = items[_index].slice(0, -1)
+                views[input_id].contenteditable = true
+
+              } else {
+
+                view.element.innerHTML = items[_index].slice(0, -1)
+                view.contenteditable = true
+              }
+
+              reducer({ id, path: dropList.derivations, value: items[_index], object: global[dropList.Data], key: true })
+            }
+            
+          }
+
+          global["keyup-index"] = _index
+        }
+      }
+    }
+
+    // console.log(global["keyup-index"], views.droplist.element.children);
+    global["keyup-index"] = global["keyup-index"] || 0
+    views.droplist.element.children[global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
+  }
+
+  global.droplistTimer = setTimeout(myFn, 100)
 }
 
 module.exports = { droplist }
-},{"./clone":35,"./toString":114,"./toValue":116,"./update":118}],52:[function(require,module,exports){
+},{"./clone":35,"./reducer":81,"./toString":114,"./toValue":116,"./update":118}],52:[function(require,module,exports){
 const axios = require("axios");
 const { toString } = require("./toString")
 
@@ -2739,8 +2848,22 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     // id
     if (viewEventIdList) mainID = toValue({ _window, req, res, id, value: viewEventIdList })
     
-    var timer = 0, idList
+    var timer = 0, idList, clickEvent, keyEvent
     var once = events[1] && events[1].includes('once')
+
+    // click
+    if (event.split(":")[0].slice(0, 5) === "click" && event.split(":")[0].length > 5) {
+      clickEvent = "loaded?" + events[1] +  (events[2] ? "?" + events[2] : "")
+      clickEvent = clickEvent.split("?")
+      event = event.split("click")[1]
+    }
+
+    // key
+    if (event.split(":")[0].slice(0, 3) === "key" && event.split(":")[0] !== "keydown" && event.split(":")[0] !== "keyup") {
+      keyEvent = "loaded?" + events[1] +  (events[2] ? "?" + events[2] : "")
+      keyEvent = keyEvent.split("?")
+      event = event.split("key")[1]
+    }
 
     // action:id
     var eventid = event.split(":")[1]
@@ -2816,6 +2939,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         
         view[`${event}-timer`] = setTimeout(async () => {
           
+          if (clickEvent) return global["click-events"].push({ id, viewEventConditions, viewEventParams, events: clickEvent, controls })
+          if (keyEvent) return global["key-events"].push({ id, viewEventConditions, viewEventParams, events: keyEvent, controls })
+
           // body
           if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") id = mainID
 
@@ -2836,6 +2962,9 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
           if (once) e.target.removeEventListener(event, myFn)
         
+          // content not editable
+          // if (event === "input" && !views[id].contenteditable) return
+
           // approval
           if (viewEventConditions) {
             var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
@@ -4459,7 +4588,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
       } else {
 
-          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()") {
+          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "data()" && path0 !== "readonly()") {
 
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
@@ -4473,9 +4602,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           path0 = "()"
       }
 
-    } else if (view && path[0] === "()" && path[1] && !path[1].includes("()")) {
+    } else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
         
-        if (path[1] !== "txt()" || path[1] !== "val()") {
+        if (path[1] !== "txt()" && path[1] !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "data()" && path0 !== "readonly()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
             else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
@@ -5532,7 +5661,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
             } else _o = o
-            
+            console.log(_o);
             if (typeof _o === "string" && views[_o]) views[_o].element.click()
             else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
             else if (typeof _o === "object" && _o.element) _o.element.click()

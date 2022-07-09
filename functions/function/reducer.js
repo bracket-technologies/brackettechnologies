@@ -267,7 +267,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
       } else {
 
-          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()") {
+          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "data()" && path0 !== "readonly()") {
 
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
@@ -281,9 +281,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           path0 = "()"
       }
 
-    } else if (view && path[0] === "()" && path[1] && !path[1].includes("()")) {
+    } else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
         
-        if (path[1] !== "txt()" || path[1] !== "val()") {
+        if (path[1] !== "txt()" && path[1] !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "data()" && path0 !== "readonly()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
             else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
@@ -1340,7 +1340,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
             } else _o = o
-            
+            console.log(_o);
             if (typeof _o === "string" && views[_o]) views[_o].element.click()
             else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
             else if (typeof _o === "object" && _o.element) _o.element.click()

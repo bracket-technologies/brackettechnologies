@@ -42,7 +42,7 @@ const defaultInputHandler = ({ id }) => {
   view.element.addEventListener("keydown", (e) => {
     if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
   })
-  
+  view.contenteditable = true
   var myFn = async (e) => {
     
     e.preventDefault()
@@ -50,7 +50,13 @@ const defaultInputHandler = ({ id }) => {
     if (view.type === "Input") value = e.target.value
     else if (view.type === "Entry") value = e.target.innerHTML
 
-    // VAR[id] doesnot exist
+    if (!view.contenteditable) {
+      if (view.type === "Input") e.target.value = view.prevValue
+      else if (view.type === "Entry") e.target.innerHTML = view.prevValue
+      return 
+    }
+
+    // views[id] doesnot exist
     if (!window.views[id]) {
       if (e.target) e.target.removeEventListener("input", myFn)
       return 
@@ -143,6 +149,9 @@ const defaultInputHandler = ({ id }) => {
 
     // arabic values
     isArabic({ id, value })
+
+    // prevValuew
+    view.prevValue = value
     
     console.log(value, global[view.Data], view.derivations)
   }
