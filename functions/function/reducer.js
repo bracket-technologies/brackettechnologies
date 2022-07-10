@@ -135,37 +135,37 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // if
     if (path0 === "if()") {
         
-        var approved = toApproval({ _window, e, string: args[1], id, _, __, _i, req, res, object })
-        
-        if (!approved) {
-            
-            if (args[3]) {
-                if (condition) return toApproval({ _window, e, string: args[3], id, _, __, _i,req, res, object })
-                return toValue({ req, res, _window, id, value: args[3], params, _, __, _i,e, object, mount })
-            }
-
-            if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], params, _, __, _i,e, object, mount })
-
-            if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
-
-                var _path = path.slice(2)
-                _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
-                var _ds = reducer({ _window, id, value, key, path: _path, params, object, params, _, __, _i,e, req, res, mount })
-                return _ds
-
-            } else return 
-
-        } else {
-
-            if (condition) return toApproval({ _window, e, string: args[2], id, _, __, _i,req, res, object })
-            _object = toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object, mount })
-
-            path.shift()
-            while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
-                path.shift()
-            }
-            path0 = path[0] || ""
+      var approved = toApproval({ _window, e, string: args[1], id, _, __, _i, req, res, object })
+      
+      if (!approved) {
+          
+        if (args[3]) {
+            if (condition) return toApproval({ _window, e, string: args[3], id, _, __, _i,req, res, object })
+            return toValue({ req, res, _window, id, value: args[3], params, _, __, _i,e, object, mount })
         }
+
+        if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], params, _, __, _i,e, object, mount })
+
+        if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
+
+            var _path = path.slice(2)
+            _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
+            var _ds = reducer({ _window, id, value, key, path: _path, params, object, params, _, __, _i,e, req, res, mount })
+            return _ds
+
+        } else return 
+
+      } else {
+
+        if (condition) return toApproval({ _window, e, string: args[2], id, _, __, _i,req, res, object })
+        _object = toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object, mount })
+
+        path.shift()
+        while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
+            path.shift()
+        }
+        path0 = path[0] || ""
+      }
     }
     
     // global store
@@ -575,11 +575,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "data()") {
 
-            var _o = o, _params = {}
+            var _o = o.type ? o : view
+            var _params = {}
             
             if (_o.type) breakRequest = true
 
-            if (args[1]) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+            if (args[1]) _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
 
             // just get data()
             if (!_o.derivations) {
@@ -3325,6 +3326,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, _i })
                 require("./route").route({ id, route })
+                
             } else {
                 
                 var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, _i })

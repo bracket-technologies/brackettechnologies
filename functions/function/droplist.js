@@ -11,6 +11,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   var global = window.global
   var view = window.views[id]
   var dropList = views["droplist"]
+  if (!view.droplist) return
   view.droplist.searchable = view.droplist.searchable || view.droplist.search || {}
   if (view.droplist.searchable && typeof view.droplist.searchable !== "object") view.droplist.searchable = {}
   

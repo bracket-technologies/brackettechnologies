@@ -1,5 +1,5 @@
 {
-  "type": "View?class=box-shadow;id=popup;style:[border=1px solid #f0f0f0;transform=scale(0.5);opacity=0;pointerEvents=none;zIndex=10;position=fixed;borderRadius=.5rem;backgroundColor=#fff;transition=.1s]",
+  "type": "View?class=box-shadow;id=popup;style:[border=1px solid #f0f0f0;transform=scale(0.5);opacity=0;pointerEvents=none;zIndex=10;position=fixed;borderRadius=.5rem;backgroundColor=#fff;transition=opacity .1s]",
   "children": [
     {
       "type": "Icon?class=pointer;id=popup-confirm;name=bi-check2;tooltip.text=Confirm;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",

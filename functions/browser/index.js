@@ -503,7 +503,7 @@ const Input = (component) => {
     component = toComponent(component)
 
     var {
-      id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
+      id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
       placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
       duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
     } = component
@@ -552,7 +552,7 @@ const Input = (component) => {
         delete label.text
 
         return {
-            id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true,
+            id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true, preventDefault,
             "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
@@ -609,8 +609,8 @@ const Input = (component) => {
         label.tooltip = tooltip
         
         return {
-            id, Data, parent, derivations, required, path, islabel: true,
-            "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
+            id, Data, parent, derivations, required, path, islabel: true, preventDefault,
+            "type": `View?class=flex start column;style.gap=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
                 "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
@@ -684,6 +684,7 @@ const Input = (component) => {
                 placeholder,
                 duplicated,
                 disabled,
+                preventDefault,
                 templated: true,
                 'placeholder-ar': component['placeholer-ar'],
                 hover: {
@@ -712,7 +713,7 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: `clickfocus;keyfocus?log():here;if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]` // for clicked event
+                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]?!preventDefault` // for clicked event
                 }, {
                     event: "select;mousedown?preventDefault()"
                 }/*, {
@@ -1875,7 +1876,15 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     // load views
     console.log("before view / firestore", new Date().getTime() - global.timer);
 
-    if (global.data.page[currentPage].views.length > 0) {
+    await db
+    .collection(`view-${project.id}`)
+    .get()
+    .then(q => {
+      q.forEach(doc => global.data.view[doc.id] = doc.data())
+      console.log("after view", new Date().getTime() - global.timer);
+    })
+    
+    /*if (global.data.page[currentPage].views.length > 0) {
 
       var docs = global.data.page[currentPage].views,
         _docs = [],
@@ -1904,9 +1913,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             })
         })
       )
-      
       console.log("after view", new Date().getTime() - global.timer);
-    }
+    }*/
   }
 
   console.log("Document Ready.");
@@ -1986,6 +1994,23 @@ const { createTags } = require("./createTags")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 const { toValue } = require("./toValue")
+
+const myViews = [
+  "View",
+  "Text",
+  "Icon",
+  "Image",
+  "Input",
+  "Video",
+  "Entry",
+  "Map",
+  "Swiper",
+  "Switch",
+  "Checkbox",
+  "Swiper",
+  "List",
+  "Item"
+]
 
 const createElement = ({ _window, id, req, res }) => {
 
@@ -2088,23 +2113,19 @@ const createElement = ({ _window, id, req, res }) => {
     } else if (priorityId) view.id = id // we have View:id & an id parameter. the priority is for View:id
 
     // view
-    if (params.view) {
+    if (params.view || (!myViews.includes(view.type) && global.data.view[view.type])) {
 
-      // merge to another view
-      if (view.view) {
+      /* if (!global.data.view[view.view]) {
 
-        /* if (!global.data.view[view.view]) {
+        global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
+        return ""
+      } */
 
-          global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
-          return ""
-        } */
-
-        var viewId = view.view
-        delete view.view
-        views[id] = { ...view, ...clone(global.data.view[viewId]) }
-        
-        return createElement({ _window, id, req, res })
-      }
+      var viewId = params.view || global.data.view[view.type]
+      delete view.view
+      views[id] = { ...view, ...clone(global.data.view[viewId]) }
+      
+      return createElement({ _window, id, req, res })
     }
   }
   
@@ -2593,6 +2614,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   var global = window.global
   var view = window.views[id]
   var dropList = views["droplist"]
+  if (!view.droplist) return
   view.droplist.searchable = view.droplist.searchable || view.droplist.search || {}
   if (view.droplist.searchable && typeof view.droplist.searchable !== "object") view.droplist.searchable = {}
   
@@ -4459,37 +4481,37 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // if
     if (path0 === "if()") {
         
-        var approved = toApproval({ _window, e, string: args[1], id, _, __, _i, req, res, object })
-        
-        if (!approved) {
-            
-            if (args[3]) {
-                if (condition) return toApproval({ _window, e, string: args[3], id, _, __, _i,req, res, object })
-                return toValue({ req, res, _window, id, value: args[3], params, _, __, _i,e, object, mount })
-            }
-
-            if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], params, _, __, _i,e, object, mount })
-
-            if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
-
-                var _path = path.slice(2)
-                _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
-                var _ds = reducer({ _window, id, value, key, path: _path, params, object, params, _, __, _i,e, req, res, mount })
-                return _ds
-
-            } else return 
-
-        } else {
-
-            if (condition) return toApproval({ _window, e, string: args[2], id, _, __, _i,req, res, object })
-            _object = toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object, mount })
-
-            path.shift()
-            while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
-                path.shift()
-            }
-            path0 = path[0] || ""
+      var approved = toApproval({ _window, e, string: args[1], id, _, __, _i, req, res, object })
+      
+      if (!approved) {
+          
+        if (args[3]) {
+            if (condition) return toApproval({ _window, e, string: args[3], id, _, __, _i,req, res, object })
+            return toValue({ req, res, _window, id, value: args[3], params, _, __, _i,e, object, mount })
         }
+
+        if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], params, _, __, _i,e, object, mount })
+
+        if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
+
+            var _path = path.slice(2)
+            _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
+            var _ds = reducer({ _window, id, value, key, path: _path, params, object, params, _, __, _i,e, req, res, mount })
+            return _ds
+
+        } else return 
+
+      } else {
+
+        if (condition) return toApproval({ _window, e, string: args[2], id, _, __, _i,req, res, object })
+        _object = toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object, mount })
+
+        path.shift()
+        while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
+            path.shift()
+        }
+        path0 = path[0] || ""
+      }
     }
     
     // global store
@@ -4899,11 +4921,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "data()") {
 
-            var _o = o, _params = {}
+            var _o = o.type ? o : view
+            var _params = {}
             
             if (_o.type) breakRequest = true
 
-            if (args[1]) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+            if (args[1]) _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
 
             // just get data()
             if (!_o.derivations) {
@@ -7649,6 +7672,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, _i })
                 require("./route").route({ id, route })
+                
             } else {
                 
                 var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, _i })

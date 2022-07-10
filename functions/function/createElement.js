@@ -7,6 +7,23 @@ const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 const { toValue } = require("./toValue")
 
+const myViews = [
+  "View",
+  "Text",
+  "Icon",
+  "Image",
+  "Input",
+  "Video",
+  "Entry",
+  "Map",
+  "Swiper",
+  "Switch",
+  "Checkbox",
+  "Swiper",
+  "List",
+  "Item"
+]
+
 const createElement = ({ _window, id, req, res }) => {
 
   var views = _window ? _window.views : window.views
@@ -108,23 +125,19 @@ const createElement = ({ _window, id, req, res }) => {
     } else if (priorityId) view.id = id // we have View:id & an id parameter. the priority is for View:id
 
     // view
-    if (params.view) {
+    if (params.view || (!myViews.includes(view.type) && global.data.view[view.type])) {
 
-      // merge to another view
-      if (view.view) {
+      /* if (!global.data.view[view.view]) {
 
-        /* if (!global.data.view[view.view]) {
+        global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
+        return ""
+      } */
 
-          global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
-          return ""
-        } */
-
-        var viewId = view.view
-        delete view.view
-        views[id] = { ...view, ...clone(global.data.view[viewId]) }
-        
-        return createElement({ _window, id, req, res })
-      }
+      var viewId = params.view || global.data.view[view.type]
+      delete view.view
+      views[id] = { ...view, ...clone(global.data.view[viewId]) }
+      
+      return createElement({ _window, id, req, res })
     }
   }
   

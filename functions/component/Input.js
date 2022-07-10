@@ -37,7 +37,7 @@ const Input = (component) => {
     component = toComponent(component)
 
     var {
-      id, input, model, droplist, readonly, style, controls, duplicated, duration, required,
+      id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
       placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
       duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
     } = component
@@ -86,7 +86,7 @@ const Input = (component) => {
         delete label.text
 
         return {
-            id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true,
+            id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true, preventDefault,
             "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
@@ -143,8 +143,8 @@ const Input = (component) => {
         label.tooltip = tooltip
         
         return {
-            id, Data, parent, derivations, required, path, islabel: true,
-            "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
+            id, Data, parent, derivations, required, path, islabel: true, preventDefault,
+            "type": `View?class=flex start column;style.gap=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
                 "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
@@ -218,6 +218,7 @@ const Input = (component) => {
                 placeholder,
                 duplicated,
                 disabled,
+                preventDefault,
                 templated: true,
                 'placeholder-ar': component['placeholer-ar'],
                 hover: {
@@ -246,7 +247,7 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: `clickfocus;keyfocus?log():here;if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]` // for clicked event
+                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]?!preventDefault` // for clicked event
                 }, {
                     event: "select;mousedown?preventDefault()"
                 }/*, {

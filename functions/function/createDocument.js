@@ -133,7 +133,15 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     // load views
     console.log("before view / firestore", new Date().getTime() - global.timer);
 
-    if (global.data.page[currentPage].views.length > 0) {
+    await db
+    .collection(`view-${project.id}`)
+    .get()
+    .then(q => {
+      q.forEach(doc => global.data.view[doc.id] = doc.data())
+      console.log("after view", new Date().getTime() - global.timer);
+    })
+    
+    /*if (global.data.page[currentPage].views.length > 0) {
 
       var docs = global.data.page[currentPage].views,
         _docs = [],
@@ -162,9 +170,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
             })
         })
       )
-      
       console.log("after view", new Date().getTime() - global.timer);
-    }
+    }*/
   }
 
   console.log("Document Ready.");
