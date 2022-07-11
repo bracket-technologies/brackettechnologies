@@ -553,13 +553,13 @@ const Input = (component) => {
 
         return {
             id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true, preventDefault,
-            "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
+            "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=${component.style.width||"100%"};style.maxWidth=${component.style.maxWidth||"100%"};${toString(container)}`,
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
                 "children": [{
                     "type": `Text?text='${text || "Label"}';style.color=#888;style.fontSize=1.1rem;style.width=fit-content;${toString(label)}`,
                     "controls": [{
-                        "event": "click?next().getInput().focus()"
+                        "event": "click?next().input().click()"
                     }]
                 }, Input({ ...component, component: true, labeled: id, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
                 ]
@@ -610,9 +610,12 @@ const Input = (component) => {
         
         return {
             id, Data, parent, derivations, required, path, islabel: true, preventDefault,
-            "type": `View?class=flex start column;style.gap=.5rem;style.width=100%;${toString(container)}`,
+            "type": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width||"100%"};style.maxWidth=${component.style.maxWidth||"100%"};${toString(container)}`,
             "children": [{
-                "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
+                "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
+                "controls": [{
+                    "event": "click?next().input().click()"
+                }]
             }, 
                 Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
@@ -2623,7 +2626,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   dropList.derivations = clone(view.derivations)
   dropList.Data = view.Data
   clearTimeout(global.droplistTimer)
-
+  
   // path & derivations
   if (view.droplist.path) dropList.derivations.push(...view.droplist.path.split("."))
 
@@ -2642,7 +2645,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 
   // items
   if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
-  
+
   // filterable
   if (!view.droplist.preventDefault) {
 
@@ -2664,12 +2667,12 @@ const droplist = ({ id, e, droplist: params = {} }) => {
     dropList.children = clone(items).map(item => {
 
       return {
-        type: `Text?class=flex align-center pointer;style:[minHeight=3.5rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.4rem;width=100%];hover.style.backgroundColor=#eee;${toString(view.droplist.item)};caller=${id};text=${item}`,
+        type: `Text?class=flex align-center pointer;style:[minHeight=3.5rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.4rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item&&view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item&&view.droplist.item.hover&&view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(view.droplist.item)};caller=${id};text=${item}`,
         controls: [...(view.droplist.controls || []), {
-          event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
+          event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault`,//;)(:droplist-positioner=${id}
           actions: [ // :[focus:${input_id}]
-            `async():[resize:${input_id}]:[isArabic:${input_id}]?if():[():${input_id}]:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()||_.txt().num()=0]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
+            `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
+            `wait():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;wait():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()||_.txt().num()=0]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
             `droplist:${id}?)(:droplist-search-txt=():${id}.getInput().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
           ]
         }]
@@ -2685,7 +2688,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   // searchable
   var myFn = () => {
 
-    if (!view.droplist.preventDefault && view.droplist.searchable) {
+    if (view.droplist.searchable) {
 
       if (global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
         
@@ -2742,11 +2745,11 @@ const droplist = ({ id, e, droplist: params = {} }) => {
     }
 
     global["keyup-index"] = global["keyup-index"] || 0
-    if (!view.droplist.preventDefault) views.droplist.element.children[global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
+    views.droplist.element.children[global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
     // if (input_id) views[input_id].element.focus()
   }
 
-  global.droplistTimer = setTimeout(myFn, 100)
+  if (!view.droplist.preventDefault) global.droplistTimer = setTimeout(myFn, 100)
 }
 
 module.exports = { droplist }
@@ -4572,7 +4575,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_id || args[1]) view = views[_id || args[1]]
             
             path[0] = path0 = "()"
-            object = views[id]
+            _object = views[id]
         }
     }
 
@@ -4629,7 +4632,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
     } else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
         
-        if (path[1] !== "txt()" && path[1] !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "data()" && path0 !== "readonly()") {
+        if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "data()" && path[1] !== "readonly()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
             else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
@@ -6540,7 +6543,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "pull()") {
 
             // if no it pulls the last element
-            var _pull = args[1] !== undefined ? toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e }) : o.length - 1
+            var _pull = args[1] !== undefined ? toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object }) : o.length - 1
             if (_pull === undefined) return undefined
             o.splice(_pull,1)
             answer = o
@@ -6563,7 +6566,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
             } else {
 
-                var _items = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e })
+                var _items = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object })
                 _items.map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
@@ -6586,7 +6589,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
             } else {
 
-                var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e })
+                var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object })
                 var _index = o.findIndex(item => isEqual(item, _item))
                 if (_index !== -1) o.splice(_index,1)
                 answer = o

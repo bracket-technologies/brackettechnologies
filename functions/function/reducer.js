@@ -226,7 +226,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_id || args[1]) view = views[_id || args[1]]
             
             path[0] = path0 = "()"
-            object = views[id]
+            _object = views[id]
         }
     }
 
@@ -283,7 +283,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
     } else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
         
-        if (path[1] !== "txt()" && path[1] !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "data()" && path0 !== "readonly()") {
+        if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "data()" && path[1] !== "readonly()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
             else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
@@ -2194,7 +2194,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "pull()") {
 
             // if no it pulls the last element
-            var _pull = args[1] !== undefined ? toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e }) : o.length - 1
+            var _pull = args[1] !== undefined ? toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object }) : o.length - 1
             if (_pull === undefined) return undefined
             o.splice(_pull,1)
             answer = o
@@ -2217,7 +2217,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
             } else {
 
-                var _items = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e })
+                var _items = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object })
                 _items.map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
@@ -2240,7 +2240,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 
             } else {
 
-                var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e })
+                var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object })
                 var _index = o.findIndex(item => isEqual(item, _item))
                 if (_index !== -1) o.splice(_index,1)
                 answer = o

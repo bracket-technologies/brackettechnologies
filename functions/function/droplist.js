@@ -20,7 +20,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   dropList.derivations = clone(view.derivations)
   dropList.Data = view.Data
   clearTimeout(global.droplistTimer)
-
+  
   // path & derivations
   if (view.droplist.path) dropList.derivations.push(...view.droplist.path.split("."))
 
@@ -39,7 +39,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 
   // items
   if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
-  
+
   // filterable
   if (!view.droplist.preventDefault) {
 
@@ -61,12 +61,12 @@ const droplist = ({ id, e, droplist: params = {} }) => {
     dropList.children = clone(items).map(item => {
 
       return {
-        type: `Text?class=flex align-center pointer;style:[minHeight=3.5rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.4rem;width=100%];hover.style.backgroundColor=#eee;${toString(view.droplist.item)};caller=${id};text=${item}`,
+        type: `Text?class=flex align-center pointer;style:[minHeight=3.5rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.4rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item&&view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item&&view.droplist.item.hover&&view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(view.droplist.item)};caller=${id};text=${item}`,
         controls: [...(view.droplist.controls || []), {
-          event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault;)(:droplist-positioner=${id}`,
+          event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault`,//;)(:droplist-positioner=${id}
           actions: [ // :[focus:${input_id}]
-            `async():[resize:${input_id}]:[isArabic:${input_id}]?if():[():${input_id}]:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-            `async():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;async():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()||_.txt().num()=0]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
+            `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
+            `wait():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;wait():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()||_.txt().num()=0]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
             `droplist:${id}?)(:droplist-search-txt=():${id}.getInput().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
           ]
         }]
@@ -82,7 +82,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   // searchable
   var myFn = () => {
 
-    if (!view.droplist.preventDefault && view.droplist.searchable) {
+    if (view.droplist.searchable) {
 
       if (global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
         
@@ -139,11 +139,11 @@ const droplist = ({ id, e, droplist: params = {} }) => {
     }
 
     global["keyup-index"] = global["keyup-index"] || 0
-    if (!view.droplist.preventDefault) views.droplist.element.children[global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
+    views.droplist.element.children[global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
     // if (input_id) views[input_id].element.focus()
   }
 
-  global.droplistTimer = setTimeout(myFn, 100)
+  if (!view.droplist.preventDefault) global.droplistTimer = setTimeout(myFn, 100)
 }
 
 module.exports = { droplist }
