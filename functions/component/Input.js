@@ -174,7 +174,7 @@ const Input = (component) => {
       var myView = {
             ...component,
             type: 'View',
-            class: 'flexbox unselectable',
+            class: `flexbox unselectable ${component.class || ""}`,
             // remove from comp
             controls: [{
                 event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]`
@@ -207,7 +207,7 @@ const Input = (component) => {
             }, {
                 type: `Input`,
                 id: `${id}-input`,
-                class: `${component.class.includes("ar") ? "ar " : ""}${input.class}`,
+                class: `${component.class.includes("ar") ? "ar " : ""}${input.class || ""}`,
                 input,
                 currency, 
                 day,
@@ -222,10 +222,11 @@ const Input = (component) => {
                 placeholder,
                 duplicated,
                 disabled,
+                duplicatable,
                 preventDefault,
                 templated: true,
                 'placeholder-ar': component['placeholer-ar'],
-                hover: {
+                /*hover: {
                     ...input.hover,
                     style: {
                         backgroundColor: style.after.backgroundColor,
@@ -233,7 +234,7 @@ const Input = (component) => {
                         ...input.style.after,
                         ...input.hover.style
                     }
-                },
+                },*/
                 style: {
                     width: password || clearable || removable || copyable || generator ? "100%" : "fit-content",
                     height: 'fit-content',
@@ -255,7 +256,7 @@ const Input = (component) => {
                 }, {
                     event: "select;mousedown?preventDefault()"
                 }, {
-                    event: "keyup??e().key=Enter",
+                    event: "keyup??duplicatable;e().key=Enter",
                     actions: `wait():insert?insert.view=parent().parent().children.0;insert.path=derivations().clone().pullLast().push():[Data():[path=derivations().clone().pullLast()].len()];insert.index=Data():[path=derivations().clone().pullLast()].len()`
                 }/*, {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"

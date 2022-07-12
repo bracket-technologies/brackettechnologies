@@ -3131,8 +3131,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index/*, object*/ }) )
                 answer = o
-            } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, _i, e, _i: index }) )
+            } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, e, _i: index }) )
 
+        } else if (k0 === "_i") {
+            
+            if (value !== undefined && key && i === lastIndex) answer = o[_i] = value
+            else if (typeof o === "object") answer = o[_i]
+            
         } else if (k0 === "index()") {
             
             var element = views[o.parent].element

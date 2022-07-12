@@ -641,7 +641,7 @@ const Input = (component) => {
       var myView = {
             ...component,
             type: 'View',
-            class: 'flexbox unselectable',
+            class: `flexbox unselectable ${component.class || ""}`,
             // remove from comp
             controls: [{
                 event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]`
@@ -674,7 +674,7 @@ const Input = (component) => {
             }, {
                 type: `Input`,
                 id: `${id}-input`,
-                class: `${component.class.includes("ar") ? "ar " : ""}${input.class}`,
+                class: `${component.class.includes("ar") ? "ar " : ""}${input.class || ""}`,
                 input,
                 currency, 
                 day,
@@ -689,10 +689,11 @@ const Input = (component) => {
                 placeholder,
                 duplicated,
                 disabled,
+                duplicatable,
                 preventDefault,
                 templated: true,
                 'placeholder-ar': component['placeholer-ar'],
-                hover: {
+                /*hover: {
                     ...input.hover,
                     style: {
                         backgroundColor: style.after.backgroundColor,
@@ -700,7 +701,7 @@ const Input = (component) => {
                         ...input.style.after,
                         ...input.hover.style
                     }
-                },
+                },*/
                 style: {
                     width: password || clearable || removable || copyable || generator ? "100%" : "fit-content",
                     height: 'fit-content',
@@ -722,7 +723,7 @@ const Input = (component) => {
                 }, {
                     event: "select;mousedown?preventDefault()"
                 }, {
-                    event: "keyup??e().key=Enter",
+                    event: "keyup??duplicatable;e().key=Enter",
                     actions: `wait():insert?insert.view=parent().parent().children.0;insert.path=derivations().clone().pullLast().push():[Data():[path=derivations().clone().pullLast()].len()];insert.index=Data():[path=derivations().clone().pullLast()].len()`
                 }/*, {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
@@ -5643,7 +5644,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else answer = []
 
             answer = answer.map(o => window.views[o.id])
-            
+            console.log(answer, _o, className);
         } else if (k0 === "classlist()" || k0 === "classList()") {
             
             var _params = {}, _o
@@ -7501,8 +7502,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index/*, object*/ }) )
                 answer = o
-            } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, _i, e, _i: index }) )
+            } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, e, _i: index }) )
 
+        } else if (k0 === "_i") {
+            
+            if (value !== undefined && key && i === lastIndex) answer = o[_i] = value
+            else if (typeof o === "object") answer = o[_i]
+            
         } else if (k0 === "index()") {
             
             var element = views[o.parent].element
@@ -9877,13 +9883,13 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     // show loader
     if (param === "loader.show") {
       document.getElementsByClassName("loader-container")[0].style.display = "flex"
-      return sleep(1)
+      return sleep(10)
     }
     
     // hide loader
     if (param === "loader.hide") {
       document.getElementsByClassName("loader-container")[0].style.display = "none"
-      return sleep(1)
+      return sleep(10)
     }
 
     if (value === undefined) value = generate()
