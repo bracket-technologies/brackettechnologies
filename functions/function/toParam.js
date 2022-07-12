@@ -181,9 +181,6 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     if (value === undefined) value = generate()
     else value = toValue({ _window, id, e, value, params, req, res, _, __ })
 
-    // condition not approved
-    if (value === "*return*") return
-
     id = viewId
 
     var path = typeof key === "string" ? key.split(".") : [], timer

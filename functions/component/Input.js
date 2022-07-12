@@ -3,6 +3,7 @@ const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
 const { clone } = require('../function/clone')
 const { generate } = require('../function/generate')
+const { reducer } = require('../function/reducer')
 
 const Input = (component) => {
 
@@ -169,8 +170,8 @@ const Input = (component) => {
     }
 
     if (model === 'featured' || password || clearable || removable || copyable || generator) {
-        
-        return {
+
+      var myView = {
             ...component,
             type: 'View',
             class: 'flexbox unselectable',
@@ -253,6 +254,9 @@ const Input = (component) => {
                     event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]?!preventDefault` // for clicked event
                 }, {
                     event: "select;mousedown?preventDefault()"
+                }, {
+                    event: "keyup??e().key=Enter",
+                    actions: `wait():insert?insert.view=parent().parent().children.0;insert.path=derivations().clone().pullLast().push():[Data():[path=derivations().clone().pullLast()].len()];insert.index=Data():[path=derivations().clone().pullLast()].len()`
                 }/*, {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
@@ -277,6 +281,21 @@ const Input = (component) => {
                 }]
             }]
         }
+        
+        if (duplicatable) {
+          var _path
+          if (component.Data && !Array.isArray(component.data)) {
+            reducer({ _window, id, path, value: [], key: true, object: global[component.Data] })
+          }
+          if (isNaN(component.derivations)) _path = 0
+          return {
+            type: "View?class=vertical;style:[gap=1rem;width=100%]",
+            children: [{
+              ...myView,
+              path: _path,
+            }]
+          }
+        } else return myView
     }
 
     if (model === 'classic') {
