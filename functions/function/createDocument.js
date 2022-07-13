@@ -113,10 +113,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
     await db
       .collection(`page-${project.id}`)
-      .doc(currentPage)
       .get()
-      .then((doc) => {
-        global.data.page[doc.id] = doc.data();
+      .then(q => {
+        q.forEach(doc => global.data.page[doc.id] = doc.data())
         console.log("after page", new Date().getTime() - global.timer);
       })
 

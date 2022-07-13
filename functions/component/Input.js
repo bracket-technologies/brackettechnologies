@@ -3,7 +3,6 @@ const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
 const { clone } = require('../function/clone')
 const { generate } = require('../function/generate')
-const { reducer } = require('../function/reducer')
 
 const Input = (component) => {
 
@@ -44,13 +43,13 @@ const Input = (component) => {
     } = component
     
     if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
+    if (duplicatable) removable = removable || {}
+    if (removable && typeof removable !== "object") removable = {}
     if (clearable && typeof clearable !== "object") clearable = {}
-    if (generator && typeof generator !== "object") component.generator = generator = {}
+    if (generator && typeof generator !== "object") generator = {}
 
     readonly = readonly ? true : false
-    removable = removable !== undefined ? (removable === false ? false : true) : false
 
-    if (duplicatable) removable = true
     if (minlength === undefined) minlength = 1
     if (droplist) droplist.align = droplist.align || "left"
     
@@ -63,6 +62,12 @@ const Input = (component) => {
         opacity: '0',
         cursor: 'pointer',
     } : {}
+
+    component = {
+      ...component, id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
+      placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
+      duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
+    }
     
     // var path = `${unit ? `path=amount` :  currency ? `path=${currency}` : duration ? `path=${duration}` : day ? `path=${day}` : lang ? `path=${lang}` : google ? `path=name` : key ? `path=${key}` : ''}`
 
@@ -162,24 +167,24 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": `click:1stChild();click:2ndChild()?clicked=true;2ndChild().style().border=${clickedBorder}`
+                "event": `click:1stChild();click:[if():[${duplicatable?true:false}]:[2ndChild().children()]:2ndChild()]?clicked=true;if():[!${duplicatable?true:false}]:[2ndChild().style().border=${clickedBorder}]:[2ndChild().lastChild().style().border=${clickedBorder}]?!mobile()`
             }, {
-                "event": `click:body?clicked=false;2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
+                "event": `click:body?clicked=false;if():[${duplicatable?true:false}]:[2ndChild().children().():[style().border=${style.border || "1px solid #ccc"}]]:[2ndChild().style().border=${style.border || "1px solid #ccc"}]?!mobile();!contains():[clicked:()];!droplist.contains():[clicked:()]`
             }]
         }
     }
 
-    if (model === 'featured' || password || clearable || removable || copyable || generator) {
+    if (model === 'featured' || password || clearable || removable || duplicatable || copyable || generator) {
 
       var myView = {
             ...component,
-            type: 'View',
+            type: duplicatable ? "[View]" : "View",
             class: `flexbox unselectable ${component.class || ""}`,
             // remove from comp
             controls: [{
-                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]`
+                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]?!mobile()`
             }, {
-                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():generator:[():[${id}+'-generate'].style().opacity=0]`
+                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():generator:[():[${id}+'-generate'].style().opacity=0]?!mobile()`
             }],
             style: {
                 cursor: readonly ? "pointer" : "auto",
@@ -252,12 +257,11 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]?!preventDefault` // for clicked event
+                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[if():${duplicatable?true:false}:[e().target.parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]?!preventDefault` // for clicked event
                 }, {
                     event: "select;mousedown?preventDefault()"
                 }, {
-                    event: "keyup??duplicatable;e().key=Enter",
-                    actions: `wait():insert?insert.view=parent().parent().children.0;insert.path=derivations().clone().pullLast().push():[Data():[path=derivations().clone().pullLast()].len()];insert.index=Data():[path=derivations().clone().pullLast()].len()`
+                    event: "keyup?Data():[path=derivations().clone().pullLast().push():[derivations().lastEl().num()+1]]=_string;update():[().parent().parent()]?duplicatable;e().key=Enter",
                 }/*, {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
@@ -284,18 +288,12 @@ const Input = (component) => {
         }
         
         if (duplicatable) {
-          var _path
-          if (component.Data && !Array.isArray(component.data)) {
-            reducer({ _window, id, path, value: [], key: true, object: global[component.Data] })
-          }
-          if (isNaN(component.derivations)) _path = 0
+          
           return {
-            type: "View?class=vertical;style:[gap=1rem;width=100%]",
-            children: [{
-              ...myView,
-              path: _path,
-            }]
+            type: "View?if():[data().type()!=array]:[data()=_list];class=vertical;style:[gap=1rem;width=100%]",
+            children: [myView]
           }
+
         } else return myView
     }
 

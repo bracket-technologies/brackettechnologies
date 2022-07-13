@@ -464,13 +464,11 @@ const Entry = (component) => {
 
 module.exports = Entry
 },{"../function/clone":35,"../function/merge":74,"../function/toComponent":104,"../function/toString":114}],4:[function(require,module,exports){
-(function (global){(function (){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
 const { clone } = require('../function/clone')
 const { generate } = require('../function/generate')
-const { reducer } = require('../function/reducer')
 
 const Input = (component) => {
 
@@ -511,13 +509,13 @@ const Input = (component) => {
     } = component
     
     if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
+    if (duplicatable) removable = removable || {}
+    if (removable && typeof removable !== "object") removable = {}
     if (clearable && typeof clearable !== "object") clearable = {}
-    if (generator && typeof generator !== "object") component.generator = generator = {}
+    if (generator && typeof generator !== "object") generator = {}
 
     readonly = readonly ? true : false
-    removable = removable !== undefined ? (removable === false ? false : true) : false
 
-    if (duplicatable) removable = true
     if (minlength === undefined) minlength = 1
     if (droplist) droplist.align = droplist.align || "left"
     
@@ -530,6 +528,12 @@ const Input = (component) => {
         opacity: '0',
         cursor: 'pointer',
     } : {}
+
+    component = {
+      ...component, id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
+      placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
+      duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
+    }
     
     // var path = `${unit ? `path=amount` :  currency ? `path=${currency}` : duration ? `path=${duration}` : day ? `path=${day}` : lang ? `path=${lang}` : google ? `path=name` : key ? `path=${key}` : ''}`
 
@@ -629,24 +633,24 @@ const Input = (component) => {
                 }]
             }],
             "controls": [{
-                "event": `click:1stChild();click:2ndChild()?clicked=true;2ndChild().style().border=${clickedBorder}`
+                "event": `click:1stChild();click:[if():[${duplicatable?true:false}]:[2ndChild().children()]:2ndChild()]?clicked=true;if():[!${duplicatable?true:false}]:[2ndChild().style().border=${clickedBorder}]:[2ndChild().lastChild().style().border=${clickedBorder}]?!mobile()`
             }, {
-                "event": `click:body?clicked=false;2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
+                "event": `click:body?clicked=false;if():[${duplicatable?true:false}]:[2ndChild().children().():[style().border=${style.border || "1px solid #ccc"}]]:[2ndChild().style().border=${style.border || "1px solid #ccc"}]?!mobile();!contains():[clicked:()];!droplist.contains():[clicked:()]`
             }]
         }
     }
 
-    if (model === 'featured' || password || clearable || removable || copyable || generator) {
+    if (model === 'featured' || password || clearable || removable || duplicatable || copyable || generator) {
 
       var myView = {
             ...component,
-            type: 'View',
+            type: duplicatable ? "[View]" : "View",
             class: `flexbox unselectable ${component.class || ""}`,
             // remove from comp
             controls: [{
-                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]`
+                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]?!mobile()`
             }, {
-                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():generator:[():[${id}+'-generate'].style().opacity=0]`
+                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():generator:[():[${id}+'-generate'].style().opacity=0]?!mobile()`
             }],
             style: {
                 cursor: readonly ? "pointer" : "auto",
@@ -719,12 +723,11 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[2ndChild().click()]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]?!preventDefault` // for clicked event
+                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[if():${duplicatable?true:false}:[e().target.parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]?!preventDefault` // for clicked event
                 }, {
                     event: "select;mousedown?preventDefault()"
                 }, {
-                    event: "keyup??duplicatable;e().key=Enter",
-                    actions: `wait():insert?insert.view=parent().parent().children.0;insert.path=derivations().clone().pullLast().push():[Data():[path=derivations().clone().pullLast()].len()];insert.index=Data():[path=derivations().clone().pullLast()].len()`
+                    event: "keyup?Data():[path=derivations().clone().pullLast().push():[derivations().lastEl().num()+1]]=_string;update():[().parent().parent()]?duplicatable;e().key=Enter",
                 }/*, {
                     event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
                 }*/]
@@ -751,18 +754,12 @@ const Input = (component) => {
         }
         
         if (duplicatable) {
-          var _path
-          if (component.Data && !Array.isArray(component.data)) {
-            reducer({ _window, id, path, value: [], key: true, object: global[component.Data] })
-          }
-          if (isNaN(component.derivations)) _path = 0
+          
           return {
-            type: "View?class=vertical;style:[gap=1rem;width=100%]",
-            children: [{
-              ...myView,
-              path: _path,
-            }]
+            type: "View?if():[data().type()!=array]:[data()=_list];class=vertical;style:[gap=1rem;width=100%]",
+            children: [myView]
           }
+
         } else return myView
     }
 
@@ -794,8 +791,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../function/clone":35,"../function/generate":60,"../function/merge":74,"../function/reducer":81,"../function/toComponent":104,"../function/toString":114}],5:[function(require,module,exports){
+},{"../function/clone":35,"../function/generate":60,"../function/merge":74,"../function/toComponent":104,"../function/toString":114}],5:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -1881,10 +1877,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
     await db
       .collection(`page-${project.id}`)
-      .doc(currentPage)
       .get()
-      .then((doc) => {
-        global.data.page[doc.id] = doc.data();
+      .then(q => {
+        q.forEach(doc => global.data.page[doc.id] = doc.data())
         console.log("after page", new Date().getTime() - global.timer);
       })
 
@@ -3775,8 +3770,8 @@ module.exports = {
     idList.map(id => setElement({ id }))
     idList.map(id => starter({ id }))
 
-    views[el.id].style.transition = views[el.id].element.style.transition = views[el.id].reservedStyles.transition || null
-    views[el.id].style.opacity = views[el.id].element.style.opacity = views[el.id].reservedStyles.opacity || "1"
+    views[el.id].style.transition = views[el.id].element.style.transition = (views[el.id].reservedStyles && views[el.id].reservedStyles.transition) || null
+    views[el.id].style.opacity = views[el.id].element.style.opacity = (views[el.id].reservedStyles && views[el.id].reservedStyles.opacity) || "1"
     delete views[el.id].reservedStyles
     view.insert = { view: views[el.id], message: "View inserted succefully!", success: true }
     
@@ -3920,7 +3915,7 @@ module.exports = {
         if (typeof string !== "string") return false
         var global = _window ? _window.global : window.global
         if (string.slice(0, 7) === "coded()") string = global.codes[string]
-
+// 
         if (string) if (string.includes("=") || string.includes(";") || string.includes("?") || string === "break()" || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) return true
         return false
     }
@@ -4638,7 +4633,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
       } else {
 
-          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "data()" && path0 !== "readonly()") {
+          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "Data()" && path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()") {
 
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
@@ -4654,13 +4649,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
     } else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
         
-        if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "data()" && path[1] !== "readonly()") {
+        /*if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "Data()" && path[1] !== "data()" && path[1] !== "derivations()" && path[1] !== "readonly()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
             else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
 
             path0 = "()"
-        }
+        }*/
     }
     
     _object = path0 === "()" ? view
@@ -4776,7 +4771,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         if (_object || _object === "" || _object === 0 || coded) path = path.slice(1)
         else {
 
-            if (path[1] && path[1].includes("()")) {
+            if (path[1] && path[1].toString().includes("()")) {
                 
                 _object = path[0]
                 path = path.slice(1)
@@ -5644,7 +5639,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else answer = []
 
             answer = answer.map(o => window.views[o.id])
-            console.log(answer, _o, className);
+            
         } else if (k0 === "classlist()" || k0 === "classList()") {
             
             var _params = {}, _o
@@ -8417,11 +8412,11 @@ module.exports = {
         var global = window.global
         var path = route.path || global.path
         var currentPage = global.currentPage = route.page || path.split("/")[1] || "main"
-        var notAvailableViews = []
-
+        // var notAvailableViews = []
+        
         document.getElementsByClassName("loader-container")[0].style.display = "flex"
 
-        if (!global.data.page[currentPage]) {
+        /*if (!global.data.page[currentPage]) {
             
             await search({ id: "root", search: { collection: "page", doc: currentPage } })
             global.data.page[currentPage] = views.root.search.data
@@ -8439,7 +8434,7 @@ module.exports = {
             Object.entries(views.root.search.data).map(([doc, data]) => {
                 global.data.view[doc] = data
             })
-        }
+        }*/
 
         var title = route.title || global.data.page[currentPage].title
 

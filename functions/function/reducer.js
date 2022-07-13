@@ -267,7 +267,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
       } else {
 
-          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "data()" && path0 !== "readonly()") {
+          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "Data()" && path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()") {
 
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
@@ -283,13 +283,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
     } else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
         
-        if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "data()" && path[1] !== "readonly()") {
+        /*if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "Data()" && path[1] !== "data()" && path[1] !== "derivations()" && path[1] !== "readonly()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
             else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
 
             path0 = "()"
-        }
+        }*/
     }
     
     _object = path0 === "()" ? view
@@ -405,7 +405,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         if (_object || _object === "" || _object === 0 || coded) path = path.slice(1)
         else {
 
-            if (path[1] && path[1].includes("()")) {
+            if (path[1] && path[1].toString().includes("()")) {
                 
                 _object = path[0]
                 path = path.slice(1)

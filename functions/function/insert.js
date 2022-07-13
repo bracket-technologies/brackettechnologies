@@ -74,8 +74,8 @@ module.exports = {
     idList.map(id => setElement({ id }))
     idList.map(id => starter({ id }))
 
-    views[el.id].style.transition = views[el.id].element.style.transition = views[el.id].reservedStyles.transition || null
-    views[el.id].style.opacity = views[el.id].element.style.opacity = views[el.id].reservedStyles.opacity || "1"
+    views[el.id].style.transition = views[el.id].element.style.transition = (views[el.id].reservedStyles && views[el.id].reservedStyles.transition) || null
+    views[el.id].style.opacity = views[el.id].element.style.opacity = (views[el.id].reservedStyles && views[el.id].reservedStyles.opacity) || "1"
     delete views[el.id].reservedStyles
     view.insert = { view: views[el.id], message: "View inserted succefully!", success: true }
     
