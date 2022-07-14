@@ -188,7 +188,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     var underscored = path0.charAt(0) === "_"
 
     // implemented function
-    if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[underscored ? path0.slice(1) : path0] || view[path0])) {
+    if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[underscored ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
       
       console.log("function");
 
@@ -216,11 +216,11 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       
       // break
       if (key === "break()" && value !== false) return view.break = true
-
+      
       // mount state & value
       if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
 
-        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, object, mount })
+        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, object, mount, createElement })
         if (timer) {
           
           timer = parseInt(timer)
@@ -231,7 +231,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
       } else {
         
-        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, _i, mount })
+        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, _i, mount, createElement })
         reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, mount, object: params })
       }
       

@@ -3,7 +3,7 @@ const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 
-const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, mount }) => {
+const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, mount, createElement }) => {
 
   const { toParam } = require("./toParam")
 
@@ -28,7 +28,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   } 
   
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, _i, object, mount, params })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, _i, object, mount, params, createElement })
 
   // or
   if (value.includes("||")) {

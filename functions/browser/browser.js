@@ -174,14 +174,14 @@ document.addEventListener('scroll', () => {
     // close droplist
     if (views.droplist.element.style.pointerEvents === "auto") {
         
-        var closeDroplist = toCode({ string: "if():[!mouseenter]:[clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()]" })
+        var closeDroplist = toCode({ string: "if():[!():droplist.mouseenter]:[():droplist.mouseleave()]" })
         toParam({ string: closeDroplist, id: "droplist" })
     }
 
     // close actionlist
     if (views.actionlist.element.style.pointerEvents === "auto") {
 
-        var closeActionlist = toCode({ string: "if():[!mouseenter]:[clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]" })
+        var closeActionlist = toCode({ string: "if():[!():actionlist.mouseenter]:[():actionlist.mouseleave()]" })
         toParam({ string: closeActionlist, id: "actionlist" })
     }
 }, true)

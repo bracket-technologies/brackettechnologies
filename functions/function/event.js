@@ -233,12 +233,12 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 const defaultEventHandler = ({ id }) => {
 
   var view = window.views[id]
-/*
+  var views = window.views
   var global = window.global
   view.touchstart = false
   view.mouseenter = false
   view.mousedown = false
-*/
+
   if (view.link) view.element.addEventListener("click", (e) => e.preventDefault())
 
   // input
@@ -262,12 +262,11 @@ const defaultEventHandler = ({ id }) => {
 
     view.element.addEventListener("blur", setEventType)
   }
-  view.mouseenter = false
   
-  var setEventType = (e) => { e.target.mouseenter = true }
+  var setEventType = (e) => { views[e.target.id].mouseenter = true }
   view.element.addEventListener("mouseenter", setEventType)
 
-  var setEventType = (e) => { e.target.mouseenter = false }
+  var setEventType = (e) => { views[e.target.id].mouseenter = false }
   view.element.addEventListener("mouseleave", setEventType)
 
 /*
