@@ -91,6 +91,11 @@ module.exports = {
       }
     } else if (view.type === "Paragraph") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index}'>${text}</textarea>`
+    } else if (view.type === "Video") {
+      tag = `<video style='${style}' controls>
+        ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>`: "")}
+        ${view.alt || view.message || ""}
+      </video>`
     }
 
     // linkable

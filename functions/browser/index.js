@@ -2141,10 +2141,9 @@ const createElement = ({ _window, id, req, res }) => {
         return ""
       } */
 
-      var viewId = params.view || global.data.view[view.type]
+      var viewId = params.view || view.type
       delete view.view
       views[id] = { ...view, ...clone(global.data.view[viewId]) }
-      
       return createElement({ _window, id, req, res })
     }
   }
@@ -9625,6 +9624,11 @@ module.exports = {
       }
     } else if (view.type === "Paragraph") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index}'>${text}</textarea>`
+    } else if (view.type === "Video") {
+      tag = `<video style='${style}' controls>
+        ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>`: "")}
+        ${view.alt || view.message || ""}
+      </video>`
     }
 
     // linkable
