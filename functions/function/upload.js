@@ -1,17 +1,19 @@
 const axios = require("axios")
 const { clone } = require("./clone")
+const { generate } = require("./generate")
 
 const upload = async ({ id, e, ...params }) => {
         
   var upload = params.upload
   var global = window.global
   var view = window.views[id]
+  var data = upload.data || {}
 
   var headers = clone(upload.headers) || {}
   headers.project = headers.project || global.projectId
   delete upload.headers
-  upload.doc = upload.doc || upload.id
-  upload.name = upload.name || global.upload[0].name
+  upload.doc = upload.doc || upload.id || generate(20)
+  data.name = data.name || data.upload[0].name || (new Date()).getTime()
 
   // file
   var file = await readFile(upload.file)
@@ -19,7 +21,7 @@ const upload = async ({ id, e, ...params }) => {
   
   // get file type
   var type = file.substring("data:".length, file.indexOf(";base64"))
-  upload.type = type.split("/").join("-")
+  data.type = type.split("/").join("-")
 
   // get regex exp
   var regex = new RegExp(`^data:${type};base64,`, "gi")

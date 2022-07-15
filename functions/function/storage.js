@@ -1,5 +1,5 @@
 const fs = require("fs")
-const { toArray } = require("./toArray")
+const { generate } = require("./generate")
 const mime = {
   html: "text/html",
   txt: "text/plain",
@@ -27,29 +27,30 @@ const postFile = async ({ req, res, storage, db }) => {
   var upload = req.body.upload
   var collection = upload.collection
   collection += `-${req.headers["project"]}`
+  var data = upload.data
 
   // file Type
-  upload.type = upload.type.split("-").join("/")
+  data.type = data.type.split("-").join("/")
   // convert base64 to buffer
   var buffer = Buffer.from(file, "base64")
 
-  await storage.bucket().file(`${collection}/${upload.doc}`).save(buffer, { contentType: upload.type }, async () => {
+  await storage.bucket().file(`${collection}/${upload.doc}`).save(buffer, { contentType: data.type }, async () => {
     url = await storage.bucket().file(`${collection}/${upload.doc}`).getSignedUrl({ action: 'read', expires: '03-09-3000' })
   })
   
   // post api
-  var data = {
+  data = {
     url: url[0],
     id: upload.doc,
-    name: upload.name,
-    description: upload.description || "",
-    type: upload.type,
-    tags: upload.tags,
-    title: upload.title,
+    name: data.name,
+    description: data.description || "",
+    type: data.type,
+    tags: data.tags || [],
+    title: data.title || data.type.toUpperCase(),
     "creation-date": (new Date).getTime()
   }
   
-  await db.collection(collection).doc(data.id).set(data).then(() => {
+  await db.collection(collection).doc(upload.doc).set(data).then(() => {
 
     success = true
     message = `Document saved successfuly!`
