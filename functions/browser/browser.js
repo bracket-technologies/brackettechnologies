@@ -157,6 +157,8 @@ window.onload = () => {
     })
 }
 
+delete global.idList
+
 window.onmousedown = (e) => {
     // e.preventDefault()
     

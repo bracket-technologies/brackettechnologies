@@ -1,10 +1,12 @@
+var { clone } = require("./clone")
+
 const save = async ({ id, e, ...params }) => {
 
   var global = window.global
   var save = params.save || {}
-  var local = window.views[id]
-  var _data = require("./clone").clone(save.data)
-  var headers = require("./clone").clone(save.headers) || {}
+  var view = window.views[id]
+  var _data = clone(save.data)
+  var headers = clone(save.headers) || {}
 
   headers.project = headers.project || global.projectId
   delete save.headers
@@ -14,16 +16,15 @@ const save = async ({ id, e, ...params }) => {
 
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
-  delete save.data
-  
-  var { data } = await require("axios").post(`/database`, { save, data: _data }, {
+    
+  var { data } = await require("axios").post(`/database`, { save: { ...save, data: undefined }, data: _data }, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...headers
     }
   })
 
-  local.save = data
+  view.save = data
   console.log(data)
 
   // await params

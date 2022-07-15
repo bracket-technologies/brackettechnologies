@@ -594,19 +594,33 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             // just get data()
             if (!_o.derivations) {
-              var _data = reducer({ req, res, _window, id, e, value, key, path: _params.path || views[id].derivations, object: _params.data || global[views[id].Data], params, _, __ })
+
+              var _path = _params.path || views[id].derivations
+              var _data 
+              if (_params.data) _data = reducer({ req, res, _window, id, e, value, key, path: _params.path || views[id].derivations, object: _params.data || global[views[id].Data], params, _, __ })
+              else {
+                
+                _path.unshift(`${views[id].Data}:()`)
+                _data = reducer({ req, res, _window, id, e, value, key, path: _path, object, params, _, __ })
+              }
               return answer = _o[_data]
             }
 
+            if (_params.path) return answer = reducer({ req, res, _window, id, e, value, key, path: _params.path, object: _params.data || object, params, _, __ })
             var _derivations = _params.path || _o.derivations || []
-            if (_params.path) return answer = reducer({ req, res, _window, id, e, value, key, path: _derivations, object: _params.data || object, params, _, __ })
 
             if (path[i + 1] !== undefined) {
 
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, __, _i,e })
-                answer = reducer({ req, res, _window, id, e, value, key, path: [..._derivations, ...path.slice(i + 1)], object: global[_o.Data], params, _, __, _i })
+                var _path = [..._derivations, ...path.slice(i + 1)]
+                _path.unshift(`${_o.Data}:()`)
+                answer = reducer({ req, res, _window, id, e, value, key, path: _path, object, params, _, __, _i })
 
-            } else answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [..._derivations], object: global[_o.Data], params, _, __, _i,e })
+            } else {
+                var _path = [..._derivations]
+                _path.unshift(`${_o.Data}:()`)
+                answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: _path, object, params, _, __, _i,e })
+            }
             
         } else if (k0 === "Data()") {
 
@@ -3111,8 +3125,19 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } */else if (k0.includes("find()")) {
             
-            if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
-            else answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
+
+            if (i === lastIndex && key && value !== undefined) {
+
+                var _index
+                if (k[0] === "_") _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
+                else _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
+                if (_index !== undefined && _index !== -1) o[_index] = answer = value
+                
+            } else {
+
+                if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
+                else answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
+            }
             
         } else if (k0 === "sort()") {
             

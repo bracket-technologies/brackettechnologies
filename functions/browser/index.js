@@ -158,6 +158,8 @@ window.onload = () => {
     })
 }
 
+delete global.idList
+
 window.onmousedown = (e) => {
     // e.preventDefault()
     
@@ -1998,6 +2000,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         <script id="views" type="application/json">${JSON.stringify(views)}</script>
         <script id="global" type="application/json">${JSON.stringify(global)}</script>
         <script src="/index.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
       </body>
     </html>`
   );
@@ -2365,26 +2368,42 @@ module.exports = {
         
         var reader = new FileReader();
         reader.onload = function () {
-            // document.getElementById('out').innerHTML = reader.result;
-            var lines = reader.result.split("\n")
-            var result = [];
-            var headers=lines[0].split(",");
+            var result = []
+            
+            // xlsx
+            if (e.target.files[0].name.includes(".xlsx")) {
 
-            for(var i=1;i<lines.length;i++){
+                let data = reader.result
+                let workbook = XLSX.read(data,{type:"binary"})
+                console.log(workbook);
+                workbook.SheetNames.forEach(sheet => {
+                    result = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+                    console.log(result);
+                })
 
-                var obj = {};
-                var currentline=lines[i].split(",");
+            } else if (e.target.files[0].name.includes(".csv")) {
 
-                for(var j=0;j<headers.length;j++){
-                    obj[headers[j]] = currentline[j];
+                // csv
+                var lines = reader.result.split("\n")
+                var headers=lines[0].split(",").map(header => header.replace(/\r?\n|\r/g, ""))
+                console.log(headers);
+                
+                for(var i=1; i<lines.length; i++) {
+
+                    var obj = {}
+                    var currentline=lines[i].split(",")
+
+                    for(var j=0; j < headers.length; j++){
+                        if (currentline[j] !== undefined) obj[headers[j]] = currentline[j].toString().replace(/\r?\n|\r/g, "")
+                    }
+
+                    result.push(obj)
                 }
-
-                result.push(obj);
             }
 
             /* Convert the final array to JSON */
             console.log(result)
-            window.views[id].csv = { data: result, message: "Data converted successfully!" }
+            window.views[id].file = { data: result, message: "Data converted successfully!" }
             toParam({ id, e, string: options.loaded, mount: true })
         };
 
@@ -4962,19 +4981,33 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             // just get data()
             if (!_o.derivations) {
-              var _data = reducer({ req, res, _window, id, e, value, key, path: _params.path || views[id].derivations, object: _params.data || global[views[id].Data], params, _, __ })
+
+              var _path = _params.path || views[id].derivations
+              var _data 
+              if (_params.data) _data = reducer({ req, res, _window, id, e, value, key, path: _params.path || views[id].derivations, object: _params.data || global[views[id].Data], params, _, __ })
+              else {
+                
+                _path.unshift(`${views[id].Data}:()`)
+                _data = reducer({ req, res, _window, id, e, value, key, path: _path, object, params, _, __ })
+              }
               return answer = _o[_data]
             }
 
+            if (_params.path) return answer = reducer({ req, res, _window, id, e, value, key, path: _params.path, object: _params.data || object, params, _, __ })
             var _derivations = _params.path || _o.derivations || []
-            if (_params.path) return answer = reducer({ req, res, _window, id, e, value, key, path: _derivations, object: _params.data || object, params, _, __ })
 
             if (path[i + 1] !== undefined) {
 
                 if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, id, value: global.codes[path[i + 1]], params, _, __, _i,e })
-                answer = reducer({ req, res, _window, id, e, value, key, path: [..._derivations, ...path.slice(i + 1)], object: global[_o.Data], params, _, __, _i })
+                var _path = [..._derivations, ...path.slice(i + 1)]
+                _path.unshift(`${_o.Data}:()`)
+                answer = reducer({ req, res, _window, id, e, value, key, path: _path, object, params, _, __, _i })
 
-            } else answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: [..._derivations], object: global[_o.Data], params, _, __, _i,e })
+            } else {
+                var _path = [..._derivations]
+                _path.unshift(`${_o.Data}:()`)
+                answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: _path, object, params, _, __, _i,e })
+            }
             
         } else if (k0 === "Data()") {
 
@@ -7479,8 +7512,19 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } */else if (k0.includes("find()")) {
             
-            if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
-            else answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
+
+            if (i === lastIndex && key && value !== undefined) {
+
+                var _index
+                if (k[0] === "_") _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
+                else _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
+                if (_index !== undefined && _index !== -1) o[_index] = answer = value
+                
+            } else {
+
+                if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
+                else answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
+            }
             
         } else if (k0 === "sort()") {
             
@@ -8462,13 +8506,15 @@ module.exports = {
     }
 }
 },{"./search":88,"./update":118}],87:[function(require,module,exports){
+var { clone } = require("./clone")
+
 const save = async ({ id, e, ...params }) => {
 
   var global = window.global
   var save = params.save || {}
-  var local = window.views[id]
-  var _data = require("./clone").clone(save.data)
-  var headers = require("./clone").clone(save.headers) || {}
+  var view = window.views[id]
+  var _data = clone(save.data)
+  var headers = clone(save.headers) || {}
 
   headers.project = headers.project || global.projectId
   delete save.headers
@@ -8478,16 +8524,15 @@ const save = async ({ id, e, ...params }) => {
 
   if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
   save.doc = save.doc || save.id || _data.id
-  delete save.data
-  
-  var { data } = await require("axios").post(`/database`, { save, data: _data }, {
+    
+  var { data } = await require("axios").post(`/database`, { save: { ...save, data: undefined }, data: _data }, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...headers
     }
   })
 
-  local.save = data
+  view.save = data
   console.log(data)
 
   // await params
@@ -9327,7 +9372,7 @@ module.exports = {
     delete params.asyncer
     delete params.awaiter
     delete params.await
-    
+
     // get params
     awaits = require("./toCode").toCode({ string: awaits, e })
     if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true })
@@ -10691,18 +10736,20 @@ module.exports = {update, removeChildren}
 },{"./clone":35,"./controls":38,"./createElement":44,"./generate":60,"./setElement":91,"./starter":94,"./toArray":99,"./toCode":103,"./toParam":110}],119:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
+const { generate } = require("./generate")
 
 const upload = async ({ id, e, ...params }) => {
         
   var upload = params.upload
   var global = window.global
   var view = window.views[id]
+  var data = upload.data || {}
 
   var headers = clone(upload.headers) || {}
   headers.project = headers.project || global.projectId
   delete upload.headers
-  upload.doc = upload.doc || upload.id
-  upload.name = upload.name || global.upload[0].name
+  upload.doc = upload.doc || upload.id || generate(20)
+  data.name = data.name || data.upload[0].name || (new Date()).getTime()
 
   // file
   var file = await readFile(upload.file)
@@ -10710,7 +10757,7 @@ const upload = async ({ id, e, ...params }) => {
   
   // get file type
   var type = file.substring("data:".length, file.indexOf(";base64"))
-  upload.type = type.split("/").join("-")
+  data.type = type.split("/").join("-")
 
   // get regex exp
   var regex = new RegExp(`^data:${type};base64,`, "gi")
@@ -10771,7 +10818,7 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./clone":35,"./toAwait":100,"axios":121}],120:[function(require,module,exports){
+},{"./clone":35,"./generate":60,"./toAwait":100,"axios":121}],120:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")

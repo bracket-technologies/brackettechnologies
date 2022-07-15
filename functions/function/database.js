@@ -162,7 +162,7 @@ var getdb = async ({ req, res, db }) => {
   })
 
   if (search.orderBy) ref = ref.orderBy(search.orderBy)
-  if (search.limit) ref = ref.limit(search.limit)
+  if (search.limit || 100) ref = ref.limit(search.limit || 100)
   if (search.offset) ref = ref.endAt(search.offset)
   if (search.limitToLast) ref = ref.limitToLast(search.limitToLast)
 

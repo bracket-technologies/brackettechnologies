@@ -10,7 +10,7 @@ module.exports = {
     delete params.asyncer
     delete params.awaiter
     delete params.await
-    
+
     // get params
     awaits = require("./toCode").toCode({ string: awaits, e })
     if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true })
