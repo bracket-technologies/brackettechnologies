@@ -8371,7 +8371,6 @@ const resize = ({ id }) => {
 
   // for width
   var width = view.style.width
-  
   if (width === "fit-content" && view.element) {
     view.element.style.width = results.width + "px"
     view.element.style.minWidth = results.width + "px"
@@ -8411,6 +8410,7 @@ const dimensions = ({ id, text }) => {
     lDiv.style.textAlign = "right"
     lDiv.classList.add("arabic")
   }
+
   lDiv.style.fontSize = pStyle.fontSize || "initial"
   lDiv.style.fontWeight = pStyle.fontWeight || "initial"
   lDiv.style.padding = pStyle.padding || "initial"
@@ -8430,16 +8430,20 @@ const dimensions = ({ id, text }) => {
   lDiv.style.opacity = "0"
 
   lDiv.innerHTML = pText
-
+  
   if (pStyle.width === "100%")
   lDiv.style.width = (view.element ? view.element.clientWidth : lDiv.style.width) + "px"
-  
   lDiv.style.width = lDiv.clientWidth + 2 + "px"
 
-  var lResult = {
-    width: lDiv.clientWidth,
-    height: lDiv.clientHeight
+  var height = lDiv.clientHeight
+  var width = lDiv.clientWidth
+
+  if (view.element.tagName === "TEXTAREA") {
+    if (lDiv.clientHeight < view.element.scrollHeight) height = view.element.scrollHeight
+    if (!pText) height = lDiv.clientHeight
   }
+  
+  var lResult = { width, height }
   
   document.body.removeChild(lDiv)
   lDiv = null
