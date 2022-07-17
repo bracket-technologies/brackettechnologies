@@ -55,8 +55,8 @@ const update = ({ id, update = {} }) => {
     views[id].index = index
     views[id].parent = view.id
     views[id].style = views[id].style || {}
-    views[id].style.opacity = "0"
-    if (timer) views[id].style.transition = `opacity ${timer}ms`
+    //views[id].style.opacity = "0"
+    //if (timer) views[id].style.transition = `opacity ${timer}ms`
     
     return createElement({ id })
 
@@ -70,7 +70,7 @@ const update = ({ id, update = {} }) => {
   idList.map(id => setElement({ id }))
   idList.map(id => starter({ id }))
   
-  var children = [...view.element.children]
+  /*var children = [...view.element.children]
   if (timer) setTimeout(() => {
       children.map(el => {
         
@@ -80,7 +80,7 @@ const update = ({ id, update = {} }) => {
   else children.map(el => {
     
     views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
-  })
+  })*/
 
   view.update = { view: views[id], message: "View updated succefully!", success: true }
 }

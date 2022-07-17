@@ -242,7 +242,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" 
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()"
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
     || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
@@ -258,7 +258,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()" 
     || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
-    || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()")) {
+    || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
+    || path0 === "upload()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -1023,7 +1024,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 } else return _view
             })
             
-        } else if (k0 === "style()") { // style():key || style():[key=value;id||el||view||element]
+        } else if (k0 === "style()" || k0 === "display()" || k0 === "hide()") { // style():key || style():[key=value;id||el||view||element]
             
             var _o, _params = {}
             if (args[1]) {
@@ -1056,6 +1057,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var { view: _view, id: _id, el: _el, element: _element, ...__params} = _params
             
+            if (k0 === "display()") __params = { display: "flex" }
+            if (k0 === "hide()") __params = { display: "none" }
+            
             if (Object.keys(__params).length > 0) {
 
               Object.entries(__params).map(([key, value]) => {
@@ -1063,7 +1067,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
               })
             }
             
-        } else if (k0 === "getTagElements()") {
+          } else if (k0 === "getTagElements()") {
 
             var _o, _params = {}, _tag_name
             if (args[1]) {
@@ -1183,6 +1187,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!__o) return
             if (__o.type !== "Input") {
                 if (__o.element.getElementsByTagName("INPUT")[0]) answer = views[__o.element.getElementsByTagName("INPUT")[0].id]
+                else if (__o.element.getElementsByTagName("TEXTAREA")[0]) answer = views[__o.element.getElementsByTagName("TEXTAREA")[0].id]
                 else return
             } else answer = __o
 
@@ -2039,9 +2044,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var __o
             if (_o.type !== "Image") {
-                var imageEl = _o.element.getElementsByTagName("IMAGE")[0]
-                if (imageEl) __o = views[imageEl.id]
-                else return
+
+              var imageEl = _o.element.getElementsByTagName("IMG")[0]
+              if (imageEl) __o = views[imageEl.id]
+              else return
+
             } else __o = _o
 
             if (__o.element) {
@@ -3474,47 +3481,74 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "wait()") {
             
-            var _params = { await: args.join(":"), awaiter: `wait():${args.slice(1).map(() => "nothing").join(":")}` }
-            toAwait({ id, e, params: _params })
+          var _params = { await: args.join(":"), awaiter: `wait():${args.slice(1).map(() => "nothing").join(":")}` }
+          toAwait({ id, e, params: _params })
 
         } else if (k0 === "update()") {
           
-            var __id, _id
-            if (args[1]) __id = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params }) || id
-            if (typeof __id === "object" && __id.id) _id = __id.id
-            else _id = __id
-            
-            return require("./update").update({ id: _id })
+          var __id, _id, _params, _self
+          
+          if (isParam({ _window, string: args[1] })) {
+
+            _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+            __id = _params.id || id
+            _self = _params.self
+
+          } else if (args[1]) __id = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params }) || id
+
+          if (typeof __id === "object" && __id.id) _id = __id.id
+          else _id = __id
+
+          if (!_id && o.id) _id = o.id
+          
+          if (_self) return require("./updateSelf").updateSelf({ id: _id })
+          else return require("./update").update({ id: _id })
+
+        } else if (k0 === "upload()") {
+          
+          if (isParam({ _window, string: args[1] })) {
+
+            var _await = ""
+            var _upload = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+            if (args[2]) _await = global.codes[args[2]]
+            return require("./upload").upload({ id, e, _, __, _i, upload: _upload, asyncer: true, await: _await })
+          }
+
+          return require("./save").save({ id, e, save: { upload: { file: global.upload } } })
 
         } else if (k0 === "save()") {
           
-            if (isParam({ _window, string: args[1] })) {
+          if (isParam({ _window, string: args[1] })) {
 
-                var _save = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                return require("./save").save({ id, e, _, __, _i, save: _save })
-            }
+            var _await = ""
+            var _save = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+            if (args[2]) _await = global.codes[args[2]]
+            return require("./save").save({ id, e, _, __, _i, save: _save, asyncer: true, await: _await })
+          }
 
-            var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-            var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
-            var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
-            var _save = { collection: _collection, doc: _doc, data: _data }
+          var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+          var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
+          var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
+          var _save = { collection: _collection, doc: _doc, data: _data }
 
-            return require("./save").save({ id, e, save: _save })
+          return require("./save").save({ id, e, save: _save })
 
         } else if (k0 === "search()") {
           
-            if (isParam({ _window, string: args[1] })) {
+          if (isParam({ _window, string: args[1] })) {
 
-                var _search = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                return require("./search").search({ id, e, _, __, _i,search: _search })
-            }
+            var _await = ""
+            var _search = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+            if (args[2]) _await = global.codes[args[2]]
+            return require("./search").search({ id, e, _, __, _i,search: _search, asyncer: true, await: _await })
+          }
 
-            var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-            var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
-            var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
-            var _search = { collection: _collection, doc: _doc, data: _data }
+          var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+          var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
+          var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
+          var _search = { collection: _collection, doc: _doc, data: _data }
 
-            return require("./search").search({ id, e, search: _search })
+          return require("./search").search({ id, e, search: _search })
 
         } else if (k0 === "setPosition()" || k0 === "position()") {
           

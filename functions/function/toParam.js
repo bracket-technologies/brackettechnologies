@@ -265,7 +265,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       mountPathUsed = true
       
       // path & derivations
-      var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : []
+      var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : params.path || []
           
       if (path.length > 0) {
         

@@ -16,7 +16,7 @@ const updateSelf = ({ id, update = {} }) => {
   
   if (!view || !view.element) return
   var parent = views[view.parent]
-  var index = view.index
+  var index = view.index || 0
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
@@ -53,8 +53,8 @@ const updateSelf = ({ id, update = {} }) => {
     views[id].index = index
     views[id].parent = parent.id
     views[id].style = views[id].style || {}
-    views[id].style.opacity = "0"
-    if (timer) views[id].style.transition = `opacity ${timer}ms`
+    //views[id].style.opacity = "0"
+    //if (timer) views[id].style.transition = `opacity ${timer}ms`
     
     return createElement({ id })
 
@@ -74,29 +74,31 @@ const updateSelf = ({ id, update = {} }) => {
   lDiv.style.top = -1000
   lDiv.innerHTML = innerHTML
   var node = lDiv.children[0]
-
-  parent.element.insertBefore(node, parent.element.children[index])
+  
+  parent.element.insertBefore(node, [...parent.element.children][index])
   var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   
   idList.map(id => setElement({ id }))
   idList.map(id => starter({ id }))
   
-  var _children = [...parent.element.children]
+  /*var _children = [...parent.element.children]
   _children.map(childNode => {
     var _index = childNode.getAttribute("index")
     if (_index === index) return childNode
     else return
-  }).filter(child => child)
-  
-  if (timer) setTimeout(() => _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1"), 0)
-  else _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1")
+  }).filter(child => child)*/
   
   if (lDiv) {
     document.body.removeChild(lDiv)
     lDiv = null
   }
   
-  view.update = { view: views[el.id], message: "Map updated succefully!", success: true }
+  /*var _children = [...node.children]
+  
+  if (timer) setTimeout(() => _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1"), timer || 0)
+  else _children.map(el => views[el.id].element.style.opacity = views[el.id].style.opacity = "1")*/
+  
+  view.update = { view: views[node.id], message: "View updated succefully!", success: true }
 }
 
 module.exports = {updateSelf}

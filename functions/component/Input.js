@@ -135,11 +135,13 @@ const Input = (component) => {
         var tooltip = component.tooltip
         var text = label.text
         id = id || generate()
-        component.clicked = component.clicked || { style: {} }
-        clickedBorder = component.clicked.style.border || "2px solid #008060"
-        component.clicked.preventDefault = true
-        if (component.clicked.style.border) delete component.clicked
+        var clickedBorder = component.clicked && component.clicked.style.border
         component.controls = component.controls || []
+
+        if (component.clicked) {
+          component.clicked.preventDefault = true
+          if (component.clicked.style.border) delete component.clicked
+        }
         
         delete component.label
         delete component.path
@@ -149,28 +151,28 @@ const Input = (component) => {
         label.tooltip = tooltip
         
         return {
-            id, Data, parent, derivations, required, path, islabel: true, preventDefault,
-            "type": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width||"100%"};style.maxWidth=${component.style.maxWidth||"100%"};${toString(container)}`,
-            "children": [{
-                "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
-                "controls": [{
-                    "event": "click?next().input().click()"
-                }]
-            }, 
-                Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
-            {
-                "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
-                "children": [{
-                    "type": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
-                }, {
-                    "type": `Text?text=Input is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
-                }]
-            }],
+          id, Data, parent, derivations, required, path, islabel: true, preventDefault,
+          "type": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width||"100%"};style.maxWidth=${component.style.maxWidth||"100%"};${toString(container)}`,
+          "children": [{
+            "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
             "controls": [{
-                "event": `click:1stChild();click:[if():[${duplicatable?true:false}]:[2ndChild().children()]:2ndChild()]?clicked=true;if():[!${duplicatable?true:false}]:[2ndChild().style().border=${clickedBorder}]:[2ndChild().lastChild().style().border=${clickedBorder}]?!mobile()`
-            }, {
-                "event": `click:body?clicked=false;if():[${duplicatable?true:false}]:[2ndChild().children().():[style().border=${style.border || "1px solid #ccc"}]]:[2ndChild().style().border=${style.border || "1px solid #ccc"}]?!mobile();!contains():[clicked:()];!droplist.contains():[clicked:()]`
+                "event": "click?next().input().click()"
             }]
+          }, 
+            Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
+          {
+            "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
+            "children": [{
+              "type": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
+            }, {
+              "type": `Text?text=Input is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
+            }]
+          }],
+          "controls": [{
+            "event": `click:1stChild();click:[if():[${duplicatable?true:false}]:[2ndChild().children()]:2ndChild()]?clicked=true;if():[!${duplicatable?true:false}]:[2ndChild().style().border=${clickedBorder}]:[2ndChild().lastChild().style().border=${clickedBorder}]?!mobile();${clickedBorder?true:false}`
+          }, {
+            "event": `click:body?clicked=false;if():[${duplicatable?true:false}]:[2ndChild().children().():[style().border=${style.border || "1px solid #ccc"}]]:[2ndChild().style().border=${style.border || "1px solid #ccc"}]?${clickedBorder?true:false};!mobile();!contains():[clicked:()];!droplist.contains():[clicked:()]`
+          }]
         }
     }
 
@@ -298,6 +300,7 @@ const Input = (component) => {
     }
 
     if (model === 'classic') {
+      
         return {
             ...component,
             style: {

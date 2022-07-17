@@ -28,7 +28,7 @@ const postFile = async ({ req, res, storage, db }) => {
   var collection = upload.collection
   collection += `-${req.headers["project"]}`
   var data = upload.data
-
+  
   // file Type
   data.type = data.type.split("-").join("/")
   // convert base64 to buffer

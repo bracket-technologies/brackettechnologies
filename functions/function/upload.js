@@ -13,15 +13,16 @@ const upload = async ({ id, e, ...params }) => {
   headers.project = headers.project || global.projectId
   delete upload.headers
   upload.doc = upload.doc || upload.id || generate(20)
-  data.name = data.name || data.upload[0].name || (new Date()).getTime()
+  upload.collection = upload.collection || "storage"
+  data.name = data.name || global.upload[0].name || (new Date()).getTime()
+
+  // get file type
+  var type = upload.file.type
+  data.type = type.split("/").join("-")
 
   // file
   var file = await readFile(upload.file)
   delete upload.file
-  
-  // get file type
-  var type = file.substring("data:".length, file.indexOf(";base64"))
-  data.type = type.split("/").join("-")
 
   // get regex exp
   var regex = new RegExp(`^data:${type};base64,`, "gi")
@@ -29,7 +30,10 @@ const upload = async ({ id, e, ...params }) => {
   
   // access key
   if (global["access-key"]) headers["access-key"] = global["access-key"]
-  
+
+  // data
+  upload.data = data
+
   var { data } = await axios.post(`/storage`, { upload, file }, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",

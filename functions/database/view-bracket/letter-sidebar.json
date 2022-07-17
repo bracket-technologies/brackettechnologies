@@ -28,7 +28,7 @@
                 },
                 {
                     "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:letter-list]?search.collection=letter;search.headers.project=project:();wait():[data:().editor.letter=().search.data]?!data:().editor.letter"
+                    "actions": "wait():search:[update:letter-list]?search.collection=letter;search.headers.project=project:();wait():[data:().editor.letter=().search.data]"
                 }
             ]
         },
