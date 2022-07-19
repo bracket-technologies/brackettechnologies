@@ -14,7 +14,7 @@ module.exports = {
   sendConfirmationEmail: async ({ req, res, db }) => {
 
     var data = req.body.data
-    var collection = "_confimr_email_"
+    var collection = "_confirmEmail_"
     var ref = db.collection(collection)
     var code = generate(6).toUpperCase()
 
@@ -29,6 +29,18 @@ module.exports = {
     }).catch(err => console.log(err))
 
     await ref.doc(data.id).set({ email: data.email, username: data.username, code }).then(() => {
+
+      success = true
+      message = `Document saved successfuly!`
+
+    }).catch(error => {
+
+      success = false
+      message = error
+    })
+
+    data.emailConfirmed = false
+    await db.collection("user").doc(data.id).set(data).then(() => {
 
       success = true
       message = `Document saved successfuly!`
