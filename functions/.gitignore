@@ -1,6 +1,7 @@
 node_modules/
-../firebase-debug.log
 .env
+../.env
+.gitignore
 ./package-lock.json
 package-lock.json
 .wwebjs_auth/
