@@ -81,7 +81,7 @@ const update = ({ id, update = {} }) => {
     
     views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
   })*/
-
+  
   view.update = { view: views[id], message: "View updated succefully!", success: true }
 }
 

@@ -259,7 +259,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
-    || path0 === "upload()")) {
+    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -687,7 +687,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
               if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
               else _parent = views[_o.parent]
             }
-
+            
             answer = _parent
             
         } else if (k0 === "siblings()") {
@@ -726,6 +726,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           if (typeof _o === "string" && views[_o]) _o = views[_o]
 
           var element = _o.element
+          if (!element) return
           var nextSibling = element.nextElementSibling
           if (!nextSibling) return
           var _id = nextSibling.id
@@ -1628,7 +1629,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "slice()") {
 
-            if (!Array.isArray(o) && typeof o !== "string") return
+            if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
             if (args[2] || !isNaN(toValue({ req, res, _window, id, e, value: args[1], params, _, __, _i }))) { // slice():start:end
 
                 var _start = toValue({ req, res, _window, id, e, value: args[1], params, _, __, _i, object })
@@ -2585,13 +2586,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else _o = o
 
             if (_o instanceof Date) answer = _o.getTime()
-            else if (_o.length === 5 && _o.split(":").length === 2) {
+            else if (!isNaN(_o) && _o.length === 5 && _o.split(":").length === 2) {
 
                 var _hrs = parseInt(_o.split(":")[0]) * 60 * 60 * 1000
                 var _mins = parseInt(_o.split(":")[1]) * 60 * 1000
                 answer = _hrs + _mins
 
-            } else if (_o.length === 8 && _o.split(":").length === 3) {
+            } else if (!isNaN(_o) && _o.length === 8 && _o.split(":").length === 3) {
 
                 var _days = parseInt(_o.split(":")[0]) * 24 * 60 * 60 * 1000
                 var _hrs = parseInt(_o.split(":")[1]) * 60 * 60 * 1000
@@ -2600,7 +2601,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             } else {
 
-                _o = new Date(_o)
+                _o = new Date()
                 answer = _o.getTime()
             }
             
@@ -3515,6 +3516,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           }
 
           return require("./save").save({ id, e, save: { upload: { file: global.upload } } })
+
+        } else if (k0 === "confirmEmail()") {
+          
+          if (isParam({ _window, string: args[1] })) {
+
+            var _await = ""
+            var _save = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+            _save.store = "confirmEmail"
+            if (args[2]) _await = global.codes[args[2]]
+            return require("./save").save({ id, e, _, __, _i, save: _save, asyncer: true, await: _await })
+          }
 
         } else if (k0 === "save()") {
           

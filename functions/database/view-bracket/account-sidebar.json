@@ -61,7 +61,7 @@
                     "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
                     "wait():save:note:[update:user-list]?save.collection=user;save.doc=txt();save.data=data:().editor.user.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[)(:new-file-created=true];duplicate-doc:().del()"
                   ],
-                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.user.txt()=data:().editor.user.[open-doc:()||duplicate-doc:()].clone();data:().editor.user.[txt()].id=txt()]:[data:().editor.user.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.user.keys().inc():txt();!txt().inc(): "
+                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.user.txt()=data:().editor.user.[open-doc:()||duplicate-doc:()].clone();data:().editor.user.[txt()].id=txt()]:[data:().editor.user.txt()=_map:creation-date:[today().timestamp()]:id:txt():first-name:_string:last-name:_string:password:_string:username:_string:email:_string]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.user.keys().inc():txt();!txt().inc(): "
                 }
               ],
               "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"

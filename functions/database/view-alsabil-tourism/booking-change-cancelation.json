@@ -1,0 +1,461 @@
+{
+  "type": "View?id=booking-change-cancelation;class=flex column;style.gap=1rem;style.width=100%",
+  "creation-date": 1652521702985,
+  "id": "booking-change-cancelation",
+  "children": [
+    {
+      "type": "Text?class=flex;text=Booking, Change, & Cancelation Policy;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=0.5rem 0]"
+    },
+    {
+      "type": "View?class=vertical;style:[gap=1rem;padding=1rem]",
+      "children": [
+        {
+          "type": "View?class=flex align-center;style:[gap=1rem]",
+          "children": [
+            {
+              "children": [
+                {
+                  "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "click?checked()=checked().opp();)(:flight-data.bookable=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.bookable=true;parent().next().style().display=flex;)(:flight-data.booking-policy=_array:[_map:reference-date:Booking Date:before-after:After:class:Economy:classes:_array];update():[parent().next()]]:[)(:flight-data.booking-policy=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
+                }
+              ],
+              "type": "View?id=bookable;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().bookable=flight-data:().bookable||false;checked=flight-data:().bookable"
+            },
+            {
+              "type": "Text?text=Bookable;style:[fontSize=1.3rem]"
+            }
+          ]
+        },
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "type": "Text?class=flexbox;text=parent().mapIndex+1;style:[fontSize=1.3rem;border=1px solid #ddd;borderRadius=.5rem;height=2rem;width=3rem]"
+                },
+                {
+                  "type": "View?class=grid;style:[gap=.5rem;gridTemplateColumns=2fr 1fr]",
+                  "children": [
+                    {
+                      "type": "Input?label:[text=Class;location=outside;style.fontSize=1.3rem];path=class;readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.seat-classes.classes;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem",
+                      "controls": [
+                        {
+                          "event": "click:droplist?parent().next().update()"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=vertical classes;style:[width=100%;gap=.5rem]",
+                      "children": [
+                        {
+                          "type": "Text?class=flex;style:[fontSize=1.3rem];text=--"
+                        },
+                        {
+                          "type": "[View]?path=classes;class=flexbox;style:[flex=1;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0;click.focus()",
+                          "children": [
+                            {
+                              "type": "Input?style:[flex=1;height=100%;fontSize=1.3rem];droplist.items=if():[parent().parent().data().class=Economy]:')(:flight-data.economy-classes._filter():[!)(:flight-data.booking-policy.():classes.flat().inc():_]'.elif():[parent().parent().data().class=Business]:')(:flight-data.business-classes._filter():[!)(:flight-data.booking-policy.():classes.flat().inc():_]'.elif():[parent().parent().data().class=First Class]:')(:flight-data.first-class-classes._filter():[!)(:flight-data.booking-policy.():classes.flat().inc():_]';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem",
+                              "controls": [
+                                {
+                                  "event": "click:droplist?parent().click()"
+                                }
+                              ]
+                            },
+                            {
+                              "controls": [
+                                {
+                                  "event": "click?data().del();)(:focus-classes=true;update():[parent().parent().id]"
+                                }
+                              ],
+                              "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]"
+                            }
+                          ],
+                          "controls": [
+                            {
+                              "event": "keyup?parent().data().classes.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
+                            },
+                            {
+                              "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().classes.len()-1"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Input?label:[text=Date Reference;location=outside;style.fontSize=1.3rem];readonly;path=reference-date;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.reference-dates.references;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                },
+                {
+                  "type": "Input?label:[text=Before/After;location=outside;style.fontSize=1.3rem];path=before-after;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];readonly;droplist.items=_array:Before:After;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                },
+                {
+                  "type": "Input?label:[text=Time Limit (dd:hh:mm);location=outside;style.fontSize=1.3rem];path=time-limit;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
+                },
+                {
+                  "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem]",
+                  "children": [
+                    {
+                      "controls": [
+                        {
+                          "event": "click?checked()=checked().opp();data().open-time-limit=checked();1stChild().style().opacity=if():checked():1:0;data().open-time-limit=checked();if():[checked()]:[parent().prev().input().():[readonly();style().backgroundColor=#ccc]]:[parent().prev().input().():[readonly()=false;style().backgroundColor=inherit]]?!flight-edit-readonly:()"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
+                        }
+                      ],
+                      "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];data().open-time-limit=data().open-time-limit||false;checked=data().open-time-limit"
+                    },
+                    {
+                      "type": "Text?text=Open Time Limit;style:[fontSize=1.3rem]"
+                    }
+                  ]
+                },
+                {
+                  "type": "View"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
+                      "controls": [
+                        {
+                          "event": "click?)(:flight-data.booking-policy.pull():[parent().parent().mapIndex];if():[)(:flight-data.booking-policy.len()=0]:[():bookable.click()];update():booking-policy"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
+                      "controls": [
+                        {
+                          "event": "click?)(:flight-data.booking-policy.push():[_map:class:Economy:classes:_array:reference-date:Booking Date:before-after:After]:[parent().parent().mapIndex+1];update():booking-policy"
+                        }
+                      ]
+                    }
+                  ],
+                  "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]"
+                }
+              ],
+              "type": "[View]?path=booking-policy;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=4rem 1fr 1fr 1fr 1fr 1fr 1fr 6rem;padding=1rem]"
+            }
+          ],
+          "type": "View?id=booking-policy;class=vertical;style:[gap=1rem;padding=.5rem;border=1px solid #ddd;borderRadius=.5rem;display=if():[)(:flight-data.booking-policy.len()>0]:flex:none]"
+        },
+        {
+          "children": [
+            {
+              "type": "View?id=changeable;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().changeable=flight-data:().changeable||false;checked=flight-data:().changeable",
+              "controls": [
+                {
+                  "event": "click?checked()=checked().opp();)(:flight-data.changeable=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.changeable=true;parent().next().style().display=flex;)(:flight-data.change-policy=_array:[_map:reference-date:Reservation Date:before-after:After:class:Economy:classes:_array:penalty-unit:$:penalty:0];update():[parent().next()]]:[)(:flight-data.change-policy=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
+                }
+              ],
+              "children": [
+                {
+                  "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
+                }
+              ]
+            },
+            {
+              "type": "Text?text=Changeable;style:[fontSize=1.3rem]"
+            }
+          ],
+          "type": "View?class=flex align-center;style:[gap=1rem]"
+        },
+        {
+          "children": [
+            {
+              "type": "[View]?path=change-policy;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=4rem 1fr 1fr 1fr 1fr 1fr 1fr 6rem;padding=1rem]",
+              "children": [
+                {
+                  "type": "Text?class=flexbox;text=parent().mapIndex+1;style:[fontSize=1.3rem;border=1px solid #ddd;borderRadius=.5rem;height=2rem;width=3rem]"
+                },
+                {
+                  "type": "View?class=grid;style:[gap=.5rem;gridTemplateColumns=2fr 1fr]",
+                  "children": [
+                    {
+                      "type": "Input?label:[text=Class;location=outside;style.fontSize=1.3rem];path=class;readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.seat-classes.classes;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem",
+                      "controls": [
+                        {
+                          "event": "click:droplist?parent().next().update()"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=vertical;style:[width=100%;gap=.5rem]",
+                      "children": [
+                        {
+                          "type": "Text?class=flex;style:[fontSize=1.3rem];text=--"
+                        },
+                        {
+                          "type": "[View]?path=classes;class=flexbox;style:[flex=1;padding=.1rem;minHeight=3.5rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0;click.focus()",
+                          "controls": [
+                            {
+                              "event": "keyup?parent().data().classes.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
+                            },
+                            {
+                              "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().classes.len()-1"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "controls": [
+                                {
+                                  "event": "click:droplist?parent().click()"
+                                }
+                              ],
+                              "type": "Input?style:[flex=1;height=100%;fontSize=1.3rem];droplist.items=if():[parent().parent().data().class=Economy]:')(:flight-data.economy-classes._filter():[!)(:flight-data.change-policy.():classes.flat().inc():_]'.elif():[parent().parent().data().class=Business]:')(:flight-data.business-classes._filter():[!)(:flight-data.change-policy.():classes.flat().inc():_]'.elif():[parent().parent().data().class=First Class]:')(:flight-data.first-class-classes._filter():[!)(:flight-data.change-policy.():classes.flat().inc():_]';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                            },
+                            {
+                              "controls": [
+                                {
+                                  "event": "click?data().del();)(:focus-classes=true;update():[parent().parent().id]"
+                                }
+                              ],
+                              "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "Input?label:[text=Date Reference;location=outside;style.fontSize=1.3rem];readonly;path=reference-date;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.reference-dates.references;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                },
+                {
+                  "type": "Input?label:[text=Before/After;location=outside;style.fontSize=1.3rem];path=before-after;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];readonly;droplist.items=_array:Before:After;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?class=flex;text=Penalty;style:[fontSize=1.3rem]"
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Input?input.type=number;path=penalty;style:[height=100%;flex=1;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
+                        },
+                        {
+                          "type": "Input?class=flexbox;path=penalty-unit;readonly;style:[color=#666;width=2.25rem;height=2.9rem;borderRadius=.5rem;fontSize=1.3rem;transition=.3s];hover.style.backgroundColor=#eee;droplist.items=_array:%:$;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                        }
+                      ],
+                      "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff;tooltip.text=Penalty is considered over fare base"
+                    }
+                  ],
+                  "type": "View?class=vertical;style:[gap=.5rem]"
+                },
+                {
+                  "type": "Input?label:[text=Time Limit (dd:hh:mm);location=outside;style.fontSize=1.3rem];path=time-limit;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
+                },
+                {
+                  "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem]",
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
+                        }
+                      ],
+                      "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];data().open-time-limit=data().open-time-limit||false;checked=data().open-time-limit",
+                      "controls": [
+                        {
+                          "event": "click?checked()=checked().opp();data().open-time-limit=checked();1stChild().style().opacity=if():checked():1:0;data().open-time-limit=checked();if():[checked()]:[parent().prev().input().():[readonly();style().backgroundColor=#ccc]]:[parent().prev().input().():[readonly()=false;style().backgroundColor=inherit]]?!flight-edit-readonly:()"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Text?text=Open Time Limit;style:[fontSize=1.3rem]"
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]",
+                  "children": [
+                    {
+                      "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
+                      "controls": [
+                        {
+                          "event": "click?)(:flight-data.change-policy.pull():[parent().parent().mapIndex];if():[)(:flight-data.change-policy.len()=0]:[():changeable.click()];update():change-policy"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
+                      "controls": [
+                        {
+                          "event": "click?)(:flight-data.change-policy.push():[_map:class:Economy:classes:_array:reference-date:Reservation Date:before-after:After:penalty-unit:$:penalty:0]:[parent().parent().mapIndex+1];update():change-policy"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "type": "View?id=change-policy;class=vertical;style:[gap=1rem;padding=.5rem;border=1px solid #ddd;borderRadius=.5rem;display=if():[)(:flight-data.change-policy.len()>0]:flex:none]"
+        },
+        {
+          "children": [
+            {
+              "type": "View?id=cancelable;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().cancelable=flight-data:().cancelable||false;checked=flight-data:().cancelable",
+              "children": [
+                {
+                  "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "click?checked()=checked().opp();)(:flight-data.cancelable=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.cancelable=true;parent().next().style().display=flex;)(:flight-data.cancelation-policy=_array:[_map:reference-date:Reservation Date:before-after:After:class:Economy:classes:_array:penalty-unit:$:penalty:0];update():[parent().next()]]:[)(:flight-data.cancelation-policy=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
+                }
+              ]
+            },
+            {
+              "type": "Text?text=Cancelable;style:[fontSize=1.3rem]"
+            }
+          ],
+          "type": "View?class=flex align-center;style:[gap=1rem]"
+        },
+        {
+          "type": "View?id=cancelation-policy;class=vertical;style:[gap=1rem;padding=.5rem;border=1px solid #ddd;borderRadius=.5rem;display=if():[)(:flight-data.cancelation-policy.len()>0]:flex:none]",
+          "children": [
+            {
+              "children": [
+                {
+                  "type": "Text?class=flexbox;text=parent().mapIndex+1;style:[fontSize=1.3rem;border=1px solid #ddd;borderRadius=.5rem;height=2rem;width=3rem]"
+                },
+                {
+                  "children": [
+                    {
+                      "controls": [
+                        {
+                          "event": "click:droplist?parent().next().update()"
+                        }
+                      ],
+                      "type": "Input?label:[text=Class;location=outside;style.fontSize=1.3rem];path=class;readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.seat-classes.classes;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                    },
+                    {
+                      "type": "View?class=vertical;style:[width=100%;gap=.5rem]",
+                      "children": [
+                        {
+                          "type": "Text?class=flex;style:[fontSize=1.3rem];text=--"
+                        },
+                        {
+                          "children": [
+                            {
+                              "controls": [
+                                {
+                                  "event": "click:droplist?parent().click()"
+                                }
+                              ],
+                              "type": "Input?style:[flex=1;height=100%;fontSize=1.3rem];droplist.items=if():[parent().parent().data().class=Economy]:')(:flight-data.economy-classes._filter():[!)(:flight-data.cancelation-policy.():classes.flat().inc():_]'.elif():[parent().parent().data().class=Business]:')(:flight-data.business-classes._filter():[!)(:flight-data.cancelation-policy.():classes.flat().inc():_]'.elif():[parent().parent().data().class=First Class]:')(:flight-data.first-class-classes._filter():[!)(:flight-data.cancelation-policy.():classes.flat().inc():_]';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                            },
+                            {
+                              "controls": [
+                                {
+                                  "event": "click?data().del();)(:focus-classes=true;update():[parent().parent()]"
+                                }
+                              ],
+                              "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]"
+                            }
+                          ],
+                          "type": "[View]?path=classes;class=flexbox;style:[flex=1;padding=.1rem;minHeight=3.5rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0;click.focus()",
+                          "controls": [
+                            {
+                              "event": "keyup?parent().data().classes.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
+                            },
+                            {
+                              "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().classes.len()-1"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "type": "View?class=grid;style:[gap=.5rem;gridTemplateColumns=2fr 1fr]"
+                },
+                {
+                  "type": "Input?label:[text=Date Reference;location=outside;style.fontSize=1.3rem];readonly;path=reference-date;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.reference-dates.references;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                },
+                {
+                  "type": "Input?label:[text=Before/After;location=outside;style.fontSize=1.3rem];path=before-after;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];readonly;droplist.items=_array:Before:After;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?class=flex;text=Penalty;style:[fontSize=1.3rem]"
+                    },
+                    {
+                      "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff;tooltip.text=Penalty is considered over fare base",
+                      "children": [
+                        {
+                          "type": "Input?input.type=number;path=penalty;style:[height=100%;flex=1;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
+                        },
+                        {
+                          "type": "Input?class=flexbox;path=penalty-unit;readonly;style:[color=#666;width=2.25rem;height=2.9rem;borderRadius=.5rem;fontSize=1.3rem;transition=.3s];hover.style.backgroundColor=#eee;droplist.items=_array:%:$;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
+                        }
+                      ]
+                    }
+                  ],
+                  "type": "View?class=vertical;style:[gap=.5rem]"
+                },
+                {
+                  "type": "Input?label:[text=Time Limit (dd:hh:mm);location=outside;style.fontSize=1.3rem];path=time-limit;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
+                },
+                {
+                  "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem]",
+                  "children": [
+                    {
+                      "controls": [
+                        {
+                          "event": "click?checked()=checked().opp();data().open-time-limit=checked();1stChild().style().opacity=if():checked():1:0;data().open-time-limit=checked();if():[checked()]:[parent().prev().input().():[readonly();style().backgroundColor=#ccc]]:[parent().prev().input().():[readonly()=false;style().backgroundColor=inherit]]?!flight-edit-readonly:()"
+                        }
+                      ],
+                      "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];data().open-time-limit=data().open-time-limit||false;checked=data().open-time-limit",
+                      "children": [
+                        {
+                          "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Text?text=Open Time Limit;style:[fontSize=1.3rem]"
+                    }
+                  ]
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
+                      "controls": [
+                        {
+                          "event": "click?)(:flight-data.cancelation-policy.pull():[parent().parent().mapIndex];if():[)(:flight-data.cancelation-policy.len()=0]:[():cancelable.click()];update():cancelation-policy"
+                        }
+                      ]
+                    },
+                    {
+                      "controls": [
+                        {
+                          "event": "click?)(:flight-data.cancelation-policy.push():[_map:class:Economy:classes:_array:reference-date:Reservation Date:before-after:After:penalty-unit:$:penalty:0]:[parent().parent().mapIndex+1];update():cancelation-policy"
+                        }
+                      ],
+                      "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
+                    }
+                  ],
+                  "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]"
+                }
+              ],
+              "type": "[View]?path=cancelation-policy;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=4rem 1fr 1fr 1fr 1fr 1fr 1fr 6rem;padding=1rem]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,7 @@ const erase = async ({ id, e, ...params }) => {
   var view = window.views[id]
   var headers = erase.headers || {}
   headers.project = headers.project || global.projectId
+  var store = erase.store || "database"
 
   // erase
   headers.erase = encodeURI(toString({ erase }))
@@ -20,7 +21,7 @@ const erase = async ({ id, e, ...params }) => {
   erase.doc = erase.doc || erase.id
   if (erase.doc === undefined) delete erase.doc
 
-  var { data } = await axios.delete(`/database`, {
+  var { data } = await axios.delete(`/${store}`, {
     headers: {
       "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
       ...headers

@@ -82,7 +82,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   // searchable
   var myFn = () => {
 
-    if (view.droplist.searchable) {
+    if (view.droplist && view.droplist.searchable) {
 
       if (global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
         

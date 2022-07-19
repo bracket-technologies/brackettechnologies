@@ -1,0 +1,71 @@
+{
+  "id": "signup",
+  "children": [
+    {
+      "type": "View?Data=signup-user;data()=_map:id:[gen():20];class=flexbox vertical;style:[width=80%;border=1px solid #ddd;borderRadius=.5rem;padding=3rem 1.5rem;margin=4rem 0;gap=2rem]",
+      "children": [
+        {
+          "type": "Text?class=flex;text=Signup to iCAN 2022;style:[fontSize=2rem;marginBottom=2rem]"
+        },
+        {
+          "controls": [
+            {
+              "event": "input?Data().username=Data().first-name+ +Data().last-name;next().next().next().next().txt()=Data().username?Data().first-name;Data().last-name"
+            }
+          ],
+          "type": "Input?label:[text=First Name;style.fontSize=1.5rem];style:[width=100%;height=4rem;borderRadius=.5rem;border=1px solid #ddd;fontSize=1.5rem];path=first-name"
+        },
+        {
+          "type": "Input?label:[text=Last Name;style.fontSize=1.5rem];style:[width=100%;height=4rem;borderRadius=.5rem;border=1px solid #ddd;fontSize=1.5rem];path=last-name",
+          "controls": [
+            {
+              "event": "input?Data().username=Data().first-name+ +Data().last-name;next().next().next().txt()=Data().username?Data().first-name;Data().last-name"
+            }
+          ]
+        },
+        {
+          "type": "Input?label:[text=Email;style.fontSize=1.5rem];style:[width=100%;height=4rem;borderRadius=.5rem;border=1px solid #ddd;fontSize=1.5rem];path=email"
+        },
+        {
+          "type": "Input?label:[text=Contact #;style.fontSize=1.5rem];style:[width=100%;height=4rem;borderRadius=.5rem;border=1px solid #ddd;fontSize=1.5rem];path=contact-number"
+        },
+        {
+          "type": "Input?label:[text=User Name;style.fontSize=1.5rem];readonly;style:[width=100%;height=4rem;borderRadius=.5rem;border=1px solid #ddd;fontSize=1.5rem];path=username"
+        },
+        {
+          "type": "Input?label:[text=Password;style.fontSize=1.5rem];password;style:[width=100%;height=4rem;borderRadius=.5rem;border=1px solid #ddd;fontSize=1.5rem];path=password;keypress:[next().1stChild().click()]"
+        },
+        {
+          "type": "View?class=vertical;style:[width=100%;gap=1rem]",
+          "children": [
+            {
+              "type": "Text?class=flexbox;style:[width=100%;height=4rem;borderRadius=.5rem;backgroundColor=blue;opacity=.8;color=#fff;fontSize=1.5rem;marginTop=2rem];text=Signup",
+              "controls": [
+                {
+                  "actions": "wait():save?save.collection=user;save.data=data();wait():[user:()=data();setCookie():[name=_id;value=user:().id];note():[text=Account has been created!;type=success];loader.hide;route():main]",
+                  "event": "click?loader.show?data().username;data().password;data().first-name;data().last-name;data().contact-number;data().email"
+                },
+                {
+                  "event": "click?note():[text=Fill the required blanks!]?!data().username||!data().password||!data().first-name||!data().last-name||!data().contact-number||!data().email"
+                }
+              ]
+            },
+            {
+              "type": "View?class=horizontal;style:[gap=.4rem]",
+              "children": [
+                {
+                  "type": "Text?text='Have an account?';style:[fontSize=1.2rem]"
+                },
+                {
+                  "type": "Text?text=Login to iCAN;style:[fontSize=1.2rem;color=blue;textDecoration=underline];click:[route():login]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "creation-date": 1658182973247,
+  "type": "View:signup?class=flexbox;style:[overflowY=auto;minHeight=fit-content]?mobile()"
+}

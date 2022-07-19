@@ -205,7 +205,7 @@ var postdb = async ({ req, res, db }) => {
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   var ref = db.collection(collection)
-  var success, message, promises = [], project
+  var success, message
 
   /////////////////// verify access key ///////////////////// access key is stopped
   // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))

@@ -1,7 +1,7 @@
 {
   "controls": [
     {
-      "actions": "async():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_account_;search.doc=)(:path.split():/.2;async():[data:().editor.account=().search.data]?)(:path.split():/.2",
+      "actions": "wait():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_account_;search.doc=)(:path.split():/.2;wait():[data:().editor.account=().search.data]?)(:path.split():/.2",
       "event": "loaded??!data:().editor.account"
     }
   ],
@@ -22,14 +22,14 @@
                   "type": "View?id=store-login-user-droplist;style.width=8rem",
                   "children": [
                     {
-                      "type": "View?)(:position-inplace=false;id=profile-btn;class=flexbox pointer;style.padding=.75rem;style.borderRadius=.5rem;style.transition=.1s;hover.style.backgroundColor=#f9f9f9;style.gap=.5rem;clicked.style.border=2px solid #00A0AC",
+                      "type": "View?position-inplace:()=false;id=profile-btn;class=flexbox pointer;style.padding=.75rem;style.borderRadius=.5rem;style.transition=.1s;hover.style.backgroundColor=#f9f9f9;style.gap=.5rem;clicked.style.border=2px solid #00A0AC",
                       "controls": [
                         {
-                          "actions": "setPosition:profile-droplist?)(:position-inplace=true;position.positioner=().id;position.placement=bottom;position.align=right;():profile-droplist.style():[opacity=1;pointerEvents=auto]",
-                          "event": "click??)(:position-inplace=false"
+                          "actions": "setPosition:profile-droplist?position-inplace:()=true;position.positioner=().id;position.placement=bottom;position.align=right;():profile-droplist.style():[opacity=1;pointerEvents=auto]",
+                          "event": "click??position-inplace:()=false"
                         },
                         {
-                          "event": "click:body?)(:position-inplace=false;():profile-droplist.style():[opacity=0;pointerEvents=none]?clicked:().outside():[().element];clicked:().outside():[():profile-droplist.element]"
+                          "event": "click:body?position-inplace:()=false;():profile-droplist.style():[opacity=0;pointerEvents=none]?clicked:().outside():[().element];clicked:().outside():[():profile-droplist.element]"
                         }
                       ],
                       "children": [
@@ -69,13 +69,7 @@
               "type": "[Text]?data=data:().editor.account.projects;hover.style.backgroundColor=#eee;style.padding=1rem;style.cursor=pointer;style.borderRadius=.5rem;style.borderBottom=1px solid #f9f9f9;style.height=4.5rem;class=flexbox;style.justifyContent=flex-start;style.fontSize=1.5rem;style.color=#000?data:().editor.account.projects.len()>0",
               "controls": [
                 {
-                  "actions": [
-                    "async():search:[route??data:().editor.account;data:().editor.project;data:().editor.view;data:().editor.page]?search.collection=page;search.headers.project=txt();async():[data:().editor.page=().search.data;route.path=/developer-editor/+data:().editor.project.id]",
-                    "async():search:[route??data:().editor.account;data:().editor.project;data:().editor.view;data:().editor.page]?search.collection=view;search.headers.project=txt();async():[data:().editor.view=().search.data;route.path=/developer-editor/+data:().editor.project.id]",
-                    "async():search:[route??data:().editor.account;data:().editor.project;data:().editor.view;data:().editor.page]?search.collection=_account_;search.field.projects.contains=txt();async():[data:().editor.account=().search.data.value();route.path=/developer-editor/+data:().editor.project.id]?!data:().editor.account",
-                    "async():search:[route??data:().editor.account;data:().editor.project;data:().editor.view;data:().editor.page]?search.collection=_project_;search.doc=txt();search.headers.project=txt();async():[data:().editor.project=().search.data;route.path=/developer-editor/+data:().editor.project.id]"
-                  ],
-                  "event": "click?)(:route-to-editor=true"
+                  "event": "click?route-to-editor=true:();route():[path=/developer-editor/+txt()]"
                 }
               ]
             },
@@ -128,10 +122,10 @@
               "type": "Input?id=project-name;style.width=100%;style.height=5rem;clicked.style.border=2px solid #00A0AC;style.borderRadius=.5rem;style.padding=0 1.5rem;style.border=1px solid #eee;style.marginBottom=3rem",
               "controls": [
                 {
-                  "event": "input?if():[val().len()>3]:[)(:new-project-name=val();)(:new-project=)(:new-project-name.toId()].elif():[val().len()<3]:[)(:new-project-name.del();)(:new-project.del()]"
+                  "event": "input?if():[val().len()>3]:[new-project-name:()=val();new-project:()=new-project-name:().toId()].elif():[val().len()<3]:[new-project-name:().del();new-project:().del()]"
                 },
                 {
-                  "event": "click?next().click()?e().key=Enter"
+                  "event": "keyup?next().click()?e().key=Enter"
                 }
               ]
             },
@@ -140,17 +134,17 @@
               "controls": [
                 {
                   "actions": [
-                    "async():save?save.collection=_project_;save.doc=)(:new-project;data:().editor.project=_map:creation-date:[today().timestamp()]:name:[)(:new-project-name]:id:[)(:new-project]:domains:[_array:[)(:new-project+'.bracketjs.com']:[)(:new-project+'.localhost']];save.data=data:().editor.project",
-                    "async():save?data:().editor.account.projects.push():[)(:new-project];save.collection=_account_;save.doc=data:().editor.account.id;save.data=data:().editor.account",
-                    "async():save?save.collection=page;save.headers.project=)(:new-project;save.doc=main;data:().editor.page.main=_map:title:[)(:new-project-name]:creation-date:[today().timestamp()]:name:main:path:/:views:[_array:main];save.data=data:().editor.page.main",
-                    "async():save?save.collection=view;save.headers.project=)(:new-project;save.doc=main;data:().editor.view.main=_map:creation-date:[today().timestamp()]:type:'View?id=main';save.data=data:().editor.view.main",
+                    "wait():save?save.collection=_project_;save.doc=new-project:();data:().editor.project=_map:creation-date:[today().timestamp()]:name:[new-project-name:()]:id:[new-project:()]:views:[_list:main]:pages:[_list:main]:domains:[_list:[new-project:()+'.bracketjs.com']:[new-project:()+'.localhost']];save.data=data:().editor.project",
+                    "wait():save?data:().editor.account.projects.push():[new-project:()];save.collection=_account_;save.doc=data:().editor.account.id;save.data=data:().editor.account",
+                    "wait():save?save.collection=page;save.headers.project=new-project:();save.doc=main;data:().editor.page.main=_map:title:[new-project-name:()]:creation-date:[today().timestamp()]:name:main:path:/:view:main:id:main;save.data=data:().editor.page.main",
+                    "wait():save?save.collection=view;save.headers.project=new-project:();save.doc=main;data:().editor.view.main=_map:creation-date:[today().timestamp()]:type:'View:main':id:main;save.data=data:().editor.view.main",
                     "route?route.path=/account_setup"
                   ],
-                  "event": "click?)(:route-to-account-setup=true?)(:new-project-name;)(:new-project"
+                  "event": "click?)(:route-to-account-setup=true?new-project-name:();new-project:()"
                 },
                 {
                   "actions": "note?note.text=Enter a valid project name and id!;note.type=danger",
-                  "event": "click??!)(:new-project-name||!)(:new-project"
+                  "event": "click??!new-project-name:()||!new-project:()"
                 }
               ]
             }

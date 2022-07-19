@@ -1,0 +1,321 @@
+{
+  "creation-date": 1658174623616,
+  "id": "main",
+  "type": "View:main?class=grid;style:[backgroundColor=#ccc]?mobile()",
+  "controls": [
+    {
+      "actions": "wait():search:search?search.collection=user;search.doc=getCookie():_id;wait():[user:()=().search.data;if():[!user:()]:[route():login];update():user-name;search.collection=post]:[posts:()=().search.data.values();update():[id=cards;self]]",
+      "event": "loaded??getCookie():_id"
+    },
+    {
+      "event": "loaded?route():login?!getCookie():_id"
+    }
+  ],
+  "children": [
+    {
+      "type": "Icon?name=thumb_up;google.filled;style:[opacity=0;pointerEvents=none;position=absolute;top=-100];#load on page loaded"
+    },
+    {
+      "type": "View?class=flexbox;style:[width=100%;height=4rem;backgroundColor=red;position=sticky;top=0;justifyContent=space-between;padding=0 1rem]",
+      "children": [
+        {
+          "type": "Icon?class=flexbox;name=menu;google.outlined;style:[fontSize=2.4rem;color=#fff;margin=auto 0]"
+        },
+        {
+          "type": "Text?text=iCAN 2022;style:[fontSize=2rem;color=#fff;fontWeight=bold;position=absolute;width=16rem;left=calc(50vw - 8rem)]"
+        },
+        {
+          "children": [
+            {
+              "type": "Icon?name=person;style:[fontSize=2rem;color=#fff]?!user:()"
+            },
+            {
+              "type": "Text?text=Hi, +user:().first-name.split(): .0;style:[fontSize=1.4rem;color=#fff];droplist:[items=_list:Profile:Logout;item.style:[fontSize=1.4rem;minHeight=3.5rem]]?user:()",
+              "controls": [
+                {
+                  "event": "click:droplist?eraseCookie():_id;route():login?droplist-txt:()=Logout"
+                }
+              ]
+            }
+          ],
+          "type": "View:user-name?class=flexbox;style:[gap=1rem]"
+        }
+      ]
+    },
+    {
+      "type": "View?class=flexbox;style:[padding=1rem 0]",
+      "children": [
+        {
+          "type": "Input?style:[width=100%;height=4rem;borderRadius=0;backgroundColor=#fff;padding=0 1rem];placeholder=Share your invention with iCAN",
+          "controls": [
+            {
+              "event": "focus?update():new-post;():new-post.style():[pointerEvents=auto;opacity=1]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "View:cards?data=posts:();class=grid;style:[width=100%;gap=1rem]",
+      "children": [
+        {
+          "type": "[View]?class=flex;style:[width=100%]?posts:().len()>0",
+          "children": [
+            {
+              "type": "View?data=data();Data;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]",
+              "children": [
+                {
+                  "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between]",
+                  "children": [
+                    {
+                      "type": "Text?text=data().created-by;style:[fontSize=1.3rem;color=#888]"
+                    },
+                    {
+                      "type": "Text?text=data().creation-date.toDateFormat();style:[fontSize=1.3rem;color=#888]"
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flexbox;style:[if():[data().images.len()>1]:[display=grid];if():[data().images.len()>2]:[gridTemplateColumns=1fr 1fr];gap=.5rem;width=100%;borderRadius=1rem;overflow=hidden]",
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "type": "Image?src=data();style:[width=100%]"
+                        }
+                      ],
+                      "controls": [
+                        {
+                          "event": "click?():image-viewer.style():[opacity=1;pointerEvents=auto];enlarge-image:()=data();update():image-viewer"
+                        }
+                      ],
+                      "type": "[View]?path=images;class=flexbox;style:[maxHeight=if():[parent().data().images.len()>1]:15rem:35rem;width=100%;overflow=hidden]"
+                    }
+                  ]
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?text=data().title;class=flexbox;style:[fontSize=1.8rem;color=red;height=3rem]"
+                    },
+                    {
+                      "type": "Text?text=data().text;style:[fontSize=1.4rem;width=100%]"
+                    },
+                    {
+                      "children": [
+                        {
+                          "controls": [
+                            {
+                              "event": "click?if():[parent().next().style().display=none]:[parent().next().style().display=flex]:[parent().next().style().display=none]"
+                            }
+                          ],
+                          "type": "Text?text=[data().comments.len()]+ comments;style:[fontSize=1.3rem;color=#888;width=8rem]"
+                        },
+                        {
+                          "type": "Text?text=[data().likes.len()]+ likes;style:[fontSize=1.3rem;color=#888;width=5rem;textAlign=right]"
+                        }
+                      ],
+                      "type": "View?class=flexbox;style:[width=100%;justifyContent=flex-end;borderTop=1px solid #ddd;padding=.5rem]"
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "[Comment]?class=vertical;path=comments?data().comments.len()>0"
+                        }
+                      ],
+                      "type": "View?class=vertical;style:[width=100%;display=none;gap=1rem]"
+                    },
+                    {
+                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]",
+                      "children": [
+                        {
+                          "type": "View?class=horizontal;style:[gap=.5rem;paddding=.5rem;height=3rem]",
+                          "controls": [
+                            {
+                              "event": "click?if():[data().likes.inc():[user:().id]]:[data().likes.pullItem():[user:().id];2ndChild().style():[display=flex;transform=scale(1.2)];timer():[2ndChild().style().transform=scale(1)]:200;1stChild().style().display=none]:[data().likes.push():[user:().id];1stChild().style():[display=flex;transform=scale(1.2)];timer():[1stChild().style().transform=scale(1)]:200;2ndChild().style().display=none];save():[collection=post;data=Data()];parent().prev().prev().update()"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "type": "Icon?name=thumb_up;google.filled;style:[fontSize=2.2rem;color=blue;marginBottom=.5rem;display=if():[data().likes.inc():[user:().id]]:flex:none;transition=.2s]"
+                            },
+                            {
+                              "type": "Icon?name=thumb_up;google.outlined;style:[fontSize=2.2rem;marginBottom=.5rem;display=if():[data().likes.inc():[user:().id]]:none:flex;transition=.2s]"
+                            },
+                            {
+                              "type": "Text?text=Like;style:[fontSize=1.3rem;marginTop=.5rem]"
+                            }
+                          ]
+                        },
+                        {
+                          "controls": [
+                            {
+                              "event": "click?if():[parent().next().style().display=none]:[parent().next().():[style().display=flex;input().focus()]]:[parent().next().style().display=none]"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "type": "Icon?name=mode_comment;google.outlined;style:[fontSize=1.8rem]"
+                            },
+                            {
+                              "type": "Text?text=Comment;style:[fontSize=1.3rem]"
+                            }
+                          ],
+                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem;height=3rem]"
+                        },
+                        {
+                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem;height=3rem]",
+                          "controls": [
+                            {
+                              "event": "click??false"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "type": "Icon?name=share;google.outlined;style:[fontSize=1.8rem]"
+                            },
+                            {
+                              "type": "Text?text=Share;style:[fontSize=1.3rem]"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=horizontal;style:[width=100%;minHeight=3.5rem;height=fit-content;borderTop=1px solid #ddd;display=none]",
+                      "children": [
+                        {
+                          "controls": [
+                            {
+                              "event": "keypress?next().click()?e().key=Enter"
+                            }
+                          ],
+                          "type": "Input?Data;textarea;style:[width=100%;height=fit-content;minHeight=3rem]"
+                        },
+                        {
+                          "type": "View?class=flexbox;style:[height=3rem;width=3rem]",
+                          "children": [
+                            {
+                              "type": "Icon?name=send;google.outlined;style:[fontSize=1.6rem]"
+                            }
+                          ],
+                          "controls": [
+                            {
+                              "event": "click?if():[prev().txt()]:[Data().comments.push():[_map:creation-date:[today().timestamp()]:user:[user:().id]:user-name:[user:().first-name+ +user:().last-name]:comment:[prev().txt()]];save():[collection=post;data=Data()];note():[text=Comment added successfully!];parent().parent().update()]:[note():[text=Can't leave empty comments!;type=warning]]"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "type": "View?class=flex vertical;style:[width=100%;gap=1rem]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "View:new-post?class=vertical;Data=new-post;style:[top=0;left=0;right=0;height=100vh;backgroundColor=#fff;position=fixed;zIndex=1;opacity=0;pointerEvents=none;transition=.2s;overflowY=auto;padding=2rem;gap=2rem]",
+      "children": [
+        {
+          "type": "View?new-post:()=_map:id:[gen():20]:creation-date:[today().timestamp()]:created-by:[user:().first-name+ +user:().last-name]:user:[user:().id]:images:_list:likes:_list:comments:_list;class=horizontal",
+          "children": [
+            {
+              "type": "Text?class=flexbox;text=New Post;style:[fontSize=1.8rem;borderLeft=3px solid blue;padding=.5rem 1rem;fontWeight=bolder]"
+            }
+          ]
+        },
+        {
+          "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=1rem]",
+          "children": [
+            {
+              "type": "Text?text=Upload Image;style:[fontSize=1.4rem]"
+            },
+            {
+              "type": "View?class=flexbox pointer;style:[borderRadius=.5rem;border=1px solid #ddd;overflow=hidden;position=relative;height=3rem;width=3.25rem;backgroundColor=#fff]",
+              "children": [
+                {
+                  "type": "Icon?class=flexbox pointer;name=bi-download;style:[color=#666;fontSize=1.6rem;transition=.3s]"
+                },
+                {
+                  "controls": [
+                    {
+                      "event": "change?fileReader():[e().target.files.0]:[parent().parent().next().():[style().display=flex;src()=[e().target.result]]]"
+                    }
+                  ],
+                  "type": "Input?class=pointer;input.type=file;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "View?class=flexbox;style:[display=none;borderRadius=.5rem;overflow=hidden]",
+          "children": [
+            {
+              "type": "Image?style:[minHeight=15rem;maxWidth=100%]"
+            }
+          ]
+        },
+        {
+          "type": "Input?path=title;label:[text=Title;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]"
+        },
+        {
+          "type": "Input?textarea;path=text;label:[text=Description;fontSize=1.2rem];style:[width=100%;border=1px solid #ddd;minHeight=10rem;fontSize=1.3rem;borderRadius=.5rem]"
+        },
+        {
+          "type": "View?class=grid;style:[gap=5rem;gridTemplateColumns=1fr 1fr;marginTop=auto]",
+          "children": [
+            {
+              "children": [
+                {
+                  "type": "Text?text=Post;style:[color=#fff;fontSize=1.4rem]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "click?loader.show;upload():[file=upload:().0]:[data().images.push():[().upload.data.url];save():[collection=post;data=data()];posts:().push():data();update():cards;():new-post.style():[opacity=0;pointerEvents=none];note():[text=Post created successfully!;type=info];loader.hide]?upload:().0;data().title;data().text"
+                }
+              ],
+              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=blue]"
+            },
+            {
+              "children": [
+                {
+                  "type": "Text?text=Cancel;style:[color=#fff;fontSize=1.4rem];click:[():new-post.style():[opacity=0;pointerEvents=none]]"
+                }
+              ],
+              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=#888]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "View:image-viewer?class=flexbox;style:[top=0;bottom=0;left=0;right=0;minHeight=100vh;backgroundColor=#444444cc;position=fixed;zIndex=1;opacity=0;pointerEvents=none;transition=.2s]",
+      "controls": [
+        {
+          "event": "click?style():[opacity=0;pointerEvents=none]?!1stChild().contains():[clicked:()]"
+        }
+      ],
+      "children": [
+        {
+          "type": "Image?src=enlarge-image:();style():[maxHeight=90%;maxWidth=90%]"
+        },
+        {
+          "type": "View?class=flexbox;style:[position=fixed;bottom=1rem;right=1rem;gap=.5rem]",
+          "children": [
+            {
+              "type": "Icon?name=bi-x-lg;style:[color=#fff;fontSize=1.6rem]"
+            },
+            {
+              "type": "Text?text=close;style:[color=#fff;fontSize=1.6rem]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

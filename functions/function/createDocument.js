@@ -1,5 +1,6 @@
 const { createElement } = require("./createElement");
 const { getJsonFiles } = require("./jsonFiles");
+const fs = require("fs")
 //
 require("dotenv").config();
 
@@ -7,11 +8,12 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   
   // Create a cookies object
   var host = req.headers["x-forwarded-host"] || req.headers["host"]
+  if (req.url.split("/")[1] === "undefined") return res.send("")
 
   // current page
   var currentPage = req.url.split("/")[1] || ""
   currentPage = currentPage || "main"
-
+  
   // get assets & views
   var global = {
     timer: new Date().getTime(),
@@ -111,11 +113,19 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     */
     console.log("before page / firestore", new Date().getTime() - global.timer);
 
+    if (host.includes("localhost")) {
+      if (!fs.existsSync(`database/page-${project.id}`)) fs.mkdirSync(`database/page-${project.id}`)
+      if (!fs.existsSync(`database/view-${project.id}`)) fs.mkdirSync(`database/view-${project.id}`)
+    }
+    
     await db
       .collection(`page-${project.id}`)
       .get()
       .then(q => {
-        q.forEach(doc => global.data.page[doc.id] = doc.data())
+        q.forEach(doc => {
+          global.data.page[doc.id] = doc.data()
+          if (host.includes("localhost")) require("fs").writeFileSync(`database/page-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
+        })
         console.log("after page", new Date().getTime() - global.timer);
       })
 
@@ -136,7 +146,10 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     .collection(`view-${project.id}`)
     .get()
     .then(q => {
-      q.forEach(doc => global.data.view[doc.id] = doc.data())
+      q.forEach(doc => {
+        global.data.view[doc.id] = doc.data()
+        if (host.includes("localhost")) require("fs").writeFileSync(`database/view-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
+      })
       console.log("after view", new Date().getTime() - global.timer);
     })
     
@@ -184,7 +197,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     )
     
   // controls & views
-  views.root.controls = global.data.page[currentPage].controls
+  views.root.controls = global.data.page[currentPage].controls || []
   views.root.children = [global.data.view[global.data.page[currentPage].view]]
   
   // meta

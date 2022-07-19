@@ -138,6 +138,15 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       return view.mouseup += `${param};`
     }
 
+    // keypress
+    if (param.slice(0, 8) === "keypress") {
+
+      param = param.slice(9)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+      view.keypress = view.keypress || ""
+      return view.keypress += `${param};`
+    }
+
     // keyup
     if (param.slice(0, 5) === "keyup") {
 

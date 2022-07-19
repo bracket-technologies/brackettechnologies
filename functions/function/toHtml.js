@@ -42,7 +42,7 @@ module.exports = {
     if (typeof value === 'object') value = ''
     
     if (view.type === "View") {
-      tag = `<div ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML}\n</div>`
+      tag = `<div ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML || view.text || ""}\n</div>`
     } else if (view.type === "Image") {
       tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index}' src='${view.src}'>${innerHTML}</img>`
     } else if (view.type === "Table") {

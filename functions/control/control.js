@@ -16,6 +16,7 @@ module.exports = {
   mouseover: require("./mouseover"),
   mousedown: require("./mousedown"),
   mouseup: require("./mouseup"),
+  keypress: require("./keypress"),
   keyup: require("./keyup"),
   keydown: require("./keydown"),
   loaded: require("./loaded"),

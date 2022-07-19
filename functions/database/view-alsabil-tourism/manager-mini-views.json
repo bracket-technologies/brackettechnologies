@@ -1,0 +1,19 @@
+{
+  "type": "View?id=manager-mini-views",
+  "creation-date": 1652284306902,
+  "children": [
+    {
+      "type": "View?view=flights-mini-window"
+    },
+    {
+      "type": "View?view=bookings-mini-window"
+    },
+    {
+      "type": "View?view=reservations-mini-window"
+    },
+    {
+      "type": "View?view=tickets-mini-window"
+    }
+  ],
+  "id": "manager-mini-views"
+}

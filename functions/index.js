@@ -38,6 +38,7 @@ realtimedb.ref("view-bracketjs").once("value").then(function(snapshot) {
 var { getdb, postdb, deletedb } = require("./function/database")
 var { getFile, postFile, deleteFile } = require("./function/storage")
 var { createDocument } = require("./function/createDocument")
+var { sendConfirmationEmail } = require("./function/sendConfirmationEmail")
 
 var app = express()
 
@@ -82,6 +83,9 @@ app.post("*", (req, res) => {
     if (path[1] === "database") return require("./function/databaseLocal").postdb({ req, res })
   }*/
 
+  // confirmEmail
+  if (path[1] === "confirmEmail") return sendConfirmationEmail({ req, res, db })
+
   // storage
   if (path[1] === "storage") return postFile({ req, res, db, storage })
 
@@ -113,20 +117,17 @@ app.delete("*", (req, res) => {
 // get
 app.get("*", async (req, res) => {
   var path = req.url.split("/")
-
-  /*
-    // var host = req.headers["x-forwarded-host"] || req.headers["host"]
+  /*var host = req.headers["x-forwarded-host"] || req.headers["host"]
   
     // bracket
-    if (req.headers.project === "bracket") {
+  if (myHost.includes(host)) {
     
-      // storage & resources
-      if (path[1] === "storage" || path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
-  
-      // database
-      if (path[1] === "database") return require("./function/databaseLocal").getdb({ req, res })
-    }
-  */
+    // storage & resources
+    if (path[1] === "storage") return require("./function/storageLocal").getFile({ req, res })
+
+    // database
+    if (path[1] === "database") return require("./function/databaseLocal").getdb({ req, res })
+  }*/
   
   // resources
   if (path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })

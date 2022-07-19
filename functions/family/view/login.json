@@ -1,0 +1,55 @@
+{
+  "id": "login",
+  "type": "View?id=login;class=flexbox;style:[position=fixed;top=0;bottom=0;left=0;right=0]",
+  "children": [
+    {
+      "type": "View?Data=signin-user;class=flexbox vertical;style:[width=80%;border=1px solid #ddd;borderRadius=.5rem;padding=3rem 2rem;gap=2rem]",
+      "children": [
+        {
+          "type": "Text?class=flex;text=Login To Family;style:[fontSize=2.2rem;marginBottom=2rem]"
+        },
+        {
+          "type": "Input?label:[text=User Name];style:[width=100%;height=4rem;borderRadius=.5rem;border=1px solid #ddd];path=username"
+        },
+        {
+          "type": "Input?label:[text=Password];password;style:[width=100%;height=4rem;borderRadius=.5rem;border=1px solid #ddd];path=password;keyup:[if():[e().key=Enter]:[next().1stChild().click()]]"
+        },
+        {
+          "children": [
+            {
+              "type": "Text?class=flexbox;style:[width=100%;height=4rem;borderRadius=.5rem;backgroundColor=blue;opacity=.8;color=#fff;fontSize=1.6rem;marginTop=2rem];text=Login",
+              "controls": [
+                {
+                  "actions": "wait():search?search.collection=user;search.field:[username.equal=data().username;password.equal=data().password];wait():[user:()=().search.data.value();if():[user:().id]:[setCookie():[name=_id;value=user:().id];route():main]:[note():[text=User name or password is incorrect!;type=danger]];loader.hide]",
+                  "event": "click?loader.show?data().username;data().password"
+                },
+                {
+                  "event": "click?note():[text='Kindly enter the username and password';type=warning]?!data().username||!data().password"
+                }
+              ]
+            },
+            {
+              "type": "View?class=horizontal;style:[gap=.4rem]",
+              "children": [
+                {
+                  "type": "Text?text='New to family?';style:[fontSize=1.2rem]"
+                },
+                {
+                  "type": "Text?text=Sign up now;style:[fontSize=1.2rem;color=blue;textDecoration=underline]"
+                }
+              ]
+            }
+          ],
+          "type": "View?class=vertical;style:[width=100%;gap=1rem]"
+        }
+      ]
+    }
+  ],
+  "creation-date": 1657477720832,
+  "controls": [
+    {
+      "actions": "wait():search?search.collection=user;search.doc=getCookie():_id;wait():[user:()=().search.data;if():[user:()]:[route():main]]",
+      "event": "loaded??getCookie():_id"
+    }
+  ]
+}

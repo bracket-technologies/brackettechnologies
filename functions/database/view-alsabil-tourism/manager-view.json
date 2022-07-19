@@ -1,0 +1,28 @@
+{
+  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]",
+  "id": "manager-view",
+  "children": [
+    {
+      "type": "View?view=loading-manager;)(:opened-manager=loading-manager"
+    },
+    {
+      "type": "View?view=dashboard-manager?)(:opened-manager=dashboard-manager"
+    },
+    {
+      "type": "View?view=flights-manager?)(:opened-manager=flights-manager"
+    },
+    {
+      "type": "View?view=reservations-manager?)(:opened-manager=reservations-manager"
+    },
+    {
+      "type": "View?view=canceled-reservations-manager?)(:opened-manager=canceled-reservations-manager"
+    },
+    {
+      "type": "View?view=sellings-manager?)(:opened-manager=sellings-manager"
+    },
+    {
+      "type": "View?view=refunds-manager?)(:opened-manager=refunds-manager"
+    }
+  ],
+  "creation-date": 0
+}

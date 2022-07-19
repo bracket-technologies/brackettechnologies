@@ -188,7 +188,7 @@
               "controls": [
                 {
                   "event": "click??data:().editor.project.id;)(:account-setup-data.business-address;)(:account-setup-data.business-city;)(:account-setup-data.business-postal-code;)(:account-setup-data.business-phone",
-                  "actions": "wait():save:route?route.path=/developer-editor/+data:().editor.project.id;data:().editor.project.override():[)(:account-setup-data];save.collection=_project_;save.doc=data:().editor.project.id;save.data=data:().editor.project"
+                  "actions": "wait():save:route?route.path=/developer-editor/+data:().editor.project.id;save.collection=_project_;save.doc=data:().editor.project.id;save.data=data:().editor.project"
                 },
                 {
                   "event": "click?parent().parent().prev().style().display=flex;():address.required.mount=true;():address.click();():city.required.mount=true;():city.click();():postal-code.required.mount=true;():postal-code.click();():phone.required.mount=true;():phone.click()?!)(:account-setup-data.business-address||!)(:account-setup-data.business-city||!)(:account-setup-data.business-postal-code||!)(:account-setup-data.business-phone"

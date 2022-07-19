@@ -10,6 +10,7 @@ module.exports = {
     var view = window.views[id]
     var headers = search.headers || {}
     headers.project = headers.project || global.projectId
+    var store = search.store || "database"
     
     if (global["access-key"]) headers["access-key"] = global["access-key"]
     delete search.headers
@@ -17,7 +18,7 @@ module.exports = {
     // search
     headers.search = encodeURI(toString({ search }))
     
-    var { data } = await axios.get(`/database`, {
+    var { data } = await axios.get(`/${store}`, {
       headers: {
         "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
         ...headers

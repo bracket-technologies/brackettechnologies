@@ -13,9 +13,9 @@ const toId = ({ string, checklist = [] }) => {
     
     candidates.map(cand => {
 
-        if (newId) return
-        var exists = checklist.find(id => id === cand)
-        if (!exists) newId = cand
+      if (newId) return
+      var exists = checklist.find(id => id === cand)
+      if (!exists) newId = cand
     })
     
     if (!newId) newId = generate(12)
