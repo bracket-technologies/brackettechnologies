@@ -7,10 +7,11 @@ const setPosition = ({ position, id, e }) => {
   var element = views[position.id || id].element
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
+  var positioner = position.positioner || id
+  
+  if (!views[positioner] && !mousePos) return
 
-  if (!views[position.positioner] && !mousePos) return
-
-  var positioner, topPos, bottomPos, rightPos, leftPos, heightPos, widthPos
+  var topPos, bottomPos, rightPos, leftPos, heightPos, widthPos
 
   if (mousePos) {
 
@@ -23,7 +24,7 @@ const setPosition = ({ position, id, e }) => {
     
   } else {
 
-    positioner = views[position.positioner].element
+    positioner = views[positioner].element
     topPos = positioner.getBoundingClientRect().top
     bottomPos = positioner.getBoundingClientRect().bottom
     rightPos = positioner.getBoundingClientRect().right

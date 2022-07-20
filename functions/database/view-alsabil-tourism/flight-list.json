@@ -1,11 +1,14 @@
 {
+  "id": "flight-list",
+  "creation-date": 1654120726246,
   "children": [
     {
+      "type": "View?style:[width=100%]",
       "children": [
         {
-          "type": "View?class=vertical;style:[width=100%;minHeight=30rem]?flights:().len()>0",
           "children": [
             {
+              "type": "View?id=table-headers;class=grid align-center;style:[width=100%;borderBottom=1px solid #ddd;gridTemplateColumns=3rem 12.5rem 8rem 1fr .75fr .75fr .75fr .75fr .75fr .75fr 1fr 8rem 10rem 10rem 1fr 1fr 1fr 1fr 1fr 3rem;height=4rem]",
               "children": [
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -32,12 +35,12 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Flight No.;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "children": [
@@ -48,12 +51,12 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=To;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
                   "children": [
@@ -64,20 +67,20 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Arr;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Stops;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "children": [
@@ -88,17 +91,9 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Duration;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
-                    }
-                  ]
-                },
-                {
-                  "children": [
-                    {
-                      "type": "Text?class=pointer;text=PNR's;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
                   ],
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
@@ -107,9 +102,17 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
-                      "type": "Text?class=pointer;text=Bookings;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                      "type": "Text?class=pointer;text=PNR's;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
                   ]
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Bookings;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "children": [
@@ -128,12 +131,12 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Av. Sts;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -167,12 +170,13 @@
                     }
                   ]
                 }
-              ],
-              "type": "View?id=table-headers;class=grid align-center;style:[width=100%;borderBottom=1px solid #ddd;gridTemplateColumns=3rem 12.5rem 8rem 1fr .75fr .75fr .75fr .75fr .75fr .75fr 1fr 8rem 10rem 10rem 1fr 1fr 1fr 1fr 1fr 3rem;height=4rem]"
+              ]
             },
             {
+              "type": "View?class=vertical;style:[width=100%]",
               "children": [
                 {
+                  "type": "[View]?data=flights:();class=grid align-center;style:[width=100%;gridTemplateColumns=3rem 12.5rem 8rem 1fr .75fr .75fr .75fr .75fr .75fr .75fr 1fr 8rem 10rem 10rem 1fr 1fr 1fr 1fr 1fr 3rem;height=4rem];mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]",
                   "children": [
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -215,12 +219,12 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().departure-airport.split(): .0;style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "children": [
@@ -239,12 +243,12 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().arrival-time.toClock():[hr;min]+if():[data().departure-day<data().arrival-day]:' (+1)':'';style:[fontSize=1.2rem]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -255,12 +259,12 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flexbox;text=data().aircraft;style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "children": [
@@ -295,20 +299,20 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flexbox;text=data().total-seats;style:[fontSize=1.2rem]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flexbox;text=data().total-av-seats;style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "children": [
@@ -319,18 +323,17 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flexbox;text=[data().total-reserved-seats||0]-[data().total-canceled-reserved-seats||0];style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "type": "View?style:[flex=1]"
                     },
                     {
-                      "type": "View?class=flexbox pointer;style:[opacity=0;flex=1]",
                       "children": [
                         {
                           "type": "Icon?class=flexbox actions;name=bi-three-dots-vertical;style:[fontSize=2.2rem;color=#888;transition=.1s;height=3rem;width=3rem;borderRadius=3rem];hover.style.color=blue",
@@ -340,21 +343,18 @@
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox pointer;style:[opacity=0;flex=1]"
                     }
-                  ],
-                  "type": "[View]?data=flights:();class=grid align-center;style:[width=100%;gridTemplateColumns=3rem 12.5rem 8rem 1fr .75fr .75fr .75fr .75fr .75fr .75fr 1fr 8rem 10rem 10rem 1fr 1fr 1fr 1fr 1fr 3rem;height=4rem];mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]"
+                  ]
                 }
-              ],
-              "type": "View?class=vertical;style:[width=100%]"
+              ]
             }
-          ]
+          ],
+          "type": "View?class=vertical;style:[width=100%;minHeight=30rem]?flights:().len()>0"
         }
-      ],
-      "type": "View?style:[width=100%]"
+      ]
     }
   ],
-  "creation-date": 1654120726246,
-  "type": "View?id=flight-list;class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]",
-  "id": "flight-list"
+  "type": "View?id=flight-list;class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]"
 }

@@ -7009,15 +7009,15 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _o
             if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, _i })
             else _o = o
-
+            
             if (_o instanceof Date) answer = _o.getTime()
-            else if (!isNaN(_o) && _o.length === 5 && _o.split(":").length === 2) {
+            else if (_o.length === 5 && _o.split(":").length === 2) {
 
                 var _hrs = parseInt(_o.split(":")[0]) * 60 * 60 * 1000
                 var _mins = parseInt(_o.split(":")[1]) * 60 * 1000
                 answer = _hrs + _mins
 
-            } else if (!isNaN(_o) && _o.length === 8 && _o.split(":").length === 3) {
+            } else if (_o.length === 8 && _o.split(":").length === 3) {
 
                 var _days = parseInt(_o.split(":")[0]) * 24 * 60 * 60 * 1000
                 var _hrs = parseInt(_o.split(":")[1]) * 60 * 60 * 1000
@@ -8795,10 +8795,11 @@ const setPosition = ({ position, id, e }) => {
   var element = views[position.id || id].element
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
+  var positioner = position.positioner || id
+  
+  if (!views[positioner] && !mousePos) return
 
-  if (!views[position.positioner] && !mousePos) return
-
-  var positioner, topPos, bottomPos, rightPos, leftPos, heightPos, widthPos
+  var topPos, bottomPos, rightPos, leftPos, heightPos, widthPos
 
   if (mousePos) {
 
@@ -8811,7 +8812,7 @@ const setPosition = ({ position, id, e }) => {
     
   } else {
 
-    positioner = views[position.positioner].element
+    positioner = views[positioner].element
     topPos = positioner.getBoundingClientRect().top
     bottomPos = positioner.getBoundingClientRect().bottom
     rightPos = positioner.getBoundingClientRect().right
