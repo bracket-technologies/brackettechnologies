@@ -259,7 +259,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
-    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()")) {
+    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -2201,10 +2201,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 })
             }
             
-        } else if (k0 === "unshift()") {
-            
-            o.unshift()
-            answer = o
+        } else if (k0 === "unshift()" || k0 === "pushFirst()" || k0 === "pushStart()") { // push to the begining, push first, push start
+
+          var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e })
+          var _index = 0
+          if (_index === undefined) _index = o.length
+          
+          if (Array.isArray(_item)) {
+              
+              _item.map(_item => {
+                  o.splice(_index, 0, _item)
+                  _index += 1
+              })
+
+          } else o.splice(_index, 0, _item)
+          answer = o
             
         } else if (k0 === "push()") {
             
@@ -2601,8 +2612,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             } else {
 
-                _o = new Date()
-                answer = _o.getTime()
+              _o = new Date(_o)
+              if (_o.getTime()) return answer = _o.getTime()
+              _o = new Date()
+              answer = _o.getTime()
             }
             
         } else if (k0 === "getDateTime()") {
@@ -3025,7 +3038,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             answer = o
             
-        } else if (k0 === "replace()") { //replace():prev:new
+        } else if (k0 === "files()") {
+            
+          answer = [...e.target.files]
+          
+      } else if (k0 === "replace()") { //replace():prev:new
 
             var rec0, rec1
             
@@ -3149,13 +3166,19 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "sort()") {
             
-            var _array, _params
+            var _array, _params = {}
             if (Array.isArray(o)) _array = o
             if (isParam({ _window, string: args[1] })) {
                 
                 _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
                 _params.data = _params.data || _params.map || _params.array || _params.object || _params.list || _array
+
+            } else if (args[1]) {
+              
+              _params.data = _array
+              _params.path = toValue({ req, res, _window, id, e, _, __, _i,params, value: args[1] })
             }
+            
             answer = require("./sort").sort({ sort: _params, id, e })
             return answer
 
@@ -3650,6 +3673,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_o.element) answer = _o.element.classList.remove(_class)
             else answer = _o.classList.remove(_class)
 
+        } else if (k === "files" && o && o.nodeType === Node.ELEMENT_NODE) {
+
+          answer = [...o.files]
+          
         } else if (k.includes("def()")) {
 
             var _name = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })

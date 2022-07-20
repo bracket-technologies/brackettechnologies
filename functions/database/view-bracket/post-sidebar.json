@@ -27,7 +27,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:post-list]?search.collection=post;search.headers.project=project:();wait():[data:().editor.post=().search.data]"
                 }
             ]

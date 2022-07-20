@@ -125,7 +125,7 @@
                                 {
                                     "controls": [
                                         {
-                                            "actions": "wait():[upload::0]:[update:gallery-view]:[update:storage-sidebar]:note?note.text=Image saved succefully!;upload.data=new-image-data:();upload.collection=storage;upload.doc=new-image-data:().name.split(): .join():'-'.split():'.'.join():'-'+'-'+today().timestamp();upload.headers.project=project:();upload.file=upload-file:();wait():[data:().editor.storage.[().upload.data.id]=().upload.data;if():[!gallery-images:().find():[id=().upload.data.id]]:[gallery-images:().push():[().upload.data]];():image-window-background.click();loader.hide]",
+                                            "actions": "wait():[upload::0]:[update:gallery-view]:[update:storage-sidebar]:note?note.text=Image saved succefully!;upload.data=new-image-data:();upload.doc=new-image-data:().name.split(): .join():'-'.split():'.'.join():'-'+'-'+timestamp();upload.headers.project=project:();upload.file=upload-file:();wait():[data:().editor.storage.[().upload.data.id]=().upload.data;if():[!gallery-images:().find():[id=().upload.data.id]]:[gallery-images:().push():[().upload.data]];():image-window-background.click();loader.hide]",
                                             "event": "click?loader.show?new-image:()"
                                         },
                                         {

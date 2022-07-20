@@ -6,8 +6,8 @@
       "event": "loaded"
     }
   ],
-  "id": "monitors-manager",
   "creation-date": 1650292186204,
+  "id": "monitors-manager",
   "children": [
     {
       "type": "View?id=monitors-manager-list;class=flex column;style.gap=2rem",
@@ -29,9 +29,9 @@
           "type": "View?class=flex align-center;style:[width=100%;padding=.5rem;height=4rem]"
         },
         {
-          "type": "View?class=flex column;style.borderRadius=1rem;style.width=100%",
           "children": [
             {
+              "type": "View?id=monitors-file-ear;class=flex;style.gap=0.1rem;().open-folder=all-monitors;style.width=100%;style.marginBottom=-0.1rem;style.zIndex=1",
               "children": [
                 {
                   "children": [
@@ -45,13 +45,13 @@
                       "type": "Text?class=ar;text=)(:monitors.len()||0;style.display=if():[parent().parent().open-folder=all-monitors]:flex.else():none;style.fontSize=1.2rem;style.color=if():[parent().parent().open-folder=all-monitors]:#fff.else():#888;style.backgroundColor=if():[parent().parent().open-folder=all-monitors]:blue.else():#ddd;style.padding=0 .55rem;style.height=1.75rem;style.borderRadius=1.5rem"
                     }
                   ],
+                  "type": "View?id=all-monitors;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=all-monitors]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0",
                   "controls": [
                     {
                       "actions": "async():search:[update:[parent().id]]:[update:monitors-views]?search.collection=resources-monitors;search.limit=25;async():[)(:monitors=().search.data]:[lastChild().text()=().search.data.len()]",
                       "event": "click?parent().open-folder=all-monitors?parent().open-folder!=all-monitors"
                     }
-                  ],
-                  "type": "View?id=all-monitors;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=all-monitors]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0"
+                  ]
                 },
                 {
                   "children": [
@@ -65,16 +65,15 @@
                       "type": "Text?class=ar;text=)(:monitors.len()||0;style.display=if():[parent().parent().open-folder=active-monitors]:flex.else():none;style.fontSize=1.2rem;style.color=if():[parent().parent().open-folder=active-monitors]:#fff.else():#888;style.backgroundColor=if():[parent().parent().open-folder=active-monitors]:blue.else():#ddd;style.padding=0 .55rem;style.height=1.75rem;style.borderRadius=1.5rem"
                     }
                   ],
-                  "type": "View?id=active-monitors;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=active-monitors]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0",
                   "controls": [
                     {
                       "actions": "async():search:[update:[parent().id]]:[update:monitors-views]?search.collection=resources-monitors;search.limit=25;search.field.active.equal=true;async():[)(:monitors=().search.data]:[lastChild().text()=().search.data.len()]",
                       "event": "click?parent().open-folder=active-monitors?parent().open-folder!=active-monitors"
                     }
-                  ]
+                  ],
+                  "type": "View?id=active-monitors;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=active-monitors]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0"
                 }
-              ],
-              "type": "View?id=monitors-file-ear;class=flex;style.gap=0.1rem;().open-folder=all-monitors;style.width=100%;style.marginBottom=-0.1rem;style.zIndex=1"
+              ]
             },
             {
               "type": "View?class=flex column;style.backgroundColor=#fff;style.minWidth=100%;style.padding=.5rem;style.borderRadius=1rem 0 1rem 1rem;style.border=1px solid #ddd",
@@ -83,30 +82,28 @@
                   "type": "View?class=flex align-center;style.width=100%;style.justifyContent=space-between;style.height=8rem;style.padding=0 2rem",
                   "children": [
                     {
+                      "type": "View?class=flexbox;style.border=1px solid #ddd;style.borderRadius=2rem;style.padding=.1rem;style.width=40rem;style.height=4rem",
                       "children": [
                         {
                           "type": "Icon?class=flexbox;style.color=#888;style.fontSize=2rem;style.minWidth=3rem;name=bi-funnel"
                         },
                         {
+                          "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، نوع، وصف ...",
                           "controls": [
                             {
                               "actions": "async():search:[update:monitors-views]?search.collection=resources-monitors;search.field.id.in=val();search.field.networks.in=val();search.field.name.in=val();search.field.type.in=val();search.field.address.in=val();search.field.note.in=val();search.field.status.in=val();search.operator=or;async():[)(:monitors=().search.data]",
                               "event": "input"
                             }
-                          ],
-                          "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، نوع، وصف ..."
+                          ]
                         },
                         {
                           "type": "Icon?class=flexbox pointer;style.color=blue;style.fontSize=2rem;style.minWidth=5rem;name=bi-sliders;style.borderRadius=2rem;style.backgroundColor=#f9f9f9;style.height=100%;style.transition=.2s;hover.style.backgroundColor=#eee"
                         }
-                      ],
-                      "type": "View?class=flexbox;style.border=1px solid #ddd;style.borderRadius=2rem;style.padding=.1rem;style.width=40rem;style.height=4rem"
+                      ]
                     },
                     {
-                      "type": "View?class=flexbox;style.gap=2rem",
                       "children": [
                         {
-                          "type": "View?id=monitors-view-type;class=flexbox;style.height=4rem;style.border=1px solid #ddd;style.borderRadius=.5rem",
                           "children": [
                             {
                               "controls": [
@@ -121,28 +118,30 @@
                               "type": "Icon?class=flexbox pointer;style.height=100%;style.width=4rem;style.borderRight=1px solid #ddd;name=bi-grid-3x3-gap;style.color=if():[)(:monitors-view-type=grid]:blue.else():#888;style.fontSize=1.8rem;hover.style.backgroundColor=#f8f8f8;style.transition=.2s",
                               "controls": [
                                 {
-                                  "event": "click?)(:monitors-view-type=grid?)(:monitors-view-type=list",
-                                  "actions": "update:[parent().id];update:monitors-views"
+                                  "actions": "update:[parent().id];update:monitors-views",
+                                  "event": "click?)(:monitors-view-type=grid?)(:monitors-view-type=list"
                                 }
                               ]
                             }
-                          ]
+                          ],
+                          "type": "View?id=monitors-view-type;class=flexbox;style.height=4rem;style.border=1px solid #ddd;style.borderRadius=.5rem"
                         },
                         {
                           "controls": [
                             {
-                              "actions": "update:monitors-mini-window",
-                              "event": "click?():monitors-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];)(:new-monitors=true;)(:monitors-data=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:note:_string:status:متصل:description:_string;)(:monitors-copied.del();)(:monitors-edit-readonly=false"
+                              "event": "click?():monitors-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];)(:new-monitors=true;)(:monitors-data=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:note:_string:status:متصل:description:_string;)(:monitors-copied.del();)(:monitors-edit-readonly=false",
+                              "actions": "update:monitors-mini-window"
                             }
                           ],
+                          "type": "View?class=flexbox pointer;style.gap=1rem;style.backgroundColor=blue;style.transition=.3s;style.borderRadius=2rem;style.padding=0 1rem;style.height=3.25rem;hover.style.backgroundColor=#0000bf",
                           "children": [
                             {
                               "type": "Text?class=flexbox ar;style.color=#fff;style.fontSize=1.2rem;text=إضافة شاشة مراقبة جديد"
                             }
-                          ],
-                          "type": "View?class=flexbox pointer;style.gap=1rem;style.backgroundColor=blue;style.transition=.3s;style.borderRadius=2rem;style.padding=0 1rem;style.height=3.25rem;hover.style.backgroundColor=#0000bf"
+                          ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox;style.gap=2rem"
                     }
                   ]
                 },
@@ -151,7 +150,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "View?class=flex column;style.borderRadius=1rem;style.width=100%"
         }
       ]
     },
@@ -164,7 +164,6 @@
       ],
       "children": [
         {
-          "type": "View?tooltip.text=عرض;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
           "children": [
             {
               "type": "Icon?name=bi-eye;style.fontSize=1.6rem;style.color=#666"
@@ -172,40 +171,42 @@
           ],
           "controls": [
             {
-              "actions": "update:monitors-mini-window?():monitors-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
-              "event": "click?)(:monitors-edit-readonly=true"
+              "event": "click?)(:monitors-edit-readonly=true",
+              "actions": "update:monitors-mini-window?():monitors-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
             }
-          ]
+          ],
+          "type": "View?tooltip.text=عرض;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee"
         },
         {
+          "type": "View?tooltip.text=تعديل;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
           "controls": [
             {
-              "actions": "async():[update:monitors-mini-window]?():monitors-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];async():[)(:monitors-edit=false]",
-              "event": "click?)(:monitors-edit-readonly=false;)(:monitors-edit=true"
+              "event": "click?)(:monitors-edit-readonly=false;)(:monitors-edit=true",
+              "actions": "async():[update:monitors-mini-window]?():monitors-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];async():[)(:monitors-edit=false]"
             }
           ],
           "children": [
             {
               "type": "Icon?name=bi-pencil-square;style.fontSize=1.6rem;style.color=#666"
             }
-          ],
-          "type": "View?tooltip.text=تعديل;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee"
+          ]
         },
         {
-          "type": "View?tooltip.text=نسخ;class=flexbox pointer;style.height=4rem;style.width=3.5rem;hover.style.backgroundColor=#eee",
-          "controls": [
-            {
-              "actions": "update:monitors-mini-window?():monitors-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
-              "event": "click?)(:monitors-edit-readonly=false;)(:monitors-data.id=generate():20;)(:monitors-data.creation-date=today().timestamp();)(:monitors-copied"
-            }
-          ],
           "children": [
             {
               "type": "Icon?name=bi-files;style.fontSize=1.6rem;style.color=#666"
             }
-          ]
+          ],
+          "controls": [
+            {
+              "event": "click?)(:monitors-edit-readonly=false;)(:monitors-data.id=generate():20;)(:monitors-data.creation-date=today().timestamp();)(:monitors-copied",
+              "actions": "update:monitors-mini-window?():monitors-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+            }
+          ],
+          "type": "View?tooltip.text=نسخ;class=flexbox pointer;style.height=4rem;style.width=3.5rem;hover.style.backgroundColor=#eee"
         },
         {
+          "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee",
           "children": [
             {
               "type": "Icon?name=bi-trash;style.fontSize=1.6rem;style.color=#666"
@@ -213,11 +214,10 @@
           ],
           "controls": [
             {
-              "actions": "setPosition:monitors-remove-popup?position.positioner=().id;position.placement=right",
-              "event": "click?if():[():monitors-remove-popup.style().pointerEvents=none]:[():monitors-remove-popup.style():[opacity=1;transform=scale(1);pointerEvents=auto]].else():[():monitors-remove-popup.style():[opacity=0;transform=scale(0.5);pointerEvents=none]]"
+              "event": "click?if():[():monitors-remove-popup.style().pointerEvents=none]:[():monitors-remove-popup.style():[opacity=1;transform=scale(1);pointerEvents=auto]].else():[():monitors-remove-popup.style():[opacity=0;transform=scale(0.5);pointerEvents=none]]",
+              "actions": "setPosition:monitors-remove-popup?position.positioner=().id;position.placement=right"
             }
-          ],
-          "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee"
+          ]
         }
       ]
     },
@@ -232,8 +232,8 @@
           "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
           "controls": [
             {
-              "event": "click?parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)];)(:monitors.[)(:monitors-data.id].del()",
-              "actions": "async():erase:[update:monitors-manager-list]?erase.collection=resources-monitors;erase.doc=)(:monitors-data.id;async():[():monitors-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:new-monitors.del()]"
+              "actions": "async():erase:[update:monitors-manager-list]?erase.collection=resources-monitors;erase.doc=)(:monitors-data.id;async():[():monitors-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:new-monitors.del()]",
+              "event": "click?parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)];)(:monitors.[)(:monitors-data.id].del()"
             }
           ]
         },

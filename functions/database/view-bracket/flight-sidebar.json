@@ -27,7 +27,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:flight-list]?search.collection=flight;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight=().search.data]"
                 }
             ]
@@ -126,7 +126,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:flight-booking-list]?search.collection=flight-booking;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-booking=().search.data]"
                 }
             ]
@@ -225,7 +225,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:flight-reservation-list]?search.collection=flight-reservation;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-reservation=().search.data]"
                 }
             ]
@@ -324,7 +324,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:flight-canceled-booking-list]?search.collection=flight-canceled-booking;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-canceled-booking=().search.data]"
                 }
             ]
@@ -423,7 +423,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:flight-canceled-reservation-list]?search.collection=flight-canceled-reservation;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight-canceled-reservation=().search.data]"
                 }
             ]

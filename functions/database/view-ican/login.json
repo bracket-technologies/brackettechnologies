@@ -1,10 +1,15 @@
 {
-  "type": "View:login?class=flexbox;style:[position=fixed;top=0;bottom=0;left=0;right=0]?mobile()",
-  "id": "login",
   "creation-date": 1658174680354,
+  "controls": [
+    {
+      "actions": "wait():search?search.collection=user;search.doc=getCookie():_id;wait():[user:()=().search.data;if():[user:()]:[route():main]]",
+      "event": "loaded??getCookie():_id"
+    }
+  ],
+  "id": "login",
+  "type": "View:login?class=flexbox;style:[position=fixed;top=0;bottom=0;left=0;right=0]?mobile()",
   "children": [
     {
-      "type": "View?Data=signin-user;class=flexbox vertical;style:[width=80%;border=1px solid #ddd;borderRadius=.5rem;padding=3rem 1.5rem;gap=2rem]",
       "children": [
         {
           "type": "Text?class=flex;text=Login to iCAN 2022;style:[fontSize=2rem;marginBottom=2rem]"
@@ -43,13 +48,8 @@
             }
           ]
         }
-      ]
-    }
-  ],
-  "controls": [
-    {
-      "actions": "wait():search?search.collection=user;search.doc=getCookie():_id;wait():[user:()=().search.data;if():[user:()]:[route():main]]",
-      "event": "loaded??getCookie():_id"
+      ],
+      "type": "View?Data=signin-user;class=flexbox vertical;style:[width=80%;border=1px solid #ddd;borderRadius=.5rem;padding=3rem 1.5rem;gap=2rem]"
     }
   ]
 }

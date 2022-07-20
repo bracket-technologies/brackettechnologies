@@ -1,9 +1,7 @@
 {
   "type": "View?id=issues-views;class=flex column;style.gap=.2rem",
-  "id": "issues-views",
   "children": [
     {
-      "type": "View?id=issues-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:issues-view-type=list]:flex:none?)(:issues-view-type=list",
       "children": [
         {
           "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
@@ -27,15 +25,23 @@
               ]
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
+                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
                       "event": "click",
                       "actions": "sort;update:issues-list-view?sort.Data=issues;sort.path=active"
                     }
-                  ],
-                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  ]
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "type": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
               "type": "View?class=flex align-center"
@@ -44,17 +50,9 @@
               "type": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
-                }
-              ]
-            },
-            {
-              "children": [
-                {
                   "type": "Text?class=ar pointer;text=الحالة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
               "type": "View?class=flex align-center",
@@ -89,28 +87,28 @@
               ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=مكان العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=إسم مكان العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=الشبكة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
               "type": "View?class=flex align-center",
@@ -121,28 +119,27 @@
               ]
             },
             {
-              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
               "children": [
                 {
+                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
                   "controls": [
                     {
-                      "actions": "setPosition:issues-remove-all-popup?position.placement=right;position.positioner=().id",
-                      "event": "click?if():[():issues-remove-all-popup.style().pointerEvents=none]:[():issues-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():issues-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
+                      "event": "click?if():[():issues-remove-all-popup.style().pointerEvents=none]:[():issues-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():issues-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                      "actions": "setPosition:issues-remove-all-popup?position.placement=right;position.positioner=().id"
                     }
-                  ],
-                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
             }
           ]
         },
         {
-          "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:issues.len()>0",
           "children": [
             {
-              "type": "[View]?data=issues:();style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[issues-view-type:()=list]:grid:none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
               "children": [
                 {
+                  "type": "View?class=flexbox;style.width=100%;style.height=100%",
                   "children": [
                     {
                       "controls": [
@@ -150,26 +147,25 @@
                           "event": "click?checked=().checked.opp();1stChild().style().opacity=if():[checked]:1:0;if():[():main-checker.checked]:[():main-checker.():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():monitors-views.className():checker.find():checked]:flex:none"
                         }
                       ],
+                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                       "children": [
                         {
                           "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                         }
-                      ],
-                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                      ]
                     }
-                  ],
-                  "type": "View?class=flexbox;style.width=100%;style.height=100%"
+                  ]
                 },
                 {
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
                       "controls": [
                         {
-                          "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50",
-                          "actions": "save?save.collection=issues;save.doc=data().id;save.data=data()"
+                          "actions": "save?save.collection=issues;save.doc=data().id;save.data=data()",
+                          "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms"
                     }
                   ],
                   "type": "View?class=flex align-center"
@@ -203,12 +199,12 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().status"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
@@ -219,44 +215,44 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().how-alert-received"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().alerter"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().receiver"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?style.fontSize=1.4rem;text=data().issue-place-type"
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().issue-place-type"
-                    }
-                  ]
-                },
-                {
-                  "children": [
-                    {
                       "type": "Text?style.fontSize=1.4rem;text=data().issue-place"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
                   "children": [
@@ -267,32 +263,36 @@
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().sensitivity"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
                   "children": [
                     {
                       "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
                       "controls": [
                         {
-                          "actions": "setPosition:issues-actions?position.placement=right;position.positioner=().id",
-                          "event": "click?if():[)(:issues-data=data();():issues-actions.style().pointerEvents=auto]:[():issues-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:issues-data.del()]].else():[():issues-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:issues-data=data().clone()]];)(:new-issues.del();)(:issues-copied.del();():issues-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+                          "event": "click?if():[)(:issues-data=data();():issues-actions.style().pointerEvents=auto]:[():issues-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:issues-data.del()]].else():[():issues-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:issues-data=data().clone()]];)(:new-issues.del();)(:issues-copied.del();():issues-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+                          "actions": "setPosition:issues-actions?position.placement=right;position.positioner=().id"
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
                 }
-              ]
+              ],
+              "type": "[View]?data=issues:();style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[issues-view-type:()=list]:grid:none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa"
             }
-          ]
+          ],
+          "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:issues.len()>0"
         }
-      ]
+      ],
+      "type": "View?id=issues-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:issues-view-type=list]:flex:none?)(:issues-view-type=list"
     }
-  ]
+  ],
+  "id": "issues-views"
 }

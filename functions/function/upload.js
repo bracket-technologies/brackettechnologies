@@ -1,53 +1,74 @@
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
+const { toArray } = require("./toArray")
 
 const upload = async ({ id, e, ...params }) => {
         
-  var upload = params.upload
+  var upload = params.upload, promises = []
   var global = window.global
   var view = window.views[id]
-  var data = upload.data || {}
-
+  var alldata = toArray(upload.data || [])
   var headers = clone(upload.headers) || {}
-  headers.project = headers.project || global.projectId
-  delete upload.headers
-  upload.doc = upload.doc || upload.id || generate(20)
+  var files = toArray(upload.file || upload.files)
+  var docs = toArray(upload.doc || upload.docs || [])
+
   upload.collection = upload.collection || "storage"
-  data.name = data.name || global.upload[0].name || (new Date()).getTime()
+  headers.project = headers.project || global.projectId
 
-  // get file type
-  var type = upload.file.type
-  data.type = type.split("/").join("-")
+  delete upload.headers
 
-  // file
-  var file = await readFile(upload.file)
-  delete upload.file
+  files.map(async (f, i) => {
 
-  // get regex exp
-  var regex = new RegExp(`^data:${type};base64,`, "gi")
-  file = file.replace(regex, "")
-  
-  // access key
-  if (global["access-key"]) headers["access-key"] = global["access-key"]
+    if (upload.file) delete upload.file
+    if (upload.files) delete upload.files
 
-  // data
-  upload.data = data
+    var data = alldata[i] || {}
+    var file = await readFile(f)
+    upload.doc = docs[i] || generate(20)
+    data.name = data.name || generate(20)
 
-  var { data } = await axios.post(`/storage`, { upload, file }, {
-    headers: {
-      "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...headers
+    // get file type
+    var type = files[i].type
+    data.type = type.split("/").join("-")
+    
+    // get regex exp
+    var regex = new RegExp(`^data:${type};base64,`, "gi")
+    file = file.replace(regex, "")
+    
+    // access key
+    if (global["access-key"]) headers["access-key"] = global["access-key"]
+
+    // data
+    upload.data = clone(data)
+    
+    promises.push(await axios.post(`/storage`, { upload, file }, {
+      headers: {
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+        ...headers
+      }
+    }))
+
+    if (promises.length === files.length) {
+
+      promises.map(({ data }, i) => {
+
+        if (files.length > 1) {
+          if (i === 0) view.uploads = []
+          view.uploads.push(data)
+        } else view.upload = data
+    
+        if (files.length > 1) console.log(view.uploads)
+        else console.log(view.upload)
+    
+      })
+    
+      // await params
+      if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
     }
   })
-
-  view.upload = data
-  console.log(data)
-
-  // await params
-  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
 }
-  
+
 const readFile = (file) => {
   return new Promise(res => {
 

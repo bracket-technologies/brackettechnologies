@@ -2319,6 +2319,8 @@ const componentModifier = ({ _window, id }) => {
     if (view.max !== undefined) view.input.max = view.max
     if (view.min !== undefined) view.input.min = view.min
     if (view.name !== undefined) view.input.name = view.name
+    if (view.accept !== undefined) view.input.accept = view.input.accept
+    if (view.multiple !== undefined) view.input.multiple = true
     if (view.input.placeholder) view.placeholder = view.input.placeholder
     
   } else if (view.type === "Item") {
@@ -2585,7 +2587,7 @@ const defaultInputHandler = ({ id }) => {
         }
 
         // for uploads
-        if (view.input.type === "file") return global.upload = e.target.files
+        if (view.input.type === "file") return global.upload = [...e.target.files]
 
         // contentfull
         if (view.input.type === "text") {
@@ -4671,7 +4673,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
-    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()")) {
+    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -6613,10 +6615,21 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 })
             }
             
-        } else if (k0 === "unshift()") {
-            
-            o.unshift()
-            answer = o
+        } else if (k0 === "unshift()" || k0 === "pushFirst()" || k0 === "pushStart()") { // push to the begining, push first, push start
+
+          var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e })
+          var _index = 0
+          if (_index === undefined) _index = o.length
+          
+          if (Array.isArray(_item)) {
+              
+              _item.map(_item => {
+                  o.splice(_index, 0, _item)
+                  _index += 1
+              })
+
+          } else o.splice(_index, 0, _item)
+          answer = o
             
         } else if (k0 === "push()") {
             
@@ -7013,8 +7026,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             } else {
 
-                _o = new Date()
-                answer = _o.getTime()
+              _o = new Date(_o)
+              if (_o.getTime()) return answer = _o.getTime()
+              _o = new Date()
+              answer = _o.getTime()
             }
             
         } else if (k0 === "getDateTime()") {
@@ -7437,7 +7452,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             answer = o
             
-        } else if (k0 === "replace()") { //replace():prev:new
+        } else if (k0 === "files()") {
+            
+          answer = [...e.target.files]
+          
+      } else if (k0 === "replace()") { //replace():prev:new
 
             var rec0, rec1
             
@@ -7561,13 +7580,19 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "sort()") {
             
-            var _array, _params
+            var _array, _params = {}
             if (Array.isArray(o)) _array = o
             if (isParam({ _window, string: args[1] })) {
                 
                 _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
                 _params.data = _params.data || _params.map || _params.array || _params.object || _params.list || _array
+
+            } else if (args[1]) {
+              
+              _params.data = _array
+              _params.path = toValue({ req, res, _window, id, e, _, __, _i,params, value: args[1] })
             }
+            
             answer = require("./sort").sort({ sort: _params, id, e })
             return answer
 
@@ -8062,6 +8087,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (_o.element) answer = _o.element.classList.remove(_class)
             else answer = _o.classList.remove(_class)
 
+        } else if (k === "files" && o && o.nodeType === Node.ELEMENT_NODE) {
+
+          answer = [...o.files]
+          
         } else if (k.includes("def()")) {
 
             var _name = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
@@ -8946,14 +8975,12 @@ const sort = ({ sort = {}, id, e }) => {
   var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
-  var sortBy = options.sortBy || view.sortBy || "ascending"
+  var sortBy = options.sortBy || view.sortBy || sort.sortBy || sort.by || "ascending"
 
-  // sort by
-  options.sortBy = sortBy === "ascending" ? "descending" : "ascending"
-  if (sort.ascending) options.sortBy = "ascending"
-  else if (sort.descending) options.sortBy = "descending"
-  else if (sort.sortBy || sort.sortby || sort.by) options.sortBy = sort.sortBy || sort.sortby || sort.by
-  view.sortBy = options.sortBy
+  if (sort.ascending) sortBy = "ascending"
+  else if (sort.descending) sortBy = "descending"
+  else if (sort.sortBy || sort.sortby || sort.by) sortBy = sort.sortBy || sort.sortby || sort.by
+  options.sortBy = view.sortBy = sortBy
 
   // path
   var path = sort.path
@@ -9010,7 +9037,7 @@ const sort = ({ sort = {}, id, e }) => {
       b = b.toString()
     }
 
-    if (options.sortBy === "ascending") {
+    if (sortBy === "descending") {
       if (isDate) {
         if (b.year === a.year) {
           if (b.month === a.month) {
@@ -9047,14 +9074,16 @@ const sort = ({ sort = {}, id, e }) => {
           else return -1
         }
       }
-
+      
       if (!isNaN(a) && !isNaN(b)) return a - b
 
       if (b < a) return -1
       return b > a ? 1 : 0
     }
   })
-
+  
+  // sort by
+  options.sortBy = sortBy === "ascending" ? "descending" : "ascending"
   if (Data) global[Data] = data
   return data
 }
@@ -9756,7 +9785,7 @@ module.exports = {
       if (view.textarea) {
         tag = `<textarea ${view.draggable ? "draggable='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${value}</textarea>`
       } else {
-        tag = `<input ${view.draggable ? "draggable='true'" : ""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}/*"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index}'/>`
+        tag = `<input ${view.draggable ? "draggable='true'" : ""} ${view.multiple?"multiple":""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}/*"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index}'/>`
       }
     } else if (view.type === "Paragraph") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index}'>${text}</textarea>`
@@ -10930,53 +10959,74 @@ module.exports = {updateSelf}
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
+const { toArray } = require("./toArray")
 
 const upload = async ({ id, e, ...params }) => {
         
-  var upload = params.upload
+  var upload = params.upload, promises = []
   var global = window.global
   var view = window.views[id]
-  var data = upload.data || {}
-
+  var alldata = toArray(upload.data || [])
   var headers = clone(upload.headers) || {}
-  headers.project = headers.project || global.projectId
-  delete upload.headers
-  upload.doc = upload.doc || upload.id || generate(20)
+  var files = toArray(upload.file || upload.files)
+  var docs = toArray(upload.doc || upload.docs || [])
+
   upload.collection = upload.collection || "storage"
-  data.name = data.name || global.upload[0].name || (new Date()).getTime()
+  headers.project = headers.project || global.projectId
 
-  // get file type
-  var type = upload.file.type
-  data.type = type.split("/").join("-")
+  delete upload.headers
 
-  // file
-  var file = await readFile(upload.file)
-  delete upload.file
+  files.map(async (f, i) => {
 
-  // get regex exp
-  var regex = new RegExp(`^data:${type};base64,`, "gi")
-  file = file.replace(regex, "")
-  
-  // access key
-  if (global["access-key"]) headers["access-key"] = global["access-key"]
+    if (upload.file) delete upload.file
+    if (upload.files) delete upload.files
 
-  // data
-  upload.data = data
+    var data = alldata[i] || {}
+    var file = await readFile(f)
+    upload.doc = docs[i] || generate(20)
+    data.name = data.name || generate(20)
 
-  var { data } = await axios.post(`/storage`, { upload, file }, {
-    headers: {
-      "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...headers
+    // get file type
+    var type = files[i].type
+    data.type = type.split("/").join("-")
+    
+    // get regex exp
+    var regex = new RegExp(`^data:${type};base64,`, "gi")
+    file = file.replace(regex, "")
+    
+    // access key
+    if (global["access-key"]) headers["access-key"] = global["access-key"]
+
+    // data
+    upload.data = clone(data)
+    
+    promises.push(await axios.post(`/storage`, { upload, file }, {
+      headers: {
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+        ...headers
+      }
+    }))
+
+    if (promises.length === files.length) {
+
+      promises.map(({ data }, i) => {
+
+        if (files.length > 1) {
+          if (i === 0) view.uploads = []
+          view.uploads.push(data)
+        } else view.upload = data
+    
+        if (files.length > 1) console.log(view.uploads)
+        else console.log(view.upload)
+    
+      })
+    
+      // await params
+      if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
     }
   })
-
-  view.upload = data
-  console.log(data)
-
-  // await params
-  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
 }
-  
+
 const readFile = (file) => {
   return new Promise(res => {
 
@@ -11015,7 +11065,7 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./clone":36,"./generate":61,"./toAwait":101,"axios":123}],122:[function(require,module,exports){
+},{"./clone":36,"./generate":61,"./toArray":100,"./toAwait":101,"axios":123}],122:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")

@@ -27,7 +27,7 @@
           "event": "mouseleave?lastChild().style().display=none"
         },
         {
-          "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+          "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
           "actions": "wait():search:[update:user-list]?search.collection=user;search.headers.project=project:();wait():[data:().editor.user=().search.data]"
         }
       ]
@@ -126,7 +126,7 @@
           "event": "mouseleave?lastChild().style().display=none"
         },
         {
-          "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+          "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
           "actions": "wait():search:[update:customer-list]?search.collection=customer;search.headers.project=project:();wait():[data:().editor.customer=().search.data]"
         }
       ]
@@ -225,7 +225,7 @@
           "event": "mouseleave?lastChild().style().display=none"
         },
         {
-          "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+          "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
           "actions": "wait():search:[update:supplier-list]?search.collection=supplier;search.headers.project=project:();wait():[data:().editor.supplier=().search.data]"
         }
       ]
@@ -324,7 +324,7 @@
           "event": "mouseleave?lastChild().style().display=none"
         },
         {
-          "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+          "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
           "actions": "wait():search:[update:agent-list]?search.collection=agent;search.headers.project=project:();wait():[data:().editor.agent=().search.data]"
         }
       ]

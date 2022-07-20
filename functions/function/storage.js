@@ -1,5 +1,6 @@
 const fs = require("fs")
 const { generate } = require("./generate")
+const { toArray } = require("./toArray")
 const mime = {
   html: "text/html",
   txt: "text/plain",
@@ -33,7 +34,7 @@ const postFile = async ({ req, res, storage, db }) => {
   data.type = data.type.split("-").join("/")
   // convert base64 to buffer
   var buffer = Buffer.from(file, "base64")
-
+  
   await storage.bucket().file(`${collection}/${upload.doc}`).save(buffer, { contentType: data.type }, async () => {
     url = await storage.bucket().file(`${collection}/${upload.doc}`).getSignedUrl({ action: 'read', expires: '03-09-3000' })
   })

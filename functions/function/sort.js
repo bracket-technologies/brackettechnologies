@@ -13,14 +13,12 @@ const sort = ({ sort = {}, id, e }) => {
   var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
-  var sortBy = options.sortBy || view.sortBy || "ascending"
+  var sortBy = options.sortBy || view.sortBy || sort.sortBy || sort.by || "ascending"
 
-  // sort by
-  options.sortBy = sortBy === "ascending" ? "descending" : "ascending"
-  if (sort.ascending) options.sortBy = "ascending"
-  else if (sort.descending) options.sortBy = "descending"
-  else if (sort.sortBy || sort.sortby || sort.by) options.sortBy = sort.sortBy || sort.sortby || sort.by
-  view.sortBy = options.sortBy
+  if (sort.ascending) sortBy = "ascending"
+  else if (sort.descending) sortBy = "descending"
+  else if (sort.sortBy || sort.sortby || sort.by) sortBy = sort.sortBy || sort.sortby || sort.by
+  options.sortBy = view.sortBy = sortBy
 
   // path
   var path = sort.path
@@ -77,7 +75,7 @@ const sort = ({ sort = {}, id, e }) => {
       b = b.toString()
     }
 
-    if (options.sortBy === "ascending") {
+    if (sortBy === "descending") {
       if (isDate) {
         if (b.year === a.year) {
           if (b.month === a.month) {
@@ -114,14 +112,16 @@ const sort = ({ sort = {}, id, e }) => {
           else return -1
         }
       }
-
+      
       if (!isNaN(a) && !isNaN(b)) return a - b
 
       if (b < a) return -1
       return b > a ? 1 : 0
     }
   })
-
+  
+  // sort by
+  options.sortBy = sortBy === "ascending" ? "descending" : "ascending"
   if (Data) global[Data] = data
   return data
 }

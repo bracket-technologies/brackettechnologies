@@ -27,7 +27,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:hotel-list]?search.collection=hotel;search.headers.project=project:();search.limit=25;wait():[data:().editor.hotel=().search.data]?!data:().editor.hotel"
                 }
             ]
@@ -126,7 +126,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:hotel-booking-list]?search.collection=hotel-booking;search.headers.project=project:();search.limit=25;wait():[data:().editor.hotel-booking=().search.data]?!data:().editor.hotel-booking"
                 }
             ]
@@ -225,7 +225,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:hotel-accommodation-list]?search.collection=hotel-accommodation;search.headers.project=project:();search.limit=25;wait():[data:().editor.hotel-accommodation=().search.data]?!data:().editor.hotel-accommodation"
                 }
             ]
@@ -324,7 +324,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:hotel-canceled-booking-list]?search.collection=hotel-canceled-booking;search.headers.project=project:();search.limit=25;wait():[data:().editor.hotel-canceled-booking=().search.data]?!data:().editor.hotel-canceled-booking"
                 }
             ]
@@ -423,7 +423,7 @@
                     "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                    "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                    "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                     "actions": "wait():search:[update:hotel-canceled-accommodation-list]?search.collection=hotel-canceled-accommodation;search.headers.project=project:();search.limit=25;wait():[data:().editor.hotel-canceled-accommodation=().search.data]?!data:().editor.hotel-canceled-accommodation"
                 }
             ]

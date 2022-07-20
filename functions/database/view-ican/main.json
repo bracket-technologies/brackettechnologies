@@ -1,16 +1,7 @@
 {
-  "creation-date": 1658174623616,
-  "id": "main",
   "type": "View:main?class=grid;style:[backgroundColor=#ccc]?mobile()",
-  "controls": [
-    {
-      "actions": "wait():search:search?search.collection=user;search.doc=getCookie():_id;wait():[user:()=().search.data;if():[!user:()]:[route():login];update():user-name;search.collection=post]:[posts:()=().search.data.values();update():[id=cards;self]]",
-      "event": "loaded??getCookie():_id"
-    },
-    {
-      "event": "loaded?route():login?!getCookie():_id"
-    }
-  ],
+  "id": "main",
+  "creation-date": 1658174623616,
   "children": [
     {
       "type": "Icon?name=thumb_up;google.filled;style:[opacity=0;pointerEvents=none;position=absolute;top=-100];#load on page loaded"
@@ -25,20 +16,20 @@
           "type": "Text?text=iCAN 2022;style:[fontSize=2rem;color=#fff;fontWeight=bold;position=absolute;width=16rem;left=calc(50vw - 8rem)]"
         },
         {
+          "type": "View:user-name?class=flexbox;style:[gap=1rem]",
           "children": [
             {
               "type": "Icon?name=person;style:[fontSize=2rem;color=#fff]?!user:()"
             },
             {
-              "type": "Text?text=Hi, +user:().first-name.split(): .0;style:[fontSize=1.4rem;color=#fff];droplist:[items=_list:Profile:Logout;item.style:[fontSize=1.4rem;minHeight=3.5rem]]?user:()",
               "controls": [
                 {
                   "event": "click:droplist?eraseCookie():_id;route():login?droplist-txt:()=Logout"
                 }
-              ]
+              ],
+              "type": "Text?text=Hi, +user:().first-name.split(): .0;style:[fontSize=1.4rem;color=#fff];droplist:[items=_list:Profile:Logout;item.style:[fontSize=1.4rem;minHeight=3.5rem]]?user:()"
             }
-          ],
-          "type": "View:user-name?class=flexbox;style:[gap=1rem]"
+          ]
         }
       ]
     },
@@ -59,13 +50,11 @@
       "type": "View:cards?data=posts:();class=grid;style:[width=100%;gap=1rem]",
       "children": [
         {
-          "type": "[View]?class=flex;style:[width=100%]?posts:().len()>0",
           "children": [
             {
               "type": "View?data=data();Data;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]",
               "children": [
                 {
-                  "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between]",
                   "children": [
                     {
                       "type": "Text?text=data().created-by;style:[fontSize=1.3rem;color=#888]"
@@ -73,12 +62,14 @@
                     {
                       "type": "Text?text=data().creation-date.toDateFormat();style:[fontSize=1.3rem;color=#888]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between]"
                 },
                 {
                   "type": "View?class=flexbox;style:[if():[data().images.len()>1]:[display=grid];if():[data().images.len()>2]:[gridTemplateColumns=1fr 1fr];gap=.5rem;width=100%;borderRadius=1rem;overflow=hidden]",
                   "children": [
                     {
+                      "type": "[View]?path=images;class=flexbox;style:[maxHeight=if():[parent().data().images.len()>1]:12.5rem:35rem;width=100%;overflow=hidden]",
                       "children": [
                         {
                           "type": "Image?src=data();style:[width=100%]"
@@ -88,8 +79,7 @@
                         {
                           "event": "click?():image-viewer.style():[opacity=1;pointerEvents=auto];enlarge-image:()=data();update():image-viewer"
                         }
-                      ],
-                      "type": "[View]?path=images;class=flexbox;style:[maxHeight=if():[parent().data().images.len()>1]:15rem:35rem;width=100%;overflow=hidden]"
+                      ]
                     }
                   ]
                 },
@@ -104,12 +94,12 @@
                     {
                       "children": [
                         {
+                          "type": "Text?text=[data().comments.len()]+ comments;style:[fontSize=1.3rem;color=#888;width=8rem]",
                           "controls": [
                             {
                               "event": "click?if():[parent().next().style().display=none]:[parent().next().style().display=flex]:[parent().next().style().display=none]"
                             }
-                          ],
-                          "type": "Text?text=[data().comments.len()]+ comments;style:[fontSize=1.3rem;color=#888;width=8rem]"
+                          ]
                         },
                         {
                           "type": "Text?text=[data().likes.len()]+ likes;style:[fontSize=1.3rem;color=#888;width=5rem;textAlign=right]"
@@ -118,15 +108,14 @@
                       "type": "View?class=flexbox;style:[width=100%;justifyContent=flex-end;borderTop=1px solid #ddd;padding=.5rem]"
                     },
                     {
+                      "type": "View?class=vertical;style:[width=100%;display=none;gap=1rem]",
                       "children": [
                         {
                           "type": "[Comment]?class=vertical;path=comments?data().comments.len()>0"
                         }
-                      ],
-                      "type": "View?class=vertical;style:[width=100%;display=none;gap=1rem]"
+                      ]
                     },
                     {
-                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]",
                       "children": [
                         {
                           "type": "View?class=horizontal;style:[gap=.5rem;paddding=.5rem;height=3rem]",
@@ -153,6 +142,7 @@
                               "event": "click?if():[parent().next().style().display=none]:[parent().next().():[style().display=flex;input().focus()]]:[parent().next().style().display=none]"
                             }
                           ],
+                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem;height=3rem]",
                           "children": [
                             {
                               "type": "Icon?name=mode_comment;google.outlined;style:[fontSize=1.8rem]"
@@ -160,16 +150,9 @@
                             {
                               "type": "Text?text=Comment;style:[fontSize=1.3rem]"
                             }
-                          ],
-                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem;height=3rem]"
+                          ]
                         },
                         {
-                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem;height=3rem]",
-                          "controls": [
-                            {
-                              "event": "click??false"
-                            }
-                          ],
                           "children": [
                             {
                               "type": "Icon?name=share;google.outlined;style:[fontSize=1.8rem]"
@@ -177,23 +160,29 @@
                             {
                               "type": "Text?text=Share;style:[fontSize=1.3rem]"
                             }
-                          ]
+                          ],
+                          "controls": [
+                            {
+                              "event": "click??false"
+                            }
+                          ],
+                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem;height=3rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]"
                     },
                     {
                       "type": "View?class=horizontal;style:[width=100%;minHeight=3.5rem;height=fit-content;borderTop=1px solid #ddd;display=none]",
                       "children": [
                         {
+                          "type": "Input?Data;textarea;style:[width=100%;height=fit-content;minHeight=3rem]",
                           "controls": [
                             {
                               "event": "keypress?next().click()?e().key=Enter"
                             }
-                          ],
-                          "type": "Input?Data;textarea;style:[width=100%;height=fit-content;minHeight=3rem]"
+                          ]
                         },
                         {
-                          "type": "View?class=flexbox;style:[height=3rem;width=3rem]",
                           "children": [
                             {
                               "type": "Icon?name=send;google.outlined;style:[fontSize=1.6rem]"
@@ -203,7 +192,8 @@
                             {
                               "event": "click?if():[prev().txt()]:[Data().comments.push():[_map:creation-date:[today().timestamp()]:user:[user:().id]:user-name:[user:().first-name+ +user:().last-name]:comment:[prev().txt()]];save():[collection=post;data=Data()];note():[text=Comment added successfully!];parent().parent().update()]:[note():[text=Can't leave empty comments!;type=warning]]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flexbox;style:[height=3rem;width=3rem]"
                         }
                       ]
                     }
@@ -212,7 +202,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "[View]?class=flex;style:[width=100%]?posts:().len()>0"
         }
       ]
     },
@@ -240,22 +231,45 @@
                   "type": "Icon?class=flexbox pointer;name=bi-download;style:[color=#666;fontSize=1.6rem;transition=.3s]"
                 },
                 {
+                  "type": "Input?class=pointer;input.type=file;multiple;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]",
                   "controls": [
                     {
-                      "event": "change?fileReader():[e().target.files.0]:[parent().parent().next().():[style().display=flex;src()=[e().target.result]]]"
+                      "event": "change?my-images:()=_list;files()._():[fileReader():_:[my-images:().push():[e().target.result];update():'new-post-images']]"
                     }
-                  ],
-                  "type": "Input?class=pointer;input.type=file;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]"
+                  ]
                 }
               ]
             }
           ]
         },
         {
-          "type": "View?class=flexbox;style:[display=none;borderRadius=.5rem;overflow=hidden]",
+          "type": "View?class=flexbox;style:[display=none;borderRadius=.5rem;overflow=hidden]?false",
           "children": [
             {
               "type": "Image?style:[minHeight=15rem;maxWidth=100%]"
+            }
+          ]
+        },
+        {
+          "type": "View:new-post-images?class=flexbox;style:[width=100%]",
+          "children": [
+            {
+              "type": "View?class=flexbox;style:[if():[my-images:().len()>1]:[display=grid];if():[my-images:().len()>2]:[gridTemplateColumns=1fr 1fr];gap=.5rem;width=100%;borderRadius=1rem;overflow=hidden;backgroundColor=#ddd;border=1px solid #ddd;gap=.1rem]?my-images:().len()>0",
+              "children": [
+                {
+                  "type": "[View]?Data=my-images;class=flexbox;style:[maxHeight=if():[my-images:().len()>1]:[12.5rem]:35rem;width=100%;overflow=hidden]",
+                  "children": [
+                    {
+                      "type": "Image?src=data();style:[width=100%]"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?():image-viewer.style():[opacity=1;pointerEvents=auto];enlarge-image:()=data();update():image-viewer"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -274,12 +288,12 @@
                   "type": "Text?text=Post;style:[color=#fff;fontSize=1.4rem]"
                 }
               ],
+              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=blue]",
               "controls": [
                 {
-                  "event": "click?loader.show;upload():[file=upload:().0]:[data().images.push():[().upload.data.url];save():[collection=post;data=data()];posts:().push():data();update():cards;():new-post.style():[opacity=0;pointerEvents=none];note():[text=Post created successfully!;type=info];loader.hide]?upload:().0;data().title;data().text"
+                  "event": "click?loader.show;upload():[files=upload:()]:[data().images.push():[().uploads.():[data.url]];save():[collection=post;data=data()];posts:().pushStart():data();update():cards;():new-post.style():[opacity=0;pointerEvents=none];note():[text=Post created successfully!;type=info];loader.hide]?upload:().0;data().title;data().text"
                 }
-              ],
-              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=blue]"
+              ]
             },
             {
               "children": [
@@ -294,12 +308,6 @@
       ]
     },
     {
-      "type": "View:image-viewer?class=flexbox;style:[top=0;bottom=0;left=0;right=0;minHeight=100vh;backgroundColor=#444444cc;position=fixed;zIndex=1;opacity=0;pointerEvents=none;transition=.2s]",
-      "controls": [
-        {
-          "event": "click?style():[opacity=0;pointerEvents=none]?!1stChild().contains():[clicked:()]"
-        }
-      ],
       "children": [
         {
           "type": "Image?src=enlarge-image:();style():[maxHeight=90%;maxWidth=90%]"
@@ -315,7 +323,22 @@
             }
           ]
         }
+      ],
+      "type": "View:image-viewer?class=flexbox;style:[top=0;bottom=0;left=0;right=0;minHeight=100vh;backgroundColor=#444444cc;position=fixed;zIndex=1;opacity=0;pointerEvents=none;transition=.2s]",
+      "controls": [
+        {
+          "event": "click?style():[opacity=0;pointerEvents=none]?!1stChild().contains():[clicked:()]"
+        }
       ]
+    }
+  ],
+  "controls": [
+    {
+      "actions": "wait():search:search?search.collection=user;search.doc=getCookie():_id;wait():[user:()=().search.data;if():[!user:()]:[route():login];update():user-name;search.collection=post]:[posts:()=().search.data.values().sort():[path=creation-date;descending];update():[id=cards;self]]",
+      "event": "loaded??getCookie():_id"
+    },
+    {
+      "event": "loaded?route():login?!getCookie():_id"
     }
   ]
 }

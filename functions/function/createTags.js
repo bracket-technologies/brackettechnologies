@@ -128,6 +128,8 @@ const componentModifier = ({ _window, id }) => {
     if (view.max !== undefined) view.input.max = view.max
     if (view.min !== undefined) view.input.min = view.min
     if (view.name !== undefined) view.input.name = view.name
+    if (view.accept !== undefined) view.input.accept = view.input.accept
+    if (view.multiple !== undefined) view.input.multiple = true
     if (view.input.placeholder) view.placeholder = view.input.placeholder
     
   } else if (view.type === "Item") {

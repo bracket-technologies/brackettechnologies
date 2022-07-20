@@ -1,7 +1,7 @@
 {
+  "type": "View?id=devices-sources-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=10vh 0",
   "children": [
     {
-      "type": "View?class=flex column;style.width=70vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto?devices-sources-data:()",
       "children": [
         {
           "type": "View?class=flex align-device;style.width=100%",
@@ -13,30 +13,30 @@
               "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto",
               "children": [
                 {
-                  "controls": [
-                    {
-                      "actions": "async():erase:[update:devices-sources-manager-list]?erase.collection=resources-devices-sources;erase.doc=)(:devices-sources-data.id;async():[():devices-sources-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:new-devices-sources.del()]",
-                      "event": "click?)(:devices-sources.[)(:devices-sources-data.id].del()"
-                    }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-devices-sources;!)(:devices-sources-edit-readonly",
                   "children": [
                     {
                       "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
                     }
-                  ]
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?)(:devices-sources.[)(:devices-sources-data.id].del()",
+                      "actions": "async():erase:[update:devices-sources-manager-list]?erase.collection=resources-devices-sources;erase.doc=)(:devices-sources-data.id;async():[():devices-sources-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:new-devices-sources.del()]"
+                    }
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-devices-sources;!)(:devices-sources-edit-readonly"
                 },
                 {
+                  "controls": [
+                    {
+                      "actions": "async():save:note:[update:devices-sources-manager-list:200]?note.text=تم حفظ الجهاز بنجاح;save.collection=resources-devices-sources;save.doc=)(:devices-sources-data.id;save.data=)(:devices-sources-data;async():[():devices-sources-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1]]",
+                      "event": "click?)(:devices-sources.[)(:devices-sources-data.id]=)(:devices-sources-data;)(:new-devices-sources.del()"
+                    }
+                  ],
                   "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:devices-sources-edit-readonly",
                   "children": [
                     {
                       "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
-                    }
-                  ],
-                  "controls": [
-                    {
-                      "event": "click?)(:devices-sources.[)(:devices-sources-data.id]=)(:devices-sources-data;)(:new-devices-sources.del()",
-                      "actions": "async():save:note:[update:devices-sources-manager-list:200]?note.text=تم حفظ الجهاز بنجاح;save.collection=resources-devices-sources;save.doc=)(:devices-sources-data.id;save.data=)(:devices-sources-data;async():[():devices-sources-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1]]"
                     }
                   ]
                 },
@@ -61,6 +61,7 @@
           "type": "View?style.width=100%;style.height=1px;style.backgroundColor=#ddd"
         },
         {
+          "type": "View?class=flex column;style.width=100%;data=)(:devices-sources-data;style.gap=2rem",
           "children": [
             {
               "type": "View?class=flex column;style.gap=1rem;style.width=100%",
@@ -69,6 +70,7 @@
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات التسجيل;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=الرمز;label.location=outside;readonly;path=id;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
@@ -84,13 +86,11 @@
                       ],
                       "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;path=active;input.value=if():[data().active]:فعّال.else():غير فعّال;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[)(:devices-sources-edit-readonly]:[droplist.readonly=true]"
                     }
-                  ],
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                  ]
                 }
               ]
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
@@ -126,7 +126,8 @@
                   ],
                   "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem"
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
               "type": "View?class=flex column;style.gap=1rem;style.width=100%",
@@ -145,11 +146,13 @@
               ]
             },
             {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text='وصف الجهاز';style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?textarea;style.width=100%;style.height=8rem;label.text='أبعاد، مهام، أهمية، أفضلية...';path=description;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:devices-sources-edit-readonly]:[readonly=true];style.border=1px solid #ccc"
@@ -157,11 +160,9 @@
                     {
                       "type": "Input?textarea;style.width=100%;style.height=8rem;label.text='كيفية إستخدام الجهاز';path=how-to-use;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:devices-sources-edit-readonly]:[readonly=true];style.border=1px solid #ccc"
                     }
-                  ],
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                  ]
                 }
-              ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              ]
             },
             {
               "children": [
@@ -179,20 +180,19 @@
               ],
               "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             }
-          ],
-          "type": "View?class=flex column;style.width=100%;data=)(:devices-sources-data;style.gap=2rem"
+          ]
         },
         {
           "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem",
           "children": [
             {
+              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!)(:devices-edit-readonly",
               "controls": [
                 {
                   "event": "click?)(:devices-sources.[)(:devices-sources-data.id]=)(:devices-sources-data;)(:new-devices-sources.del()",
                   "actions": "wait():save:note:[update:devices-sources-manager-list:200]?note.text=تم حفظ الجهاز بنجاح;save.collection=resources-devices-sources;save.doc=)(:devices-sources-data.id;save.data=)(:devices-sources-data;wait():[():devices-sources-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1]]"
                 }
-              ],
-              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!)(:devices-edit-readonly"
+              ]
             },
             {
               "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s",
@@ -204,9 +204,9 @@
             }
           ]
         }
-      ]
+      ],
+      "type": "View?class=flex column;style.width=70vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto?devices-sources-data:()"
     }
   ],
-  "id": "devices-sources-mini-window",
-  "type": "View?id=devices-sources-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=10vh 0"
+  "id": "devices-sources-mini-window"
 }

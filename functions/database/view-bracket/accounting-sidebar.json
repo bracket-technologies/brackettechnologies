@@ -46,7 +46,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                             "actions": "wait():search:[update:expense-list]?search.collection=expense;search.headers.project=project:();wait():[data:().editor.expense=().search.data]?!data:().editor.expense"
                         }
                     ]
@@ -145,7 +145,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                             "actions": "wait():search:[update:purchase-list]?search.collection=purchase;search.headers.project=project:();wait():[data:().editor.purchase=().search.data]?!data:().editor.purchase"
                         }
                     ]
@@ -244,7 +244,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                             "actions": "wait():search:[update:payment-list]?search.collection=payment;search.headers.project=project:();wait():[data:().editor.payment=().search.data]?!data:().editor.payment"
                         }
                     ]
@@ -343,7 +343,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                             "actions": "wait():search:[update:payment-return-list]?search.collection=payment-return;search.headers.project=project:();wait():[data:().editor.payment-return=().search.data]?!data:().editor.payment-return"
                         }
                     ]
@@ -463,7 +463,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                             "actions": "wait():search:[update:draft-invoice-list]?search.collection=draft-invoice;search.headers.project=project:();wait():[data:().editor.draft-invoice=().search.data]?!data:().editor.draft-invoice"
                         }
                     ]
@@ -562,7 +562,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                             "actions": "wait():search:[update:invoice-list]?search.collection=invoice;search.headers.project=project:();wait():[data:().editor.invoice=().search.data]?!data:().editor.invoice"
                         }
                     ]
@@ -661,7 +661,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                             "actions": "wait():search:[update:receipt-list]?search.collection=receipt;search.headers.project=project:();wait():[data:().editor.receipt=().search.data]?!data:().editor.receipt"
                         }
                     ]
@@ -760,7 +760,7 @@
                             "event": "mouseleave?lastChild().style().display=none"
                         },
                         {
-                            "event": "click?next().style().display=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:flex:none;1stChild().style().transform=if():[next().style().display=none||3rdChild().contains():[clicked:()]]:rotate(0):rotate(90deg)?!3rdChild().contains():[clicked:()]",
+                            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
                             "actions": "wait():search:[update:refund-list]?search.collection=refund;search.headers.project=project:();wait():[data:().editor.refund=().search.data]?!data:().editor.refund"
                         }
                     ]

@@ -1,13 +1,13 @@
 {
+  "id": "maintenance-views",
   "type": "View?id=maintenance-views;class=flex column;style.gap=.2rem",
   "children": [
     {
-      "type": "View?id=maintenance-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:maintenance-view-type=list]:flex:none?)(:maintenance-view-type=list",
       "children": [
         {
+          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
           "children": [
             {
-              "type": "View?class=flexbox;style.height=100%;style.width=100%",
               "children": [
                 {
                   "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
@@ -22,21 +22,22 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style.height=100%;style.width=100%"
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "actions": "sort;update:maintenance-list-view?sort.Data=maintenance;sort.path=active",
-                      "event": "click"
+                      "event": "click",
+                      "actions": "sort;update:maintenance-list-view?sort.Data=maintenance;sort.path=active"
                     }
-                  ]
+                  ],
+                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "type": "View?class=flex align-center",
@@ -47,12 +48,12 @@
               ]
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=الحالة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
               "type": "View?class=flex align-center",
@@ -63,12 +64,12 @@
               ]
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=القائمين بالصيانة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
               "children": [
@@ -87,12 +88,12 @@
               ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "children": [
@@ -111,29 +112,28 @@
               ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
               "children": [
                 {
                   "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
                   "controls": [
                     {
-                      "actions": "setPosition:maintenance-remove-all-popup?position.placement=right;position.positioner=().id",
-                      "event": "click?if():[():maintenance-remove-all-popup.style().pointerEvents=none]:[():maintenance-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]]:[():maintenance-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
+                      "event": "click?if():[():maintenance-remove-all-popup.style().pointerEvents=none]:[():maintenance-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]]:[():maintenance-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                      "actions": "setPosition:maintenance-remove-all-popup?position.placement=right;position.positioner=().id"
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
             }
-          ],
-          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden"
+          ]
         },
         {
           "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?maintenance:().len()>0",
@@ -143,12 +143,12 @@
                 {
                   "children": [
                     {
+                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                       "children": [
                         {
                           "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                         }
                       ],
-                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                       "controls": [
                         {
                           "event": "click?checked=().checked.opp();1stChild().style().opacity=if():[checked]:1:0;if():[():main-checker.checked]:[():main-checker.():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():monitors-views.className():checker.find():checked]:flex:none"
@@ -159,33 +159,21 @@
                   "type": "View?class=flexbox;style.width=100%;style.height=100%"
                 },
                 {
+                  "type": "View?class=flex align-center",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
                       "controls": [
                         {
                           "actions": "save?save.collection=maintenance;save.doc=data().id;save.data=data()",
                           "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms"
                     }
-                  ],
-                  "type": "View?class=flex align-center"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
-                  "controls": [
-                    {
-                      "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
-                    },
-                    {
-                      "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
-                    },
-                    {
-                      "actions": "update:maintenance-mini-window?():maintenance-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
-                      "event": "click?maintenance-data:()=data().clone();maintenance-edit-readonly:()=true;new-maintenance:().del();maintenance-copied:().del()?!2ndChild().mouseenter"
-                    }
-                  ],
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
@@ -198,15 +186,27 @@
                         }
                       ]
                     }
+                  ],
+                  "controls": [
+                    {
+                      "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
+                    },
+                    {
+                      "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
+                    },
+                    {
+                      "actions": "update:maintenance-mini-window?():maintenance-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
+                      "event": "click?maintenance-data:()=data().clone();maintenance-edit-readonly:()=true;new-maintenance:().del();maintenance-copied:().del()?!2ndChild().mouseenter"
+                    }
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().status"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
                   "children": [
@@ -225,12 +225,36 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().start-date.toDateFormat()"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
+                },
+                {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "children": [
+                    {
+                      "type": "Text?style.fontSize=1.4rem;text="
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "children": [
+                    {
+                      "type": "Text?style.fontSize=1.4rem;text="
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "children": [
+                    {
+                      "type": "Text?style.fontSize=1.4rem;text="
+                    }
+                  ]
                 },
                 {
                   "children": [
@@ -241,58 +265,34 @@
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text="
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
-                  "children": [
-                    {
-                      "type": "Text?style.fontSize=1.4rem;text="
-                    }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
-                },
-                {
-                  "children": [
-                    {
-                      "type": "Text?style.fontSize=1.4rem;text="
-                    }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
-                },
-                {
-                  "children": [
-                    {
-                      "type": "Text?style.fontSize=1.4rem;text="
-                    }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
-                },
-                {
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
                   "children": [
                     {
                       "controls": [
                         {
-                          "event": "click?if():[)(:maintenance-data=data();():maintenance-actions.style().pointerEvents=auto]:[():maintenance-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:maintenance-data.del()]].else():[():maintenance-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:maintenance-data=data().clone()]];)(:new-maintenance.del();)(:maintenance-copied.del();():maintenance-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
-                          "actions": "setPosition:maintenance-actions?position.placement=right;position.positioner=().id"
+                          "actions": "setPosition:maintenance-actions?position.placement=right;position.positioner=().id",
+                          "event": "click?if():[)(:maintenance-data=data();():maintenance-actions.style().pointerEvents=auto]:[():maintenance-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:maintenance-data.del()]].else():[():maintenance-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:maintenance-data=data().clone()]];)(:new-maintenance.del();)(:maintenance-copied.del();():maintenance-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
                         }
                       ],
                       "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
                 }
               ],
               "type": "[View]?data=maintenance:();style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[maintenance-view-type:()=list]:grid:none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa"
             }
           ]
         }
-      ]
+      ],
+      "type": "View?id=maintenance-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:maintenance-view-type=list]:flex:none?)(:maintenance-view-type=list"
     }
-  ],
-  "id": "maintenance-views"
+  ]
 }

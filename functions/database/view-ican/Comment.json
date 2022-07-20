@@ -1,4 +1,6 @@
 {
+  "id": "Comment",
+  "creation-date": 1658179009147,
   "children": [
     {
       "type": "View?style:[width=fit-content;minWidth=50%;borderRadius=0 1.5rem 1.5rem 1.5rem;if():[data().user=user:().id]:[borderRadius=1.5rem 0 1.5rem 1.5rem;marginLeft=auto];padding=1rem;border=1px solid #ddd;gap=2rem]?data()",
@@ -28,7 +30,5 @@
       "type": "[Comment]?class=vertical;path=comments?data().comments.len()>0"
     }
   ],
-  "type": "View?style.padding=.5rem",
-  "id": "Comment",
-  "creation-date": 1658179009147
+  "type": "View?style.padding=.5rem"
 }
