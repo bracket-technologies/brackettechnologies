@@ -121,7 +121,7 @@ const sort = ({ sort = {}, id, e }) => {
   })
   
   // sort by
-  options.sortBy = sortBy === "ascending" ? "descending" : "ascending"
+  if (sort.reversable || sort.reverse || sort.flip || sort.flipable) options.sortBy = sortBy === "ascending" ? "descending" : "ascending"
   if (Data) global[Data] = data
   return data
 }

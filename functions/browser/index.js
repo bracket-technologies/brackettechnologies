@@ -740,7 +740,7 @@ const Input = (component) => {
             }, {
                 type: `Text?class=flexbox pointer;id=${id}+-generate;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
             }, {
-                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
+                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
@@ -6126,7 +6126,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = {}
             k.split(":").slice(1).map((el, i) => {
 
-                if (i % 2) return
+                if (i % 2 || v === undefined) return
                 var f = toValue({ req, res, _window, id, _, __, _i,e, value: el, params })
                 var v = toValue({ req, res, _window, id, _, __, _i,e, value: args[i + 1], params })
                 answer[f] = v
@@ -7608,7 +7608,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
             if (k[0] === "_") {
 
-                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index/*, object*/ }) )
+                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index, object }) )
                 answer = o
             } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, e, _i: index }) )
 
@@ -9084,7 +9084,7 @@ const sort = ({ sort = {}, id, e }) => {
   })
   
   // sort by
-  options.sortBy = sortBy === "ascending" ? "descending" : "ascending"
+  if (sort.reversable || sort.reverse || sort.flip || sort.flipable) options.sortBy = sortBy === "ascending" ? "descending" : "ascending"
   if (Data) global[Data] = data
   return data
 }

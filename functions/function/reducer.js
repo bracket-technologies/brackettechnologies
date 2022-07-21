@@ -1712,7 +1712,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = {}
             k.split(":").slice(1).map((el, i) => {
 
-                if (i % 2) return
+                if (i % 2 || v === undefined) return
                 var f = toValue({ req, res, _window, id, _, __, _i,e, value: el, params })
                 var v = toValue({ req, res, _window, id, _, __, _i,e, value: args[i + 1], params })
                 answer[f] = v
@@ -3194,7 +3194,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
             if (k[0] === "_") {
 
-                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index/*, object*/ }) )
+                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index, object }) )
                 answer = o
             } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, e, _i: index }) )
 

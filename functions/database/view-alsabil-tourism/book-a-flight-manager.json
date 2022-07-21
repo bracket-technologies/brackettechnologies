@@ -1,12 +1,4 @@
 {
-  "controls": [
-    {
-      "actions": "wait():search:[update:book-a-flight-list]?search.collection=flight;search.field.departure-day.greater=todayStart().timestamp()+timezone();wait():[flights:()=().search.data]",
-      "event": "loaded??false"
-    }
-  ],
-  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;search-flight:()=search-flight:()||_array:[_map:class:Economy:pax:1];flights-booked:()=_array;pax-details:()=_map:adt:1:chd:0:inf:0;bookings:()=bookings:()||_array;search-type:()=Individual;search-engine-req:()=book-a-flight",
-  "id": "book-a-flight-manager",
   "children": [
     {
       "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]",
@@ -40,12 +32,12 @@
                   "type": "Icon?class=flexbox;name=backpack;google.outlined;style:[color=#666;fontSize=2.2rem;transition=.3s];hover:[style:[color=blue];id=parent()]"
                 }
               ],
+              "type": "View?class=flexbox pointer;tooltip.text=book;style:[height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover:[style:[backgroundColor=#f6f6f6]]",
               "controls": [
                 {
                   "event": "click?():book-btn.click()"
                 }
-              ],
-              "type": "View?class=flexbox pointer;tooltip.text=book;style:[height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover:[style:[backgroundColor=#f6f6f6]]"
+              ]
             }
           ]
         }
@@ -75,7 +67,6 @@
               ]
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Taxes;style:[fontSize=1.1rem;color=#fff]"
@@ -83,9 +74,11 @@
                 {
                   "type": "Text?id=pricing-taxes;text=[booking-details:().():total-taxes-usd.sum().round():2||'--']+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Fees;style:[fontSize=1.1rem;color=#fff]"
@@ -93,8 +86,7 @@
                 {
                   "type": "Text?id=pricing-fees;text=[booking-details:().():total-fees-usd.sum().round():2||'--']+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
               "children": [
@@ -108,7 +100,6 @@
               "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between;backgroundColor=red;height=100%;width=100%;padding=0 1rem]",
               "children": [
                 {
                   "type": "Text?text=Total;style:[fontSize=1.1rem;color=#fff]"
@@ -116,10 +107,10 @@
                 {
                   "type": "Text?id=pricing-total;text=[booking-details:().():[total-base-fare-usd+total-taxes-usd+total-fees-usd].sum().round():2||'--']+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between;backgroundColor=red;height=100%;width=100%;padding=0 1rem]"
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Bookable;style:[fontSize=1.1rem;color=#fff]"
@@ -127,7 +118,8 @@
                 {
                   "type": "Text?id=pricing-bookable;text=Yes;style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
               "children": [
@@ -146,26 +138,25 @@
                   "type": "Text?text=Added Profit;style:[fontSize=1.1rem;color=#fff]"
                 },
                 {
+                  "type": "View?class=flexbox;style:[borderRadius=.5rem;border=1px solid #fff;padding=.25rem]",
                   "children": [
                     {
+                      "type": "Text?id=pricing-additional-profit;editable;text=booking-details:().():total-additional-profit-usd.sum().round():2||0;style:[fontSize=1.1rem;color=#fff;cursor=text]",
                       "controls": [
                         {
                           "event": "input?txt()=txt()||0;booking-details:().():[total-additional-profit-usd=txt().num().divide():[booking-details:().len()]];():pricing-total.txt()=[booking-details:().():[total-base-fare-usd+total-taxes-usd+total-fees-usd].sum()+txt().num()].round()+$"
                         }
-                      ],
-                      "type": "Text?id=pricing-additional-profit;editable;text=booking-details:().():total-additional-profit-usd.sum().round():2||0;style:[fontSize=1.1rem;color=#fff;cursor=text]"
+                      ]
                     },
                     {
                       "type": "Text?text=$;style:[color=#fff;fontSize=1.1rem]"
                     }
-                  ],
-                  "type": "View?class=flexbox;style:[borderRadius=.5rem;border=1px solid #fff;padding=.25rem]"
+                  ]
                 }
               ],
               "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between;height=100%]",
               "children": [
                 {
                   "controls": [
@@ -175,11 +166,20 @@
                   ],
                   "type": "Text:book-btn?text=Book;class=flexbox pointer;style:[fontSize=1.2rem;color=#fff;height=70%;width=9rem;borderRadius=.5rem;marginLeft=auto;backgroundColor=#1867ed;transition=.2s];hover.style.backgroundColor=#0853d1"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between;height=100%]"
             }
           ]
         }
       ]
+    }
+  ],
+  "id": "book-a-flight-manager",
+  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;flights-booked:()=_array;search-engine-req:()=book-a-flight",
+  "controls": [
+    {
+      "event": "loaded??false",
+      "actions": "wait():search:[update:book-a-flight-list]?search.collection=flight;search.field.departure-day.greater=todayStart().timestamp()+timezone();wait():[flights:()=().search.data]"
     }
   ]
 }

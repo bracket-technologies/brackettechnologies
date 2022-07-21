@@ -160,7 +160,7 @@ var getdb = async ({ req, res, db }) => {
     var operator = Object.keys(value)[0]
     ref = ref.where(key, toFirebaseOperator(operator), value[operator])
   })
-
+  
   if (search.orderBy) ref = ref.orderBy(search.orderBy)
   if (search.limit || 100) ref = ref.limit(search.limit || 100)
   if (search.offset) ref = ref.endAt(search.offset)
@@ -182,7 +182,7 @@ var getdb = async ({ req, res, db }) => {
   }).catch(error => {
     
     success = false
-    message = `An error Occured!`
+    message = error
   })
     
   await Promise.all(promises)
