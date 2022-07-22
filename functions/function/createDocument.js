@@ -248,6 +248,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         <script id="global" type="application/json">${JSON.stringify(global)}</script>
         <script src="/index.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
       </body>
     </html>`
   );

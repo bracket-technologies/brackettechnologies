@@ -28,7 +28,7 @@
                 },
                 {
                     "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
-                    "actions": "wait():search:[update:flight-list]?search.collection=flight;search.headers.project=project:();search.limit=25;wait():[data:().editor.flight=().search.data]"
+                    "actions": "wait():search:[update:flight-list]?search.collection=flight;search.headers.project=project:();search.limit=100;wait():[data:().editor.flight=().search.data]"
                 }
             ]
         },

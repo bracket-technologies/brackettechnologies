@@ -197,7 +197,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     var underscored = path0.charAt(0) === "_"
 
     // implemented function
-    if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[underscored ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
+    /*if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[underscored ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
       
       console.log("function");
 
@@ -218,7 +218,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       
       if (view[path0]) return toParam({ _window, ...view[path0], string, object, _, __ })
       else if (underscored && view[path0.slice(1)]) return toParam({ _window, ...view[path0], string, _, __, _i, _: object })
-    }
+    }*/
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {

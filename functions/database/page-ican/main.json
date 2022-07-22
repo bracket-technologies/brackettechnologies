@@ -1,8 +1,8 @@
 {
-  "view": "main",
-  "id": "main",
-  "path": "/",
   "title": "iCAN 2022",
+  "id": "main",
+  "view": "main",
   "name": "main",
-  "creation-date": 1658174623614
+  "creation-date": 1658174623614,
+  "path": "/"
 }

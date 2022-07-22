@@ -1,10 +1,16 @@
 {
+  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;flights-booked:()=_array;search-engine-req:()=book-a-flight",
+  "controls": [
+    {
+      "actions": "wait():search:[update:book-a-flight-list]?search.collection=flight;search.field.departure-day.greater=todayStart().timestamp()+timezone();wait():[flights:()=().search.data]",
+      "event": "loaded??false"
+    }
+  ],
+  "id": "book-a-flight-manager",
   "children": [
     {
-      "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]",
       "children": [
         {
-          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
           "children": [
             {
               "type": "View?style:[height=60%;width=2px;backgroundColor=blue]"
@@ -12,7 +18,8 @@
             {
               "type": "Text?text=Book a Seat Manager;style:[color=#444;fontSize=1.6rem]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%"
         },
         {
           "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
@@ -41,7 +48,8 @@
             }
           ]
         }
-      ]
+      ],
+      "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]"
     },
     {
       "type": "View?view=search-engine"
@@ -53,7 +61,6 @@
       "type": "View?id=pricing-bar;class=flex align-center;style:[position=absolute;top=calc(100vh - 8rem);left=12.5rem;right=12.5rem;height=3.5rem;backgroundColor=#222;borderRadius=1rem 1rem 0 0;zIndex=1;padding=0 1.5rem;cursor=default]",
       "children": [
         {
-          "type": "View?class=grid align-center;style:[height=100%;width=100%;gridTemplateColumns=1fr 1fr 1fr 1.25fr 1fr 1fr 1fr 1fr 1.5fr;gap=1rem]",
           "children": [
             {
               "type": "View?class=flexbox;style:[justifyContent=space-between]",
@@ -111,6 +118,7 @@
               "type": "View?class=flexbox;style:[justifyContent=space-between;backgroundColor=red;height=100%;width=100%;padding=0 1rem]"
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Bookable;style:[fontSize=1.1rem;color=#fff]"
@@ -118,8 +126,7 @@
                 {
                   "type": "Text?id=pricing-bookable;text=Yes;style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
               "children": [
@@ -169,17 +176,10 @@
               ],
               "type": "View?class=flexbox;style:[justifyContent=space-between;height=100%]"
             }
-          ]
+          ],
+          "type": "View?class=grid align-center;style:[height=100%;width=100%;gridTemplateColumns=1fr 1fr 1fr 1.25fr 1fr 1fr 1fr 1fr 1.5fr;gap=1rem]"
         }
       ]
-    }
-  ],
-  "id": "book-a-flight-manager",
-  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;flights-booked:()=_array;search-engine-req:()=book-a-flight",
-  "controls": [
-    {
-      "event": "loaded??false",
-      "actions": "wait():search:[update:book-a-flight-list]?search.collection=flight;search.field.departure-day.greater=todayStart().timestamp()+timezone();wait():[flights:()=().search.data]"
     }
   ]
 }

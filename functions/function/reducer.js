@@ -57,7 +57,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path[0]) args = path[0].toString().split(":")
 
     // function
-    if (path0.slice(-2) === "()" && path0.slice(0, 2) !== ")(" && args[1] !== "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
+    /*if (path0.slice(-2) === "()" && path0.slice(0, 2) !== ")(" && args[1] !== "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
             
         var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
         if (_params.length > 0) {
@@ -75,7 +75,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         console.log(string);
         if (view[path0]) return toParam({ _window, ...view[path0], string })
         else if (view[path0.slice(1)]) return toParam({ _window, ...view[path0], string })
-    }
+    }*/
 
     // multiplication
     if (path.join(".").includes("*")) {
@@ -259,7 +259,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
-    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()")) {
+    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -3214,6 +3214,85 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else answer = 0
             }
             
+        } else if (k0 === "html2pdf()") {
+
+            var _element, _params = {}, _el
+            if (isParam({ _window, string: args[1] })) {
+
+                _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+                _el = _params.element || _params.id || _params.view
+
+            } else if (args[1]) _el = toValue({ req, res, _window, id, e, _, __, _i,params, value: args[1] })
+            else if (o) _el = o
+
+            if (typeof _el === "object" && _el.id) _element = views[_el.id].element
+            else if (_el.nodeType === Node.ELEMENT_NODE) _element = _el
+            else if (typeof _el === "string") _element = views[_el].element
+
+            var opt = {
+                margin:       0,
+                filename:     _params.name || generate(20),
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
+            }
+            
+            var images = [..._element.getElementsByTagName("IMG")]
+            if (images.length > 0) {
+
+                const toDataURL = url => fetch(url)
+                .then(response => response.blob())
+                .then(blob => new Promise((resolve, reject) => {
+                    const reader = new FileReader()
+                    reader.onloadend = () => resolve(reader.result)
+                    reader.onerror = reject
+                    reader.readAsDataURL(blob)
+                }))
+
+                images.map((image, i) => {
+                    toDataURL(image.src)
+                    .then(dataUrl => {
+                        image.src = dataUrl
+                        if (images.length === i + 1) html2pdf().set(opt).from(_element).save().then(() => {
+
+                            if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
+                        })
+                    })
+                })
+
+            } else html2pdf().set(opt).from(_element).save().then(() => {
+
+                if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
+            })
+
+        } else if (k0 === "share()") {
+
+            if (isParam({ _window, string: args[1] })) { // share():[text;title;url;files]
+
+                var _params = toParam({ req, res, _window, id, e, _, string: args[1] }) || {}, images = []
+                _params.files = toArray(_params.file || _params.files) || []
+                if (_params.image || _params.images) _params.images = toArray(_params.image || _params.images)
+
+                var getFileFromUrl = async (url, name) => {
+
+                    const response = await fetch(url)
+                    const blob = await response.blob()
+                    images.push(new File([blob], 'rick.jpg', { type: blob.type }))
+
+                    if (images.length === _params.images.length)
+                    await navigator.share({ title: _params.title, text: _params.text, url: _params.url, files: images })
+                }
+            
+                if (_params.images) _params.images.map(async url => getFileFromUrl(url, _params.title))
+                else {
+                    console.log(_params);
+                    navigator.share(_params)
+                }
+
+            } else if (args[1]) { // share():url
+                navigator.share({ url: toValue({ req, res, _window, id, e, _, __, _i,params, value: args[1] })})
+            }
+
         } else if (k0 === "typeof()" || k0 === "type()") {
 
             answer = getType(o)

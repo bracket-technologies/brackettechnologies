@@ -17,6 +17,7 @@ const {toArray} = require("./toArray")
 const {generate} = require("./generate")
 const {refresh} = require("./refresh")
 const {axios} = require("./axios")
+const {wait} = require("./wait")
 const {createElement} = require("./createElement")
 const {addEventListener} = require("./event")
 const {execute} = require("./execute")
@@ -151,6 +152,7 @@ module.exports = {
   defaultInputHandler,
   focus,
   sort,
+  wait,
   log,
   save,
   erase,
