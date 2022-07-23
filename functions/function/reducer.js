@@ -259,7 +259,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
-    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()")) {
+    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -1374,6 +1374,29 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) views[_o].element.click()
             else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
             else if (typeof _o === "object" && _o.element) _o.element.click()
+
+        } else if (k0 === "dblclick()") {
+            
+            var _params = {}, _o
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+            } else _o = o
+            
+            if (typeof _o === "string" && views[_o]) views[_o].element.click()
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
+            else if (typeof _o === "object" && _o.element) _o.element.click()
+            
+            setTimeout(() => {
+                if (typeof _o === "string" && views[_o]) views[_o].element.click()
+                else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
+                else if (typeof _o === "object" && _o.element) _o.element.click()
+            }, 0)
 
         } else if (k0 === "focus()") {
 
