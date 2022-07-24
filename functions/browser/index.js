@@ -1684,14 +1684,16 @@ module.exports = {
     if (reset === "daily") timestamp = (new Date(_date.setHours(0,0,0,0))).getTime()
     else if (reset === "weekly") timestamp = (new Date((new Date(_date.getDate() - _date.getDay() + (_date.getDay() === 0 ? -6 : 1))).setHours(0,0,0,0))).getTime()
     else if (reset === "monthly") timestamp = (new Date(new Date(_date.setMonth(_date.getMonth(), 1)).setHours(0,0,0,0))).getTime()
+    else timestamp = (new Date(_date.setHours(0,0,0,0))).getTime()
 
     var diff = timer - timestamp, _reset
     if (reset === "daily") _reset = 60*60*24*1000 - diff <= 0
     else if (reset === "weekly") _reset = 7*60*60*24*1000 - diff <= 0
     else if (reset === "monthly") _reset = ((new Date(_date.getFullYear(), _date.getMonth() + 1, 0)).getDate()*60*60*24*1000) - diff <= 0
+    else _reset = 60*60*24*1000 - diff <= 0
 
     if (_reset) counter = 0
-    
+
     if (end && end === counter) counter = 0
     counter = counter + 1
 
@@ -1699,11 +1701,12 @@ module.exports = {
     if (length && (length - _counter.length < 0)) _counter = "1"
 
     var diff = length - _counter.length
-    
+
     while (diff > 0) {
       _counter = "0" + _counter
       diff -= 1
     }
+
     console.log({ counter: _counter, length, reset, timer: timestamp });
     return { counter: _counter, length, reset, timer: timestamp }
   }
@@ -3682,18 +3685,16 @@ module.exports = {getParam}
 },{"./toParam":111}],65:[function(require,module,exports){
 module.exports = {
     getType: (value) => {
-        if (typeof value === "string" && value !== "true" && value !== "false") {
+        if (/*typeof value === "string" && value !== "true" && value !== "false"*/typeof value === "number") {
             
             if (value.length >= 10 && value.length <=13 && !isNaN(value) && value.slice(0, 2) !== "00") return "timestamp"
             if (value.length === 8 && value.slice(0, 2) !== "00" && !isNaN(value)) return "time"
-            return "string"
-        }
-        if (typeof value === "number") {
             
             if ((value + "").length >= 10 && (value + "").length <= 13 && (value + "").slice(0, 2) !== "00") return "timestamp"
             if ((value + "").length === 8 && (value + "").slice(0, 2) !== "00") return "time"
             return "number"
         }
+        if (typeof value === "string") return "string"
         if (typeof value === "object" && Array.isArray(value)) return "array"
         if (typeof value === "object") return "map"
         if (typeof value === "boolean" || value === "true" || value === "false") return "boolean"
