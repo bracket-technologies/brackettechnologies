@@ -41,7 +41,7 @@ module.exports = {
         views[id].mapIndex = index
         views[id].parent = view.id
         views[id].style = views[id].style || {}
-        views[id].reservedStyles = toParam({ id, string: views[id].type.split("?")[1] || "" }).style || {}
+        views[id].reservedStyles = /*toParam({ id, string: views[id].type.split("?")[1] || "" }).style ||*/ {}
         views[id].style.transition = null
         views[id].style.opacity = "0"
         

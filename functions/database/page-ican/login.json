@@ -1,8 +1,8 @@
 {
-  "path": "/login",
-  "id": "login",
   "title": "iCAN 2022 | Login",
+  "view": "login",
   "creation-date": 1658174664282,
   "name": "Login",
-  "view": "login"
+  "path": "/login",
+  "id": "login"
 }

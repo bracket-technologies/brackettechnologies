@@ -81,11 +81,12 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
 
 // clicked element
 document.body.addEventListener('click', e => {
+  
     var global = window.global
     global["key-events"] = []
 
     var global = window.global
-    global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[(e || window.event).target.id]
+    global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[((e || window.event).target||e.currentTarget).id]
     global.clickedElement = (e || window.event).target
 
     // droplist

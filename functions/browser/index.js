@@ -82,11 +82,12 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
 
 // clicked element
 document.body.addEventListener('click', e => {
+  
     var global = window.global
     global["key-events"] = []
 
     var global = window.global
-    global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[(e || window.event).target.id]
+    global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[((e || window.event).target||e.currentTarget).id]
     global.clickedElement = (e || window.event).target
 
     // droplist
@@ -3784,7 +3785,7 @@ module.exports = {
         views[id].mapIndex = index
         views[id].parent = view.id
         views[id].style = views[id].style || {}
-        views[id].reservedStyles = toParam({ id, string: views[id].type.split("?")[1] || "" }).style || {}
+        views[id].reservedStyles = /*toParam({ id, string: views[id].type.split("?")[1] || "" }).style ||*/ {}
         views[id].style.transition = null
         views[id].style.opacity = "0"
         
@@ -4652,10 +4653,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // while
     if (path0 === "while()") {
             
-        while (toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e, object, mount })) {
-            toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object, mount })
-        }
-        path = path.slice(1)
+      while (!global.return && toApproval({ _window, e, string: args[1], id, _, __, _i, req, res, object })) {
+        toValue({ req, res, _window, id, value: args[2], params, _, __, _i, e, object, mount, createElement })
+      }
+      // path = path.slice(1)
+      return global.return = false
     }
 
     // initialize by methods
@@ -10548,7 +10550,9 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
       }
     })
     return value = newVal
-  } 
+  }
+
+  if (value === "()") return view
 
   // return await value
   if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]

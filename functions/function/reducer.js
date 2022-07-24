@@ -235,10 +235,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     // while
     if (path0 === "while()") {
             
-        while (toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e, object, mount })) {
-            toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object, mount })
-        }
-        path = path.slice(1)
+      while (!global.return && toApproval({ _window, e, string: args[1], id, _, __, _i, req, res, object })) {
+        toValue({ req, res, _window, id, value: args[2], params, _, __, _i, e, object, mount, createElement })
+      }
+      // path = path.slice(1)
+      return global.return = false
     }
 
     // initialize by methods

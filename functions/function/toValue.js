@@ -72,7 +72,9 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
       }
     })
     return value = newVal
-  } 
+  }
+
+  if (value === "()") return view
 
   // return await value
   if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]

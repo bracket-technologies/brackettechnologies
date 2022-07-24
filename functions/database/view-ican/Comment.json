@@ -1,5 +1,4 @@
 {
-  "creation-date": 1658179009147,
   "children": [
     {
       "children": [
@@ -29,6 +28,7 @@
       "type": "[Comment]?class=vertical;path=comments?data().comments.len()>0"
     }
   ],
-  "id": "Comment",
-  "type": "View?style.padding=.5rem"
+  "type": "View?style.padding=.5rem",
+  "creation-date": 1658179009147,
+  "id": "Comment"
 }
