@@ -1,0 +1,191 @@
+{
+  "creation-date": 1658779408265,
+  "children": [
+    {
+      "type": "View?class=flexbox;style:[width=100%;height=6rem;padding=1rem;gap=1rem;justifyContent=space-between]",
+      "children": [
+        {
+          "type": "Text?class=flexbox;text=Sales;style:[height=3.5rem;padding=0 1rem;fontSize=2rem;borderLeft=3px solid blue]"
+        },
+        {
+          "type": "View?class=flexbox;style:[gap=1rem]",
+          "children": [
+            {
+              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]",
+              "children": [
+                {
+                  "type": "Icon?name=search;google.outlined;style:[color=#888;fontSize=2rem]"
+                }
+              ]
+            },
+            {
+              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]",
+              "controls": [
+                {
+                  "event": "click?update():new-selling;():new-selling.style():[opacity=1;pointerEvents=auto]"
+                }
+              ],
+              "children": [
+                {
+                  "type": "Icon?name=add;google.outlined;style:[color=#888;fontSize=2rem]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "type": "View?class=flex vertical;style:[width=100%;gap=1rem]",
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "type": "Text?text=data().market-name;class=flexbox;style:[fontSize=1.8rem;color=blue;height=3rem]"
+                        },
+                        {
+                          "type": "Text?text=data().total-price.price()+' L.L';class=flexbox;style:[fontSize=1.8rem;color=red;height=3rem]"
+                        }
+                      ],
+                      "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between]"
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "type": "Text?text=#;style:[color=#666;fontSize=1.2rem;flex=1]"
+                            },
+                            {
+                              "type": "Text?text=Product;style:[color=#666;fontSize=1.2rem;flex=1]"
+                            },
+                            {
+                              "type": "Text?text=Unit;style:[color=#666;fontSize=1.2rem;flex=1]"
+                            },
+                            {
+                              "type": "Text?text=Price L.L.;style:[color=#666;fontSize=1.2rem;flex=1]"
+                            },
+                            {
+                              "type": "Text?text=Qty;style:[color=#666;fontSize=1.2rem;flex=1]"
+                            }
+                          ],
+                          "type": "View?class=horizontal align-center;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr;height=2.5rem;backgroundColor=#ddd;padding=.5rem;borderRadius=.25rem]"
+                        },
+                        {
+                          "children": [
+                            {
+                              "type": "[View]?class=horizontal;path=sales;style:[display=grid;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr;padding=0 .5rem]",
+                              "children": [
+                                {
+                                  "type": "Text?class=horizontal;text=parent().mapIndex+1;style:[fontSize=1.3rem;flex=1]"
+                                },
+                                {
+                                  "type": "Text?class=horizontal;text=data().product-name;style:[width=100%;fontSize=1.3rem]"
+                                },
+                                {
+                                  "type": "Text?class=horizontal;text=data().unit;style:[width=100%;fontSize=1.3rem]"
+                                },
+                                {
+                                  "type": "Text?class=horizontal;text=data().price.price();style:[width=100%;fontSize=1.3rem]"
+                                },
+                                {
+                                  "type": "Text?class=horizontal;text=data().qty;style:[width=100%;fontSize=1.3rem]"
+                                }
+                              ]
+                            }
+                          ],
+                          "type": "View?class=vertical;style:[gap=.5rem;flex=1]"
+                        }
+                      ],
+                      "type": "View?class=vertical;style:[gap=.5rem;width=100%;transition=.2s;overflow=hidden]"
+                    },
+                    {
+                      "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between;borderTop=1px solid #ddd;padding=.5rem]",
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "type": "Text?text=Date:;style:[fontSize=1.3rem;color=#888]?false"
+                            },
+                            {
+                              "type": "Text?text=data().selling-date.toDateFormat();style:[fontSize=1.3rem;color=#888]"
+                            }
+                          ],
+                          "type": "View?class=horizontal;style:[gap=.5rem]"
+                        },
+                        {
+                          "type": "View?class=horizontal;style:[gap=.5rem]",
+                          "children": [
+                            {
+                              "type": "Text?text=Seller:;style:[fontSize=1.3rem;color=#888]?false"
+                            },
+                            {
+                              "type": "Text?text=data().created-by-name;style:[fontSize=1.3rem;color=#888]"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "type": "Icon?name=receipt_long;google.outlined;style:[fontSize=1.8rem]"
+                            },
+                            {
+                              "type": "Text?text=Receipt;style:[fontSize=1.3rem]"
+                            }
+                          ],
+                          "controls": [
+                            {
+                              "event": "click?html2pdf():[view=parent().parent().parent();size=A6]"
+                            }
+                          ],
+                          "type": "View?class=horizontal;style:[gap=.5rem;paddding=.5rem];closed=false"
+                        },
+                        {
+                          "controls": [
+                            {
+                              "event": "click?share():[text='Market: '+data().market-name+' | Price: '+data().total-price.price()+' L.L. | Date: '+data().selling-date.toDateInputFormat()+' | Seller: '+data().created-by-name]"
+                            }
+                          ],
+                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem]",
+                          "children": [
+                            {
+                              "type": "Icon?name=share;google.outlined;style:[fontSize=1.8rem]"
+                            },
+                            {
+                              "type": "Text?text=Share;style:[fontSize=1.3rem]"
+                            }
+                          ]
+                        }
+                      ],
+                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]"
+                    }
+                  ]
+                }
+              ],
+              "type": "[View]?Data=sellings;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]"
+            }
+          ],
+          "type": "View?class=vertical;style:[width=100%;gap=1rem;paddingTop=1rem;paddingBottom=6rem]?sellings:().len()>0"
+        }
+      ],
+      "type": "View:selling-list?class=vertical;style:[width=100%;gap=1rem;backgroundColor=#eee]",
+      "controls": [
+        {
+          "event": "loaded?if():[!market-sellings:()]:[search():[collection=selling]:[sellings:()=().search.data.values().sort():[path=selling-date;descending];update():selling-list]]:[market-sellings:()=false]"
+        }
+      ]
+    }
+  ],
+  "type": "View:sellings?if():[!sellings:()]:[sellings:()=_list]",
+  "id": "sellings"
+}

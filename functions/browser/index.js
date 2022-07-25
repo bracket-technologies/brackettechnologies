@@ -5689,17 +5689,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = position(o, relativeTo)
 
         } else if (k0 === "getChildrenByClassName()" || k0 === "className()") {
-
-            // map not loaded yet
-            if (view.status === "Loading") {
-
-                /*view.controls = toArray(view.controls)
-                view.controls.push({
-                    event: `loaded?${key}`
-                })
-                return */
-                
-            }
             
             var className, _params = {}, _o
             if (args[1]) {
@@ -7002,7 +6991,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           _options.counter = _options.counter || _options.start || _options.count || 0
           _options.length = _options.length || _options.len || _options.maxLength || 0
           _options.end = _options.end || _options.max || _options.maximum || 99999
-          _options.timer = _options.timer || (new Date(_date.setHours(0,0,0,0))).getTime()
+          //_options.timer = _options.timer || (new Date(_date.setHours(0,0,0,0))).getTime()
 
           answer = require("./counter").counter({ ..._options })
 
@@ -7677,7 +7666,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 filename:     _params.name || generate(20),
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
+                jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' }
             }
             
             var images = [..._element.getElementsByTagName("IMG")]
@@ -10940,7 +10929,7 @@ const removeChildren = ({ id }) => {
 
   //if (!view.element && id !== "root") return delete views[id]
   var children = [...view.element.children]
-
+  
   children.map((child) => {
 
     var id = child.id

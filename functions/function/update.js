@@ -93,7 +93,7 @@ const removeChildren = ({ id }) => {
 
   //if (!view.element && id !== "root") return delete views[id]
   var children = [...view.element.children]
-
+  
   children.map((child) => {
 
     var id = child.id
