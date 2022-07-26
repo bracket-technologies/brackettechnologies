@@ -1,22 +1,21 @@
 {
-  "id": "markets",
-  "type": "View:markets?markets:()=_list",
   "creation-date": 1658744205858,
+  "type": "View:markets?markets:()=_list",
   "children": [
     {
       "type": "View:new-market?Data=new-market;class=vertical;style:[position=fixed;padding=1rem;paddingBottom=3rem;top=0;left=0;right=0;bottom=0;overflowY=auto;opacity=0;pointerEvents=none;transition=.2s;backgroundColor=#fff;gap=2rem;zIndex=2]",
       "children": [
         {
-          "type": "Text?if():[!new-market:()]:[new-market:()=_map:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:creation-date:[today()]:day:todayStart():month:monthStart():year:yearStart():id:[gen():20]:visits:0:sales:0:total-sales:0];class=horizontal;text=New Market;style:[height=4rem;padding=0 1rem;fontSize=2rem;borderLeft=3px solid blue;width=100%;backgroundColor=#f6f6f6]"
+          "type": "Text?if():[!new-market:()||new-market:().keys().len()=0]:[new-market:()=_map:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:creation-date:[today().timestamp()]:day:todayStart():month:monthStart():year:yearStart():id:[gen():20]:visits:0:sales:0:total-sales:0];class=horizontal;text=New Market;style:[height=4rem;padding=0 1rem;fontSize=2rem;borderLeft=3px solid blue;width=100%;backgroundColor=#f6f6f6]"
         },
         {
           "type": "View?class=vertical;style:[width=100%;gap=2rem;paddingTop=1rem]",
           "children": [
             {
-              "type": "Input?path=name;label:[text=Market Name;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]"
+              "type": "Input?path=name;label:[text=Market Name;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem];keyup:[data()=data().capitalize();txt()=data()]"
             },
             {
-              "type": "Input?path=owner-name;label:[text=Owner Name;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]"
+              "type": "Input?path=owner-name;label:[text=Owner Name;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem];keyup:[data()=data().capitalize();txt()=data()]"
             },
             {
               "type": "Input?path=city;label:[text=City;fontSize=1.2rem];readonly;style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem];droplist.items=_list:Beirut:Baalbeck;droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem]"
@@ -31,19 +30,20 @@
               "type": "Input?path=contact-number;label:[text=Contact Number;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]"
             },
             {
+              "type": "View?class=grid;style:[gap=5rem;gridTemplateColumns=1fr 1fr;marginTop=3rem]",
               "children": [
                 {
-                  "controls": [
-                    {
-                      "event": "click?loader.show;save():[collection=agent;data=new-market:()]:[if():[!markets:().find():[id=new-market:().id]]:[markets:().push():[new-market:().clone()].sort():[path=last-visit;descending]]:[markets:().pullItem():[id=new-market:().id];markets:().push():[new-market:().clone()]];new-market:().del();update():market-list;():new-market.style():[opacity=0;pointerEvents=none];edit-market:().del();loader.hide]?data().name;data().city;data().district;data().address;data().contact-number;data().owner-name"
-                    }
-                  ],
                   "children": [
                     {
                       "type": "Text?text=if():[!edit-market:()]:[Add Market]:Save;style:[color=#fff;fontSize=1.4rem]"
                     }
                   ],
-                  "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=blue]"
+                  "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=blue]",
+                  "controls": [
+                    {
+                      "event": "click?loader.show;save():[collection=agent;data=new-market:()]:[if():[!markets:().find():[id=new-market:().id]]:[markets:().push():[new-market:().clone()].sort():[path=last-visit;descending]]:[markets:().pullItem():[id=new-market:().id];markets:().push():[new-market:().clone()]];new-market:().del();update():market-list;():new-market.style():[opacity=0;pointerEvents=none];edit-market:().del();loader.hide]?data().name;data().city;data().district;data().address;data().contact-number;data().owner-name"
+                    }
+                  ]
                 },
                 {
                   "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=#888];click:[():new-market.style():[opacity=0;pointerEvents=none];edit-market:().del()]",
@@ -53,8 +53,7 @@
                     }
                   ]
                 }
-              ],
-              "type": "View?class=grid;style:[gap=5rem;gridTemplateColumns=1fr 1fr;marginTop=3rem]"
+              ]
             }
           ]
         }
@@ -69,20 +68,20 @@
         {
           "children": [
             {
+              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]",
               "children": [
                 {
                   "type": "Icon?name=search;google.outlined;style:[color=#888;fontSize=2rem]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]"
+              ]
             },
             {
+              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]",
               "controls": [
                 {
-                  "event": "click?update():new-market;():new-market.style():[opacity=1;pointerEvents=auto]"
+                  "event": "click?new-market:()=_map;update():new-market;():new-market.style():[opacity=1;pointerEvents=auto]"
                 }
               ],
-              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]",
               "children": [
                 {
                   "type": "Icon?name=add;google.outlined;style:[color=#888;fontSize=2rem]"
@@ -97,7 +96,7 @@
     {
       "controls": [
         {
-          "event": "loaded?search():[collection=agent]:[markets:()=().search.data.values().sort():[path=last-visit;descending];update():market-list]"
+          "event": "loaded?search():[collection=agent]:[markets:()=[().search.data.values()||_list].sort():[path=last-visit;descending];update():market-list]"
         }
       ],
       "type": "View:market-list?class=vertical;style:[width=100%;gap=1rem;backgroundColor=#eee]",
@@ -106,9 +105,9 @@
           "type": "View?class=vertical;style:[width=100%;gap=1rem;paddingTop=1rem;paddingBottom=6rem]?markets:().len()>0",
           "children": [
             {
-              "type": "[View]?Data=markets;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]",
               "children": [
                 {
+                  "type": "View?class=flex vertical;style:[width=100%;gap=1rem]",
                   "children": [
                     {
                       "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between]",
@@ -117,12 +116,12 @@
                           "type": "Text?text=data().name;class=flexbox;style:[fontSize=1.8rem;color=blue;height=3rem]"
                         },
                         {
-                          "type": "Icon?name=edit;style:[height=3rem;width=3rem;fontSize=2rem;color=#888];google.outlined",
                           "controls": [
                             {
                               "event": "click?edit-market:()=true;new-market:()=data().clone();update():new-market;():new-market.style():[opacity=1;pointerEvents=auto]"
                             }
-                          ]
+                          ],
+                          "type": "Icon?name=edit;style:[height=3rem;width=3rem;fontSize=2rem;color=#888];google.outlined"
                         }
                       ]
                     },
@@ -130,10 +129,8 @@
                       "type": "Text?text=data().city+, +data().district+, +data().address+', mobile: '+data().contact-number;style:[fontSize=1.4rem;width=100%]"
                     },
                     {
-                      "type": "View?class=flexbox;style:[width=100%;justifyContent=flex-end;borderTop=1px solid #ddd;padding=.5rem]",
                       "children": [
                         {
-                          "type": "View?class=horizontal;style:[gap=.5rem;marginRight=auto]",
                           "children": [
                             {
                               "type": "Text?text=if():[data().total-sales]:Total Sales;style:[fontSize=1.3rem;color=#888]"
@@ -146,10 +143,10 @@
                             {
                               "event": "click?loader.show;market-sellings:()=true;search():[collection=selling;field.market.equal=data().id]:[sellings:()=().search.data.values().sort():[path=selling-date;descending];loader.hide;():sellings-btn.click()]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=horizontal;style:[gap=.5rem;marginRight=auto]"
                         },
                         {
-                          "type": "View?class=horizontal;style:[gap=.5rem]",
                           "children": [
                             {
                               "type": "Text?text=if():[data().last-visit]:Last visit;style:[fontSize=1.3rem;color=#888]"
@@ -157,9 +154,11 @@
                             {
                               "type": "Text?text=data().last-visit.toDateFormat();style:[fontSize=1.3rem;color=#888]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=horizontal;style:[gap=.5rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox;style:[width=100%;justifyContent=flex-end;borderTop=1px solid #ddd;padding=.5rem]"
                     },
                     {
                       "children": [
@@ -170,7 +169,6 @@
                       "type": "View?class=vertical;style:[width=100%;display=none;gap=1rem]"
                     },
                     {
-                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]",
                       "children": [
                         {
                           "children": [
@@ -185,11 +183,6 @@
                         },
                         {
                           "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem]",
-                          "controls": [
-                            {
-                              "event": "click?new-selling:()=_map:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:creation-date:[today().timestamp()]:id:[gen():20]:selling-date:todayStart():sales:[_list:_map]:market:[data().id]:market-name:[data().name];update():new-selling;():new-selling.style():[opacity=1;pointerEvents=auto];my-market:()=data().clone()"
-                            }
-                          ],
                           "children": [
                             {
                               "type": "Icon?name=local_mall;google.outlined;style:[fontSize=2.2rem]"
@@ -197,9 +190,15 @@
                             {
                               "type": "Text?text=Sell;style:[fontSize=1.3rem;marginTop=.4rem]"
                             }
+                          ],
+                          "controls": [
+                            {
+                              "event": "click?new-selling:()=_map:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:creation-date:[today().timestamp()]:id:[gen():20]:selling-date:todayStart():sales:[_list:_map]:market:[data().id]:market-name:[data().name];update():new-selling;():new-selling.style():[opacity=1;pointerEvents=auto];my-market:()=data().clone()"
+                            }
                           ]
                         },
                         {
+                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem]",
                           "children": [
                             {
                               "type": "Icon?name=share;google.outlined;style:[fontSize=1.8rem]"
@@ -212,19 +211,20 @@
                             {
                               "event": "click?share():[text='Market: '+data().name+' | Address: '+data().city+, +data().district+, +data().address+' | Mobile: '+data().contact-number]"
                             }
-                          ],
-                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem]"
+                          ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]"
                     }
-                  ],
-                  "type": "View?class=flex vertical;style:[width=100%;gap=1rem]"
+                  ]
                 }
-              ]
+              ],
+              "type": "[View]?Data=markets;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]"
             }
           ]
         }
       ]
     }
-  ]
+  ],
+  "id": "markets"
 }

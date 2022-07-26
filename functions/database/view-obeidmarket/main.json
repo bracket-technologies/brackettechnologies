@@ -1,4 +1,7 @@
 {
+  "id": "main",
+  "creation-date": 1658743048312,
+  "type": "View:main?style:[position=relative]?mobile()",
   "controls": [
     {
       "event": "loaded??getCookie():_id",
@@ -10,6 +13,7 @@
   ],
   "children": [
     {
+      "type": "View?class=flexbox;style:[width=100%;height=4rem;backgroundColor=blue;position=sticky;top=0;justifyContent=space-between;padding=0 1rem]",
       "children": [
         {
           "type": "Icon?class=flexbox;name=menu;google.outlined;style:[fontSize=2.4rem;color=#fff;margin=auto 0]"
@@ -33,14 +37,12 @@
           ],
           "type": "View:user-name?class=flexbox;style:[gap=1rem]"
         }
-      ],
-      "type": "View?class=flexbox;style:[width=100%;height=4rem;backgroundColor=blue;position=sticky;top=0;justifyContent=space-between;padding=0 1rem]"
+      ]
     },
     {
       "type": "View:main-view"
     },
     {
-      "type": "View:bottom-navbar?class=box-shadow-1 grid;style:[position=fixed;height=5rem;width=100%;backgroundColor=#f6f6f6;padding=0 1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;bottom=0;left=0;right=0;zIndex=1;opacity=0];loaded:[timer():[style().opacity=1]:600]",
       "children": [
         {
           "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200]]",
@@ -54,6 +56,7 @@
           ]
         },
         {
+          "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200];timer():[toggleView():[parent=main-view;view=markets]]:400]",
           "children": [
             {
               "type": "Icon?name=store;google.outlined;style:[fontSize=3rem;color=#888;transition=.2s]"
@@ -61,11 +64,9 @@
             {
               "type": "Text?text=Markets;style:[fontSize=1.1rem;color=#888;transition=.2s]"
             }
-          ],
-          "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200];timer():[toggleView():[parent=main-view;view=markets]]:400]"
+          ]
         },
         {
-          "type": "View:sellings-btn?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200];timer():[toggleView():[parent=main-view;view=sellings]]:400]",
           "children": [
             {
               "type": "Icon?name=local_mall;google.outlined;style:[fontSize=3rem;color=#888;transition=.2s]"
@@ -73,10 +74,10 @@
             {
               "type": "Text?text=Sales;style:[fontSize=1.1rem;color=#888;transition=.2s]"
             }
-          ]
+          ],
+          "type": "View:sellings-btn?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200];timer():[toggleView():[parent=main-view;view=sellings]]:400]"
         },
         {
-          "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200]]",
           "children": [
             {
               "type": "Icon?name=grid_view;google.outlined;style:[fontSize=3rem;color=#888;transition=.2s]"
@@ -84,7 +85,8 @@
             {
               "type": "Text?text=Products;style:[fontSize=1.1rem;color=#888;transition=.2s]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200]]"
         },
         {
           "children": [
@@ -97,13 +99,11 @@
           ],
           "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200]]"
         }
-      ]
+      ],
+      "type": "View:bottom-navbar?class=box-shadow-1 grid;style:[position=fixed;height=5rem;width=100%;backgroundColor=#f6f6f6;padding=0 1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;bottom=0;left=0;right=0;zIndex=1;opacity=0];loaded:[timer():[style().opacity=1]:600]"
     },
     {
       "type": "View?view=new-selling"
     }
-  ],
-  "id": "main",
-  "type": "View:main?style:[position=relative]?mobile()",
-  "creation-date": 1658743048312
+  ]
 }

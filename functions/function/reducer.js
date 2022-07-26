@@ -243,7 +243,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()"
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()"
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
     || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
@@ -430,7 +430,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     
     var answer = path.reduce((o, k, i) => {
         
-        if (k === undefined) console.log(path)
+        if (k === undefined) console.log(view, id, path)
 
         k = k.toString()
         k0 = k.split(":")[0]
@@ -3677,7 +3677,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
           return require("./search").search({ id, e, search: _search })
 
-        } else if (k0 === "setPosition()" || k0 === "position()") {
+        } else if (k0 === "erase()") {
+          
+            if (isParam({ _window, string: args[1] })) {
+  
+              var _await = ""
+              var _erase = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+              if (args[2]) _await = global.codes[args[2]]
+              return require("./erase").erase({ id, e, _, __, _i, erase: _erase, asyncer: true, await: _await })
+            }
+  
+            var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+            var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
+            var _erase = { collection: _collection, doc: _doc }
+  
+            return require("./erase").erase({ id, e, save: _erase })
+  
+          } else if (k0 === "setPosition()" || k0 === "position()") {
           
             // setPosition():toBePositioned:positioner:placement:align
             /*

@@ -9,17 +9,16 @@ const erase = async ({ id, e, ...params }) => {
   var headers = erase.headers || {}
   headers.project = headers.project || global.projectId
   var store = erase.store || "database"
+  
+  erase.doc = erase.doc || erase.id || (erase.data && erase.data.id)
+  if (erase.doc === undefined) return
+  delete erase.data
 
   // erase
   headers.erase = encodeURI(toString({ erase }))
 
   // access key
   if (global["access-key"]) headers["access-key"] = global["access-key"]
-  
-  // no id
-  if (!erase.id && !erase.doc && !erase.docs) return
-  erase.doc = erase.doc || erase.id
-  if (erase.doc === undefined) delete erase.doc
 
   var { data } = await axios.delete(`/${store}`, {
     headers: {

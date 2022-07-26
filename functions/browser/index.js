@@ -2831,17 +2831,16 @@ const erase = async ({ id, e, ...params }) => {
   var headers = erase.headers || {}
   headers.project = headers.project || global.projectId
   var store = erase.store || "database"
+  
+  erase.doc = erase.doc || erase.id || (erase.data && erase.data.id)
+  if (erase.doc === undefined) return
+  delete erase.data
 
   // erase
   headers.erase = encodeURI(toString({ erase }))
 
   // access key
   if (global["access-key"]) headers["access-key"] = global["access-key"]
-  
-  // no id
-  if (!erase.id && !erase.doc && !erase.docs) return
-  erase.doc = erase.doc || erase.id
-  if (erase.doc === undefined) delete erase.doc
 
   var { data } = await axios.delete(`/${store}`, {
     headers: {
@@ -4662,7 +4661,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()"
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()"
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
     || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
@@ -4849,7 +4848,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     
     var answer = path.reduce((o, k, i) => {
         
-        if (k === undefined) console.log(path)
+        if (k === undefined) console.log(view, id, path)
 
         k = k.toString()
         k0 = k.split(":")[0]
@@ -8096,7 +8095,23 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
           return require("./search").search({ id, e, search: _search })
 
-        } else if (k0 === "setPosition()" || k0 === "position()") {
+        } else if (k0 === "erase()") {
+          
+            if (isParam({ _window, string: args[1] })) {
+  
+              var _await = ""
+              var _erase = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+              if (args[2]) _await = global.codes[args[2]]
+              return require("./erase").erase({ id, e, _, __, _i, erase: _erase, asyncer: true, await: _await })
+            }
+  
+            var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+            var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
+            var _erase = { collection: _collection, doc: _doc }
+  
+            return require("./erase").erase({ id, e, save: _erase })
+  
+          } else if (k0 === "setPosition()" || k0 === "position()") {
           
             // setPosition():toBePositioned:positioner:placement:align
             /*
@@ -8377,7 +8392,7 @@ const hasEmptyField = (o) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./axios":32,"./capitalize":34,"./clone":36,"./cookie":40,"./counter":41,"./csvToJson":48,"./decode":50,"./droplist":52,"./execute":55,"./exportJson":56,"./focus":59,"./generate":61,"./getDateTime":62,"./getDaysInMonth":63,"./getType":65,"./importJson":66,"./isEqual":69,"./isParam":70,"./note":76,"./print":81,"./refresh":83,"./remove":85,"./route":87,"./save":88,"./search":89,"./setPosition":93,"./sort":94,"./toApproval":99,"./toArray":100,"./toAwait":101,"./toCSV":102,"./toClock":103,"./toCode":104,"./toId":108,"./toNumber":109,"./toParam":111,"./toPdf":112,"./toPrice":113,"./toSimplifiedDate":114,"./toValue":117,"./toggleView":118,"./update":119,"./updateSelf":120,"./upload":121,"uuid":158}],83:[function(require,module,exports){
+},{"./axios":32,"./capitalize":34,"./clone":36,"./cookie":40,"./counter":41,"./csvToJson":48,"./decode":50,"./droplist":52,"./erase":53,"./execute":55,"./exportJson":56,"./focus":59,"./generate":61,"./getDateTime":62,"./getDaysInMonth":63,"./getType":65,"./importJson":66,"./isEqual":69,"./isParam":70,"./note":76,"./print":81,"./refresh":83,"./remove":85,"./route":87,"./save":88,"./search":89,"./setPosition":93,"./sort":94,"./toApproval":99,"./toArray":100,"./toAwait":101,"./toCSV":102,"./toClock":103,"./toCode":104,"./toId":108,"./toNumber":109,"./toParam":111,"./toPdf":112,"./toPrice":113,"./toSimplifiedDate":114,"./toValue":117,"./toggleView":118,"./update":119,"./updateSelf":120,"./upload":121,"uuid":158}],83:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
