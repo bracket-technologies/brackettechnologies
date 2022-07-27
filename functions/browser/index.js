@@ -2150,7 +2150,7 @@ const createElement = ({ _window, id, req, res }) => {
   if (params) {
     
     params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
-    
+
     if (params.id && params.id !== id && !priorityId) {
 
       if (view[params.id] && typeof view[params.id] === "object") {
@@ -2166,7 +2166,7 @@ const createElement = ({ _window, id, req, res }) => {
 
     // view
     if (params.view || (!myViews.includes(view.type) && global.data.view[view.type])) {
-
+      
       /* if (!global.data.view[view.view]) {
 
         global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
@@ -2175,6 +2175,7 @@ const createElement = ({ _window, id, req, res }) => {
 
       var viewId = params.view || view.type
       delete view.view
+      
       views[id] = { ...view, ...clone(global.data.view[viewId]) }
       return createElement({ _window, id, req, res })
     }
@@ -3615,8 +3616,9 @@ module.exports = {
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
-const generate = (length, number) => {
+const generate = (params = {}) => {
 
+  var { length, number } = params
   var result = "", chars = number ? numbers : characters
   if (!length) length = 5
 
@@ -6843,13 +6845,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                if (_params.number || _params.numbers) answer = generate(_params.length || 5, true)
-                else answer = generate(_params.length || 5)
+                _params.length = _params.length || _params.len || 5
+                _params.number = _params.number || _params.num
+                answer = generate(_params)
 
             } else {
 
                 var length = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params }) || 5
-                answer = generate(length)
+                answer = generate({ length })
             }
 
         } else if (k0 === "includes()" || k0 === "inc()") {

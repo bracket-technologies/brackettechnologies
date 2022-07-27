@@ -2425,13 +2425,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                if (_params.number || _params.numbers) answer = generate(_params.length || 5, true)
-                else answer = generate(_params.length || 5)
+                _params.length = _params.length || _params.len || 5
+                _params.number = _params.number || _params.num
+                answer = generate(_params)
 
             } else {
 
                 var length = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params }) || 5
-                answer = generate(length)
+                answer = generate({ length })
             }
 
         } else if (k0 === "includes()" || k0 === "inc()") {
