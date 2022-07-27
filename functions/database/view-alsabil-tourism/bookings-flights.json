@@ -1,5 +1,4 @@
 {
-  "creation-date": 1654022032235,
   "type": "View?id=bookings-flights;class=vertical;style:[gap=.5rem;width=100%]",
   "id": "bookings-flights",
   "children": [
@@ -7,13 +6,10 @@
       "type": "Text?class=flex;text=Booking Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
     },
     {
-      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]",
       "children": [
         {
-          "type": "View?id=flights-in-booking;class=vertical;style:[gap=3rem;padding=.5rem;borderRadius=.5rem];flights-booked:()=flights-booked:().filter();data().flights=flights-booked:()._():[_map:departure-airport:[_.departure-airport]:departure-day:[_.departure-day]:departure-time:[_.departure-time]:arrival-airport:[_.arrival-airport]:arrival-day:[_.arrival-day]:arrival-time:[_.arrival-time]:seats:[_.seats]]",
           "children": [
             {
-              "type": "[View]?path=flights;class=vertical;style:[gap=2rem;backgroundColor=#f9f9f9;width=100%;padding=1rem;borderRadius=.5rem;border=1px solid #ddd]",
               "children": [
                 {
                   "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=6rem 2fr 1fr 1fr 2fr 1fr 1fr 6rem]",
@@ -40,14 +36,15 @@
                       "type": "Input?label:[text=Arrival Time;location=outside;style.fontSize=1.3rem];readonly;tooltip.text=country timing;input.type=time;path=arrival-time;if():data():[input.value=data().toClock():[hr;min]];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                     },
                     {
+                      "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]",
                       "children": [
                         {
+                          "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                           "controls": [
                             {
                               "event": "click?)(:booking-data.flights.pull():[parent().parent().parent().mapIndex];if():[)(:booking-data.flights.len()=0]:[)(:booking-data.flights.push():_map];update():[parent().parent().parent().parent()]"
                             }
-                          ],
-                          "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
+                          ]
                         },
                         {
                           "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
@@ -57,19 +54,22 @@
                             }
                           ]
                         }
-                      ],
-                      "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]"
+                      ]
                     }
                   ]
                 },
                 {
                   "type": "View?view=booking-seat-passenger"
                 }
-              ]
+              ],
+              "type": "[View]?path=flights;class=vertical;style:[gap=2rem;backgroundColor=#f9f9f9;width=100%;padding=1rem;borderRadius=.5rem;border=1px solid #ddd]"
             }
-          ]
+          ],
+          "type": "View?id=flights-in-booking;class=vertical;style:[gap=3rem;padding=.5rem;borderRadius=.5rem];flights-booked:()=flights-booked:().filter();data().flights=flights-booked:()._():[_map:departure-airport:[_.departure-airport]:departure-day:[_.departure-day]:departure-time:[_.departure-time]:arrival-airport:[_.arrival-airport]:arrival-day:[_.arrival-day]:arrival-time:[_.arrival-time]:seats:[_.seats]]"
         }
-      ]
+      ],
+      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]"
     }
-  ]
+  ],
+  "creation-date": 1654022032235
 }

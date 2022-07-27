@@ -3321,8 +3321,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "exportCSV()") {
             
-            var file = toParam({ req, res, _window, id, e, _, string: args[1] })
-            require("./toCSV").toCSV({ file })
+            var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+            require("./toCSV").toCSV(_params)
+            
+        } else if (k0 === "exportExcel()") {
+            
+            var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+            require("./toExcel").toExcel(_params)
             
         } else if (k0 === "exportPdf()") {
             

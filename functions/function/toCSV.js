@@ -1,5 +1,5 @@
 module.exports = {
-    toCSV: ({ file = {} }) => {
+    toCSV: (file = {}) => {
 
         var data = file.data
         var fileName = file.name

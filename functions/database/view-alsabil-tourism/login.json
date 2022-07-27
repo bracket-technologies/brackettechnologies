@@ -1,5 +1,5 @@
 {
-  "creation-date": 1651335662000,
+  "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]",
   "id": "login",
   "children": [
     {
@@ -20,6 +20,7 @@
           "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
+              "type": "Input?id=username;path=username;label.text=User Name;container.style.width=100%;clicked.style.border=2px solid #3299FF;input.value=_string",
               "controls": [
                 {
                   "event": "input?style().backgroundColor=#fff;():username-req.style().opacity=0"
@@ -27,8 +28,7 @@
                 {
                   "event": "keydown?style().backgroundColor=#fff;():root.click()?e().key=Tab"
                 }
-              ],
-              "type": "Input?id=username;path=username;label.text=User Name;container.style.width=100%;clicked.style.border=2px solid #3299FF;input.value=_string"
+              ]
             },
             {
               "type": "Text?id=username-req;class=flex;style():[color=#ff0000ee;fontSize=1.2rem;opacity=0];text=User name is required!"
@@ -36,9 +36,9 @@
           ]
         },
         {
+          "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
-              "type": "Input?id=password;path=password;label.text=Password;container.style.width=100%;clicked.style.border=2px solid #3299FF;password;input.value=_string",
               "controls": [
                 {
                   "event": "input?style().backgroundColor=#fff;():password-req.style().opacity=0"
@@ -52,13 +52,13 @@
                 {
                   "event": "keydown?():signin-btn.click()?e().key=Enter"
                 }
-              ]
+              ],
+              "type": "Input?id=password;path=password;label.text=Password;container.style.width=100%;clicked.style.border=2px solid #3299FF;password;input.value=_string"
             },
             {
               "type": "Text?id=password-req;class=flex;style():[color=#ff0000ee;fontSize=1.2rem;opacity=0];text=Password is required!"
             }
-          ],
-          "type": "View?class=flex column;style.gap=0.5rem"
+          ]
         },
         {
           "children": [
@@ -73,8 +73,8 @@
                   "event": "click?if():[!signin:().username]:[():username-req.style().opacity=1;():username.2ndChild().style():[backgroundColor=#ff000020]];if():[!signin:().password]:[():password-req.style().opacity=1;():password.2ndChild().style():[backgroundColor=#ff000020]]?!signin:().username||!signin:().password"
                 },
                 {
-                  "event": "loaded??getCookie():[name=_id]",
-                  "actions": "wait():search?search.collection=user;search.doc=getCookie():[name=_id];wait():[if():[().search.data]:[user:()=().search.data;toggleView():[id=login;page=main;timer=200]]]"
+                  "actions": "wait():search?search.collection=user;search.doc=getCookie():[name=_id];wait():[if():[().search.data]:[user:()=().search.data;toggleView():[id=login;page=main;timer=200]]]",
+                  "event": "loaded??getCookie():[name=_id]"
                 }
               ]
             },
@@ -87,5 +87,5 @@
       ]
     }
   ],
-  "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]"
+  "creation-date": 1651335662000
 }
