@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+  "type": "View?id=flights-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
   "children": [
     {
       "children": [
@@ -45,15 +49,26 @@
                 },
                 {
                   "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
+<<<<<<< HEAD
+=======
+                  "children": [
+                    {
+                      "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
+                    }
+                  ],
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
                   "controls": [
                     {
                       "event": "click?style():[id=flights-mini-window;transition=.2s;padding=0;minHeight=100%];style().display=none;style():next().display=flex;1stChild():flights-mini-window.style():[borderRadius=0];():flight-form-header.style().display=flex;():flight-form-footer.style().display=flex"
                     }
+<<<<<<< HEAD
                   ],
                   "children": [
                     {
                       "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
                     }
+=======
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
                   ]
                 },
                 {
@@ -109,12 +124,12 @@
                       "type": "Input?label:[text=Created By;location=outside;style.fontSize=1.3rem];readonly;path=created-by-name;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                     },
                     {
-                      "type": "Input?id=flight-active;label:[text=Active;location=outside;style.fontSize=1.3rem];readonly;path=active;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];input.value=if():[data()]:Active:Inactive;droplist.items=_array:Active:Inactive;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.preventDefault",
                       "controls": [
                         {
                           "event": "click?droplist();if():[txt()=Active]:[)(:flight-data.active=true;():flight-active.getInput().txt()=Active]:[)(:flight-data.active=false;():flight-active.getInput().txt()=Inactive]"
                         }
-                      ]
+                      ],
+                      "type": "Input?id=flight-active;label:[text=Active;location=outside;style.fontSize=1.3rem];readonly;path=active;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];input.value=if():[data()]:Active:Inactive;droplist.items=_array:Active:Inactive;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.preventDefault"
                     },
                     {
                       "type": "Input?id=flight-status;label:[text=Status;location=outside;style.fontSize=1.3rem];readonly;path=status;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.flight-status.status;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
@@ -125,13 +140,11 @@
               ]
             },
             {
-              "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?class=flex;text=General Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]",
                   "children": [
                     {
                       "type": "Input?id=flight-type;label:[text=Flight Type;location=outside;style.fontSize=1.3rem];readonly;path=flight-type;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=_array:Schedule:Charter;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style:[minHeight=3rem;fontSize=1.3rem]"
@@ -164,9 +177,11 @@
                       ],
                       "type": "Input?label:[text=In Favour of;location=outside;style.fontSize=1.3rem];path=in-favour-of;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items='my-agents:().():[company-name]';if():[flight-edit-readonly:()]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.searchable;droplist.item.style:[minHeight=3rem;fontSize=1.3rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]"
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
             },
             {
               "children": [
@@ -174,7 +189,6 @@
                   "type": "Text?class=flex;text=Travel Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=1rem]",
                   "children": [
                     {
                       "controls": [
@@ -220,7 +234,8 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=1rem]"
                 }
               ],
               "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
@@ -295,7 +310,12 @@
       "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%]?flight-data:()"
     }
   ],
+<<<<<<< HEAD
   "type": "View?id=flights-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
   "creation-date": 1652280972498,
   "id": "flights-mini-window"
+=======
+  "id": "flights-mini-window",
+  "creation-date": 1652280972498
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
 }

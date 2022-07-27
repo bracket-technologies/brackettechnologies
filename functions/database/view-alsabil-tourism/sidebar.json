@@ -1,9 +1,17 @@
 {
-  "id": "sidebar",
   "type": "View?id=sidebar;style:[minWidth=4.5rem;maxWidth=4.5rem;width=4.5rem;backgroundColor=#f6f6f6;height=100%]",
+  "id": "sidebar",
   "children": [
     {
       "type": "View?id=dashboard;tooltip.text=Dashboard;opened-manager:()=dashboard-manager;class=flexbox pointer;style():[height=5rem;transition=.2s;borderRight=if():[opened-manager:()=dashboard-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
+<<<<<<< HEAD
+=======
+      "controls": [
+        {
+          "event": "click?():my-flights.style().height=0;flights-opened:()=false;():sidebar.children().pullItems():[id=flights||id=accounting].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=dashboard-manager]:[opened-manager:()=dashboard-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=dashboard-manager;timer=200]]:[opened-manager:().del()]"
+        }
+      ],
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
       "children": [
         {
           "type": "Icon?name=speed;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=dashboard-manager]:blue:#888]"
@@ -45,16 +53,46 @@
         {
           "event": "mouseleave?expand-timer=timer():[if():[!mouseenter]:[2ndChild().style():[width=0;right=0;pointerEvents=none]]]:200"
         }
+<<<<<<< HEAD
+=======
+      ],
+      "children": [
+        {
+          "type": "Icon?name=flight_takeoff;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=book-a-flight-manager]:blue:#888]"
+        },
+        {
+          "controls": [
+            {
+              "event": "click?if():[flights-opened:()]:[():my-flights.style().height=0;1stChild().style().transform=rotate(0);flights-opened:()=false]:[():my-flights.style().height=25.1rem;1stChild().style().transform=rotate(180deg);flights-opened:()=true]"
+            }
+          ],
+          "type": "View?class=flexbox;style:[width=0;height=3rem;borderRadius=0 .5rem .5rem 0;pointerEvents=none;position=absolute;right=0;transition=.2s;cursor=pointer;zIndex=1;backgroundColor=#e6e6e6;overflow=hidden]",
+          "children": [
+            {
+              "type": "Icon?name=expand_more;google.outlined;style:[fontSize=2rem]"
+            }
+          ]
+        }
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
       ]
     },
     {
       "children": [
         {
+<<<<<<< HEAD
+=======
+          "controls": [
+            {
+              "event": "click?():sidebar.children().pullItems():[id=my-flights||id=accounting].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=flights-manager]:[opened-manager:()=flights-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=flights-manager;timer=200]]:[opened-manager:().del()]"
+            }
+          ],
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
           "type": "View?id=flight-sidebar-btn;tooltip.text=flights;class=flexbox pointer;style:[if():[!user.admin||!agent:().admin]:[display=none];height=5rem;minHeight=5rem;flex=1;transition=.2s;position=relative;borderRight=if():[opened-manager:()=flights-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
           "children": [
             {
               "type": "Icon?name=flight;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=flights-manager]:blue:#888]"
             }
+<<<<<<< HEAD
           ],
           "controls": [
             {
@@ -63,16 +101,30 @@
           ]
         },
         {
+=======
+          ]
+        },
+        {
+          "children": [
+            {
+              "type": "Icon?name=backpack;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=flights-manager]:blue:#888]"
+            }
+          ],
+          "type": "View?tooltip.text=my bookings;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=bookings-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
           "controls": [
             {
               "event": "click?():sidebar.children().pullItems():[id=my-flights||id=accounting].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=bookings-manager]:[opened-manager:()=bookings-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=bookings-manager;timer=200]]:[opened-manager:().del()]"
             }
+<<<<<<< HEAD
           ],
           "type": "View?tooltip.text=my bookings;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=bookings-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
           "children": [
             {
               "type": "Icon?name=backpack;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=flights-manager]:blue:#888]"
             }
+=======
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
           ]
         },
         {
@@ -163,6 +215,61 @@
           ]
         },
         {
+<<<<<<< HEAD
+=======
+          "children": [
+            {
+              "type": "Icon?name=no_backpack;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=flights-manager]:blue:#888]"
+            }
+          ],
+          "type": "View?tooltip.text=my canceled bookings;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=canceled-bookings-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
+          "controls": [
+            {
+              "event": "click?():sidebar.children().pullItems():[id=my-flights||id=accounting].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=canceled-bookings-manager]:[opened-manager:()=canceled-bookings-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=canceled-bookings-manager;timer=200]]:[opened-manager:().del()]"
+            }
+          ]
+        }
+      ],
+      "type": "View?id=my-flights;class=vertical;style:[width=4.5rem;height=0;transition=.2s;overflow=hidden]"
+    },
+    {
+      "type": "View?tooltip.text=Accounting;class=flexbox pointer;style:[height=5rem;transition=.2s;borderBottom=2px solid #00000000];hover.style.backgroundColor=#e6e6e6?false",
+      "children": [
+        {
+          "type": "Icon?name=payments;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=flights-manager]:blue:#888]"
+        }
+      ],
+      "controls": [
+        {
+          "event": "click?():my-flights.style().height=0;flights-opened:()=false;():sidebar.children().pullItems():[id=flights||id=accounting].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=payments-manager]:[opened-manager:()=payments-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=payments-manager;timer=200]]"
+        }
+      ]
+    },
+    {
+      "children": [
+        {
+          "controls": [
+            {
+              "event": "click?():sidebar.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];():bookings-droplist.children().():[mouseleave();1stChild().style().color=#888;hover.disable=false];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=sellings-manager]:[opened-manager:()=sellings-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=sellings-manager;timer=200]]:[opened-manager:().del()]"
+            }
+          ],
+          "children": [
+            {
+              "type": "Icon?name=sell;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=sellings-manager]:blue:#888;transition=.2s]"
+            }
+          ],
+          "type": "View?id=sellings;tooltip.text=Sellings;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;borderRight=if():[opened-manager:()=sellings-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6"
+        },
+        {
+          "children": [
+            {
+              "type": "View?class=vertical;style:[flex=0.8;height=1px;backgroundColor=#ccc]"
+            }
+          ],
+          "type": "View?class=flexbox"
+        },
+        {
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
           "children": [
             {
               "type": "Icon?name=payments;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=refunds-manager]:blue:#888;transition=.2s]"

@@ -110,7 +110,7 @@ const createElement = ({ _window, id, req, res }) => {
   if (params) {
     
     params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
-    
+
     if (params.id && params.id !== id && !priorityId) {
 
       if (view[params.id] && typeof view[params.id] === "object") {
@@ -126,7 +126,7 @@ const createElement = ({ _window, id, req, res }) => {
 
     // view
     if (params.view || (!myViews.includes(view.type) && global.data.view[view.type])) {
-
+      
       /* if (!global.data.view[view.view]) {
 
         global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
@@ -135,6 +135,7 @@ const createElement = ({ _window, id, req, res }) => {
 
       var viewId = params.view || view.type
       delete view.view
+      
       views[id] = { ...view, ...clone(global.data.view[viewId]) }
       return createElement({ _window, id, req, res })
     }

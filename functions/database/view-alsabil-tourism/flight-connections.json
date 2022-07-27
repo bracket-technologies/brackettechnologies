@@ -1,4 +1,10 @@
 {
+<<<<<<< HEAD
+=======
+  "id": "flight-connections",
+  "type": "View?id=flight-connections;class=flex column;style.gap=1rem;style.width=100%",
+  "creation-date": 1653036755929,
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
   "children": [
     {
       "type": "Text?class=flex;text=Connections;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=0.5rem 0]"
@@ -56,12 +62,12 @@
                       ]
                     },
                     {
-                      "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                       "controls": [
                         {
                           "event": "click?)(:flight-data.connections.push():[_map:type:Return Trip]:[parent().parent().mapIndex+1];update():connections?!)(:flight-edit-readonly"
                         }
-                      ]
+                      ],
+                      "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
                     }
                   ]
                 },

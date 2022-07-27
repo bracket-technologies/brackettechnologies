@@ -1,6 +1,10 @@
 {
+<<<<<<< HEAD
   "type": "View?id=bookings-flights;class=vertical;style:[gap=.5rem;width=100%]",
   "id": "bookings-flights",
+=======
+  "creation-date": 1654022032235,
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
   "children": [
     {
       "type": "Text?class=flex;text=Booking Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -71,5 +75,10 @@
       "type": "View?class=vertical;style:[padding=1rem;gap=1rem]"
     }
   ],
+<<<<<<< HEAD
   "creation-date": 1654022032235
+=======
+  "type": "View?id=bookings-flights;class=vertical;style:[gap=.5rem;width=100%]",
+  "id": "bookings-flights"
+>>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
 }
