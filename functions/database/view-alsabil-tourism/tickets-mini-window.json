@@ -1,18 +1,10 @@
 {
-<<<<<<< HEAD
   "id": "tickets-mini-window",
-=======
   "type": "View?id=tickets-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=absolute;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
   "creation-date": 1653754089875,
->>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
   "children": [
     {
-      "controls": [
-        {
-          "event": "loaded",
-          "actions": "wait():search?search.collection=agent;search.doc=ticket-data:().agent;wait():[my-agent:()=().search.data;update():ticket-agent]"
-        }
-      ],
+      "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%]?ticket-data:()",
       "children": [
         {
           "children": [
@@ -20,16 +12,18 @@
               "type": "Text?text=Ticket form +if():[ticket-copied:()]:(Duplicate).elif():[ticket-edit-readonly:()]:(Display).elif():[ticket-edit:()]:(Edit):(New);style:[fontSize=1.5rem]"
             },
             {
+              "type": "View?class=flexbox;style.gap=1.5rem;style.marginLeft=auto",
               "children": [
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=erase;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s];hover.style.backgroundColor=#fff?!)(:new-ticket;!)(:ticket-edit-readonly",
                   "children": [
                     {
                       "type": "Icon?name=bi-trash;style.fontSize=2rem"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=erase;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s];hover.style.backgroundColor=#fff?!)(:new-ticket;!)(:ticket-edit-readonly"
                 },
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
                   "children": [
                     {
                       "type": "Icon?name=print;google.outlined;style.fontSize=2.2rem"
@@ -39,42 +33,28 @@
                     {
                       "event": "click?():ticket-form-header.style().display=none;html2pdf():[id=():tickets-mini-window.1stChild();name=ticket-data:().pnr]:[():ticket-form-header.style().display=flex];#():tickets-mini-window.style():[bottom=null;padding=0;transition=null;minHeight=100%;zIndex=99999];#next().style().display=none;#next().next().style().display=flex;#style():[1stChild():tickets-mini-window].borderRadius=0;#():ticket-form-header.style().display=none;#print():[id=():tickets-mini-window.1stChild().id;after-print='next().next().click()']"
                     }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s"
+                  ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
                   "controls": [
                     {
                       "event": "click?style():[id=tickets-mini-window;transition=.2s;padding=0;minHeight=100%];style().display=none;style():next().display=flex;1stChild():tickets-mini-window.style():[borderRadius=0];():tickets-mini-window.1stChild().1stChild().display=flex"
                     }
                   ],
-<<<<<<< HEAD
-=======
-                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s"
-                },
-                {
-                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none",
-                  "controls": [
-                    {
-                      "event": "click?style():[id=tickets-mini-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():ticket-form-header.style().display=flex;():ticket-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():tickets-mini-window].borderRadius=1rem"
-                    }
-                  ],
->>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
                   "children": [
                     {
                       "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s"
                 },
                 {
-<<<<<<< HEAD
+                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none",
                   "children": [
                     {
                       "type": "Icon?name=crop;google.outlined;style.fontSize=2.2rem"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none",
                   "controls": [
                     {
                       "event": "click?style():[id=tickets-mini-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():ticket-form-header.style().display=flex;():ticket-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():tickets-mini-window].borderRadius=1rem"
@@ -83,31 +63,23 @@
                 },
                 {
                   "type": "View?class=flexbox pointer;tooltip.text=close;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff",
-=======
->>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
-                  "controls": [
-                    {
-                      "event": "click?style():[id=tickets-mini-window;transition=.2s;padding=10vh 5vw;bottom=0];():tickets-mini-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw];style():[1stChild():tickets-mini-window].borderRadius=1rem;ticket-data:().del();new-ticket:().del()"
-                    }
-                  ],
-<<<<<<< HEAD
-=======
-                  "type": "View?class=flexbox pointer;tooltip.text=close;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff",
->>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
                   "children": [
                     {
                       "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.7rem"
                     }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?style():[id=tickets-mini-window;transition=.2s;padding=10vh 5vw;bottom=0];():tickets-mini-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw];style():[1stChild():tickets-mini-window].borderRadius=1rem;ticket-data:().del();new-ticket:().del()"
+                    }
                   ]
                 }
-              ],
-              "type": "View?class=flexbox;style.gap=1.5rem;style.marginLeft=auto"
+              ]
             }
           ],
           "type": "View:ticket-form-header?class=flex align-center;style:[width=100%;backgroundColor=#ddd;borderRadius=1rem 1rem 0 0;padding=0.5rem 1rem]"
         },
         {
-          "type": "View:ticket-form-body?class=flex column;style:[width=100%;gap=2rem;margin=2rem 0]",
           "children": [
             {
               "type": "View?class=flexbox grid;style:[gridTemplateColumns=1fr 1fr 1fr;borderBottom=1px solid #ddd;paddingBottom=1rem]",
@@ -163,7 +135,6 @@
                               "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
                             },
                             {
-                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
                               "children": [
                                 {
                                   "type": "Text?text=Address;style:[color=#000;fontSize=1.3rem;fontWeight=bold;textAlign=left;minWidth=12.5rem]"
@@ -171,9 +142,11 @@
                                 {
                                   "type": "Text?text=my-agent:().company-head-office-country+', '+my-agent:().company-head-office-city+', '+my-agent:().company-head-office-address;style:[color=#000;fontSize=1.3rem;textAlign=left;maxWidth=25rem]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
                             },
                             {
+                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
                               "children": [
                                 {
                                   "type": "Text?text=Contact Number;style:[color=#000;fontSize=1.3rem;fontWeight=bold;textAlign=left;width=12.5rem]"
@@ -181,10 +154,10 @@
                                 {
                                   "type": "Text?text=my-agent:().contact-number;style:[color=#000;fontSize=1.3rem;textAlign=left]"
                                 }
-                              ],
-                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
+                              ]
                             },
                             {
+                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
                               "children": [
                                 {
                                   "type": "Text?text=Email;style:[color=#000;fontSize=1.3rem;fontWeight=bold;textAlign=left;width=12.5rem]"
@@ -192,8 +165,7 @@
                                 {
                                   "type": "Text?text=my-agent:().email;style:[color=#000;fontSize=1.3rem;textAlign=left;maxWidth=25rem]"
                                 }
-                              ],
-                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
+                              ]
                             }
                           ],
                           "type": "View?class=vertical;style:[gap=1rem;alignItems=flex-end]"
@@ -241,7 +213,6 @@
                   "type": "Text?class=flex;text=Flight Info;style:[width=100%;#borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
-                  "type": "View?class=flexbox;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=2fr 1.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem;height=3.5rem;backgroundColor=#4e98cebb;opacity=.9;borderRadius=.5rem]",
                   "children": [
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -260,12 +231,12 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Flight No.;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "children": [
@@ -278,24 +249,10 @@
                     {
                       "children": [
                         {
-<<<<<<< HEAD
                           "type": "Text?class=pointer;text=To;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
-                        }
-                      ]
-=======
-                          "type": "Text?class=pointer;text=From;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
                       ],
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
->>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
-                    },
-                    {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
-                      "children": [
-                        {
-                          "type": "Text?class=pointer;text=To;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
-                        }
-                      ]
                     },
                     {
                       "children": [
@@ -306,12 +263,12 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Arr;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -322,16 +279,18 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Duration;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=2fr 1.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem;height=3.5rem;backgroundColor=#4e98cebb;opacity=.9;borderRadius=.5rem]"
                 },
                 {
+                  "type": "[View]?Data=my-flights;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=2fr 1.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]",
                   "children": [
                     {
                       "children": [
@@ -345,12 +304,12 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1;gap=1rem]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex;text=data().departure-day.toDateFormat();style:[fontSize=1.3rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -361,12 +320,12 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().departure-airport.split(): .0;style:[fontSize=1.3rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "children": [
@@ -377,12 +336,12 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().departure-time.toClock():[hr;min];style:[fontSize=1.3rem]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "children": [
@@ -393,23 +352,22 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flexbox;text=data().aircraft;style:[fontSize=1.3rem]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flexbox;text=data().flight-duration.split():':'.0+'h'+':'+data().flight-duration.split():':'.1+'m';style:[fontSize=1.3rem]?data().flight-duration"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     }
-                  ],
-                  "type": "[View]?Data=my-flights;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=2fr 1.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]"
+                  ]
                 }
               ]
             },
@@ -423,28 +381,28 @@
                   "type": "View?class=flexbox;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=3rem 4rem 3fr 1.5fr 1fr 1fr 1fr;padding=1rem;backgroundColor=#4e98cebb;opacity=.9;borderRadius=.5rem;height=3.5rem]",
                   "children": [
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=#;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Age;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Name;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "children": [
@@ -463,20 +421,20 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Meal;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Baggage;style:[color=#000;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     }
                   ]
                 },
@@ -502,12 +460,12 @@
                           ]
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex;text=[data().title+ +data().first-name+ +data().last-name].uppercase();style:[fontSize=1.3rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
                           "children": [
@@ -518,35 +476,25 @@
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex align-center;text=data().head-class+ | +data().class;style:[fontSize=1.3rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                          ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex align-center;text=if():[data().meal-included]:Included:'Not included';style:[fontSize=1.3rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                          ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
-<<<<<<< HEAD
-=======
-                              "type": "Text?class=flex align-center;text=if():[data().meal-included]:Included:'Not included';style:[fontSize=1.3rem]"
-                            }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
-                        },
-                        {
-                          "children": [
-                            {
->>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
                               "type": "Text?class=flex align-center;text=data().baggage-kg+kg;style:[fontSize=1.3rem]"
                             }
                           ]
@@ -558,9 +506,11 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "View:ticket-form-body?class=flex column;style:[width=100%;gap=2rem;margin=2rem 0]"
         },
         {
+          "type": "View?style:[gap=.5rem;width=100%;if():[tickets:().clone().filter():[pnr=ticket-data:().pnr].():[reservation-details.0].flat()=10]:[pageBreakBefore=always];#marginTop=auto]",
           "children": [
             {
               "type": "Text?class=flex;text=Terms & Conditions;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -573,17 +523,15 @@
               ],
               "type": "View?style:[gap=1rem;width=100%;display=flex;padding=1rem]"
             }
-          ],
-          "type": "View?style:[gap=.5rem;width=100%;if():[tickets:().clone().filter():[pnr=ticket-data:().pnr].():[reservation-details.0].flat()=10]:[pageBreakBefore=always];#marginTop=auto]"
+          ]
         }
       ],
-      "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%]?ticket-data:()"
+      "controls": [
+        {
+          "actions": "wait():search?search.collection=agent;search.doc=ticket-data:().agent;wait():[my-agent:()=().search.data;update():ticket-agent]",
+          "event": "loaded"
+        }
+      ]
     }
-  ],
-<<<<<<< HEAD
-  "creation-date": 1653754089875,
-  "type": "View?id=tickets-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=absolute;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]"
-=======
-  "id": "tickets-mini-window"
->>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
+  ]
 }

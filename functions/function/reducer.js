@@ -260,7 +260,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
-    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()")) {
+    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
+    || path0 === "exportExcel()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -2216,7 +2217,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "unshift()" || k0 === "pushFirst()" || k0 === "pushStart()") { // push to the begining, push first, push start
 
-          var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e })
+          var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e, object })
           var _index = 0
           if (_index === undefined) _index = o.length
           
@@ -2232,8 +2233,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "push()") {
             
-            var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e })
-            var _index = toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e })
+            var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e, object })
+            var _index = toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object })
             if (_index === undefined) _index = o.length
             
             if (Array.isArray(_item)) {

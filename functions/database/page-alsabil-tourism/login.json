@@ -1,19 +1,10 @@
 {
-  "view": "login",
-  "name": "Login Agent | Al Sabil Tourism",
-<<<<<<< HEAD
-  "id": "login",
-  "creation-date": 1651335662000,
   "views": [
     "login"
   ],
-  "title": "Login Agent | Al Sabil Tourism"
-=======
   "creation-date": 1651335662000,
-  "id": "login",
+  "view": "login",
   "title": "Login Agent | Al Sabil Tourism",
-  "views": [
-    "login"
-  ]
->>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
+  "name": "Login Agent | Al Sabil Tourism",
+  "id": "login"
 }

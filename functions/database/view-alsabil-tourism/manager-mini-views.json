@@ -1,9 +1,4 @@
 {
-<<<<<<< HEAD
-  "type": "View?id=manager-mini-views",
-  "creation-date": 1652284306902,
-=======
->>>>>>> b2a55010666953943b6f235ac93b4f35faa67d6d
   "id": "manager-mini-views",
   "children": [
     {

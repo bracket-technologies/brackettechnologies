@@ -8,7 +8,7 @@ module.exports = {
         var myObject = []
 
         // This condition will generate the Label/Header
-        var keys = file.fields || []
+        var keys = file.fields || file.keys || file.headers || []
         if (keys.length > 0) data.map((data, i) => {
             myObject[i] = {}
             keys.map(key => myObject[i][key] = data[key])
