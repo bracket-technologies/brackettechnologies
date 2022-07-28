@@ -3,6 +3,14 @@ const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
 const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, mount, createElement }) => {
 
   const { toParam } = require("./toParam")
@@ -26,7 +34,19 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
     
     value = toCode({ _window, string: value, e, start: "(", end: ")" })
   } 
+
+  // show loader
+  if (value === "loader.show") {
+    document.getElementsByClassName("loader-container")[0].style.display = "flex"
+    return sleep(10)
+  }
   
+  // hide loader
+  if (value === "loader.hide") {
+    document.getElementsByClassName("loader-container")[0].style.display = "none"
+    return sleep(10)
+  }
+
   // value is a param it has key=value
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, _i, object, mount, params, createElement })
 
@@ -87,7 +107,10 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === " ") return value
+  else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "min") value = "min(" + global.codes[value.slice(3, 15)] + ")"
+  else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "max") value = "max(" + global.codes[value.slice(3, 15)] + ")"
   else if (value.slice(4, 11) === "coded()" && value.slice(0, 4) === "calc") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
+  else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "clamp") value = "clamp(" + global.codes[value.slice(5, 17)] + ")"
   else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "scale") value = "scale(" + global.codes[value.slice(5, 17)] + ")"
   else if (value.slice(6, 13) === "coded()" && value.slice(0, 6) === "rotate") value = "rotate(" + global.codes[value.slice(6, 18)] + ")"
   else if (value.slice(9, 16) === "coded()" && value.slice(0, 9) === "translate") value = "translate(" + global.codes[value.slice(9, 21)] + ")"

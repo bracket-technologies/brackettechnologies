@@ -4,10 +4,14 @@
   "creation-date": 1658765496074,
   "children": [
     {
-      "type": "Text?if():[!new-selling:()]:[new-selling:()=_map:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:creation-date:[today().timestamp()]:day:todayStart():month:monthStart():year:yearStart():id:[gen():20]:selling-date:todayStart():sales:[_list:_map]];class=horizontal;text=New Sale;style:[height=4rem;padding=0 1rem;fontSize=2rem;borderLeft=3px solid blue;width=100%;backgroundColor=#f6f6f6]"
+      "type": "View?class=flex align-center;if():[!new-selling:()]:[new-selling:()=_map:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:creation-date:[today().timestamp()]:day:todayStart():month:monthStart():year:yearStart():id:[gen():20]:selling-date:todayStart():sales:[_list:_map]];style:[minHeight=4rem;padding=0 1rem;borderLeft=3px solid blue;width=100%;backgroundColor=#f6f6f6]",
+      "children": [
+        {
+          "type": "Text?text=New Selling;style:[fontSize=2rem]"
+        }
+      ]
     },
     {
-      "type": "View?class=vertical;style:[width=100%;gap=2rem;padding=2rem 0]",
       "children": [
         {
           "controls": [
@@ -26,9 +30,9 @@
           ]
         },
         {
-          "type": "View?class=vertical;style:[flex=1;gap=1rem]",
           "children": [
             {
+              "type": "View?class=horizontal;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem]",
               "children": [
                 {
                   "type": "Text?text=#;style:[color=#888;fontSize=1.2rem;flex=1]"
@@ -45,11 +49,9 @@
                 {
                   "type": "Text?text=Qty;style:[color=#888;fontSize=1.2rem;flex=1]"
                 }
-              ],
-              "type": "View?class=horizontal;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem]"
+              ]
             },
             {
-              "type": "View?class=vertical;style:[gap=1rem;flex=1]",
               "children": [
                 {
                   "type": "[View]?class=horizontal;path=sales;style:[display=grid;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem]",
@@ -92,9 +94,11 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=vertical;style:[gap=1rem;flex=1]"
             },
             {
+              "type": "View:total-new-sale?class=flexbox;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem;borderTop=1px solid #ddd;padding=1rem 0;height=5rem]",
               "children": [
                 {
                   "controls": [
@@ -102,12 +106,12 @@
                       "event": "click?Data().sales.push():_map;update():[parent().prev()]"
                     }
                   ],
-                  "type": "View?class=flexbox",
                   "children": [
                     {
                       "type": "Icon?name=add;google.outlined;style:[fontSize=2rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox"
                 },
                 {
                   "type": "View"
@@ -116,30 +120,31 @@
                   "type": "View"
                 },
                 {
-                  "type": "View:total-price",
                   "children": [
                     {
                       "type": "Text?class=flex;text=;style:[fontSize=1.3rem;color=blue;padding=.5rem];loaded:[data().total-price=parent().parent().prev().children().():[className():price.0.data().num()*className():qty.0.data().num()].sum();txt()=data().total-price.price()]"
                     }
-                  ]
+                  ],
+                  "type": "View:total-price"
                 },
                 {
+                  "type": "View:total-qty",
                   "children": [
                     {
                       "type": "Text?class=flex;text=;style:[fontSize=1.3rem;color=blue;padding=.5rem];loaded:[data().total-qty=className():qty.():[data().num()].sum();txt()=data().total-qty]"
                     }
-                  ],
-                  "type": "View:total-qty"
+                  ]
                 }
-              ],
-              "type": "View:total-new-sale?class=flexbox;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem;borderTop=1px solid #ddd;padding=1rem 0;height=5rem]"
+              ]
             }
-          ]
+          ],
+          "type": "View?class=vertical;style:[gap=1rem]"
         },
         {
           "type": "Input?path=note;textarea;label:[text=Notes;fontSize=1.2rem];style:[width=100%;minHeight=8rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]"
         },
         {
+          "type": "View?class=grid;style:[gap=5rem;gridTemplateColumns=1fr 1fr;marginTop=auto]",
           "children": [
             {
               "children": [
@@ -155,17 +160,17 @@
               ]
             },
             {
-              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=#888];click:[():new-selling.style():[opacity=0;pointerEvents=none]]",
               "children": [
                 {
                   "type": "Text?text=Cancel;style:[color=#fff;fontSize=1.4rem]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=#888];click:[():new-selling.style():[opacity=0;pointerEvents=none]]"
             }
-          ],
-          "type": "View?class=grid;style:[gap=5rem;gridTemplateColumns=1fr 1fr;marginTop=3rem]"
+          ]
         }
-      ]
+      ],
+      "type": "View?class=vertical;style:[flex=1;width=100%;gap=2rem;padding=2rem 0]"
     }
   ]
 }

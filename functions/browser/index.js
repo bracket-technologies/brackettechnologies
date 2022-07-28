@@ -985,7 +985,7 @@ module.exports = (component) => {
                 }, {
                     type: "View?style.minWidth=2rem;text=?data().type()!=map;data().type()!=array"
                 }, {
-                    type: "Input?preventDefault;#mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;#mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=path().lastElement();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?path().lastElement().num().type()!=number",
+                    type: "Input?preventDefault;#mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;#mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=path().lastElement();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?path().lastElement().type()!=number",
                     controls: [{
                         event: "input?Data():[path().clone().replaceLast():val()]=data().clone();data().del();parent().parent().deepChildren().():[derivations.[path().lastIndex()]=val()]"
                     }, {
@@ -998,7 +998,7 @@ module.exports = (component) => {
                         event: "keyup?insert-index:()=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;if():[data().type()=string]:[data()=_array];if():[path().lastEl()=children]:[data().push():[_map:type:_string];log():data():path()];if():[path().lastEl()=controls]:[data().push():[_map:event:_string]];parent-id:()=parent().parent().id;timer():[():[parent-id:()].update.view.inputs().2.focus()]:0;update():[parent().parent()]?e().key=Enter;ctrlKey:();path().lastEl()=controls||path().lastEl()=children"
                     }]
                 }, {
-                    type: "Text?text=path().lastElement();class=flex-box;#mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?path().lastElement().num().type()=number"
+                    type: "Text?text=path().lastElement();class=flex-box;#mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?path().lastElement().type()=number"
                 }, {
                     type: "Text?text=:;class=flex-box pointer;#mode.dark.style.color=#888;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_array:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
                 }, {
@@ -3686,7 +3686,7 @@ module.exports = {getParam}
 },{"./toParam":112}],65:[function(require,module,exports){
 module.exports = {
     getType: (value) => {
-        if (/*typeof value === "string" && value !== "true" && value !== "false"*/typeof value === "number") {
+        if (/*typeof value === "string" && value !== "true" && value !== "false"*/typeof value === "number" || (!isNaN(value) && value !== "")) {
             
             if (value.length >= 10 && value.length <=13 && !isNaN(value) && value.slice(0, 2) !== "00") return "timestamp"
             if (value.length === 8 && value.slice(0, 2) !== "00" && !isNaN(value)) return "time"
@@ -10523,6 +10523,14 @@ const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
 const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, mount, createElement }) => {
 
   const { toParam } = require("./toParam")
@@ -10546,7 +10554,19 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
     
     value = toCode({ _window, string: value, e, start: "(", end: ")" })
   } 
+
+  // show loader
+  if (value === "loader.show") {
+    document.getElementsByClassName("loader-container")[0].style.display = "flex"
+    return sleep(10)
+  }
   
+  // hide loader
+  if (value === "loader.hide") {
+    document.getElementsByClassName("loader-container")[0].style.display = "none"
+    return sleep(10)
+  }
+
   // value is a param it has key=value
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, _i, object, mount, params, createElement })
 
@@ -10607,7 +10627,10 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)
   else if (value === " ") return value
+  else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "min") value = "min(" + global.codes[value.slice(3, 15)] + ")"
+  else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "max") value = "max(" + global.codes[value.slice(3, 15)] + ")"
   else if (value.slice(4, 11) === "coded()" && value.slice(0, 4) === "calc") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
+  else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "clamp") value = "clamp(" + global.codes[value.slice(5, 17)] + ")"
   else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "scale") value = "scale(" + global.codes[value.slice(5, 17)] + ")"
   else if (value.slice(6, 13) === "coded()" && value.slice(0, 6) === "rotate") value = "rotate(" + global.codes[value.slice(6, 18)] + ")"
   else if (value.slice(9, 16) === "coded()" && value.slice(0, 9) === "translate") value = "translate(" + global.codes[value.slice(9, 21)] + ")"
