@@ -12,7 +12,7 @@ module.exports = {
 
                 let data = reader.result
                 let workbook = XLSX.read(data,{type:"binary"})
-                console.log(workbook);
+                
                 workbook.SheetNames.forEach(sheet => {
                     result = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
                     console.log(result);

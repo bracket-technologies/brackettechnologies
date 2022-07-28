@@ -2535,25 +2535,94 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "toDateFormat()") { // returns date for input
 
-            if (!isNaN(o) && typeof o === "string") o = parseInt(o)
-            var _date = new Date(o)
-            var _year = _date.getFullYear()
-            var _month = _date.getMonth() + 1
-            var _day = _date.getDate()
-            var _dayofWeek = _date.getDay()
+            if (isParam({ _window, string: args[1] })) {
 
-            var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+                var _options = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+                var format = _options.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
 
-            return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}`
+                if (typeof o === "string") {
+
+                    if (format.split("/").length > 1) {
+                        console.log(o);
+                        var _date = o.split("/")
+                        format.split("/").map((format, i) => {
+                            if (format === "dd") day = _date[i]
+                            else if (format === "mm") month = _date[i]
+                            else if (format === "yyyy") year = _date[i]
+                            else if (format === "hh") hour = _date[i]
+                            else if (format === "mm") min = _date[i]
+                            else if (format === "ss") sec = _date[i]
+                        })
+                    }
+                    
+                    return new Date(year, month, day, hour, min, sec)
+
+                } else if (_options.excel && typeof o === "number") {
+
+                    function ExcelDateToJSDate(serial) {
+                        var utc_days  = Math.floor(serial - 25569);
+                        var utc_value = utc_days * 86400;                                        
+                        var date_info = new Date(utc_value * 1000);
+                     
+                        var fractional_day = serial - Math.floor(serial) + 0.0000001;
+                     
+                        var total_seconds = Math.floor(86400 * fractional_day);
+                     
+                        var seconds = total_seconds % 60;
+                     
+                        total_seconds -= seconds;
+                     
+                        var hours = Math.floor(total_seconds / (60 * 60));
+                        var minutes = Math.floor(total_seconds / 60) % 60;
+                     
+                        return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+                     }
+                    return ExcelDateToJSDate(o)
+                }
+
+            } else {
+
+                if (!isNaN(o) && typeof o === "string") o = parseInt(o)
+                var _date = new Date(o)
+                var _year = _date.getFullYear()
+                var _month = _date.getMonth() + 1
+                var _day = _date.getDate()
+                var _dayofWeek = _date.getDay()
+
+                var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+                return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}`
+            }
 
         } else if (k0 === "toDateInputFormat()") { // returns date for input in format yyyy-mm-dd
 
-            if (!isNaN(o) && typeof o === "string") o = parseInt(o)
-            var _date = new Date(o)
-            var _year = _date.getFullYear()
-            var _month = _date.getMonth() + 1
-            var _day = _date.getDate()
-            return `${_year}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
+            if (isParam({ _window, string: args[1] })) {
+
+                var _options = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+                var format = _options.from, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
+                if (format.split("/").length > 1) {
+                    var _date = o.split("/")
+                    format.split("/").map((format, i) => {
+                        if (format === "dd") day = _date[i]
+                        else if (format === "mm") month = _date[i]
+                        else if (format === "yyyy") year = _date[i]
+                        else if (format === "hh") hour = _date[i]
+                        else if (format === "mm") min = _date[i]
+                        else if (format === "ss") sec = _date[i]
+                    })
+                }
+                console.log(new Date(year, month, day, hour, min, sec));
+                return new Date(year, month, day, hour, min, sec)
+
+            } else {
+
+                if (!isNaN(o) && typeof o === "string") o = parseInt(o)
+                var _date = new Date(o)
+                var _year = _date.getFullYear()
+                var _month = _date.getMonth() + 1
+                var _day = _date.getDate()
+                return `${_year}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
+            }
 
         } else if (k0 === "toUTCString()") {
             
