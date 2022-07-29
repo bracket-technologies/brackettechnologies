@@ -2231,10 +2231,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           } else o.splice(_index, 0, _item)
           answer = o
             
-        } else if (k0 === "push()") {
+        } else if (k0.includes("push()")) {
             
-            var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e, object })
-            var _index = toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object })
+            var _item, _index
+            if (k0.charAt(0) === "_") {
+                _item = toValue({ req, res, _window, id, value: args[1], params, _: o, __: _, _i,e, object })
+                _index = toValue({ req, res, _window, id, value: args[2], params, _: o, __: _, _i,e, object })
+            } else {
+                _item = toValue({ req, res, _window, id, value: args[1], params, _, __, _i,e, object })
+                _index = toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object })
+            }
+
             if (_index === undefined) _index = o.length
             
             if (Array.isArray(_item)) {
@@ -3318,7 +3325,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 margin:       0,
                 filename:     _params.name || generate(20),
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
+                html2canvas:  { scale: 3 },
                 jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' }
             }
             

@@ -1,5 +1,6 @@
 {
-  "creation-date": 0,
+  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]",
+  "id": "manager-view",
   "children": [
     {
       "type": "View?view=loading-manager;)(:opened-manager=loading-manager"
@@ -23,6 +24,5 @@
       "type": "View?view=refunds-manager?)(:opened-manager=refunds-manager"
     }
   ],
-  "id": "manager-view",
-  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]"
+  "creation-date": 0
 }
