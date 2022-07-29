@@ -1,42 +1,43 @@
 {
-  "id": "members-views",
+  "type": "View?id=members-views;class=flex column;style.gap=.2rem",
   "children": [
     {
       "type": "View?id=members-list-view;style.flex=1;class=flex column;style.gap=.2rem;style.display=if():[)(:members-view-type=list]:flex.else():none?)(:members-view-type=list",
       "children": [
         {
+          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 2fr 6rem;style.overflow=hidden",
           "children": [
             {
+              "type": "View?class=flexbox;style.height=100%;style.width=100%",
               "children": [
                 {
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "controls": [
                     {
                       "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;():members-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked]:[_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():members-views.getChildrenByClassName():checker.find():[checked.isTrue()]]:flex.else():none"
                     }
                   ],
+                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "children": [
                     {
                       "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[().parent().checked]:1.else():0;style.transition=.3s"
                     }
                   ]
                 }
-              ],
-              "type": "View?class=flexbox;style.height=100%;style.width=100%"
+              ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "event": "click",
-                      "actions": "sort;update:members-list-view?sort.Data=members;sort.path=active"
+                      "actions": "sort;update:members-list-view?sort.Data=members;sort.path=active",
+                      "event": "click"
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "type": "View?class=flex align-center",
@@ -50,26 +51,26 @@
               "type": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الإسم;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
                       "actions": "sort;update:members-list-view?sort.Data=members;sort.path=name",
                       "event": "click"
                     }
-                  ]
+                  ],
+                  "type": "Text?class=ar pointer;text=الإسم;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
               "children": [
                 {
+                  "type": "Text?class=flexbox pointer;style.color=#888;style.fontWeight=bold;style.fontSize=1.3rem;text=الحالة",
                   "controls": [
                     {
-                      "event": "click",
-                      "actions": "sort;update:members-list-view?sort.Data=members;sort.path=status"
+                      "actions": "sort;update:members-list-view?sort.Data=members;sort.path=status",
+                      "event": "click"
                     }
-                  ],
-                  "type": "Text?class=flexbox pointer;style.color=#888;style.fontWeight=bold;style.fontSize=1.3rem;text=الحالة"
+                  ]
                 }
               ],
               "type": "View?class=flex align-center"
@@ -77,13 +78,13 @@
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=العمل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "actions": "async():sort:[update:members-list-view]?sort.Data=members;sort.path=job-title",
-                      "event": "click"
+                      "event": "click",
+                      "actions": "async():sort:[update:members-list-view]?sort.Data=members;sort.path=job-title"
                     }
-                  ]
+                  ],
+                  "type": "Text?class=ar pointer;text=العمل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
               "type": "View?class=flex align-center"
@@ -92,79 +93,94 @@
               "type": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=المركز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
-                  "controls": [
-                    {
-                      "event": "click",
-                      "actions": "async():sort:[update:members-list-view]?sort.Data=members;sort.path=center"
-                    }
-                  ]
+                  "type": "Text?class=ar pointer;text=المركز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=جهات الإتصال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "type": "Text?class=ar pointer;text=الشبكة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
               "type": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
+              "type": "View?class=flex align-center",
+              "children": [
+                {
+                  "type": "Text?class=ar pointer;text=جهات الإتصال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                }
+              ]
+            },
+            {
               "children": [
                 {
                   "controls": [
                     {
-                      "actions": "setPosition:members-remove-all-popup?position.placement=right;position.positioner=().id",
-                      "event": "click?if():[():members-remove-all-popup.style().pointerEvents=none]:[():members-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():members-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
+                      "event": "click?if():[():members-remove-all-popup.style().pointerEvents=none]:[():members-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():members-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                      "actions": "setPosition:members-remove-all-popup?position.placement=right;position.positioner=().id"
                     }
                   ],
                   "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
             }
-          ],
-          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 2fr 6rem;style.overflow=hidden"
+          ]
         },
         {
+          "type": "View?class=flex column;style.width=100%;style.gap=.2rem;style.overflow=auto;style.height=calc(100vh - 33rem)?)(:members.len().greater():0",
           "children": [
             {
-              "type": "[View]?data=)(:members;style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:members-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 2fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
+              "type": "[View]?data=)(:members;style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:members-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 2fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
               "children": [
                 {
-                  "type": "View?class=flexbox;style.width=100%;style.height=100%",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                      "controls": [
+                        {
+                          "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():members-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                        }
+                      ],
                       "children": [
                         {
                           "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[().parent().checked]:1.else():0;style.transition=.3s"
                         }
                       ],
-                      "controls": [
-                        {
-                          "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():members-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
-                        }
-                      ]
+                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style.width=100%;style.height=100%"
                 },
                 {
-                  "type": "View?class=flex align-center",
                   "children": [
                     {
                       "controls": [
                         {
-                          "actions": "save?save.collection=resources-members;save.doc=data().id;save.data=data()",
-                          "event": "click?().style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50"
+                          "event": "click?().style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50",
+                          "actions": "save?save.collection=resources-members;save.doc=data().id;save.data=data()"
                         }
                       ],
                       "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[().data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center"
                 },
                 {
+                  "controls": [
+                    {
+                      "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
+                    },
+                    {
+                      "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
+                    },
+                    {
+                      "actions": "update:members-mini-window?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
+                      "event": "click?)(:members-data=data().clone();)(:members-edit-readonly=true;)(:new-members.del();)(:members-copied.del()?!2ndChild().mouseenter"
+                    }
+                  ],
+                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
@@ -176,19 +192,6 @@
                           "event": "click?copyToClipBoard():[data().id]"
                         }
                       ]
-                    }
-                  ],
-                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
-                  "controls": [
-                    {
-                      "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
-                    },
-                    {
-                      "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
-                    },
-                    {
-                      "actions": "update:members-mini-window?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
-                      "event": "click?)(:members-data=data().clone();)(:members-edit-readonly=true;)(:new-members.del();)(:members-copied.del()?!2ndChild().mouseenter"
                     }
                   ]
                 },
@@ -203,10 +206,11 @@
                 {
                   "children": [
                     {
+                      "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=غائب]:#ffdbdb.elif():[data()=في مهمة]:#ffe3b0.elif():[data()=في إجازة]:#fffbb8.elif():[data()=يداوم]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem;droplist.items=)(:data.collection.members-status.status;droplist.align=right",
                       "controls": [
                         {
-                          "event": "click?droplist();Data().path():[derivations().clone().pullLast().push():status]=text()",
-                          "actions": "async():save:[update:members-manager-list]?save.collection=resources-members;save.doc=Data().path():[derivations().clone().pullLast().push():id];save.data=Data().path():[derivations().clone().pullLast()];async():[)(:members=Data()]"
+                          "actions": "async():save:[update:members-manager-list]?save.collection=resources-members;save.doc=Data().path():[derivations().clone().pullLast().push():id];save.data=Data().path():[derivations().clone().pullLast()];async():[)(:members=Data()]",
+                          "event": "click?droplist();Data().path():[derivations().clone().pullLast().push():status]=text()"
                         }
                       ],
                       "children": [
@@ -216,8 +220,7 @@
                         {
                           "type": "Text?style.color=if():[data()=غائب]:red.elif():[data()=في مهمة]:#db8f00.elif():[data()=في إجازة]:#c2b800.elif():[data()=يداوم]:#00c206;style.fontSize=1.2rem;style.fontWeight=bold;text=data()"
                         }
-                      ],
-                      "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=غائب]:#ffdbdb.elif():[data()=في مهمة]:#ffe3b0.elif():[data()=في إجازة]:#fffbb8.elif():[data()=يداوم]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem;droplist.items=)(:data.collection.members-status.status;droplist.align=right"
+                      ]
                     }
                   ],
                   "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status"
@@ -231,49 +234,51 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "type": "View?class=flex align-center center-in-members;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?class=pointer;style.fontSize=1.4rem;text=if():[data().center]:[)(:centers.values().find():[id=data().center].name].else():;hover.style.color=#000;style.transition=.3s;hover.style.fontWeight=bold;tooltip.text=عرض تفاصيل المركز",
-                      "controls": [
-                        {
-                          "actions": "update:centers-mini-window?():centers-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
-                          "event": "click?)(:centers-data=)(:centers.values().find():[id=data().center].clone();)(:centers-edit-readonly=true;)(:new-centers.del();)(:centers-copied.del()?text()"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
-                  "children": [
-                    {
-                      "type": "Text?style.fontSize=1.4rem;text=data().contacts._map():[if():[_.name;_.phone-number]:[_.name+ +_.phone-number].else():_string].filter().join(): | .ar()"
+                      "type": "Text?class=pointer;style.fontSize=1.4rem;text=centers:().find():[id=data().center].name;hover.style.color=#000;style.transition=.3s;hover.style.fontWeight=bold"
                     }
                   ]
                 },
                 {
                   "children": [
                     {
-                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
+                      "type": "Text?class=pointer;style.fontSize=1.4rem;text=networks:().filter():[id.in():[data().networks-managing]].():name;hover.style.color=#000;style.transition=.3s;hover.style.fontWeight=bold"
+                    }
+                  ],
+                  "type": "View?class=flex align-center network-in-members;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?style.fontSize=1.4rem;text=data().contacts.():[name+ +phone-number].filter().join(): | .ar()"
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                },
+                {
+                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
+                  "children": [
+                    {
                       "controls": [
                         {
                           "actions": "setPosition:members-actions?position.placement=right;position.positioner=().id",
                           "event": "click?if():[)(:members-data=data();():members-actions.style().pointerEvents=auto]:[():members-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:members-data.del()]].else():[():members-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:members-data=data().clone()]];)(:new-members.del();)(:members-copied.del();():members-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
                         }
-                      ]
+                      ],
+                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
                     }
-                  ],
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
+                  ]
                 }
               ]
             }
-          ],
-          "type": "View?class=flex column;style.width=100%;style.gap=.2rem;style.overflow=auto;style.height=calc(100vh - 33rem)?)(:members.len().greater():0"
+          ]
         }
       ]
     },
     {
+      "type": "View?id=members-grid-view;class=flex column;style.gap=1rem;style.display=if():[)(:members-view-type=grid]:flex.else():none?)(:members-view-type=grid",
       "children": [
         {
           "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;class=flex align-center;style.borderRadius=1rem;style.overflow=hidden",
@@ -281,6 +286,7 @@
             {
               "children": [
                 {
+                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "controls": [
                     {
                       "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;():members-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():members-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
@@ -290,8 +296,7 @@
                     {
                       "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[().parent().checked]:1.else():0;style.transition=.3s"
                     }
-                  ],
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                  ]
                 }
               ],
               "type": "View?class=flexbox;style.height=100%;style.width=6rem"
@@ -300,13 +305,13 @@
               "type": "View?class=flexbox;style.padding=0 .5rem;style.marginRight=auto",
               "children": [
                 {
+                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
                   "controls": [
                     {
-                      "actions": "setPosition:members-remove-all-popup?position.placement=right;position.positioner=().id",
-                      "event": "click?if():[():members-remove-all-popup.style().pointerEvents=none]:[():members-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():members-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
+                      "event": "click?if():[():members-remove-all-popup.style().pointerEvents=none]:[():members-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():members-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                      "actions": "setPosition:members-remove-all-popup?position.placement=right;position.positioner=().id"
                     }
-                  ],
-                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
+                  ]
                 }
               ]
             }
@@ -319,17 +324,18 @@
               "type": "View?style.padding=1rem;style.gap=1rem;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr?)(:members.len().greater():0",
               "children": [
                 {
+                  "type": "[View]?data=)(:members;class=flex;style.borderRadius=1.5rem;style.border=1px solid #e5e5e5;style.padding=1rem;hover.style.border=1px solid #ddd",
                   "children": [
                     {
                       "type": "View?class=flex align-center column;style.gap=1rem;style.width=fit-content",
                       "children": [
                         {
+                          "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                           "children": [
                             {
                               "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[().parent().checked]:1.else():0;style.transition=.3s"
                             }
                           ],
-                          "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                           "controls": [
                             {
                               "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():members-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
@@ -339,8 +345,8 @@
                         {
                           "controls": [
                             {
-                              "event": "click?().style().backgroundColor=if():[().data().active]:#ddd.else():#15ff00;().data().active=data().active.opp();().style().transform=scale(1.1);timer():[().style().transform=scale(1)]:50",
-                              "actions": "save?save.collection=resources-members;save.doc=data().id;save.data=data()"
+                              "actions": "save?save.collection=resources-members;save.doc=data().id;save.data=data()",
+                              "event": "click?().style().backgroundColor=if():[().data().active]:#ddd.else():#15ff00;().data().active=data().active.opp();().style().transform=scale(1.1);timer():[().style().transform=scale(1)]:50"
                             }
                           ],
                           "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[().data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms"
@@ -359,6 +365,7 @@
                           ]
                         },
                         {
+                          "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
                           "children": [
                             {
                               "children": [
@@ -371,8 +378,7 @@
                               ],
                               "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=غائب]:#ffdbdb.elif():[data()=في مهمة]:#ffe3b0.elif():[data()=في إجازة]:#fffbb8.elif():[data()=يداوم]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status"
+                          ]
                         },
                         {
                           "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
@@ -383,12 +389,12 @@
                           ]
                         },
                         {
-                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                           "children": [
                             {
                               "type": "Text?style.fontSize=1.4rem;text=data().contacts._map():[if():[_.name;_.phone-number]:[_.name+ +_.phone-number].else():_string].filter().join(): | .ar()"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                         }
                       ]
                     },
@@ -406,16 +412,14 @@
                         }
                       ]
                     }
-                  ],
-                  "type": "[View]?data=)(:members;class=flex;style.borderRadius=1.5rem;style.border=1px solid #e5e5e5;style.padding=1rem;hover.style.border=1px solid #ddd"
+                  ]
                 }
               ]
             }
           ]
         }
-      ],
-      "type": "View?id=members-grid-view;class=flex column;style.gap=1rem;style.display=if():[)(:members-view-type=grid]:flex.else():none?)(:members-view-type=grid"
+      ]
     }
   ],
-  "type": "View?id=members-views;class=flex column;style.gap=.2rem"
+  "id": "members-views"
 }

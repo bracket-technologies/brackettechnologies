@@ -2,9 +2,9 @@
   "views": [
     "login"
   ],
-  "title": "Login Agent | Al Sabil Tourism",
-  "view": "login",
   "id": "login",
-  "creation-date": 1651335662000,
-  "name": "Login Agent | Al Sabil Tourism"
+  "title": "Login Agent | Al Sabil Tourism",
+  "name": "Login Agent | Al Sabil Tourism",
+  "view": "login",
+  "creation-date": 1651335662000
 }

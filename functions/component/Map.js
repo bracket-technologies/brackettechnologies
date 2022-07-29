@@ -46,7 +46,7 @@ module.exports = (component) => {
                 }, {
                     type: "View?style.minWidth=2rem;text=?data().type()!=map;data().type()!=array"
                 }, {
-                    type: "Input?preventDefault;#mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;#mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=path().lastElement();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?path().lastElement().type()!=number",
+                    type: "Input?preventDefault;#mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;#mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=path().lastElement();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?parent().parent().parent().data().type()!=array",
                     controls: [{
                         event: "input?Data():[path().clone().replaceLast():val()]=data().clone();data().del();parent().parent().deepChildren().():[derivations.[path().lastIndex()]=val()]"
                     }, {
@@ -59,7 +59,7 @@ module.exports = (component) => {
                         event: "keyup?insert-index:()=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;if():[data().type()=string]:[data()=_array];if():[path().lastEl()=children]:[data().push():[_map:type:_string];log():data():path()];if():[path().lastEl()=controls]:[data().push():[_map:event:_string]];parent-id:()=parent().parent().id;timer():[():[parent-id:()].update.view.inputs().2.focus()]:0;update():[parent().parent()]?e().key=Enter;ctrlKey:();path().lastEl()=controls||path().lastEl()=children"
                     }]
                 }, {
-                    type: "Text?text=path().lastElement();class=flex-box;#mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?path().lastElement().type()=number"
+                    type: "Text?text=path().lastElement();class=flex-box;#mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?parent().parent().parent().data().type()=array"
                 }, {
                     type: "Text?text=:;class=flex-box pointer;#mode.dark.style.color=#888;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_array:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
                 }, {

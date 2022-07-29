@@ -1,42 +1,43 @@
 {
-  "type": "View?id=issues-views;class=flex column;style.gap=.2rem",
+  "id": "issues-views",
   "children": [
     {
       "type": "View?id=issues-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:issues-view-type=list]:flex:none?)(:issues-view-type=list",
       "children": [
         {
+          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
           "children": [
             {
+              "type": "View?class=flexbox;style.height=100%;style.width=100%",
               "children": [
                 {
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                  "controls": [
+                    {
+                      "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():issues-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():issues-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                    }
+                  ],
                   "children": [
                     {
                       "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                     }
                   ],
-                  "controls": [
-                    {
-                      "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():issues-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():issues-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
-                    }
-                  ]
+                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
                 }
-              ],
-              "type": "View?class=flexbox;style.height=100%;style.width=100%"
+              ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
+                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
                       "event": "click",
                       "actions": "sort;update:issues-list-view?sort.Data=issues;sort.path=active"
                     }
-                  ],
-                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "children": [
@@ -47,12 +48,12 @@
               "type": "View?class=flex align-center"
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=الحالة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
               "type": "View?class=flex align-center",
@@ -63,28 +64,28 @@
               ]
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=كيفية التبليغ;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "type": "Text?class=ar pointer;text=المبلّغ;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
               "type": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
-              "children": [
-                {
-                  "type": "Text?class=ar pointer;text=المبلّغ;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
-                }
-              ]
-            },
-            {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=المراقب;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "type": "View?class=flex align-center",
@@ -95,20 +96,20 @@
               ]
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=إسم مكان العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=الشبكة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "type": "View?class=flex align-center",
@@ -119,43 +120,43 @@
               ]
             },
             {
+              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
               "children": [
                 {
                   "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
                   "controls": [
                     {
-                      "actions": "setPosition:issues-remove-all-popup?position.placement=right;position.positioner=().id",
-                      "event": "click?if():[():issues-remove-all-popup.style().pointerEvents=none]:[():issues-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():issues-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
+                      "event": "click?if():[():issues-remove-all-popup.style().pointerEvents=none]:[():issues-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():issues-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                      "actions": "setPosition:issues-remove-all-popup?position.placement=right;position.positioner=().id"
                     }
                   ]
                 }
-              ],
-              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
+              ]
             }
-          ],
-          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden"
+          ]
         },
         {
           "children": [
             {
+              "type": "[View]?data=issues:();style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[issues-view-type:()=list]:grid:none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
               "children": [
                 {
+                  "type": "View?class=flexbox;style.width=100%;style.height=100%",
                   "children": [
                     {
-                      "children": [
-                        {
-                          "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
-                        }
-                      ],
                       "controls": [
                         {
                           "event": "click?checked=().checked.opp();1stChild().style().opacity=if():[checked]:1:0;if():[():main-checker.checked]:[():main-checker.():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():monitors-views.className():checker.find():checked]:flex:none"
                         }
                       ],
-                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                      "children": [
+                        {
+                          "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                        }
+                      ]
                     }
-                  ],
-                  "type": "View?class=flexbox;style.width=100%;style.height=100%"
+                  ]
                 },
                 {
                   "children": [
@@ -180,8 +181,8 @@
                       "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
                     },
                     {
-                      "event": "click?issues-data:()=data().clone();)(:issues-edit-readonly=true;)(:new-issues.del();)(:issues-copied.del()?!2ndChild().mouseenter",
-                      "actions": "update:issues-mini-window?():issues-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+                      "actions": "update:issues-mini-window?():issues-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
+                      "event": "click?issues-data:()=data().clone();)(:issues-edit-readonly=true;)(:new-issues.del();)(:issues-copied.del()?!2ndChild().mouseenter"
                     }
                   ],
                   "children": [
@@ -200,12 +201,12 @@
                   "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s"
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().status"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
                   "children": [
@@ -248,20 +249,20 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().issue-place"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().network-name"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
                   "children": [
@@ -272,21 +273,20 @@
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
                   "children": [
                     {
+                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
                       "controls": [
                         {
                           "actions": "setPosition:issues-actions?position.placement=right;position.positioner=().id",
                           "event": "click?if():[)(:issues-data=data();():issues-actions.style().pointerEvents=auto]:[():issues-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:issues-data.del()]].else():[():issues-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:issues-data=data().clone()]];)(:new-issues.del();)(:issues-copied.del();():issues-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
                         }
-                      ],
-                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
+                      ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
                 }
-              ],
-              "type": "[View]?data=issues:();style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[issues-view-type:()=list]:grid:none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa"
+              ]
             }
           ],
           "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:issues.len()>0"
@@ -294,5 +294,5 @@
       ]
     }
   ],
-  "id": "issues-views"
+  "type": "View?id=issues-views;class=flex column;style.gap=.2rem"
 }

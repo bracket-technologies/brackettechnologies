@@ -1,15 +1,17 @@
 {
+  "id": "seats-prices-baggage",
+  "creation-date": 1652457705068,
+  "type": "View?id=seats-prices-baggage;class=flex column;style:[gap=1rem;width=100%]",
   "children": [
     {
       "type": "Text?class=flex;text=Seats & Prices;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=0.5rem 0]"
     },
     {
-      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]",
       "children": [
         {
-          "type": "View?class=vertical;style:[gap=1rem]",
           "children": [
             {
+              "type": "View?class=flex align-center;style:[gap=1rem]?false",
               "children": [
                 {
                   "controls": [
@@ -27,10 +29,10 @@
                 {
                   "type": "Text?text=Economy Class;style:[fontSize=1.3rem]"
                 }
-              ],
-              "type": "View?class=flex align-center;style:[gap=1rem]?false"
+              ]
             },
             {
+              "type": "View?id=seats;class=vertical;style:[gap=3rem;display=if():[flight-data:().seats.len()>0]:flex:none]",
               "children": [
                 {
                   "type": "[View]?path=seats;class=vertical",
@@ -42,6 +44,7 @@
                       "type": "View?class=vertical;style:[gap=2rem;width=100%;padding=1.5rem;border=1px solid #ddd;borderRadius=0 .5rem .5rem .5rem]",
                       "children": [
                         {
+                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1.5fr .5fr .5fr .5fr .5fr 1fr 1fr 1fr 1fr 6rem]",
                           "children": [
                             {
                               "children": [
@@ -55,12 +58,12 @@
                               "type": "View?class=grid;style:[gridTemplateColumns=2.5fr 1fr;gap=1rem]"
                             },
                             {
-                              "type": "Input?label:[text=Seats;location=outside;style.fontSize=1.3rem];tooltip.text=Total available seats;data().seats=data().seats||0;data().individual-reserved-seats=data().individual-reserved-seats||0;data().group-reserved-seats=data().group-reserved-seats||0;input.type=number;path=seats;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]",
                               "controls": [
                                 {
                                   "event": "change?Data():[path=path().clone().pullLast().push():av-seats]=data();Data():[path=path().clone().pullLast().push():'individual-considered-seats']=data();Data():[path=path().clone().pullLast().push():'group-considered-seats']=data();next().input().txt()=data();next().next().input().txt()=data();next().next().next().input().txt()=data();next().next().next().input().max()=data()"
                                 }
-                              ]
+                              ],
+                              "type": "Input?label:[text=Seats;location=outside;style.fontSize=1.3rem];tooltip.text=Total available seats;data().seats=data().seats||0;data().individual-reserved-seats=data().individual-reserved-seats||0;data().group-reserved-seats=data().group-reserved-seats||0;input.type=number;path=seats;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
                             },
                             {
                               "type": "Input?label:[text=Av. Seats;location=outside;style.fontSize=1.3rem];tooltip.text=Available seats;input.type=number;data().av-seats=data().av-seats||0;path=av-seats;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -72,13 +75,11 @@
                               "type": "Input?label:[text=Max Grp;location=outside;style.fontSize=1.3rem];tooltip.text=Maximum considered seats for Groups;input.type=number;data().group-max-seats=data().group-max-seats||0;path=group-max-seats;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                             },
                             {
-                              "type": "View?class=vertical;style:[gap=.5rem]",
                               "children": [
                                 {
                                   "type": "Text?class=flex;text=Additional Profit;style:[fontSize=1.3rem]"
                                 },
                                 {
-                                  "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff",
                                   "children": [
                                     {
                                       "type": "Input?input.type=number;path=additional-profit;style:[height=100%;flex=1;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
@@ -86,9 +87,11 @@
                                     {
                                       "type": "Input?class=flexbox;path=additional-profit-unit;readonly;style:[color=#666;width=2.25rem;height=2.9rem;borderRadius=.5rem;fontSize=1.3rem;transition=.3s];hover.style.backgroundColor=#eee;droplist.items=_array:%:$;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
                                     }
-                                  ]
+                                  ],
+                                  "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=vertical;style:[gap=.5rem]"
                             },
                             {
                               "children": [
@@ -96,6 +99,7 @@
                                   "type": "Text?class=flex;text=Commission;style:[fontSize=1.3rem]"
                                 },
                                 {
+                                  "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff",
                                   "children": [
                                     {
                                       "type": "Input?input.type=number;path=commission;style:[height=100%;flex=1;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
@@ -103,8 +107,7 @@
                                     {
                                       "type": "Input?class=flexbox;path=commission-unit;readonly;style:[color=#666;width=2.25rem;height=2.9rem;borderRadius=.5rem;fontSize=1.3rem;transition=.3s];hover.style.backgroundColor=#eee;droplist.items=_array:%:$;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
                                     }
-                                  ],
-                                  "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
+                                  ]
                                 }
                               ],
                               "type": "View?class=vertical;style:[gap=.5rem]"
@@ -129,14 +132,15 @@
                               ]
                             },
                             {
+                              "type": "View?class=flexbox;style:[gap=.5rem;marginTop=auto;height=3.5rem]",
                               "children": [
                                 {
-                                  "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];if():[data().meal-included.isundefined()]:[data().meal-included=false];checked=data().meal-included||false",
                                   "controls": [
                                     {
                                       "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;data().meal-included=().checked?!)(:flight-edit-readonly"
                                     }
                                   ],
+                                  "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];if():[data().meal-included.isundefined()]:[data().meal-included=false];checked=data().meal-included||false",
                                   "children": [
                                     {
                                       "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
@@ -146,19 +150,17 @@
                                 {
                                   "type": "Text?class=flex;text=Meal Included;style:[fontSize=1.3rem]"
                                 }
-                              ],
-                              "type": "View?class=flexbox;style:[gap=.5rem;marginTop=auto;height=3.5rem]"
+                              ]
                             },
                             {
-                              "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem;justifyContent=flex-end]",
                               "children": [
                                 {
+                                  "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                                   "controls": [
                                     {
                                       "event": "click?)(:flight-data.seats.pull():[parent().parent().parent().parent().mapIndex];update():seats?)(:flight-data.seats.len()>1"
                                     }
-                                  ],
-                                  "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
+                                  ]
                                 },
                                 {
                                   "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
@@ -168,12 +170,13 @@
                                     }
                                   ]
                                 }
-                              ]
+                              ],
+                              "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem;justifyContent=flex-end]"
                             }
-                          ],
-                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1.5fr .5fr .5fr .5fr .5fr 1fr 1fr 1fr 1fr 6rem]"
+                          ]
                         },
                         {
+                          "type": "[View]?path=pricing;style:[padding=0 1.5rem;gap=1rem;width=100%;display=grid;gridTemplateColumns=4rem 1fr 1fr 1fr 1fr 1fr 1fr 6rem]",
                           "children": [
                             {
                               "type": "Text?class=flexbox;text=parent().mapIndex+1;style:[fontSize=1.3rem;border=1px solid #ddd;borderRadius=.5rem;height=2rem;width=3rem]"
@@ -187,20 +190,20 @@
                               "type": "Input?label:[text=Trip;location=outside;style.fontSize=1.3rem];path=trip;readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items='flight-data:().trips.clone()';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
                             },
                             {
-                              "type": "Input?label:[text=Time Limit (dd:hh:mm);location=outside;style.fontSize=1.3rem];if():[data().trip!=Open Round Trip]:[readonly=true];input.value=data().time-limit.time();clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem;if():[parent().data().trip!=Open Round Trip]:[backgroundColor=#ccc]];if():[)(:flight-edit-readonly]:[readonly=true];input.preventDefault",
                               "controls": [
                                 {
                                   "event": "input?data().time-limit=txt().timestamp()?txt().len()=8"
                                 }
-                              ]
+                              ],
+                              "type": "Input?label:[text=Time Limit (dd:hh:mm);location=outside;style.fontSize=1.3rem];if():[data().trip!=Open Round Trip]:[readonly=true];input.value=data().time-limit.time();clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem;if():[parent().data().trip!=Open Round Trip]:[backgroundColor=#ccc]];if():[)(:flight-edit-readonly]:[readonly=true];input.preventDefault"
                             },
                             {
+                              "type": "View?class=vertical;style:[gap=.5rem];data().adt-base-fare-usd=data().adt-base-fare-usd||0",
                               "children": [
                                 {
                                   "type": "Text?class=flex;text=Adult Base Fare;style:[fontSize=1.3rem]"
                                 },
                                 {
-                                  "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff",
                                   "children": [
                                     {
                                       "type": "Input?input.type=number;path=adt-base-fare-usd;style:[height=100%;flex=1;borderRadius=.5rem;fontSize=1.3rem];if():[flight-edit-readonly:()]:[readonly=true]"
@@ -208,10 +211,10 @@
                                     {
                                       "type": "Input?class=flexbox;input.value=$;readonly;style:[color=#666;width=2.25rem;height=2.9rem;borderRadius=.5rem;fontSize=1.3rem;transition=.3s];hover.style.backgroundColor=#eee"
                                     }
-                                  ]
+                                  ],
+                                  "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
                                 }
-                              ],
-                              "type": "View?class=vertical;style:[gap=.5rem];data().adt-base-fare-usd=data().adt-base-fare-usd||0"
+                              ]
                             },
                             {
                               "type": "View?class=vertical;style:[gap=.5rem];data().chd-base-fare-usd=data().chd-base-fare-usd||0",
@@ -220,6 +223,7 @@
                                   "type": "Text?class=flex;text=Child Base Fare;style:[fontSize=1.3rem]"
                                 },
                                 {
+                                  "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff",
                                   "children": [
                                     {
                                       "type": "Input?input.type=number;path=chd-base-fare-usd;style:[height=100%;flex=1;borderRadius=.5rem;fontSize=1.3rem];if():[flight-edit-readonly:()]:[readonly=true]"
@@ -227,8 +231,7 @@
                                     {
                                       "type": "Input?class=flexbox;input.value=$;readonly;style:[color=#666;width=2.25rem;height=2.9rem;borderRadius=.5rem;fontSize=1.3rem;transition=.3s];hover.style.backgroundColor=#eee"
                                     }
-                                  ],
-                                  "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
+                                  ]
                                 }
                               ]
                             },
@@ -274,39 +277,36 @@
                               "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem;justifyContent=flex-end]",
                               "children": [
                                 {
-                                  "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                                   "controls": [
                                     {
                                       "event": "click?parent().parent().parent().data().pricing.pull():[parent().parent().mapIndex];if():[parent().parent().parent().data().pricing.len()=0]:[parent().parent().parent().data().pricing.push():[_map:trip:[flight-data:().trips.clone().pullItems():[parent().parent().parent().data().pricing.():trip].0||Data().trips.0]:grp-base-fare-usd:0:adt-base-fare-usd:0:chd-base-fare-usd:0]];update():[parent().parent().parent()]"
                                     }
-                                  ]
+                                  ],
+                                  "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
                                 },
                                 {
-                                  "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                                   "controls": [
                                     {
                                       "event": "click?parent().parent().parent().data().pricing.push():[_map:trip:[flight-data:().trips.clone().pullItems():[parent().parent().parent().data().pricing.():trip].0||Data().trips.0]:grp-base-fare-usd:0:adt-base-fare-usd:0:chd-base-fare-usd:0]:[parent().parent().mapIndex+1];update():[parent().parent().parent()]"
                                     }
-                                  ]
+                                  ],
+                                  "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
                                 }
                               ]
                             }
-                          ],
-                          "type": "[View]?path=pricing;style:[padding=0 1.5rem;gap=1rem;width=100%;display=grid;gridTemplateColumns=4rem 1fr 1fr 1fr 1fr 1fr 1fr 6rem]"
+                          ]
                         }
                       ]
                     }
                   ]
                 }
-              ],
-              "type": "View?id=seats;class=vertical;style:[gap=3rem;display=if():[flight-data:().seats.len()>0]:flex:none]"
+              ]
             }
-          ]
+          ],
+          "type": "View?class=vertical;style:[gap=1rem]"
         }
-      ]
+      ],
+      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]"
     }
-  ],
-  "type": "View?id=seats-prices-baggage;class=flex column;style:[gap=1rem;width=100%]",
-  "creation-date": 1652457705068,
-  "id": "seats-prices-baggage"
+  ]
 }

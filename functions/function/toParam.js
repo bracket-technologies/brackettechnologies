@@ -225,7 +225,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       
       // break
       if (key === "break()" && value !== false) return view.break = true
-      
+      var _path = clone(params.path)
+      delete params.path
+
       // mount state & value
       if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
 
@@ -243,6 +245,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
         if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, _i, mount, createElement })
         reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, mount, object: params })
       }
+      if (!params.path) params.path = _path
       
     } else if (key) {
       

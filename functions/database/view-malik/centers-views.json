@@ -1,8 +1,9 @@
 {
-  "type": "View?id=centers-views;class=flex column;style.gap=.2rem",
   "id": "centers-views",
+  "type": "View?id=centers-views;class=flex column;style.gap=.2rem",
   "children": [
     {
+      "type": "View?id=centers-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:centers-view-type=list]:flex.else():none?)(:centers-view-type=list",
       "children": [
         {
           "children": [
@@ -10,15 +11,15 @@
               "type": "View?class=flexbox;style.height=100%;style.width=100%",
               "children": [
                 {
-                  "controls": [
-                    {
-                      "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():centers-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():centers-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
-                    }
-                  ],
                   "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "children": [
                     {
                       "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():centers-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():centers-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
                     }
                   ]
                 }
@@ -30,8 +31,8 @@
                 {
                   "controls": [
                     {
-                      "event": "click",
-                      "actions": "sort;update:centers-list-view?sort.Data=centers;sort.path=active"
+                      "actions": "sort;update:centers-list-view?sort.Data=centers;sort.path=active",
+                      "event": "click"
                     }
                   ],
                   "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
@@ -53,15 +54,14 @@
                   "type": "Text?class=ar pointer;text=إسم المركز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "actions": "sort;update:centers-list-view?sort.Data=centers;sort.path=name",
-                      "event": "click"
+                      "event": "click",
+                      "actions": "sort;update:centers-list-view?sort.Data=centers;sort.path=name"
                     }
                   ]
                 }
               ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=الفروع;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
@@ -72,7 +72,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "children": [
@@ -89,18 +90,18 @@
               "type": "View?class=flex align-center"
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
+                  "type": "Text?class=ar pointer;text=نوع المركز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
                       "event": "click",
                       "actions": "async():sort:[update:centers-list-view]?sort.Data=centers;sort.path=type"
                     }
-                  ],
-                  "type": "Text?class=ar pointer;text=نوع المركز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  ]
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
               "type": "View?class=flex align-center",
@@ -111,12 +112,12 @@
               ]
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=الأفراد;tooltip.text=الأفراد الموجودين داخل المركز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
               "type": "View?class=grid align-center;style.gridTemplateColumns=1fr 1fr",
@@ -125,19 +126,19 @@
                   "type": "Text?class=ar pointer;text=حسّاس جداً;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "event": "click",
-                      "actions": "async():sort:[update:centers-list-view]?sort.Data=centers;sort.path=case-sensitive"
+                      "actions": "async():sort:[update:centers-list-view]?sort.Data=centers;sort.path=case-sensitive",
+                      "event": "click"
                     }
                   ]
                 },
                 {
-                  "type": "Text?class=ar pointer;text=الإذن ضروري;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "event": "click",
-                      "actions": "async():sort:[update:centers-list-view]?sort.Data=centers;sort.path=visit-permission-needed"
+                      "actions": "async():sort:[update:centers-list-view]?sort.Data=centers;sort.path=visit-permission-needed",
+                      "event": "click"
                     }
-                  ]
+                  ],
+                  "type": "Text?class=ar pointer;text=الإذن ضروري;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
@@ -150,18 +151,18 @@
               ]
             },
             {
+              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
               "children": [
                 {
+                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
                   "controls": [
                     {
-                      "event": "click?if():[():centers-remove-all-popup.style().pointerEvents=none]:[():centers-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():centers-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
-                      "actions": "setPosition:centers-remove-all-popup?position.placement=right;position.positioner=().id"
+                      "actions": "setPosition:centers-remove-all-popup?position.placement=right;position.positioner=().id",
+                      "event": "click?if():[():centers-remove-all-popup.style().pointerEvents=none]:[():centers-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():centers-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
                     }
-                  ],
-                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
+                  ]
                 }
-              ],
-              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
+              ]
             }
           ],
           "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 12rem .5fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden"
@@ -170,23 +171,22 @@
           "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:centers.len().greater():0",
           "children": [
             {
-              "type": "[View]?data=)(:centers;style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:centers-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 12rem .5fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
               "children": [
                 {
                   "type": "View?class=flexbox;style.width=100%;style.height=100%",
                   "children": [
                     {
-                      "controls": [
-                        {
-                          "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():centers-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
-                        }
-                      ],
                       "children": [
                         {
                           "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                         }
                       ],
-                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                      "controls": [
+                        {
+                          "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():centers-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                        }
+                      ]
                     }
                   ]
                 },
@@ -205,6 +205,18 @@
                   "type": "View?class=flex align-center"
                 },
                 {
+                  "controls": [
+                    {
+                      "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
+                    },
+                    {
+                      "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
+                    },
+                    {
+                      "event": "click?)(:centers-data=data().clone();)(:centers-edit-readonly=true;)(:new-centers.del();)(:centers-copied.del()?!2ndChild().mouseenter",
+                      "actions": "update:centers-mini-window?():centers-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+                    }
+                  ],
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
@@ -218,18 +230,6 @@
                       "type": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0"
                     }
                   ],
-                  "controls": [
-                    {
-                      "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
-                    },
-                    {
-                      "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
-                    },
-                    {
-                      "actions": "update:centers-mini-window?():centers-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
-                      "event": "click?)(:centers-data=data().clone();)(:centers-edit-readonly=true;)(:new-centers.del();)(:centers-copied.del()?!2ndChild().mouseenter"
-                    }
-                  ],
                   "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s"
                 },
                 {
@@ -241,15 +241,14 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().branches.map():name.join(): و"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
                   "children": [
                     {
                       "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:#ffdbdb.elif():[data()=متصل]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem",
@@ -262,7 +261,8 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status"
                 },
                 {
                   "children": [
@@ -273,40 +273,29 @@
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=(+data().networks.len().ar()+)"
                     },
                     {
-                      "controls": [
-                        {
-                          "actions": "update:networks-mini-window?():networks-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
-                          "event": "click?)(:networks-data=)(:networks.values()._find():[_.name=data();_.centers.find():[=parent().data().id]];)(:networks-edit-readonly=true;)(:new-networks.del();)(:networks-copied.del()?text()"
-                        }
-                      ],
-                      "type": "[Text]?style.fontSize=1.4rem;data=)(:networks.values().filter():[centers.find():[=data().id]].map():name;Data;tooltip.text=عرض الشبكة;hover.style.color=#000;hover.style.fontWeight=bold;style.transition=.3s;style.cursor=pointer?data().networks.len()>0"
+                      "type": "[Text]?style.fontSize=1.4rem;data=networks:().filter():[centers.in():[data().networks]].():name;Data;tooltip.text=عرض الشبكة;hover.style.color=#000;hover.style.fontWeight=bold;style.transition=.3s;style.cursor=pointer?data().networks.len()>0"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center networks-in-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem",
+                  "type": "View?class=flex align-center members-in-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=(+data().members.len().ar()+)"
                     },
                     {
-                      "type": "[Text]?style.fontSize=1.4rem;data=)(:members.values().filter():[center=data().id].map():name;Data;tooltip.text=عرض الفرد;hover.style.color=#000;hover.style.fontWeight=bold;style.transition=.3s;style.cursor=pointer?data().members.len()>0",
-                      "controls": [
-                        {
-                          "event": "click?)(:members-data=)(:members.values().find():[name=data();center=parent().data().id];)(:members-edit-readonly=true;)(:new-members.del();)(:members-copied.del()?text()",
-                          "actions": "update:members-mini-window?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
-                        }
-                      ]
+                      "type": "[Text]?style.fontSize=1.4rem;data=members:().filter():[id.in():[data().members]].():name;Data;tooltip.text=عرض الفرد;hover.style.color=#000;hover.style.fontWeight=bold;style.transition=.3s;style.cursor=pointer?data().members.len()>0"
                     }
                   ]
                 },
                 {
+                  "type": "View?class=grid align-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gridTemplateColumns=1fr 1fr",
                   "children": [
                     {
                       "type": "View?class=flex align-center;style.marginRight=1rem",
@@ -317,25 +306,25 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style.marginRight=1rem",
                       "children": [
                         {
                           "type": "View?class=flexbox;style.backgroundColor=if():[data().visit-permission-needed]:green.else():#ddd;style.height=1.25rem;style.width=1.25rem;style.borderRadius=1rem;style.marginRight=-.5rem;style.opacity=0.7;style.transition=.3s"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style.marginRight=1rem"
+                      ]
                     }
-                  ],
-                  "type": "View?class=grid align-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gridTemplateColumns=1fr 1fr"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().contacts._map():[if():[_.name;_.phone-number]:[_.name+ +_.phone-number].else():_string].filter().join(): | .ar()"
+                      "type": "Text?style.fontSize=1.4rem;text=data().contacts.():[name+ +phone-number.filter().join(): | .ar()"
                     }
                   ]
                 },
                 {
+                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
                   "children": [
                     {
                       "controls": [
@@ -346,20 +335,18 @@
                       ],
                       "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
                     }
-                  ],
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
+                  ]
                 }
-              ]
+              ],
+              "type": "[View]?data=)(:centers;style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:centers-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 12rem .5fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa"
             }
           ]
         }
-      ],
-      "type": "View?id=centers-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:centers-view-type=list]:flex.else():none?)(:centers-view-type=list"
+      ]
     },
     {
       "children": [
         {
-          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;class=flex align-center;style.borderRadius=1rem;style.overflow=hidden",
           "children": [
             {
               "children": [
@@ -380,40 +367,44 @@
               "type": "View?class=flexbox;style.height=100%;style.width=6rem"
             },
             {
-              "type": "View?class=flexbox;style.padding=0 .5rem;style.marginRight=auto",
               "children": [
                 {
                   "controls": [
                     {
-                      "actions": "setPosition:centers-remove-all-popup?position.placement=right;position.positioner=().id",
-                      "event": "click?if():[():centers-remove-all-popup.style().pointerEvents=none]:[():centers-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():centers-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
+                      "event": "click?if():[():centers-remove-all-popup.style().pointerEvents=none]:[():centers-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():centers-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                      "actions": "setPosition:centers-remove-all-popup?position.placement=right;position.positioner=().id"
                     }
                   ],
                   "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style.padding=0 .5rem;style.marginRight=auto"
             }
-          ]
+          ],
+          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;class=flex align-center;style.borderRadius=1rem;style.overflow=hidden"
         },
         {
+          "type": "View?style.overflow=auto;style.height=calc(100vh - 27.8rem)",
           "children": [
             {
               "type": "View?style.padding=1rem;style.gap=1rem;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr?)(:centers.len().greater():0",
               "children": [
                 {
+                  "type": "[View]?data=)(:centers;class=flex;style.borderRadius=1.5rem;style.border=1px solid #e5e5e5;style.padding=1rem;hover.style.border=1px solid #ddd",
                   "children": [
                     {
+                      "type": "View?class=flex align-center column;style.gap=1rem;style.width=fit-content",
                       "children": [
                         {
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                            }
+                          ],
                           "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                           "controls": [
                             {
                               "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():centers-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
-                            }
-                          ],
-                          "children": [
-                            {
-                              "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                             }
                           ]
                         },
@@ -421,8 +412,8 @@
                           "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
                           "controls": [
                             {
-                              "actions": "save?save.collection=resources-centers;save.doc=data().id;save.data=data()",
-                              "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50"
+                              "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50",
+                              "actions": "save?save.collection=resources-centers;save.doc=data().id;save.data=data()"
                             }
                           ]
                         },
@@ -432,18 +423,17 @@
                         {
                           "type": "View?class=flexbox;tooltip.text=طلب إذن قبل القيام الزيارة;style.backgroundColor=if():[data().visit-permission-needed]:green.else():#ddd;style.height=1.25rem;style.width=1.25rem;style.borderRadius=1rem;style.display=0.7"
                         }
-                      ],
-                      "type": "View?class=flex align-center column;style.gap=1rem;style.width=fit-content"
+                      ]
                     },
                     {
                       "children": [
                         {
+                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                           "children": [
                             {
                               "type": "Text?style.fontSize=1.4rem;text=data().name"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                          ]
                         },
                         {
                           "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
@@ -465,31 +455,30 @@
                           "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                           "children": [
                             {
-                              "type": "Text?style.fontSize=1.4rem;text=data().branches.map():name.join(): و"
+                              "type": "Text?style.fontSize=1.4rem;text=data().branches.():name.join(): | "
                             }
                           ]
+                        },
+                        {
+                          "children": [
+                            {
+                              "type": "Text?style.fontSize=1.4rem;text=data().type"
+                            }
+                          ],
+                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                         },
                         {
                           "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                           "children": [
                             {
-                              "type": "Text?style.fontSize=1.4rem;text=data().type"
+                              "type": "Text?style.fontSize=1.4rem;text=data().contacts.():[name+ +phone-number].filter().join(): | .ar()"
                             }
                           ]
-                        },
-                        {
-                          "children": [
-                            {
-                              "type": "Text?style.fontSize=1.4rem;text=data().contacts._map():[if():[_.name;_.phone-number]:[_.name+ +_.phone-number].else():_string].filter().join(): | .ar()"
-                            }
-                          ],
-                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                         }
                       ],
                       "type": "View?style.flex=1;class=flex column;style.gap=1rem;style.padding=0 2rem"
                     },
                     {
-                      "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem;style.height=fit-content",
                       "children": [
                         {
                           "controls": [
@@ -500,18 +489,17 @@
                           ],
                           "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3rem;style.borderRadius=3rem;style.width=3rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem;style.height=fit-content"
                     }
-                  ],
-                  "type": "[View]?data=)(:centers;class=flex;style.borderRadius=1.5rem;style.border=1px solid #e5e5e5;style.padding=1rem;hover.style.border=1px solid #ddd"
+                  ]
                 }
               ]
             }
-          ],
-          "type": "View?style.overflow=auto;style.height=calc(100vh - 27.8rem)"
+          ]
         }
       ],
-      "type": "View?id=centers-grid-view;class=flex column;style.gap=1rem;style.display=if():[)(:centers-view-type=grid]:flex.else():none?)(:centers-view-type=grid"
+      "type": "View?id=centers-grid-view;class=flex column;style.gap=1rem;style.display=if():[)(:centers-view-type=grid]:flex.else():none?)(:centers-view-type=grid;false"
     }
   ]
 }

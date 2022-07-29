@@ -189,7 +189,11 @@ document.addEventListener('scroll', () => {
     }
 }, true)
 
-
+window.addEventListener("keydown", function(e) {
+  if(["ArrowUp","ArrowDown"].indexOf(e.code) > -1) {
+      e.preventDefault()
+  }
+}, false)
 // unloaded views
 // require("../function/loadViews").loadViews(true)
 // new Promise(res => require("../function/loadViews").loadViews(res)).then(() => {})

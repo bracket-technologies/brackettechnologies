@@ -3,7 +3,6 @@
   "type": "View?id=devices-views;class=flex column;style.gap=.2rem",
   "children": [
     {
-      "type": "View?id=devices-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:devices-view-type=list]:flex.else():none?)(:devices-view-type=list",
       "children": [
         {
           "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
@@ -12,22 +11,21 @@
               "type": "View?class=flexbox;style.height=100%;style.width=100%",
               "children": [
                 {
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                  "controls": [
+                    {
+                      "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():devices-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():devices-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                    }
+                  ],
                   "children": [
                     {
                       "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                     }
                   ],
-                  "controls": [
-                    {
-                      "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():devices-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():devices-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
-                    }
-                  ]
+                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
                 }
               ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
@@ -38,7 +36,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "children": [
@@ -49,12 +48,12 @@
               "type": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=إسم الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "type": "View?class=flex align-center",
@@ -65,18 +64,18 @@
               ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "controls": [
                     {
-                      "event": "click",
-                      "actions": "sort;update:devices-list-view?sort.Data=devices;sort.path=status"
+                      "actions": "sort;update:devices-list-view?sort.Data=devices;sort.path=status",
+                      "event": "click"
                     }
                   ],
                   "type": "Text?class=flexbox pointer;style.color=#888;style.fontWeight=bold;style.fontSize=1.3rem;text=الحالة"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "children": [
@@ -87,12 +86,12 @@
               "type": "View?class=flex align-center"
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=مكان الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
               "type": "View?class=flex align-center",
@@ -105,13 +104,13 @@
             {
               "children": [
                 {
+                  "type": "Text?class=ar pointer;text=الإسم على الشاشة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "actions": "sort;update:devices-list-view?sort.Data=devices;sort.path=name-on-monitor",
-                      "event": "click"
+                      "event": "click",
+                      "actions": "sort;update:devices-list-view?sort.Data=devices;sort.path=name-on-monitor"
                     }
-                  ],
-                  "type": "Text?class=ar pointer;text=الإسم على الشاشة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  ]
                 }
               ],
               "type": "View?class=flex align-center"
@@ -133,23 +132,22 @@
               "type": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
               "children": [
                 {
                   "controls": [
                     {
-                      "event": "click?if():[():devices-remove-all-popup.style().pointerEvents=none]:[():devices-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():devices-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
-                      "actions": "setPosition:devices-remove-all-popup?position.placement=right;position.positioner=().id"
+                      "actions": "setPosition:devices-remove-all-popup?position.placement=right;position.positioner=().id",
+                      "event": "click?if():[():devices-remove-all-popup.style().pointerEvents=none]:[():devices-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():devices-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
                     }
                   ],
                   "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
             }
           ]
         },
         {
-          "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:devices.len().greater():0",
           "children": [
             {
               "type": "[View]?data=)(:devices;style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:devices-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
@@ -158,12 +156,12 @@
                   "type": "View?class=flexbox;style.width=100%;style.height=100%",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                       "controls": [
                         {
                           "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():devices-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
                         }
                       ],
+                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                       "children": [
                         {
                           "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
@@ -173,20 +171,32 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
                       "controls": [
                         {
                           "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50",
                           "actions": "save?save.collection=resources-devices;save.doc=data().id;save.data=data()"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center"
                 },
                 {
+                  "controls": [
+                    {
+                      "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
+                    },
+                    {
+                      "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
+                    },
+                    {
+                      "event": "click?)(:devices-data=data().clone();)(:devices-edit-readonly=true;)(:new-devices.del();)(:devices-copied.del()?!2ndChild().mouseenter",
+                      "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+                    }
+                  ],
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
@@ -200,19 +210,7 @@
                       ]
                     }
                   ],
-                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
-                  "controls": [
-                    {
-                      "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
-                    },
-                    {
-                      "event": "mouseleave?1stChild().style().fontWeight=normal;2ndChild().style().opacity=0"
-                    },
-                    {
-                      "event": "click?)(:devices-data=data().clone();)(:devices-edit-readonly=true;)(:new-devices.del();)(:devices-copied.del()?!2ndChild().mouseenter",
-                      "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
-                    }
-                  ]
+                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s"
                 },
                 {
                   "children": [
@@ -223,16 +221,18 @@
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=)(:reference-devices.[data().reference-device].type"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
+                  "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
                   "children": [
                     {
+                      "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:#ffdbdb.elif():[data()=متصل]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem",
                       "children": [
                         {
                           "type": "View?class=flexbox;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206.else():#444;style.height=1rem;style.width=1rem;style.borderRadius=1rem"
@@ -240,19 +240,17 @@
                         {
                           "type": "Text?style.color=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206;style.fontSize=1.2rem;style.fontWeight=bold;text=data()"
                         }
-                      ],
-                      "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:#ffdbdb.elif():[data()=متصل]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem"
+                      ]
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status"
+                  ]
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=)(:networks.[data().network].name"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
@@ -271,29 +269,29 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().name-on-monitor"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  ]
                 },
                 {
+                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=(+data().in-devices.len().ar()+)"
                     },
                     {
+                      "type": "[Text]?class=flexbox;style.fontSize=1.4rem;data=range():1:[data().in-devices.len()+1].ar();Data;style.transition=.3s;style.cursor=pointer;style.borderRadius=.5rem;style.height=2.2rem;style.padding=.75rem;style.border=1px solid #ccc?data().in-devices.len()>0",
                       "controls": [
                         {
                           "event": "click?)(:devices-data=)(:devices.values().find():[id=parent().data().in-devices.[().mapIndex]];)(:devices-edit-readonly=true;)(:new-devices.del();)(:devices-copied.del()?text()!=_string",
                           "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
                         }
-                      ],
-                      "type": "[Text]?class=flexbox;style.fontSize=1.4rem;data=range():1:[data().in-devices.len()+1].ar();Data;style.transition=.3s;style.cursor=pointer;style.borderRadius=.5rem;style.height=2.2rem;style.padding=.75rem;style.border=1px solid #ccc?data().in-devices.len()>0"
+                      ]
                     }
-                  ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
+                  ]
                 },
                 {
                   "children": [
@@ -313,24 +311,26 @@
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
                 },
                 {
+                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
                   "children": [
                     {
+                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
                       "controls": [
                         {
                           "actions": "setPosition:devices-actions?position.placement=right;position.positioner=().id",
                           "event": "click?if():[)(:devices-data=data();():devices-actions.style().pointerEvents=auto]:[():devices-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:devices-data.del()]].else():[():devices-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:devices-data=data().clone()]];)(:new-devices.del();)(:devices-copied.del();():devices-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
                         }
-                      ],
-                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
+                      ]
                     }
-                  ],
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
+                  ]
                 }
               ]
             }
-          ]
+          ],
+          "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:devices.len().greater():0"
         }
-      ]
+      ],
+      "type": "View?id=devices-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:devices-view-type=list]:flex.else():none?)(:devices-view-type=list"
     }
   ]
 }

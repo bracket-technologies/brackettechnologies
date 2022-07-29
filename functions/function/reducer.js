@@ -3149,8 +3149,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             } else if (Array.isArray(o)) {
 
-                var _itemIndex = o.findIndex(item => isEqual(item, rec0))
-                if (_itemIndex >= 0) o[_itemIndex] = rec1
+                var _itemIndex = o.findIndex(item => isEqual(item, rec0)), rec2 = rec1 || rec0 // replace():rec0:rec1 || replace():rec0 (if rec0 doesnot exist push it)
+                if (_itemIndex >= 0) o[_itemIndex] = rec2
+                else o.push(rec2)
                 return o
             }
             

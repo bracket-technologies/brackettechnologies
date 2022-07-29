@@ -1,9 +1,16 @@
 {
   "type": "View?id=login;class=flexbox;style.height=100vh;style.width=100vw;style.cursor=default",
-  "creation-date": 1647426612988,
   "id": "login",
+  "controls": [
+    {
+      "actions": "wait():search?search.collection=user;search.doc=getCookie():_id;wait():[user:()=().search.data.value();if():[user:()]:[toggleView():[page=main;timer=200]]:[eraseCookie():_id]]",
+      "event": "beforeLoading??getCookie():_id"
+    }
+  ],
+  "creation-date": 1647426612988,
   "children": [
     {
+      "type": "View?Data=login-account;data=_map;class=flex column box-shadow-1;style.width=40rem;style.height=fit-content;style.padding=8rem 3rem;style.backgroundColor=#f9f9f9;style.gap=2rem;style.borderRadius=1rem",
       "children": [
         {
           "type": "Text?class=ar flexbox;style.color=#444;style.fontSize=2.3rem;text=تسجيل دخول;style.fontWeight=bold;style.marginTop=-1rem"
@@ -31,7 +38,6 @@
           ]
         },
         {
-          "type": "Input?class=ar;id=password;path=password;label.position=outside;style.width=100%;style.height=4.5rem;style.borderRadius=.5rem;style.border=1px solid #eee;label.text=كلمة المرور;clicked.style.border=2px solid #32a852;password;required.text=أدخل كلمة المرور",
           "controls": [
             {
               "event": "keyup?():login-confirm.click()?e().key.is():Enter"
@@ -39,36 +45,30 @@
             {
               "event": "focus?click()"
             }
-          ]
+          ],
+          "type": "Input?class=ar;id=password;path=password;label.position=outside;style.width=100%;style.height=4.5rem;style.borderRadius=.5rem;style.border=1px solid #eee;label.text=كلمة المرور;clicked.style.border=2px solid #32a852;password;required.text=أدخل كلمة المرور"
         },
         {
+          "type": "View?class=flexbox;style.height=1rem;style.marginBottom=2rem",
           "children": [
             {
               "type": "Text?id=wrong-password;class=ar;style.color=red;style.fontSize=1.5rem;style.transform=translateY(2rem);text=إسم المستخدم أو كلمة المرور غير صحيحة!;style.display=none"
             }
-          ],
-          "type": "View?class=flexbox;style.height=1rem;style.marginBottom=2rem"
+          ]
         },
         {
+          "type": "Text?id=login-confirm;class=flexbox ar pointer;style.width=100%;style.minHeight=4.5rem;style.backgroundColor=#32a852;style.color=#fff;hover.style.backgroundColor=#33914c;style.transition=.3s;text=تسجيل دخول;style.fontSize=1.6rem;style.marginTop=auto;style.marginBottom=auto;style.borderRadius=1rem",
           "controls": [
             {
               "event": "click?if():[!prev().prev().prev().input().txt()]:[prev().prev().prev().():[required.mount=true;click()]];if():[!prev().prev().input().txt()]:[prev().prev().():[required.mount=true;click()]]?parent().inputs().find():[txt()=_string]"
             },
             {
-              "event": "click??!parent().inputs().find():[txt()=_string]",
-              "actions": "wait():search?search.collection=user;search.field.username.equal=login-account:().username;search.field.password.equal=login-account:().password;wait():[user:()=().search.data.value();if():[user:()]:[setCookie():[value=user:().id;name=_id];toggleView():[page=main;timer=200]]:[prev().1stChild().style().display=flex]]"
+              "actions": "wait():search?search.collection=user;search.field.username.equal=login-account:().username;search.field.password.equal=login-account:().password;wait():[user:()=().search.data.value();if():[user:()]:[setCookie():[value=user:().id;name=_id];toggleView():[page=main;timer=200]]:[prev().1stChild().style().display=flex]]",
+              "event": "click??!parent().inputs().find():[txt()=_string]"
             }
-          ],
-          "type": "Text?id=login-confirm;class=flexbox ar pointer;style.width=100%;style.minHeight=4.5rem;style.backgroundColor=#32a852;style.color=#fff;hover.style.backgroundColor=#33914c;style.transition=.3s;text=تسجيل دخول;style.fontSize=1.6rem;style.marginTop=auto;style.marginBottom=auto;style.borderRadius=1rem"
+          ]
         }
-      ],
-      "type": "View?Data=login-account;data=_map;class=flex column box-shadow-1;style.width=40rem;style.height=fit-content;style.padding=8rem 3rem;style.backgroundColor=#f9f9f9;style.gap=2rem;style.borderRadius=1rem"
-    }
-  ],
-  "controls": [
-    {
-      "actions": "wait():search?search.collection=user;search.doc=getCookie():_id;wait():[user:()=().search.data.value();if():[user:()]:[toggleView():[page=main;timer=200]]:[eraseCookie():_id]]",
-      "event": "beforeLoading??getCookie():_id"
+      ]
     }
   ]
 }
