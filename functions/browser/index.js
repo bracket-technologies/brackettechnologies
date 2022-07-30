@@ -2868,6 +2868,7 @@ const { toValue } = require("./toValue")
 const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
+const { generate } = require("./generate")
 
 const events = [
   "click",
@@ -2889,7 +2890,25 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   var mainID = id
 
   // 'string'
-  var events = controls.event
+  var events = toArray(controls.event), _events = []
+  events.map(event => {
+    var _evs = event.split("{")
+    var _event = _evs[0]
+    _evs.slice(1).map(str => {
+      var num = str.split("}")[0]
+
+      if (!isNaN(num) && num !== "" && parseFloat(num)) {
+        var _params = events[parseFloat(num)]
+        var key = generate()
+        global.codes[key] = _params
+        _event += `coded()${key}${str.split("}")[1]}`
+        console.log(_event, _params);
+      }
+    })
+    _events.push(_event)
+  })
+
+  events = _events[0]
   events = toCode({ _window, id, string: events })
   // if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   
@@ -3162,7 +3181,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":36,"./execute":55,"./toApproval":99,"./toArray":100,"./toCode":104,"./toParam":112,"./toValue":118}],55:[function(require,module,exports){
+},{"./clone":36,"./execute":55,"./generate":61,"./toApproval":99,"./toArray":100,"./toCode":104,"./toParam":112,"./toValue":118}],55:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -7710,9 +7729,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
             if (k[0] === "_") {
 
-                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, key, params, __: _, _: o, e, _i: index, object }) )
+                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: _, _: o, e, _i: index, object }) )
                 answer = o
-            } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, key, params, _, __, e, _i: index }) )
+            } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, params, _, __, e, _i: index }) )
 
         } else if (k0 === "_i") {
             
@@ -8964,12 +8983,12 @@ const setElement = ({ id }) => {
     
     // before loading event
     var beforeLoadingControls = view.controls && toArray(view.controls)
-        .filter(control => control.event && control.event.split("?")[0].includes("beforeLoading"))
+        .filter(controls => controls.event && toArray(controls.event)[0].split("?")[0].includes("beforeLoading"))
     if (beforeLoadingControls) {
 
         var currentPage = global.currentPage
         controls({ controls: beforeLoadingControls, id })
-        view.controls = toArray(view.controls).filter(controls => controls.event ? !controls.event.includes("beforeLoading") : true)
+        view.controls = toArray(view.controls).filter(controls => controls.event ? !toArray(controls.event)[0].includes("beforeLoading") : true)
 
         // page routed
         if (currentPage !== global.currentPage) return true
@@ -10602,6 +10621,7 @@ module.exports = {
 }
 
 },{}],118:[function(require,module,exports){
+const { clone } = require("./clone");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
@@ -10630,7 +10650,11 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   
   // string
   if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
-  if (value.includes('codedS()') && value.length === 13) return global.codes[value]
+  if (value.includes('codedS()') && value.length === 13) {
+    
+    if (!object) return global.codes[value]
+    else value = global.codes[value]
+  }
 
   // (...)
   var valueParanthes = value.split("()").join("")
@@ -10670,12 +10694,15 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
     values.slice(1).map(val => newVal += val)
     return value = newVal
 
-  } else if (value.includes("-")) { // subtraction
+  }
+  
+  if (value.includes("-")) { // subtraction
 
     var _value = calcSubs({ _window, value, params, _, __, _i, id, e, req, res, object })
     if (_value !== value) return _value
-
-  } else if (value.includes("*")) { // multiplication
+  }
+  
+  if (value.includes("*")) { // multiplication
 
     var values = value.split("*").map(value => toValue({ _window, value, params, _, __, _i, id, e, req, res, object, mount }))
     var newVal = values[0]
@@ -10721,8 +10748,10 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
   else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
-  else if (object) value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
-  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
+  else if (object) {
+    //value = value + ".clone()"
+    value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
+  } else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
   else if (path[0].includes("()") && path.length === 1) {
 
     var val0 = value.split("coded()")[0]
@@ -10837,7 +10866,7 @@ const calcSubs = ({ _window, value, params, _, __, _i, id, e, req, res, object }
 
 module.exports = { toValue, calcSubs }
 
-},{"./generate":61,"./isParam":70,"./reducer":82,"./toCode":104,"./toParam":112}],119:[function(require,module,exports){
+},{"./clone":36,"./generate":61,"./isParam":70,"./reducer":82,"./toCode":104,"./toParam":112}],119:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")

@@ -9,12 +9,12 @@ const setElement = ({ id }) => {
     
     // before loading event
     var beforeLoadingControls = view.controls && toArray(view.controls)
-        .filter(control => control.event && control.event.split("?")[0].includes("beforeLoading"))
+        .filter(controls => controls.event && toArray(controls.event)[0].split("?")[0].includes("beforeLoading"))
     if (beforeLoadingControls) {
 
         var currentPage = global.currentPage
         controls({ controls: beforeLoadingControls, id })
-        view.controls = toArray(view.controls).filter(controls => controls.event ? !controls.event.includes("beforeLoading") : true)
+        view.controls = toArray(view.controls).filter(controls => controls.event ? !toArray(controls.event)[0].includes("beforeLoading") : true)
 
         // page routed
         if (currentPage !== global.currentPage) return true

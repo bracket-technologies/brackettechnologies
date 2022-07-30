@@ -1,3 +1,4 @@
+const { clone } = require("./clone");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
@@ -26,7 +27,11 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   
   // string
   if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
-  if (value.includes('codedS()') && value.length === 13) return global.codes[value]
+  if (value.includes('codedS()') && value.length === 13) {
+    
+    if (!object) return global.codes[value]
+    else value = global.codes[value]
+  }
 
   // (...)
   var valueParanthes = value.split("()").join("")
@@ -66,12 +71,15 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
     values.slice(1).map(val => newVal += val)
     return value = newVal
 
-  } else if (value.includes("-")) { // subtraction
+  }
+  
+  if (value.includes("-")) { // subtraction
 
     var _value = calcSubs({ _window, value, params, _, __, _i, id, e, req, res, object })
     if (_value !== value) return _value
-
-  } else if (value.includes("*")) { // multiplication
+  }
+  
+  if (value.includes("*")) { // multiplication
 
     var values = value.split("*").map(value => toValue({ _window, value, params, _, __, _i, id, e, req, res, object, mount }))
     var newVal = values[0]
@@ -117,8 +125,10 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
   else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
-  else if (object) value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
-  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
+  else if (object) {
+    //value = value + ".clone()"
+    value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
+  } else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
   else if (path[0].includes("()") && path.length === 1) {
 
     var val0 = value.split("coded()")[0]

@@ -1,6 +1,4 @@
 {
-  "id": "reservation-flight-list",
-  "type": "View?class=flex align-center;style:[width=100%;flex=1;position=relative;height=100%];if():[data().booking-details.len()>1]:[mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]]",
   "creation-date": 1656873798264,
   "children": [
     {
@@ -10,36 +8,35 @@
           "type": "[View]?path=booking-details;class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 1fr]",
           "children": [
             {
-              "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]",
               "children": [
                 {
-                  "type": "View?class=flex align-center;style:[flex=1]",
                   "children": [
                     {
                       "type": "Text?class=flex align-center;text=data().departure-airport.split(): .0;style:[fontSize=1.2rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[flex=1]"
                 },
                 {
+                  "type": "View?class=flex align-center;style:[width=10rem]",
                   "children": [
                     {
                       "type": "Text?class=flex align-center dots;text=data().departure-day.toDateFormat();style:[fontSize=1.2rem]"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[width=10rem]"
+                  ]
                 },
                 {
-                  "type": "View?class=flex align-center;style:[flex=1]",
                   "children": [
                     {
                       "type": "Text?class=flex align-center;text=data().departure-time.toClock():[hr;min];style:[fontSize=1.2rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[flex=1]"
                 }
-              ]
+              ],
+              "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]"
             },
             {
-              "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]",
               "children": [
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -50,12 +47,12 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style:[width=10rem]",
                   "children": [
                     {
                       "type": "Text?class=flex align-center dots;text=data().arrival-day.toDateFormat();style:[fontSize=1.2rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[width=10rem]"
                 },
                 {
                   "children": [
@@ -65,7 +62,8 @@
                   ],
                   "type": "View?class=flex align-center;style:[flex=1]"
                 }
-              ]
+              ],
+              "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]"
             }
           ]
         }
@@ -74,5 +72,7 @@
     {
       "type": "Icon?class=flexbox pointer;name=bi-chevron-down;style:[width=2rem;height=2rem;backgroundColor=#fff;opacity=0;fontSize=1.5rem;position=absolute;zIndex=1;right=0;transition=.2s];click.if():[prev().style().height=fit-content]:[prev().style():[height=3rem;backgroundColor=inherit;zIndex=0;left=0rem;paddingLeft=0];prev().removeClass():box-shadow-4;style().transform=rotate(0)]:[prev().style():[height=fit-content;left=-1rem;paddingLeft=1rem;backgroundColor=#fff;zIndex=1];prev().addClass():box-shadow-4;style().transform=rotate(180deg)]?data().booking-details.len()>1"
     }
-  ]
+  ],
+  "type": "View?class=flex align-center;style:[width=100%;flex=1;position=relative;height=100%];if():[data().booking-details.len()>1]:[mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]]",
+  "id": "reservation-flight-list"
 }
