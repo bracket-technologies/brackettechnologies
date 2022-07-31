@@ -83,7 +83,7 @@ const defaultInputHandler = ({ id }) => {
         }
 
         // for uploads
-        if (view.input.type === "file") return global.upload = [...e.target.files]
+        if (view.input.type === "file") return global.files = [...e.target.files]
 
         // contentfull
         if (view.input.type === "text") {

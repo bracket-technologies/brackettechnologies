@@ -282,7 +282,7 @@
             {
               "controls": [
                 {
-                  "event": "click?loader.show;upload():[files=upload:()]:[data().images.push():[().uploads.():[data.url]];save():[collection=post;data=data()];posts:().pushStart():data();update():cards;():new-post.style():[opacity=0;pointerEvents=none];note():[text=Post created successfully!;type=info];loader.hide]?upload:().0;data().title;data().text"
+                  "event": "click?loader.show;upload():[files=files:()]:[data().images.push():[().uploads.():[data.url]];save():[collection=post;data=data()];posts:().pushStart():data();update():cards;():new-post.style():[opacity=0;pointerEvents=none];note():[text=Post created successfully!;type=info];loader.hide]?files:().0;data().title;data().text"
                 }
               ],
               "children": [
