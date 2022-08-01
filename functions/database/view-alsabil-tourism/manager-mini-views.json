@@ -1,7 +1,7 @@
 {
   "type": "View?id=manager-mini-views",
-  "id": "manager-mini-views",
   "creation-date": 1652284306902,
+  "id": "manager-mini-views",
   "children": [
     {
       "type": "View?view=flights-mini-window"

@@ -1,6 +1,5 @@
 {
-  "type": "View?id=flights-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
-  "id": "flights-mini-window",
+  "creation-date": 1652280972498,
   "children": [
     {
       "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%]?flight-data:()",
@@ -14,77 +13,77 @@
               "type": "View?class=flexbox;style.gap=1.5rem;style.marginLeft=auto",
               "children": [
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=erase;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s];hover.style.backgroundColor=#fff?!new-flight:();!flight-edit-readonly:()",
                   "children": [
                     {
                       "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.7rem"
                     }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=erase;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s];hover.style.backgroundColor=#fff?!new-flight:();!flight-edit-readonly:()"
+                  ]
                 },
                 {
-                  "children": [
-                    {
-                      "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.2rem"
-                    }
-                  ],
                   "type": "View?class=flexbox pointer;tooltip.text=save;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s?!flight-edit-readonly:()",
                   "controls": [
                     {
                       "event": "click?():save-flight.click()"
                     }
+                  ],
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.2rem"
+                    }
                   ]
                 },
                 {
-                  "controls": [
-                    {
-                      "event": "click?():flights-mini-window.style():[padding=0;transition=null;minHeight=100%;zIndex=99999];next().style().display=none;next().next().style().display=flex;1stChild():flights-mini-window.style().borderRadius=0;():flight-form-header.style().display=none;():flight-form-footer.style().display=none;#exportPdf():[html=():flights-mini-window.1stChild().html();name=gen()];print():[id=1stChild():'flights-mini-window'.id;after-print='next().next().click()']"
-                    }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
                   "children": [
                     {
                       "type": "Icon?name=print;google.outlined;style.fontSize=2.2rem"
                     }
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
+                  "controls": [
+                    {
+                      "event": "click?():flights-mini-window.style():[padding=0;transition=null;minHeight=100%;zIndex=99999];next().style().display=none;next().next().style().display=flex;1stChild():flights-mini-window.style().borderRadius=0;():flight-form-header.style().display=none;():flight-form-footer.style().display=none;#exportPdf():[html=():flights-mini-window.1stChild().html();name=gen()];print():[id=1stChild():'flights-mini-window'.id;after-print='next().next().click()']"
+                    }
                   ]
                 },
                 {
-                  "children": [
-                    {
-                      "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
-                    }
-                  ],
                   "controls": [
                     {
                       "event": "click?style():[id=flights-mini-window;transition=.2s;padding=0;minHeight=100%];style().display=none;style():next().display=flex;1stChild():flights-mini-window.style():[borderRadius=0];():flight-form-header.style().display=flex;():flight-form-footer.style().display=flex"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s"
+                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
+                  "children": [
+                    {
+                      "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
+                    }
+                  ]
                 },
                 {
-                  "controls": [
-                    {
-                      "event": "click?style():[id=flights-mini-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():flight-form-header.style().display=flex;():flight-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():flights-mini-window].borderRadius=1rem"
-                    }
-                  ],
                   "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none",
                   "children": [
                     {
                       "type": "Icon?name=crop;google.outlined;style.fontSize=2.2rem"
                     }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?style():[id=flights-mini-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():flight-form-header.style().display=flex;():flight-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():flights-mini-window].borderRadius=1rem"
+                    }
                   ]
                 },
                 {
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.7rem"
+                    }
+                  ],
                   "controls": [
                     {
                       "event": "click?style():[id=flights-mini-window;transition=.2s;padding=10vh 5vw;bottom=0];():flights-mini-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw];1stChild():flights-mini-window.style().borderRadius=1rem;flight-data:().del();new-flight:().del()"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=cancel;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff",
-                  "children": [
-                    {
-                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.7rem"
-                    }
-                  ]
+                  "type": "View?class=flexbox pointer;tooltip.text=cancel;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff"
                 }
               ]
             }
@@ -95,13 +94,11 @@
           "type": "View?id=flight-form-body;class=flex column;data=)(:flight-data;style:[width=100%;gap=2rem;padding=.5rem]",
           "children": [
             {
-              "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?class=flex;text=Registration Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1.5fr 1fr .75fr .75fr;padding=1rem]",
                   "children": [
                     {
                       "type": "Input?label:[text=Registration Id;location=outside;style.fontSize=1.3rem];copyable;readonly;copyable;path=id;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -123,12 +120,13 @@
                     {
                       "type": "Input?id=flight-status;label:[text=Status;location=outside;style.fontSize=1.3rem];readonly;path=status;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.flight-status.status;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
                     }
-                  ]
+                  ],
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1.5fr 1fr .75fr .75fr;padding=1rem]"
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
             },
             {
-              "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?class=flex;text=General Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -169,7 +167,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
             },
             {
               "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
@@ -178,6 +177,7 @@
                   "type": "Text?class=flex;text=Travel Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=1rem]",
                   "children": [
                     {
                       "type": "Input?clearable;label:[text=Departure Airport;location=outside;style.fontSize=1.3rem];path=departure-airport;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items='collections:().international-airports.airports.():[code+ +name].filter():[!=)(:flight-data.arrival-airport]';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.searchable;droplist.item.style:[minHeight=3rem;fontSize=1.3rem]",
@@ -191,12 +191,12 @@
                       "type": "Input?label:[text=Departure Day;location=outside;style.fontSize=1.3rem];input.type=date;path=departure-day;if():data():[input.value=data().toDateInputFormat()];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true];change:[data()=data().timestamp();flight-data:().arrival-day=data();():arrival-day.getInput().min()=data().toDateInputFormat();():arrival-day.input().txt()=data().toDateInputFormat()]"
                     },
                     {
+                      "type": "Input?label:[text=Departure Time;location=outside;style.fontSize=1.3rem];tooltip.text=country timing;input.type=time;if():[data().departure-time]:[input.value=data().departure-time.toClock():[hr;min]];path=departure-time;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[flight-edit-readonly:()]:[readonly=true]",
                       "controls": [
                         {
                           "event": "input?data()=txt().timestamp()"
                         }
-                      ],
-                      "type": "Input?label:[text=Departure Time;location=outside;style.fontSize=1.3rem];tooltip.text=country timing;input.type=time;if():[data().departure-time]:[input.value=data().departure-time.toClock():[hr;min]];path=departure-time;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[flight-edit-readonly:()]:[readonly=true]"
+                      ]
                     },
                     {
                       "type": "Input?label:[text=Flight Duration (hh:mm);location=outside;style.fontSize=1.3rem];path=flight-duration;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
@@ -216,15 +216,14 @@
                       "type": "Input:arrival-day?label:[text=Arrival Day;location=outside;style.fontSize=1.3rem];input.type=date;if():[data().arrival-day]:[input.value=data().arrival-day.toDateInputFormat()];path=arrival-day;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true];change:[data()=data().timestamp();)(:flight-data.arrival-day=data();():arrival-day.getInput().min()=data().toDateInputFormat();():arrival-day.getInput().txt()=data().toDateInputFormat()]"
                     },
                     {
+                      "type": "Input?label:[text=Arrival Time;location=outside;style.fontSize=1.3rem];input.type=time;tooltip.text=country timing;if():[data().arrival-time]:[input.value=data().arrival-time.toClock():[hr;min]];path=arrival-time;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[flight-edit-readonly:()]:[readonly=true]",
                       "controls": [
                         {
                           "event": "input?data()=txt().timestamp()"
                         }
-                      ],
-                      "type": "Input?label:[text=Arrival Time;location=outside;style.fontSize=1.3rem];input.type=time;tooltip.text=country timing;if():[data().arrival-time]:[input.value=data().arrival-time.toClock():[hr;min]];path=arrival-time;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[flight-edit-readonly:()]:[readonly=true]"
+                      ]
                     }
-                  ],
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=1rem]"
+                  ]
                 }
               ]
             },
@@ -285,17 +284,18 @@
               ]
             },
             {
-              "type": "Text?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1",
               "controls": [
                 {
                   "event": "click?():flights-mini-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw;zIndex=1];flight-data:().del();new-flight:().del();flight-invoice:().del()"
                 }
-              ]
+              ],
+              "type": "Text?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1"
             }
           ]
         }
       ]
     }
   ],
-  "creation-date": 1652280972498
+  "type": "View?id=flights-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
+  "id": "flights-mini-window"
 }

@@ -1,7 +1,4 @@
 {
-  "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]",
-  "id": "login",
-  "creation-date": 1651335662000,
   "children": [
     {
       "type": "View?Data=signin;class=flex column;style():[width=40rem;borderRadius=1rem;backgroundColor=#fff;gap=2rem;padding=5rem 3rem]",
@@ -18,6 +15,7 @@
           ]
         },
         {
+          "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
               "type": "Input?id=username;path=username;label.text=User Name;container.style.width=100%;clicked.style.border=2px solid #3299FF;input.value=_string",
@@ -33,8 +31,7 @@
             {
               "type": "Text?id=username-req;class=flex;style():[color=#ff0000ee;fontSize=1.2rem;opacity=0];text=User name is required!"
             }
-          ],
-          "type": "View?class=flex column;style.gap=0.5rem"
+          ]
         },
         {
           "type": "View?class=flex column;style.gap=0.5rem",
@@ -67,8 +64,8 @@
               "type": "Text?id=signin-btn;class=flexbox pointer;style():[backgroundColor=#3299FF;height=4.5rem;width=100%;borderRadius=.5rem;fontSize=1.6rem;color=#fff;transition=.3s];text=Sign in;hover.style.backgroundColor=#2d8eed",
               "controls": [
                 {
-                  "event": "click??signin:().username;signin:().password",
-                  "actions": "wait():search?search.collection=user;search.field.username.equal=signin:().username;search.field.password.equal=signin:().password;wait():[if():[().search.data.len()>0]:[user:()=().search.data.value();setCookie():[name=_id;value=user:().id];setCookie():[name=_key;value=user:().access-key];setCookie():[name=_agent;value=user:().agent];toggleView():[id=login;page=main;timer=200]]:[():incorrect-data.style().opacity=1]]"
+                  "actions": "wait():search?search.collection=user;search.field.username.equal=signin:().username;search.field.password.equal=signin:().password;wait():[if():[().search.data.len()>0]:[user:()=().search.data.value();setCookie():[name=_id;value=user:().id];setCookie():[name=_key;value=user:().access-key];setCookie():[name=_agent;value=user:().agent];toggleView():[id=login;page=main;timer=200]]:[():incorrect-data.style().opacity=1]]",
+                  "event": "click??signin:().username;signin:().password"
                 },
                 {
                   "event": "click?if():[!signin:().username]:[():username-req.style().opacity=1;():username.2ndChild().style():[backgroundColor=#ff000020]];if():[!signin:().password]:[():password-req.style().opacity=1;():password.2ndChild().style():[backgroundColor=#ff000020]]?!signin:().username||!signin:().password"
@@ -87,5 +84,8 @@
         }
       ]
     }
-  ]
+  ],
+  "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]",
+  "id": "login",
+  "creation-date": 1651335662000
 }
