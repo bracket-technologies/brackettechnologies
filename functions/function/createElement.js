@@ -111,18 +111,18 @@ const createElement = ({ _window, id, req, res }) => {
     
     params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
 
-    if (params.id && params.id !== id && !priorityId) {
+    if (params.id && params.id !== id/* && !priorityId*/) {
 
-      if (view[params.id] && typeof view[params.id] === "object") {
+      if (views[params.id] && typeof views[params.id] === "object") {
         
-        view[params.id]["id-repetition-counter"] = (view[params.id]["id-repetition-counter"] || 0) + 1
-        params.id = params.id + `-${view[params.id]["id-repetition-counter"]}`
+        views[params.id]["id-repetition-counter"] = (views[params.id]["id-repetition-counter"] || 0) + 1
+        params.id = params.id + `-${views[params.id]["id-repetition-counter"]}`
       }
       
       delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
 
-    } else if (priorityId) view.id = id // we have View:id & an id parameter. the priority is for View:id
+    }// else if (priorityId) view.id = id // we have View:id & an id parameter. the priority is for View:id
 
     // view
     if (params.view || (!myViews.includes(view.type) && global.data.view[view.type])) {

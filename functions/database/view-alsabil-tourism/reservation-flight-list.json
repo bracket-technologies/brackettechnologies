@@ -16,13 +16,26 @@
                     {
                       "type": "Text?class=flex align-center;text=data().departure-airport.split(): .0;style:[fontSize=1.2rem]"
                     }
+<<<<<<< HEAD
+=======
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style:[width=10rem]",
                   "children": [
                     {
                       "type": "Text?class=flex align-center dots;text=data().departure-day.toDateFormat();style:[fontSize=1.2rem]"
                     }
+>>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
+                  ]
+                },
+                {
+                  "type": "View?class=flex align-center;style:[flex=1]",
+                  "children": [
+                    {
+                      "type": "Text?class=flex align-center dots;text=data().departure-day.toDateFormat();style:[fontSize=1.2rem]"
+                    }
+<<<<<<< HEAD
                   ],
                   "type": "View?class=flex align-center;style:[width=10rem]"
                 },
@@ -32,19 +45,22 @@
                     {
                       "type": "Text?class=flex align-center;text=data().departure-time.toClock():[hr;min];style:[fontSize=1.2rem]"
                     }
+=======
+>>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
                   ]
                 }
               ]
             },
             {
+              "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]",
               "children": [
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=flex align-center;text=data().arrival-airport.split(): .0;style:[fontSize=1.2rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "type": "View?class=flex align-center;style:[width=10rem]",
@@ -62,8 +78,7 @@
                   ],
                   "type": "View?class=flex align-center;style:[flex=1]"
                 }
-              ],
-              "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]"
+              ]
             }
           ],
           "type": "[View]?path=booking-details;class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 1fr]"

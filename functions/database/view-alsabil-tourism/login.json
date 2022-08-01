@@ -1,5 +1,8 @@
 {
+<<<<<<< HEAD
   "id": "login",
+=======
+>>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
   "children": [
     {
       "children": [
@@ -71,8 +74,8 @@
                   "event": "click?if():[!signin:().username]:[():username-req.style().opacity=1;():username.2ndChild().style():[backgroundColor=#ff000020]];if():[!signin:().password]:[():password-req.style().opacity=1;():password.2ndChild().style():[backgroundColor=#ff000020]]?!signin:().username||!signin:().password"
                 },
                 {
-                  "event": "loaded??getCookie():[name=_id]",
-                  "actions": "wait():search?search.collection=user;search.doc=getCookie():[name=_id];wait():[if():[().search.data]:[user:()=().search.data;toggleView():[id=login;page=main;timer=200]]]"
+                  "actions": "wait():search?search.collection=user;search.doc=getCookie():[name=_id];wait():[if():[().search.data]:[user:()=().search.data;toggleView():[id=login;page=main;timer=200]]]",
+                  "event": "loaded??getCookie():[name=_id]"
                 }
               ]
             },
@@ -87,5 +90,9 @@
     }
   ],
   "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]",
+<<<<<<< HEAD
+=======
+  "id": "login",
+>>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
   "creation-date": 1651335662000
 }

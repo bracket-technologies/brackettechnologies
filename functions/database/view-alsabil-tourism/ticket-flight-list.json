@@ -1,7 +1,12 @@
 {
+<<<<<<< HEAD
   "id": "ticket-flight-list",
   "type": "View?class=flex align-center;style:[width=100%;flex=1;position=relative;height=100%];if():[data().reservation-details.len()>1]:[mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]]",
+=======
+>>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
   "creation-date": 1656873798264,
+  "id": "ticket-flight-list",
+  "type": "View?class=flex align-center;style:[width=100%;flex=1;position=relative;height=100%];if():[data().reservation-details.len()>1]:[mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]]",
   "children": [
     {
       "type": "View?class=vertical;style:[flex=1;gap=.75rem;padding=.75rem 0;position=absolute;right=0;left=0;top=0.5rem;height=3rem;minHeight=3rem;overflow=hidden;backgroundColor=inherit;borderRadius=.5rem]",
@@ -57,12 +62,12 @@
                   "type": "View?class=flex align-center;style:[width=8rem]"
                 },
                 {
-                  "type": "View?class=flex align-center;style:[flex=1]",
                   "children": [
                     {
                       "type": "Text?class=flex align-center;text=data().arrival-time.toClock():[hr;min];style:[fontSize=1.2rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[flex=1]"
                 }
               ]
             },

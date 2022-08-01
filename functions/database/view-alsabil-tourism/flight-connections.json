@@ -1,5 +1,8 @@
 {
+<<<<<<< HEAD
   "type": "View?id=flight-connections;class=flex column;style.gap=1rem;style.width=100%",
+=======
+>>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
   "children": [
     {
       "type": "Text?class=flex;text=Connections;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=0.5rem 0]"
@@ -8,25 +11,37 @@
       "type": "View?class=vertical;style:[gap=1rem;padding=1rem]",
       "children": [
         {
-          "type": "View?class=flex align-center;style:[gap=1rem]",
           "children": [
             {
+<<<<<<< HEAD
+=======
+              "type": "View?id=connected;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().connected=flight-data:().connected||false;checked=flight-data:().connected",
+              "controls": [
+                {
+                  "event": "click?checked()=checked().opp();flight-data:().connected=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.connected=true;parent().next().style().display=flex;)(:flight-data.connections=_array:[_map:type:Return Trip];update():[parent().next()]]:[)(:flight-data.connections=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
+                }
+              ],
+>>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
               "children": [
                 {
                   "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
                 }
+<<<<<<< HEAD
               ],
               "type": "View?id=connected;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().connected=flight-data:().connected||false;checked=flight-data:().connected",
               "controls": [
                 {
                   "event": "click?checked()=checked().opp();flight-data:().connected=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.connected=true;parent().next().style().display=flex;)(:flight-data.connections=_array:[_map:type:Return Trip];update():[parent().next()]]:[)(:flight-data.connections=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
                 }
+=======
+>>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
               ]
             },
             {
               "type": "Text?text=Connected;style:[fontSize=1.3rem]"
             }
-          ]
+          ],
+          "type": "View?class=flex align-center;style:[gap=1rem]"
         },
         {
           "children": [
@@ -104,6 +119,12 @@
       ]
     }
   ],
+<<<<<<< HEAD
   "id": "flight-connections",
   "creation-date": 1653036755929
+=======
+  "creation-date": 1653036755929,
+  "type": "View?id=flight-connections;class=flex column;style.gap=1rem;style.width=100%",
+  "id": "flight-connections"
+>>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
 }
