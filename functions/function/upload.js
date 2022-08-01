@@ -54,9 +54,16 @@ const upload = async ({ id, e, ...params }) => {
       promises.map(({ data }, i) => {
 
         if (files.length > 1) {
-          if (i === 0) view.uploads = []
-          view.uploads.push(data)
-        } else view.upload = data
+          if (i === 0) {
+            view.uploads = []
+            global.uploads = []
+          }
+          view.uploads.push(clone(data))
+          global.uploads.push(clone(data))
+        } else {
+          view.upload = clone(data)
+          global.upload = clone(data)
+        }
     
         if (files.length > 1) console.log(view.uploads)
         else console.log(view.upload)

@@ -26,7 +26,7 @@ const save = async ({ id, e, ...params }) => {
   })
 
   if (store === "confirmEmail") view.confirmEmail = data
-  else view.save = data
+  else view.save = global.save = data
 
   console.log(data)
 

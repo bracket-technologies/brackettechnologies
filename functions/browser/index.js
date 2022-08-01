@@ -2854,7 +2854,7 @@ const erase = async ({ id, e, ...params }) => {
     }
   })
 
-  view.erase = data
+  view.erase = global.erase = data
   console.log(data)
 
   if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
@@ -2902,7 +2902,6 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         var key = generate()
         global.codes[key] = _params
         _event += `coded()${key}${str.split("}")[1]}`
-        console.log(_event, _params);
       }
     })
     _events.push(_event)
@@ -4838,7 +4837,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     if (i % 2) return
                     var f = toValue({ req, res, _window, id, _, __, _i,e, value: arg, params })
                     var v = toValue({ req, res, _window, id, _, __, _i,e, value: args[i + 1], params })
-                    _object[f] = v
+                    if (v !== undefined) _object[f] = v
 
                 })
                 
@@ -6169,10 +6168,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             answer = {}
             k.split(":").slice(1).map((el, i) => {
 
-                if (i % 2 || v === undefined) return
+                if (i % 2) return
                 var f = toValue({ req, res, _window, id, _, __, _i,e, value: el, params })
                 var v = toValue({ req, res, _window, id, _, __, _i,e, value: args[i + 1], params })
-                answer[f] = v
+                if (v !== undefined) answer[f] = v
             })
 
         } else if (k0 === "_semi" || k0 === ";") {
@@ -7092,7 +7091,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
           _options.counter = _options.counter || _options.start || _options.count || 0
           _options.length = _options.length || _options.len || _options.maxLength || 0
-          _options.end = _options.end || _options.max || _options.maximum || 99999
+          _options.end = _options.end || _options.max || _options.maximum || 999999999999
           //_options.timer = _options.timer || (new Date(_date.setHours(0,0,0,0))).getTime()
 
           answer = require("./counter").counter({ ..._options })
@@ -8859,7 +8858,7 @@ const save = async ({ id, e, ...params }) => {
   })
 
   if (store === "confirmEmail") view.confirmEmail = data
-  else view.save = data
+  else view.save = global.save = data
 
   console.log(data)
 
@@ -8896,7 +8895,7 @@ module.exports = {
       }
     })
     
-    view.search = clone(data)
+    view.search = global.search = clone(data)
     console.log(data)
     
     // await params
@@ -11300,9 +11299,16 @@ const upload = async ({ id, e, ...params }) => {
       promises.map(({ data }, i) => {
 
         if (files.length > 1) {
-          if (i === 0) view.uploads = []
-          view.uploads.push(data)
-        } else view.upload = data
+          if (i === 0) {
+            view.uploads = []
+            global.uploads = []
+          }
+          view.uploads.push(clone(data))
+          global.uploads.push(clone(data))
+        } else {
+          view.upload = clone(data)
+          global.upload = clone(data)
+        }
     
         if (files.length > 1) console.log(view.uploads)
         else console.log(view.upload)

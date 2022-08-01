@@ -25,7 +25,7 @@ module.exports = {
       }
     })
     
-    view.search = clone(data)
+    view.search = global.search = clone(data)
     console.log(data)
     
     // await params
