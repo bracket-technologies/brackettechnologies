@@ -1,10 +1,5 @@
 {
-<<<<<<< HEAD
-  "creation-date": 1653848240784,
   "id": "canceled-bookings-manager",
-=======
-  "id": "canceled-bookings-manager",
-  "creation-date": 1653848240784,
->>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
-  "type": "View?id=canceled-bookings-manager"
+  "type": "View?id=canceled-bookings-manager",
+  "creation-date": 1653848240784
 }

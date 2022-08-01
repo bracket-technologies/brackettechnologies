@@ -1,15 +1,5 @@
 {
-<<<<<<< HEAD
-  "creation-date": 1651335662000,
-  "id": "main",
-  "path": "/",
-  "title": "Al Sabil Travel",
-=======
-  "title": "Al Sabil Travel",
-  "creation-date": 1651335662000,
-  "id": "main",
   "name": "Al Sabil Travel",
->>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
   "views": [
     "booking-change-cancelation",
     "booking-passenger",
@@ -50,9 +40,8 @@
     "search-engine"
   ],
   "view": "main",
-<<<<<<< HEAD
-  "name": "Al Sabil Travel"
-=======
-  "path": "/"
->>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
+  "creation-date": 1651335662000,
+  "title": "Al Sabil Travel",
+  "path": "/",
+  "id": "main"
 }

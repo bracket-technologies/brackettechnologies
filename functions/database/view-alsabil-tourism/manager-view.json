@@ -1,12 +1,6 @@
 {
-<<<<<<< HEAD
-  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]",
   "id": "manager-view",
   "creation-date": 0,
-=======
-  "creation-date": 0,
-  "id": "manager-view",
->>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
   "children": [
     {
       "type": "View?view=loading-manager;)(:opened-manager=loading-manager"
@@ -29,10 +23,6 @@
     {
       "type": "View?view=refunds-manager?)(:opened-manager=refunds-manager"
     }
-<<<<<<< HEAD
-  ]
-=======
   ],
   "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]"
->>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
 }

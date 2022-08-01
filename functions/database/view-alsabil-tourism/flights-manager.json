@@ -46,16 +46,11 @@
       "type": "View?view=flight-list;flights:().del()"
     }
   ],
+  "type": "View?id=flights-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;search-flight:()=search-flight:()||_array:[_map:class:Economy];flights-booked:()=_array;bookings:()=bookings:()||_array;search-type:()=Individual;search-engine-req:()=flight",
   "controls": [
     {
-      "actions": "wait():search:[update:flights-list]?search.collection=flight;search.field.departure-date.greater=todayStart().timestamp();wait():[flights:()=().search.data]",
-      "event": "loaded"
+      "event": "loaded",
+      "actions": "wait():search:[update:flights-list]?search.collection=flight;search.field.departure-date.greater=todayStart().timestamp();wait():[flights:()=().search.data]"
     }
-  ],
-<<<<<<< HEAD
-  "type": "View?id=flights-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;search-flight:()=search-flight:()||_array:[_map:class:Economy];flights-booked:()=_array;bookings:()=bookings:()||_array;search-type:()=Individual;search-engine-req:()=flight",
-  "id": "flights-manager"
-=======
-  "type": "View?id=flights-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;search-flight:()=search-flight:()||_array:[_map:class:Economy];flights-booked:()=_array;bookings:()=bookings:()||_array;search-type:()=Individual;search-engine-req:()=flight"
->>>>>>> 0a1eab9221a87b31885f0c4dc3bfa750c3c98f7a
+  ]
 }
