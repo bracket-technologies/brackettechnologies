@@ -1,7 +1,7 @@
 {
-  "id": "booking-seat-passenger",
   "children": [
     {
+      "type": "View?class=flexbox;style:[width=100%;borderBottom=1px solid #ddd;padding=0.5rem 0]",
       "children": [
         {
           "type": "Text?class=flex;text=Passengers Info;style:[fontSize=1.4rem]"
@@ -22,8 +22,7 @@
             }
           ]
         }
-      ],
-      "type": "View?class=flexbox;style:[width=100%;borderBottom=1px solid #ddd;padding=0.5rem 0]"
+      ]
     },
     {
       "children": [
@@ -49,6 +48,7 @@
       "type": "View?id=passenger-details;class=vertical;style:[padding=1rem;gap=1rem]"
     }
   ],
+  "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]",
   "creation-date": 1654011294803,
-  "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]"
+  "id": "booking-seat-passenger"
 }

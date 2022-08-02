@@ -208,7 +208,7 @@ window.addEventListener('beforeinstallprompt', function (e) {
   
   // Stash the event so it can be triggered later.
   window.global["installApp"] = e
-  setTimeout(() => { console.log(window.global["installApp"]); window.global["installApp"].prompt() }, 1000)
+  //setTimeout(() => { console.log(window.global["installApp"]); window.global["installApp"].prompt() }, 1000)
 })
 
 window.addEventListener('appinstalled', () => {
