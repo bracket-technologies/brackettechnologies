@@ -1,15 +1,17 @@
 {
+<<<<<<< HEAD
+=======
+  "type": "View?id=reservations-list;class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]",
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
   "creation-date": 1655930948086,
   "id": "reservations-list",
   "children": [
     {
-      "type": "View?style:[width=100%];data=reservations:()",
       "children": [
         {
           "type": "View?class=vertical;style:[width=100%;minHeight=30rem]?reservations:().len()>0",
           "children": [
             {
-              "type": "View?class=grid align-center;style:[borderBottom=1px solid #ddd;gridTemplateColumns=3rem .75fr 1.25fr 10rem 20rem .5fr 4fr 10rem 10rem .75fr .75fr;height=4rem;width=100%]",
               "children": [
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -44,12 +46,12 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Passenger Name;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -71,12 +73,12 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=To;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     }
                   ]
                 },
@@ -89,12 +91,12 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Issuer;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;width=100%]",
@@ -104,7 +106,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=grid align-center;style:[borderBottom=1px solid #ddd;gridTemplateColumns=3rem .75fr 1.25fr 10rem 20rem .5fr 4fr 10rem 10rem .75fr .75fr;height=4rem;width=100%]"
             },
             {
               "type": "View?Data=reservations;class=vertical;style:[width=100%;zIndex=0]",
@@ -120,6 +123,7 @@
                             {
                               "type": "Text?class=flexbox;style:[fontSize=1.2rem];text=parent().parent().parent().mapIndex+1"
                             }
+<<<<<<< HEAD
                           ],
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
@@ -128,6 +132,8 @@
                             {
                               "type": "Text?class=flex dots;text=data().pnr;style:[fontSize=1.2rem]"
                             }
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                           ],
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
@@ -135,7 +141,7 @@
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
-                              "type": "Text?class=flex dots;style:[fontSize=1.2rem];droplist.items=data().tickets;text=().droplist.items.0||;droplist.item.style:[minHeight=3rem;height=3rem;fontSize=1.2rem]"
+                              "type": "Text?class=flex dots;text=data().pnr;style:[fontSize=1.2rem]"
                             }
                           ]
                         },
@@ -143,8 +149,20 @@
                           "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
                           "children": [
                             {
+                              "type": "Text?class=flex dots;style:[fontSize=1.2rem];droplist.items=data().tickets;text=().droplist.items.0||;droplist.item.style:[minHeight=3rem;height=3rem;fontSize=1.2rem]"
+                            }
+<<<<<<< HEAD
+=======
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                        },
+                        {
+                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
+                          "children": [
+                            {
                               "type": "Text?class=flex dots;text=data().issue-date.toDateFormat();tooltip.text=().text;style:[fontSize=1.2rem]"
                             }
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                           ]
                         },
                         {
@@ -183,8 +201,10 @@
                           ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=100%]",
                           "children": [
                             {
+                              "type": "Text?class=flex dots;text=[data().total-payable-usd||data().total-usd].round():2+'$';style:[fontSize=1.2rem;width=100%;textAlign=right]",
                               "controls": [
                                 {
                                   "event": "loaded?if():[!data().total-payable-usd]:[data().total-usd=data().total-base-fare-usd+data().total-fees-usd+data().total-taxes-usd;data().total-payable-usd=data().total-usd;data().booking-details.():[seats.():[passengers-details._():[_.payable-usd=_.total-usd]]];save():[collection=flight-booking;data=data()]]"
@@ -195,11 +215,9 @@
                                 {
                                   "event": "loaded?if():[data().pnr=1GT6VV||data().pnr=NBP8SS||data().pnr=4OIEWN]:[loader.show;erase():[collection=flight-booking;doc=data().id]:[reservations:().pullItem():data();loader.hide]]"
                                 }
-                              ],
-                              "type": "Text?class=flex dots;text=[data().total-payable-usd||data().total-usd].round():2+'$';style:[fontSize=1.2rem;width=100%;textAlign=right]"
+                              ]
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=100%]"
+                          ]
                         },
                         {
                           "type": "View?class=flex align-center;style:[flex=1;gap=1rem;justifyContent=flex-end;transition=.2s;opacity=0]",
@@ -227,6 +245,15 @@
                                     }
                                   ]
                                 }
+<<<<<<< HEAD
+=======
+                              ],
+                              "controls": [
+                                {
+                                  "actions": "wait():save:search:search?save.collection=flight-booking;save.doc=data().id;save.data=data();wait():[search.collection=flight;search.docs=data().booking-details.():flight-id]:[my-flights:()=().search.data.values();my-flights:()._():[_.canceled-bookings=[_.canceled-bookings||_list];_.canceled-bookings.push():[data().id];_.total-av-seats=[_.total-av-seats||0]+[data().total-passengers];_.total-canceled-seats=[_.total-canceled-seats||0]+[data().total-passengers];_.total-canceled-booked-seats=[_.total-canceled-booked-seats||0]+[data().total-passengers];if():[data().type=Group]:[_.total-group-canceled-booked-seats=[_.total-group-canceled-booked-seats||0]+[data().total-passengers]].elif():[data().type=Individual]:[_.total-individual-canceled-booked-seats=[_.total-individual-canceled-booked-seats||0]+[data().total-passengers]];_.total-canceled-reserved-seats=[_.total-canceled-reserved-seats||0]+[data().total-passengers];if():[data().type=Group]:[_.total-group-canceled-reserved-seats=[_.total-group-canceled-reserved-seats||0]+[data().total-passengers]].elif():[data().type=Individual]:[_.total-individual-canceled-reserved-seats=[_.total-individual-canceled-reserved-seats||0]+[data().total-passengers]]];data().booking-details._():[my-flights:().find():[id=_.flight-id].seats.filter():[sub-class.in():[_.seats.():class]]._():[_.av-seats=[_.av-seats]+[__.seats.find():[class=_.sub-class].passengers];_.canceled-seats=[_.canceled-seats||0]+[__.seats.find():[class=_.sub-class].passengers];_.canceled-booked-seats=[_.canceled-booked-seats||0]+[__.seats.find():[class=_.sub-class].passengers];_.canceled-reserved-seats=[_.canceled-reserved-seats||0]+[__.seats.find():[class=_.sub-class].passengers];if():[data().type=Group]:[_.group-canceled-booked-seats=[_.group-canceled-booked-seats||0]+__.seats.find():[class=_.sub-class].passengers].elif():[data().type=Individual]:[_.individual-canceled-booked-seats=[_.individual-canceled-booked-seats||0]+__.seats.find():[class=_.sub-class].passengers];if():[data().type=Group]:[_.group-canceled-reserved-seats=[_.group-canceled-reserved-seats||0]+__.seats.find():[class=_.sub-class].passengers].elif():[data().type=Individual]:[_.individual-canceled-reserved-seats=[_.individual-canceled-reserved-seats||0]+__.seats.find():[class=_.sub-class].passengers]]];my-flights:()._():[save():[collection=flight;doc=_.id;data=_]];search.del();search.collection=flight-reservation;search.docs=().my-canceled-reservations]:[my-tickets:()=().search.data.values();my-tickets:()._():[_.status=Canceled;_.cancelation-day=todayStart();_.cancelation-month=monthStart();_.cancelation-year=yearStart();_.canceled-by=user:().id;_.canceled-by-name=user:().first-name+ +user:().last-name;_.canceled-by-agent=agent:().id;_.canceled-by-agent-name=agent:().company-name;_.cancelation-date=today().timestamp();_.reservation-details._():[_.status=Canceled;_.cancelation-day=todayStart();_.cancelation-month=monthStart();_.cancelation-year=yearStart();_.canceled-by=user:().id;_.canceled-by-name=user:().first-name+ +user:().last-name;_.canceled-by-agent=agent:().id;_.canceled-by-agent-name=agent:().company-name;_.cancelation-date=today().timestamp()]];my-tickets:()._():[save():[collection=flight-reservation;data=_]];reservations:().pullItem():[id=data().id];update():reservations-list;note():[text=Booking has been Canceled!];loader.hide]",
+                                  "event": "click:popup?loader.show;data().cancelation-day=todayStart();data().cancelation-month=monthStart();data().cancelation-year=yearStart();data().canceled-by=user:().id;data().canceled-by-name=user:().first-name+ +user:().last-name;data().canceled-by-agent=agent:().id;data().canceled-by-agent-name=agent:().company-name;data().status=Canceled;data().cancelation-date=today().timestamp();data().canceled-passengers=data().total-passengers;data().canceled-base-fare-usd=data().base-fare-usd;data().canceled-fees-usd=data().fees-usd;data().canceled-taxes-usd=data().taxes-usd;data().canceled-commission-usd=[data().commission-usd||0];data().canceled-additional-profit-usd=[data().additional-profit-usd||0];data().canceled-total-usd=data().total-usd;data().canceled-payable-usd=data().payable-usd;data().canceled-reservations=[data().canceled-reservations||_list];my-canceled-reservations=data().reservations.clone().pullItems():[data().canceled-reservations];data().canceled-reservations.push():[().my-canceled-reservations];data().booking-details._():[_.seats.():[passengers-details.():[status=Canceled]];_.total-canceled-passengers=_.total-passengers;_.total-canceled-adults=_.total-adults;_.total-canceled-children=_.total-children;_.total-canceled-base-fare-usd=_.total-base-fare-usd;_.total-canceled-fees-usd=_.total-fees-usd;_.total-canceled-taxes-usd=_.total-taxes-usd;_.total-canceled-commission-usd=[_.total-commission-usd||0];_.total-canceled-additional-profit-usd=_.total-additional-profit-usd]?data().status=Issued;false"
+                                }
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                               ]
                             },
                             {
@@ -247,7 +274,8 @@
             }
           ]
         }
-      ]
+      ],
+      "type": "View?style:[width=100%];data=reservations:()"
     }
   ],
   "type": "View?id=reservations-list;class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]"

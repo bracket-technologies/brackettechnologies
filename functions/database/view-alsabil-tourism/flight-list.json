@@ -1,9 +1,17 @@
 {
+<<<<<<< HEAD
+=======
+  "creation-date": 1654120726246,
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
   "id": "flight-list",
   "children": [
     {
       "children": [
         {
+<<<<<<< HEAD
+=======
+          "type": "View?class=vertical;data=flights:().[().mapIndex].clone();style:[width=100%;minHeight=30rem]?flights:().len()>0",
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
           "children": [
             {
               "type": "View?id=table-headers;class=grid align-center;style:[width=100%;borderBottom=1px solid #ddd;gridTemplateColumns=2rem 15rem 10rem 8rem .75fr .75fr .75fr .75fr .75fr .75fr .75fr 1fr 1fr 1fr 1fr 1fr 1fr 3rem;height=4rem]",
@@ -65,12 +73,12 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Dep;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
                   "children": [
@@ -89,6 +97,17 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
+<<<<<<< HEAD
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Stops;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                },
+                {
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
@@ -109,8 +128,12 @@
                     {
                       "type": "Text?class=pointer;text=PNR's;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
+<<<<<<< HEAD
                   ],
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]?false"
+=======
+                  ]
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                 },
                 {
                   "children": [
@@ -148,6 +171,17 @@
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Payable;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+<<<<<<< HEAD
+=======
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?text=-"
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                     }
                   ],
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
@@ -166,17 +200,21 @@
               "type": "View?class=vertical;style:[width=100%]",
               "children": [
                 {
+                  "type": "[View]?data=flights:();class=grid align-center;style:[width=100%;gridTemplateColumns=2rem 15rem 10rem 8rem .75fr .75fr .75fr .75fr .75fr .75fr .75fr 1fr 1fr 1fr 1fr 1fr 1fr 3rem;height=4rem];mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]",
                   "children": [
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex dots;text=parent().parent().mapIndex+1;style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
+<<<<<<< HEAD
                       "type": "View?class=flex align-center;style:[height=100%;width=15rem;gap=1rem]",
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                       "children": [
                         {
                           "children": [
@@ -189,7 +227,8 @@
                         {
                           "type": "Text?class=flex dots;text=data().airline.slice():3;style:[fontSize=1.2rem;width=7.5rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;width=15rem;gap=1rem]"
                     },
                     {
                       "children": [
@@ -224,12 +263,12 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().departure-time.toClock():[hr;min];style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -262,6 +301,7 @@
                           "type": "Text?class=flexbox;text=data().aircraft;style:[fontSize=1.2rem]"
                         }
                       ]
+<<<<<<< HEAD
                     },
                     {
                       "children": [
@@ -273,11 +313,28 @@
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;width=100%]?false",
+=======
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Text?class=flexbox;text=data().flight-duration.split():':'.0+'h'+':'+data().flight-duration.split():':'.1+'m';style:[fontSize=1.2rem]?data().flight-duration"
+                        }
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                    },
+                    {
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                       "children": [
                         {
                           "type": "Text?class=flexbox dots;text=data().pnrs.0;tooltip.text='txt()';droplist.items=data().pnrs;droplist.item.style:[minHeight=3rem;height=3rem;fontSize=1.3rem];droplist.style:[maxWidth=null];style:[fontSize=1.2rem]"
                         }
+<<<<<<< HEAD
                       ]
+=======
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;width=100%]?false"
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                     },
                     {
                       "children": [
@@ -304,7 +361,11 @@
                               "event": "click?loader.show;search():[collection=flight-reservation;field.flights.contains=data().id]:[tickets:()=search:().data.values();unreset-tickets:()=true;():'flight-ticket-sidebar-btn'.click();loader.hide]"
                             }
                           ],
+<<<<<<< HEAD
                           "type": "Text?class=flexbox pointer;tooltip.text=show passengers;text=[data().total-seats]-[data().total-av-seats];style:[fontSize=1.2rem;transition=.2s;padding=.5rem;borderRadius=.5rem];hover.style:[color=blue;backgroundColor=#ddd]"
+=======
+                          "type": "Text?class=flexbox pointer;text=[data().total-seats]-[data().total-av-seats];style:[fontSize=1.2rem;transition=.2s;padding=.5rem;borderRadius=.5rem];hover.style:[color=blue;backgroundColor=#ddd]"
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                         }
                       ]
                     },
@@ -332,8 +393,12 @@
                         }
                       ]
                     }
+<<<<<<< HEAD
                   ],
                   "type": "[View]?data=flights:();class=grid align-center;style:[width=100%;gridTemplateColumns=2rem 15rem 10rem 8rem .75fr .75fr .75fr .75fr .75fr .75fr .75fr 1fr 1fr 1fr 1fr 1fr 1fr 3rem;height=4rem];mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]"
+=======
+                  ]
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                 }
               ]
             }
@@ -344,6 +409,10 @@
       "type": "View?style:[width=100%]"
     }
   ],
+<<<<<<< HEAD
   "type": "View:flight-list?class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]",
   "creation-date": 1654120726246
+=======
+  "type": "View:flight-list?class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]"
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
 }

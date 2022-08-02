@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+  "id": "reservations-manager",
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
   "controls": [
     {
       "actions": "wait():search:[update:reservations-list]?search.collection=flight-booking;search.field.day.equal=todayStart();search.field.status.equal=Issued;if():[!user:().admin]:[search.field.user.equal=user:().id];if():[!user:().admin;!agent:().admin]:[search.field.agent.equal=agent:().id];wait():[reservations:()=().search.data.values()]",
@@ -10,7 +14,6 @@
     {
       "children": [
         {
-          "type": "View?class=flexbox;style:[height=100%]",
           "children": [
             {
               "type": "View?style:[height=60%;width=2px;backgroundColor=blue]"
@@ -42,7 +45,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[height=100%]"
         },
         {
           "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
@@ -79,7 +83,6 @@
       "type": "View?Data=search-reservation;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;height=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]",
       "children": [
         {
-          "type": "View?class=flexbox;style:[width=100%]",
           "children": [
             {
               "children": [
@@ -106,6 +109,7 @@
                   "type": "Input?id=first-name;path=name;label.text=Name;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                 },
                 {
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
                       "controls": [
@@ -126,8 +130,7 @@
                       ],
                       "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
                     }
-                  ],
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
+                  ]
                 },
                 {
                   "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
@@ -178,7 +181,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[width=100%]"
         }
       ]
     },

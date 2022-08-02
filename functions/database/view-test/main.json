@@ -1,0 +1,60 @@
+{
+  "id": "main",
+  "creation-date": 1658651717443,
+  "children": [
+    {
+      "type": "View?class=flexbox;style:[width=100%;height=4rem;padding=0 1rem;backgroundColor=red;position=sticky;top=0;justifyContent=space-between]",
+      "children": [
+        {
+          "type": "Icon?name=menu;google.outlined;style:[fontSize=2.4rem;color=#fff;margin=auto 0]"
+        },
+        {
+          "type": "Text?class=flexbox;text=Kstore;style:[fontSize=2.4rem;color=#fff;fontWeight=bold;position=absolute;width=16rem;left=calc(50vw - 8rem)]"
+        },
+        {
+          "children": [
+            {
+              "type": "Icon?name=person;google.outlined;style:[fontSize=2rem;color=#fff]?!user:()"
+            },
+            {
+              "type": "Text?text=Hi,+user:().first-name;style:[fontSize=1.4rem;color=#fff];droplist:[items=_list:Profile:Logout;item.style:[fontSize=1.4rem;minHeight=3.5rem]]?user:()"
+            }
+          ],
+          "type": "View:user-name?class=flexbox;style:[gap=1rem]"
+        }
+      ]
+    },
+    {
+      "type": "View?class=flexbox;style:[padding=1rem 0]",
+      "children": [
+        {
+          "type": "Input?placeholder=share your product with Kstore;style:[width=100%;height=4rem;borderRadius=0;backgroundColor=#fff;paddig=0 1rem]",
+          "controls": [
+            {
+              "event": "focus?update():new-post;():new-post.style():[pointerEvents=auto;opacity=1]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "children": [
+        {
+          "type": "View?new-post:()=_map:id:[gen():20]:creation-date:[today().timestamp()]:created-by:[user:().first-name+ +user:().last-name]:user:[user:().id]:images:_list:likes:_list:comments:_list;class=horizontal",
+          "children": [
+            {
+              "type": "Text?class=flexbox;text=New Post;style:[fontSize=1.8rem;fontWeight=bolder;borderLeft=3px solid blue;padding=.5rem 1rem]"
+            }
+          ]
+        }
+      ],
+      "type": "View:new-post?class=vertical;Data=new-post;style:[top=0;left=0;right=0;height=100vh;backgroundColor=#fff;position=fixed;zIndex=1;opacity=0;pointerEvents=none;transition=.2s;overflowY=auto]"
+    }
+  ],
+  "controls": [
+    {
+      "event": "loaded?search():[collection=user;doc=getCookie():_id]:[user:()=().search.data;if():[!user:()]:[route():login];update():user-name;search():[collection=post]:[posts:()=().search.data.values();update():[id=cards;self]]]?getCookie():_id"
+    }
+  ],
+  "type": "View:main?class=grid;style:[backgroundColor=#ccc]?mobile()"
+}

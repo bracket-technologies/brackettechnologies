@@ -1,7 +1,5 @@
 {
-  "id": "booking-seat-passenger",
   "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]",
-  "creation-date": 1654011294803,
   "children": [
     {
       "type": "View?class=flexbox;style:[width=100%;borderBottom=1px solid #ddd;padding=0.5rem 0]",
@@ -10,6 +8,7 @@
           "type": "Text?class=flex;text=Passengers Info;style:[fontSize=1.4rem]"
         },
         {
+          "type": "View?class=flexbox pointer;style:[borderRadius=.5rem;border=1px solid #ddd;overflow=hidden;position=relative;marginLeft=auto;marginRight=1rem;height=3rem;width=3.25rem;backgroundColor=#fff];mouseenter.1stChild().style:[color=#222];mouseleave.1stChild().style:[color=#666];hover.style.backgroundColor=#f6f6f6;tooltip.text=import passengers",
           "children": [
             {
               "type": "Icon?class=flexbox pointer;name=bi-download;tooltip.text=import passengers;style:[color=#666;fontSize=1.6rem;transition=.3s]"
@@ -22,8 +21,7 @@
                 }
               ]
             }
-          ],
-          "type": "View?class=flexbox pointer;style:[borderRadius=.5rem;border=1px solid #ddd;overflow=hidden;position=relative;marginLeft=auto;marginRight=1rem;height=3rem;width=3.25rem;backgroundColor=#fff];mouseenter.1stChild().style:[color=#222];mouseleave.1stChild().style:[color=#666];hover.style.backgroundColor=#f6f6f6;tooltip.text=import passengers"
+          ]
         }
       ]
     },
@@ -50,5 +48,7 @@
         }
       ]
     }
-  ]
+  ],
+  "creation-date": 1654011294803,
+  "id": "booking-seat-passenger"
 }

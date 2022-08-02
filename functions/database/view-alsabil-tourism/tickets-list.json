@@ -1,10 +1,12 @@
 {
   "type": "View?id=tickets-list;class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]",
   "id": "tickets-list",
+  "creation-date": 1655930948086,
   "children": [
     {
       "children": [
         {
+          "type": "View?class=vertical;style:[width=100%;minHeight=30rem]?tickets:().len()>0;tickets:().0.len()>0",
           "children": [
             {
               "children": [
@@ -33,17 +35,16 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
+                      "type": "Text?class=pointer;text=E-Ticket;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                       "controls": [
                         {
                           "event": "click?loader.show;tickets:()=sort():[data=tickets:();path=e-ticket;descending];update():tickets-list-data;loader.hide"
                         }
-                      ],
-                      "type": "Text?class=pointer;text=E-Ticket;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                      ]
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Creation Date;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
@@ -53,7 +54,8 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -84,6 +86,7 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "controls": [
@@ -93,45 +96,44 @@
                           ],
                           "type": "Text?class=pointer;text=To;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "children": [
                         {
+                          "type": "Text?class=pointer;text=Class;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                           "controls": [
                             {
                               "event": "click?loader.show;tickets:()=sort():[data=tickets:();path=reservation-details.0.class;descending];update():tickets-list-data;loader.hide"
                             }
-                          ],
-                          "type": "Text?class=pointer;text=Class;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                          ]
                         }
                       ],
                       "type": "View?class=flex align-center;style:[height=100%;width=100%]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;width=100%]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Bag;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;width=100%]"
                     }
                   ],
                   "type": "View?class=grid align-center;style:[gridTemplateColumns=1fr 1fr 4rem 4rem]"
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
-                      "type": "Text?class=pointer;text=Agent;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                       "controls": [
                         {
                           "event": "click?loader.show;tickets:()=sort():[data=tickets:();path=issued-by-agent-name;descending];update():tickets-list-data;loader.hide"
                         }
-                      ]
+                      ],
+                      "type": "Text?class=pointer;text=Agent;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -147,12 +149,12 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;width=100%]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Payable;style:[color=#888;fontSize=1.2rem;transition=.3s;width=100%;textAlign=right];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;width=100%]"
+                  ]
                 }
               ],
               "type": "View?class=grid align-center;style:[borderBottom=1px solid #ddd;gridTemplateColumns=3rem .75fr 1.25fr 10rem 20rem 5fr 10rem 10rem .75fr .75fr;height=4rem;width=100%]"
@@ -160,7 +162,6 @@
             {
               "children": [
                 {
-                  "type": "[View]?style:[width=100%]?data().len()>0",
                   "children": [
                     {
                       "type": "View?class=grid align-center flight;style:[gridTemplateColumns=3rem .75fr 1.25fr 10rem 20rem 5fr 10rem 10rem .75fr .75fr;height=4rem;transition=.2s;width=100%;cursor=default];hover:[style.backgroundColor=#f6f6f6];mouseenter.lastChild().style().opacity=1;mouseleave.lastChild().style().opacity=0",
@@ -172,6 +173,17 @@
                               "type": "Text?class=flex dots;text=parent().parent().parent().mapIndex+1;style:[fontSize=1.2rem]"
                             }
                           ]
+<<<<<<< HEAD
+                        },
+                        {
+                          "children": [
+                            {
+                              "type": "Text?class=flex dots;text=data().pnr;style:[fontSize=1.2rem]"
+                            }
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                         },
                         {
                           "children": [
@@ -182,6 +194,8 @@
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
+<<<<<<< HEAD
+=======
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=data().e-ticket;style:[fontSize=1.2rem]"
@@ -190,6 +204,8 @@
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=data().creation-date.toDateFormat();style:[fontSize=1.2rem]"
@@ -227,6 +243,7 @@
                         {
                           "children": [
                             {
+                              "type": "Text?class=flex dots;text=[data().total-payable-usd||data().total-usd].round():2+'$';style:[fontSize=1.2rem;textAlign=right;width=100%]",
                               "controls": [
                                 {
                                   "event": "loaded?if():[data().pnr=5W7YCB]:[loader.show;erase():[collection=flight-reservation;doc=data().id]:[tickets:().pullItem():data();loader.hide]]?false"
@@ -234,8 +251,7 @@
                                 {
                                   "event": "loaded?if():[data().user-name=Test Test]:[loader.show;erase():[collection=flight-reservation;doc=data().id]:[tickets:().pullItem():data();loader.hide]]?false"
                                 }
-                              ],
-                              "type": "Text?class=flex dots;text=[data().total-payable-usd||data().total-usd].round():2+'$';style:[fontSize=1.2rem;textAlign=right;width=100%]"
+                              ]
                             }
                           ],
                           "type": "View?class=flex align-center;style:[height=100%;width=100%]"
@@ -280,13 +296,13 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "[View]?style:[width=100%]?data().len()>0"
                 }
               ],
               "type": "View:tickets-list-data?Data=tickets;class=vertical;style:[width=100%;zIndex=0]"
             }
-          ],
-          "type": "View?class=vertical;style:[width=100%;minHeight=30rem]?tickets:().len()>0;tickets:().0.len()>0"
+          ]
         }
       ],
       "type": "View?style:[width=100%];data=tickets:()"

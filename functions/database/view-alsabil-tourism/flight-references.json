@@ -1,7 +1,10 @@
 {
   "id": "flight-references",
+<<<<<<< HEAD
   "creation-date": 1652977860885,
   "type": "View?id=flight-references;class=flex column;style.gap=.5rem;style.width=100%?false",
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
   "children": [
     {
       "type": "Text?class=flex;text=Bookings & Reservations & Sellings (Invoices);style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -18,6 +21,22 @@
               "type": "View?class=vertical;style:[gap=.5rem]",
               "children": [
                 {
+<<<<<<< HEAD
+=======
+                  "children": [
+                    {
+                      "type": "Input?style:[flex=1;height=100%;fontSize=1.3rem;color=#888];readonly;if():[)(:flight-edit-readonly]:[readonly=true]"
+                    },
+                    {
+                      "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]",
+                      "controls": [
+                        {
+                          "event": "click?data().del();)(:focus-classes=true;update():[parent().parent().id]?!)(:flight-edit-readonly"
+                        }
+                      ]
+                    }
+                  ],
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                   "type": "[View]?path=bookings;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative;backgroundColor=#ccc];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                   "controls": [
                     {
@@ -26,6 +45,7 @@
                     {
                       "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().bookings.len()-1"
                     }
+<<<<<<< HEAD
                   ],
                   "children": [
                     {
@@ -39,6 +59,8 @@
                       ],
                       "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]"
                     }
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                   ]
                 }
               ]
@@ -53,6 +75,18 @@
             {
               "children": [
                 {
+<<<<<<< HEAD
+=======
+                  "controls": [
+                    {
+                      "event": "keyup?parent().data().canceled-bookings.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
+                    },
+                    {
+                      "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().canceled-bookings.len()-1"
+                    }
+                  ],
+                  "type": "[View]?path=canceled-bookings;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative;backgroundColor=#ccc];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                   "children": [
                     {
                       "type": "Input?readonly;style:[flex=1;height=100%;fontSize=1.3rem;color=#888];if():[)(:flight-edit-readonly]:[readonly=true]"
@@ -65,6 +99,7 @@
                       ],
                       "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]"
                     }
+<<<<<<< HEAD
                   ],
                   "controls": [
                     {
@@ -75,6 +110,9 @@
                     }
                   ],
                   "type": "[View]?path=canceled-bookings;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative;backgroundColor=#ccc];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
+=======
+                  ]
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                 }
               ],
               "type": "View?class=vertical;style:[gap=.5rem]"
@@ -83,12 +121,93 @@
           "type": "View?class=vertical;style:[gap=.5rem]"
         },
         {
+<<<<<<< HEAD
           "type": "View?class=vertical;style:[gap=.5rem]",
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
           "children": [
             {
               "type": "Text?class=flex align-center;text=Reservations;style:[fontSize=1.3rem]"
             },
             {
+<<<<<<< HEAD
+=======
+              "type": "View?class=vertical;style:[gap=.5rem]",
+              "children": [
+                {
+                  "controls": [
+                    {
+                      "event": "keyup?parent().data().reservations.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
+                    },
+                    {
+                      "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().reservations.len()-1"
+                    }
+                  ],
+                  "type": "[View]?path=reservations;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative;backgroundColor=#ccc];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
+                  "children": [
+                    {
+                      "type": "Input?readonly;style:[flex=1;height=100%;fontSize=1.3rem;color=#888];if():[)(:flight-edit-readonly]:[readonly=true]"
+                    },
+                    {
+                      "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]",
+                      "controls": [
+                        {
+                          "event": "click?data().del();)(:focus-classes=true;update():[parent().parent().id]"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "type": "View?class=vertical;style:[gap=.5rem]"
+        },
+        {
+          "type": "View?class=vertical;style:[gap=.5rem]",
+          "children": [
+            {
+              "type": "Text?class=flex align-center;text=Canceled Reservations;style:[fontSize=1.3rem]"
+            },
+            {
+              "type": "View?class=vertical;style:[gap=.5rem]",
+              "children": [
+                {
+                  "controls": [
+                    {
+                      "event": "keyup?parent().data().canceled-reservations.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
+                    },
+                    {
+                      "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().canceled-reservations.len()-1"
+                    }
+                  ],
+                  "type": "[View]?path=canceled-reservations;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative;backgroundColor=#ccc];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
+                  "children": [
+                    {
+                      "type": "Input?readonly;style:[flex=1;height=100%;fontSize=1.3rem;color=#888];if():[)(:flight-edit-readonly]:[readonly=true]"
+                    },
+                    {
+                      "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]",
+                      "controls": [
+                        {
+                          "event": "click?data().del();)(:focus-classes=true;update():[parent().parent().id]"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "View?class=vertical;style:[gap=.5rem]",
+          "children": [
+            {
+              "type": "Text?class=flex align-center;text=Sellings;style:[fontSize=1.3rem]"
+            },
+            {
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
               "children": [
                 {
                   "children": [
@@ -104,6 +223,7 @@
                       ]
                     }
                   ],
+<<<<<<< HEAD
                   "type": "[View]?path=reservations;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative;backgroundColor=#ccc];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                   "controls": [
                     {
@@ -113,6 +233,17 @@
                       "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().reservations.len()-1"
                     }
                   ]
+=======
+                  "controls": [
+                    {
+                      "event": "keyup?parent().data().sellings.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
+                    },
+                    {
+                      "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().sellings.len()-1"
+                    }
+                  ],
+                  "type": "[View]?path=sellings;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative;backgroundColor=#ccc];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                 }
               ],
               "type": "View?class=vertical;style:[gap=.5rem]"
@@ -233,5 +364,11 @@
       ],
       "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]"
     }
+<<<<<<< HEAD
   ]
+=======
+  ],
+  "type": "View?id=flight-references;class=flex column;style.gap=.5rem;style.width=100%?false",
+  "creation-date": 1652977860885
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
 }

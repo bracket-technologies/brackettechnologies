@@ -27,7 +27,7 @@ const erase = async ({ id, e, ...params }) => {
     }
   })
 
-  view.erase = data
+  view.erase = global.erase = data
   console.log(data)
 
   if (params.asyncer) require("./toAwait").toAwait({ id, e, params })

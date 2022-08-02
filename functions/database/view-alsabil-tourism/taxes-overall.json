@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+  "creation-date": 1652957792803,
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
   "type": "View?id=taxes-overall;class=flex column;style.gap=.5rem;style.width=100%",
   "id": "taxes-overall",
   "children": [
@@ -17,8 +21,40 @@
                 {
                   "type": "Text?text=Cost ($);class=flex;style:[fontSize=1.3rem]"
                 }
+<<<<<<< HEAD
               ],
               "type": "View?class=grid align-center;style:[gridTemplateColumns=4fr 1fr;gap=.5rem;borderBottom=1px solid #ccc;paddingBottom=.5rem]"
+=======
+              ]
+            },
+            {
+              "type": "[View]?class=grid align-center;style:[gridTemplateColumns=4fr 1fr;gap=.5rem]?data()",
+              "children": [
+                {
+                  "type": "Text?class=flex dots;text=path().lastEl();style:[textAlign=left;fontSize=1.3rem;width=100%]"
+                },
+                {
+                  "type": "Input?clicked.style.border=2px solid #0080ff;input.type=number;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem;border=1px solid #ccc]"
+                }
+              ]
+            }
+          ],
+          "type": "View?id=flight-taxes;class=vertical;style:[width=100%;gap=.5rem];path=taxes-usd"
+        },
+        {
+          "type": "View?id=flight-fees;class=vertical;style:[width=100%;gap=.5rem];path=fees-usd",
+          "children": [
+            {
+              "type": "View?class=grid align-center;style:[gridTemplateColumns=4fr 1fr;gap=.5rem;borderBottom=1px solid #ccc;paddingBottom=.5rem]",
+              "children": [
+                {
+                  "type": "Text?text=Fees;class=flex;style:[fontSize=1.3rem]"
+                },
+                {
+                  "type": "Text?text=Cost ($);class=flex;style:[fontSize=1.3rem]"
+                }
+              ]
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
             },
             {
               "children": [
@@ -31,6 +67,7 @@
               ],
               "type": "[View]?class=grid align-center;style:[gridTemplateColumns=4fr 1fr;gap=.5rem]?data()"
             }
+<<<<<<< HEAD
           ],
           "type": "View?id=flight-taxes;class=vertical;style:[width=100%;gap=.5rem];path=taxes-usd"
         },
@@ -59,6 +96,8 @@
                 }
               ]
             }
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
           ]
         },
         {
@@ -111,7 +150,6 @@
               "type": "Text?class=flex;text=Hand Baggage;style:[fontSize=1.3rem]"
             },
             {
-              "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff",
               "children": [
                 {
                   "type": "Input?input.type=number;path=hand-baggage-kg;style:[height=100%;flex=1;borderRadius=.5rem;fontSize=1.3rem];if():[flight-edit-readonly:()]:[readonly=true]"
@@ -119,7 +157,8 @@
                 {
                   "type": "Input?class=flexbox;input.value=kg;readonly;style:[color=#666;width=2.5rem;height=2.9rem;borderRadius=.5rem;fontSize=1.3rem;transition=.3s];hover.style.backgroundColor=#eee"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
             }
           ],
           "type": "View?class=vertical;style:[gap=.5rem];data().hand-baggage-kg=data().hand-baggage-kg||7"

@@ -1,24 +1,37 @@
 {
+  "type": "View?id=seats-prices-baggage;class=flex column;style:[gap=1rem;width=100%]",
   "id": "seats-prices-baggage",
+<<<<<<< HEAD
+=======
+  "creation-date": 1652457705068,
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
   "children": [
     {
       "type": "Text?class=flex;text=Seats & Prices;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=0.5rem 0]"
     },
     {
-      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]",
       "children": [
         {
+          "type": "View?class=vertical;style:[gap=1rem]",
           "children": [
             {
               "type": "View?class=flex align-center;style:[gap=1rem]?false",
               "children": [
                 {
-                  "type": "View?id=economy-class-btn;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];checked=true",
                   "controls": [
                     {
                       "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=flex;)(:flight-data.economy-class=_array:[_map:seats:0:commission:0:commission-unit:%:additional-profit:0:addtional-profit-unit:%:pricing:[_array:[_map:trip:[Data().trips.0||_string]:adt-base-fare-usd:0:chd-base-fare-usd:0:baggage-kg:30]]];update():[parent().next().id]]:[)(:flight-data.economy-class=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
                     }
                   ],
+                  "type": "View?id=economy-class-btn;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];checked=true",
+<<<<<<< HEAD
+                  "controls": [
+                    {
+                      "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=flex;)(:flight-data.economy-class=_array:[_map:seats:0:commission:0:commission-unit:%:additional-profit:0:addtional-profit-unit:%:pricing:[_array:[_map:trip:[Data().trips.0||_string]:adt-base-fare-usd:0:chd-base-fare-usd:0:baggage-kg:30]]];update():[parent().next().id]]:[)(:flight-data.economy-class=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
+                    }
+                  ],
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
                   "children": [
                     {
                       "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
@@ -40,7 +53,6 @@
                       "type": "Text?class=flexbox;text=parent().mapIndex+1;style:[fontSize=1.3rem;border=1px solid #ddd;borderRadius=.5rem .5rem 0 0;height=2rem;width=3rem;marginBottom=-1px;borderBottom=0px;zIndex=1;backgroundColor=#fff]"
                     },
                     {
-                      "type": "View?class=vertical;style:[gap=2rem;width=100%;padding=1.5rem;border=1px solid #ddd;borderRadius=0 .5rem .5rem .5rem]",
                       "children": [
                         {
                           "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1.5fr .5fr .5fr .5fr .5fr 1fr 1fr 1fr 1fr 6rem]",
@@ -74,6 +86,7 @@
                               "type": "Input?label:[text=Max Grp;location=outside;style.fontSize=1.3rem];tooltip.text=Maximum considered seats for Groups;input.type=number;data().group-max-seats=data().group-max-seats||0;path=group-max-seats;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                             },
                             {
+                              "type": "View?class=vertical;style:[gap=.5rem]",
                               "children": [
                                 {
                                   "type": "Text?class=flex;text=Additional Profit;style:[fontSize=1.3rem]"
@@ -89,8 +102,7 @@
                                   ],
                                   "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
                                 }
-                              ],
-                              "type": "View?class=vertical;style:[gap=.5rem]"
+                              ]
                             },
                             {
                               "type": "View?class=vertical;style:[gap=.5rem]",
@@ -112,7 +124,6 @@
                               ]
                             },
                             {
-                              "type": "View?class=vertical;style:[gap=.5rem];data().baggage-kg=data().baggage-kg||7",
                               "children": [
                                 {
                                   "type": "Text?class=flex;text=Baggage;style:[fontSize=1.3rem]"
@@ -128,9 +139,11 @@
                                   ],
                                   "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=vertical;style:[gap=.5rem];data().baggage-kg=data().baggage-kg||7"
                             },
                             {
+                              "type": "View?class=flexbox;style:[gap=.5rem;marginTop=auto;height=3.5rem]",
                               "children": [
                                 {
                                   "children": [
@@ -148,8 +161,7 @@
                                 {
                                   "type": "Text?class=flex;text=Meal Included;style:[fontSize=1.3rem]"
                                 }
-                              ],
-                              "type": "View?class=flexbox;style:[gap=.5rem;marginTop=auto;height=3.5rem]"
+                              ]
                             },
                             {
                               "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem;justifyContent=flex-end]",
@@ -295,16 +307,17 @@
                           ],
                           "type": "[View]?path=pricing;style:[padding=0 1.5rem;gap=1rem;width=100%;display=grid;gridTemplateColumns=4rem 1fr 1fr 1fr 1fr 1fr 1fr 6rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=vertical;style:[gap=2rem;width=100%;padding=1.5rem;border=1px solid #ddd;borderRadius=0 .5rem .5rem .5rem]"
                     }
                   ]
                 }
               ]
             }
-          ],
-          "type": "View?class=vertical;style:[gap=1rem]"
+          ]
         }
-      ]
+      ],
+      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]"
     }
   ],
   "creation-date": 1652457705068,

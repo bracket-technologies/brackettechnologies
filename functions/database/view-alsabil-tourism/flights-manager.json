@@ -46,7 +46,10 @@
     }
   ],
   "type": "View?id=flights-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;search-flight:()=search-flight:()||_array:[_map:class:Economy];flights-booked:()=_array;bookings:()=bookings:()||_array;search-type:()=Individual;search-engine-req:()=flight",
+<<<<<<< HEAD
   "id": "flights-manager",
+=======
+>>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
   "controls": [
     {
       "event": "loaded",
