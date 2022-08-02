@@ -1,8 +1,6 @@
 {
-<<<<<<< HEAD
-=======
   "id": "manager-view",
->>>>>>> 0c1a607cfdde57928b9a9c3d465987f8235cdda4
+  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]",
   "creation-date": 0,
   "children": [
     {
@@ -26,7 +24,5 @@
     {
       "type": "View?view=refunds-manager?)(:opened-manager=refunds-manager"
     }
-  ],
-  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]",
-  "id": "manager-view"
+  ]
 }

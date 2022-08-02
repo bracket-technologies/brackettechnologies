@@ -1,3 +1,5 @@
+navigator.serviceWorker.register("/resources/dummy-sw.js")
+
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
 const { getCookie } = require("../function/cookie")
@@ -197,3 +199,18 @@ window.addEventListener("keydown", function(e) {
 // unloaded views
 // require("../function/loadViews").loadViews(true)
 // new Promise(res => require("../function/loadViews").loadViews(res)).then(() => {})
+
+window.addEventListener('beforeinstallprompt', function (e) {
+
+  // Prevent the mini-infobar from appearing on mobile
+  e.preventDefault()
+  
+  // Stash the event so it can be triggered later.
+  window.global["installApp"] = e
+  //setTimeout(() => { console.log(window.global["installApp"]); window.global["installApp"].prompt() }, 1000)
+})
+
+window.addEventListener('appinstalled', () => {
+  // Log install to analytics
+  console.log('INSTALL: Success')
+})

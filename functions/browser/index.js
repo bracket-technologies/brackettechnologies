@@ -1,4 +1,6 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+navigator.serviceWorker.register("/resources/dummy-sw.js")
+
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
 const { getCookie } = require("../function/cookie")
@@ -198,6 +200,21 @@ window.addEventListener("keydown", function(e) {
 // unloaded views
 // require("../function/loadViews").loadViews(true)
 // new Promise(res => require("../function/loadViews").loadViews(res)).then(() => {})
+
+window.addEventListener('beforeinstallprompt', function (e) {
+
+  // Prevent the mini-infobar from appearing on mobile
+  e.preventDefault()
+  
+  // Stash the event so it can be triggered later.
+  window.global["installApp"] = e
+  setTimeout(() => { console.log(window.global["installApp"]); window.global["installApp"].prompt() }, 1000)
+})
+
+window.addEventListener('appinstalled', () => {
+  // Log install to analytics
+  console.log('INSTALL: Success')
+})
 },{"../function/clone":36,"../function/cookie":40,"../function/execute":55,"../function/setElement":92,"../function/starter":95,"../function/toApproval":99,"../function/toCode":104,"../function/toParam":112}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
@@ -4703,7 +4720,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
     || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
-    || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()")) {
+    || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -6073,7 +6090,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = global.device.type === "tablet"
 
-        } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
+        } else if (k0 === "installApp()") {
+
+          var event = new Event('beforeinstallprompt')
+          window.dispatchEvent(event)
+
+      } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
 
             var _params = {}, _o, _timer
             if (args[1]) {

@@ -261,7 +261,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
     || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
-    || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()")) {
+    || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -1631,7 +1631,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = global.device.type === "tablet"
 
-        } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
+        } else if (k0 === "installApp()") {
+
+          var event = new Event('beforeinstallprompt')
+          window.dispatchEvent(event)
+
+      } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
 
             var _params = {}, _o, _timer
             if (args[1]) {

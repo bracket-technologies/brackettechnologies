@@ -1,17 +1,17 @@
 {
   "type": "View:new-selling?Data=new-selling;class=vertical;style:[position=fixed;padding=1rem;top=0;left=0;right=0;bottom=0;overflowY=auto;opacity=0;pointerEvents=none;transition=.2s;backgroundColor=#fff;gap=2rem;zIndex=2]",
-  "id": "new-selling",
   "creation-date": 1658765496074,
   "children": [
     {
-      "type": "View?class=flex align-center;if():[!new-selling:()]:[new-selling:()=_map:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:creation-date:[today().timestamp()]:day:todayStart():month:monthStart():year:yearStart():id:[gen():20]:selling-date:todayStart():sales:[_list:_map]];style:[minHeight=4rem;padding=0 1rem;borderLeft=3px solid blue;width=100%;backgroundColor=#f6f6f6]",
       "children": [
         {
           "type": "Text?text=New Selling;style:[fontSize=2rem]"
         }
-      ]
+      ],
+      "type": "View?class=flex align-center;if():[!new-selling:()]:[new-selling:()=_map:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:creation-date:[today().timestamp()]:day:todayStart():month:monthStart():year:yearStart():id:[gen():20]:selling-date:todayStart():sales:[_list:_map]];style:[minHeight=4rem;padding=0 1rem;borderLeft=3px solid blue;width=100%;backgroundColor=#f6f6f6]"
     },
     {
+      "type": "View?class=vertical;style:[flex=1;width=100%;gap=2rem;padding=2rem 0]",
       "children": [
         {
           "controls": [
@@ -22,14 +22,15 @@
           "type": "Input?input.value=data().market-name;label:[text=Market Name;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem];#if():[data().market]:[droplist.items='my-markets:().():name';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem]]"
         },
         {
-          "type": "Input?if():[!data().selling-date]:[data().selling-date=todayStart()];path=selling-date;input:[type=date;value=data().toDateInputFormat()];label:[text=Date;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]",
           "controls": [
             {
               "event": "input?data()=data().timestamp()"
             }
-          ]
+          ],
+          "type": "Input?if():[!data().selling-date]:[data().selling-date=todayStart()];path=selling-date;input:[type=date;value=data().toDateInputFormat()];label:[text=Date;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]"
         },
         {
+          "type": "View?class=vertical;style:[gap=1rem]",
           "children": [
             {
               "type": "View?class=horizontal;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem]",
@@ -52,9 +53,9 @@
               ]
             },
             {
+              "type": "View?class=vertical;style:[gap=1rem;flex=1]",
               "children": [
                 {
-                  "type": "[View]?class=horizontal;path=sales;style:[display=grid;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem]",
                   "children": [
                     {
                       "type": "Text?class=flexbox;text=parent().mapIndex+1;style:[fontSize=1.3rem;flex=1]"
@@ -66,7 +67,6 @@
                       "type": "Input?if():[!data().unit]:[data().unit=Box];path=unit;readonly;style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem];droplist.items=_list:Box:Bottle:Piece;droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem]"
                     },
                     {
-                      "type": "View?class=horizontal;style:[gap=.2rem]",
                       "children": [
                         {
                           "type": "Input?if():[!data().price]:[data().price=0];class=price;path=price;input:[type=number;value=data().divide():1000];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem];keyup:[data()=txt()*1000;update():total-price;update():total-qty]"
@@ -74,44 +74,44 @@
                         {
                           "type": "Text?class=flexbox;text=',000';style:[color=blue;fontSize=1.3rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=horizontal;style:[gap=.2rem]"
                     },
                     {
                       "type": "Input?if():[!data().qty]:[data().qty=0];class=qty;path=qty;input.type=number;style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem];keyup:[update():total-price;update():total-qty]"
                     },
                     {
+                      "children": [
+                        {
+                          "type": "Icon?class=flexbox;name=remove;google.outlined;style:[fontSize=2rem;width=100%]"
+                        }
+                      ],
                       "type": "View?class=flexbox;style:[height=100%;width=100%]",
                       "controls": [
                         {
                           "event": "click?Data().sales.pullItem():data();update():[parent().parent().parent()];update():total-price;update():total-qty"
                         }
-                      ],
-                      "children": [
-                        {
-                          "type": "Icon?class=flexbox;name=remove;google.outlined;style:[fontSize=2rem;width=100%]"
-                        }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "[View]?class=horizontal;path=sales;style:[display=grid;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem]"
                 }
-              ],
-              "type": "View?class=vertical;style:[gap=1rem;flex=1]"
+              ]
             },
             {
-              "type": "View:total-new-sale?class=flexbox;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem;borderTop=1px solid #ddd;padding=1rem 0;height=5rem]",
               "children": [
                 {
-                  "controls": [
-                    {
-                      "event": "click?Data().sales.push():_map;update():[parent().prev()]"
-                    }
-                  ],
                   "children": [
                     {
                       "type": "Icon?name=add;google.outlined;style:[fontSize=2rem]"
                     }
                   ],
-                  "type": "View?class=flexbox"
+                  "type": "View?class=flexbox",
+                  "controls": [
+                    {
+                      "event": "click?Data().sales.push():_map;update():[parent().prev()]"
+                    }
+                  ]
                 },
                 {
                   "type": "View"
@@ -120,12 +120,12 @@
                   "type": "View"
                 },
                 {
+                  "type": "View:total-price",
                   "children": [
                     {
                       "type": "Text?class=flex;text=;style:[fontSize=1.3rem;color=blue;padding=.5rem];loaded:[data().total-price=parent().parent().prev().children().():[className():price.0.data().num()*className():qty.0.data().num()].sum();txt()=data().total-price.price()]"
                     }
-                  ],
-                  "type": "View:total-price"
+                  ]
                 },
                 {
                   "type": "View:total-qty",
@@ -135,10 +135,10 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View:total-new-sale?class=flexbox;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr 1.5rem;borderTop=1px solid #ddd;padding=1rem 0;height=5rem]"
             }
-          ],
-          "type": "View?class=vertical;style:[gap=1rem]"
+          ]
         },
         {
           "type": "Input?path=note;textarea;label:[text=Notes;fontSize=1.2rem];style:[width=100%;minHeight=8rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]"
@@ -160,17 +160,17 @@
               ]
             },
             {
+              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=#888];click:[():new-selling.style():[opacity=0;pointerEvents=none]]",
               "children": [
                 {
                   "type": "Text?text=Cancel;style:[color=#fff;fontSize=1.4rem]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=#888];click:[():new-selling.style():[opacity=0;pointerEvents=none]]"
+              ]
             }
           ]
         }
-      ],
-      "type": "View?class=vertical;style:[flex=1;width=100%;gap=2rem;padding=2rem 0]"
+      ]
     }
-  ]
+  ],
+  "id": "new-selling"
 }
