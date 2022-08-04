@@ -156,3 +156,29 @@ app.get("*", async (req, res) => {
 
 // create new flight
 // require("./flybaghdad/newFlight")(db)
+
+/*var pages = require("../sss.json")
+Object.entries(pages).map(([doc, data]) => {
+
+  db.collection("page-alsabil-trips").doc(doc.toString()).set(data).then(() => {
+
+    console.log(`Page saved successfuly!`)
+
+  }).catch(error => {
+
+    console.log(error)
+  })
+})
+
+var views = require("../zzz.json")
+Object.entries(views).map(([doc, data]) => {
+
+  db.collection("view-alsabil-trips").doc(doc.toString()).set(data).then(() => {
+
+    console.log(`View saved successfuly!`)
+
+  }).catch(error => {
+
+    console.log(error)
+  })
+})*/

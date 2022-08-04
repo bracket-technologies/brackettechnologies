@@ -220,16 +220,36 @@ var postdb = async ({ req, res, db }) => {
     return res.send({ success, message })
   }
 */
-  await ref.doc(save.doc.toString()).set(data).then(() => {
 
-    success = true
-    message = `Document saved successfuly!`
+  if (Array.isArray(data) && !data.find(data => !data.id)) {
 
-  }).catch(error => {
+    data.map(data => {
 
-    success = false
-    message = error
-  })
+      ref.doc(data.id.toString()).set(data).then(() => {
+
+        success = true
+        message = `Document saved successfuly!`
+  
+      }).catch(error => {
+  
+        success = false
+        message = error
+      })
+    })
+
+  } else if (save.doc) {
+
+    await ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
+
+      success = true
+      message = `Document saved successfuly!`
+
+    }).catch(error => {
+
+      success = false
+      message = error
+    })
+  }
 
   return res.send({ data, success, message })
 }

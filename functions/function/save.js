@@ -15,8 +15,7 @@ const save = async ({ id, e, ...params }) => {
   // access key
   if (global["access-key"]) headers["access-key"] = global["access-key"]
 
-  if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
-  save.doc = save.doc || save.id || _data.id
+  if (!save.doc && !save.id && (!_data || (_data && !_data.id)) && (Array.isArray(data) ? !data.find(data => !data.id) : true)) return
     
   var { data } = await require("axios").post(`/${store}`, { save: { ...save, data: undefined }, data: _data }, {
     headers: {

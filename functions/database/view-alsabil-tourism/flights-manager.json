@@ -1,6 +1,4 @@
 {
-  "type": "View?id=flights-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;search-flight:()=search-flight:()||_array:[_map:class:Economy];flights-booked:()=_array;bookings:()=bookings:()||_array;search-type:()=Individual;search-engine-req:()=flight",
-  "id": "flights-manager",
   "children": [
     {
       "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]",
@@ -17,7 +15,6 @@
           "type": "View?class=flexbox;style:[gap=1rem];style.height=100%"
         },
         {
-          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
           "children": [
             {
               "type": "Icon?class=flexbox pointer;name=bi-trash;tooltip.text=erase;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
@@ -29,14 +26,15 @@
               "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             },
             {
+              "type": "Icon?class=flexbox pointer;name=bi-plus;tooltip.text=create new;style:[color=#666;fontSize=2.4rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]",
               "controls": [
                 {
                   "event": "click?style():[id=flights-mini-window;opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];flight-data:()=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:day:todayStart():month:monthStart():year:yearStart():note:_string:status:Schedualed:description:_string:flight-type:Charter:bookings:_list:canceled-bookings:_array:reservations:_list:segments:_list:e-tickets:_list:canceled-reservations:_array:hand-baggage-kg:7:economy-classes:_array:business-classes:_array:first-class-classes:_array:waiting-list-classes:_array:goshow-classes:_array:connected:false:connections:_array:bookable:true:booking-policy:[_array:[_map:reference-date:Booking Date:before-after:After:class:Economy:classes:_array]]:changeable:true:change-policy:[_array:[_map:reference-date:Reservation Date:before-after:After:class:Economy:classes:_array:penalty-unit:$:penalty:0]]:cancelable:true:cancelation-policy:[_array:[_map:reference-date:Reservation Date:before-after:After:class:Economy:classes:_array:penalty-unit:$:penalty:0]]:reservations:_array:canceled-reservations:_array:seats:[_array:[_map:class:Economy:seats:0:av-seats:0:individual-considered-seats:0:group-considered-seats:0:commission:0:commission-unit:%:additional-profit:0:additional-profit-unit:%:baggage-kg:30:pricing:[_array:[_map:trip:One Way:grp-base-fare-usd:0:adt-base-fare-usd:0:chd-base-fare-usd:0]]]];new-flight:()=true;flight-copied:().del();flight-edit-readonly:()=false;update():flights-mini-window"
                 }
-              ],
-              "type": "Icon?class=flexbox pointer;name=bi-plus;tooltip.text=create new;style:[color=#666;fontSize=2.4rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
+              ]
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
         }
       ]
     },
@@ -47,10 +45,12 @@
       "type": "View?view=flight-list;flights:().del()"
     }
   ],
+  "id": "flights-manager",
+  "type": "View?id=flights-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;search-flight:()=search-flight:()||_array:[_map:class:Economy];flights-booked:()=_array;bookings:()=bookings:()||_array;search-type:()=Individual;search-engine-req:()=flight",
   "controls": [
     {
-      "event": "loaded",
-      "actions": "wait():search:[update:flights-list]?search.collection=flight;search.field.departure-date.greater=todayStart().timestamp();wait():[flights:()=().search.data]"
+      "actions": "wait():search:[update:flights-list]?search.collection=flight;search.field.departure-date.greater=todayStart().timestamp();wait():[flights:()=().search.data]",
+      "event": "loaded"
     }
   ]
 }

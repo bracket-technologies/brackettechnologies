@@ -1,6 +1,6 @@
 {
-  "creation-date": 0,
   "id": "manager-view",
+  "creation-date": 0,
   "children": [
     {
       "type": "View?view=loading-manager;)(:opened-manager=loading-manager"

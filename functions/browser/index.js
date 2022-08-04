@@ -2907,24 +2907,20 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   var mainID = id
 
   // 'string'
-  var events = toArray(controls.event), _events = []
+  var events = toArray(controls.event), _events = ""
   events.map(event => {
-    var _evs = event.split("{")
-    var _event = _evs[0]
-    _evs.slice(1).map(str => {
+    
+    _events = event.split("{")[0]
+    event.split("{").slice(1).map(str => {
       var num = str.split("}")[0]
 
       if (!isNaN(num) && num !== "" && parseFloat(num)) {
-        var _params = events[parseFloat(num)]
-        var key = generate()
-        global.codes[key] = _params
-        _event += `coded()${key}${str.split("}")[1]}`
+        _events += `[${events[parseFloat(num)]}]${str.split("}")[1]}`
       }
     })
-    _events.push(_event)
   })
 
-  events = _events[0]
+  events = _events
   events = toCode({ _window, id, string: events })
   // if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   
@@ -4720,7 +4716,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
     || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
-    || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()")) {
+    || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()"
+    || path0 === "replaceItem()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -7720,6 +7717,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 return o
             }
             
+        } else if (k0 === "replaceItem()") {
+
+            if (isParam({ _window, string: args[1] })) {
+
+                var _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                var _path = _params.path, _data = _params.data
+                var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, id, path: _path || [], value, params, __: _, _: o, e, _i: index, object: item }), reducer({ req, res, _window, id, path: _path || [], value, params, __: _, _: o, e, object: _data })))
+                if (_index >= 0) o[_index] = _data
+                else o.push(_data)
+
+            } else if (args[1]) {
+
+                var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+                var _index = o.findIndex(item => item.id === _data.id)
+                if (_index >= 0) o[_index] = _data
+                else o.push(_data)
+            }
+            
         } else if (k0 === "replaceLast()") {
         
             var _item = toValue({ req, res, _window, id, e, _, __, _i,value: args[1] || "", params })
@@ -8963,8 +8978,7 @@ const save = async ({ id, e, ...params }) => {
   // access key
   if (global["access-key"]) headers["access-key"] = global["access-key"]
 
-  if (!save.doc && !save.id && (!_data || (_data && !_data.id))) return
-  save.doc = save.doc || save.id || _data.id
+  if (!save.doc && !save.id && (!_data || (_data && !_data.id)) && (Array.isArray(data) ? !data.find(data => !data.id) : true)) return
     
   var { data } = await require("axios").post(`/${store}`, { save: { ...save, data: undefined }, data: _data }, {
     headers: {

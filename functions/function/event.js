@@ -26,24 +26,20 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   var mainID = id
 
   // 'string'
-  var events = toArray(controls.event), _events = []
+  var events = toArray(controls.event), _events = ""
   events.map(event => {
-    var _evs = event.split("{")
-    var _event = _evs[0]
-    _evs.slice(1).map(str => {
+    
+    _events = event.split("{")[0]
+    event.split("{").slice(1).map(str => {
       var num = str.split("}")[0]
 
       if (!isNaN(num) && num !== "" && parseFloat(num)) {
-        var _params = events[parseFloat(num)]
-        var key = generate()
-        global.codes[key] = _params
-        _event += `coded()${key}${str.split("}")[1]}`
+        _events += `[${events[parseFloat(num)]}]${str.split("}")[1]}`
       }
     })
-    _events.push(_event)
   })
 
-  events = _events[0]
+  events = _events
   events = toCode({ _window, id, string: events })
   // if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   
