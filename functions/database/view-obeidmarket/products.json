@@ -1,5 +1,6 @@
 {
   "id": "products",
+  "creation-date": 1659451967287,
   "type": "View:products?if():[!products:()]:[products:()=_list]",
   "children": [
     {
@@ -9,6 +10,7 @@
           "type": "Text?class=flexbox;text=Products;style:[height=3.5rem;padding=0 1rem;fontSize=2rem;borderLeft=3px solid blue]"
         },
         {
+          "type": "View?class=flexbox;style:[gap=1rem]",
           "children": [
             {
               "children": [
@@ -31,34 +33,32 @@
                 }
               ]
             }
-          ],
-          "type": "View?class=flexbox;style:[gap=1rem]"
+          ]
         }
       ]
     },
     {
+      "children": [
+        {
+          "type": "View?class=vertical;style:[width=100%;gap=1rem;paddingTop=1rem;paddingBottom=6rem]?products:().len()>0",
+          "children": [
+            {
+              "type": "[View]?Data=products;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]",
+              "children": [
+                {
+                  "type": "View?class=flex vertical;style:[width=100%;gap=1rem]"
+                }
+              ]
+            }
+          ]
+        }
+      ],
       "type": "View:product-list?class=vertical;style:[width=100%;gap=1rem;backgroundColor=#eee;minHeight=100vh]",
       "controls": [
         {
           "event": "loaded?if():[!market-sellings:()]:[search():[collection=selling]:[sellings:()=().search.data.values().sort():[path=selling-date;descending];update():selling-list]]:[market-sellings:()=false]"
         }
-      ],
-      "children": [
-        {
-          "children": [
-            {
-              "children": [
-                {
-                  "type": "View?class=flex vertical;style:[width=100%;gap=1rem]"
-                }
-              ],
-              "type": "[View]?Data=products;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]"
-            }
-          ],
-          "type": "View?class=vertical;style:[width=100%;gap=1rem;paddingTop=1rem;paddingBottom=6rem]?products:().len()>0"
-        }
       ]
     }
-  ],
-  "creation-date": 1659451967287
+  ]
 }

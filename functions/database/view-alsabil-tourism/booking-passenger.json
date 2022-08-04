@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "id": "booking-passenger",
   "type": "View?class=vertical;style:[flex=1]",
+=======
+  "type": "View?class=vertical;style:[flex=1]",
+  "id": "booking-passenger",
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
   "creation-date": 1655734694974,
   "children": [
     {
@@ -12,7 +17,6 @@
           "type": "View?class=vertical;style:[width=100%]",
           "children": [
             {
-              "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=if():[!agent:().admin]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr];borderRadius=.5rem;marginBottom=1rem]",
               "children": [
                 {
                   "children": [
@@ -45,6 +49,17 @@
                     }
                   ],
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+<<<<<<< HEAD
+=======
+                },
+                {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Meal Included;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
+                    }
+                  ]
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -71,20 +86,20 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Fees;style:[color=#888;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]?!agent:().admin",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Commission;style:[color=#888;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]?!agent:().admin"
                 },
                 {
                   "children": [
@@ -102,7 +117,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=if():[!agent:().admin]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr];borderRadius=.5rem;marginBottom=1rem]"
             },
             {
               "type": "View?class=vertical;style:[width=100%]",
@@ -129,20 +145,20 @@
                           ]
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex;text=if():[data().age=INF]::[booking-data:().clone().booking-details.[parent().parent().parent().mapIndex].seats.find():[passengers-details.find():[counter=parent().parent().parent().parent().data().counter]].class];style:[fontSize=1.3rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex;text=if():[data().age=INF]::[booking-data:().clone().booking-details.[parent().parent().parent().mapIndex].seats.find():[passengers-details.find():[counter=parent().parent().parent().parent().data().counter]].baggage-kg];style:[fontSize=1.3rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                          ]
                         },
                         {
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -153,20 +169,20 @@
                           ]
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex base-fare;text=data().base-fare-usd.round():2+'$';style:[fontSize=1.3rem;marginLeft=auto]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex taxes;text=data().taxes-usd.round():2+'$';style:[fontSize=1.3rem;marginLeft=auto]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                          ]
                         },
                         {
                           "children": [
@@ -208,6 +224,7 @@
               ]
             },
             {
+              "type": "View?style:[gap=1rem;height=3.5rem;width=100%;display=grid;gridTemplateColumns=if():[!agent:().admin]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr];borderRadius=.5rem;borderTop=1px solid #ddd]",
               "children": [
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
@@ -272,16 +289,19 @@
                     }
                   ]
                 }
-              ],
-              "type": "View?style:[gap=1rem;height=3.5rem;width=100%;display=grid;gridTemplateColumns=if():[!agent:().admin]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr];borderRadius=.5rem;borderTop=1px solid #ddd]"
+              ]
             }
           ]
         },
         {
           "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr;position=relative];data().status=Booked",
+          "controls": [
+            {
+              "watch": "data()?booking-data:().booking-details.slice():1.():[seats._():[().myIndex=_.passengers-details.findIndex():[counter=data().counter];if():[().myIndex>-1]:[_.passengers-details.[().myIndex].():[age=data().age;title=data().title;gender=data().gender;first-name=data().first-name;last-name=data().last-name;dob=data().dob;nationality=data().nationality;passport-number=data().passport-number;passport-issuer=data().passport-issuer;passport-expiry-date=data().passport-expiry-date;contact-number=data().contact-number;email=data().email;if():[data().infants.len()>0]:[().myCounter=0;data().infants.clone()._():[infants.[().myCounter].():[age=_.age;title=_.title;gender=_.gender;first-name=_.first-name;last-name=_.last-name;dob=_.dob;nationality=_.nationality;passport-number=_.passport-number;passport-issuer=_.passport-issuer;passport-expiry-date=_.passport-expiry-date];().myCounter=().myCounter+1]]];().myIndex=-1]]]"
+            }
+          ],
           "children": [
             {
-              "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr]",
               "children": [
                 {
                   "type": "Input?label:[text=Age;location=outside;style.fontSize=1.3rem];if():[!data().age]:[data().age=ADT];path=age;readonly;clicked.style.border=2px solid #0080ff;#droplist.items=_list:ADT:CHD:INF;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -302,7 +322,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr]"
             },
             {
               "controls": [
@@ -321,12 +342,12 @@
               ]
             },
             {
-              "type": "Input?label:[text=DOB;location=outside;style.fontSize=1.3rem];input.type=date;path=dob;if():data():[input.value=data().toDateInputFormat()];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[booking-edit-readonly:()]:[readonly=true]",
               "controls": [
                 {
                   "event": "change?data()=data().timestamp()"
                 }
-              ]
+              ],
+              "type": "Input?label:[text=DOB;location=outside;style.fontSize=1.3rem];input.type=date;path=dob;if():data():[input.value=data().toDateInputFormat()];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[booking-edit-readonly:()]:[readonly=true]"
             },
             {
               "type": "Input?label:[text=Nationality;location=outside;style.fontSize=1.3rem];clearable;path=nationality;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items='collections:().nationalities.nationalities';if():[)(:booking-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.searchable;if():[booking-edit-readonly:()]:[readonly=true]"
@@ -353,6 +374,14 @@
             },
             {
               "type": "View?class=flexbox pointer;tooltip.text=add infant;style:[borderRadius=.5rem;border=1px solid #ddd;height=3rem;width=3rem;backgroundColor=#fff;transition=.2s;position=absolute;right=0;bottom=0];hover.style:[backgroundColor=#f6f6f6;border=1px solid #bbb];mouseenter.1stChild().style().color=#888;mouseleave.1stChild().style().color=#aaa?data().age=ADT",
+<<<<<<< HEAD
+=======
+              "children": [
+                {
+                  "type": "Icon?name=add;google.outlined;style:[fontSize=2rem;color=#aaa;transition=.2s]"
+                }
+              ],
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
               "controls": [
                 {
                   "event": "click?note():[text=You didn't add infants to your booking!;type=warning]?pax-details:().inf=0"
@@ -366,6 +395,7 @@
                 {
                   "event": "click?booking-data:().counter=booking-data:().counter+1;booking-data:().booking-details.0.seats.[path().3]._():[().inf-base-fare-usd=_.inf-base-fare-usd];data().infants.push():[_map:counter:[booking-data:().counter]:parent-counter:[data().counter]:age:INF:title:'Mstr.':gender:M:base-fare-usd:[().inf-base-fare-usd]:taxes-usd:0:fees-usd:0:total-usd:[().inf-base-fare-usd]:additional-profit-usd:0:commission-usd:0:payable-usd:[().inf-base-fare-usd]];booking-data:().booking-details.0.seats.[path().3]._():[_.infants=_.infants+1;_.passengers=_.passengers+1;_.total-passengers=_.total-passengers+1;_.total-base-fare-usd=_.total-base-fare-usd+().inf-base-fare-usd;_.total-usd=_.total-usd+().inf-base-fare-usd;_.total-payable-usd=_.total-payable-usd+().inf-base-fare-usd];booking-data:().booking-details.slice():1._():[_.seats.find():[passengers-details.find():[counter=data().counter]]._():[_.passengers-details.find():[counter=data().counter]._():[().inf-base-fare-usd=__.inf-base-fare-usd;_.infants.push():[_map:counter:[booking-data:().counter]:parent-counter:[data().counter]:age:INF:title:'Mstr.':gender:M:base-fare-usd:[().inf-base-fare-usd]:taxes-usd:0:fees-usd:0:total-usd:[().inf-base-fare-usd]:additional-profit-usd:0:commission-usd:0:payable-usd:[().inf-base-fare-usd]]];_.infants=_.infants+1;_.passengers=_.passengers+1;_.total-passengers=_.total-passengers+1;_.total-base-fare-usd=_.total-base-fare-usd+().inf-base-fare-usd;_.total-usd=_.total-usd+().inf-base-fare-usd;_.total-payable-usd=_.total-payable-usd+().inf-base-fare-usd]]?data().infants.len()!=1;pax-details:().inf;pax-details:().inf>booking-data:().booking-details.0.seats.():[passengers-details.():infants.filter().flat()].flat().len()",
                   "actions": "wait():insert?insert.view=parent().parent().parent().parent().children.0;insert.path=path().clone().push():[_list:infants:[data().infants.lastIndex()]];insert.id=parent().parent()"
+<<<<<<< HEAD
                 }
               ],
               "children": [
@@ -391,6 +421,23 @@
           "controls": [
             {
               "watch": "data()?booking-data:().booking-details.slice():1.():[seats._():[().myIndex=_.passengers-details.findIndex():[counter=data().counter];if():[().myIndex>-1]:[_.passengers-details.[().myIndex].():[age=data().age;title=data().title;gender=data().gender;first-name=data().first-name;last-name=data().last-name;dob=data().dob;nationality=data().nationality;passport-number=data().passport-number;passport-issuer=data().passport-issuer;passport-expiry-date=data().passport-expiry-date;contact-number=data().contact-number;email=data().email;if():[data().infants.len()>0]:[().myCounter=0;data().infants.clone()._():[infants.[().myCounter].():[age=_.age;title=_.title;gender=_.gender;first-name=_.first-name;last-name=_.last-name;dob=_.dob;nationality=_.nationality;passport-number=_.passport-number;passport-issuer=_.passport-issuer;passport-expiry-date=_.passport-expiry-date];().myCounter=().myCounter+1]]];().myIndex=-1]]]"
+=======
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "type": "Icon?name=remove;google.outlined;style:[fontSize=2rem;color=#aaa;transition=.2s]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "click?booking-data:().counter=[booking-data:().counter]-1;parent().parent().parent().rem()"
+                }
+              ],
+              "type": "View?class=flexbox pointer;tooltip.text=remove infant;style:[borderRadius=.5rem;border=1px solid #ddd;height=3rem;width=3rem;backgroundColor=#fff;transition=.2s;position=absolute;right=0;bottom=0];hover.style:[backgroundColor=#f6f6f6;border=1px solid #bbb];mouseenter.1stChild().style().color=#888;mouseleave.1stChild().style().color=#aaa?data().age=INF;!booking-edit:()"
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
             }
           ]
         },

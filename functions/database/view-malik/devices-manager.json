@@ -1,21 +1,13 @@
 {
-  "controls": [
-    {
-      "event": "loaded",
-      "actions": "async():search:[search??)(:devices.values().map():network.len()>0]:[search??)(:devices.values().map():center.len()>0]:[search??)(:devices.values().map():station.len()>0]:[update:devices-manager-list]?search.collection=resources-devices;async():[)(:devices=().search.data;search.collection=resources-networks;search.docs=)(:devices.values().map():network.removeDuplicates().filter()]:[().search.data.values()._map():[)(:networks.[_.id]=_];search.collection=resources-centers;search.docs=)(:devices.values().map():center.removeDuplicates().filter()]:[search.collection=resources-stations;search.docs=)(:devices.values().map():station.removeDuplicates().filter()]:[().search.data.values()._map():[)(:stations.[_.id]=_];():all-devices.lastChild().text()=().search.data.len()]"
-    },
-    {
-      "actions": "async():search?search.collection=resources;async():[)(:resources=().search.data]",
-      "event": "loaded??!)(:resources"
-    }
-  ],
-  "type": "View?id=devices-manager;class=flex column;)(:devices-view-type=list",
   "children": [
     {
+      "type": "View?id=devices-manager-list;class=flex column;style.gap=2rem",
       "children": [
         {
+          "type": "View?class=flex align-center;style:[width=100%;padding=.5rem;height=4rem]",
           "children": [
             {
+              "type": "View?class=flexbox;style:[height=100%;gap=1rem]",
               "children": [
                 {
                   "type": "View?style:[width=4px;height=100%;backgroundColor=blue;borderRadius=.5rem]"
@@ -23,11 +15,9 @@
                 {
                   "type": "Text?text=إدارة الأجهزة;style:[fontSize=2rem;color=#000;fontWeight=bolder]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[height=100%;gap=1rem]"
+              ]
             }
-          ],
-          "type": "View?class=flex align-center;style:[width=100%;padding=.5rem;height=4rem]"
+          ]
         },
         {
           "type": "View?class=flex column;style.borderRadius=1rem;style.width=100%",
@@ -36,13 +26,6 @@
               "type": "View?id=devices-file-ear;class=flex;style.gap=0.1rem;().open-folder=all-devices;style.width=100%;style.marginBottom=-0.1rem;style.zIndex=1",
               "children": [
                 {
-                  "type": "View?id=all-devices;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=all-devices]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0",
-                  "controls": [
-                    {
-                      "actions": "async():search:[update:[parent().id]]:[update:devices-views]?search.collection=resources-devices;search.limit=25;async():[)(:devices=().search.data]:[lastChild().text()=().search.data.len()]",
-                      "event": "click?parent().open-folder=all-devices?parent().open-folder!=all-devices"
-                    }
-                  ],
                   "children": [
                     {
                       "type": "Icon?id=test;class=flexbox;name=bi-list-ul;style.fontSize=1.8rem;style.color=if():[parent().parent().open-folder=all-devices]:blue.else():#888"
@@ -53,16 +36,16 @@
                     {
                       "type": "Text?class=ar;text=)(:devices.len()||0;style.display=if():[parent().parent().open-folder=all-devices]:flex.else():none;style.fontSize=1.2rem;style.color=if():[parent().parent().open-folder=all-devices]:#fff.else():#888;style.backgroundColor=if():[parent().parent().open-folder=all-devices]:blue.else():#ddd;style.padding=0 .55rem;style.height=1.75rem;style.borderRadius=1.5rem"
                     }
+                  ],
+                  "type": "View?id=all-devices;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=all-devices]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0",
+                  "controls": [
+                    {
+                      "event": "click?parent().open-folder=all-devices?parent().open-folder!=all-devices",
+                      "actions": "async():search:[update:[parent().id]]:[update:devices-views]?search.collection=resources-devices;search.limit=25;async():[)(:devices=().search.data]:[lastChild().text()=().search.data.len()]"
+                    }
                   ]
                 },
                 {
-                  "controls": [
-                    {
-                      "actions": "async():search:[update:[parent().id]]:[update:devices-views]?search.collection=resources-devices;search.limit=25;search.field.active.equal=true;async():[)(:devices=().search.data]:[lastChild().text()=().search.data.len()]",
-                      "event": "click?parent().open-folder=active-devices?parent().open-folder!=active-devices"
-                    }
-                  ],
-                  "type": "View?id=active-devices;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=active-devices]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0",
                   "children": [
                     {
                       "type": "Icon?class=flexbox;name=bi-activity;style.fontSize=1.8rem;style.color=if():[parent().parent().open-folder=active-devices]:blue.else():#888"
@@ -73,7 +56,14 @@
                     {
                       "type": "Text?class=ar;text=)(:devices.len()||0;style.display=if():[parent().parent().open-folder=active-devices]:flex.else():none;style.fontSize=1.2rem;style.color=if():[parent().parent().open-folder=active-devices]:#fff.else():#888;style.backgroundColor=if():[parent().parent().open-folder=active-devices]:blue.else():#ddd;style.padding=0 .55rem;style.height=1.75rem;style.borderRadius=1.5rem"
                     }
-                  ]
+                  ],
+                  "controls": [
+                    {
+                      "actions": "async():search:[update:[parent().id]]:[update:devices-views]?search.collection=resources-devices;search.limit=25;search.field.active.equal=true;async():[)(:devices=().search.data]:[lastChild().text()=().search.data.len()]",
+                      "event": "click?parent().open-folder=active-devices?parent().open-folder!=active-devices"
+                    }
+                  ],
+                  "type": "View?id=active-devices;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[parent().open-folder=active-devices]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0"
                 }
               ]
             },
@@ -88,13 +78,13 @@
                           "type": "Icon?class=flexbox;style.color=#888;style.fontSize=2rem;style.minWidth=3rem;name=bi-funnel"
                         },
                         {
+                          "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، نوع، وصف ...",
                           "controls": [
                             {
                               "event": "input",
                               "actions": "async():search:[update:devices-views]?search.collection=resources-devices;search.field.id.in=val();search.field.networks.in=val();search.field.name.in=val();search.field.type.in=val();search.field.address.in=val();search.field.note.in=val();search.field.status.in=val();search.operator=or;async():[)(:devices=().search.data]"
                             }
-                          ],
-                          "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، نوع، وصف ..."
+                          ]
                         },
                         {
                           "type": "Icon?class=flexbox pointer;style.color=blue;style.fontSize=2rem;style.minWidth=5rem;name=bi-sliders;style.borderRadius=2rem;style.backgroundColor=#f9f9f9;style.height=100%;style.transition=.2s;hover.style.backgroundColor=#eee"
@@ -129,18 +119,18 @@
                           ]
                         },
                         {
+                          "children": [
+                            {
+                              "type": "Text?class=flexbox ar;style.color=#fff;style.fontSize=1.2rem;text=إضافة جهاز جديد"
+                            }
+                          ],
                           "controls": [
                             {
                               "actions": "update:devices-mini-window",
                               "event": "click?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];)(:new-devices=true;)(:devices-data=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:note:_string:status:متصل:device-installed:false:installation-date:[today().timestamp()]:description:_string:contacts:_array;)(:devices-copied.del();)(:devices-edit-readonly=false"
                             }
                           ],
-                          "type": "View?class=flexbox pointer;style.gap=1rem;style.backgroundColor=blue;style.transition=.3s;style.borderRadius=2rem;style.padding=0 1rem;style.height=3.25rem;hover.style.backgroundColor=#0000bf",
-                          "children": [
-                            {
-                              "type": "Text?class=flexbox ar;style.color=#fff;style.fontSize=1.2rem;text=إضافة جهاز جديد"
-                            }
-                          ]
+                          "type": "View?class=flexbox pointer;style.gap=1rem;style.backgroundColor=blue;style.transition=.3s;style.borderRadius=2rem;style.padding=0 1rem;style.height=3.25rem;hover.style.backgroundColor=#0000bf"
                         }
                       ]
                     }
@@ -154,22 +144,15 @@
             }
           ]
         }
-      ],
-      "type": "View?id=devices-manager-list;class=flex column;style.gap=2rem"
+      ]
     },
     {
-      "controls": [
-        {
-          "event": "mouseleave?timer():[if():[!().mouseenter]:[().style():[opacity=0;pointerEvents=none;transform=scale(0.8)]]]:200"
-        }
-      ],
-      "type": "View?id=devices-actions;class=flexbox column box-shadow-1;style.padding=.2rem;style.backgroundColor=#fff;style.borderRadius=.5rem;style.position=absolute;style.opacity=0;style.pointerEvents=none;style.transition=opacity .2s, transform .2s;style.transform=scale(0.8);style.zIndex=1",
       "children": [
         {
           "controls": [
             {
-              "event": "click?)(:devices-edit-readonly=true",
-              "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+              "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
+              "event": "click?)(:devices-edit-readonly=true"
             }
           ],
           "children": [
@@ -180,6 +163,7 @@
           "type": "View?tooltip.text=عرض;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee"
         },
         {
+          "type": "View?tooltip.text=تعديل;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
           "children": [
             {
               "type": "Icon?name=bi-pencil-square;style.fontSize=1.6rem;style.color=#666"
@@ -190,16 +174,15 @@
               "actions": "async():[update:devices-mini-window]?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];async():[)(:devices-edit=false]",
               "event": "click?)(:devices-edit-readonly=false;)(:devices-edit=true"
             }
-          ],
-          "type": "View?tooltip.text=تعديل;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee"
+          ]
         },
         {
-          "type": "View?tooltip.text=نسخ;class=flexbox pointer;style.height=4rem;style.width=3.5rem;hover.style.backgroundColor=#eee",
           "children": [
             {
               "type": "Icon?name=bi-files;style.fontSize=1.6rem;style.color=#666"
             }
           ],
+          "type": "View?tooltip.text=نسخ;class=flexbox pointer;style.height=4rem;style.width=3.5rem;hover.style.backgroundColor=#eee",
           "controls": [
             {
               "event": "click?)(:devices-edit-readonly=false;)(:devices-data.id=generate():20;)(:devices-data.creation-date=today().timestamp();)(:devices-copied",
@@ -208,23 +191,28 @@
           ]
         },
         {
-          "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee",
           "children": [
             {
               "type": "Icon?name=bi-trash;style.fontSize=1.6rem;style.color=#666"
             }
           ],
+          "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee",
           "controls": [
             {
-              "event": "click?if():[():devices-remove-popup.style().pointerEvents=none]:[():devices-remove-popup.style():[opacity=1;transform=scale(1);pointerEvents=auto]].else():[():devices-remove-popup.style():[opacity=0;transform=scale(0.5);pointerEvents=none]]",
-              "actions": "setPosition:devices-remove-popup?position.positioner=().id;position.placement=right"
+              "actions": "setPosition:devices-remove-popup?position.positioner=().id;position.placement=right",
+              "event": "click?if():[():devices-remove-popup.style().pointerEvents=none]:[():devices-remove-popup.style():[opacity=1;transform=scale(1);pointerEvents=auto]].else():[():devices-remove-popup.style():[opacity=0;transform=scale(0.5);pointerEvents=none]]"
             }
           ]
         }
-      ]
+      ],
+      "controls": [
+        {
+          "event": "mouseleave?timer():[if():[!().mouseenter]:[().style():[opacity=0;pointerEvents=none;transform=scale(0.8)]]]:200"
+        }
+      ],
+      "type": "View?id=devices-actions;class=flexbox column box-shadow-1;style.padding=.2rem;style.backgroundColor=#fff;style.borderRadius=.5rem;style.position=absolute;style.opacity=0;style.pointerEvents=none;style.transition=opacity .2s, transform .2s;style.transform=scale(0.8);style.zIndex=1"
     },
     {
-      "type": "View?class=box-shadow;id=devices-remove-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
       "children": [
         {
           "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
@@ -236,14 +224,15 @@
           ]
         },
         {
-          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
           "controls": [
             {
               "event": "click?parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
             }
-          ]
+          ],
+          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem"
         }
       ],
+      "type": "View?class=box-shadow;id=devices-remove-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
       "controls": [
         {
           "event": "mouseleave::200?style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
@@ -251,33 +240,39 @@
       ]
     },
     {
-      "type": "View?class=box-shadow;id=devices-remove-all-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
+      "controls": [
+        {
+          "event": "mouseleave::200?style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!mouseenter"
+        }
+      ],
       "children": [
         {
           "controls": [
             {
-              "actions": "async():erase:[update:devices-manager-list]?erase.collection=resources-devices;erase.docs=().clicked-devices-id;async():[().clicked-devices-id._map():[)(:devices._.del()];().clicked-devices-id.del()]",
-              "event": "click?().clicked-devices-id=():devices-views.getChildrenByClassName():checker.slice():1.filter():checked.map():[data().id];().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+              "event": "click?().clicked-devices-id=():devices-views.getChildrenByClassName():checker.slice():1.filter():checked.map():[data().id];().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+              "actions": "async():erase:[update:devices-manager-list]?erase.collection=resources-devices;erase.docs=().clicked-devices-id;async():[().clicked-devices-id._map():[)(:devices._.del()];().clicked-devices-id.del()]"
             }
           ],
           "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem"
         },
         {
-          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
           "controls": [
             {
               "event": "click?parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
             }
-          ]
+          ],
+          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem"
         }
       ],
-      "controls": [
-        {
-          "event": "mouseleave::200?style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
-        }
-      ]
+      "type": "View?class=box-shadow;id=devices-remove-all-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10"
     }
   ],
-  "id": "devices-manager",
-  "creation-date": 1650292186204
+  "type": "View?id=devices-manager;class=flex column;)(:devices-view-type=list",
+  "creation-date": 1650292186204,
+  "controls": [
+    {
+      "event": "loaded?search():[collection=resources-devices]:[devices:()=().search.data.values();update():'devices-manager-list';lastChild():'all-devices'.txt()=devices:().len();className():'devices'.():update()];search():[collection=resources-centers]:[centers:()=[().search.data.values()||_list];if():[centers:().len()>0]:[className():'centers-in-device'.():update()]];search():[collection=resources-stations]:[stations:()=().search.data.values();if():[stations:().len()>0]:[className():'stations-in-device'.():update()]];search():[collection=resources-networks]:[networks:()=().search.data.values();if():[networks:().len()>0]:[className():'network-in-device'.():update()]];search():[collection=resources-members]:[members:()=().search.data.values();if():[members:().len()>0]:[className():'members-in-deivce'.():update()]];search():[collection=resources-reference-devices]:[reference-devices:()=().search.data.values();if():[reference-devices:().len()>0]:[className():'reference-device-in-deivce'.():update()]];search():[collection=resources-monitors]:[monitors:()=().search.data.values();if():[monitors:().len()>0]:[className():'monitor-in-deivce'.():update()]]"
+    }
+  ],
+  "id": "devices-manager"
 }

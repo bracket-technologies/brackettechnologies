@@ -1,8 +1,8 @@
 {
   "id": "login",
-  "name": "Login",
+  "path": "/login",
   "creation-date": 1658763147239,
-  "view": "login",
   "title": "Login To Obeid Market",
-  "path": "/login"
+  "view": "login",
+  "name": "Login"
 }

@@ -1,4 +1,6 @@
 {
+  "type": "View?id=missions-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
+  "id": "missions-mini-window",
   "children": [
     {
       "children": [
@@ -8,50 +10,50 @@
               "type": "Text?text=إستمارة مهمة +if():[missions-copied:()]:(منسوخ).elif():[missions-edit-readonly:()]:(عرض).elif():[missions-edit:()]:(تعديل):(جديد);style.fontSize=1.8rem;style.fontWeight=bolder"
             },
             {
+              "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto",
               "children": [
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-missions;!)(:missions-edit-readonly",
-                  "children": [
-                    {
-                      "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
-                    }
-                  ],
                   "controls": [
                     {
                       "actions": "wait():erase:[update:missions-manager-list]?erase.collection=missions;erase.doc=missions-data:().id;wait():[():missions-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];new-missions:().del()]",
                       "event": "click?missions:().[missions-data:().id].del()?false"
                     }
-                  ]
-                },
-                {
-                  "controls": [
+                  ],
+                  "children": [
                     {
-                      "actions": "wait():save:note:[update:missions-manager-list:200]?note.text=تم تسجيل المهمة بنجاح;save.collection=missions;save.doc=missions-data:().id;save.data=missions-data:();wait():[():missions-mini-window.style():[opacity=0;pointerEvents=none;zIndex-counter:()=zIndex-counter:()-1;zIndex=1]]",
-                      "event": "click?missions:().[missions-data:().id]=missions-data:();)(:new-missions.del()"
+                      "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:missions-edit-readonly",
+                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-missions;!)(:missions-edit-readonly"
+                },
+                {
                   "children": [
                     {
                       "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
                     }
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:missions-edit-readonly",
+                  "controls": [
+                    {
+                      "event": "click?missions:().[missions-data:().id]=missions-data:();)(:new-missions.del()",
+                      "actions": "wait():save:note:[update:missions-manager-list:200]?note.text=تم تسجيل المهمة بنجاح;save.collection=missions;save.doc=missions-data:().id;save.data=missions-data:();wait():[():missions-mini-window.style():[opacity=0;pointerEvents=none;zIndex-counter:()=zIndex-counter:()-1;zIndex=1]]"
+                    }
                   ]
                 },
                 {
-                  "controls": [
-                    {
-                      "event": "click?():missions-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:missions-data.del();)(:new-missions.del()"
-                    }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s",
                   "children": [
                     {
                       "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.8rem"
                     }
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s",
+                  "controls": [
+                    {
+                      "event": "click?():missions-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:missions-data.del();)(:new-missions.del()"
+                    }
                   ]
                 }
-              ],
-              "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto"
+              ]
             }
           ],
           "type": "View?class=flex align-center;style.width=100%"
@@ -78,24 +80,24 @@
                       "type": "Input?style.width=100%;style.height=4rem;label.text=تاريخ التسجيل;label.location=outside;readonly;input.value=data().creation-date.toSimplifiedDateTimeAr();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
                     },
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;input.value=if():[data().active]:فعّال:غير فعّال;path=active;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
                       "controls": [
                         {
                           "event": "click:droplist?data()=if():[droplist-txt:()=فعّال]:true:false"
                         }
-                      ]
+                      ],
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;input.value=if():[data().active]:فعّال:غير فعّال;path=active;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]"
                     }
                   ]
                 }
               ]
             },
             {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=عنوان المهمة;label.location=outside;path=title;clicked.style.border=2px solid #0080ff;readonly;style.borderRadius=.5rem;if():[missions-edit-readonly:()]:[readonly=true]"
@@ -109,10 +111,10 @@
                     {
                       "type": "Input?input.type=datetime-local;style.width=100%;style.height=4rem;label.text=تاريخ الإنتهاء;label.location=outside;data().end-date=data().end-date||today().timestamp();path=end-date;input.value=data().toDateInputFormat();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[missions-edit-readonly:()]:[readonly=true];change:[data()=data().timestamp()]"
                     }
-                  ]
+                  ],
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem"
                 }
-              ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              ]
             },
             {
               "type": "View?class=flex column;style.gap=1rem;style.width=100%",
@@ -121,12 +123,15 @@
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;tooltip.text=رمز الأفراد المشاركين في المهمة;style.fontSize=1.5rem;text=الأفراد المشاركين في المهمة;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
+                  "type": "View?old-members:()=data().members.clone();class=flex column;path=members",
                   "children": [
                     {
+                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                       "children": [
                         {
                           "children": [
                             {
+                              "type": "Input?style.width=100%;style.height=4rem;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[missions-edit-readonly:()]:[readonly=true]",
                               "controls": [
                                 {
                                   "event": "input?data().del()?!data()"
@@ -139,47 +144,45 @@
                                   "actions": "async():search?search.collection=resources-members;search.doc=data();async():[)(:members.[().search.data.id]=().search.data;click()]",
                                   "event": "click??!)(:members.values().find():[id=data()];)(:missions-edit-readonly;data();data().len()=20"
                                 }
-                              ],
-                              "type": "Input?style.width=100%;style.height=4rem;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[missions-edit-readonly:()]:[readonly=true]"
+                              ]
                             },
                             {
+                              "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
                               "controls": [
                                 {
                                   "event": "click?Data().members=_array;parent().input().text()=_string?Data().members.len()=1;!)(:missions-edit-readonly"
                                 },
                                 {
-                                  "event": "click??Data().members.len()>1;!)(:missions-edit-readonly",
-                                  "actions": "remove:[parent().id]"
+                                  "actions": "remove:[parent().id]",
+                                  "event": "click??Data().members.len()>1;!)(:missions-edit-readonly"
                                 }
-                              ],
-                              "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
+                              ]
                             }
                           ],
                           "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
                         },
                         {
-                          "type": "View?class=flex;style.gap=1rem",
                           "children": [
                             {
-                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                               "controls": [
                                 {
-                                  "event": "click?Data().members.push():_string?Data().members.len()>0;!missions-edit-readonly:()",
-                                  "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:members:[Data().members.len()-1];insert.index=parent().parent().children().len()-1"
+                                  "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:members:[Data().members.len()-1];insert.index=parent().parent().children().len()-1",
+                                  "event": "click?Data().members.push():_string?Data().members.len()>0;!missions-edit-readonly:()"
                                 }
-                              ]
+                              ],
+                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex;style.gap=1rem"
                         }
-                      ],
-                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                      ]
                     }
-                  ],
-                  "type": "View?old-members:()=data().members.clone();class=flex column;path=members"
+                  ]
                 }
               ]
             },
             {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الجهات التي تم التواصل معها;style.padding=1rem 0;style.fontWeight=bold"
@@ -220,13 +223,13 @@
                                   "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                                 },
                                 {
-                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                                   "controls": [
                                     {
                                       "actions": "remove:[parent().parent().id]",
                                       "event": "click??Data().who-have-been-contacted.len()>1;!)(:maintenance-edit-readonly"
                                     }
-                                  ]
+                                  ],
+                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                                 }
                               ]
                             }
@@ -239,8 +242,7 @@
                   ],
                   "type": "View?class=flex column;path=who-have-been-contacted"
                 }
-              ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              ]
             },
             {
               "children": [
@@ -248,21 +250,20 @@
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات أخرى;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=1rem;style.width=100%;class=flex column;style.padding=0 1rem",
                   "children": [
                     {
                       "type": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
                           "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().resource-intended.exists().else():false",
-                          "children": [
-                            {
-                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
-                            }
-                          ],
                           "controls": [
                             {
                               "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().resources-intended.del()]?!)(:missions-edit-readonly"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                             }
                           ]
                         },
@@ -274,12 +275,12 @@
                     {
                       "children": [
                         {
-                          "type": "Input?style.width=100%;style.height=4rem;label.text=نوع مكان المقصود في المهمة;readonly;label.location=outside;path=resource-intended-type;data()=data()||مركز;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_list:مركز:محطة;droplist.align=right;if():[missions-edit-readonly:()]:[droplist.readonly=true]",
                           "controls": [
                             {
                               "event": "click:droplist?resource-intended-type:()=if():[droplist-txt:()=محطة]:station:center"
                             }
-                          ]
+                          ],
+                          "type": "Input?style.width=100%;style.height=4rem;label.text=نوع مكان المقصود في المهمة;readonly;label.location=outside;path=resource-intended-type;data()=data()||مركز;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_list:مركز:محطة;droplist.align=right;if():[missions-edit-readonly:()]:[droplist.readonly=true]"
                         },
                         {
                           "type": "Input?old-resource-intended:()=data().resource-intended-name;style.width=100%;style.height=4rem;label.text=المكان المقصود;label.location=outside;path=resource-intended-name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='data:().collections.lists.[issue-place-type:()].():name';droplist.align=right;if():[missions-edit-readonly:()]:[droplist.readonly=true]",
@@ -296,6 +297,7 @@
                       "type": "View?style.gap=2rem;style.width=100%;style.display=if():[data().resources-intended.len()>0]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr"
                     },
                     {
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
                           "children": [
@@ -313,19 +315,18 @@
                         {
                           "type": "Text?text=هدف المهمة صيانة عطل;style.fontSize=1.6rem"
                         }
-                      ],
-                      "type": "View?class=flex;style.width=100%;style.gap=2rem"
+                      ]
                     },
                     {
                       "type": "View?style.gap=2rem;style.width=100%;style.display=if():[data().issue-source-determined]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr",
                       "children": [
                         {
+                          "type": "Input?style.width=100%;style.height=4rem;label.text=نوع مكان العطل الرئيسي;readonly;label.location=outside;path=issue-place-type;data()=data()||مركز;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_list:مركز:محطة;droplist.align=right;if():[maintenance-edit-readonly:()]:[droplist.readonly=true]",
                           "controls": [
                             {
                               "event": "click:droplist?issue-place-type:()=if():[droplist-txt:()=محطة]:station:center"
                             }
-                          ],
-                          "type": "Input?style.width=100%;style.height=4rem;label.text=نوع مكان العطل الرئيسي;readonly;label.location=outside;path=issue-place-type;data()=data()||مركز;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_list:مركز:محطة;droplist.align=right;if():[maintenance-edit-readonly:()]:[droplist.readonly=true]"
+                          ]
                         },
                         {
                           "controls": [
@@ -349,38 +350,38 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
                           "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().target-new-installations.exists().else():false",
-                          "children": [
-                            {
-                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
-                            }
-                          ],
                           "controls": [
                             {
                               "event": "click?().checked=().checked.opp()?!)(:missions-edit-readonly"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                             }
                           ]
                         },
                         {
                           "type": "Text?text=هدف المهمة عمل تركيب/تحديث;style.fontSize=1.6rem"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem"
                     },
                     {
                       "type": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
-                          "controls": [
-                            {
-                              "event": "click?checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().new-devices.del()]?!)(:missions-edit-readonly"
-                            }
-                          ],
                           "children": [
                             {
                               "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                            }
+                          ],
+                          "controls": [
+                            {
+                              "event": "click?checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().new-devices.del()]?!)(:missions-edit-readonly"
                             }
                           ],
                           "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().new-devices-installed.exists().else():false"
@@ -411,8 +412,8 @@
                                       "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
                                     },
                                     {
-                                      "event": "click??!)(:devices.values().find():[id=data()];)(:missions-edit-readonly;data();data().len()=20",
-                                      "actions": "async():search?search.collection=resources-devices;search.doc=data();async():[)(:devices.[().search.data.id]=().search.data;click()]"
+                                      "actions": "async():search?search.collection=resources-devices;search.doc=data();async():[)(:devices.[().search.data.id]=().search.data;click()]",
+                                      "event": "click??!)(:devices.values().find():[id=data()];)(:missions-edit-readonly;data();data().len()=20"
                                     }
                                   ],
                                   "type": "Input?style.width=100%;style.height=4rem;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[missions-edit-readonly:()]:[readonly=true]"
@@ -434,13 +435,13 @@
                             {
                               "children": [
                                 {
-                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                                   "controls": [
                                     {
                                       "event": "click?Data().new-devices.push():_string?Data().new-devices.len()>0;!missions-edit-readonly:()",
                                       "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:new-devices:[Data().new-devices.len()-1];insert.index=parent().parent().children().len()-1"
                                     }
-                                  ]
+                                  ],
+                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                                 }
                               ],
                               "type": "View?class=flex;style.gap=1rem"
@@ -454,17 +455,17 @@
                       "type": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
-                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().old-devices-replaced||false",
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                            }
+                          ],
                           "controls": [
                             {
                               "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().old-devices.del()]?!issues-edit-readonly:()"
                             }
                           ],
-                          "children": [
-                            {
-                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
-                            }
-                          ]
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().old-devices-replaced||false"
                         },
                         {
                           "type": "Text?text=تم استبدال أجهزة معطّلة;style.fontSize=1.6rem"
@@ -472,14 +473,15 @@
                       ]
                     },
                     {
-                      "type": "View?class=vertical;style:[gap=1rem;display=if():[data().old-devices]:grid:none;width=100%]",
                       "children": [
                         {
                           "type": "Text?text=الأجهزة القديمة التي تم استبدالها;style:[fontSize=1.6rem]"
                         },
                         {
+                          "type": "View?path=old-devices;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr",
                           "children": [
                             {
+                              "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
                               "children": [
                                 {
                                   "controls": [
@@ -487,8 +489,8 @@
                                       "event": "input?data().del()?!data()"
                                     },
                                     {
-                                      "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
-                                      "event": "click?devices-data:()=devices:().values().find():[id=data()];devices-edit-readonly:()=true;new-devices:().del();)(:devices-copied.del()?)(:devices.values().find():[id=data()];)(:missions-edit-readonly;data();data().len()=20"
+                                      "event": "click?devices-data:()=devices:().values().find():[id=data()];devices-edit-readonly:()=true;new-devices:().del();)(:devices-copied.del()?)(:devices.values().find():[id=data()];)(:missions-edit-readonly;data();data().len()=20",
+                                      "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
                                     },
                                     {
                                       "actions": "async():search?search.collection=resources-devices;search.doc=data();async():[)(:devices.[().search.data.id]=().search.data;click()]",
@@ -509,11 +511,9 @@
                                   ],
                                   "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
                                 }
-                              ],
-                              "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
+                              ]
                             },
                             {
-                              "type": "View?class=flex;style.gap=1rem",
                               "children": [
                                 {
                                   "controls": [
@@ -524,25 +524,26 @@
                                   ],
                                   "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=flex;style.gap=1rem"
                             }
-                          ],
-                          "type": "View?path=old-devices;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr"
+                          ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=vertical;style:[gap=1rem;display=if():[data().old-devices]:grid:none;width=100%]"
                     },
                     {
                       "children": [
                         {
-                          "children": [
-                            {
-                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
-                            }
-                          ],
-                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().a-devices-fixed||false",
                           "controls": [
                             {
                               "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().devices-fixed.del()]?!issues-edit-readonly:()"
+                            }
+                          ],
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().a-devices-fixed||false",
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                             }
                           ]
                         },
@@ -553,14 +554,15 @@
                       "type": "View?class=flex;style.width=100%;style.gap=2rem"
                     },
                     {
+                      "type": "View?class=vertical;style:[gap=1rem;display=if():[data().devices-fixed]:grid:none;width=100%]",
                       "children": [
                         {
                           "type": "Text?text=الأجهزة التي تم إصلاحها;style:[fontSize=1.6rem]"
                         },
                         {
-                          "type": "View?path=devices-fixed;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr",
                           "children": [
                             {
+                              "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
                               "children": [
                                 {
                                   "type": "Input?style.width=100%;style.height=4rem;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[missions-edit-readonly:()]:[readonly=true]",
@@ -573,12 +575,13 @@
                                       "event": "click?devices-data:()=devices:().values().find():[id=data()];devices-edit-readonly:()=true;new-devices:().del();)(:devices-copied.del()?devices:().values().find():[id=data()];missions-edit-readonly:();data();data().len()=20"
                                     },
                                     {
-                                      "actions": "async():search?search.collection=resources-devices;search.doc=data();async():[)(:devices.[().search.data.id]=().search.data;click()]",
-                                      "event": "click??!devices:().values().find():[id=data()];)(:missions-edit-readonly;data();data().len()=20"
+                                      "event": "click??!devices:().values().find():[id=data()];)(:missions-edit-readonly;data();data().len()=20",
+                                      "actions": "async():search?search.collection=resources-devices;search.doc=data();async():[)(:devices.[().search.data.id]=().search.data;click()]"
                                     }
                                   ]
                                 },
                                 {
+                                  "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
                                   "controls": [
                                     {
                                       "event": "click?Data().devices-fixed=_array;parent().input().text()=_string?Data().devices-fixed.len()=1;!missions-edit-readonly:()"
@@ -587,11 +590,9 @@
                                       "actions": "remove:[parent().id]",
                                       "event": "click??Data().devices-fixed.len()>1;!missions-edit-readonly:()"
                                     }
-                                  ],
-                                  "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
+                                  ]
                                 }
-                              ],
-                              "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
+                              ]
                             },
                             {
                               "type": "View?class=flex;style.gap=1rem",
@@ -607,12 +608,13 @@
                                 }
                               ]
                             }
-                          ]
+                          ],
+                          "type": "View?path=devices-fixed;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr"
                         }
-                      ],
-                      "type": "View?class=vertical;style:[gap=1rem;display=if():[data().devices-fixed]:grid:none;width=100%]"
+                      ]
                     }
-                  ]
+                  ],
+                  "type": "View?style.gap=1rem;style.width=100%;class=flex column;style.padding=0 1rem"
                 }
               ],
               "type": "View?class=flex column;style.gap=1rem;style.width=100%;style.marginBottom=1rem"
@@ -626,38 +628,38 @@
                   "type": "View?path=missions-steps-description;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                   "children": [
                     {
-                      "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
                       "children": [
                         {
                           "type": "Input?textarea;style.width=100%;style.height=8rem;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[missions-edit-readonly:()]:[readonly=true];style.border=1px solid #ccc"
                         },
                         {
-                          "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
                           "controls": [
                             {
                               "event": "click?Data().missions-steps-description=_array;parent().input().text()=_string?Data().missions-steps-description.len()=1;!missions-edit-readonly:()"
                             },
                             {
-                              "actions": "remove:[parent().id]",
-                              "event": "click??Data().missions-steps-description.len()>1;!missions-edit-readonly:()"
+                              "event": "click??Data().missions-steps-description.len()>1;!missions-edit-readonly:()",
+                              "actions": "remove:[parent().id]"
                             }
-                          ]
+                          ],
+                          "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
                         }
-                      ]
+                      ],
+                      "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
                     },
                     {
-                      "type": "View?class=flex;style.gap=1rem",
                       "children": [
                         {
-                          "type": "Icon?class=flexbox pointer;style.marginTop=auto;style.marginBottom=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                           "controls": [
                             {
                               "event": "click?Data().missions-steps-description.push():_string?Data().missions-steps-description.len()>0;!missions-edit-readonly:()",
                               "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:missions-steps-description:[Data().missions-steps-description.len()-1];insert.index=parent().parent().children().len()-1"
                             }
-                          ]
+                          ],
+                          "type": "Icon?class=flexbox pointer;style.marginTop=auto;style.marginBottom=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex;style.gap=1rem"
                     }
                   ]
                 }
@@ -665,6 +667,7 @@
               "type": "View?class=vertical;style:[gap=1rem;display=if():[data().new-devices]:grid:none;width=100%]"
             },
             {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=ملاحظات;style.padding=1rem 0;style.fontWeight=bold"
@@ -677,12 +680,12 @@
                   ],
                   "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
                 }
-              ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              ]
             }
           ]
         },
         {
+          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem",
           "children": [
             {
               "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!missions-edit-readonly:()",
@@ -701,13 +704,10 @@
                 }
               ]
             }
-          ],
-          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem"
+          ]
         }
       ],
       "type": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto?missions-data:()"
     }
-  ],
-  "type": "View?id=missions-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
-  "id": "missions-mini-window"
+  ]
 }

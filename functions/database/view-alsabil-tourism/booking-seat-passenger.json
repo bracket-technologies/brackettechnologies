@@ -1,8 +1,11 @@
 {
+<<<<<<< HEAD
   "creation-date": 1654011294803,
+=======
+  "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]",
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
   "children": [
     {
-      "type": "View?class=flexbox;style:[width=100%;borderBottom=1px solid #ddd;padding=0.5rem 0]",
       "children": [
         {
           "type": "Text?class=flex;text=Passengers Info;style:[fontSize=1.4rem]"
@@ -19,6 +22,7 @@
                   "event": "change?csvToJson():[loaded='my-passengers=().file.data;booking-data:().booking-details.():[seats.():[passengers-details._():[_.type=().my-passengers.[_.counter-1].Pax Type.uppercase();_.title=().my-passengers.[_.counter-1].Title.uppercase();_.gender=().my-passengers.[_.counter-1].Gender.uppercase().slice():0:1;_.first-name=().my-passengers.[_.counter-1].First Name.uppercase();_.last-name=().my-passengers.[_.counter-1].Last Name.uppercase();_.dob=().my-passengers.[_.counter-1].'DOB (dd/mm/yyyy)'.toDateFormat():[format=dd/mm/yyyy;excel].timestamp();_.nationality=().my-passengers.[_.counter-1].Nationality;_.passport-number=().my-passengers.[_.counter-1].Passport Number;_.passport-issuer=().my-passengers.[_.counter-1].Passport Issued Country;_.passport-expiry-date=().my-passengers.[_.counter-1].'Passport Expiry (dd/mm/yyyy)'.toDateFormat():[format=dd/mm/yyyy;excel].timestamp();_.contact-number=().my-passengers.[_.counter-1].Mobile Number;_.email=().my-passengers.[_.counter-1].Email;_.id-number=().my-passengers.[_.counter-1].ID Number]]];update():passenger-details']"
                 }
               ]
+<<<<<<< HEAD
             }
           ],
           "type": "View?class=flexbox pointer;style:[borderRadius=.5rem;border=1px solid #ddd;overflow=hidden;position=relative;marginLeft=auto;marginRight=1rem;height=3rem;width=3.25rem;backgroundColor=#fff];mouseenter.1stChild().style:[color=#222];mouseleave.1stChild().style:[color=#666];hover.style.backgroundColor=#f6f6f6;tooltip.text=import passengers"
@@ -42,6 +46,39 @@
                 }
               ],
               "type": "[View]?class=vertical;path=seats;style:[gap=4rem;width=100%]"
+=======
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
+            }
+          ],
+          "type": "View?class=vertical;path=booking-details.0;style:[gap=4rem;width=100%]"
+        }
+<<<<<<< HEAD
+      ]
+    }
+  ],
+  "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]",
+  "id": "booking-seat-passenger"
+=======
+      ],
+      "type": "View?class=flexbox;style:[width=100%;borderBottom=1px solid #ddd;padding=0.5rem 0]"
+    },
+    {
+      "type": "View?id=passenger-details;class=vertical;style:[padding=1rem;gap=1rem]",
+      "children": [
+        {
+          "children": [
+            {
+              "type": "[View]?class=vertical;path=seats;style:[gap=4rem;width=100%]",
+              "children": [
+                {
+                  "type": "[View]?class=vertical;path=passengers-details;style:[gap=4rem;width=100%]",
+                  "children": [
+                    {
+                      "type": "View?view=booking-passenger"
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "type": "View?class=vertical;path=booking-details.0;style:[gap=4rem;width=100%]"
@@ -49,6 +86,7 @@
       ]
     }
   ],
-  "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]",
-  "id": "booking-seat-passenger"
+  "id": "booking-seat-passenger",
+  "creation-date": 1654011294803
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
 }

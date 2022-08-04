@@ -37,6 +37,7 @@
               "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]"
             },
             {
+              "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]",
               "children": [
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -62,8 +63,7 @@
                   ],
                   "type": "View?class=flex align-center;style:[flex=1]"
                 }
-              ],
-              "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]"
+              ]
             }
           ],
           "type": "[View]?path=booking-details;class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 1fr]"

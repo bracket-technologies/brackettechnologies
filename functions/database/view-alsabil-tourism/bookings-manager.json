@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "controls": [
     {
       "event": "loaded??false",
@@ -8,6 +9,9 @@
   "type": "View?id=bookings-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];bookings:()=_list;search-booking:()=search-booking:()||_map",
   "id": "bookings-manager",
   "creation-date": 1653729664265,
+=======
+  "type": "View?id=bookings-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];bookings:()=_list;search-booking:()=search-booking:()||_map",
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
   "children": [
     {
       "type": "View?class=flex align-center;style.height=4.5rem",
@@ -40,7 +44,6 @@
           ]
         },
         {
-          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
           "children": [
             {
               "type": "Icon?class=flexbox pointer;name=bi-trash;tooltip.text=erase;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
@@ -59,12 +62,12 @@
               ],
               "type": "Icon?class=flexbox pointer;name=bi-plus;tooltip.text=create new;style:[color=#666;fontSize=2.4rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
         }
       ]
     },
     {
-      "type": "View?view=search-engine;search-engine-req:()=booking",
       "controls": [
         {
           "event": "mouseenter?lastChild().style():[minHeight=2.5rem;bottom=-2.5rem]"
@@ -75,7 +78,8 @@
         {
           "event": "click:lastChild()?if():[lastChild().open]:[next().style().minHeight=0]:[next().style().minHeight=8rem]"
         }
-      ]
+      ],
+      "type": "View?view=search-engine;search-engine-req:()=booking"
     },
     {
       "children": [
@@ -99,12 +103,12 @@
                   "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
-                      "type": "Input?path=booking-date;label.text=Booking Date;label.style.fontSize=1.3rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat();style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "change?data()=data().timestamp();txt():booking-date-text=data().toDateFormat();input():travel-date.min()=data().toDateInputFormat()"
                         }
-                      ]
+                      ],
+                      "type": "Input?path=booking-date;label.text=Booking Date;label.style.fontSize=1.3rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat();style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                     },
                     {
                       "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
@@ -146,12 +150,12 @@
                 {
                   "children": [
                     {
-                      "type": "Input?id=travel-date;if():[data().booking-date]:[input.min=data().booking-date.toDateInputFormat()];path=travel-date;label.text=Travel Date;label.style.fontSize=1.3rem;input.type=date;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "change?data()=data().timestamp();txt():travel-date-text=data().toDateFormat()"
                         }
-                      ]
+                      ],
+                      "type": "Input?id=travel-date;if():[data().booking-date]:[input.min=data().booking-date.toDateInputFormat()];path=travel-date;label.text=Travel Date;label.style.fontSize=1.3rem;input.type=date;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                     },
                     {
                       "children": [
@@ -173,11 +177,15 @@
               ]
             },
             {
+<<<<<<< HEAD
               "children": [
                 {
                   "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"
                 }
               ],
+=======
+              "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6",
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
               "controls": [
                 {
                   "actions": [
@@ -189,7 +197,15 @@
                   "event": "click?note():'Kindly fill any of the blanks!':danger?!search-booking:().pnr;!search-booking:().name;!search-booking:().booking-date;!search-booking:().travel-date;!search-booking:().status"
                 }
               ],
+<<<<<<< HEAD
               "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6"
+=======
+              "children": [
+                {
+                  "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"
+                }
+              ]
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
             }
           ],
           "type": "View?class=flexbox;style:[width=100%]"
@@ -200,5 +216,16 @@
     {
       "type": "View?view=bookings-list"
     }
+<<<<<<< HEAD
+=======
+  ],
+  "id": "bookings-manager",
+  "creation-date": 1653729664265,
+  "controls": [
+    {
+      "actions": "wait():search:[update:bookings-list]?search.collection=flight-booking;search.field.status.equal=Booked;if():[!user:().admin||!agent:().admin]:[search.field.user.equal=user:().id];if():[!user:().admin||!agent:().admin]:[search.field.agent.equal=agent:().id];wait():[bookings:()=().search.data.values()]",
+      "event": "loaded??false"
+    }
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
   ]
 }

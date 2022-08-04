@@ -1,7 +1,11 @@
 {
+<<<<<<< HEAD
   "id": "flight-list",
   "creation-date": 1654120726246,
   "type": "View:flight-list?class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]",
+=======
+  "creation-date": 1654120726246,
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
   "children": [
     {
       "type": "View?style:[width=100%]",
@@ -10,6 +14,7 @@
           "type": "View?class=vertical;data=flights:().[().mapIndex].clone();style:[width=100%;minHeight=30rem]?flights:().len()>0",
           "children": [
             {
+              "type": "View?id=table-headers;class=grid align-center;style:[width=100%;borderBottom=1px solid #ddd;gridTemplateColumns=2rem 15rem 10rem 8rem .75fr .75fr .75fr .75fr .75fr .75fr .75fr 1fr 1fr 1fr 1fr 1fr 1fr 3rem;height=4rem]",
               "children": [
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -20,18 +25,34 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Airline;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=ID;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Travel Date;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
-                      "type": "Text?class=pointer;text=ID;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                      "type": "Text?class=pointer;text=Flight No.;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
                   ]
                 },
@@ -39,6 +60,7 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
+<<<<<<< HEAD
                       "type": "Text?class=pointer;text=Travel Date;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
                   ]
@@ -55,6 +77,8 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
+=======
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
                       "type": "Text?class=pointer;text=From;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
                   ]
@@ -84,12 +108,12 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Stops;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -108,12 +132,12 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]?false",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=PNR's;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]?false"
+                  ]
                 },
                 {
                   "children": [
@@ -148,12 +172,12 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Payable;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "type": "View?class=flex;style:[flex=1]",
@@ -163,8 +187,7 @@
                     }
                   ]
                 }
-              ],
-              "type": "View?id=table-headers;class=grid align-center;style:[width=100%;borderBottom=1px solid #ddd;gridTemplateColumns=2rem 15rem 10rem 8rem .75fr .75fr .75fr .75fr .75fr .75fr .75fr 1fr 1fr 1fr 1fr 1fr 1fr 3rem;height=4rem]"
+              ]
             },
             {
               "type": "View?class=vertical;style:[width=100%]",
@@ -196,12 +219,12 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
                       "children": [
                         {
                           "type": "Input?copyable;style:[border=0;height=fit-content;padding=0;paddingRight=.5rem;fontSize=1.2rem];input.style.padding=0;path=id;readonly"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;width=10rem]"
                     },
                     {
                       "children": [
@@ -212,12 +235,12 @@
                       "type": "View?class=flex align-center;style:[height=100%;width=8rem]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().flight-number;style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -236,20 +259,30 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
+<<<<<<< HEAD
+=======
+                          "type": "Text?class=flex align-center;text=data().departure-time.toClock():[hr;min];style:[fontSize=1.2rem]"
+                        }
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                    },
+                    {
+                      "children": [
+                        {
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
                           "type": "Text?class=flex align-center;text=data().arrival-airport.split(): .0;style:[fontSize=1.2rem]"
                         }
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().arrival-time.toClock():[hr;min]+if():[data().departure-day<data().arrival-day]:' (+1)':'';style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "children": [
@@ -260,28 +293,28 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flexbox;text=data().aircraft;style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flexbox;text=data().flight-duration.split():':'.0+'h'+':'+data().flight-duration.split():':'.1+'m';style:[fontSize=1.2rem]?data().flight-duration"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;width=100%]?false",
                       "children": [
                         {
                           "type": "Text?class=flexbox dots;text=data().pnrs.0;tooltip.text='txt()';droplist.items=data().pnrs;droplist.item.style:[minHeight=3rem;height=3rem;fontSize=1.3rem];droplist.style:[maxWidth=null];style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;width=100%]?false"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -345,5 +378,11 @@
         }
       ]
     }
+<<<<<<< HEAD
   ]
+=======
+  ],
+  "type": "View:flight-list?class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]",
+  "id": "flight-list"
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
 }

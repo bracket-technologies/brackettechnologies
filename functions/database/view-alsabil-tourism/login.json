@@ -2,7 +2,6 @@
   "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]",
   "children": [
     {
-      "type": "View?Data=signin;class=flex column;style():[width=40rem;borderRadius=1rem;backgroundColor=#fff;gap=2rem;padding=5rem 3rem]",
       "children": [
         {
           "type": "View?class=flex column;style.gap=0.5rem",
@@ -16,10 +15,8 @@
           ]
         },
         {
-          "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
-              "type": "Input?id=username;path=username;label.text=User Name;container.style.width=100%;clicked.style.border=2px solid #3299FF;input.value=_string",
               "controls": [
                 {
                   "event": "input?style().backgroundColor=#fff;():username-req.style().opacity=0"
@@ -27,18 +24,19 @@
                 {
                   "event": "keydown?style().backgroundColor=#fff;():root.click()?e().key=Tab"
                 }
-              ]
+              ],
+              "type": "Input?id=username;path=username;label.text=User Name;container.style.width=100%;clicked.style.border=2px solid #3299FF;input.value=_string"
             },
             {
               "type": "Text?id=username-req;class=flex;style():[color=#ff0000ee;fontSize=1.2rem;opacity=0];text=User name is required!"
             }
-          ]
+          ],
+          "type": "View?class=flex column;style.gap=0.5rem"
         },
         {
           "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
-              "type": "Input?id=password;path=password;label.text=Password;container.style.width=100%;clicked.style.border=2px solid #3299FF;password;input.value=_string",
               "controls": [
                 {
                   "event": "input?style().backgroundColor=#fff;():password-req.style().opacity=0"
@@ -52,7 +50,8 @@
                 {
                   "event": "keydown?():signin-btn.click()?e().key=Enter"
                 }
-              ]
+              ],
+              "type": "Input?id=password;path=password;label.text=Password;container.style.width=100%;clicked.style.border=2px solid #3299FF;password;input.value=_string"
             },
             {
               "type": "Text?id=password-req;class=flex;style():[color=#ff0000ee;fontSize=1.2rem;opacity=0];text=Password is required!"
@@ -60,6 +59,7 @@
           ]
         },
         {
+          "type": "View?class=flex column;style():[gap=1rem;marginTop=3rem;width=100%]",
           "children": [
             {
               "controls": [
@@ -80,10 +80,10 @@
             {
               "type": "Text?link.path=/forgot-your-password;link.style.marginRight=auto;class=pointer;text='Forgot your password?';style():[color=#3299FF;fontSize=1.2rem;marginRight=auto];hover.style.textDecoration=underline"
             }
-          ],
-          "type": "View?class=flex column;style():[gap=1rem;marginTop=3rem;width=100%]"
+          ]
         }
-      ]
+      ],
+      "type": "View?Data=signin;class=flex column;style():[width=40rem;borderRadius=1rem;backgroundColor=#fff;gap=2rem;padding=5rem 3rem]"
     }
   ],
   "creation-date": 1651335662000,

@@ -3261,6 +3261,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else o.push(rec2)
                 return o
             }
+<<<<<<< HEAD
             
         } else if (k0 === "replaceItem()") {
 
@@ -3280,6 +3281,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else o.push(_data)
             }
             
+=======
+          
+        } else if (k0.includes("replaceItem()")) {
+        
+          var _index
+          if (isParam({ _window, string: args[1] }) && Array.isArray(o)) {
+
+            if (k[0] === "_") _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
+            else _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
+
+            if (_index === -1) o.splice(_index, 1)
+            if (args[2]) {
+              var _item = rec0 = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
+              o.splice(_index, 0, _item)
+            }
+          } 
+      
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
         } else if (k0 === "replaceLast()") {
         
             var _item = toValue({ req, res, _window, id, e, _, __, _i,value: args[1] || "", params })

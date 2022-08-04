@@ -1,8 +1,8 @@
 {
+  "id": "main",
   "name": "main",
-  "title": "Obeid Market",
-  "view": "main",
   "path": "/",
   "creation-date": 1658743048311,
-  "id": "main"
+  "title": "Obeid Market",
+  "view": "main"
 }

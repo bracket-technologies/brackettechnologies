@@ -1,7 +1,6 @@
 {
-  "type": "View?id=booking-change-cancelation;class=flex column;style.gap=1rem;style.width=100%",
   "creation-date": 1652521702985,
-  "id": "booking-change-cancelation",
+  "type": "View?id=booking-change-cancelation;class=flex column;style.gap=1rem;style.width=100%",
   "children": [
     {
       "type": "Text?class=flex;text=Booking, Change, & Cancelation Policy;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=0.5rem 0]"
@@ -11,16 +10,27 @@
         {
           "children": [
             {
-              "children": [
-                {
-                  "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
-                }
-              ],
+<<<<<<< HEAD
+=======
               "controls": [
                 {
                   "event": "click?checked()=checked().opp();)(:flight-data.bookable=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.bookable=true;parent().next().style().display=flex;)(:flight-data.booking-policy=_array:[_map:reference-date:Booking Date:before-after:After:class:Economy:classes:_array];update():[parent().next()]]:[)(:flight-data.booking-policy=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
                 }
               ],
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
+              "children": [
+                {
+                  "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
+                }
+              ],
+<<<<<<< HEAD
+              "controls": [
+                {
+                  "event": "click?checked()=checked().opp();)(:flight-data.bookable=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.bookable=true;parent().next().style().display=flex;)(:flight-data.booking-policy=_array:[_map:reference-date:Booking Date:before-after:After:class:Economy:classes:_array];update():[parent().next()]]:[)(:flight-data.booking-policy=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
+                }
+              ],
+=======
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
               "type": "View?id=bookable;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().bookable=flight-data:().bookable||false;checked=flight-data:().bookable"
             },
             {
@@ -54,6 +64,7 @@
                           "type": "Text?class=flex;style:[fontSize=1.3rem];text=--"
                         },
                         {
+                          "type": "[View]?path=classes;class=flexbox;style:[flex=1;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0;click.focus()",
                           "children": [
                             {
                               "controls": [
@@ -79,8 +90,7 @@
                             {
                               "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().classes.len()-1"
                             }
-                          ],
-                          "type": "[View]?path=classes;class=flexbox;style:[flex=1;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0;click.focus()"
+                          ]
                         }
                       ],
                       "type": "View?class=vertical classes;style:[width=100%;gap=.5rem]"
@@ -98,15 +108,21 @@
                   "type": "Input?label:[text=Time Limit (dd:hh:mm);location=outside;style.fontSize=1.3rem];path=time-limit;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
                 },
                 {
-                  "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem]",
                   "children": [
                     {
+<<<<<<< HEAD
+=======
+                      "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];data().open-time-limit=data().open-time-limit||false;checked=data().open-time-limit",
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
                       "children": [
                         {
                           "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
                         }
                       ],
+<<<<<<< HEAD
                       "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];data().open-time-limit=data().open-time-limit||false;checked=data().open-time-limit",
+=======
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
                       "controls": [
                         {
                           "event": "click?checked()=checked().opp();data().open-time-limit=checked();1stChild().style().opacity=if():checked():1:0;data().open-time-limit=checked();if():[checked()]:[parent().prev().input().():[readonly();style().backgroundColor=#ccc]]:[parent().prev().input().():[readonly()=false;style().backgroundColor=inherit]]?!flight-edit-readonly:()"
@@ -116,7 +132,8 @@
                     {
                       "type": "Text?text=Open Time Limit;style:[fontSize=1.3rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem]"
                 },
                 {
                   "type": "View"
@@ -147,6 +164,7 @@
           ]
         },
         {
+          "type": "View?class=flex align-center;style:[gap=1rem]",
           "children": [
             {
               "children": [
@@ -164,8 +182,7 @@
             {
               "type": "Text?text=Changeable;style:[fontSize=1.3rem]"
             }
-          ],
-          "type": "View?class=flex align-center;style:[gap=1rem]"
+          ]
         },
         {
           "children": [
@@ -177,12 +194,12 @@
                 {
                   "children": [
                     {
-                      "type": "Input?label:[text=Class;location=outside;style.fontSize=1.3rem];path=class;readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.seat-classes.classes;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem",
                       "controls": [
                         {
                           "event": "click:droplist?parent().next().update()"
                         }
-                      ]
+                      ],
+                      "type": "Input?label:[text=Class;location=outside;style.fontSize=1.3rem];path=class;readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.seat-classes.classes;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
                     },
                     {
                       "type": "View?class=vertical;style:[width=100%;gap=.5rem]",
@@ -217,7 +234,8 @@
                             {
                               "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().classes.len()-1"
                             }
-                          ]
+                          ],
+                          "type": "[View]?path=classes;class=flexbox;style:[flex=1;padding=.1rem;minHeight=3.5rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0;click.focus()"
                         }
                       ]
                     }
@@ -255,12 +273,12 @@
                 {
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];data().open-time-limit=data().open-time-limit||false;checked=data().open-time-limit",
                       "children": [
                         {
                           "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
                         }
                       ],
+                      "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];data().open-time-limit=data().open-time-limit||false;checked=data().open-time-limit",
                       "controls": [
                         {
                           "event": "click?checked()=checked().opp();data().open-time-limit=checked();1stChild().style().opacity=if():checked():1:0;data().open-time-limit=checked();if():[checked()]:[parent().prev().input().():[readonly();style().backgroundColor=#ccc]]:[parent().prev().input().():[readonly()=false;style().backgroundColor=inherit]]?!flight-edit-readonly:()"
@@ -274,7 +292,6 @@
                   "type": "View?class=flexbox;style:[gap=1rem;marginTop=auto;height=3.5rem]"
                 },
                 {
-                  "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]",
                   "children": [
                     {
                       "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
@@ -292,7 +309,8 @@
                       ],
                       "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]"
                 }
               ],
               "type": "[View]?path=change-policy;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=4rem 1fr 1fr 1fr 1fr 1fr 1fr 6rem;padding=1rem]"
@@ -304,6 +322,7 @@
           "type": "View?class=flex align-center;style:[gap=1rem]",
           "children": [
             {
+              "type": "View?id=cancelable;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().cancelable=flight-data:().cancelable||false;checked=flight-data:().cancelable",
               "children": [
                 {
                   "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
@@ -313,8 +332,7 @@
                 {
                   "event": "click?checked()=checked().opp();)(:flight-data.cancelable=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.cancelable=true;parent().next().style().display=flex;)(:flight-data.cancelation-policy=_array:[_map:reference-date:Reservation Date:before-after:After:class:Economy:classes:_array:penalty-unit:$:penalty:0];update():[parent().next()]]:[)(:flight-data.cancelation-policy=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
                 }
-              ],
-              "type": "View?id=cancelable;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().cancelable=flight-data:().cancelable||false;checked=flight-data:().cancelable"
+              ]
             },
             {
               "type": "Text?text=Cancelable;style:[fontSize=1.3rem]"
@@ -355,12 +373,12 @@
                               "type": "Input?style:[flex=1;height=100%;fontSize=1.3rem];droplist.items=if():[parent().parent().data().class=Economy]:')(:flight-data.economy-classes._filter():[!)(:flight-data.cancelation-policy.():classes.flat().inc():_]'.elif():[parent().parent().data().class=Business]:')(:flight-data.business-classes._filter():[!)(:flight-data.cancelation-policy.():classes.flat().inc():_]'.elif():[parent().parent().data().class=First Class]:')(:flight-data.first-class-classes._filter():[!)(:flight-data.cancelation-policy.():classes.flat().inc():_]';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
                             },
                             {
+                              "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]",
                               "controls": [
                                 {
                                   "event": "click?data().del();)(:focus-classes=true;update():[parent().parent()]"
                                 }
-                              ],
-                              "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=inherit;borderRadius=.5rem];hover.style:[color=#000]"
+                              ]
                             }
                           ],
                           "type": "[View]?path=classes;class=flexbox;style:[flex=1;padding=.1rem;minHeight=3.5rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0;click.focus()",
@@ -410,10 +428,20 @@
                 {
                   "children": [
                     {
+<<<<<<< HEAD
+=======
+                      "controls": [
+                        {
+                          "event": "click?checked()=checked().opp();data().open-time-limit=checked();1stChild().style().opacity=if():checked():1:0;data().open-time-limit=checked();if():[checked()]:[parent().prev().input().():[readonly();style().backgroundColor=#ccc]]:[parent().prev().input().():[readonly()=false;style().backgroundColor=inherit]]?!flight-edit-readonly:()"
+                        }
+                      ],
+                      "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];data().open-time-limit=data().open-time-limit||false;checked=data().open-time-limit",
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
                       "children": [
                         {
                           "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
                         }
+<<<<<<< HEAD
                       ],
                       "controls": [
                         {
@@ -421,6 +449,9 @@
                         }
                       ],
                       "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];data().open-time-limit=data().open-time-limit||false;checked=data().open-time-limit"
+=======
+                      ]
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
                     },
                     {
                       "type": "Text?text=Open Time Limit;style:[fontSize=1.3rem]"
@@ -432,12 +463,12 @@
                   "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]",
                   "children": [
                     {
+                      "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                       "controls": [
                         {
                           "event": "click?)(:flight-data.cancelation-policy.pull():[parent().parent().mapIndex];if():[)(:flight-data.cancelation-policy.len()=0]:[():cancelable.click()];update():cancelation-policy"
                         }
-                      ],
-                      "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
+                      ]
                     },
                     {
                       "controls": [
@@ -457,5 +488,6 @@
       ],
       "type": "View?class=vertical;style:[gap=1rem;padding=1rem]"
     }
-  ]
+  ],
+  "id": "booking-change-cancelation"
 }

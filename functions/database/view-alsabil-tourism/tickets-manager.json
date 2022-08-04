@@ -3,6 +3,7 @@
   "id": "tickets-manager",
   "children": [
     {
+      "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem",
       "children": [
         {
           "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
@@ -34,8 +35,7 @@
             }
           ]
         }
-      ],
-      "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem"
+      ]
     },
     {
       "controls": [
@@ -60,6 +60,7 @@
             {
               "children": [
                 {
+<<<<<<< HEAD
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase();txt()=data()"
@@ -68,12 +69,22 @@
                   "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                 },
                 {
+=======
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase();txt()=data()"
                     }
                   ],
-                  "type": "Input?id=E-Ticket;path=e-ticket;label.text=E-Ticket;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                },
+                {
+                  "type": "Input?id=E-Ticket;path=e-ticket;label.text=E-Ticket;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF",
+                  "controls": [
+                    {
+                      "event": "input?data()=data().toUpperCase();txt()=data()"
+                    }
+                  ]
                 },
                 {
                   "type": "Input?id=Flight;path=flight;label.text=Flight;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
@@ -148,6 +159,7 @@
                   "event": "click?note():'Kindly fill any of the blanks!':danger?!search-ticket:().pnr;!search-ticket:().e-ticket;!search-ticket:().flight;!search-ticket:().name;!search-ticket:().reservation-date;!search-ticket:().travel-date"
                 }
               ],
+              "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6",
               "children": [
                 {
                   "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"

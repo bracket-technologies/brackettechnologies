@@ -1,7 +1,13 @@
 {
+<<<<<<< HEAD
   "title": "Al Sabil Travel",
   "name": "Al Sabil Travel",
   "view": "main",
+=======
+  "name": "Al Sabil Travel",
+  "view": "main",
+  "id": "main",
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
   "creation-date": 1651335662000,
   "views": [
     "booking-change-cancelation",
@@ -42,6 +48,10 @@
     "book-a-flight-list",
     "search-engine"
   ],
+<<<<<<< HEAD
   "id": "main",
+=======
+  "title": "Al Sabil Travel",
+>>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
   "path": "/"
 }
