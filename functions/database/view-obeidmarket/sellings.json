@@ -1,4 +1,5 @@
 {
+  "type": "View:sellings?if():[!sellings:()]:[sellings:()=_list]",
   "id": "sellings",
   "children": [
     {
@@ -19,15 +20,15 @@
               ]
             },
             {
-              "controls": [
-                {
-                  "event": "click?update():new-selling;():new-selling.style():[opacity=1;pointerEvents=auto]"
-                }
-              ],
               "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]",
               "children": [
                 {
                   "type": "Icon?name=add;google.outlined;style:[color=#888;fontSize=2rem]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "click?update():new-selling;():new-selling.style():[opacity=1;pointerEvents=auto]"
                 }
               ]
             }
@@ -38,11 +39,12 @@
     {
       "children": [
         {
+          "type": "View?class=vertical;style:[width=100%;gap=1rem;paddingTop=1rem;paddingBottom=6rem]?sellings:().len()>0",
           "children": [
             {
+              "type": "[View]?Data=sellings;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]",
               "children": [
                 {
-                  "type": "View?class=flex vertical;style:[width=100%;gap=1rem]",
                   "children": [
                     {
                       "children": [
@@ -56,10 +58,8 @@
                       "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between]"
                     },
                     {
-                      "type": "View?class=vertical;style:[gap=.5rem;width=100%;transition=.2s;overflow=hidden]",
                       "children": [
                         {
-                          "type": "View?class=horizontal align-center;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr;height=2.5rem;backgroundColor=#ddd;padding=.5rem;borderRadius=.25rem]",
                           "children": [
                             {
                               "type": "Text?text=#;style:[color=#666;fontSize=1.2rem;flex=1]"
@@ -76,12 +76,12 @@
                             {
                               "type": "Text?text=Qty;style:[color=#666;fontSize=1.2rem;flex=1]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=horizontal align-center;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr;height=2.5rem;backgroundColor=#ddd;padding=.5rem;borderRadius=.25rem]"
                         },
                         {
                           "children": [
                             {
-                              "type": "[View]?class=horizontal;path=sales;style:[display=grid;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr;padding=0 .5rem]",
                               "children": [
                                 {
                                   "type": "Text?class=horizontal;text=parent().mapIndex+1;style:[fontSize=1.3rem;flex=1]"
@@ -98,17 +98,20 @@
                                 {
                                   "type": "Text?class=horizontal;text=data().qty;style:[width=100%;fontSize=1.3rem]"
                                 }
-                              ]
+                              ],
+                              "type": "[View]?class=horizontal;path=sales;style:[display=grid;gap=.5rem;gridTemplateColumns=1.5rem 4fr 2fr 2fr 1fr;padding=0 .5rem]"
                             }
                           ],
                           "type": "View?class=vertical;style:[gap=.5rem;flex=1]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=vertical;style:[gap=.5rem;width=100%;transition=.2s;overflow=hidden]"
                     },
                     {
                       "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between;borderTop=1px solid #ddd;padding=.5rem]",
                       "children": [
                         {
+                          "type": "View?class=horizontal;style:[gap=.5rem]",
                           "children": [
                             {
                               "type": "Text?text=Date:;style:[fontSize=1.3rem;color=#888]?false"
@@ -116,8 +119,7 @@
                             {
                               "type": "Text?text=data().selling-date.toDateFormat();style:[fontSize=1.3rem;color=#888]"
                             }
-                          ],
-                          "type": "View?class=horizontal;style:[gap=.5rem]"
+                          ]
                         },
                         {
                           "type": "View?class=horizontal;style:[gap=.5rem]",
@@ -133,15 +135,14 @@
                       ]
                     },
                     {
-                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]",
                       "children": [
                         {
-                          "type": "View?class=horizontal;style:[gap=.5rem;paddding=.5rem];closed=false",
                           "controls": [
                             {
                               "event": "click?html2pdf():[view=parent().parent().parent();size=A6]"
                             }
                           ],
+                          "type": "View?class=horizontal;style:[gap=.5rem;paddding=.5rem];closed=false",
                           "children": [
                             {
                               "type": "Icon?name=receipt_long;google.outlined;style:[fontSize=1.8rem]"
@@ -167,25 +168,24 @@
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex vertical;style:[width=100%;gap=1rem]"
                 }
-              ],
-              "type": "[View]?Data=sellings;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]"
+              ]
             }
-          ],
-          "type": "View?class=vertical;style:[width=100%;gap=1rem;paddingTop=1rem;paddingBottom=6rem]?sellings:().len()>0"
+          ]
         }
       ],
+      "type": "View:selling-list?class=vertical;style:[width=100%;gap=1rem;backgroundColor=#eee;minHeight=100vh]",
       "controls": [
         {
           "event": "loaded?if():[!market-sellings:()]:[search():[collection=selling]:[sellings:()=().search.data.values().sort():[path=selling-date;descending];update():selling-list]]:[market-sellings:()=false]"
         }
-      ],
-      "type": "View:selling-list?class=vertical;style:[width=100%;gap=1rem;backgroundColor=#eee;minHeight=100vh]"
+      ]
     }
   ],
-  "type": "View:sellings?if():[!sellings:()]:[sellings:()=_list]",
   "creation-date": 1658779408265
 }

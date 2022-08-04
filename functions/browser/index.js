@@ -3071,7 +3071,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
       var myFn = (e) => {
         
-        view[`${event}-timer`] = setTimeout(async () => {
+        view[`${event}-timer`] = setTimeout(() => {
           
           if (clickEvent) return global["click-events"].push({ id, viewEventConditions, viewEventParams, events: clickEvent, controls })
           if (keyEvent) return global["key-events"].push({ id, viewEventConditions, viewEventParams, events: keyEvent, controls })
@@ -3099,26 +3099,32 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           // content not editable
           // if (event === "input" && !views[id].contenteditable) return
 
-          // approval
-          if (viewEventConditions) {
-            var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
+          var _myFn = async () => {
+            
+            // approval
+            if (viewEventConditions) {
+              var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
+              if (!approved) return
+            }
+            
+            // approval
+            var approved = toApproval({ string: events[2], e, id: mainID })
             if (!approved) return
+
+            // params
+            await toParam({ string: events[1], e, id: mainID, mount: true })
+
+            // break
+            if (view.break) return delete view.break
+          
+            // approval
+            if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
+            
+            if (controls.actions || controls.action) await execute({ controls, e, id: mainID })
           }
-          
-          // approval
-          var approved = toApproval({ string: events[2], e, id: mainID })
-          if (!approved) return
 
-          // params
-          await toParam({ string: events[1], e, id: mainID, mount: true })
-
-          // break
-          if (view.break) return delete view.break
-        
-          // approval
-          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
-          
-          if (controls.actions || controls.action) await execute({ controls, e, id: mainID })
+          if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") setTimeout(_myFn, 100)
+          else _myFn()
           
         }, timer)
       }
@@ -7719,7 +7725,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 else o.push(rec2)
                 return o
             }
-            
+          
+        } else if (k0.includes("replaceItem()")) {
+        
+          var _index
+          if (isParam({ _window, string: args[1] }) && Array.isArray(o)) {
+
+            if (k[0] === "_") _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
+            else _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, _i: index, req, res, object: o }) )
+
+            if (_index === -1) o.splice(_index, 1)
+            if (args[2]) {
+              var _item = rec0 = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
+              o.splice(_index, 0, _item)
+            }
+          } 
+      
         } else if (k0 === "replaceLast()") {
         
             var _item = toValue({ req, res, _window, id, e, _, __, _i,value: args[1] || "", params })

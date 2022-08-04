@@ -190,7 +190,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
       var myFn = (e) => {
         
-        view[`${event}-timer`] = setTimeout(async () => {
+        view[`${event}-timer`] = setTimeout(() => {
           
           if (clickEvent) return global["click-events"].push({ id, viewEventConditions, viewEventParams, events: clickEvent, controls })
           if (keyEvent) return global["key-events"].push({ id, viewEventConditions, viewEventParams, events: keyEvent, controls })
@@ -218,26 +218,32 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           // content not editable
           // if (event === "input" && !views[id].contenteditable) return
 
-          // approval
-          if (viewEventConditions) {
-            var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
+          var _myFn = async () => {
+            
+            // approval
+            if (viewEventConditions) {
+              var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
+              if (!approved) return
+            }
+            
+            // approval
+            var approved = toApproval({ string: events[2], e, id: mainID })
             if (!approved) return
+
+            // params
+            await toParam({ string: events[1], e, id: mainID, mount: true })
+
+            // break
+            if (view.break) return delete view.break
+          
+            // approval
+            if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
+            
+            if (controls.actions || controls.action) await execute({ controls, e, id: mainID })
           }
-          
-          // approval
-          var approved = toApproval({ string: events[2], e, id: mainID })
-          if (!approved) return
 
-          // params
-          await toParam({ string: events[1], e, id: mainID, mount: true })
-
-          // break
-          if (view.break) return delete view.break
-        
-          // approval
-          if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
-          
-          if (controls.actions || controls.action) await execute({ controls, e, id: mainID })
+          if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") setTimeout(_myFn, 100)
+          else _myFn()
           
         }, timer)
       }
