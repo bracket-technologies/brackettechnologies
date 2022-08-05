@@ -7902,7 +7902,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 margin:       0,
                 filename:     _params.name || generate(20),
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 3 },
+                html2canvas:  { scale: 2.5, dpi: 192, letterRendering: true },
                 jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' }
             }
             
@@ -7922,7 +7922,17 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     toDataURL(image.src)
                     .then(dataUrl => {
                         image.src = dataUrl
-                        if (images.length === i + 1) html2pdf().set(opt).from(_element).save().then(() => {
+                        if (images.length === i + 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(function (pdf) {
+                          var totalPages = pdf.internal.getNumberOfPages()
+                       
+                          for (i = 1; i <= totalPages; i++) {
+
+                            pdf.setPage(i)
+                            pdf.setFontSize(9)
+                            pdf.setTextColor(150)
+                            pdf.text('Page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.09), (pdf.internal.pageSize.getHeight() - 0.08))
+                          }
+                        }).save().then(() => {
 
                             if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
                         })

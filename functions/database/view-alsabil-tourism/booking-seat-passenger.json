@@ -1,8 +1,6 @@
 {
-  "creation-date": 1654011294803,
   "children": [
     {
-      "type": "View?class=flexbox;style:[width=100%;borderBottom=1px solid #ddd;padding=0.5rem 0]",
       "children": [
         {
           "type": "Text?class=flex;text=Passengers Info;style:[fontSize=1.4rem]"
@@ -14,41 +12,43 @@
               "type": "Icon?class=flexbox pointer;name=bi-download;tooltip.text=import passengers;style:[color=#666;fontSize=1.6rem;transition=.3s]"
             },
             {
+              "type": "Input?class=pointer;input.type=file;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1;width=20rem]?booking-data:().status=Loading",
               "controls": [
                 {
                   "event": "change?csvToJson():[loaded='my-passengers=().file.data;booking-data:().booking-details.():[seats.():[passengers-details._():[_.type=().my-passengers.[_.counter-1].Pax Type.uppercase();_.title=().my-passengers.[_.counter-1].Title.uppercase();_.gender=().my-passengers.[_.counter-1].Gender.uppercase().slice():0:1;_.first-name=().my-passengers.[_.counter-1].First Name.uppercase();_.last-name=().my-passengers.[_.counter-1].Last Name.uppercase();_.dob=().my-passengers.[_.counter-1].'DOB (dd/mm/yyyy)'.toDateFormat():[format=dd/mm/yyyy;excel].timestamp();_.nationality=().my-passengers.[_.counter-1].Nationality;_.passport-number=().my-passengers.[_.counter-1].Passport Number;_.passport-issuer=().my-passengers.[_.counter-1].Passport Issued Country;_.passport-expiry-date=().my-passengers.[_.counter-1].'Passport Expiry (dd/mm/yyyy)'.toDateFormat():[format=dd/mm/yyyy;excel].timestamp();_.contact-number=().my-passengers.[_.counter-1].Mobile Number;_.email=().my-passengers.[_.counter-1].Email;_.id-number=().my-passengers.[_.counter-1].ID Number]]];update():passenger-details']"
                 }
-              ],
-              "type": "Input?class=pointer;input.type=file;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1;width=20rem]?booking-data:().status=Booked"
+              ]
             }
           ]
         }
-      ]
+      ],
+      "type": "View?class=flexbox;style:[width=100%;borderBottom=1px solid #ddd;padding=0.5rem 0]"
     },
     {
       "children": [
         {
+          "type": "View?class=vertical;path=booking-details.0;style:[gap=4rem;width=100%]",
           "children": [
             {
-              "type": "[View]?class=vertical;path=seats;style:[gap=4rem;width=100%]",
               "children": [
                 {
-                  "type": "[View]?class=vertical;path=passengers-details;style:[gap=4rem;width=100%]",
                   "children": [
                     {
                       "type": "View?view=booking-passenger"
                     }
-                  ]
+                  ],
+                  "type": "[View]?class=vertical;path=passengers-details;style:[gap=4rem;width=100%]"
                 }
-              ]
+              ],
+              "type": "[View]?class=vertical;path=seats;style:[gap=4rem;width=100%]"
             }
-          ],
-          "type": "View?class=vertical;path=booking-details.0;style:[gap=4rem;width=100%]"
+          ]
         }
       ],
       "type": "View?id=passenger-details;class=vertical;style:[padding=1rem;gap=1rem]"
     }
   ],
-  "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]",
-  "id": "booking-seat-passenger"
+  "id": "booking-seat-passenger",
+  "creation-date": 1654011294803,
+  "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]"
 }
