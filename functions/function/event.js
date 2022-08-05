@@ -27,16 +27,14 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
   // 'string'
   var events = toArray(controls.event), _events = ""
-  events.map(event => {
     
-    _events = event.split("{")[0]
-    event.split("{").slice(1).map(str => {
-      var num = str.split("}")[0]
+  _events = events[0].split("{")[0]
+  events[0].split("{").slice(1).map(str => {
+    var num = str.split("}")[0]
 
-      if (!isNaN(num) && num !== "" && parseFloat(num)) {
-        _events += `[${events[parseFloat(num)]}]${str.split("}")[1]}`
-      }
-    })
+    if (!isNaN(num) && num !== "" && parseInt(num)) {
+      _events += `[${events[parseInt(num)]}]${str.split("}")[1]}`
+    }
   })
 
   events = _events

@@ -1,6 +1,5 @@
 {
   "type": "View?id=tickets-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-tickets:()]:[tickets:()=_list];unreset-tickets:()=false;search-ticket:()=search-ticket:()||_map",
-  "id": "tickets-manager",
   "children": [
     {
       "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem",
@@ -58,19 +57,9 @@
           "type": "View?class=flexbox;style:[width=100%]",
           "children": [
             {
+              "type": "View?class=horizontal grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr]",
               "children": [
                 {
-<<<<<<< HEAD
-                  "controls": [
-                    {
-                      "event": "input?data()=data().toUpperCase();txt()=data()"
-                    }
-                  ],
-                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
-                },
-                {
-=======
->>>>>>> 7077a5e7f28e85c9821556e3e311fcf1427ab882
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase();txt()=data()"
@@ -104,6 +93,7 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                       "children": [
                         {
                           "type": "Text?id=ticket-date-text;class=flex align-center;if():[data().reservation-date]:[text=data().reservation-date.toDateFormat()];style:[fontSize=1.3rem]"
@@ -111,24 +101,21 @@
                         {
                           "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().reservation-date.del();prev().txt()=;parent().prev().click();input():travel-date.min()=null]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
+                      ]
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
-                      "type": "Input?id=travel-date;if():[data().reservation-date]:[input.min=data().reservation-date.toDateInputFormat()];path=travel-date;label.text=Travel Date;label.style.fontSize=1.3rem;input.type=date;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "change?data()=data().timestamp();txt():travel-date-text=data().toDateFormat()"
                         }
-                      ]
+                      ],
+                      "type": "Input?id=travel-date;if():[data().reservation-date]:[input.min=data().reservation-date.toDateInputFormat()];path=travel-date;label.text=Travel Date;label.style.fontSize=1.3rem;input.type=date;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                       "children": [
                         {
                           "type": "Text?id=travel-date-text;class=flex align-center;if():[data().travel-date]:[text=data().travel-date.toDateFormat()];style:[fontSize=1.3rem]"
@@ -136,17 +123,23 @@
                         {
                           "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().travel-date.del();prev().txt()=;parent().prev().click()]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
                 },
                 {
                   "type": "Input?id=ticket-status;path=status;label.text=Status;label.style.fontSize=1.3rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='collections:().ticket-status.status';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem]"
                 }
-              ],
-              "type": "View?class=horizontal grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr]"
+              ]
             },
             {
+              "children": [
+                {
+                  "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"
+                }
+              ],
               "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6",
               "controls": [
                 {
@@ -157,12 +150,6 @@
                 },
                 {
                   "event": "click?note():'Kindly fill any of the blanks!':danger?!search-ticket:().pnr;!search-ticket:().e-ticket;!search-ticket:().flight;!search-ticket:().name;!search-ticket:().reservation-date;!search-ticket:().travel-date"
-                }
-              ],
-              "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6",
-              "children": [
-                {
-                  "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"
                 }
               ]
             }
@@ -176,8 +163,9 @@
   ],
   "controls": [
     {
-      "event": "loaded??false",
-      "actions": "wait():search:[update:tickets-list]?search.collection=flight-reservation;search.field.status.equal=Confirmed;search.field.day.equal=todayStart().timestamp();if():[!user:().admin;!agent:().admin]:[search.field.user.equal=user:().id];if():[!user:().admin;!agent:().admin]:[search.field.agent.equal=agent:().id];wait():[tickets:()=().search.data.values()]"
+      "actions": "wait():search:[update:tickets-list]?search.collection=flight-reservation;search.field.status.equal=Confirmed;search.field.day.equal=todayStart().timestamp();if():[!user:().admin;!agent:().admin]:[search.field.user.equal=user:().id];if():[!user:().admin;!agent:().admin]:[search.field.agent.equal=agent:().id];wait():[tickets:()=().search.data.values()]",
+      "event": "loaded??false"
     }
-  ]
+  ],
+  "id": "tickets-manager"
 }

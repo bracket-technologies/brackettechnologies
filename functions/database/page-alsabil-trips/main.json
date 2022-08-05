@@ -1,8 +1,8 @@
 {
   "id": "main",
-  "path": "/",
+  "name": "main",
   "creation-date": 1658743048311,
-  "title": "Obeid Market",
   "view": "main",
-  "name": "main"
+  "title": "Alsabil Trips",
+  "path": "/"
 }

@@ -1,0 +1,200 @@
+{
+  "id": "new-payment",
+  "children": [
+    {
+      "type": "View?class=flex align-center;if():[!new-payment:()]:[new-payment:()=_map:created-by:[user:().id]:created-by-name:[user:().first-name+ +user:().last-name]:creation-date:[today().timestamp()]:day:todayStart():month:monthStart():year:yearStart():id:[gen():20]:payment-date:todayStart():payments:[_list:_map]];style:[minHeight=4rem;padding=0 1rem;borderLeft=3px solid blue;width=100%;backgroundColor=#f6f6f6]",
+      "children": [
+        {
+          "type": "Text?text=New Payment;style:[fontSize=2rem]"
+        }
+      ]
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "type": "Text?text=Upload Images;style:[fontSize=1.4rem]"
+            },
+            {
+              "children": [
+                {
+                  "type": "Icon?class=flexbox pointer;name=bi-download;style:[color=#666;fontSize=1.6rem;transition=.3s]"
+                },
+                {
+                  "type": "Input?class=pointer;input.type=file;multiple;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]",
+                  "controls": [
+                    {
+                      "event": "change?my-images:()=_list;files:()._():[fileReader():_:[my-images:().push():[result:()];update():'new-payment-images']]"
+                    }
+                  ]
+                }
+              ],
+              "type": "View?class=flexbox pointer;style:[borderRadius=.5rem;border=1px solid #ddd;overflow=hidden;position=relative;height=3rem;width=3.25rem;backgroundColor=#fff]"
+            }
+          ],
+          "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=1rem]"
+        },
+        {
+          "type": "View:new-payment-images?class=flexbox;style:[width=100%]",
+          "children": [
+            {
+              "children": [
+                {
+                  "type": "[View]?Data=my-images;class=flexbox;style:[maxHeight=if():[my-images:().len()>1]:[12.5rem]:35rem;width=100%;overflow=hidden]",
+                  "children": [
+                    {
+                      "type": "Image?src=data();style:[width=100%]"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?():image-viewer.style():[opacity=1;pointerEvents=auto];enlarge-image:()=data();update():image-viewer?false"
+                    }
+                  ]
+                }
+              ],
+              "type": "View?class=flexbox;style:[if():[my-images:().len()>1]:[display=grid];if():[my-images:().len()>2]:[gridTemplateColumns=1fr 1fr];gap=.5rem;width=100%;borderRadius=1rem;overflow=hidden;backgroundColor=#ddd;border=1px solid #ddd;gap=.1rem]?my-images:().len()>0"
+            }
+          ]
+        },
+        {
+          "type": "Input?input.value=data().market-name;label:[text=Trip Name;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem];#if():[data().market]:[droplist.items='my-markets:().():name';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem]]",
+          "controls": [
+            {
+              "event": "input??!data().market"
+            }
+          ]
+        },
+        {
+          "type": "Input?if():[!data().payment-date]:[data().payment-date=todayStart()];path=payment-date;input:[type=date;value=data().toDateInputFormat()];label:[text=Date;fontSize=1.2rem];style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]",
+          "controls": [
+            {
+              "event": "input?data()=data().timestamp()"
+            }
+          ]
+        },
+        {
+          "type": "View?class=vertical;style:[gap=1rem]",
+          "children": [
+            {
+              "type": "View?class=horizontal;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 8fr 2fr 1.5rem]",
+              "children": [
+                {
+                  "type": "Text?text=#;style:[color=#888;fontSize=1.2rem;flex=1]"
+                },
+                {
+                  "type": "Text?text=Description;style:[color=#888;fontSize=1.2rem;flex=1]"
+                },
+                {
+                  "type": "Text?text=Payment;style:[color=#888;fontSize=1.2rem;flex=1]"
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "type": "[View]?class=horizontal;path=payments-lbp;style:[display=grid;gap=.5rem;gridTemplateColumns=1.5rem 8fr 2fr 1.5rem]",
+                  "children": [
+                    {
+                      "type": "Text?class=flexbox;text=parent().mapIndex+1;style:[fontSize=1.3rem;flex=1]"
+                    },
+                    {
+                      "type": "Input?path=description;style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]"
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Input?if():[!data().payment]:[data().payment=0];path=payment;input:[type=number;value=data().divide():1000];class=payment-lbp;style:[width=100%;height=4rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem;color=blue];keyup:[data()=txt()*1000;update():'total-payment-lbp']"
+                        },
+                        {
+                          "type": "Text?class=flexbox;text=',000';style:[color=blue;fontSize=1.3rem]"
+                        }
+                      ],
+                      "type": "View?class=horizontal;style:[gap=.2rem]"
+                    },
+                    {
+                      "controls": [
+                        {
+                          "event": "click?Data().payments-lbp.pullItem():data();update():3rdParent();update():'total-payment-lbp'"
+                        }
+                      ],
+                      "type": "View?class=flexbox;style:[height=100%;width=100%]",
+                      "children": [
+                        {
+                          "type": "Icon?class=flexbox;name=remove;google.outlined;style:[fontSize=2rem;width=100%]"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "type": "View?class=vertical;style:[gap=1rem;flex=1]"
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "type": "Icon?name=add;google.outlined;style:[fontSize=2rem]"
+                    }
+                  ],
+                  "type": "View?class=flexbox",
+                  "controls": [
+                    {
+                      "event": "click?Data().payments-lbp.push():_map;update():[parent().prev()]"
+                    }
+                  ]
+                },
+                {
+                  "type": "View"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?class=flex;text=;style:[fontSize=1.3rem;color=blue;padding=.5rem];loaded:[data().total-payment-lbp=2ndParent().prev().children().():[className():'payment-lbp'.0.data().num()].sum();txt()=data().total-payment-lbp.price()]"
+                    }
+                  ],
+                  "type": "View:total-payment-lbp"
+                }
+              ],
+              "type": "View:total-new-payment?class=flexbox;style:[display=grid;width=100%;gap=.5rem;gridTemplateColumns=1.5rem 8fr 2fr 1.5rem;borderTop=1px solid #ddd;padding=1rem 0;height=5rem]"
+            }
+          ]
+        },
+        {
+          "type": "Input?path=note;textarea;label:[text=Notes;fontSize=1.2rem];style:[width=100%;minHeight=8rem;border=1px solid #ddd;fontSize=1.3rem;borderRadius=.5rem]"
+        },
+        {
+          "children": [
+            {
+              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=blue]",
+              "children": [
+                {
+                  "type": "Text?text=Confirm;style:[color=#fff;fontSize=1.4rem]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "click?loader.show;upload():[files=files:()]:[data().images.push():[().uploads.():[data.url]];save():[collection=payment;data=new-payment:()]:[my-trip:()._():[_.total-payments-lbp=[_.total-payments-lbp||0]+new-payment:().total-payment-lbp];save():[collection=trip;data=my-trip:()];#sellings:().push():[new-selling:().clone()];#update():selling-list;trips:().replaceItem():[my-trip:()].sort():[path=entry-date;descending];update():'trip-list';():new-trip.style():[opacity=0;pointerEvents=none];new-trip:().del();loader.hide]]?data().trip;data().payment-date"
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "type": "Text?text=Cancel;style:[color=#fff;fontSize=1.4rem]"
+                }
+              ],
+              "type": "View?class=flexbox;style:[width=100%;height=3.5rem;borderRadius=1.5rem;opacity=.8;backgroundColor=#888];click:[():new-payment.style():[opacity=0;pointerEvents=none]]"
+            }
+          ],
+          "type": "View?class=grid;style:[gap=5rem;gridTemplateColumns=1fr 1fr;marginTop=auto]"
+        }
+      ],
+      "type": "View?class=vertical;style:[flex=1;width=100%;gap=2rem;padding=2rem 0]"
+    }
+  ],
+  "creation-date": 1658765496074,
+  "type": "View:new-payment?Data=new-payment;class=vertical;style:[position=fixed;padding=1rem;top=0;left=0;right=0;bottom=0;overflowY=auto;opacity=0;pointerEvents=none;transition=.2s;backgroundColor=#fff;gap=2rem;zIndex=2]"
+}

@@ -1,20 +1,23 @@
 {
+  "id": "sellings",
   "creation-date": 1658779408265,
   "children": [
     {
+      "type": "View?class=flexbox;style:[width=100%;height=6rem;padding=1rem;gap=1rem;justifyContent=space-between]",
       "children": [
         {
           "type": "Text?class=flexbox;text=Sales;style:[height=3.5rem;padding=0 1rem;fontSize=2rem;borderLeft=3px solid blue]"
         },
         {
+          "type": "View?class=flexbox;style:[gap=1rem]",
           "children": [
             {
-              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]",
               "children": [
                 {
                   "type": "Icon?name=search;google.outlined;style:[color=#888;fontSize=2rem]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]"
             },
             {
               "controls": [
@@ -29,22 +32,29 @@
               ],
               "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]"
             }
-          ],
-          "type": "View?class=flexbox;style:[gap=1rem]"
+          ]
         }
-      ],
-      "type": "View?class=flexbox;style:[width=100%;height=6rem;padding=1rem;gap=1rem;justifyContent=space-between]"
+      ]
     },
     {
+      "controls": [
+        {
+          "event": "loaded?if():[!market-sellings:()]:[search():[collection=selling]:[sellings:()=().search.data.values().sort():[path=selling-date;descending];update():selling-list]]:[market-sellings:()=false]"
+        }
+      ],
+      "type": "View:selling-list?class=vertical;style:[width=100%;gap=1rem;backgroundColor=#eee;minHeight=100vh]",
       "children": [
         {
+          "type": "View?class=vertical;style:[width=100%;gap=1rem;paddingTop=1rem;paddingBottom=7rem]?sellings:().len()>0",
           "children": [
             {
+              "type": "[View]?Data=sellings;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]",
               "children": [
                 {
                   "type": "View?class=flex vertical;style:[width=100%;gap=1rem]",
                   "children": [
                     {
+                      "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between]",
                       "children": [
                         {
                           "type": "Text?text=data().market-name;class=flexbox;style:[fontSize=1.8rem;color=blue;height=3rem]"
@@ -52,8 +62,7 @@
                         {
                           "type": "Text?text=data().total-price.price()+' L.L';class=flexbox;style:[fontSize=1.8rem;color=red;height=3rem]"
                         }
-                      ],
-                      "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between]"
+                      ]
                     },
                     {
                       "children": [
@@ -106,8 +115,10 @@
                       "type": "View?class=vertical;style:[gap=.5rem;width=100%;transition=.2s;overflow=hidden]"
                     },
                     {
+                      "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between;borderTop=1px solid #ddd;padding=.5rem]",
                       "children": [
                         {
+                          "type": "View?class=horizontal;style:[gap=.5rem]",
                           "children": [
                             {
                               "type": "Text?text=Date:;style:[fontSize=1.3rem;color=#888]?false"
@@ -115,8 +126,7 @@
                             {
                               "type": "Text?text=data().selling-date.toDateFormat();style:[fontSize=1.3rem;color=#888]"
                             }
-                          ],
-                          "type": "View?class=horizontal;style:[gap=.5rem]"
+                          ]
                         },
                         {
                           "children": [
@@ -129,18 +139,13 @@
                           ],
                           "type": "View?class=horizontal;style:[gap=.5rem]"
                         }
-                      ],
-                      "type": "View?class=flexbox;style:[width=100%;justifyContent=space-between;borderTop=1px solid #ddd;padding=.5rem]"
+                      ]
                     },
                     {
+                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]",
                       "children": [
                         {
                           "type": "View?class=horizontal;style:[gap=.5rem;paddding=.5rem];closed=false",
-                          "controls": [
-                            {
-                              "event": "click?html2pdf():[view=parent().parent().parent();size=A6]"
-                            }
-                          ],
                           "children": [
                             {
                               "type": "Icon?name=receipt_long;google.outlined;style:[fontSize=1.8rem]"
@@ -148,10 +153,14 @@
                             {
                               "type": "Text?text=Receipt;style:[fontSize=1.3rem]"
                             }
+                          ],
+                          "controls": [
+                            {
+                              "event": "click?html2pdf():[view=parent().parent().parent();size=A6]"
+                            }
                           ]
                         },
                         {
-                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem]",
                           "children": [
                             {
                               "type": "Icon?name=share;google.outlined;style:[fontSize=1.8rem]"
@@ -160,32 +169,23 @@
                               "type": "Text?text=Share;style:[fontSize=1.3rem]"
                             }
                           ],
+                          "type": "View?class=horizontal;style:[gap=.5rem;padding=.5rem]",
                           "controls": [
                             {
                               "event": "click?share():[text='Market: '+data().market-name+' | Price: '+data().total-price.price()+' L.L. | Date: '+data().selling-date.toDateInputFormat()+' | Seller: '+data().created-by-name]"
                             }
                           ]
                         }
-                      ],
-                      "type": "View?class=flexbox;style:[justifyContent=space-between;paddingTop=.5rem]"
+                      ]
                     }
                   ]
                 }
-              ],
-              "type": "[View]?Data=sellings;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]"
+              ]
             }
-          ],
-          "type": "View?class=vertical;style:[width=100%;gap=1rem;paddingTop=1rem;paddingBottom=7rem]?sellings:().len()>0"
-        }
-      ],
-      "type": "View:selling-list?class=vertical;style:[width=100%;gap=1rem;backgroundColor=#eee;minHeight=100vh]",
-      "controls": [
-        {
-          "event": "loaded?if():[!market-sellings:()]:[search():[collection=selling]:[sellings:()=().search.data.values().sort():[path=selling-date;descending];update():selling-list]]:[market-sellings:()=false]"
+          ]
         }
       ]
     }
   ],
-  "type": "View:sellings?if():[!sellings:()]:[sellings:()=_list]",
-  "id": "sellings"
+  "type": "View:sellings?if():[!sellings:()]:[sellings:()=_list]"
 }

@@ -1,0 +1,108 @@
+{
+  "controls": [
+    {
+      "event": "loaded?search():[collection=user;doc=getCookie():_id]:[user:()=().search.data;if():[!user:()]:[route():login];update():user-name]?getCookie():_id"
+    },
+    {
+      "event": "loaded?route():login?!getCookie():_id"
+    }
+  ],
+  "children": [
+    {
+      "type": "View?class=flexbox;style:[width=100%;height=4rem;backgroundColor=blue;position=sticky;top=0;justifyContent=space-between;padding=0 1rem]",
+      "children": [
+        {
+          "type": "Icon?class=flexbox;name=menu;google.outlined;style:[fontSize=2.4rem;color=#fff;margin=auto 0]"
+        },
+        {
+          "type": "Text?text=Alsabil Trips;style:[fontSize=2rem;color=#fff;fontWeight=bold;position=absolute;width=16rem;left=calc(50vw - 8rem)]"
+        },
+        {
+          "type": "View:user-name?class=flexbox;style:[gap=1rem]",
+          "children": [
+            {
+              "type": "Icon?name=person;style:[fontSize=2rem;color=#fff]?!user:()"
+            },
+            {
+              "controls": [
+                {
+                  "event": "click:droplist?eraseCookie():_id;route():login?droplist-txt:()=Logout"
+                }
+              ],
+              "type": "Text?text=Hi, +user:().first-name.split(): .0;style:[fontSize=1.4rem;color=#fff];droplist:[items=_list:Profile:Logout;item.style:[fontSize=1.4rem;minHeight=3.5rem]]?user:()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "View:main-view"
+    },
+    {
+      "children": [
+        {
+          "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200];timer():[toggleView():[parent=main-view;view=gallery]]:400]",
+          "children": [
+            {
+              "type": "Icon?name=photo_library;google.outlined;style:[fontSize=3rem;color=#888;transition=.2s]"
+            },
+            {
+              "type": "Text?text=Gallery;style:[fontSize=1.1rem;color=#888;transition=.2s]"
+            }
+          ]
+        },
+        {
+          "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200];timer():[toggleView():[parent=main-view;view=payments]]:400]",
+          "children": [
+            {
+              "type": "Icon?name=receipt_long;google.outlined;style:[fontSize=3rem;color=#888;transition=.2s]"
+            },
+            {
+              "type": "Text?text=Payments;style:[fontSize=1.1rem;color=#888;transition=.2s]"
+            }
+          ]
+        },
+        {
+          "type": "View:payments-btn?class=flexbox vertical;style:[flex=1;transition=.2s];click:[installApp();siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200];timer():[toggleView():[parent=main-view;view=trips]]:400]",
+          "children": [
+            {
+              "type": "Icon?name=mode_of_travel;google.outlined;style:[fontSize=3rem;color=#888;transition=.2s]"
+            },
+            {
+              "type": "Text?text=Trips;style:[fontSize=1.1rem;color=#888;transition=.2s]"
+            }
+          ]
+        },
+        {
+          "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200];timer():[toggleView():[parent=main-view;view=income]]:400]",
+          "children": [
+            {
+              "type": "Icon?name=payments;google.outlined;style:[fontSize=3rem;color=#888;transition=.2s]"
+            },
+            {
+              "type": "Text?text=Income;style:[fontSize=1.1rem;color=#888;transition=.2s]"
+            }
+          ]
+        },
+        {
+          "type": "View?class=flexbox vertical;style:[flex=1;transition=.2s];click:[siblings().():[children().():[style().color=#888]];children().():[style().color=blue;timer():[style().transform=scale(1.2)]:0;timer():[style().transform=scale(1)]:200];timer():[toggleView():[parent=main-view;view=savings]]:400]",
+          "children": [
+            {
+              "type": "Icon?name=backpack;google.outlined;style:[fontSize=3rem;color=#888;transition=.2s]"
+            },
+            {
+              "type": "Text?text=Packages;style:[fontSize=1.1rem;color=#888;transition=.2s]"
+            }
+          ]
+        }
+      ],
+      "type": "View:bottom-navbar?class=box-shadow-1 grid;style:[position=fixed;height=6rem;width=100%;backgroundColor=#f6f6f6;padding=0 1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;bottom=0;left=0;right=0;zIndex=1;opacity=0];loaded:[timer():[style().opacity=1]:600]"
+    },
+    {
+      "type": "View?view=new-payment"
+    }
+  ],
+  "id": "main",
+  "creation-date": 1658743048312,
+  "type": "View:main?style:[position=relative]?mobile()"
+}

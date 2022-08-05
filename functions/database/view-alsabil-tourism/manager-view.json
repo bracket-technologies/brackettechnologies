@@ -1,5 +1,4 @@
 {
-  "id": "manager-view",
   "creation-date": 0,
   "children": [
     {
@@ -24,5 +23,6 @@
       "type": "View?view=refunds-manager?)(:opened-manager=refunds-manager"
     }
   ],
-  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]"
+  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]",
+  "id": "manager-view"
 }

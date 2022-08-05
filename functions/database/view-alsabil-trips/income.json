@@ -1,4 +1,7 @@
 {
+  "id": "income",
+  "creation-date": 1659451967287,
+  "type": "View:products?if():[!products:()]:[products:()=_list]",
   "children": [
     {
       "children": [
@@ -6,17 +9,17 @@
           "type": "Text?class=flexbox;text=Products;style:[height=3.5rem;padding=0 1rem;fontSize=2rem;borderLeft=3px solid blue]"
         },
         {
+          "type": "View?class=flexbox;style:[gap=1rem]",
           "children": [
             {
+              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]",
               "children": [
                 {
                   "type": "Icon?name=search;google.outlined;style:[color=#888;fontSize=2rem]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]"
+              ]
             },
             {
-              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]",
               "children": [
                 {
                   "type": "Icon?name=add;google.outlined;style:[color=#888;fontSize=2rem]"
@@ -26,10 +29,10 @@
                 {
                   "event": "click?update():new-product;():new-product.style():[opacity=1;pointerEvents=auto]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[height=3.5rem;width=3.5rem;border=1px solid #ddd;borderRadius=.5rem]"
             }
-          ],
-          "type": "View?class=flexbox;style:[gap=1rem]"
+          ]
         }
       ],
       "type": "View?class=flexbox;style:[width=100%;height=6rem;padding=1rem;gap=1rem;justifyContent=space-between]"
@@ -38,17 +41,17 @@
       "type": "View:product-list?class=vertical;style:[width=100%;gap=1rem;backgroundColor=#eee;minHeight=100vh]",
       "children": [
         {
-          "type": "View?class=vertical;style:[display=grid;gridTemplateColumns=1fr 1fr;width=100%;gap=1rem;paddingTop=1rem;paddingBottom=7rem]?products:().len()>0",
           "children": [
             {
+              "type": "[View]?Data=products;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]",
               "children": [
                 {
                   "type": "View?class=flex vertical;style:[width=100%;gap=1rem]"
                 }
-              ],
-              "type": "[View]?Data=products;class=flex vertical;style:[gap=1rem;padding=1rem;width=100%;backgroundColor=#fff]"
+              ]
             }
-          ]
+          ],
+          "type": "View?class=vertical;style:[display=grid;gridTemplateColumns=1fr 1fr;width=100%;gap=1rem;paddingTop=1rem;paddingBottom=7rem]?products:().len()>0"
         }
       ],
       "controls": [
@@ -57,8 +60,5 @@
         }
       ]
     }
-  ],
-  "type": "View:products?if():[!products:()]:[products:()=_list]",
-  "creation-date": 1659451967287,
-  "id": "products"
+  ]
 }
