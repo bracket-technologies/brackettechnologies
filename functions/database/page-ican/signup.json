@@ -1,8 +1,8 @@
 {
+  "title": "iCAN 2022 | Signup",
   "view": "signup",
-  "name": "Signup",
   "path": "/signup",
-  "creation-date": 1658182956197,
   "id": "signup",
-  "title": "iCAN 2022 | Signup"
+  "name": "Signup",
+  "creation-date": 1658182956197
 }

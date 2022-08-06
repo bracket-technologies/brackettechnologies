@@ -13,7 +13,6 @@ const update = ({ id, update = {} }) => {
   var views = window.views
   var global = window.global
   var view = views[id]
-  var timer = update.timer || 0
   
   if (!view || !view.element) return
 
@@ -82,7 +81,7 @@ const update = ({ id, update = {} }) => {
     views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
   })*/
   
-  view.update = { view: views[id], message: "View updated succefully!", success: true }
+  view.update = global.update = { view: views[id], message: "View updated successfully!", success: true }
 }
 
 const removeChildren = ({ id }) => {

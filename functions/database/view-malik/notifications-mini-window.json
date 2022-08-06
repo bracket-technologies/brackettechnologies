@@ -1,4 +1,5 @@
 {
+  "type": "View?id=notifications-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
   "id": "notifications-mini-window",
   "children": [
     {
@@ -13,42 +14,42 @@
               "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto",
               "children": [
                 {
-                  "children": [
-                    {
-                      "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
-                    }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-notifications;!)(:notifications-edit-readonly",
                   "controls": [
                     {
                       "actions": "wait():erase:[update:notifications-manager-list]?erase.collection=notifications;erase.doc=notifications-data:().id;wait():[():notifications-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];new-notifications:().del()]",
                       "event": "click?notifications:().[notifications-data:().id].del()?false"
                     }
-                  ]
+                  ],
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
+                    }
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-notifications;!)(:notifications-edit-readonly"
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:notifications-edit-readonly",
                   "children": [
                     {
                       "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
                     }
                   ],
+                  "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:notifications-edit-readonly",
                   "controls": [
                     {
-                      "event": "click?)(:notifications.[)(:notifications-data.id]=)(:notifications-data;)(:new-notifications.del()",
-                      "actions": "async():save:note:[update:notifications-manager-list:200]?note.text=تم حفظ الإشعار بنجاح;save.collection=resources-notifications;save.doc=)(:notifications-data.id;save.data=)(:notifications-data;async():[():notifications-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1]]"
+                      "actions": "async():save:note:[update:notifications-manager-list:200]?note.text=تم حفظ الإشعار بنجاح;save.collection=resources-notifications;save.doc=)(:notifications-data.id;save.data=)(:notifications-data;async():[():notifications-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1]]",
+                      "event": "click?)(:notifications.[)(:notifications-data.id]=)(:notifications-data;)(:new-notifications.del()"
                     }
                   ]
                 },
                 {
-                  "children": [
-                    {
-                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.8rem"
-                    }
-                  ],
                   "controls": [
                     {
                       "event": "click?():notifications-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:notifications-data.del();)(:new-notifications.del()"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.8rem"
                     }
                   ],
                   "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s"
@@ -80,24 +81,24 @@
                       "type": "Input?style.width=100%;style.height=4rem;label.text=تاريخ التسجيل;label.location=outside;readonly;input.value=data().creation-date.toSimplifiedDateTimeAr();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
                     },
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;path=active;input.value=if():[data().active]:فعّال.else():غير فعّال;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[)(:notifications-edit-readonly]:[droplist.readonly=true]",
                       "controls": [
                         {
                           "watch": "data()?data()=if():[txt()=فعّال]:true:false"
                         }
-                      ]
+                      ],
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;path=active;input.value=if():[data().active]:فعّال.else():غير فعّال;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[)(:notifications-edit-readonly]:[droplist.readonly=true]"
                     }
                   ]
                 }
               ]
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=عنوان الإشعار;label.location=outside;path=title;data()=رسالة;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_list:عطل:تركيب:صيانة:رسالة;droplist.align=right;if():[)(:notifications-edit-readonly]:[droplist.readonly=true]",
@@ -116,41 +117,37 @@
                     {
                       "type": "Input?textarea;style.width=100%;style.minHeight=8rem;label.text=نص الإشعار;label.location=outside;path=text;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:notifications-edit-readonly]:[readonly=true]"
                     }
-                  ],
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem"
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;tooltip.text=رمز المستخدمين;style.fontSize=1.5rem;text=المرسل إليهم;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?class=flex column;path=receivers",
                   "children": [
                     {
-                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                       "children": [
                         {
-                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
                           "children": [
                             {
+                              "type": "Input?style.width=100%;style.height=4rem;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[notifications-edit-readonly:()]:[readonly=true]",
                               "controls": [
                                 {
                                   "event": "input?data().del()?!data()"
                                 },
                                 {
-                                  "event": "click?members-data:()=members:().values().find():[id=data()];members-edit-readonly:()=true;new-members:().del();members-copied:().del()?data();data().len()=20;members:().values().find():[id=data()];notifications-edit-readonly:()",
-                                  "actions": "update:members-mini-window?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+                                  "actions": "update:members-mini-window?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
+                                  "event": "click?members-data:()=members:().values().find():[id=data()];members-edit-readonly:()=true;new-members:().del();members-copied:().del()?data();data().len()=20;members:().values().find():[id=data()];notifications-edit-readonly:()"
                                 },
                                 {
-                                  "actions": "wait():search?search.collection=resources-members;search.doc=data();wait():[members:().[().search.data.id]=().search.data;click()]",
-                                  "event": "click??!members:().values().find():[id=data()];notifications-edit-readonly:();data();data().len()=20"
+                                  "event": "click??!members:().values().find():[id=data()];notifications-edit-readonly:();data();data().len()=20",
+                                  "actions": "wait():search?search.collection=resources-members;search.doc=data();wait():[members:().[().search.data.id]=().search.data;click()]"
                                 }
-                              ],
-                              "type": "Input?style.width=100%;style.height=4rem;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[notifications-edit-readonly:()]:[readonly=true]"
+                              ]
                             },
                             {
                               "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
@@ -164,7 +161,8 @@
                                 }
                               ]
                             }
-                          ]
+                          ],
+                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
                         },
                         {
                           "type": "View?class=flex;style.gap=1rem",
@@ -172,30 +170,36 @@
                             {
                               "controls": [
                                 {
-                                  "event": "click?Data().receivers.push():_string?Data().receivers.len()>0;!notifications-edit-readonly:()",
-                                  "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:receivers:[Data().receivers.len()-1];insert.index=parent().parent().children().len()-1"
+                                  "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:receivers:[Data().receivers.len()-1];insert.index=parent().parent().children().len()-1",
+                                  "event": "click?Data().receivers.push():_string?Data().receivers.len()>0;!notifications-edit-readonly:()"
                                 }
                               ],
                               "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex column;path=receivers"
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;tooltip.text=رمز المستخدمين;style.fontSize=1.5rem;text=قرأ الرسالة;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
+                  "type": "View?class=flex column;path=readBy",
                   "children": [
                     {
                       "children": [
                         {
+                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
                           "children": [
                             {
                               "controls": [
@@ -225,31 +229,28 @@
                                 }
                               ]
                             }
-                          ],
-                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
+                          ]
                         },
                         {
                           "type": "View?class=flex;style.gap=1rem",
                           "children": [
                             {
-                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                               "controls": [
                                 {
-                                  "event": "click?Data().readBy.push():_string?Data().readBy.len()>0;!notifications-edit-readonly:()",
-                                  "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:readBy:[Data().readBy.len()-1];insert.index=parent().parent().children().len()-1"
+                                  "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:readBy:[Data().readBy.len()-1];insert.index=parent().parent().children().len()-1",
+                                  "event": "click?Data().readBy.push():_string?Data().readBy.len()>0;!notifications-edit-readonly:()"
                                 }
-                              ]
+                              ],
+                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                             }
                           ]
                         }
                       ],
                       "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
                     }
-                  ],
-                  "type": "View?class=flex column;path=readBy"
+                  ]
                 }
-              ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              ]
             },
             {
               "children": [
@@ -271,9 +272,9 @@
                       ]
                     },
                     {
-                      "type": "[View]?style.gapRow=2rem;style.gapColumn=1rem;style.width=100%;style.display=grid",
                       "children": [
                         {
+                          "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                           "children": [
                             {
                               "type": "Input?style.width=100%;style.height=4rem;path=user;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[)(:notifications-edit-readonly]:[readonly=true]"
@@ -297,17 +298,17 @@
                                   "type": "Icon?class=flexbox pointer;style.marginBottom=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                                   "controls": [
                                     {
-                                      "event": "click??Data().comments.len().greater():1;!)(:notifications-edit-readonly",
-                                      "actions": "remove:[parent().parent().id]"
+                                      "actions": "remove:[parent().parent().id]",
+                                      "event": "click??Data().comments.len().greater():1;!)(:notifications-edit-readonly"
                                     }
                                   ]
                                 }
                               ]
                             }
-                          ],
-                          "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                          ]
                         }
-                      ]
+                      ],
+                      "type": "[View]?style.gapRow=2rem;style.gapColumn=1rem;style.width=100%;style.display=grid"
                     }
                   ]
                 }
@@ -321,41 +322,40 @@
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=ملاحظات;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?textarea;style.width=100%;style.height=8rem;path=note;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[notifications-edit-readonly:()]:[readonly=true];style.border=1px solid #ccc"
                     }
-                  ]
+                  ],
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
                 }
               ]
             }
           ]
         },
         {
+          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem",
           "children": [
             {
+              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!)(:notifications-edit-readonly",
               "controls": [
                 {
                   "actions": "wait():save:note:[update:notifications-manager-list:200]?note.text=تم حفظ الإشعار بنجاح;save.collection=notifications;save.doc=)(:notifications-data.id;save.data=)(:notifications-data;wait():[():notifications-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1]]",
                   "event": "click?)(:notifications.[)(:notifications-data.id]=)(:notifications-data;)(:new-notifications.del()"
                 }
-              ],
-              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!)(:notifications-edit-readonly"
+              ]
             },
             {
-              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s",
               "controls": [
                 {
                   "event": "click?():notifications-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=zIndex-counter-1:();zIndex=1];notifications-data:().del();)(:new-notifications.del()"
                 }
-              ]
+              ],
+              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s"
             }
-          ],
-          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem"
+          ]
         }
       ]
     }
-  ],
-  "type": "View?id=notifications-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0"
+  ]
 }

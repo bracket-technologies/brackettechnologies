@@ -1,8 +1,8 @@
 {
-  "view": "login",
-  "name": "Login",
-  "id": "login",
+  "creation-date": 1658174664282,
   "path": "/login",
-  "title": "iCAN 2022 | Login",
-  "creation-date": 1658174664282
+  "id": "login",
+  "name": "Login",
+  "view": "login",
+  "title": "iCAN 2022 | Login"
 }

@@ -1016,7 +1016,7 @@ module.exports = (component) => {
                     }, {
                         event: "keyup?():droplist.children().[)(:keyup-index].mouseleave();)(:keyup-index=if():[e().keyCode=40]:[)(:keyup-index+1]:[)(:keyup-index-1];():droplist.children().[)(:keyup-index].mouseenter()?e().keyCode=40||e().keyCode=38;)(:droplist-positioner;if():[e().keyCode=38]:[)(:keyup-index>0].elif():[e().keyCode=40]:[)(:keyup-index<next().droplist.items.lastIndex()]"
                     }, {
-                        event: "keyup?insert-index:()=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;if():[data().type()=string]:[data()=_array];if():[path().lastEl()=children]:[data().push():[_map:type:_string];log():data():path()];if():[path().lastEl()=controls]:[data().push():[_map:event:_string]];parent-id:()=parent().parent().id;timer():[():[parent-id:()].update.view.inputs().2.focus()]:0;update():[parent().parent()]?e().key=Enter;ctrlKey:();path().lastEl()=controls||path().lastEl()=children"
+                        event: "keyup?insert-index:()=3rdParent().children().findIndex():[id=parent().parent().id]+1;if():[data().type()=string]:[data()=_list];if():[path().lastEl()=children]:[data().push():[_map:type:_string]];if():[path().lastEl()=controls]:[data().push():[_map:event:_string]];update():2ndParent();update:().view.inputs().lastEl().focus()?e().key=Enter;ctrlKey:();path().lastEl()=controls||path().lastEl()=children"
                     }]
                 }, {
                     type: "Text?text=path().lastElement();class=flex-box;#mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?parent().parent().parent().data().type()=array"
@@ -2760,8 +2760,8 @@ const droplist = ({ id, e, droplist: params = {} }) => {
           event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault`,//;)(:droplist-positioner=${id}
           actions: [ // :[focus:${input_id}]
             `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-            `wait():[update:[():${id}.parent().parent().id]]?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;():${id}.parent().parent().parent().data().type()=map]:[_array:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_array.elif():[txt()=map]:[_map:_string:_string];)(:parent-id=():${id}.parent().parent().id;wait():[)(:break-loop=false;():[)(:parent-id].getInputs()._():[if():[!)(:break-loop;!_.txt()||_.txt().num()=0]:[_.focus();)(:break-loop=true]]];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];)(:droplist-positioner.del()?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
-            `droplist:${id}?)(:droplist-search-txt=():${id}.getInput().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
+            `?if():[txt()=array||txt()=map]:[)(:opened-maps.push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;3rdParent():${id}.data().type()=map]:[_list:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;3rdParent():${id}.data().type()=map]:[_list:[_map:type:_string]].elif():[txt()=children]:[_map:type:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:_list.elif():[txt()=map]:[_map:_string:_string];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];droplist-positioner:().del();my-parent:()=2ndParent():${id};update():[2ndParent():${id}];().quit=false;my-parent:().inputs().():[if():[!().quit;!txt()||txt()=0]:[focus();().quit=true]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
+            `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
           ]
         }]
       }
@@ -4721,7 +4721,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
     || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
     || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()"
-    || path0 === "replaceItem()")) {
+    || path0 === "replaceItem()" || path0 === "grandParent()" || path0 === "grandChild()" || path0 === "grandChildren()" || path0 === "open()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -5135,24 +5135,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "parent()") {
 
-            var _o, _parent, _params = {}
-            if (args[1]) {
+          var _o, _parent, _params = {}
+          if (args[1]) {
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+            if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+            _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
 
-            } else _o = o
+          } else _o = o
 
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            if (typeof _o === "object") {
+          if (typeof _o === "string" && views[_o]) _o = views[_o]
+          if (typeof _o === "object") {
 
-              if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
-              else _parent = views[_o.parent]
-            }
+            if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
+            else _parent = views[_o.parent]
+          }
+          
+          answer = _parent
             
-            answer = _parent
-            
-        } else if (k0 === "2ndParent()") {
+        } else if (k0 === "2ndParent()" || k0 === "grandParent()") {
 
           var _o, _parent, _params = {}
           if (args[1]) {
@@ -5439,7 +5439,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         var _id = previousSibling.id
         answer = views[_id]
 
-    } else if (k0 === "1stChild()") {// o could be a string or element or view
+    } else if (k0 === "1stChild()" || k0 === "child()") {// o could be a string or element or view
             
             var _o, _params = {}
             if (args[1]) {
@@ -5459,7 +5459,51 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (views[_id]) answer = views[_id]
             else answer = views[_id] = { id: _id, element: _o.element.children[0] }
             
-        } else if (k0 === "2ndChild()") {// o could be a string or element or view
+        } else if (k0 === "grandChild()") {
+            
+          var _o, _params = {}
+          if (args[1]) {
+
+              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+
+          } else _o = o
+
+          if (typeof _o === "string" && views[_o]) _o = views[_o]
+          else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
+          
+          if (!_o.element) return
+          if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
+          var _id = _o.element.children[0].children[0].id
+          
+          if (views[_id]) answer = views[_id]
+          else answer = views[_id] = { id: _id, element: _o.element.children[0].children[0] }
+          
+      } else if (k0 === "grandChildren()") {
+            
+        var _o, _params = {}
+        if (args[1]) {
+
+            if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+            _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+
+        } else _o = o
+
+        if (typeof _o === "string" && views[_o]) _o = views[_o]
+        else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
+        
+        if (!_o.element) return
+        if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
+        var _children = [..._o.element.children[0].children]
+        
+        var _views = []
+        _children.map(child => {
+          _views.push(views[child.id])
+        })
+
+        answer = _views
+        
+    } else if (k0 === "2ndChild()") {// o could be a string or element or view
             
             var _o, _params = {}
             if (args[1]) {
@@ -7680,7 +7724,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = o !== undefined ? true : false
             
-        } else if (k0 === "removeMapping()") {
+        } else if (k0 === "open()") {
+            
+          var _url
+          if (args[1]) _url = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+          else _url = o
+          window.open(_url)
+          
+      } else if (k0 === "removeMapping()") {
             
             if (o.type.slice(0, 1) === "[") {
                 var _type = o.type.slice(1).split("]")[0]
@@ -7930,7 +7981,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                             pdf.setPage(i)
                             pdf.setFontSize(9)
                             pdf.setTextColor(150)
-                            pdf.text('Page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.09), (pdf.internal.pageSize.getHeight() - 0.08))
+                            pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.09), (pdf.internal.pageSize.getHeight() - 0.08))
                           }
                         }).save().then(() => {
 
@@ -11196,7 +11247,6 @@ const update = ({ id, update = {} }) => {
   var views = window.views
   var global = window.global
   var view = views[id]
-  var timer = update.timer || 0
   
   if (!view || !view.element) return
 
@@ -11265,7 +11315,7 @@ const update = ({ id, update = {} }) => {
     views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
   })*/
   
-  view.update = { view: views[id], message: "View updated succefully!", success: true }
+  view.update = global.update = { view: views[id], message: "View updated successfully!", success: true }
 }
 
 const removeChildren = ({ id }) => {

@@ -1,40 +1,40 @@
 {
   "id": "networks-views",
-  "type": "View?id=networks-views;class=flex column;style.gap=.2rem",
   "children": [
     {
       "children": [
         {
+          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
           "children": [
             {
+              "type": "View?class=flexbox;style.height=100%;style.width=100%",
               "children": [
                 {
-                  "children": [
-                    {
-                      "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
-                    }
-                  ],
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "controls": [
                     {
                       "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():networks-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():networks-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
                     }
+                  ],
+                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                  "children": [
+                    {
+                      "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                    }
                   ]
                 }
-              ],
-              "type": "View?class=flexbox;style.height=100%;style.width=100%"
+              ]
             },
             {
               "type": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "event": "click",
-                      "actions": "sort;update:networks-list-view?sort.Data=networks;sort.path=active"
+                      "actions": "sort;update:networks-list-view?sort.Data=networks;sort.path=active",
+                      "event": "click"
                     }
-                  ]
+                  ],
+                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
@@ -47,18 +47,18 @@
               ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
+                  "type": "Text?class=ar pointer;text=إسم الشبكة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "actions": "sort;update:networks-list-view?sort.Data=networks;sort.path=name",
-                      "event": "click"
+                      "event": "click",
+                      "actions": "sort;update:networks-list-view?sort.Data=networks;sort.path=name"
                     }
-                  ],
-                  "type": "Text?class=ar pointer;text=إسم الشبكة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "type": "View?class=flex align-center",
@@ -67,8 +67,8 @@
                   "type": "Text?class=flexbox pointer;style.color=#888;style.fontWeight=bold;style.fontSize=1.3rem;text=الحالة",
                   "controls": [
                     {
-                      "actions": "sort;update:networks-list-view?sort.Data=networks;sort.path=status",
-                      "event": "click"
+                      "event": "click",
+                      "actions": "sort;update:networks-list-view?sort.Data=networks;sort.path=status"
                     }
                   ]
                 }
@@ -80,8 +80,8 @@
                 {
                   "controls": [
                     {
-                      "event": "click",
-                      "actions": "async():sort:[update:networks-list-view]?sort.Data=networks;sort.path=type"
+                      "actions": "async():sort:[update:networks-list-view]?sort.Data=networks;sort.path=type",
+                      "event": "click"
                     }
                   ],
                   "type": "Text?class=ar pointer;text=نوع الخدمة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
@@ -89,26 +89,26 @@
               ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الخدمة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
                       "actions": "async():sort:[update:networks-list-view]?sort.Data=networks;sort.path=service",
                       "event": "click"
                     }
-                  ]
+                  ],
+                  "type": "Text?class=ar pointer;text=الخدمة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=الأجهزة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
               "type": "View?class=flex align-center",
@@ -138,18 +138,17 @@
               "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
               "children": [
                 {
+                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
                   "controls": [
                     {
-                      "event": "click?if():[():networks-remove-all-popup.style().pointerEvents=none]:[():networks-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():networks-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
-                      "actions": "setPosition:networks-remove-all-popup?position.placement=right;position.positioner=().id"
+                      "actions": "setPosition:networks-remove-all-popup?position.placement=right;position.positioner=().id",
+                      "event": "click?if():[():networks-remove-all-popup.style().pointerEvents=none]:[():networks-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():networks-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
                     }
-                  ],
-                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
+                  ]
                 }
               ]
             }
-          ],
-          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden"
+          ]
         },
         {
           "children": [
@@ -158,14 +157,14 @@
                 {
                   "children": [
                     {
-                      "children": [
-                        {
-                          "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
-                        }
-                      ],
                       "controls": [
                         {
                           "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():networks-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                         }
                       ],
                       "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
@@ -179,8 +178,8 @@
                       "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00:#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
                       "controls": [
                         {
-                          "actions": "save?save.collection=resources-networks;save.doc=data().id;save.data=data()",
-                          "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50"
+                          "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50",
+                          "actions": "save?save.collection=resources-networks;save.doc=data().id;save.data=data()"
                         }
                       ]
                     }
@@ -188,20 +187,20 @@
                   "type": "View?class=flex align-center"
                 },
                 {
-                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
                     },
                     {
-                      "type": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0",
                       "controls": [
                         {
                           "event": "click?copyToClipBoard():[data().id]"
                         }
-                      ]
+                      ],
+                      "type": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0"
                     }
                   ],
+                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
                   "controls": [
                     {
                       "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
@@ -227,7 +226,6 @@
                   "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style.backgroundColor=#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem",
                       "children": [
                         {
                           "type": "View?class=flexbox;style.backgroundColor=#444;style.height=1rem;style.width=1rem;style.borderRadius=1rem"
@@ -235,7 +233,8 @@
                         {
                           "type": "Text?style.fontSize=1.2rem;style.fontWeight=bold;text=data().status"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox pointer;style.backgroundColor=#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem"
                     }
                   ]
                 },
@@ -256,12 +255,12 @@
                   "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flex align-center devices-in-network pointer;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=[data().devices.len()||0].ar();style:[padding=.5rem;borderRadius=.5rem;transition=.2s];hover.style:[backgroundColor=#ddd;color=blue]?data().devices.len()>0;devices:().find():[id.in():[data().devices]]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center devices-in-network pointer;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
                   "children": [
@@ -275,6 +274,7 @@
                   "type": "View?class=flex align-center stations stations-in-network;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
                 },
                 {
+                  "type": "View?class=flex align-center centers centers-in-network;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=[data().centers.len()||0].ar()"
@@ -282,10 +282,10 @@
                     {
                       "type": "[Text]?style.fontSize=1.4rem;data=centers:().filter():[id.in():[data().centers]].():name;Data;tooltip.text=عرض المركز;hover.style.color=#000;hover.style.fontWeight=bold;style.transition=.3s;style.cursor=pointer?data().centers.len()>0;centers:().find():[id.in():[data().centers]]"
                     }
-                  ],
-                  "type": "View?class=flex align-center centers centers-in-network;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
+                  ]
                 },
                 {
+                  "type": "View?class=flex align-center managers members-in-network;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=[data().managers.len()||0].ar()"
@@ -293,19 +293,18 @@
                     {
                       "type": "[Text]?style.fontSize=1.4rem;data=members:().filter():[id.in():[data().managers]].():name;Data;tooltip.text=عرض الفرد;hover.style.color=#000;hover.style.fontWeight=bold;style.transition=.3s;style.cursor=pointer?data().managers.len()>0;members:().find():[id.in():[data().managers]]"
                     }
-                  ],
-                  "type": "View?class=flex align-center managers members-in-network;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
+                  ]
                 },
                 {
                   "children": [
                     {
+                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
                       "controls": [
                         {
-                          "actions": "setPosition:networks-actions?position.placement=right;position.positioner=().id",
-                          "event": "click?if():[)(:networks-data=data();():networks-actions.style().pointerEvents=auto]:[():networks-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:networks-data.del()]].else():[():networks-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:networks-data=data().clone()]];)(:new-network.del();)(:networks-copied.del();():networks-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+                          "event": "click?if():[)(:networks-data=data();():networks-actions.style().pointerEvents=auto]:[():networks-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:networks-data.del()]].else():[():networks-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:networks-data=data().clone()]];)(:new-network.del();)(:networks-copied.del();():networks-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+                          "actions": "setPosition:networks-actions?position.placement=right;position.positioner=().id"
                         }
-                      ],
-                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
+                      ]
                     }
                   ],
                   "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
@@ -322,17 +321,16 @@
     {
       "children": [
         {
-          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;class=flex align-center;style.borderRadius=1rem;style.overflow=hidden",
           "children": [
             {
               "children": [
                 {
+                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "children": [
                     {
                       "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                     }
                   ],
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "controls": [
                     {
                       "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():networks-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():networks-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
@@ -345,23 +343,24 @@
             {
               "children": [
                 {
-                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
                   "controls": [
                     {
                       "actions": "setPosition:networks-remove-all-popup?position.placement=right;position.positioner=().id",
                       "event": "click?if():[():networks-remove-all-popup.style().pointerEvents=none]:[():networks-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():networks-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
                     }
-                  ]
+                  ],
+                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
                 }
               ],
               "type": "View?class=flexbox;style.padding=0 .5rem;style.marginRight=auto"
             }
-          ]
+          ],
+          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;class=flex align-center;style.borderRadius=1rem;style.overflow=hidden"
         },
         {
-          "type": "View?style.overflow=auto;style.height=calc(100vh - 27.8rem)",
           "children": [
             {
+              "type": "View?style.padding=1rem;style.gap=1rem;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr?)(:networks.len().greater():0",
               "children": [
                 {
                   "children": [
@@ -384,8 +383,8 @@
                           "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
                           "controls": [
                             {
-                              "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50",
-                              "actions": "save?save.collection=resources-networks;save.doc=data().id;save.data=data()"
+                              "actions": "save?save.collection=resources-networks;save.doc=data().id;save.data=data()",
+                              "event": "click?style().backgroundColor=if():[data().active]:#ddd.else():#15ff00;data().active=data().active.opp();style().transform=scale(1.1);timer():[style().transform=scale(1)]:50"
                             }
                           ]
                         }
@@ -449,26 +448,27 @@
                       "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem;style.height=fit-content",
                       "children": [
                         {
+                          "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3rem;style.borderRadius=3rem;style.width=3rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
                           "controls": [
                             {
-                              "actions": "setPosition:networks-actions?position.placement=right;position.positioner=().id",
-                              "event": "click?if():[)(:networks-data=data();():networks-actions.style().pointerEvents=auto]:[():networks-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:networks-data.del()]].else():[():networks-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:networks-data=data().clone()]];)(:new-network.del();)(:networks-copied.del();():networks-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+                              "event": "click?if():[)(:networks-data=data();():networks-actions.style().pointerEvents=auto]:[():networks-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:networks-data.del()]].else():[():networks-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:networks-data=data().clone()]];)(:new-network.del();)(:networks-copied.del();():networks-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+                              "actions": "setPosition:networks-actions?position.placement=right;position.positioner=().id"
                             }
-                          ],
-                          "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3rem;style.borderRadius=3rem;style.width=3rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
+                          ]
                         }
                       ]
                     }
                   ],
                   "type": "[View]?data=)(:networks;class=flex;style.borderRadius=1.5rem;style.border=1px solid #e5e5e5;style.padding=1rem;hover.style.border=1px solid #ddd"
                 }
-              ],
-              "type": "View?style.padding=1rem;style.gap=1rem;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr?)(:networks.len().greater():0"
+              ]
             }
-          ]
+          ],
+          "type": "View?style.overflow=auto;style.height=calc(100vh - 27.8rem)"
         }
       ],
       "type": "View?id=networks-grid-view;class=flex column;style.gap=1rem;style.display=if():[)(:networks-view-type=grid]:flex.else():none?)(:networks-view-type=grid;false"
     }
-  ]
+  ],
+  "type": "View?id=networks-views;class=flex column;style.gap=.2rem"
 }

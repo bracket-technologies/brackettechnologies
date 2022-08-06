@@ -1,13 +1,11 @@
 {
   "type": "View?style.padding=.5rem",
-  "id": "Comment",
   "creation-date": 1658179009147,
   "children": [
     {
       "type": "View?style:[width=fit-content;minWidth=50%;borderRadius=0 1.5rem 1.5rem 1.5rem;if():[data().user=user:().id]:[borderRadius=1.5rem 0 1.5rem 1.5rem;marginLeft=auto];padding=1rem;border=1px solid #ddd;gap=2rem]?data()",
       "children": [
         {
-          "type": "View?class=flexbox;style:[justifyContent=space-between;if():[data().user=user:().id]:[flexDirection=row-reverse];flex=1]",
           "children": [
             {
               "type": "Text?text=data().user-name;style:[fontSize=1.2rem;color=#888]"
@@ -15,7 +13,8 @@
             {
               "type": "Text?text=data().creation-date.toDateFormat();style:[fontSize=1.2rem;color=#888]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[justifyContent=space-between;if():[data().user=user:().id]:[flexDirection=row-reverse];flex=1]"
         },
         {
           "type": "View?class=flex;style:[overflow=wrap]",
@@ -30,5 +29,6 @@
     {
       "type": "[Comment]?class=vertical;path=comments?data().comments.len()>0"
     }
-  ]
+  ],
+  "id": "Comment"
 }

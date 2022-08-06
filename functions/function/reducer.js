@@ -262,7 +262,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
     || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
     || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()"
-    || path0 === "replaceItem()")) {
+    || path0 === "replaceItem()" || path0 === "grandParent()" || path0 === "grandChild()" || path0 === "grandChildren()" || path0 === "open()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -676,24 +676,24 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "parent()") {
 
-            var _o, _parent, _params = {}
-            if (args[1]) {
+          var _o, _parent, _params = {}
+          if (args[1]) {
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+            if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+            _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
 
-            } else _o = o
+          } else _o = o
 
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            if (typeof _o === "object") {
+          if (typeof _o === "string" && views[_o]) _o = views[_o]
+          if (typeof _o === "object") {
 
-              if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
-              else _parent = views[_o.parent]
-            }
+            if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
+            else _parent = views[_o.parent]
+          }
+          
+          answer = _parent
             
-            answer = _parent
-            
-        } else if (k0 === "2ndParent()") {
+        } else if (k0 === "2ndParent()" || k0 === "grandParent()") {
 
           var _o, _parent, _params = {}
           if (args[1]) {
@@ -980,7 +980,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         var _id = previousSibling.id
         answer = views[_id]
 
-    } else if (k0 === "1stChild()") {// o could be a string or element or view
+    } else if (k0 === "1stChild()" || k0 === "child()") {// o could be a string or element or view
             
             var _o, _params = {}
             if (args[1]) {
@@ -1000,7 +1000,51 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (views[_id]) answer = views[_id]
             else answer = views[_id] = { id: _id, element: _o.element.children[0] }
             
-        } else if (k0 === "2ndChild()") {// o could be a string or element or view
+        } else if (k0 === "grandChild()") {
+            
+          var _o, _params = {}
+          if (args[1]) {
+
+              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+
+          } else _o = o
+
+          if (typeof _o === "string" && views[_o]) _o = views[_o]
+          else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
+          
+          if (!_o.element) return
+          if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
+          var _id = _o.element.children[0].children[0].id
+          
+          if (views[_id]) answer = views[_id]
+          else answer = views[_id] = { id: _id, element: _o.element.children[0].children[0] }
+          
+      } else if (k0 === "grandChildren()") {
+            
+        var _o, _params = {}
+        if (args[1]) {
+
+            if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+            _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+
+        } else _o = o
+
+        if (typeof _o === "string" && views[_o]) _o = views[_o]
+        else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
+        
+        if (!_o.element) return
+        if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
+        var _children = [..._o.element.children[0].children]
+        
+        var _views = []
+        _children.map(child => {
+          _views.push(views[child.id])
+        })
+
+        answer = _views
+        
+    } else if (k0 === "2ndChild()") {// o could be a string or element or view
             
             var _o, _params = {}
             if (args[1]) {
@@ -3221,7 +3265,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = o !== undefined ? true : false
             
-        } else if (k0 === "removeMapping()") {
+        } else if (k0 === "open()") {
+            
+          var _url
+          if (args[1]) _url = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+          else _url = o
+          window.open(_url)
+          
+      } else if (k0 === "removeMapping()") {
             
             if (o.type.slice(0, 1) === "[") {
                 var _type = o.type.slice(1).split("]")[0]
