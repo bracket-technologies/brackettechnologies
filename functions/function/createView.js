@@ -1,15 +1,14 @@
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
+const { generate } = require("./generate")
 
-const createView = ({ view, id }) => {
+const createView = ({ view, id = generate() }) => {
 
-  var views = window.views[id]
+  var view = window.views[id] || {}
   var global = window.global
-
-  if (!view) return
   
-  views.children = toArray(clone(global.data.view[view]))
+  view.children = toArray(clone(global.data.view[view]))
 
   // update
   update({ id })

@@ -23,6 +23,6 @@
       "type": "View?view=refunds-manager?)(:opened-manager=refunds-manager"
     }
   ],
-  "id": "manager-view",
-  "creation-date": 0
+  "creation-date": 0,
+  "id": "manager-view"
 }

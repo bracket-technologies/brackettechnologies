@@ -3477,6 +3477,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "html2pdf()") {
 
+            document.getElementsByClassName("loader-container")[0].style.display = "flex"
+            return sleep(10)
+
             var _element, _params = {}, _el
             if (isParam({ _window, string: args[1] })) {
 
@@ -3491,10 +3494,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             else if (typeof _el === "string") _element = views[_el].element
 
             var opt = {
-                margin:       0,
+                margin:       1,
                 filename:     _params.name || generate(20),
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2.5, dpi: 192, letterRendering: true },
+                html2canvas:  { scale: 2.5, dpi: 192 },
                 jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' }
             }
             
@@ -3511,10 +3514,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 }))
 
                 images.map((image, i) => {
-                    toDataURL(image.src)
-                    .then(dataUrl => {
+                    toDataURL(image.src).then(dataUrl => {
+
                         image.src = dataUrl
-                        if (images.length === i + 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(function (pdf) {
+                        if (images.length === i + 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then((pdf) => {
                           var totalPages = pdf.internal.getNumberOfPages()
                        
                           for (i = 1; i <= totalPages; i++) {
@@ -3522,11 +3525,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                             pdf.setPage(i)
                             pdf.setFontSize(9)
                             pdf.setTextColor(150)
-                            pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.09), (pdf.internal.pageSize.getHeight() - 0.08))
+                            pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
                           }
+
                         }).save().then(() => {
 
                             if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
+                            document.getElementsByClassName("loader-container")[0].style.display = "none"
+                            return sleep(10)
                         })
                     })
                 })
@@ -4235,5 +4241,34 @@ const hasEmptyField = (o) => {
     
     return _hasEmptyField
 }
+
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }
+  
+const exportHTMLToPDF = async (pages, outputType='blob') => {
+    const opt = {
+      margin:       [0,0],
+      filename:     'myfile.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { dpi: 192, letterRendering: true },
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    const doc = new jsPDF(opt.jsPDF)
+    const pageSize = jsPDF.getPageSize(opt.jsPDF)
+    for(let i = 0; i < pages.length; i++) {
+      const page = pages[i]
+      const pageImage = await html2pdf().from(page).set(opt).outputImg()
+      if (i != 0) { doc.addPage() }
+      doc.addImage(pageImage.src, 'jpeg', opt.margin[0], opt.margin[1], pageSize.width, pageSize.height);
+    }
+    // This can be whatever output you want. I prefer blob. 
+    const pdf = doc.output(outputType)
+    return pdf
+  }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
