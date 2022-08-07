@@ -3477,10 +3477,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "html2pdf()") {
 
-            document.getElementsByClassName("loader-container")[0].style.display = "flex"
-            return sleep(10)
-
-            var _element, _params = {}, _el
+            var _params = {}, _el, once
             if (isParam({ _window, string: args[1] })) {
 
                 _params = toParam({ req, res, _window, id, e, _, string: args[1] })
@@ -3489,58 +3486,65 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else if (args[1]) _el = toValue({ req, res, _window, id, e, _, __, _i,params, value: args[1] })
             else if (o) _el = o
 
-            if (typeof _el === "object" && _el.id) _element = views[_el.id].element
-            else if (_el.nodeType === Node.ELEMENT_NODE) _element = _el
-            else if (typeof _el === "string") _element = views[_el].element
-
             var opt = {
-                margin:       1,
+                margin:       [0.1, 0.1],
                 filename:     _params.name || generate(20),
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2.5, dpi: 192 },
-                jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' }
+                jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
+                execludeImages: _params.execludeImages || false
             }
             
-            var images = [..._element.getElementsByTagName("IMG")]
-            if (images.length > 0) {
+            var pages = _params.pages || [_el], _elements = []
+            pages.map(page => {
+                
+                var _element
+                if (typeof page === "object" && page.id) _element = views[page.id].element
+                else if (page.nodeType === Node.ELEMENT_NODE) _element = page
+                else if (typeof page === "string") _element = views[page].element
 
-                const toDataURL = url => fetch(url)
-                .then(response => response.blob())
-                .then(blob => new Promise((resolve, reject) => {
-                    const reader = new FileReader()
-                    reader.onloadend = () => resolve(reader.result)
-                    reader.onerror = reject
-                    reader.readAsDataURL(blob)
-                }))
+                _elements.push(_element)
+                var images = [..._element.getElementsByTagName("IMG")]
+                if (images.length > 0) {
 
-                images.map((image, i) => {
-                    toDataURL(image.src).then(dataUrl => {
+                    images.map((image, i) => {
+                        toDataURL(image.src).then(dataUrl => {
 
-                        image.src = dataUrl
-                        if (images.length === i + 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then((pdf) => {
-                          var totalPages = pdf.internal.getNumberOfPages()
-                       
-                          for (i = 1; i <= totalPages; i++) {
+                            image.src = dataUrl
+                            if (images.length === i + 1) {
 
-                            pdf.setPage(i)
-                            pdf.setFontSize(9)
-                            pdf.setTextColor(150)
-                            pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
-                          }
+                                if (!once && pages.length > 1 && pages.length === _elements.length) {
 
-                        }).save().then(() => {
+                                    once = true
+                                    exportHTMLToPDF(_elements, opt)
 
-                            if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
-                            document.getElementsByClassName("loader-container")[0].style.display = "none"
-                            return sleep(10)
+                                } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
+                                    var totalPages = pdf.internal.getNumberOfPages()
+                                
+                                    for (i = 1; i <= totalPages; i++) {
+
+                                        pdf.setPage(i)
+                                        pdf.setFontSize(9)
+                                        pdf.setTextColor(150)
+                                        pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
+                                    }
+
+                                }).save().then(() => {
+
+                                    if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
+                                })
+                            }
                         })
                     })
+
+                } else html2pdf().set(opt).from(_element).save().then(() => {
+
+                    if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
                 })
-
-            } else html2pdf().set(opt).from(_element).save().then(() => {
-
-                if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
             })
+
+            document.getElementsByClassName("loader-container")[0].style.display = "none"
+            sleep(10)
 
         } else if (k0 === "share()") {
 
@@ -4250,25 +4254,46 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
   }
   
-const exportHTMLToPDF = async (pages, outputType='blob') => {
-    const opt = {
-      margin:       [0,0],
-      filename:     'myfile.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { dpi: 192, letterRendering: true },
-      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
+const exportHTMLToPDF = async (pages, opt) => {
+    
+    const { jsPDF } = jspdf
     const doc = new jsPDF(opt.jsPDF)
     const pageSize = jsPDF.getPageSize(opt.jsPDF)
-    for(let i = 0; i < pages.length; i++) {
-      const page = pages[i]
-      const pageImage = await html2pdf().from(page).set(opt).outputImg()
-      if (i != 0) { doc.addPage() }
-      doc.addImage(pageImage.src, 'jpeg', opt.margin[0], opt.margin[1], pageSize.width, pageSize.height);
+
+    if (opt.execludeImages) {
+        
+        var promises = []
+        pages.map(page => { promises.push(html2pdf().from(page).set(opt).outputImg()) })
+        await Promise.all(promises)
+
+        promises.map((pageImage, i) => {
+            console.log(i);
+            if (i != 0) { doc.addPage() }
+            doc.addImage(pageImage._result.src, 'jpeg', 0.1, 0.1, pageSize.width - 0.2, pageSize.height - 0.2);
+        })
+
+    } else {
+
+        for (let i = 0; i < pages.length; i++) {
+            const page = pages[i]
+            const pageImage = await html2pdf().from(page).set(opt).outputImg()
+            console.log(i);
+            if (i != 0) { doc.addPage() }
+            doc.addImage(pageImage.src, 'jpeg', 0.1, 0.1, pageSize.width - 0.2, pageSize.height - 0.2);
+        }
     }
-    // This can be whatever output you want. I prefer blob. 
-    const pdf = doc.output(outputType)
-    return pdf
-  }
+    
+    doc.save(opt.filename)
+}
+
+
+const toDataURL = url => fetch(url)
+.then(response => response.blob())
+.then(blob => new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+}))
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }

@@ -1,0 +1,18 @@
+{
+  "children": [
+    {
+      "type": "Image?src='https://storage.googleapis.com/bracketjs.appspot.com/storage-test1/undefined-1659894580645?GoogleAccessId=firebase-adminsdk-3gkdr%40bracketjs.iam.gserviceaccount.com&Expires=32509468800&Signature=ejG6b4k4NBFQyso7MIFofgBVQAMJCxd%2B1ZE5BUyVaBavLnMyUJ59jKpL%2FEmq9FfOEh%2FPX6wzBPAlrN%2FKSy%2FnZEBtr02uAbGVyvQKFmj9IbYbLgUV%2BHmDPEVnORcJRoeuWThzdbuq9PdEh0fybvqJ0ZGEy0WWYCztLtJZ6Pq6hDmE5mAnCEO8uP7Fo1EY3yugtdnrlkRmCgy8ysEBHyQr%2BGGz41uPcumCJo2E3LGk7Hi8bogzTcAUC%2FNTK6sGTm4Wu9sg4oii5y1CmneVqCoHigz6ZWZQHmj7PvC4Cx6%2FpgkRE%2Bs75CAUke7Sjjd03bsDyAuLpi5df1MmZe0Wsg9b6A%3D%3D';class=flexbox;style:[height=80%;width=80%;position=fixed;zIndex=-1;padding=2rem]"
+    },
+    {
+      "type": "View?class=flexbox vertical;Data=signin-user;style:[width=80%;height=80%;border=1px solid #ddd;gap=2rem;padding=2rem]",
+      "children": [
+        {
+          "type": "Text?text=Login to Arduino Monitoring Platform;class=flex;style:[fontSize=1.4rem;marginBottom=.5rem]"
+        }
+      ]
+    }
+  ],
+  "creation-date": 1659888656198,
+  "id": "login",
+  "type": "View:login?class=flexbox;style:[position=fixed;bottom=0;top=0;right=0;left=0]"
+}

@@ -553,14 +553,12 @@ const Input = (component) => {
         cursor: 'pointer',
     } : {}
 
-    component = {
+    var _component = component = {
       ...component, id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
       placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
       duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
     }
     
-    // var path = `${unit ? `path=amount` :  currency ? `path=${currency}` : duration ? `path=${duration}` : day ? `path=${day}` : lang ? `path=${lang}` : google ? `path=name` : key ? `path=${key}` : ''}`
-
     if (label && (label.location === "inside" || label.position === "inside")) {
 
         var label = clone(component.label)
@@ -790,9 +788,9 @@ const Input = (component) => {
     }
 
     if (model === 'classic') {
-      
+        
         return {
-            ...component,
+            ..._component,
             style: {
                 cursor: readonly ? "pointer" : "auto",
                 border: "0",
@@ -2051,6 +2049,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         <script src="/index.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
       </body>
     </html>`
   );
@@ -7934,10 +7933,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "html2pdf()") {
 
-            document.getElementsByClassName("loader-container")[0].style.display = "flex"
-            return sleep(10)
-
-            var _element, _params = {}, _el
+            var _params = {}, _el, once
             if (isParam({ _window, string: args[1] })) {
 
                 _params = toParam({ req, res, _window, id, e, _, string: args[1] })
@@ -7946,58 +7942,65 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else if (args[1]) _el = toValue({ req, res, _window, id, e, _, __, _i,params, value: args[1] })
             else if (o) _el = o
 
-            if (typeof _el === "object" && _el.id) _element = views[_el.id].element
-            else if (_el.nodeType === Node.ELEMENT_NODE) _element = _el
-            else if (typeof _el === "string") _element = views[_el].element
-
             var opt = {
-                margin:       1,
+                margin:       [0.1, 0.1],
                 filename:     _params.name || generate(20),
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2.5, dpi: 192 },
-                jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' }
+                jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
+                execludeImages: _params.execludeImages || false
             }
             
-            var images = [..._element.getElementsByTagName("IMG")]
-            if (images.length > 0) {
+            var pages = _params.pages || [_el], _elements = []
+            pages.map(page => {
+                
+                var _element
+                if (typeof page === "object" && page.id) _element = views[page.id].element
+                else if (page.nodeType === Node.ELEMENT_NODE) _element = page
+                else if (typeof page === "string") _element = views[page].element
 
-                const toDataURL = url => fetch(url)
-                .then(response => response.blob())
-                .then(blob => new Promise((resolve, reject) => {
-                    const reader = new FileReader()
-                    reader.onloadend = () => resolve(reader.result)
-                    reader.onerror = reject
-                    reader.readAsDataURL(blob)
-                }))
+                _elements.push(_element)
+                var images = [..._element.getElementsByTagName("IMG")]
+                if (images.length > 0) {
 
-                images.map((image, i) => {
-                    toDataURL(image.src).then(dataUrl => {
+                    images.map((image, i) => {
+                        toDataURL(image.src).then(dataUrl => {
 
-                        image.src = dataUrl
-                        if (images.length === i + 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then((pdf) => {
-                          var totalPages = pdf.internal.getNumberOfPages()
-                       
-                          for (i = 1; i <= totalPages; i++) {
+                            image.src = dataUrl
+                            if (images.length === i + 1) {
 
-                            pdf.setPage(i)
-                            pdf.setFontSize(9)
-                            pdf.setTextColor(150)
-                            pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
-                          }
+                                if (!once && pages.length > 1 && pages.length === _elements.length) {
 
-                        }).save().then(() => {
+                                    once = true
+                                    exportHTMLToPDF(_elements, opt)
 
-                            if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
-                            document.getElementsByClassName("loader-container")[0].style.display = "none"
-                            return sleep(10)
+                                } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
+                                    var totalPages = pdf.internal.getNumberOfPages()
+                                
+                                    for (i = 1; i <= totalPages; i++) {
+
+                                        pdf.setPage(i)
+                                        pdf.setFontSize(9)
+                                        pdf.setTextColor(150)
+                                        pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
+                                    }
+
+                                }).save().then(() => {
+
+                                    if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
+                                })
+                            }
                         })
                     })
+
+                } else html2pdf().set(opt).from(_element).save().then(() => {
+
+                    if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
                 })
-
-            } else html2pdf().set(opt).from(_element).save().then(() => {
-
-                if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
             })
+
+            document.getElementsByClassName("loader-container")[0].style.display = "none"
+            sleep(10)
 
         } else if (k0 === "share()") {
 
@@ -8707,26 +8710,47 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
   }
   
-const exportHTMLToPDF = async (pages, outputType='blob') => {
-    const opt = {
-      margin:       [0,0],
-      filename:     'myfile.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { dpi: 192, letterRendering: true },
-      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
+const exportHTMLToPDF = async (pages, opt) => {
+    
+    const { jsPDF } = jspdf
     const doc = new jsPDF(opt.jsPDF)
     const pageSize = jsPDF.getPageSize(opt.jsPDF)
-    for(let i = 0; i < pages.length; i++) {
-      const page = pages[i]
-      const pageImage = await html2pdf().from(page).set(opt).outputImg()
-      if (i != 0) { doc.addPage() }
-      doc.addImage(pageImage.src, 'jpeg', opt.margin[0], opt.margin[1], pageSize.width, pageSize.height);
+
+    if (opt.execludeImages) {
+        
+        var promises = []
+        pages.map(page => { promises.push(html2pdf().from(page).set(opt).outputImg()) })
+        await Promise.all(promises)
+
+        promises.map((pageImage, i) => {
+            console.log(i);
+            if (i != 0) { doc.addPage() }
+            doc.addImage(pageImage._result.src, 'jpeg', 0.1, 0.1, pageSize.width - 0.2, pageSize.height - 0.2);
+        })
+
+    } else {
+
+        for (let i = 0; i < pages.length; i++) {
+            const page = pages[i]
+            const pageImage = await html2pdf().from(page).set(opt).outputImg()
+            console.log(i);
+            if (i != 0) { doc.addPage() }
+            doc.addImage(pageImage.src, 'jpeg', 0.1, 0.1, pageSize.width - 0.2, pageSize.height - 0.2);
+        }
     }
-    // This can be whatever output you want. I prefer blob. 
-    const pdf = doc.output(outputType)
-    return pdf
-  }
+    
+    doc.save(opt.filename)
+}
+
+
+const toDataURL = url => fetch(url)
+.then(response => response.blob())
+.then(blob => new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+}))
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
 },{"./axios":32,"./capitalize":34,"./clone":36,"./cookie":40,"./counter":41,"./csvToJson":48,"./decode":50,"./droplist":52,"./erase":53,"./execute":55,"./exportJson":56,"./focus":59,"./generate":61,"./getDateTime":62,"./getDaysInMonth":63,"./getType":65,"./importJson":66,"./isEqual":69,"./isParam":70,"./note":76,"./print":81,"./refresh":83,"./remove":85,"./route":87,"./save":88,"./search":89,"./setPosition":93,"./sort":94,"./toApproval":99,"./toArray":100,"./toAwait":101,"./toCSV":102,"./toClock":103,"./toCode":104,"./toExcel":107,"./toId":109,"./toNumber":110,"./toParam":112,"./toPdf":113,"./toPrice":114,"./toSimplifiedDate":115,"./toValue":118,"./toggleView":119,"./update":120,"./updateSelf":121,"./upload":122,"uuid":160}],83:[function(require,module,exports){

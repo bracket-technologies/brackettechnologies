@@ -1,8 +1,8 @@
 {
-  "view": "main",
   "name": "main",
-  "path": "/",
-  "id": "main",
+  "creation-date": 1658651717442,
+  "view": "main",
   "title": "Kayan Store",
-  "creation-date": 1658651717442
+  "id": "main",
+  "path": "/"
 }

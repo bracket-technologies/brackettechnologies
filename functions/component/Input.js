@@ -63,14 +63,12 @@ const Input = (component) => {
         cursor: 'pointer',
     } : {}
 
-    component = {
+    var _component = component = {
       ...component, id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
       placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
       duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
     }
     
-    // var path = `${unit ? `path=amount` :  currency ? `path=${currency}` : duration ? `path=${duration}` : day ? `path=${day}` : lang ? `path=${lang}` : google ? `path=name` : key ? `path=${key}` : ''}`
-
     if (label && (label.location === "inside" || label.position === "inside")) {
 
         var label = clone(component.label)
@@ -300,9 +298,9 @@ const Input = (component) => {
     }
 
     if (model === 'classic') {
-      
+        
         return {
-            ...component,
+            ..._component,
             style: {
                 cursor: readonly ? "pointer" : "auto",
                 border: "0",

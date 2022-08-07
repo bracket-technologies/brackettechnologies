@@ -1,7 +1,5 @@
 {
-  "type": "View?id=flight-connections;class=flex column;style.gap=1rem;style.width=100%",
   "id": "flight-connections",
-  "creation-date": 1653036755929,
   "children": [
     {
       "type": "Text?class=flex;text=Connections;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=0.5rem 0]"
@@ -17,12 +15,12 @@
                   "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
                 }
               ],
-              "type": "View?id=connected;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().connected=flight-data:().connected||false;checked=flight-data:().connected",
               "controls": [
                 {
                   "event": "click?checked()=checked().opp();flight-data:().connected=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.connected=true;parent().next().style().display=flex;)(:flight-data.connections=_array:[_map:type:Return Trip];update():[parent().next()]]:[)(:flight-data.connections=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
                 }
-              ]
+              ],
+              "type": "View?id=connected;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().connected=flight-data:().connected||false;checked=flight-data:().connected"
             },
             {
               "type": "Text?text=Connected;style:[fontSize=1.3rem]"
@@ -30,9 +28,9 @@
           ]
         },
         {
-          "type": "View:connections?class=vertical;style:[gap=1rem;padding=.5rem;backgroundColor=#f9f9f9;borderRadius=.5rem;display=if():[flight-data:().connections.0.len()>0]:flex:none]",
           "children": [
             {
+              "type": "[View]?path=connections;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=2rem 1rem]?data().connections.len()>0",
               "children": [
                 {
                   "type": "Input?label:[text=Connection Type;location=outside;style.fontSize=1.3rem];path=type;readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=_array:Come Trip:Go Trip:Return Trip;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
@@ -57,12 +55,12 @@
                       ]
                     },
                     {
+                      "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                       "controls": [
                         {
                           "event": "click?)(:flight-data.connections.push():[_map:type:Return Trip]:[parent().parent().mapIndex+1];update():connections?!)(:flight-edit-readonly"
                         }
-                      ],
-                      "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
+                      ]
                     }
                   ],
                   "type": "View?class=flexbox;style:[gap=1.5rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]"
@@ -97,13 +95,15 @@
                 {
                   "type": "Input?label:[text=Flight Duration (hh:mm);location=outside;style.fontSize=1.3rem];path=flight-duration;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
                 }
-              ],
-              "type": "[View]?path=connections;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=2rem 1rem]?data().connections.len()>0"
+              ]
             }
-          ]
+          ],
+          "type": "View:connections?class=vertical;style:[gap=1rem;padding=.5rem;backgroundColor=#f9f9f9;borderRadius=.5rem;display=if():[flight-data:().connections.0.len()>0]:flex:none]"
         }
       ],
       "type": "View?class=vertical;style:[gap=1rem;padding=1rem]"
     }
-  ]
+  ],
+  "type": "View?id=flight-connections;class=flex column;style.gap=1rem;style.width=100%",
+  "creation-date": 1653036755929
 }
