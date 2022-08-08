@@ -3441,6 +3441,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             
             answer = require("./sort").sort({ sort: _params, id, e })
+            
             return answer
 
         } else if (k0.includes("findIndex()")) {

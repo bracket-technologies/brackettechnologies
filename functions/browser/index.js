@@ -7897,6 +7897,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             
             answer = require("./sort").sort({ sort: _params, id, e })
+            
             return answer
 
         } else if (k0.includes("findIndex()")) {
@@ -9480,12 +9481,10 @@ const sort = ({ sort = {}, id, e }) => {
         a = {year, month, day}
         isDate = true
       }
-
-      // number
-      else a = toNumber(a)
     }
 
     b = reducer({ id, path, object: b, e }) || "!"
+
     if (b !== undefined) {
       b = b.toString()
 
@@ -9497,9 +9496,6 @@ const sort = ({ sort = {}, id, e }) => {
         b = {year, month, day}
         isDate = true
       }
-
-      // number
-      else b = toNumber(b)
     }
 
     if ((!isNaN(a) && b === "!") || (!isNaN(b) && a === "!")) {
@@ -9511,7 +9507,7 @@ const sort = ({ sort = {}, id, e }) => {
       a = a.toString()
       b = b.toString()
     }
-
+    
     if (sortBy === "descending") {
       if (isDate) {
         if (b.year === a.year) {
