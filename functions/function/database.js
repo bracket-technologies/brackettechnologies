@@ -221,7 +221,7 @@ var postdb = async ({ req, res, db }) => {
   }
 */
 
-  if (Array.isArray(data) && !data.find(data => !data.id)) {
+  if (Array.isArray(data)/* && !data.find(data => !data.id)*/) {
 
     data.map(data => {
 
