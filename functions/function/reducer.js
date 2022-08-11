@@ -3270,7 +3270,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           var _url
           if (args[1]) _url = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
           else _url = o
-          window.open(_url)
+          open(_url)
           
       } else if (k0 === "removeMapping()") {
             
@@ -3441,6 +3441,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
             
             answer = require("./sort").sort({ sort: _params, id, e })
+            
             return answer
 
         } else if (k0.includes("findIndex()")) {
@@ -3488,7 +3489,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var opt = {
                 margin:       [0.1, 0.1],
-                filename:     _params.name || generate(20),
+                filename:     _params.name || generate({ length: 20 }),
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2.5, dpi: 192 },
                 jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
@@ -3903,7 +3904,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return require("./upload").upload({ id, e, _, __, _i, upload: _upload, asyncer: true, await: _await })
           }
 
-          return require("./save").save({ id, e, save: { upload: { file: global.upload } } })
+          return require("./upload").upload({ id, e, save: { upload: { file: global.upload } } })
 
         } else if (k0 === "confirmEmail()") {
           
@@ -4295,5 +4296,17 @@ const toDataURL = url => fetch(url)
     reader.onerror = reject
     reader.readAsDataURL(blob)
 }))
+
+const open = (url) => {
+  /*
+  const downloadLink = document.createElement("a");
+  const fileName = "file";
+
+  downloadLink.href = url;
+  downloadLink.download = fileName;
+  downloadLink.click();
+  */
+  window.open(url, "_blank")
+}
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }

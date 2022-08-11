@@ -25,8 +25,8 @@ const upload = async ({ id, e, ...params }) => {
 
     var data = alldata[i] || {}
     var file = await readFile(f)
-    upload.doc = docs[i] || generate(20)
-    data.name = data.name || generate(20)
+    upload.doc = docs[i] || generate({ length: 20 })
+    data.name = data.name || generate({ length: 20 })
 
     // get file type
     var type = files[i].type
@@ -53,17 +53,16 @@ const upload = async ({ id, e, ...params }) => {
 
       promises.map(({ data }, i) => {
 
-        if (files.length > 1) {
-          if (i === 0) {
-            view.uploads = []
-            global.uploads = []
-          }
-          view.uploads.push(clone(data))
-          global.uploads.push(clone(data))
-        } else {
-          view.upload = clone(data)
-          global.upload = clone(data)
+        if (i === 0) {
+          view.uploads = []
+          global.uploads = []
         }
+        
+        view.uploads.push(clone(data))
+        global.uploads.push(clone(data))
+        
+        view.upload = clone(data)
+        global.upload = clone(data)
     
         if (files.length > 1) console.log(view.uploads)
         else console.log(view.upload)
@@ -79,9 +78,12 @@ const upload = async ({ id, e, ...params }) => {
 const readFile = (file) => {
   return new Promise(res => {
 
-    let myReader = new FileReader()
-    myReader.onloadend = () => res(myReader.result)
-    myReader.readAsDataURL(file)
+    if (typeof file === "string" && file.slice(0, 5) === "data:") res(file)
+    else { 
+      let myReader = new FileReader()
+      myReader.onloadend = () => res(myReader.result)
+      myReader.readAsDataURL(file)
+    }
   })
 }
 

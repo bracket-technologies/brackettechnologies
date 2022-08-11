@@ -35,7 +35,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     var view = views[id]
     
     // break
-    if (view && view.break) return
+    if (view && (view.break || view.return)) return
+    if (view && (view["break()"] || view["return()"])) return
 
     if (param.charAt(0) === "#") return
     

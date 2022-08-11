@@ -37,6 +37,11 @@ const watch = ({ controls, id }) => {
             
             // params
             toParam({ id, string: watch.split('?')[1], mount: true })
+
+            // break
+            if (view["break()"]) delete view["break()"]
+            if (view["return()"]) return delete view["return()"]
+            
             if (view["once"] || view["once()"]) {
 
                 delete view["once"]

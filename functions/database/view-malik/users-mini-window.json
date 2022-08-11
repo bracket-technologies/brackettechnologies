@@ -1,4 +1,5 @@
 {
+  "type": "View?id=users-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
   "children": [
     {
       "children": [
@@ -13,8 +14,8 @@
                 {
                   "controls": [
                     {
-                      "actions": "wait():erase:[update:users-manager-list]?erase.collection=user;erase.doc=users-data:().id;wait():[():users-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];new-users:().del()]",
-                      "event": "click?users:().[users-data:().id].del()?false"
+                      "event": "click?users:().[users-data:().id].del()?false",
+                      "actions": "wait():erase:[update:users-manager-list]?erase.collection=user;erase.doc=users-data:().id;wait():[():users-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];new-users:().del()]"
                     }
                   ],
                   "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-users;!)(:users-edit-readonly",
@@ -25,12 +26,12 @@
                   ]
                 },
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:users-edit-readonly",
                   "children": [
                     {
                       "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:users-edit-readonly",
                   "controls": [
                     {
                       "event": "click?users:().[users-data:().id]=users-data:();)(:new-users.del()",
@@ -39,6 +40,7 @@
                   ]
                 },
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s",
                   "children": [
                     {
                       "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.8rem"
@@ -48,8 +50,7 @@
                     {
                       "event": "click?():users-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:users-data.del();)(:new-users.del()"
                     }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s"
+                  ]
                 }
               ],
               "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto"
@@ -94,7 +95,6 @@
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=إسم المستخدم;label.location=outside;path=name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[users-edit-readonly:()]:[readonly=true];keyup:[Data().username=data().split(): .0+gen():[len=2;num];next().txt()=Data().username]"
@@ -108,41 +108,41 @@
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=حالة المستخدم;label.location=outside;path=status;data()=data:().collection.users-status.status.0;clicked.style.border=2px solid #0080ff;readonly;style.borderRadius=.5rem;droplist.items='data:().collection.users-status.status';droplist.align=right;if():[users-edit-readonly:()]:[droplist.readonly=true]"
                     }
-                  ]
+                  ],
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem"
                 }
               ],
               "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=ملاحظات;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?textarea;style.width=100%;style.height=8rem;path=note;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[users-edit-readonly:()]:[readonly=true];style.border=1px solid #ccc"
                     }
-                  ],
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             }
           ],
           "type": "View?class=flex column;style.width=100%;data=)(:users-data;style.gap=2rem"
         },
         {
-          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem",
           "children": [
             {
+              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!users-edit-readonly:()",
               "controls ": [
                 {
-                  "event": "click?users:().[users-data:().id]=users-data:();)(:new-users.del()",
-                  "actions": "wait():save:note:[update:users-manager-list:200]?note.text=تم تسجيل المستخدم بنجاح;save.collection=user;save.doc=users-data:().id;save.data=users-data:();wait():[():users-mini-window.style():[opacity=0;pointerEvents=none;zIndex-counter:()=zIndex-counter:()-1;zIndex=1]]"
+                  "actions": "wait():save:note:[update:users-manager-list:200]?note.text=تم تسجيل المستخدم بنجاح;save.collection=user;save.doc=users-data:().id;save.data=users-data:();wait():[():users-mini-window.style():[opacity=0;pointerEvents=none;zIndex-counter:()=zIndex-counter:()-1;zIndex=1]]",
+                  "event": "click?users:().[users-data:().id]=users-data:();)(:new-users.del()"
                 }
-              ],
-              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!users-edit-readonly:()"
+              ]
             },
             {
               "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s",
@@ -152,12 +152,12 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem"
         }
       ],
       "type": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto?users-data:()"
     }
   ],
-  "type": "View?id=users-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
   "id": "users-mini-window"
 }

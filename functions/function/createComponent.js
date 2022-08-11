@@ -38,7 +38,6 @@ module.exports = {
     if (params) {
       
       params = toParam({ _window, string: params, id, req, res, mount: true })
-      // views[id] = view = override(view, params)
 
       if (params.id) {
         

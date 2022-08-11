@@ -40,8 +40,8 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     if (_params) params = {..._params, ...params}
 
     // break
-    view.break = params.break
-    delete params.break
+    if (view["break()"]) delete view["break()"]
+    if (view["return()"]) return delete view["return()"]
 
     actions.map(action => {
 
@@ -62,6 +62,11 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       if (isParam({ _window, string: args[1] }) || (args[2] && isNaN(args[2].split("i")[0]) && !args[3])) { // action:[params]:[conditions]
 
         __params = toParam({ _window, id: viewId, e, string: args[1], mount: true })
+
+        // break
+        if (view["break()"]) delete view["break()"]
+        if (view["return()"]) return delete view["return()"]
+
         actionid = toArray(__params.id || viewId) // id
         if (__params.timer !== undefined) timer = __params.timer.toString() // timer
         if (args[2]) caseCondition = args[2]
