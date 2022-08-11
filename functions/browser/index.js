@@ -4732,7 +4732,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
     || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
     || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()"
-    || path0 === "replaceItem()" || path0 === "grandParent()" || path0 === "grandChild()" || path0 === "grandChildren()" || path0 === "open()")) {
+    || path0 === "replaceItem()" || path0 === "grandParent()" || path0 === "grandChild()" || path0 === "grandChildren()" || path0 === "open()" || path0 === "2ndNext()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -5260,9 +5260,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var element = _o.element
             // if (_o.templated || _o.link) element = views[_o.parent].element
             
-            var nextSibling = element.nextElementSibling
-            if (!nextSibling) return
-            nextSibling = element.nextElementSibling
+            if (!element.nextElementSibling || !element.nextElementSibling.nextElementSibling) return
+            var nextSibling = element.nextElementSibling.nextElementSibling
             if (!nextSibling) return
             var _id = nextSibling.id
             answer = views[_id]
@@ -7923,13 +7922,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
             
+            var notArray = false
             if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
+            if (typeof o === "object" && !Array.isArray(o)) notArray = true
             if (k[0] === "_") {
 
                 toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: _, _: o, e, _i: index, object }) )
                 answer = o
             } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, params, _, __, e, _i: index }) )
 
+            if (notArray) answer = o[0]
         } else if (k0 === "_i") {
             
             if (value !== undefined && key && i === lastIndex) answer = o[_i] = value
@@ -9129,7 +9131,7 @@ const save = async ({ id, e, ...params }) => {
 
   if (save.doc || save.id || (typeof _data === "object" && !Array.isArray(_data) && _data.id)) save.doc = save.doc || save.id || _data.id
   if (!save.doc && (Array.isArray(data) ? !data.find(data => !data.id) : false)) return
-  delete save.data
+  // delete save.data
   
   var { data } = await require("axios").post(`/${store}`, { save, data: _data }, {
     headers: {
