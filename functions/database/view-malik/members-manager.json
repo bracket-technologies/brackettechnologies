@@ -1,21 +1,12 @@
 {
-  "controls": [
-    {
-      "event": "loaded?search():[collection=resources-members;limit=50]:[members:()=().search.data.values();update():'members-manager-list';lastChild():'all-members'.txt()=members:().len()];search():[collection=resources-centers]:[centers:()=().search.data.values();if():[centers:().len()>0]:[className():'center-in-member'.():update()]];search():[collection=resources-networks]:[networks:()=().search.data.values();if():[networks:().len()>0]:[className():'network-in-member'.():update()]]"
-    }
-  ],
-  "type": "View?id=members-manager;class=flex column;)(:members-view-type=list;style.height=100%",
-  "id": "members-manager",
   "creation-date": 1649687625820,
   "children": [
     {
       "type": "View?id=members-manager-list;class=flex column;style.height=100%;style.gap=2rem",
       "children": [
         {
-          "type": "View?class=flex align-center;style:[width=100%;padding=.5rem;height=4rem]",
           "children": [
             {
-              "type": "View?class=flexbox;style:[height=100%;gap=1rem]",
               "children": [
                 {
                   "type": "View?style:[width=4px;height=100%;backgroundColor=blue;borderRadius=.5rem]"
@@ -23,16 +14,25 @@
                 {
                   "type": "Text?text=إدارة الأفراد;style:[fontSize=2rem;color=#000;fontWeight=bolder]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[height=100%;gap=1rem]"
             }
-          ]
+          ],
+          "type": "View?class=flex align-center;style:[width=100%;padding=.5rem;height=4rem]"
         },
         {
-          "type": "View?class=flex column;style.borderRadius=1rem;style.width=100%",
           "children": [
             {
+              "type": "View?id=members-file-ear;class=flex;style.gap=0.1rem;().open-folder=all-members;style.width=100%;style.marginBottom=-0.1rem;style.zIndex=1",
               "children": [
                 {
+                  "controls": [
+                    {
+                      "actions": "async():search:[update:[().parent().id]]:[update:members-views]?search.collection=resources-members;search.limit=25;async():[)(:members=().search.data]:[().lastChild().text()=().search.data.len()]",
+                      "event": "click?().parent().open-folder=all-members?().parent().open-folder!=all-members"
+                    }
+                  ],
+                  "type": "View?id=all-members;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[().parent().open-folder=all-members]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0",
                   "children": [
                     {
                       "type": "Icon?id=test;class=flexbox;name=bi-list-ul;style.fontSize=1.8rem;style.color=if():[().parent().parent().open-folder=all-members]:blue.else():#888"
@@ -43,14 +43,7 @@
                     {
                       "type": "Text?class=ar;text=)(:members.len()||0;style.display=if():[().parent().parent().open-folder=all-members]:flex.else():none;style.fontSize=1.2rem;style.color=if():[().parent().parent().open-folder=all-members]:#fff.else():#888;style.backgroundColor=if():[().parent().parent().open-folder=all-members]:blue.else():#ddd;style.padding=0 .55rem;style.height=1.75rem;style.borderRadius=1.5rem"
                     }
-                  ],
-                  "controls": [
-                    {
-                      "event": "click?().parent().open-folder=all-members?().parent().open-folder!=all-members",
-                      "actions": "async():search:[update:[().parent().id]]:[update:members-views]?search.collection=resources-members;search.limit=25;async():[)(:members=().search.data]:[().lastChild().text()=().search.data.len()]"
-                    }
-                  ],
-                  "type": "View?id=all-members;class=flexbox pointer;style.justifyContent=flex-start;style.padding=1rem;style.height=4rem;style.gap=1rem;style.backgroundColor=if():[().parent().open-folder=all-members]:#fff.else():#f9f9f9;style.borderRadius=1rem 1rem 0 0;style.border=1px solid #ddd;style.borderBottom=0"
+                  ]
                 },
                 {
                   "children": [
@@ -72,10 +65,10 @@
                     }
                   ]
                 }
-              ],
-              "type": "View?id=members-file-ear;class=flex;style.gap=0.1rem;().open-folder=all-members;style.width=100%;style.marginBottom=-0.1rem;style.zIndex=1"
+              ]
             },
             {
+              "type": "View?class=flex column;style.backgroundColor=#fff;style.minWidth=100%;style.padding=.5rem;style.borderRadius=1rem 0 1rem 1rem;style.border=1px solid #ddd",
               "children": [
                 {
                   "type": "View?class=flex align-center;style.width=100%;style.justifyContent=space-between;style.padding=0 2rem;style.height=8rem",
@@ -87,13 +80,13 @@
                           "type": "Icon?class=flexbox;style.color=#888;style.fontSize=2rem;style.minWidth=3rem;name=bi-funnel"
                         },
                         {
-                          "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، عمل، وصف ...",
                           "controls": [
                             {
                               "event": "input",
                               "actions": "async():search:[update:members-views]?search.collection=resources-members;search.field.id.in=().val();search.field.center.in=().val();search.field.name.in=().val();search.field.name.in=().val();search.field.job-title.in=().val();search.field.address.in=().val();search.field.note.in=().val();search.field.status.in=().val();search.operator=or;async():[)(:members=().search.data]"
                             }
-                          ]
+                          ],
+                          "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، عمل، وصف ..."
                         },
                         {
                           "type": "Icon?class=flexbox pointer;style.color=blue;style.fontSize=2rem;style.minWidth=5rem;name=bi-sliders;style.borderRadius=2rem;style.backgroundColor=#f9f9f9;style.height=100%;style.transition=.2s;hover.style.backgroundColor=#eee"
@@ -101,7 +94,6 @@
                       ]
                     },
                     {
-                      "type": "View?class=flexbox;style.gap=2rem",
                       "children": [
                         {
                           "type": "View?id=members-view-type;class=flexbox;style.height=4rem;style.border=1px solid #ddd;style.borderRadius=.5rem",
@@ -110,8 +102,8 @@
                               "type": "Icon?class=flexbox pointer;style.height=100%;style.width=4rem;style.borderLeft=1px solid #ddd;name=bi-list-task;style.color=if():[)(:members-view-type=list]:blue.else():#888;style.fontSize=2.2rem;hover.style.backgroundColor=#f8f8f8;style.transition=.2s",
                               "controls": [
                                 {
-                                  "event": "click?)(:members-view-type=list?)(:members-view-type=grid",
-                                  "actions": "update:[().parent().id];update:members-views"
+                                  "actions": "update:[().parent().id];update:members-views",
+                                  "event": "click?)(:members-view-type=list?)(:members-view-type=grid"
                                 }
                               ]
                             },
@@ -130,8 +122,8 @@
                           "type": "View?class=flexbox pointer;style.gap=1rem;style.backgroundColor=blue;style.transition=.3s;style.borderRadius=2rem;style.padding=0 1rem;style.height=3.25rem;hover.style.backgroundColor=#0000bf",
                           "controls": [
                             {
-                              "event": "click?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];)(:new-members=true;)(:members-data=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:note:_string:status:يداوم:job-title:فني صيانة:job-description:_string:description:_string:network-manager:false:networks-managing:_array:contacts:_array;)(:members-copied.del();)(:members-edit-readonly=false",
-                              "actions": "update:members-mini-window"
+                              "actions": "update:members-mini-window",
+                              "event": "click?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];)(:new-members=true;)(:members-data=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:note:_string:status:يداوم:job-title:فني صيانة:job-description:_string:description:_string:network-manager:false:networks-managing:_array:contacts:_array;)(:members-copied.del();)(:members-edit-readonly=false"
                             }
                           ],
                           "children": [
@@ -140,17 +132,18 @@
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox;style.gap=2rem"
                     }
                   ]
                 },
                 {
                   "type": "View?view=members-views"
                 }
-              ],
-              "type": "View?class=flex column;style.backgroundColor=#fff;style.minWidth=100%;style.padding=.5rem;style.borderRadius=1rem 0 1rem 1rem;style.border=1px solid #ddd"
+              ]
             }
-          ]
+          ],
+          "type": "View?class=flex column;style.borderRadius=1rem;style.width=100%"
         }
       ]
     },
@@ -158,29 +151,29 @@
       "children": [
         {
           "type": "View?tooltip.text=عرض;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
-          "controls": [
-            {
-              "event": "click?)(:members-edit-readonly=true",
-              "actions": "update:members-mini-window?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
-            }
-          ],
           "children": [
             {
               "type": "Icon?name=bi-eye;style.fontSize=1.6rem;style.color=#666"
             }
+          ],
+          "controls": [
+            {
+              "actions": "update:members-mini-window?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
+              "event": "click?)(:members-edit-readonly=true"
+            }
           ]
         },
         {
+          "controls": [
+            {
+              "event": "click?)(:members-edit-readonly=false;)(:members-edit=true",
+              "actions": "async():[update:members-mini-window]?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];async():[)(:members-edit=false]"
+            }
+          ],
           "type": "View?tooltip.text=تعديل;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
           "children": [
             {
               "type": "Icon?name=bi-pencil-square;style.fontSize=1.6rem;style.color=#666"
-            }
-          ],
-          "controls": [
-            {
-              "actions": "async():[update:members-mini-window]?():members-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];async():[)(:members-edit=false]",
-              "event": "click?)(:members-edit-readonly=false;)(:members-edit=true"
             }
           ]
         },
@@ -199,80 +192,87 @@
           "type": "View?tooltip.text=نسخ;class=flexbox pointer;style.height=4rem;style.width=3.5rem;hover.style.backgroundColor=#eee"
         },
         {
-          "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee",
+          "children": [
+            {
+              "type": "Icon?name=bi-trash;style.fontSize=1.6rem;style.color=#666"
+            }
+          ],
           "controls": [
             {
               "actions": "setPosition:members-remove-popup?position.positioner=().id;position.placement=right",
               "event": "click?if():[():members-remove-popup.style().pointerEvents=none]:[():members-remove-popup.style():[opacity=1;transform=scale(1);pointerEvents=auto]].else():[():members-remove-popup.style():[opacity=0;transform=scale(0.5);pointerEvents=none]]"
             }
           ],
-          "children": [
-            {
-              "type": "Icon?name=bi-trash;style.fontSize=1.6rem;style.color=#666"
-            }
-          ]
+          "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee"
         }
       ],
+      "type": "View?id=members-actions;class=flexbox column box-shadow-1;style.padding=.2rem;style.backgroundColor=#fff;style.borderRadius=.5rem;style.position=absolute;style.opacity=0;style.pointerEvents=none;style.transition=opacity .2s, transform .2s;style.transform=scale(0.8);style.zIndex=1",
       "controls": [
         {
           "event": "mouseleave?()::200.if():[!().mouseenter]:[().style():[opacity=0;pointerEvents=none;transform=scale(0.8)]]"
         }
-      ],
-      "type": "View?id=members-actions;class=flexbox column box-shadow-1;style.padding=.2rem;style.backgroundColor=#fff;style.borderRadius=.5rem;style.position=absolute;style.opacity=0;style.pointerEvents=none;style.transition=opacity .2s, transform .2s;style.transform=scale(0.8);style.zIndex=1"
+      ]
     },
     {
       "type": "View?class=box-shadow;id=members-remove-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
-      "controls": [
-        {
-          "event": "mouseleave::200?().style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
-        }
-      ],
       "children": [
         {
           "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
           "controls": [
             {
-              "event": "click?().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)];)(:members.[)(:members-data.id].del()",
-              "actions": "async():erase:[update:members-manager-list]?erase.collection=resources-members;erase.doc=)(:members-data.id;async():[():members-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:new-members.del()]"
+              "actions": "async():erase:[update:members-manager-list]?erase.collection=resources-members;erase.doc=)(:members-data.id;async():[():members-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:new-members.del()]",
+              "event": "click?().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)];)(:members.[)(:members-data.id].del()"
             }
           ]
         },
         {
+          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
           "controls": [
             {
               "event": "click?().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
             }
-          ],
-          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem"
+          ]
+        }
+      ],
+      "controls": [
+        {
+          "event": "mouseleave::200?().style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
         }
       ]
     },
     {
-      "children": [
-        {
-          "controls": [
-            {
-              "actions": "async():erase:[update:members-manager-list]?erase.collection=resources-members;erase.docs=().clicked-members-id;async():[().clicked-members-id._map():[)(:members._.del()];().clicked-members-id.del()]",
-              "event": "click?().clicked-members-id=():members-views.getChildrenByClassName():checker.slice():1.filter():checked.map():[data().id];().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
-            }
-          ],
-          "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem"
-        },
-        {
-          "controls": [
-            {
-              "event": "click?().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
-            }
-          ],
-          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem"
-        }
-      ],
       "type": "View?class=box-shadow;id=members-remove-all-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
       "controls": [
         {
           "event": "mouseleave::200?().style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!mouseenter"
         }
+      ],
+      "children": [
+        {
+          "controls": [
+            {
+              "event": "click?().clicked-members-id=():members-views.getChildrenByClassName():checker.slice():1.filter():checked.map():[data().id];().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+              "actions": "async():erase:[update:members-manager-list]?erase.collection=resources-members;erase.docs=().clicked-members-id;async():[().clicked-members-id._map():[)(:members._.del()];().clicked-members-id.del()]"
+            }
+          ],
+          "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem"
+        },
+        {
+          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
+          "controls": [
+            {
+              "event": "click?().parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+            }
+          ]
+        }
       ]
     }
-  ]
+  ],
+  "type": "View?id=members-manager;class=flex column;)(:members-view-type=list;style.height=100%",
+  "controls": [
+    {
+      "event": "loaded?search():[collection=resources-members;limit=50]:[members:()=().search.data.values();update():'members-manager-list';lastChild():'all-members'.txt()=members:().len()];search():[collection=resources-centers]:[centers:()=().search.data.values();if():[centers:().len()>0]:[className():'center-in-member'.():update()]];search():[collection=resources-networks]:[networks:()=().search.data.values();if():[networks:().len()>0]:[className():'network-in-member'.():update()]]"
+    }
+  ],
+  "id": "members-manager"
 }

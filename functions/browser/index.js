@@ -55,6 +55,7 @@ window.onfocus = () => {
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
     
     if (!views[id]) return
+    var view = views[id]
     e.target = views[id].element
     
     // approval
@@ -77,6 +78,10 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     
     // approval
     if (viewEventParams) await toParam({ string: viewEventParams, id, mount: true, e })
+
+    // break
+    if (view["break()"]) delete view["break()"]
+    if (view["return()"]) return delete view["return()"]
     
     // execute
     if (controls.actions || controls.action) await execute({ controls, id, e })
@@ -1786,7 +1791,6 @@ module.exports = {
     if (params) {
       
       params = toParam({ _window, string: params, id, req, res, mount: true })
-      // views[id] = view = override(view, params)
 
       if (params.id) {
         
@@ -2170,6 +2174,10 @@ const createElement = ({ _window, id, req, res }) => {
   if (params) {
     
     params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
+
+    // break
+    if (params["break()"]) delete params["break()"]
+    if (params["return()"]) return delete params["return()"]
 
     if (params.id && params.id !== id/* && !priorityId*/) {
 
@@ -3106,7 +3114,8 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
             await toParam({ string: events[1], e, id: mainID, mount: true })
 
             // break
-            if (view.break) return delete view.break
+            if (view["break()"]) delete view["break()"]
+            if (view["return()"]) return delete view["return()"]
           
             // approval
             if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
@@ -3135,7 +3144,7 @@ const defaultEventHandler = ({ id }) => {
   view.mouseenter = false
   view.mousedown = false
 
-  if (view.link) view.element.addEventListener("click", (e) => e.preventDefault())
+  if (view.link) view.element.addEventListener("click", (e) => { if (!view.link.link) e.preventDefault() })
 
   // input
   if (view.type === "Input") {
@@ -3237,8 +3246,8 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
     if (_params) params = {..._params, ...params}
 
     // break
-    view.break = params.break
-    delete params.break
+    if (view["break()"]) delete view["break()"]
+    if (view["return()"]) return delete view["return()"]
 
     actions.map(action => {
 
@@ -3259,6 +3268,11 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
       if (isParam({ _window, string: args[1] }) || (args[2] && isNaN(args[2].split("i")[0]) && !args[3])) { // action:[params]:[conditions]
 
         __params = toParam({ _window, id: viewId, e, string: args[1], mount: true })
+
+        // break
+        if (view["break()"]) delete view["break()"]
+        if (view["return()"]) return delete view["return()"]
+
         actionid = toArray(__params.id || viewId) // id
         if (__params.timer !== undefined) timer = __params.timer.toString() // timer
         if (args[2]) caseCondition = args[2]
@@ -7726,7 +7740,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           var _url
           if (args[1]) _url = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
           else _url = o
-          window.open(_url)
+          open(_url)
           
       } else if (k0 === "removeMapping()") {
             
@@ -7945,7 +7959,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             var opt = {
                 margin:       [0.1, 0.1],
-                filename:     _params.name || generate(20),
+                filename:     _params.name || generate({ length: 20 }),
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2.5, dpi: 192 },
                 jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
@@ -8360,7 +8374,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return require("./upload").upload({ id, e, _, __, _i, upload: _upload, asyncer: true, await: _await })
           }
 
-          return require("./save").save({ id, e, save: { upload: { file: global.upload } } })
+          return require("./upload").upload({ id, e, save: { upload: { file: global.upload } } })
 
         } else if (k0 === "confirmEmail()") {
           
@@ -8752,6 +8766,18 @@ const toDataURL = url => fetch(url)
     reader.onerror = reject
     reader.readAsDataURL(blob)
 }))
+
+const open = (url) => {
+  /*
+  const downloadLink = document.createElement("a");
+  const fileName = "file";
+
+  downloadLink.href = url;
+  downloadLink.download = fileName;
+  downloadLink.click();
+  */
+  window.open(url, "_blank")
+}
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
 },{"./axios":32,"./capitalize":34,"./clone":36,"./cookie":40,"./counter":41,"./csvToJson":48,"./decode":50,"./droplist":52,"./erase":53,"./execute":55,"./exportJson":56,"./focus":59,"./generate":61,"./getDateTime":62,"./getDaysInMonth":63,"./getType":65,"./importJson":66,"./isEqual":69,"./isParam":70,"./note":76,"./print":81,"./refresh":83,"./remove":85,"./route":87,"./save":88,"./search":89,"./setPosition":93,"./sort":94,"./toApproval":99,"./toArray":100,"./toAwait":101,"./toCSV":102,"./toClock":103,"./toCode":104,"./toExcel":107,"./toId":109,"./toNumber":110,"./toParam":112,"./toPdf":113,"./toPrice":114,"./toSimplifiedDate":115,"./toValue":118,"./toggleView":119,"./update":120,"./updateSelf":121,"./upload":122,"uuid":160}],83:[function(require,module,exports){
@@ -10412,7 +10438,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     var view = views[id]
     
     // break
-    if (view && view.break) return
+    if (view && (view.break || view.return)) return
+    if (view && (view["break()"] || view["return()"])) return
 
     if (param.charAt(0) === "#") return
     
@@ -11533,8 +11560,8 @@ const upload = async ({ id, e, ...params }) => {
 
     var data = alldata[i] || {}
     var file = await readFile(f)
-    upload.doc = docs[i] || generate(20)
-    data.name = data.name || generate(20)
+    upload.doc = docs[i] || generate({ length: 20 })
+    data.name = data.name || generate({ length: 20 })
 
     // get file type
     var type = files[i].type
@@ -11561,17 +11588,16 @@ const upload = async ({ id, e, ...params }) => {
 
       promises.map(({ data }, i) => {
 
-        if (files.length > 1) {
-          if (i === 0) {
-            view.uploads = []
-            global.uploads = []
-          }
-          view.uploads.push(clone(data))
-          global.uploads.push(clone(data))
-        } else {
-          view.upload = clone(data)
-          global.upload = clone(data)
+        if (i === 0) {
+          view.uploads = []
+          global.uploads = []
         }
+        
+        view.uploads.push(clone(data))
+        global.uploads.push(clone(data))
+        
+        view.upload = clone(data)
+        global.upload = clone(data)
     
         if (files.length > 1) console.log(view.uploads)
         else console.log(view.upload)
@@ -11587,9 +11613,12 @@ const upload = async ({ id, e, ...params }) => {
 const readFile = (file) => {
   return new Promise(res => {
 
-    let myReader = new FileReader()
-    myReader.onloadend = () => res(myReader.result)
-    myReader.readAsDataURL(file)
+    if (typeof file === "string" && file.slice(0, 5) === "data:") res(file)
+    else { 
+      let myReader = new FileReader()
+      myReader.onloadend = () => res(myReader.result)
+      myReader.readAsDataURL(file)
+    }
   })
 }
 
@@ -11670,6 +11699,11 @@ const watch = ({ controls, id }) => {
             
             // params
             toParam({ id, string: watch.split('?')[1], mount: true })
+
+            // break
+            if (view["break()"]) delete view["break()"]
+            if (view["return()"]) return delete view["return()"]
+            
             if (view["once"] || view["once()"]) {
 
                 delete view["once"]

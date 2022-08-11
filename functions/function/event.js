@@ -228,7 +228,8 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
             await toParam({ string: events[1], e, id: mainID, mount: true })
 
             // break
-            if (view.break) return delete view.break
+            if (view["break()"]) delete view["break()"]
+            if (view["return()"]) return delete view["return()"]
           
             // approval
             if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
@@ -257,7 +258,7 @@ const defaultEventHandler = ({ id }) => {
   view.mouseenter = false
   view.mousedown = false
 
-  if (view.link) view.element.addEventListener("click", (e) => e.preventDefault())
+  if (view.link) view.element.addEventListener("click", (e) => { if (!view.link.link) e.preventDefault() })
 
   // input
   if (view.type === "Input") {

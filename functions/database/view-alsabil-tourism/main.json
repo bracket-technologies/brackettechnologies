@@ -36,6 +36,7 @@
           "type": "View?class=flexbox",
           "children": [
             {
+              "type": "Icon?class=flexbox pointer;name=bi-bell;style:[fontSize=1.7rem;color=#999;transition=.2s];hover.style.color=blue",
               "controls": [
                 {
                   "event": "mouseenter?style().transform=rotate(30deg);trans-bell-1:()=timer():[style().transform=rotate(-30deg)]:200;trans-bell-2:()=timer():[style().transform=rotate(30deg)]:400;trans-bell-3:()=timer():[style().transform=rotate(-30deg)]:600;trans-bell-4:()=timer():[style().transform=rotate(0deg)]:800"
@@ -43,8 +44,7 @@
                 {
                   "event": "mouseleave?clearTimer():[trans-bell-1:()]:[trans-bell-2:()]:[trans-bell-3:()]:[trans-bell-4:()];style().transform=rotate(0)"
                 }
-              ],
-              "type": "Icon?class=flexbox pointer;name=bi-bell;style:[fontSize=1.7rem;color=#999;transition=.2s];hover.style.color=blue"
+              ]
             }
           ]
         },
@@ -65,11 +65,6 @@
           "type": "View?style:[height=70%;width=1px;backgroundColor=#eee]"
         },
         {
-          "controls": [
-            {
-              "event": "click?if():[style():profile-droplist.pointerEvents=none]:[style():[id=profile-droplist;opacity=1;pointerEvents=auto;transform=scale(1)]]:[style():[id=profile-droplist;opacity=0;pointerEvents=none;transform=scale(.5)]];position():[id=profile-droplist;positioner=().id;placement=bottom;align=right]"
-            }
-          ],
           "type": "View?id=user-name;class=flexbox pointer;style:[borderRadius=.5rem;padding=0 1rem;gap=1rem;height=3.25rem;transition=.2s];hover.style.backgroundColor=#f6f6f6",
           "children": [
             {
@@ -78,12 +73,18 @@
             {
               "type": "Text?text=if():[user:()]:[Welcome +user:().first-name]:[Sign in | up];style:[fontSize=1.4rem;color=#666]"
             }
+          ],
+          "controls": [
+            {
+              "event": "click?if():[style():profile-droplist.pointerEvents=none]:[style():[id=profile-droplist;opacity=1;pointerEvents=auto;transform=scale(1)]]:[style():[id=profile-droplist;opacity=0;pointerEvents=none;transform=scale(.5)]];position():[id=profile-droplist;positioner=().id;placement=bottom;align=right]"
+            }
           ]
         }
       ],
       "type": "View?id=navbar;class=flex align-center box-shadow-1;style:[minHeight=4.5rem;height=4.5rem;backgroundColor=#fff;padding=0 1rem;gap=3rem;top=0;width=100%;zIndex=1]"
     },
     {
+      "type": "View?class=flex;style:[width=100%;height=calc(100% - 4.5rem)]",
       "children": [
         {
           "type": "View?view=sidebar"
@@ -94,18 +95,18 @@
         {
           "type": "View?view=manager-mini-views"
         }
-      ],
-      "type": "View?class=flex;style:[width=100%;height=calc(100% - 4.5rem)]"
+      ]
     },
     {
+      "type": "View?id=profile-droplist;class=flex column box-shadow-1;style:[padding=.1rem;borderRadius=.5rem;backgroundColor=#fff;position=absolute;zIndex=10;opacity=0;pointerEvents=none;transition=.2s;transform=scale(.5)]",
       "children": [
         {
+          "type": "Text?class=flex align-center pointer;style:[padding=0 1rem;height=3.5rem;fontSize=1.4rem;transition=.2s];text=Profile;hover.style.backgroundColor=#eee",
           "controls": [
             {
               "event": "click?toggleView():[id=main;page=profile;timer=200]"
             }
-          ],
-          "type": "Text?class=flex align-center pointer;style:[padding=0 1rem;height=3.5rem;fontSize=1.4rem;transition=.2s];text=Profile;hover.style.backgroundColor=#eee"
+          ]
         },
         {
           "type": "Text?class=flex align-center pointer;style:[padding=0 1rem;height=3.5rem;fontSize=1.4rem;transition=.2s];text=Sign out;hover.style.backgroundColor=#eee",
@@ -116,7 +117,6 @@
           ]
         }
       ],
-      "type": "View?id=profile-droplist;class=flex column box-shadow-1;style:[padding=.1rem;borderRadius=.5rem;backgroundColor=#fff;position=absolute;zIndex=10;opacity=0;pointerEvents=none;transition=.2s;transform=scale(.5)]",
       "controls": [
         {
           "event": "mouseenter?clearTimer():[close-profile-droplist:()]"
@@ -149,18 +149,21 @@
           "type": "Icon?class=flexbox pointer;name=bi-eye;style:[width=3.25rem;height=3.5rem;fontSize=1.5rem;transition=.2s;borderRadius=.5rem];hover.style.backgroundColor=#eee"
         },
         {
-          "type": "Icon?class=flexbox pointer;name=bi-pencil-square;style:[fontSize=1.5rem;width=3.25rem;height=3.5rem;borderRadius=.5rem;transition=.2s];hover.style.backgroundColor=#eee",
           "controls": [
             {
-              "event": "click?if():[action-lister:()=bookings]:[booking-edit:()=true];style():[id=action-lister:()+'-mini-window';opacity=1;pointerEvents=auto;zIndex=1];update():[action-lister:()+'-mini-window']?booking-data:().status!=Canceled;flight-data:().status!=Canceled;reservation-data:().status!=Canceled"
+              "event": "click?if():[action-lister:()=bookings]:[booking-edit:()=true];style():[id=action-lister:()+'-mini-window';opacity=1;pointerEvents=auto;zIndex=1];update():[action-lister:()+'-mini-window']?if():[action-lister:()=bookings]:[booking-data:().status!=Canceled]:true;flight-data:().status!=Canceled;reservation-data:().status!=Canceled"
             }
-          ]
+          ],
+          "type": "Icon?class=flexbox pointer;name=bi-pencil-square;style:[fontSize=1.5rem;width=3.25rem;height=3.5rem;borderRadius=.5rem;transition=.2s];hover.style.backgroundColor=#eee"
         },
         {
           "type": "View?class=flexbox pointer;style:[width=3.25rem;height=3.5rem;transition=.2s;borderRadius=.5rem];hover.style.backgroundColor=#eee?action-lister:()=bookings;booking-data:().tickets.len()>0||booking-data:().e-tickets.len()>0",
           "controls": [
             {
-              "event": "click?loader.show;search():[limit=250;collection=flight-reservation;docs=booking-data:().reservations]:[tickets:()=search:().data.values();ticket-data:()=tickets:().0.clone();search():[collection=flight;docs=booking-data:().booking-details.():[flight-id]]:[my-flights:()=_list;ticket-data:().flights.clone()._():[my-flights:().push():[().search.data.values().clone().find():[id=_]]];ticket-edit-readonly:()=true;search():[collection=agent;doc=ticket-data:().agent]:[my-agent:()=search:().data;update():[tickets-mini-window];timer():[():[print-ticket].click();loader.hide]:200]]]"
+              "event": "click?loader.show;search():[limit=250;collection=flight-reservation;docs=booking-data:().reservations]:[tickets:()=search:().data.values();ticket-data:()=tickets:().0.clone();search():[collection=flight;docs=booking-data:().booking-details.():[flight-id]]:[my-flights:()=_list;ticket-data:().flights.clone()._():[my-flights:().push():[().search.data.values().clone().find():[id=_]]];ticket-edit-readonly:()=true;search():[collection=agent;doc=ticket-data:().agent]:[my-agent:()=search:().data;update():[tickets-mini-window];timer():[():[print-ticket].click();loader.hide]:200]]]?!print-by-ticket:()"
+            },
+            {
+              "event": "click?loader.show;search():[limit=250;collection=flight-reservation;docs=booking-data:().reservations]:[tickets:()=().search.data.values();ticket-data:()=tickets:().0.clone();search():[collection=flight;docs=booking-data:().booking-details.():[flight-id]]:[my-flights:()=_list;ticket-data:().flights.clone()._():[my-flights:().push():[().search.data.values().clone().find():[id=_]]];ticket-edit-readonly:()=true;tickets-multiple:()=true;search():[collection=agent;doc=ticket-data:().agent]:[my-agent:()=search:().data;update():[tickets-mini-window];timer():[():ticket-form-header.style().display=none;html2pdf():[pages=className():[ticket-pages];name=ticket-data:().pnr]]:200]]]?print-by-ticket:()"
             }
           ],
           "children": [
@@ -178,22 +181,6 @@
           ]
         },
         {
-          "type": "View?class=flexbox pointer;style:[width=3.25rem;height=3.5rem;transition=.2s;borderRadius=.5rem;position=relative];hover.style.backgroundColor=#eee?action-lister:()=bookings;booking-data:().tickets.len()>0||booking-data:().e-tickets.len()>0",
-          "children": [
-            {
-              "type": "Icon?class=flexbox;name=airplane_ticket;google.outlined;style:[fontSize=2rem;opacity=.7]"
-            },
-            {
-              "type": "Text?class=flexbox;text='*';style:[position=absolute;right=-0.1rem;top=-0.1rem;fontSize=2.2rem;opacity=.7]"
-            }
-          ],
-          "controls": [
-            {
-              "event": "click?loader.show;search():[limit=250;collection=flight-reservation;docs=booking-data:().reservations]:[tickets:()=().search.data.values();ticket-data:()=tickets:().0.clone();search():[collection=flight;docs=booking-data:().booking-details.():[flight-id]]:[my-flights:()=_list;ticket-data:().flights.clone()._():[my-flights:().push():[().search.data.values().clone().find():[id=_]]];ticket-edit-readonly:()=true;tickets-multiple:()=true;search():[collection=agent;doc=ticket-data:().agent]:[my-agent:()=search:().data;update():[tickets-mini-window];timer():[():ticket-form-header.style().display=none;html2pdf():[pages=className():[ticket-pages];name=ticket-data:().pnr]]:200]]]"
-            }
-          ]
-        },
-        {
           "type": "Icon?class=flexbox pointer;name=bi-files;style:[width=3.25rem;height=3.5rem;fontSize=1.5rem;transition=.2s;borderRadius=.5rem];hover.style.backgroundColor=#eee"
         },
         {
@@ -202,22 +189,11 @@
       ]
     },
     {
-      "controls": [
-        {
-          "event": "mouseleave?pax-details-timer=timer():[if():[():droplist.style().pointerEvents=none]:[style():[opacity=0;pointerEvents=none]]]:300"
-        },
-        {
-          "event": "mouseenter?clearTimer():[().pax-details-timer]"
-        },
-        {
-          "event": "click:body?style():[opacity=0;pointerEvents=none]?!contains():[clicked:()];!pax-details-btn.contains():[clicked:()];!droplist.contains():[clicked:()]"
-        }
-      ],
       "children": [
         {
+          "type": "View?Data=pax-details;class=flexbox column;style:[borderRadius=.5rem;gap=1rem]",
           "children": [
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Adults;style:[fontSize=1.4rem;width=10rem;textAlign=left]"
@@ -226,32 +202,33 @@
                   "type": "View?class=flexbox;style:[gap=.5rem]",
                   "children": [
                     {
+                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]",
                       "children": [
                         {
                           "type": "Icon?name=remove;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
                         }
-                      ],
-                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]"
+                      ]
                     },
                     {
+                      "type": "Text:adt-num?class=flexbox pointer;path=adt;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[10-[pax-details:().chd.num()||0]]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "click:droplist?className():pax-flight.():[data().pax=pax-details:().adt.num()+pax-details:().chd.num();txt()=pax-details:().adt.num()+pax-details:().chd.num()];flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar"
                         }
-                      ],
-                      "type": "Text:adt-num?class=flexbox pointer;path=adt;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[10-[pax-details:().chd.num()||0]]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF"
+                      ]
                     },
                     {
-                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]",
                       "children": [
                         {
                           "type": "Icon?name=add;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]"
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
               "type": "View?class=flexbox;style:[width=95%;height=1px;backgroundColor=#ddd]"
@@ -263,46 +240,6 @@
                   "type": "Text?text=Children;style:[fontSize=1.4rem;width=10rem;textAlign=left]"
                 },
                 {
-                  "children": [
-                    {
-                      "children": [
-                        {
-                          "type": "Icon?name=remove;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
-                        }
-                      ],
-                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]"
-                    },
-                    {
-                      "type": "Text:chd-num?class=flexbox pointer;path=chd;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[10-[pax-details:().adt.num()||0]]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF",
-                      "controls": [
-                        {
-                          "event": "click:droplist?className():pax-flight.():[data().pax=pax-details:().adt.num()+pax-details:().chd.num();txt()=pax-details:().adt.num()+pax-details:().chd.num()];flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]",
-                      "children": [
-                        {
-                          "type": "Icon?name=add;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
-                        }
-                      ]
-                    }
-                  ],
-                  "type": "View?class=flexbox;style:[gap=.5rem]"
-                }
-              ]
-            },
-            {
-              "type": "View?class=flexbox;style:[width=95%;height=1px;backgroundColor=#ddd]"
-            },
-            {
-              "type": "View?class=flexbox;style:[justifyContent=space-between]",
-              "children": [
-                {
-                  "type": "Text?text=Infants;style:[fontSize=1.4rem;width=10rem;textAlign=left]"
-                },
-                {
                   "type": "View?class=flexbox;style:[gap=.5rem]",
                   "children": [
                     {
@@ -316,10 +253,49 @@
                     {
                       "controls": [
                         {
-                          "event": "click:droplist?flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar"
+                          "event": "click:droplist?className():pax-flight.():[data().pax=pax-details:().adt.num()+pax-details:().chd.num();txt()=pax-details:().adt.num()+pax-details:().chd.num()];flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar"
                         }
                       ],
-                      "type": "Text:inf-num?class=flexbox pointer;path=inf;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[pax-details:().adt]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF"
+                      "type": "Text:chd-num?class=flexbox pointer;path=chd;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[10-[pax-details:().adt.num()||0]]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF"
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Icon?name=add;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
+                        }
+                      ],
+                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "View?class=flexbox;style:[width=95%;height=1px;backgroundColor=#ddd]"
+            },
+            {
+              "children": [
+                {
+                  "type": "Text?text=Infants;style:[fontSize=1.4rem;width=10rem;textAlign=left]"
+                },
+                {
+                  "type": "View?class=flexbox;style:[gap=.5rem]",
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "type": "Icon?name=remove;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
+                        }
+                      ],
+                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]"
+                    },
+                    {
+                      "type": "Text:inf-num?class=flexbox pointer;path=inf;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[pax-details:().adt+1]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF",
+                      "controls": [
+                        {
+                          "event": "click:droplist?flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar"
+                        }
+                      ]
                     },
                     {
                       "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]",
@@ -331,15 +307,34 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between]"
             }
-          ],
-          "type": "View?Data=pax-details;class=flexbox column;style:[borderRadius=.5rem;gap=1rem]"
+          ]
         }
       ],
-      "type": "View:pax-details?class=flexbox box-shadow-2;style:[position=absolute;opacity=0;pointerEvents=none;padding=1rem;backgroundColor=#fff;borderRadius=.5rem;transition=opacity .2s;zIndex=1]"
+      "type": "View:pax-details?class=flexbox box-shadow-2;style:[position=absolute;opacity=0;pointerEvents=none;padding=1rem;backgroundColor=#fff;borderRadius=.5rem;transition=opacity .2s;zIndex=1]",
+      "controls": [
+        {
+          "event": "mouseleave?pax-details-timer=timer():[if():[():droplist.style().pointerEvents=none]:[style():[opacity=0;pointerEvents=none]]]:300"
+        },
+        {
+          "event": "mouseenter?clearTimer():[().pax-details-timer]"
+        },
+        {
+          "event": "click:body?style():[opacity=0;pointerEvents=none]?!contains():[clicked:()];!pax-details-btn.contains():[clicked:()];!droplist.contains():[clicked:()]"
+        }
+      ]
     },
     {
+      "controls": [
+        {
+          "event": "click:body?timer():[if():[!bookings.contains():[clicked:()];sidebar.contains():[clicked:()];!mouseenter]:[style():[opacity=0;pointerEvents=none;transform=scale(0.5)];if():[opened-manager:()!=flights-manager;opened-manager:()!=bookings-manager;opened-manager:()!=reservations-manager]:[():bookings.():[style().borderRight=2px solid #00000000;1stChild().style().color=#888;hover.disable=false]]]]:200"
+        },
+        {
+          "event": "mouseleave?timer():[if():[!mouseenter]:[style():[opacity=0;pointerEvents=none;transform=scale(0.5)];if():[opened-manager:()!=flights-manager;opened-manager:()!=bookings-manager;opened-manager:()!=reservations-manager]:[():bookings.():[style().borderRight=2px solid #00000000;1stChild().style().color=#888;hover.disable=false]]]]:200"
+        }
+      ],
       "type": "View:bookings-droplist?class=vertical box-shadow-2;style:[padding=.1rem;borderRadius=.5rem;overflow=hidden;width=4rem;opacity=0;pointerEvents=none;transition=.2s;transform=scale(0.5);position=absolute;zIndex=11;backgroundColor=#fff]",
       "children": [
         {
@@ -361,12 +356,12 @@
               "type": "Icon?name=backpack;google.outlined;tooltip.text=my bookings;class=flexbox;style:[fontSize=2.5rem;color=#888;transition=.1s]"
             }
           ],
-          "type": "View?class=flexbox pointer;style:[borderRadius=0;height=5rem;width=100%;color=blue;transition=.1s];hover.style:[backgroundColor=#e6e6e6]",
           "controls": [
             {
               "event": "click?():sidebar.children().():[style().borderRight=2px solid #00000000;1stChild().style().color=#888;hover.disable=false];():bookings-droplist.children().():[mouseleave();1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=bookings-manager]:[opened-manager:()=bookings-manager;():bookings.():[style().borderRight=2px solid blue;1stChild().style().color=blue;hover.disable=true];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=bookings-manager;timer=200]]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox pointer;style:[borderRadius=0;height=5rem;width=100%;color=blue;transition=.1s];hover.style:[backgroundColor=#e6e6e6]"
         },
         {
           "type": "View?class=flexbox pointer;style:[borderRadius= 0 0 .5rem .5rem;height=5rem;width=100%;color=blue;transition=.1s];hover.style:[backgroundColor=#e6e6e6]",
@@ -382,46 +377,38 @@
           ]
         },
         {
+          "type": "View?class=flexbox pointer;style:[borderRadius=0;height=5rem;width=100%;color=blue;transition=.1s];hover.style:[backgroundColor=#e6e6e6]",
           "children": [
             {
               "type": "Icon?name=no_backpack;google.outlined;tooltip.text=my canceled bookings;class=flexbox;style:[fontSize=2.5rem;color=#888;transition=.1s]"
             }
           ],
-          "type": "View?class=flexbox pointer;style:[borderRadius=0;height=5rem;width=100%;color=blue;transition=.1s];hover.style:[backgroundColor=#e6e6e6]",
           "controls": [
             {
               "event": "click?():sidebar.children().():[style().borderRight=2px solid #00000000;1stChild().style().color=#888;hover.disable=false];():bookings-droplist.children().():[mouseleave();1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=canceled-bookings-manager]:[opened-manager:()=canceled-bookings-manager;():bookings.():[style().borderRight=2px solid blue;1stChild().style().color=blue;hover.disable=true];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=canceled-bookings-manager;timer=200]]"
             }
           ]
         }
-      ],
-      "controls": [
-        {
-          "event": "click:body?timer():[if():[!bookings.contains():[clicked:()];sidebar.contains():[clicked:()];!mouseenter]:[style():[opacity=0;pointerEvents=none;transform=scale(0.5)];if():[opened-manager:()!=flights-manager;opened-manager:()!=bookings-manager;opened-manager:()!=reservations-manager]:[():bookings.():[style().borderRight=2px solid #00000000;1stChild().style().color=#888;hover.disable=false]]]]:200"
-        },
-        {
-          "event": "mouseleave?timer():[if():[!mouseenter]:[style():[opacity=0;pointerEvents=none;transform=scale(0.5)];if():[opened-manager:()!=flights-manager;opened-manager:()!=bookings-manager;opened-manager:()!=reservations-manager]:[():bookings.():[style().borderRight=2px solid #00000000;1stChild().style().color=#888;hover.disable=false]]]]:200"
-        }
       ]
     }
   ],
-  "id": "main",
   "type": "View:main?class=flex column;style:[width=100%;position=relative;minHeight=100vh;height=100vh;overflow=visible]",
   "controls": [
     {
       "event": "loaded?route():[page=login]?!getCookie():[name=_id]"
     },
     {
-      "actions": "wait():search:[search??!agent:().id]?search.collection=user;search.doc=getCookie():[name=_id];wait():[user:()=().search.data;if():[!user:().id||!user:().agent]:[route():[page=login]]:[update():user-name;search.collection=agent;search.doc=user:().agent]]:[if():[().search.data]:[agent:()=().search.data;setCookie():[name=_agent;value=agent:().id];if():[user:().admin;agent:().admin]:[():flight-sidebar-btn.style().display=flex]]:[route():[page=login]]]",
-      "event": "loaded??getCookie():[name=_id];!user:().id"
+      "event": "loaded??getCookie():[name=_id];!user:().id",
+      "actions": "wait():search:[search??!agent:().id]?search.collection=user;search.doc=getCookie():[name=_id];wait():[user:()=().search.data;if():[!user:().id||!user:().agent]:[route():[page=login]]:[update():user-name;search.collection=agent;search.doc=user:().agent]]:[if():[().search.data]:[agent:()=().search.data;setCookie():[name=_agent;value=agent:().id];if():[user:().admin;agent:().admin]:[():flight-sidebar-btn.style().display=flex]]:[route():[page=login]]]"
     },
     {
       "actions": "wait():search?search.collection=agent;search.doc=getCookie():[name=_agent];wait():[agent:()=().search.data;if():[!agent:().id]:[route():[page=login]];if():[user:().admin;agent:().admin]:[():flight-sidebar-btn.style().display=flex]]",
       "event": "loaded??getCookie():[name=_agent];!agent:().id"
     },
     {
-      "actions": "wait():search?search.collection=collection;wait():[if():[().search.data]:[collections:()=().search.data]]",
-      "event": "loaded??getCookie():[name=_id]"
+      "event": "loaded??getCookie():[name=_id]",
+      "actions": "wait():search?search.collection=collection;wait():[if():[().search.data]:[collections:()=().search.data]]"
     }
-  ]
+  ],
+  "id": "main"
 }

@@ -54,6 +54,7 @@ window.onfocus = () => {
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
     
     if (!views[id]) return
+    var view = views[id]
     e.target = views[id].element
     
     // approval
@@ -76,6 +77,10 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
     
     // approval
     if (viewEventParams) await toParam({ string: viewEventParams, id, mount: true, e })
+
+    // break
+    if (view["break()"]) delete view["break()"]
+    if (view["return()"]) return delete view["return()"]
     
     // execute
     if (controls.actions || controls.action) await execute({ controls, id, e })

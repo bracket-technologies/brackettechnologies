@@ -111,6 +111,10 @@ const createElement = ({ _window, id, req, res }) => {
     
     params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
 
+    // break
+    if (params["break()"]) delete params["break()"]
+    if (params["return()"]) return delete params["return()"]
+
     if (params.id && params.id !== id/* && !priorityId*/) {
 
       if (views[params.id] && typeof views[params.id] === "object") {
