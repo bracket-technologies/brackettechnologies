@@ -1,10 +1,10 @@
 {
-  "creation-date": 1657214427578,
+  "type": "View:hotel-search-engine?class=vertical;style:[width=100%;position=relative];search-hotel:()=search-hotel:()||_map;pax-details:()=_map:adt:[if():[search-hotel:().pax]:[if():[search-hotel:().pax<10]:[search-hotel:().pax||1]:9]:1]:chd:0:inf:0;hotel-bookings:()=hotel-bookings:()||_list;search-type:()=Individual;booking-details:()=_list",
   "children": [
     {
+      "type": "View?class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding=2rem 1rem];search-for:()=search-for:()||Hotels",
       "children": [
         {
-          "type": "View?class=flexbox pointer;style:[padding=0 1rem;height=2.75rem;borderRadius=.5rem;backgroundColor=if():[search-for:()=Hotels]:#FF4340:inherit;transition=.3s]",
           "children": [
             {
               "type": "Text?text=Hotels & Hotel Apartments;style:[color=if():[search-for:()=Hotels]:#fff:#FF4340;fontSize=1.2rem]"
@@ -14,28 +14,29 @@
             {
               "event": "click?1stChild():[search-engine-req:()+'s-list'].children().():rem();hotels:()=_list;hotels-booked:()=_array;search-for:()=Hotels;parent().children().():[style():[backgroundColor=inherit];1stChild().style().color=#FF4340];style():[backgroundColor=#FF4340];1stChild().style().color=#fff;booking-details:()=_list;update():pricing-bar?search-for:()!=Hotels"
             }
-          ]
+          ],
+          "type": "View?class=flexbox pointer;style:[padding=0 1rem;height=2.75rem;borderRadius=.5rem;backgroundColor=if():[search-for:()=Hotels]:#FF4340:inherit;transition=.3s]"
         },
         {
+          "controls": [
+            {
+              "event": "click?1stChild():[search-engine-req:()+'s-list'].children().():rem();hotels:()=_list;hotels-booked:()=_array;search-for:()=Villas;parent().children().():[style():[backgroundColor=inherit];1stChild().style().color=#FF4340];style():[backgroundColor=#FF4340];1stChild().style().color=#fff;booking-details:()=_list;update():pricing-bar?search-for:()!=Villas"
+            }
+          ],
           "children": [
             {
               "type": "Text?text=Villas & Apartments;style:[color=if():[)(:search-by=One way]:#fff:#FF4340;fontSize=1.2rem]"
             }
           ],
-          "type": "View?class=flexbox pointer;style:[padding=0 1rem;height=2.75rem;borderRadius=.5rem;backgroundColor=if():[search-for:()=Villas]:#FF4340:inherit;transition=.3s]",
-          "controls": [
-            {
-              "event": "click?1stChild():[search-engine-req:()+'s-list'].children().():rem();hotels:()=_list;hotels-booked:()=_array;search-for:()=Villas;parent().children().():[style():[backgroundColor=inherit];1stChild().style().color=#FF4340];style():[backgroundColor=#FF4340];1stChild().style().color=#fff;booking-details:()=_list;update():pricing-bar?search-for:()!=Villas"
-            }
-          ]
+          "type": "View?class=flexbox pointer;style:[padding=0 1rem;height=2.75rem;borderRadius=.5rem;backgroundColor=if():[search-for:()=Villas]:#FF4340:inherit;transition=.3s]"
         },
         {
+          "type": "View?class=flexbox;style:[marginLeft=auto;gap=2rem;marginRight=1rem]",
           "children": [
             {
               "controls": {
                 "event": "click:droplist?search-type:()=droplist-txt:();1stChild().txt()=droplist-txt:();if():[search-type:()=Group]:[():group-pax.style().display=flex;():individual-pax.style().display=none]:[pax-details:()=_map:adt:1:chd:0:inf:0;():individual-pax.1stChild().txt()=1;():group-pax.input().txt()=1;():group-pax.style().display=none;():individual-pax.style().display=flex;update():pax-details;update():pricing-bar]"
               },
-              "type": "View?class=flexbox pointer;style:[gap=.5rem;borderRadius=.5rem;height=3rem];droplist.items=_array:Individual:Group;droplist.placement=bottom;droplist.item:[hover.style:[backgroundColor=#222];style:[fontSize=1.2rem;color=#fff;minHeight=3rem]];droplist.style:[backgroundColor=#000;opacity=.9];droplist.preventDefault",
               "children": [
                 {
                   "type": "Text?id=search-type;class=flex;style:[fontSize=1.3rem;color=#FF4340];text=search-type:()"
@@ -43,18 +44,16 @@
                 {
                   "type": "Icon?name=bi-caret-down-fill;style:[fontSize=1.3rem;color=#FF4340]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox pointer;style:[gap=.5rem;borderRadius=.5rem;height=3rem];droplist.items=_array:Individual:Group;droplist.placement=bottom;droplist.item:[hover.style:[backgroundColor=#222];style:[fontSize=1.2rem;color=#fff;minHeight=3rem]];droplist.style:[backgroundColor=#000;opacity=.9];droplist.preventDefault"
             }
-          ],
-          "type": "View?class=flexbox;style:[marginLeft=auto;gap=2rem;marginRight=1rem]"
+          ]
         }
-      ],
-      "type": "View?class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding=2rem 1rem];search-for:()=search-for:()||Hotels"
+      ]
     },
     {
       "children": [
         {
-          "type": "View?class=flex;style:[gap=.5rem;width=40rem]",
           "children": [
             {
               "type": "Icon?name=bi-geo-alt;style:[fontSize=1.5rem;color=#888]"
@@ -62,9 +61,11 @@
             {
               "type": "Text?text=Destination;style:[fontSize=1.3rem]"
             }
-          ]
+          ],
+          "type": "View?class=flex;style:[gap=.5rem;width=40rem]"
         },
         {
+          "type": "View?class=flex;style:[gap=.5rem;width=15rem]",
           "children": [
             {
               "type": "Icon?name=bi-calendar3;style:[fontSize=1.3rem;color=#888]"
@@ -72,10 +73,10 @@
             {
               "type": "Text?text=Check-in;style:[fontSize=1.3rem]"
             }
-          ],
-          "type": "View?class=flex;style:[gap=.5rem;width=15rem]"
+          ]
         },
         {
+          "type": "View?class=flex;style:[gap=.5rem;width=15rem]",
           "children": [
             {
               "type": "Icon?name=bi-calendar3;style:[fontSize=1.3rem;color=#888]"
@@ -83,11 +84,9 @@
             {
               "type": "Text?text=Check-out;style:[fontSize=1.3rem]"
             }
-          ],
-          "type": "View?class=flex;style:[gap=.5rem;width=15rem]"
+          ]
         },
         {
-          "type": "View?class=flex;style:[gap=.5rem;width=10rem]",
           "children": [
             {
               "type": "Icon?name=bi-clock;style:[fontSize=1.3rem;color=#888]"
@@ -95,7 +94,8 @@
             {
               "type": "Text?text=Duration;style:[fontSize=1.3rem]"
             }
-          ]
+          ],
+          "type": "View?class=flex;style:[gap=.5rem;width=10rem]"
         },
         {
           "children": [
@@ -112,9 +112,9 @@
       "type": "View?class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding=0 1rem]"
     },
     {
+      "type": "View?class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding=1rem]",
       "children": [
         {
-          "type": "View:search-engine-hotel?class=flex column;style:[gap=1rem]",
           "children": [
             {
               "type": "View?Data=search-hotel;class=flex align-center;style:[gap=1rem]",
@@ -128,6 +128,7 @@
                   "type": "View?class=flex column;style:[gap=1rem;width=40rem]"
                 },
                 {
+                  "type": "View?class=flex column;style:[gap=1rem;width=15rem;position=relative]",
                   "children": [
                     {
                       "type": "Input?path=checkin;if():[!data()]:[data()=today().timestamp();Data().checkout=data()+259200000];input.type=date;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #FF4340",
@@ -140,19 +141,18 @@
                     {
                       "type": "Text?class=flex align-center checkin;if():[data().checkin]:[text=data().checkin.toDateFormat()];style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem;fontSize=1.3rem];click:[prev().click()]"
                     }
-                  ],
-                  "type": "View?class=flex column;style:[gap=1rem;width=15rem;position=relative]"
+                  ]
                 },
                 {
                   "type": "View?class=flex column;style:[gap=1rem;width=15rem;position=relative]",
                   "children": [
                     {
-                      "type": "Input?path=checkout;if():data():[input.min=data().toDateInputFormat()];input.type=date;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s];clicked.style.border=2px solid #FF4340",
                       "controls": [
                         {
                           "event": "change?parent().data().checkout=data().date().timestamp();parent().className():checkout.():[txt()=data().toDateFormat()];2ndParent().className():stay-duration.():[txt()=]"
                         }
-                      ]
+                      ],
+                      "type": "Input?path=checkout;if():data():[input.min=data().toDateInputFormat()];input.type=date;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s];clicked.style.border=2px solid #FF4340"
                     },
                     {
                       "type": "Text?class=flex align-center checkout;if():[data().checkout]:[text=data().checkout.toDateFormat()];style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem;fontSize=1.3rem];click:[prev().click()]"
@@ -162,6 +162,7 @@
                 {
                   "children": [
                     {
+                      "type": "View?class=flex align-center pointer;style:[padding=0 1rem;gap=1rem;position=relative;height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s];clicked.style.border=2px solid #FF4340;droplist.items=_list:1 night:2 nights:3 nights:4 nights:5 nights:6 nights:1 week:10 nights:15 nights;droplist.placement=bottom;droplist.align=left;droplist.preventDefault;droplist.item.style:[minHeight=3rem;fontSize=1.3rem]",
                       "children": [
                         {
                           "type": "Text?class=stay-duration;text=[search-hotel:().duration||3 nights];style:[fontSize=1.3rem]"
@@ -174,8 +175,7 @@
                         {
                           "event": "click:droplist?className():stay-duration.():[txt()=droplist-txt:()];if():[Data().checkin]:[if():[droplist-txt:()=1 night]:[data().checkout=data().checkin+86400000].elif():[droplist-txt:()=2 nights]:[data().checkout=data().checkin+172800000].elif():[droplist-txt:()=3 nights]:[data().checkout=data().checkin+259200000].elif():[droplist-txt:()=4 nights]:[data().checkout=data().checkin+345600000].elif():[droplist-txt:()=5 nights]:[data().checkout=data().checkin+432000000].elif():[droplist-txt:()=6 nights]:[data().checkout=data().checkin+518400000].elif():[droplist-txt:()=1 week]:[data().checkout=data().checkin+604800000].elif():[droplist-txt:()=10 days]:[data().checkout=data().checkin+864000000].elif():[droplist-txt:()=15 days]:[data().checkout=data().checkin+1296000000];className():checkout.():[txt()=Data().checkout.toDateFormat();prev().input().txt()=Data().checkout.toDateInputFormat()]]"
                         }
-                      ],
-                      "type": "View?class=flex align-center pointer;style:[padding=0 1rem;gap=1rem;position=relative;height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s];clicked.style.border=2px solid #FF4340;droplist.items=_list:1 night:2 nights:3 nights:4 nights:5 nights:6 nights:1 week:10 nights:15 nights;droplist.placement=bottom;droplist.align=left;droplist.preventDefault;droplist.item.style:[minHeight=3rem;fontSize=1.3rem]"
+                      ]
                     }
                   ],
                   "type": "View?class=flex column;style:[gap=1rem;width=10rem]"
@@ -200,6 +200,7 @@
                       ]
                     },
                     {
+                      "type": "View:group-pax?class=flex align-center;style:[gap=.5rem;width=8rem;display=if():[search-type:()=Group]:flex:none]",
                       "children": [
                         {
                           "controls": [
@@ -209,8 +210,7 @@
                           ],
                           "type": "Input?class=pax-hotel;path=pax;input.type=number;style:[backgroundColor=#fff;borderRadius=.5rem;border=1px solid #ddd;padding=0 1rem;height=4rem;flex=1]"
                         }
-                      ],
-                      "type": "View:group-pax?class=flex align-center;style:[gap=.5rem;width=8rem;display=if():[search-type:()=Group]:flex:none]"
+                      ]
                     },
                     {
                       "controls": [
@@ -224,7 +224,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "View:search-engine-hotel?class=flex column;style:[gap=1rem]"
         },
         {
           "controls": [
@@ -239,8 +240,7 @@
           ],
           "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=#FF4340;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginBottom=auto]"
         }
-      ],
-      "type": "View?class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding=1rem]"
+      ]
     },
     {
       "type": "View?style:[height=1px;width=100%;backgroundColor=#ddd]"
@@ -254,6 +254,6 @@
       "type": "View?class=flexbox pointer unselectable;style:[width=6rem;left=calc(50% - 3rem);transition=.2s;borderRadius=0 0 1rem 1rem;backgroundColor=#f6f6f6;height=0;overflow=hidden;border=1px solid #ddd;borderTop=0;position=absolute;bottom=0;zIndex=1];hover.style.backgroundColor=#eee;open=false;click:[if():[open]:[1stChild().style().transform=rotate(0deg)]:[1stChild().style().transform=rotate(180deg)];open=().open.opp()]?false"
     }
   ],
-  "type": "View:hotel-search-engine?class=vertical;style:[width=100%;position=relative];search-hotel:()=search-hotel:()||_map;pax-details:()=_map:adt:[if():[search-hotel:().pax]:[if():[search-hotel:().pax<10]:[search-hotel:().pax||1]:9]:1]:chd:0:inf:0;hotel-bookings:()=hotel-bookings:()||_list;search-type:()=Individual;booking-details:()=_list",
+  "creation-date": 1657214427578,
   "id": "hotel-search-engine"
 }

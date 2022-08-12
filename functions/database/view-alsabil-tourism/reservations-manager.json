@@ -1,7 +1,6 @@
 {
   "children": [
     {
-      "type": "View?class=flex align-center;style:[minHeight=4.5rem;maxHeight=4.5rem]",
       "children": [
         {
           "type": "View?class=flexbox;style:[height=100%]",
@@ -12,6 +11,7 @@
             {
               "children": [
                 {
+                  "type": "View?class=flexbox;style:[height=100%;borderRadius=.5rem]",
                   "children": [
                     {
                       "type": "Text?text=Reservations;style:[fontSize=1.6rem];droplist:[items=_list:Reservations:Bookings;align=center;style:[backgroundColor=#000;opacity=.9];item.style:[minHeight=3rem;fontSize=1.3rem;color=#fff];item.hover.style:[backgroundColor=#222];preventDefault]",
@@ -24,8 +24,7 @@
                         }
                       ]
                     }
-                  ],
-                  "type": "View?class=flexbox;style:[height=100%;borderRadius=.5rem]"
+                  ]
                 },
                 {
                   "type": "Text?text=Manager;style:[color=#444;fontSize=1.6rem];click:[prev().1stChild().click()]"
@@ -52,7 +51,8 @@
             }
           ]
         }
-      ]
+      ],
+      "type": "View?class=flex align-center;style:[minHeight=4.5rem;maxHeight=4.5rem]"
     },
     {
       "controls": [
@@ -69,7 +69,6 @@
       "type": "View?view=search-engine;search-engine-req:()=reservation"
     },
     {
-      "type": "View?Data=search-reservation;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;height=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]",
       "children": [
         {
           "type": "View?class=flexbox;style:[width=100%]",
@@ -77,20 +76,20 @@
             {
               "children": [
                 {
-                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF",
-                  "controls": [
-                    {
-                      "event": "input?data()=data().toUpperCase();txt()=data()"
-                    }
-                  ]
-                },
-                {
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase();txt()=data()"
                     }
                   ],
-                  "type": "Input?id=E-Ticket;path=e-ticket;label.text=E-Ticket;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                },
+                {
+                  "type": "Input?id=E-Ticket;path=e-ticket;label.text=E-Ticket;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF",
+                  "controls": [
+                    {
+                      "event": "input?data()=data().toUpperCase();txt()=data()"
+                    }
+                  ]
                 },
                 {
                   "type": "Input?id=flight-id;path=flight;label.text=Flight;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
@@ -99,17 +98,17 @@
                   "type": "Input?id=first-name;path=name;label.text=Name;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                 },
                 {
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
-                      "type": "Input?path=reservation-date;label.text=Reservation Date;label.style.fontSize=1.3rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "change?data()=data().timestamp();txt():reservation-date-text=data().toDateFormat();input():travel-date.min()=data().toDateInputFormat()"
                         }
-                      ]
+                      ],
+                      "type": "Input?path=reservation-date;label.text=Reservation Date;label.style.fontSize=1.3rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                       "children": [
                         {
                           "type": "Text?id=reservation-date-text;class=flex align-center;if():[data().reservation-date]:[text=data().reservation-date.toDateFormat()];style:[fontSize=1.3rem]"
@@ -117,13 +116,12 @@
                         {
                           "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().reservation-date.del();prev().txt()=;parent().prev().click();input():travel-date.min()=null]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
                     }
-                  ],
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
+                  ]
                 },
                 {
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
                       "controls": [
@@ -144,7 +142,8 @@
                       ],
                       "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
                 },
                 {
                   "type": "Input?id=reservation-status;path=status;label.text=Status;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='collections:().reservation-status.status';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem]"
@@ -160,10 +159,10 @@
               ],
               "controls": [
                 {
-                  "event": "click?loader.show?search-reservation:().pnr||search-reservation:().e-ticket||search-reservation:().flight||search-reservation:().name||search-reservation:().reservation-date||search-reservation:().travel-date||search-reservation:().status",
                   "actions": [
                     "wait():search:[update:reservations-list]?search.collection=flight-booking;search.field:[if():[search-reservation:().pnr]:[pnr.equal=search-reservation:().pnr];if():[search-reservation:().e-ticket]:[e-tickets.contain=search-reservation:().e-ticket];if():[search-reservation:().flight]:[flights.contains=search-reservation:().flight];if():[search-reservation:().name]:[passengers-name.lessOrEqual=search-reservation:().name];if():[search-reservation:().reservation-date]:[day.equal=search-reservation:().reservation-date];if():[search-reservation:().travel-date]:[travel-dates.contain=search-reservation:().travel-date];if():[search-reservation:().status]:[status.equal=search-reservation:().status]:[status.equal=Issued]];wait():[reservations:()=().search.data.values();loader.hide]"
-                  ]
+                  ],
+                  "event": "click?loader.show?search-reservation:().pnr||search-reservation:().e-ticket||search-reservation:().flight||search-reservation:().name||search-reservation:().reservation-date||search-reservation:().travel-date||search-reservation:().status"
                 },
                 {
                   "event": "click?note():'Kindly fill any of the blanks!':danger?!search-reservation:().pnr;!search-reservation:().e-ticket;!search-reservation:().flight;!search-reservation:().name;!search-reservation:().reservation-date;!search-reservation:().travel-date;!search-reservation:().status"
@@ -173,18 +172,19 @@
             }
           ]
         }
-      ]
+      ],
+      "type": "View?Data=search-reservation;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;height=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]"
     },
     {
       "type": "View?view=reservations-list"
     }
   ],
-  "id": "reservations-manager",
   "controls": [
     {
-      "event": "loaded??false",
-      "actions": "wait():search:[update:reservations-list]?search.collection=flight-booking;search.field.day.equal=todayStart();search.field.status.equal=Issued;if():[!user:().admin]:[search.field.user.equal=user:().id];if():[!user:().admin;!agent:().admin]:[search.field.agent.equal=agent:().id];wait():[reservations:()=().search.data.values()]"
+      "actions": "wait():search:[update:reservations-list]?search.collection=flight-booking;search.field.day.equal=todayStart();search.field.status.equal=Issued;if():[!user:().admin]:[search.field.user.equal=user:().id];if():[!user:().admin;!agent:().admin]:[search.field.agent.equal=agent:().id];wait():[reservations:()=().search.data.values()]",
+      "event": "loaded??false"
     }
   ],
-  "type": "View?id=reservations-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];reservations:()=if():[reservations:().type()=array]:[reservations:()]:_list;search-reservation:()=search-reservation:()||_map:status:Issued?false"
+  "type": "View?id=reservations-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];reservations:()=if():[reservations:().type()=array]:[reservations:()]:_list;search-reservation:()=search-reservation:()||_map:status:Issued?false",
+  "id": "reservations-manager"
 }
