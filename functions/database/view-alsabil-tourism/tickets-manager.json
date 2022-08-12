@@ -1,5 +1,5 @@
 {
-  "id": "tickets-manager",
+  "type": "View?id=tickets-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-tickets:()]:[tickets:()=_list];unreset-tickets:()=false;search-ticket:()=search-ticket:()||_map",
   "children": [
     {
       "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem",
@@ -16,7 +16,6 @@
           ]
         },
         {
-          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
           "children": [
             {
               "type": "Icon?class=flexbox pointer;name=bi-trash;tooltip.text=erase;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
@@ -25,19 +24,19 @@
               "type": "Icon?class=flexbox pointer;name=bi-download;tooltip.text=import;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             },
             {
-              "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]",
               "controls": [
                 {
                   "event": "click?my-counter=1;exportExcel():[data=tickets:().clone().():[reservation-details.0._():[_.Sequence=().my-counter;().my-counter=().my-counter+1;_.E Ticket=_.e-ticket;_.PNR=_.pnr;_.Airline=_.airline;_.Flight Number=_.flight-number;_.PNR=_.pnr;_.Departure Time=_.departure-time.toClock():[hr;min];_.Arrival Time=_.arrival-time.toClock():[hr;min];_.Travel Date=_.departure-day.toDateFormat().slice():4;_.Departure Airport=_.departure-airport.slice():0:3;_.Arrival Airport=_.arrival-airport.slice():0:3;_.Class=_.head-class;_.Meal Included=_.meal-included;_.Title=_.title.capitalize();_.Gender=if():[_.gender=F]:FEMALE:MALE;_.Pax Type=_.age;_.First Name=_.first-name;_.Last Name=_.last-name;_.'DOB (dd/mm/yyyy)'=_.dob.toDateFormat().slice():4;_.Nationality=_.nationality.uppercase();_.Passport Number=_.passport-number;_.Passport Issued Country=_.passport-issuer.uppercase();_.Passport Nationality=_.passport-issuer.uppercase();_.'Passport Expiry (dd/mm/yyyy)'=_.passport-expiry-date.toDateFormat().slice():4;_.'Passport Issued Date (dd/mm/yyyy)'=_string;_.Mobile Number=_.contact-number;_.Email=_.email;_.ID Number=_string]].flat();name=my tickets;fields=_list:Sequence:Traveling With:Pax Type:Title:First Name:Last Name:Gender:'DOB (dd/mm/yyyy)':Nationality:Mobile Number:Email:ID Number:Passport Number:'Passport Expiry (dd/mm/yyyy)':'Passport Issued Date (dd/mm/yyyy)':Passport Issued Country:Passport Nationality]"
                 }
-              ]
+              ],
+              "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
         }
       ]
     },
     {
-      "type": "View?view=search-engine;search-engine-req:()=ticket",
       "controls": [
         {
           "event": "mouseenter?lastChild().style():[minHeight=2.5rem;bottom=-2.5rem]"
@@ -45,23 +44,25 @@
         {
           "event": "mouseleave?lastChild().style():[minHeight=0;bottom=0]"
         }
-      ]
+      ],
+      "type": "View?view=search-engine;search-engine-req:()=ticket"
     },
     {
       "type": "View:ticket-search-engine?Data=search-ticket;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]",
       "children": [
         {
+          "type": "View?class=flexbox;style:[width=100%;gap=1rem]",
           "children": [
             {
               "type": "View?class=horizontal grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr]",
               "children": [
                 {
+                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase().split():' '.join():'';txt()=data()"
                     }
-                  ],
-                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                  ]
                 },
                 {
                   "controls": [
@@ -83,6 +84,7 @@
                   "type": "Input?id=first-name;path=name;label.text=Name;label.style.fontSize=1.3rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                 },
                 {
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
                       "type": "Input?path=reservation-date;label.text=Issuing Date;label.style.fontSize=1.3rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.3rem;transition=.1s];clicked.style.border=2px solid #0080FF",
@@ -103,8 +105,7 @@
                         }
                       ]
                     }
-                  ],
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
+                  ]
                 },
                 {
                   "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
@@ -118,6 +119,7 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                       "children": [
                         {
                           "type": "Text?id=travel-date-text;class=flex align-center;if():[data().travel-date]:[text=data().travel-date.toDateFormat()];style:[fontSize=1.3rem]"
@@ -125,8 +127,7 @@
                         {
                           "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().travel-date.del();prev().txt()=;parent().prev().click()]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
+                      ]
                     }
                   ]
                 },
@@ -157,8 +158,7 @@
                 }
               ]
             }
-          ],
-          "type": "View?class=flexbox;style:[width=100%;gap=1rem]"
+          ]
         }
       ]
     },
@@ -166,5 +166,5 @@
       "type": "View?view=tickets-list"
     }
   ],
-  "type": "View?id=tickets-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-tickets:()]:[tickets:()=_list];unreset-tickets:()=false;search-ticket:()=search-ticket:()||_map"
+  "id": "tickets-manager"
 }

@@ -1,24 +1,25 @@
 {
-  "id": "issues-mini-window",
   "type": "View?id=issues-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
   "children": [
     {
+      "type": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto;issues-data:().maintenances=_list?issues-data:()",
       "children": [
         {
           "children": [
             {
-              "type": "Text?text=إستمارة عطل+if():[)(:issues-copied]:(منسوخ).elif():[)(:issues-edit-readonly]:(عرض).elif():[)(:issues-edit]:(تعديل).else():(جديد);style.fontSize=1.8rem;style.fontWeight=bolder"
+              "type": "Text?text=إستمارة عطل +if():[)(:issues-copied]:(منسوخ).elif():[)(:issues-edit-readonly]:(عرض).elif():[)(:issues-edit]:(تعديل).else():(جديد);style.fontSize=1.8rem;style.fontWeight=bolder"
             },
             {
+              "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto",
               "children": [
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-issues;!)(:issues-edit-readonly",
                   "controls": [
                     {
                       "event": "click?issues:().[issues-data:().id].del()?false",
                       "actions": "wait():erase:[update:issues-manager-list]?erase.collection=issues;erase.doc=issues-data:().id;wait():[():issues-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];new-issues:().del()]"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-issues;!)(:issues-edit-readonly",
                   "children": [
                     {
                       "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
@@ -31,13 +32,7 @@
                       "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:issues-edit-readonly",
-                  "controls": [
-                    {
-                      "actions": "wait():save:note:[update:issues-manager-list:200]?note.text=تم تسجيل العطل بنجاح;save.collection=issues;save.doc=issues-data:().id;save.data=issues-data:();wait():[():issues-mini-window.style():[opacity=0;pointerEvents=none;zIndex-counter:()=zIndex-counter:()-1;zIndex=1]]",
-                      "event": "click?issues:().[issues-data:().id]=issues-data:();)(:new-issues.del()"
-                    }
-                  ]
+                  "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s;click:[():save-issue.click()]?!)(:issues-edit-readonly"
                 },
                 {
                   "children": [
@@ -52,8 +47,7 @@
                   ],
                   "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s"
                 }
-              ],
-              "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto"
+              ]
             }
           ],
           "type": "View?class=flex align-center;style.width=100%"
@@ -62,8 +56,10 @@
           "type": "View?style.width=100%;style.height=1px;style.backgroundColor=#ddd"
         },
         {
+          "type": "View?class=flex column;style.width=100%;data=)(:issues-data;style.gap=2rem",
           "children": [
             {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات التسجيل;style.padding=1rem 0;style.fontWeight=bold"
@@ -87,16 +83,15 @@
                     }
                   ]
                 }
-              ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              ]
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=حالة العطل;label.location=outside;path=issue-status;data()=data:().collection.issue-status.status.0;clicked.style.border=2px solid #0080ff;readonly;style.borderRadius=.5rem;droplist.items='data:().collection.issue-status.status';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]"
@@ -105,34 +100,42 @@
                       "type": "Input?style.width=100%;style.height=4rem;label.text=حساسية العطل;label.location=outside;data().issue-sensitivity=data().issue-sensitivity||ملحّ;path=issue-sensitivity;clicked.style.border=2px solid #0080ff;readonly;style.borderRadius=.5rem;droplist.items=_list:ملحّ:ملحّ جدا;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]"
                     },
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=كيف تم التبليغ;label.location=outside;readonly;data().how-alert-received=data().how-alert-received||إتصال;path=how-alert-received;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_list:إتصال:إشعار صوتي:إشعار نظري;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
                       "controls": [
                         {
                           "event": "click:droplist?if():[data()=إتصال]:[next().style().display=flex;next().next().style().display=flex]:[next().style().display=none;next().next().style().display=none]"
+                        }
+                      ],
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=كيف تم التبليغ;label.location=outside;readonly;data().how-alert-received=data().how-alert-received||إتصال;path=how-alert-received;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_list:إتصال:إشعار صوتي:إشعار نظري:إشعار مسجّل;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]"
+                    },
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=المركز المبلّغ;label.location=outside;path=alerter-center;if():data():[input.value=centers:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='centers:().():name';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
+                      "controls": [
+                        {
+                          "event": "click:droplist?data()=centers:().find():[name=data()].id"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=الشخص المبلّغ;label.location=outside;path=alerter;if():data():[input.value=members:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='members:().filter():[id.in():[centers:().find():[id=Data().alerter-center].members]].():name';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
+                      "controls": [
+                        {
+                          "event": "click:droplist?data()=members:().find():[name=data()].id"
                         }
                       ]
                     },
                     {
                       "controls": [
                         {
-                          "event": "click:droplist?Data().alerter-center-id=data:().collection.lists.centers.find():[name=droplist-txt:()].id"
+                          "event": "click:droplist?data()=members:().find():[name=data()].id"
                         }
                       ],
-                      "type": "Input?old-center:()=data().alerter-center;style.width=100%;style.height=4rem;label.text=المركز المبلّغ;label.location=outside;path=alerter-center-name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='data:().collections.lists.centers.():name';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]"
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=الشخص الذي تلقى التبليغ;label.location=outside;path=receiver;if():data():[input.value=members:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='members:().filter():[center=user:().center].():name';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]"
                     },
                     {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=الشبكة المعطلة;label.location=outside;path=network;if():data():[input.value=networks:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='networks:().():name';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
                       "controls": [
                         {
-                          "event": "click:droplist?Data().alerter-center-id=data:().collection.lists.centers.find():[name=droplist-txt:()].id"
-                        }
-                      ],
-                      "type": "Input?old-member:()=data().alerter-member;style.width=100%;style.height=4rem;label.text=الشخص المبلّغ;label.location=outside;path=alerter-member-name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=data:().collections.lists.members.():name;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]"
-                    },
-                    {
-                      "type": "Input?old-network:()=data().network;style.width=100%;style.height=4rem;label.text=الشبكة المعطلة;label.location=outside;path=network-name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=data:().collections.lists.networks.():name;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
-                      "controls": [
-                        {
-                          "event": "click:droplist?Data().network=data:().collection.lists.networks.find():[name=droplist-txt:()].id"
+                          "event": "click:droplist?data()=networks:().find():[name=data()].id"
                         }
                       ]
                     },
@@ -145,17 +148,17 @@
                       ]
                     },
                     {
-                      "type": "Input?old-issue-place:()=data().issue-place-name;style.width=100%;style.height=4rem;label.text=مكان العطل;label.location=outside;path=issue-place-name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='data:().collections.lists.[issue-place-type:()].():name';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
                       "controls": [
                         {
-                          "event": "click:droplist?Data().issue-place-id=data:().collections.lists.[issue-place-type:()].find():[name=droplist-txt:()].id"
+                          "event": "click:droplist?if():[issue-place-type:()=station]:[data()=stations:().find():[name=data()].id]:[data()=centers:().find():[name=data()].id]"
                         }
-                      ]
+                      ],
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=مكان العطل;label.location=outside;path=issue-place;if():data():[if():[Data().issue-place-type=station]:[input.value=stations:().find():[id=data()].name].elif():[Data().issue-place-type=center]:[input.value=centers:().find():[id=data()].name]];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='if():[issue-place-type:()=station]:[stations:().():name]:[centers:().():name]';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]"
                     }
-                  ],
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem"
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
               "children": [
@@ -165,6 +168,7 @@
                 {
                   "children": [
                     {
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
                           "controls": [
@@ -172,26 +176,25 @@
                               "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().monitor-serial-number.del()]?!)(:issues-edit-readonly"
                             }
                           ],
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().issue-observable.exists().else():false",
                           "children": [
                             {
                               "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                             }
-                          ],
-                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().issue-observable.exists().else():false"
+                          ]
                         },
                         {
                           "type": "Text?text=العطل ظاهر على الشاشة;style.fontSize=1.6rem"
                         }
-                      ],
-                      "type": "View?class=flex;style.width=100%;style.gap=2rem"
+                      ]
                     },
                     {
                       "children": [
                         {
-                          "type": "Input?label:[text=رقم شاشة المراقبة];style.width=100%;style.height=4rem;style.border=1px solid #ddd;path=monitor-serial-number;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=data:().collections.lists.monitors.():serial-number;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
+                          "type": "Input?label:[text=رقم شاشة المراقبة];style.width=100%;style.height=4rem;style.border=1px solid #ddd;path=monitor;if():data():[input.value=monitors:().find():[id=data()].serial-number];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='monitors:().():serial-number';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
                           "controls": [
                             {
-                              "event": "click:droplist?Data().monitor=data:().collection.lists.monitors.find():[serail-number=droplist-txt:()].id"
+                              "event": "click:droplist?data()=monitors:().find():[serial-number=data()].id"
                             }
                           ]
                         }
@@ -199,7 +202,6 @@
                       "type": "View?old-monitor:()=data().monitor;style.gap=2rem;style.width=100%;style.display=if():[data().monitor]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr"
                     },
                     {
-                      "type": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
                           "children": [
@@ -207,46 +209,52 @@
                               "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                             }
                           ],
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().main-issue-observable.exists().else():false",
                           "controls": [
                             {
                               "event": "click?checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().main-device.del()]?!)(:issues-edit-readonly"
                             }
-                          ],
-                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().main-issue-observable.exists().else():false"
+                          ]
                         },
                         {
                           "type": "Text?text=تم تحديد مصدر العطل;style.fontSize=1.6rem"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem"
                     },
                     {
-                      "type": "View?old-device:()=data().main-device;style.gap=2rem;style.width=100%;style.display=if():[data().main-device]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr",
                       "children": [
                         {
-                          "type": "Input?label:[text=الجهاز الرئيسي المعطل];style.width=100%;style.height=4rem;style.border=1px solid #ddd;path=main-device;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=data:().collections.lists.devices.():serial-number;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true];droplist.searchable"
+                          "type": "Input?label:[text=الجهاز الرئيسي المعطل];style.width=100%;style.height=4rem;style.border=1px solid #ddd;path=main-device;if():data():[input.value=devices:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='devices:().():name';droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true];droplist.searchable",
+                          "controls": [
+                            {
+                              "event": "click:droplist?data()=devices:().find():[name=data()].id"
+                            }
+                          ]
                         }
-                      ]
+                      ],
+                      "type": "View?style.gap=2rem;style.width=100%;style.display=if():[data().main-device]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr"
                     },
                     {
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
+                          "controls": [
+                            {
+                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().how-observer-can-fix-issue.del()]?!issues-edit-readonly:()"
+                            }
+                          ],
                           "children": [
                             {
                               "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                             }
                           ],
-                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().observer-can-fix-issue||false",
-                          "controls": [
-                            {
-                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().how-observer-can-fix-issue.del()]?!issues-edit-readonly:()"
-                            }
-                          ]
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().observer-can-fix-issue||false"
                         },
                         {
                           "type": "Text?text=يستطيع المراقب صيانة العطل;style.fontSize=1.6rem"
                         }
-                      ],
-                      "type": "View?class=flex;style.width=100%;style.gap=2rem"
+                      ]
                     },
                     {
                       "type": "View?style.gap=2rem;style.width=100%;style.display=if():[data().main-device]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr",
@@ -259,15 +267,15 @@
                     {
                       "children": [
                         {
+                          "controls": [
+                            {
+                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().how-issue-fixed-itself.del()]?!issues-edit-readonly:()"
+                            }
+                          ],
                           "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().issue-fixed-itself||false",
                           "children": [
                             {
                               "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
-                            }
-                          ],
-                          "controls": [
-                            {
-                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().how-issue-fixed-itself.del()]?!issues-edit-readonly:()"
                             }
                           ]
                         },
@@ -292,6 +300,7 @@
               "type": "View?class=flex column;style.gap=1rem;style.width=100%;style.marginBottom=1rem"
             },
             {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=وصف العطل;style.padding=1rem 0;style.fontWeight=bold"
@@ -304,52 +313,49 @@
                   ],
                   "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
                 }
-              ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              ]
             },
             {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=ملاحظات;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?textarea;style.width=100%;style.height=8rem;path=note;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[issues-edit-readonly:()]:[readonly=true];style.border=1px solid #ccc"
                     }
-                  ],
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                  ]
                 }
-              ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
-            }
-          ],
-          "type": "View?class=flex column;style.width=100%;data=)(:issues-data;style.gap=2rem"
-        },
-        {
-          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem",
-          "children": [
-            {
-              "controls ": [
-                {
-                  "actions": "wait():save:note:[update:issues-manager-list:200]?note.text=تم تسجيل العطل بنجاح;save.collection=issues;save.doc=issues-data:().id;save.data=issues-data:();wait():[():issues-mini-window.style():[opacity=0;pointerEvents=none;zIndex-counter:()=zIndex-counter:()-1;zIndex=1]]",
-                  "event": "click?issues:().[issues-data:().id]=issues-data:();)(:new-issues.del()"
-                }
-              ],
-              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!issues-edit-readonly:()"
-            },
-            {
-              "controls": [
-                {
-                  "event": "click?():issues-mini-window.style():[opacity=0;pointerEvents=none;zIndex-counter:()=zIndex-counter-1:();zIndex=1];issues-data:().del();new-issues:().del()"
-                }
-              ],
-              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s"
+              ]
             }
           ]
+        },
+        {
+          "children": [
+            {
+              "type": "Text:save-issue?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!issues-edit-readonly:()",
+              "controls": [
+                {
+                  "event": "click?issues-data:().maintenances=[issues-data:().maintenances||_list];save():[collection=issues;data=issues-data:()]:[():issues-mini-window.style():[opacity=0;pointerEvents=none];note():[text=تم تسجيل العطل بنجاح];issues:().replaceItem():[issues-data:()];new-issues:().del();update():[issues-manager-list]]"
+                }
+              ]
+            },
+            {
+              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s",
+              "controls": [
+                {
+                  "event": "click?():issues-mini-window.style():[opacity=0;pointerEvents=none;zIndex=1];issues-data:().del();new-issues:().del()"
+                }
+              ]
+            }
+          ],
+          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem"
         }
-      ],
-      "type": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto;issues-data:().maintenances=_list?issues-data:()"
+      ]
     }
-  ]
+  ],
+  "id": "issues-mini-window"
 }
