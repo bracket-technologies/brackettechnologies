@@ -6,7 +6,6 @@
       "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]",
       "children": [
         {
-          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
           "children": [
             {
               "type": "View?style:[height=60%;width=2px;backgroundColor=blue;borderRadius=1rem]"
@@ -14,10 +13,10 @@
             {
               "type": "Text?text=Flights Manager;style:[color=#444;fontSize=1.6rem]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%"
         },
         {
-          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
           "children": [
             {
               "type": "Icon?class=flexbox pointer;name=bi-trash;tooltip.text=erase;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
@@ -36,7 +35,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
         }
       ]
     },
@@ -49,8 +49,8 @@
   ],
   "controls": [
     {
-      "event": "loaded",
-      "actions": "wait():search:[update:flights-list]?search.collection=flight;search.field.departure-date.greater=todayStart().timestamp();wait():[flights:()=().search.data]"
+      "actions": "wait():search:[update:flights-list]?search.collection=flight;search.field.departure-date.greater=todayStart().timestamp();wait():[flights:()=().search.data]",
+      "event": "loaded"
     }
   ]
 }

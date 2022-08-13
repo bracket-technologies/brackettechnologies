@@ -262,7 +262,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
     || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
     || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()"
-    || path0 === "replaceItem()" || path0 === "grandParent()" || path0 === "grandChild()" || path0 === "grandChildren()" || path0 === "open()" || path0 === "2ndNext()")) {
+    || path0 === "replaceItem()" || path0 === "grandParent()" || path0 === "grandChild()" || path0 === "grandChildren()" || path0 === "open()" || path0 === "2ndNext()" || path0 === "isNaN()")) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -3620,6 +3620,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = toNumber(o)
             
+        } else if (k0 === "isNaN()") {
+
+            answer = isNaN(o)
+            console.log(answer, o);
         } else if (k0 === "round()") {
 
             var nth = toValue({ req, res, _window, id, e, _, __, _i,params, value: args[1] }) || 2

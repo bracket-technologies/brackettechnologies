@@ -1,8 +1,5 @@
 {
-  "path": "/",
-  "name": "Al Sabil Travel",
   "title": "Al Sabil Travel",
-  "id": "main",
   "views": [
     "booking-change-cancelation",
     "booking-passenger",
@@ -43,5 +40,8 @@
     "search-engine"
   ],
   "creation-date": 1651335662000,
+  "name": "Al Sabil Travel",
+  "path": "/",
+  "id": "main",
   "view": "main"
 }

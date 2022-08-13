@@ -8,8 +8,7 @@ const setElement = ({ id }) => {
     if (!view) return console.log("No Element", id)
     
     // before loading event
-    var beforeLoadingControls = view.controls && toArray(view.controls)
-        .filter(controls => controls.event && toArray(controls.event)[0].split("?")[0].includes("beforeLoading"))
+    var beforeLoadingControls = view.controls && toArray(view.controls).filter(controls => controls.event && toArray(controls.event)[0].split("?")[0].includes("beforeLoading"))
     if (beforeLoadingControls) {
 
         var currentPage = global.currentPage

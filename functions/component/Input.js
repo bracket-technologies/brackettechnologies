@@ -150,7 +150,7 @@ const Input = (component) => {
         
         return {
           id, Data, parent, derivations, required, path, islabel: true, preventDefault,
-          "type": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width||"100%"};style.maxWidth=${component.style.maxWidth||"100%"};${toString(container)}`,
+          "type": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width ||"100%"};style.maxWidth=${component.style.maxWidth ||"100%"};${toString(container)}`,
           "children": [{
             "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
             "controls": [{
@@ -159,11 +159,11 @@ const Input = (component) => {
           }, 
             Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
           {
-            "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
+            "type": `View:${id}-required?class=flex gap-1;style:[alignItems=center;opacity=${required && required.style && required.style.opacity || "0"};transition=.2s]?${required ? true : false}`,
             "children": [{
               "type": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
             }, {
-              "type": `Text?text=Input is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
+              "type": `Text?text=${required && required.text || "Required blank"};style.color=#D72C0D;style.fontSize=1.3rem;${toString(required)}`
             }]
           }],
           "controls": [{
@@ -201,7 +201,7 @@ const Input = (component) => {
                 ...style,
             },
             children: [...children, { // message
-                type: `Text?id=${id}+-msg;msg=parent().msg;text=parent().msg?parent().msg`,
+                type: `Text?id=${id}-msg;msg=parent().msg;text=parent().msg?parent().msg`,
                 style: {
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',

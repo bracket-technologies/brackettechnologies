@@ -1,16 +1,15 @@
 {
-  "type": "View:main?class=flex column;style:[width=100%;position=relative;minHeight=100vh;height=100vh;overflow=visible]",
   "controls": [
     {
-      "event": "loaded?route():[page=login]?!getCookie():[name=_id]"
+      "event": "beforeLoading?route():[page=login]?!getCookie():[name=_id]"
     },
     {
-      "actions": "wait():search:[search??!agent:().id]?search.collection=user;search.doc=getCookie():[name=_id];wait():[user:()=().search.data;if():[!user:().id||!user:().agent]:[route():[page=login]]:[update():[user-name];search.collection=agent;search.doc=user:().agent]]:[if():[search:().data]:[agent:()=().search.data;if():[agent:().admin=true;user:().admin=true;():my-flights.style().height=10.1rem]:[():my-flights.style().height=15.1rem];setCookie():[name=_agent;value=agent:().id];if():[user:().admin;agent:().admin]:[():flight-sidebar-btn.style().display=flex]]:[route():[page=login]]]",
-      "event": "loaded??getCookie():[name=_id];!user:().id"
+      "event": "loaded?loader.show?getCookie():[name=_id];!user:().id",
+      "actions": "wait():search:[search??!agent:().id]?search.collection=user;search.doc=getCookie():[name=_id];wait():[user:()=().search.data;if():[!user:().id||!user:().agent]:[route():[page=login]]:[update():[user-name];search.collection=agent;search.doc=user:().agent]]:[if():[search:().data]:[agent:()=().search.data;if():[!user:().password-changed]:[():[show-profile].click()];if():[agent:().admin=true;user:().admin=true;():my-flights.style().height=10.1rem]:[():my-flights.style().height=15.1rem];setCookie():[name=_agent;value=agent:().id];if():[user:().admin;agent:().admin]:[():flight-sidebar-btn.style().display=flex];loader.hide]:[loader.hide;route():[page=login]]]"
     },
     {
-      "event": "loaded??user:();getCookie():[name=_agent];!agent:().id",
-      "actions": "wait():search?search.collection=agent;search.doc=getCookie():[name=_agent];wait():[agent:()=().search.data;if():[!agent:().id]:[route():[page=login]];if():[user:().admin;agent:().admin]:[():flight-sidebar-btn.style().display=flex;if():[agent:().admin=true;user:().admin=true;():my-flights.style().height=10.1rem]:[():my-flights.style().height=15.1rem]]]"
+      "actions": "wait():search?search.collection=agent;search.doc=getCookie():[name=_agent];wait():[agent:()=().search.data;if():[!agent:().id]:[route():[page=login]];if():[user:().admin;agent:().admin]:[():flight-sidebar-btn.style().display=flex;if():[agent:().admin=true;user:().admin=true;():my-flights.style().height=10.1rem]:[():my-flights.style().height=15.1rem]]]",
+      "event": "loaded??user:();getCookie():[name=_agent];!agent:().id;false"
     },
     {
       "event": "loaded??getCookie():[name=_id]",
@@ -19,20 +18,12 @@
   ],
   "children": [
     {
-      "type": "View?id=navbar;class=flex align-center box-shadow-1;style:[minHeight=4.5rem;height=4.5rem;backgroundColor=#fff;padding=0 1rem;gap=3rem;top=0;width=100%;zIndex=1]",
       "children": [
         {
           "type": "Image?src='https://storage.googleapis.com/bracketjs.appspot.com/storage-alsabil-tourism/WhatsApp-Image-2022-07-20-at-7-12-54-PM-jpeg-1658512330263?GoogleAccessId=firebase-adminsdk-3gkdr%40bracketjs.iam.gserviceaccount.com&Expires=32509461600&Signature=tlfXcuHj6FhyjlRkAidypJ74mXWZKbmTMocaVZYXIk7WTtjCh%2F9PVVBXdYnWfDtW69btXW%2FNaeAcCJjDSR9%2FLK7%2FhLcVz%2BIr%2BCEc0M%2BWNkvW546%2F7lYHK4viVg%2BIUB4WNfRtPIp9%2BbAbe5vIjRzp7kjaMVDH0lLDyL1JJGQe1V1cdi1%2BlgnyuAHvorcclzC8Q8wyftii2NDK2z0DsQ9pq4g5g5VPOOVjDde6dlcT8ZPOYYztZzdAKK2CeNYwB0nmjPyalHwaloJgNsVXpVh%2Fb%2B4fQ%2B1nfEonV%2B6a8mw7w9uX2RobOTTTjeRkqZlZbrqlLS9FlpF4%2FUXUkukcZMnJjg%3D%3D';class=flex pointer;style:[maxHeight=4rem]"
         },
         {
-          "controls": [
-            {
-              "event": "mouseenter?style().border=1px solid #eee;style().width=70rem"
-            },
-            {
-              "event": "mouseleave?if():[!2ndChild().focus]:[style().border=none;style().width=3.25rem]"
-            }
-          ],
+          "type": "View?class=flex pointer;style:[borderRadius=1.5rem;width=3.25rem;height=3.25rem;marginLeft=auto;transition=width .3s;overflow=hidden]",
           "children": [
             {
               "type": "Icon?class=flexbox;name=bi-search;style:[color=#999;fontSize=1.6rem;minWidth=3.25rem]"
@@ -49,9 +40,17 @@
               "type": "Input?style:[flex=1;height=100%];placeholder=Search for flights, hotels, tours, transfers..."
             }
           ],
-          "type": "View?class=flex pointer;style:[borderRadius=1.5rem;width=3.25rem;height=3.25rem;marginLeft=auto;transition=width .3s;overflow=hidden]"
+          "controls": [
+            {
+              "event": "mouseenter?style().border=1px solid #eee;style().width=70rem"
+            },
+            {
+              "event": "mouseleave?if():[!2ndChild().focus]:[style().border=none;style().width=3.25rem]"
+            }
+          ]
         },
         {
+          "type": "View?class=flexbox",
           "children": [
             {
               "type": "Icon?class=flexbox pointer;name=bi-bell;style:[fontSize=1.7rem;color=#999;transition=.2s];hover.style.color=blue",
@@ -64,19 +63,18 @@
                 }
               ]
             }
-          ],
-          "type": "View?class=flexbox"
+          ]
         },
         {
           "type": "View?class=flexbox",
           "children": [
             {
-              "type": "Icon?class=flexbox pointer;name=published_with_changes;google.outlined;tooltip.text=Hot reload;style:[fontSize=2rem;color=#999;transition=.2s];hover.style.color=green",
               "controls": [
                 {
                   "event": "click?loader.show;search():[collection=view;limit=100]:[data:().view=().search.data;update():root;loader.hide]"
                 }
-              ]
+              ],
+              "type": "Icon?class=flexbox pointer;name=published_with_changes;google.outlined;tooltip.text=Hot reload;style:[fontSize=2rem;color=#999;transition=.2s];hover.style.color=green"
             }
           ]
         },
@@ -85,6 +83,11 @@
         },
         {
           "type": "View?id=user-name;class=flexbox pointer;style:[borderRadius=.5rem;padding=0 1rem;gap=1rem;height=3.25rem;transition=.2s];hover.style.backgroundColor=#f6f6f6",
+          "controls": [
+            {
+              "event": "click?if():[style():profile-droplist.pointerEvents=none]:[style():[id=profile-droplist;opacity=1;pointerEvents=auto;transform=scale(1)]]:[style():[id=profile-droplist;opacity=0;pointerEvents=none;transform=scale(.5)]];position():[id=profile-droplist;positioner=().id;placement=bottom;align=right]"
+            }
+          ],
           "children": [
             {
               "type": "Icon?name=bi-person;style:[fontSize=2.4rem;color=#999]"
@@ -92,17 +95,12 @@
             {
               "type": "Text?text=if():[user:()]:[Welcome +user:().first-name]:[Sign in | up];style:[fontSize=1.4rem;color=#666]"
             }
-          ],
-          "controls": [
-            {
-              "event": "click?if():[style():profile-droplist.pointerEvents=none]:[style():[id=profile-droplist;opacity=1;pointerEvents=auto;transform=scale(1)]]:[style():[id=profile-droplist;opacity=0;pointerEvents=none;transform=scale(.5)]];position():[id=profile-droplist;positioner=().id;placement=bottom;align=right]"
-            }
           ]
         }
-      ]
+      ],
+      "type": "View?id=navbar;class=flex align-center box-shadow-1;style:[minHeight=4.5rem;height=4.5rem;backgroundColor=#fff;padding=0 1rem;gap=3rem;top=0;width=100%;zIndex=1]"
     },
     {
-      "type": "View?class=flex;style:[width=100%;height=calc(100% - 4.5rem)]",
       "children": [
         {
           "type": "View?view=sidebar"
@@ -113,23 +111,30 @@
         {
           "type": "View?view=manager-mini-views"
         }
-      ]
+      ],
+      "type": "View?class=flex;style:[width=100%;height=calc(100% - 4.5rem)]"
     },
     {
       "children": [
         {
-          "controls": [
+          "children": [
             {
-              "event": "click?toggleView():[id=main;page=profile;timer=200]"
+              "type": "Icon?name=manage_accounts;google.outlined;style:[fontSize=2rem;color=#999;transition=.2s]"
+            },
+            {
+              "type": "Text?class=flex align-center;style:[height=3.5rem;fontSize=1.4rem];text=Profile"
             }
           ],
-          "type": "Text?class=flex align-center pointer;style:[padding=0 1rem;height=3.5rem;fontSize=1.4rem;transition=.2s];text=Profile;hover.style.backgroundColor=#eee"
+          "type": "View:show-profile?class=flex align-center pointer;style:[padding=0 1rem;gap=1rem;transition=.2s];hover.style.backgroundColor=#eee;click:[update():[profile-window];():[profile-window].style():[opacity=1;pointerEvents=auto]];mouseenter:[1stChild().style().color=#444];mouseleave:[1stChild().style().color=#999]"
         },
         {
-          "type": "Text?class=flex align-center pointer;style:[padding=0 1rem;height=3.5rem;fontSize=1.4rem;transition=.2s];text=Sign out;hover.style.backgroundColor=#eee",
-          "controls": [
+          "type": "View?class=flex align-center pointer;style:[padding=0 1rem;gap=1rem;transition=.2s];hover.style.backgroundColor=#eee;click:[eraseCookie():[name=_id];eraseCookie():[name=_key];eraseCookie():[name=_agent];agent:().del();user:().del();toggleView():[id=main;page=login;timer=200]];mouseenter:[1stChild().style().color=#444];mouseleave:[1stChild().style().color=#999]",
+          "children": [
             {
-              "event": "click?eraseCookie():[name=_id];eraseCookie():[name=_key];eraseCookie():[name=_agent];agent:().del();user:().del();toggleView():[id=main;page=login;timer=200]"
+              "type": "Icon?name=logout;google.outlined;style:[fontSize=2rem;color=#999;transition=.2s]"
+            },
+            {
+              "type": "Text?class=flex align-center;style:[height=3.5rem;fontSize=1.4rem];text=Sign out"
             }
           ]
         }
@@ -147,28 +152,28 @@
     {
       "children": [
         {
+          "type": "Icon?class=flexbox pointer;name=bi-eye;style:[width=3.25rem;height=3.5rem;fontSize=1.5rem;transition=.2s;borderRadius=.5rem];hover.style.backgroundColor=#eee",
           "controls": [
             {
               "event": "click?loader.show;search():[collection=agent;if():[action-lister:()=tickets]:[doc=ticket-data:().agent].elif():[action-lister:()=bookings]:[doc=booking-data:().agent]]:[my-agent:()=search:().data;if():[action-lister:()=tickets]:[search():[collection=flight;docs=ticket-data:().flights]:[my-flights:()=_list;ticket-data:().clone().flights._():[my-flights:().push():[().search.data.values().clone().find():[id=_]]];style():[id=action-lister:()+'-mini-window';opacity=1;pointerEvents=auto;zIndex=1];[action-lister:().slice():0:(-1)+'-edit-readonly']:()=true;update():[action-lister:()+'-mini-window'];loader.hide]]:[style():[id=action-lister:()+'-mini-window';opacity=1;pointerEvents=auto;zIndex=1];[action-lister:().slice():0:(-1)+'-edit-readonly']:()=true;update():[action-lister:()+'-mini-window'];loader.hide]]"
             }
-          ],
-          "type": "Icon?class=flexbox pointer;name=bi-eye;style:[width=3.25rem;height=3.5rem;fontSize=1.5rem;transition=.2s;borderRadius=.5rem];hover.style.backgroundColor=#eee"
+          ]
         },
         {
-          "type": "Icon:edit-form?class=flexbox pointer;name=bi-pencil-square;style:[fontSize=1.5rem;width=3.25rem;height=3.5rem;borderRadius=.5rem;transition=.2s];hover.style.backgroundColor=#eee?if():[action-lister:()=bookings]:[booking-data:().status!=Canceled]:true;if():[action-lister:()=flights]:[flight-data:().status!=Canceled]:true;if():[action-lister:()=tickets]:[reservation-data:().status!=Canceled]:true",
           "controls": [
             {
               "event": "click?if():[action-lister:()=bookings]:[booking-edit:()=true];style():[id=action-lister:()+'-mini-window';opacity=1;pointerEvents=auto;zIndex=1];update():[action-lister:()+'-mini-window']"
             }
-          ]
+          ],
+          "type": "Icon:edit-form?class=flexbox pointer;name=bi-pencil-square;style:[fontSize=1.5rem;width=3.25rem;height=3.5rem;borderRadius=.5rem;transition=.2s];hover.style.backgroundColor=#eee?if():[action-lister:()=bookings]:[booking-data:().status!=Canceled]:true;if():[action-lister:()=flights]:[flight-data:().status!=Canceled]:true;if():[action-lister:()=tickets]:[reservation-data:().status!=Canceled]:true"
         },
         {
+          "type": "View?class=flexbox pointer;style:[width=3.25rem;height=3.5rem;transition=.2s;borderRadius=.5rem];hover.style.backgroundColor=#eee?action-lister:()=bookings;booking-data:().tickets.len()>0||booking-data:().e-tickets.len()>0",
           "children": [
             {
               "type": "Icon?class=flexbox;name=airplane_ticket;google.outlined;style:[fontSize=2rem;opacity=.7]"
             }
           ],
-          "type": "View?class=flexbox pointer;style:[width=3.25rem;height=3.5rem;transition=.2s;borderRadius=.5rem];hover.style.backgroundColor=#eee?action-lister:()=bookings;booking-data:().tickets.len()>0||booking-data:().e-tickets.len()>0",
           "controls": [
             {
               "event": "click?loader.show;search():[limit=250;collection=flight-reservation;docs=booking-data:().reservations]:[tickets:()=search:().data.values();ticket-data:()=tickets:().0.clone();search():[collection=flight;docs=booking-data:().booking-details.():[flight-id]]:[my-flights:()=_list;ticket-data:().flights.clone()._():[my-flights:().push():[().search.data.values().clone().find():[id=_]]];ticket-edit-readonly:()=true;search():[collection=agent;doc=ticket-data:().agent]:[my-agent:()=search:().data;update():[tickets-mini-window];timer():[():[print-ticket].click();loader.hide]:200]]]?!print-by-ticket:()"
@@ -179,12 +184,12 @@
           ]
         },
         {
+          "type": "View?class=flexbox pointer;style:[width=3.25rem;height=3.5rem;transition=.2s;borderRadius=.5rem];hover.style.backgroundColor=#eee?action-lister:()=tickets",
           "children": [
             {
               "type": "Icon?class=flexbox;name=airplane_ticket;google.outlined;style:[fontSize=2rem;opacity=.7]"
             }
           ],
-          "type": "View?class=flexbox pointer;style:[width=3.25rem;height=3.5rem;transition=.2s;borderRadius=.5rem];hover.style.backgroundColor=#eee?action-lister:()=tickets",
           "controls": [
             {
               "event": "click?loader.show;search():[collection=flight;docs=ticket-data:().flights]:[my-flights:()=_list;ticket-data:().flights.clone()._():[my-flights:().push():[().search.data.values().clone().find():[id=_]]];ticket-edit-readonly:()=true;search():[collection=agent;doc=ticket-data:().agent]:[my-agent:()=search:().data;update():[tickets-mini-window];timer():[():[print-ticket].click();loader.hide]:200]]"
@@ -214,21 +219,9 @@
           "event": "click:body?close-action-list:()=timer():[style():[opacity=0;transform=scale(0.5);pointerEvents=none]]:200?!contains():[clicked:()];!clicked:().classList().inc():actions"
         }
       ],
-      "type": "View?id=action-list;class=flex column box-shadow-2;style:[padding=.1rem;borderRadius=.5rem;backgroundColor=#fff;position=absolute;zIndex=10;opacity=0;pointerEvents=none;transition='opacity .2s, transform .2s';transform=scale(.5)]"
+      "type": "View:action-list?class=flex column box-shadow-2;style:[padding=.1rem;borderRadius=.5rem;backgroundColor=#fff;position=absolute;zIndex=10;opacity=0;pointerEvents=none;transition='opacity .2s, transform .2s';transform=scale(.5)]"
     },
     {
-      "type": "View:pax-details?class=flexbox box-shadow-2;style:[position=absolute;opacity=0;pointerEvents=none;padding=1rem;backgroundColor=#fff;borderRadius=.5rem;transition=opacity .2s;zIndex=1]",
-      "controls": [
-        {
-          "event": "mouseleave?pax-details-timer=timer():[if():[():droplist.style().pointerEvents=none]:[style():[opacity=0;pointerEvents=none]]]:300"
-        },
-        {
-          "event": "mouseenter?clearTimer():[().pax-details-timer]"
-        },
-        {
-          "event": "click:body?style():[opacity=0;pointerEvents=none]?!contains():[clicked:()];!pax-details-btn.contains():[clicked:()];!droplist.contains():[clicked:()]"
-        }
-      ],
       "children": [
         {
           "children": [
@@ -238,43 +231,43 @@
                   "type": "Text?text=Adults;style:[fontSize=1.4rem;width=10rem;textAlign=left]"
                 },
                 {
-                  "type": "View?class=flexbox;style:[gap=.5rem]",
                   "children": [
                     {
+                      "children": [
+                        {
+                          "type": "Icon?name=remove;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
+                        }
+                      ],
                       "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]",
                       "controls": [
                         {
                           "event": "click?data().adt=data().adt.num()-1;next().txt()=data().adt;className():pax-flight.():[data().pax=pax-details:().adt.num()+pax-details:().chd.num();txt()=pax-details:().adt.num()+pax-details:().chd.num()];flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar?data().adt>0"
                         }
-                      ],
-                      "children": [
-                        {
-                          "type": "Icon?name=remove;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
-                        }
                       ]
                     },
                     {
-                      "type": "Text:adt-num?class=flexbox pointer;path=adt;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[10-[pax-details:().chd.num()||0]]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "click:droplist?className():pax-flight.():[data().pax=pax-details:().adt.num()+pax-details:().chd.num();txt()=pax-details:().adt.num()+pax-details:().chd.num()];flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar"
                         }
-                      ]
+                      ],
+                      "type": "Text:adt-num?class=flexbox pointer;path=adt;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[10-[pax-details:().chd.num()||0]]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF"
                     },
                     {
-                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]",
+                      "controls": [
+                        {
+                          "event": "click?data().adt=data().adt.num()+1;prev().txt()=data().adt;className():pax-flight.():[data().pax=pax-details:().adt.num()+pax-details:().chd.num();txt()=pax-details:().adt.num()+pax-details:().chd.num()];flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar?data().adt<9;className():pax-flight.0.data().pax<9"
+                        }
+                      ],
                       "children": [
                         {
                           "type": "Icon?name=add;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
                         }
                       ],
-                      "controls": [
-                        {
-                          "event": "click?data().adt=data().adt.num()+1;prev().txt()=data().adt;className():pax-flight.():[data().pax=pax-details:().adt.num()+pax-details:().chd.num();txt()=pax-details:().adt.num()+pax-details:().chd.num()];flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar?data().adt<9;className():pax-flight.0.data().pax<9"
-                        }
-                      ]
+                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style:[gap=.5rem]"
                 }
               ],
               "type": "View?class=flexbox;style:[justifyContent=space-between]"
@@ -283,6 +276,7 @@
               "type": "View?class=flexbox;style:[width=95%;height=1px;backgroundColor=#ddd]"
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Children;style:[fontSize=1.4rem;width=10rem;textAlign=left]"
@@ -304,12 +298,12 @@
                       "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]"
                     },
                     {
-                      "type": "Text:chd-num?class=flexbox pointer;path=chd;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[10-[pax-details:().adt.num()||0]]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "click:droplist?className():pax-flight.():[data().pax=pax-details:().adt.num()+pax-details:().chd.num();txt()=pax-details:().adt.num()+pax-details:().chd.num()];flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar"
                         }
-                      ]
+                      ],
+                      "type": "Text:chd-num?class=flexbox pointer;path=chd;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[10-[pax-details:().adt.num()||0]]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF"
                     },
                     {
                       "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]",
@@ -326,8 +320,7 @@
                     }
                   ]
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
               "type": "View?class=flexbox;style:[width=95%;height=1px;backgroundColor=#ddd]"
@@ -339,9 +332,9 @@
                   "type": "Text?text=Infants;style:[fontSize=1.4rem;width=10rem;textAlign=left]"
                 },
                 {
+                  "type": "View?class=flexbox;style:[gap=.5rem]",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]",
                       "children": [
                         {
                           "type": "Icon?name=remove;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
@@ -351,7 +344,8 @@
                         {
                           "event": "click?data().inf=data().inf.num()-1;next().txt()=data().inf;flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar?data().inf>0"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]"
                     },
                     {
                       "type": "Text:inf-num?class=flexbox pointer;path=inf;style:[height=3rem;width=3rem;borderRadius=.5rem;border=1px solid #ddd;textAlign=center;fontSize=1.4rem];readonly;droplist.items='range():0:[pax-details:().adt+1]';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem];clicked.style.border=2px solid #0080FF",
@@ -367,23 +361,35 @@
                           "type": "Icon?name=add;google.outlined;style:[fontSize=1.5rem;color=#888;transition=.2s]"
                         }
                       ],
-                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]",
                       "controls": [
                         {
                           "event": "click?data().inf=data().inf.num()+1;prev().txt()=data().inf;flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar?data().inf<9;data().adt>data().inf"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox pointer;style:[border=1px solid #ddd;height=3rem;width=3rem;borderRadius=.5rem;transition=.2s];mouseenter:[style():[border=2px solid #0080FF];1stChild().style().color=#0080FF];mouseleave:[style():[border=1px solid #ddd];1stChild().style().color=#888]"
                     }
-                  ],
-                  "type": "View?class=flexbox;style:[gap=.5rem]"
+                  ]
                 }
               ]
             }
           ],
           "type": "View?Data=pax-details;class=flexbox column;style:[borderRadius=.5rem;gap=1rem]"
         }
-      ]
+      ],
+      "controls": [
+        {
+          "event": "mouseleave?pax-details-timer=timer():[if():[():droplist.style().pointerEvents=none]:[style():[opacity=0;pointerEvents=none]]]:300"
+        },
+        {
+          "event": "mouseenter?clearTimer():[().pax-details-timer]"
+        },
+        {
+          "event": "click:body?style():[opacity=0;pointerEvents=none]?!contains():[clicked:()];!pax-details-btn.contains():[clicked:()];!droplist.contains():[clicked:()]"
+        }
+      ],
+      "type": "View:pax-details?class=flexbox box-shadow-2;style:[position=absolute;opacity=0;pointerEvents=none;padding=1rem;backgroundColor=#fff;borderRadius=.5rem;transition=opacity .2s;zIndex=1]"
     }
   ],
+  "type": "View:main?class=flex column;style:[width=100%;position=relative;minHeight=100vh;height=100vh;overflow=visible]",
   "id": "main"
 }
