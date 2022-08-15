@@ -5062,6 +5062,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _o = o.type ? o : view
             var _params = {}
             
+            if (!o) return
             if (_o.type) breakRequest = true
 
             if (args[1]) _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
@@ -7929,9 +7930,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: _, _: o, e, _i: index, object }) )
                 answer = o
+                
             } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, params, _, __, e, _i: index }) )
 
             if (notArray) answer = o[0]
+
         } else if (k0 === "_i") {
             
             if (value !== undefined && key && i === lastIndex) answer = o[_i] = value
@@ -8417,6 +8420,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _await = ""
             var _search = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
             if (args[2]) _await = global.codes[args[2]]
+            
             return require("./search").search({ id, e, _, __, _i,search: _search, asyncer: true, await: _await })
           }
 

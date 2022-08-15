@@ -1,11 +1,8 @@
 {
-  "id": "book-a-hotel-manager",
-  "type": "View?id=book-a-hotel-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];hotels:()=_list;hotels-booked:()=_array;hotel-search-engine-req:()=book-a-hotel",
   "children": [
     {
       "children": [
         {
-          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
           "children": [
             {
               "type": "View?style:[height=60%;width=2px;backgroundColor=#FF4340;borderRadius=1rem]"
@@ -13,7 +10,8 @@
             {
               "type": "Text?text=Book a Hotel Room Manager;style:[color=#444;fontSize=1.6rem]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%"
         },
         {
           "children": [
@@ -55,9 +53,9 @@
       "type": "View?id=pricing-bar;class=flex align-center;style:[position=absolute;top=calc(100vh - 8rem);left=12.5rem;right=12.5rem;height=3.5rem;backgroundColor=#222;borderRadius=1rem 1rem 0 0;zIndex=10;padding=0 1.5rem;cursor=default]?false",
       "children": [
         {
-          "type": "View?class=grid align-center;style:[height=100%;width=100%;gridTemplateColumns=1fr 1fr 1fr 1.25fr 1fr 1fr 1fr 1fr 1.5fr;gap=1rem]",
           "children": [
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Base Fare;style:[fontSize=1.1rem;color=#fff]"
@@ -65,8 +63,7 @@
                 {
                   "type": "Text:pricing-base-fare?text=[[booking-details:().():total-base-fare-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
               "type": "View?class=flexbox;style:[justifyContent=space-between]",
@@ -80,6 +77,7 @@
               ]
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Fees;style:[fontSize=1.1rem;color=#fff]"
@@ -87,11 +85,9 @@
                 {
                   "type": "Text?id=pricing-fees;text=[[booking-details:().():total-fees-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Pax;style:[fontSize=1.1rem;color=#fff]"
@@ -99,10 +95,10 @@
                 {
                   "type": "Text?id=pricing-pax;text=[booking-details:().0.total-adults||pax-details:().adt]+' Adt | '+if():[booking-details:().0.total-children]:[booking-details:().0.total-children+' Chd | '].elif():[!booking-details:().0.total-adults]:[pax-details:().chd+' Chd | ']:''+if():[booking-details:().0.total-infants]:[booking-details:().0.total-infants+' Inf'].elif():[!booking-details:().0.total-adults]:[pax-details:().inf+' Inf']:'';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between;backgroundColor=red;height=100%;width=100%;padding=0 1rem]",
               "children": [
                 {
                   "type": "Text?text=Total;style:[fontSize=1.1rem;color=#fff]"
@@ -110,7 +106,8 @@
                 {
                   "type": "Text?id=pricing-total;text=[[booking-details:().():[total-usd].sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between;backgroundColor=red;height=100%;width=100%;padding=0 1rem]"
             },
             {
               "children": [
@@ -124,6 +121,7 @@
               "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Commission;style:[fontSize=1.1rem;color=#fff]"
@@ -131,10 +129,10 @@
                 {
                   "type": "Text?id=pricing-commission;text=[[booking-details:().():total-commission-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Added Profit;style:[fontSize=1.1rem;color=#fff]"
@@ -155,11 +153,9 @@
                     }
                   ]
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between;height=100%]",
               "children": [
                 {
                   "controls": [
@@ -169,11 +165,15 @@
                   ],
                   "type": "Text:book-btn?text=Book;class=flexbox pointer;style:[fontSize=1.2rem;color=#fff;height=70%;width=9rem;borderRadius=.5rem;marginLeft=auto;backgroundColor=#1867ed;transition=.2s];hover.style.backgroundColor=#0853d1"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between;height=100%]"
             }
-          ]
+          ],
+          "type": "View?class=grid align-center;style:[height=100%;width=100%;gridTemplateColumns=1fr 1fr 1fr 1.25fr 1fr 1fr 1fr 1fr 1.5fr;gap=1rem]"
         }
       ]
     }
-  ]
+  ],
+  "type": "View?id=book-a-hotel-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];hotels:()=_list;hotels-booked:()=_array;hotel-search-engine-req:()=book-a-hotel",
+  "id": "book-a-hotel-manager"
 }

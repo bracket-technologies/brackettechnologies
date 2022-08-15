@@ -1,5 +1,5 @@
 {
-  "id": "manager-mini-views",
+  "creation-date": 1652284306902,
   "type": "View?id=manager-mini-views",
   "children": [
     {
@@ -18,5 +18,5 @@
       "type": "View?view=profile-window"
     }
   ],
-  "creation-date": 1652284306902
+  "id": "manager-mini-views"
 }

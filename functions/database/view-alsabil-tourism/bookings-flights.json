@@ -1,19 +1,19 @@
 {
   "id": "bookings-flights",
+  "creation-date": 1654022032235,
   "children": [
     {
       "type": "Text?class=flex;text=Booking Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
     },
     {
+      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]",
       "children": [
         {
           "type": "View?id=flights-in-booking;class=vertical;style:[gap=3rem;padding=.5rem;borderRadius=.5rem];flights-booked:()=flights-booked:().filter();data().flights=flights-booked:()._():[_map:departure-airport:[_.departure-airport]:departure-day:[_.departure-day]:departure-time:[_.departure-time]:arrival-airport:[_.arrival-airport]:arrival-day:[_.arrival-day]:arrival-time:[_.arrival-time]:seats:[_.seats]]",
           "children": [
             {
-              "type": "[View]?path=flights;class=vertical;style:[gap=2rem;backgroundColor=#f9f9f9;width=100%;padding=1rem;borderRadius=.5rem;border=1px solid #ddd]",
               "children": [
                 {
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=6rem 2fr 1fr 1fr 2fr 1fr 1fr 6rem]",
                   "children": [
                     {
                       "type": "Text?class=flexbox;text=parent().parent().mapIndex+1;style:[fontSize=1.3rem;border=1px solid #ddd;borderRadius=.5rem;height=2rem;width=3rem]"
@@ -57,19 +57,19 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=6rem 2fr 1fr 1fr 2fr 1fr 1fr 6rem]"
                 },
                 {
                   "type": "View?view=booking-seat-passenger"
                 }
-              ]
+              ],
+              "type": "[View]?path=flights;class=vertical;style:[gap=2rem;backgroundColor=#f9f9f9;width=100%;padding=1rem;borderRadius=.5rem;border=1px solid #ddd]"
             }
           ]
         }
-      ],
-      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]"
+      ]
     }
   ],
-  "creation-date": 1654022032235,
   "type": "View?id=bookings-flights;class=vertical;style:[gap=.5rem;width=100%]"
 }
