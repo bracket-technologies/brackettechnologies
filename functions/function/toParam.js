@@ -193,33 +193,18 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     id = viewId
 
-    var path = typeof key === "string" ? key.split(".") : [], timer
-    var path0 = path[0].split(":")[0]
-    var underscored = path0.charAt(0) === "_"
+    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false
 
-    // implemented function
-    /*if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[underscored ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
-      
-      console.log("function");
-
-      var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
-      if (_params.length > 0) {
-        _params.map((param, index) => {
-          var _index = 0
-          while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
-            var _replacemenet = path[0].split(":").slice(1)[index]
-            if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
-            string = string.replace(param, _replacemenet)
-            _index += 1
-          }
-        })
+    // function
+    if (path.length === 1 && key.slice(-2) === "()" && !key.includes(":")) clone(view["my-views"]).reverse().map(view => {
+      if (!isFn) {
+        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === key)
+        if (isFn) isFn = (global.data.view[view].functions || {})[isFn]
+        // console.log(isFn, key, view, global.data.view);
       }
-      
-      string = toCode({ _window, string })
-      
-      if (view[path0]) return toParam({ _window, ...view[path0], string, object, _, __ })
-      else if (underscored && view[path0.slice(1)]) return toParam({ _window, ...view[path0], string, _, __, _i, _: object })
-    }*/
+    })
+
+    if (isFn) return toParam({ _window, string: isFn, e, id, req, res, mount, object, _, __, _i, asyncer, createElement, params, executer })
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -255,6 +240,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
+
+    if (view && view.doc) view.Data = view.doc
+    if (params.doc) params.Data = params.doc
 
     // mount data directly when found
     if (mount && !mountDataUsed && ((params.data !== undefined && (!view.Data || !global[view.Data])) || params.Data || (view && view.data !== undefined && !view.Data))) {

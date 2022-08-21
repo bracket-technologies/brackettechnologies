@@ -1,7 +1,8 @@
 {
+  "id": "invoices-manager",
+  "type": "View?id=invoices-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-invoices:()]:[invoices:()=_list];unreset-invoices:()=false;search-invoice:()=search-invoice:()||_map",
   "children": [
     {
-      "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem",
       "children": [
         {
           "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
@@ -17,6 +18,9 @@
         {
           "children": [
             {
+              "type": "Icon?class=flexbox pointer;name=bi-eye;tooltip.text=show hidden;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6];click:[():[invoices-list-data].children().():[style():[height=4rem;backgroundColor=#fff];hidden=false;1stChild().1stChild().():[2ndChild().style().display=flex;3rdChild().style().display=none]]]"
+            },
+            {
               "type": "Icon?class=flexbox pointer;name=bi-trash;tooltip.text=erase;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             },
             {
@@ -26,34 +30,22 @@
               "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]",
               "controls": [
                 {
-                  "event": "click?my-counter=1;exportExcel():[data=invoices:().clone().():[].flat();name=my invoices 💌;fields=_list:Sequence:Traveling With:Pax Type:Title:First Name:Last Name:Gender:'DOB (dd/mm/yyyy)':Nationality:Mobile Number:Email:ID Number:Passport Number:'Passport Expiry (dd/mm/yyyy)':'Passport Issued Date (dd/mm/yyyy)':Passport Issued Country:Passport Nationality]"
+                  "event": "click"
                 }
               ]
             }
           ],
           "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
         }
-      ]
+      ],
+      "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem"
     },
     {
-      "type": "View?view=search-engine;search-engine-req:()=invoice",
-      "controls": [
-        {
-          "event": "mouseenter?lastChild().style():[minHeight=2.5rem;bottom=-2.5rem]"
-        },
-        {
-          "event": "mouseleave?lastChild().style():[minHeight=0;bottom=0]"
-        }
-      ]
-    },
-    {
-      "type": "View:invoice-search-engine?Data=search-invoice;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]",
       "children": [
         {
           "type": "View?class=flexbox;style:[width=100%;gap=1rem]",
           "children": [
             {
-              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]",
               "children": [
                 {
                   "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
@@ -64,10 +56,10 @@
                   ]
                 },
                 {
-                  "type": "Input?id=Flight;path=flight;label.text=Flight Number;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
+                  "type": "Input?id=E-Ticket;path=e-ticket;label.text=E-Ticket;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                   "controls": [
                     {
-                      "event": "input?data()=data().toUpperCase().split():' '.join():'';txt()=data()"
+                      "event": "input?data()=data().toUpperCase();txt()=data()"
                     }
                   ]
                 },
@@ -75,31 +67,52 @@
                   "type": "Input?id=first-name;path=name;label.text=Name;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                 },
                 {
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
+                      "type": "Input?path=from-date;label.text=From Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
-                          "event": "change?data()=data().timestamp();txt():invoice-date-text=data().toDateFormat();input():travel-date.min()=data().toDateInputFormat()"
+                          "event": "change?data()=data().timestamp();txt():from-date-text=data().toDateFormat()"
                         }
-                      ],
-                      "type": "Input?path=creation-date;label.text=Creation Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                      ]
                     },
                     {
                       "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                       "children": [
                         {
-                          "type": "Text?id=invoice-date-text;class=flex align-center;if():[data().reservation-date]:[text=data().reservation-date.toDateFormat()];style:[fontSize=1.2rem]"
+                          "type": "Text?id=from-date-text;class=flex align-center;if():[data().from-date]:[text=data().from-date.toDateFormat()];style:[fontSize=1.2rem]"
                         },
                         {
-                          "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().creation-date.del();prev().txt()=;parent().prev().click();input():travel-date.min()=null]"
+                          "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().from-date.del();prev().txt()=;parent().prev().():[click();input().txt()=null]]"
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
                 },
                 {
-                  "type": "Input?id=invoice-status;path=status;label.text=Status;label.style.fontSize=1.3rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='collections:().invoice-status.status';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem]"
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
+                  "children": [
+                    {
+                      "controls": [
+                        {
+                          "event": "change?data()=data().timestamp();txt():to-date-text=data().toDateFormat()"
+                        }
+                      ],
+                      "type": "Input?path=to-date;label.text=To Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Text?id=to-date-text;class=flex align-center;if():[data().to-date]:[text=data().to-date.toDateFormat()];style:[fontSize=1.2rem]"
+                        },
+                        {
+                          "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().to-date.del();prev().txt()=;parent().prev().():[click();input().txt()=null]]"
+                        }
+                      ],
+                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
+                    }
+                  ]
                 },
                 {
                   "type": "Input?path=agent;if():[data()]:[input.value=agents:().find():[id=data()].company-name];label.text=Agent;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='agents:().():company-name';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin",
@@ -110,45 +123,38 @@
                   ]
                 },
                 {
-                  "controls": [
-                    {
-                      "event": "click:droplist?data()=users:().find():[username=data()].id"
-                    }
-                  ],
-                  "type": "Input?path=user;if():[data()]:[input.value=users:().find():[id=data()].username];label.text=User;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='users:().():username';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin"
-                },
-                {
                   "type": "View?style:[flex=1]"
                 }
-              ]
+              ],
+              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]"
             },
             {
-              "controls": [
-                {
-                  "actions": [
-                    "wait():search:[update:invoices-list]?search.collection=flight-reservation;search.limit=250;search.field:[if():[search-invoice:().pnr]:[pnr.equal=search-invoice:().pnr];if():[!agent:().admin]:[agent.equal=agent:().id];if():[search-invoice:().name]:[passengers-name.lessOrEqual=search-invoice:().name];if():[search-invoice:().creation-date]:[day.equal=search-invoice:().creation-date];if():[search-invoice:().travel-date]:[travel-date.contain=search-invoice:().travel-date];if():[search-invoice:().status]:[status.equal=search-invoice:().status];if():[search-invoice:().agent]:[agent.equal=search-invoice:().agent];if():[search-invoice:().user]:[user.equal=search-invoice:().user]];wait():[invoices:()=().search.data.values().sort():[path=creation-date;descending];loader.hide]"
-                  ],
-                  "event": "click?loader.show?search-invoice:().pnr||search-invoice:().name||search-invoice:().creation-date||search-invoice:().travel-date||search-invoice:().agent||search-invoice:().user"
-                },
-                {
-                  "event": "click?note():'Kindly fill any of the required blanks!':danger?!search-invoice:().pnr;!search-invoice:().name;!search-invoice:().creation-date;!search-invoice:().travel-date;!search-invoice:().agent;!search-invoice:().user"
-                }
-              ],
-              "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6",
               "children": [
                 {
                   "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"
                 }
-              ]
+              ],
+              "controls": [
+                {
+                  "event": "click?loader.show;invoices:()=_list;first=false;second=false?search-invoice:().pnr||search-invoice:().e-ticket||search-invoice:().name||search-invoice:().from-date||search-invoice:().agent",
+                  "actions": [
+                    "wait():search:[update:invoices-list]?search.collection=flight-reservation;search.limit=250;search.field:[if():[search-invoice:().pnr]:[pnr.equal=search-invoice:().pnr];if():[search-invoice:().e-ticket]:[e-ticket.equal=search-invoice:().e-ticket];if():[search-invoice:().name]:[passengers-name.lessOrEqual=search-invoice:().name];if():[search-invoice:().from-date]:[if():[search-invoice:().to-date]:[day.greaterOrEqual=search-invoice:().from-date;day.lessOrEqual=search-invoice:().to-date]:[day.equal=search-invoice:().from-date]];if():[search-invoice:().status]:[status.equal=search-invoice:().status];if():[search-invoice:().agent]:[agent.equal=search-invoice:().agent]:[agent.equal=agent:().id]];wait():[().first=true;if():[invoices:().len()=0]:[invoices:()=search:().data.values().clone()._():[_.type=Flight;_.status=Confirmed]]:[invoices:().push():[search:().data.values().clone()._():[_.type=Flight;_.status=Confirmed]]];invoices:()=invoices:().sort():[path=creation-date;ascending];if():[first;second]:[update():[invoices-list-data];loader.hide]]",
+                    "wait():search:[update:invoices-list]?search.collection=flight-reservation;search.limit=250;search.field:[if():[search-invoice:().pnr]:[pnr.equal=search-invoice:().pnr];if():[search-invoice:().e-ticket]:[e-ticket.equal=search-invoice:().e-ticket];if():[search-invoice:().name]:[passengers-name.lessOrEqual=search-invoice:().name];if():[search-invoice:().from-date]:[if():[search-invoice:().to-date]:[cancelation-day.greaterOrEqual=search-invoice:().from-date;cancelation-day.lessOrEqual=search-invoice:().to-date]:[cancelation-day.equal=search-invoice:().from-date]];if():[search-invoice:().status]:[status.equal=search-invoice:().status];if():[search-invoice:().agent]:[agent.equal=search-invoice:().agent]:[agent.equal=agent:().id]];wait():[().second=true;if():[invoices:().len()=0]:[invoices:()=search:().data.values()._():[_.type=Flight;_.status=Canceled;_.creation-date=_.cancelation-date;_.user-name=_.canceled-by-name;_.agent-name=_.canceled-by-agent-name]]:[invoices:().push():[search:().data.values()._():[_.type=Flight;_.status=Canceled;_.creation-date=_.cancelation-date]]];invoices:()=invoices:().sort():[path=creation-date;ascending];if():[first;second]:[update():[invoices-list-data];loader.hide]]"
+                  ]
+                },
+                {
+                  "event": "click?note():'Kindly fill any of the required blanks!':danger?!search-invoice:().pnr;!search-invoice:().e-ticket;!search-invoice:().name;!search-invoice:().from-date;!search-invoice:().agent"
+                }
+              ],
+              "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6"
             }
           ]
         }
-      ]
+      ],
+      "type": "View:invoice-search-engine?doc=search-invoice;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd;borderTop=1px solid #ddd]"
     },
     {
       "type": "View?view=invoices-list"
     }
-  ],
-  "type": "View?id=invoices-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-invoices:()]:[invoices:()=_list];unreset-invoices:()=false;search-invoice:()=search-invoice:()||_map",
-  "id": "invoices-manager"
+  ]
 }

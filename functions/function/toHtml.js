@@ -26,6 +26,7 @@ module.exports = {
       views[id].id = id
       views[id].index = index
       views[id].parent = view.id
+      views[id]["my-views"] = [...view["my-views"]]
       
       return createElement({ _window, id, req, res })
       

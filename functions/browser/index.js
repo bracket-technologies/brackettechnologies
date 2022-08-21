@@ -9,6 +9,7 @@ const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
 const { toCode } = require("../function/toCode")
 const { clone } = require("../function/clone")
+// const downloadsFolder = require('downloads-folder')
 
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -50,7 +51,7 @@ window.onfocus = () => {
     views.root.element.click()
     document.activeElement.blur()
 }
-
+//console.log(downloadsFolder())
 // body clicked
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
     
@@ -757,15 +758,13 @@ const Input = (component) => {
                     event: "select;mousedown?preventDefault()"
                 }, {
                     event: "keyup?Data():[path=derivations().clone().pullLast().push():[derivations().lastEl().num()+1]]=_string;update():[().parent().parent()]?duplicatable;e().key=Enter",
-                }/*, {
-                    event: "input?parent().parent().required.mount=false;parent().parent().click()?parent().parent().required.mount;e().target.value"
-                }*/]
+                }]
             }, {
-                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:0]:[right=if():[parent().password]:4rem:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().txt();${readonly?false:true}]:[prev().data().del();():${id}-input.txt()=;():${id}-input.focus()].elif():[parent().clearable;${readonly?false:true}]:[():${id}-input.focus()].elif():[${readonly?false:true};parent().removable;!():${id}-input.txt();parent().data().len()!=1]:[${readonly?false:true};parent().rem()]]?parent().clearable||parent().removable`,
+                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:0]:[right=if():[parent().password]:4rem:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().txt();${readonly?false:true}]:[prev().data().del();():${id}-input.txt()=;#():${id}-input.focus()].elif():[parent().clearable;${readonly?false:true}]:[#():${id}-input.focus()].elif():[${readonly?false:true};parent().removable;!():${id}-input.txt();parent().data().len()!=1]:[${readonly?false:true};parent().rem()]]?parent().clearable||parent().removable`,
             }, {
                 type: `Text?class=flexbox pointer;id=${id}+-generate;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
             }, {
-                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
+                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();#():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
@@ -1763,11 +1762,13 @@ module.exports = {
   createComponent: ({ _window, id, req, res }) => {
     
     var views = _window ? _window.views : window.views
-    var global = _window ? _window.global : window.global
     var view = views[id], parent = view.parent
     
     if (!component[view.type]) return
     views[id] = view = component[view.type](view)
+
+    // my views
+    if (!view["my-views"]) view["my-views"] = [...views[view.parent]["my-views"]]
 
     // destructure type, params, & conditions from type
     view.type = toCode({ _window, id, string: view.type })
@@ -1848,12 +1849,14 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
       id: "root",
       type: "View",
       parent: "body",
+      "my-views": [],
       style: { backgroundColor: "#fff" },
     },
     public: {
       id: "public",
       type: "View",
       parent: "body",
+      "my-views": [],
       children: Object.values(global.public),
     },
   };
@@ -2016,6 +2019,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
   var _window = { global, views, db }
 
+  // inherit view name
+  views.root["my-views"].push(global.data.page[currentPage].view)
+
   // create html
   var innerHTML = ""
   innerHTML += createElement({ _window, id: "root", req, res })
@@ -2115,6 +2121,7 @@ const createElement = ({ _window, id, req, res }) => {
 
   // view is empty
   if (!view.type) return
+  if (!view["my-views"]) view["my-views"] = [...views[parent]["my-views"]]
 
   // code []
   view.type = toCode({ _window, string: view.type })
@@ -2147,7 +2154,7 @@ const createElement = ({ _window, id, req, res }) => {
   view.class = view.class || ""
   
   // Data
-  view.Data = view.Data || parent.Data
+  view.Data = view.Data || view.doc || parent.Data
 
   // derivations
   view.derivations = view.derivations || [...(parent.derivations || [])]
@@ -2203,6 +2210,7 @@ const createElement = ({ _window, id, req, res }) => {
 
       var viewId = params.view || view.type
       delete view.view
+      view["my-views"].push(params.view)
       
       views[id] = { ...view, ...clone(global.data.view[viewId]) }
       return createElement({ _window, id, req, res })
@@ -3840,6 +3848,7 @@ module.exports = {
         views[id].reservedStyles = /*toParam({ id, string: views[id].type.split("?")[1] || "" }).style ||*/ {}
         views[id].style.transition = null
         views[id].style.opacity = "0"
+        views[id]["my-views"] = [...view["my-views"]]
         
         return createElement({ id })
 
@@ -4713,7 +4722,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()"
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "doc()" || path0 === "mail()"
+    || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()"
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
     || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
@@ -4736,12 +4746,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
-          path.unshift("doc()")
-          path0 = "doc()"
+          path.unshift("document()")
+          path0 = "document()"
 
       } else {
 
-          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "Data()" && path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()") {
+          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "Data()" && path0 !== "doc()" && 
+          path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()") {
 
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
@@ -4772,13 +4783,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     : path0 === "e()" ? e
     : path0 === "_" ? _
     : path0 === "__" ? __
-    : (path0 === "document()" || path0 === "doc()") ? document
+    : (path0 === "document()") ? document
     : (path0 === "window()" || path0 === "win()") ? _window || window
     : path0 === "history()" ? history
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
     : _object !== undefined ? _object : object
 
-    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
+    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" 
+    || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
         
     if (!_object && _object !== 0 && _object !== false) {
 
@@ -5005,7 +5017,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         if (o === undefined) return o
 
-        else if (k0 !== "data()" && k0 !== "Data()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
+        else if (k0 !== "data()" && k0 !== "Data()" && k0 !== "doc()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
             
             var el = k
             breakRequest = i + 1
@@ -5097,7 +5109,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: _path, object, params, _, __, _i,e })
             }
             
-        } else if (k0 === "Data()") {
+        } else if (k0 === "Data()" || k0 === "doc()") {
 
             var _path = args[1], _Data
 
@@ -7164,7 +7176,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (typeof o === "string") {
 
                     if (format.split("/").length > 1) {
-                        console.log(o);
+                        
                         var _date = o.split("/")
                         format.split("/").map((format, i) => {
                             if (format === "dd") day = _date[i]
@@ -7197,7 +7209,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                         var minutes = Math.floor(total_seconds / 60) % 60;
                      
                         return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
-                     }
+                    }
                     return ExcelDateToJSDate(o)
                 }
 
@@ -7209,10 +7221,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 var _month = _date.getMonth() + 1
                 var _day = _date.getDate()
                 var _dayofWeek = _date.getDay()
+                var _hour = _date.getHours()
+                var _mins = _date.getMinutes()
 
                 var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
-                return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}`
+                return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
             }
 
         } else if (k0 === "toDateInputFormat()") { // returns date for input in format yyyy-mm-dd
@@ -7996,7 +8010,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                                 } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
                                     var totalPages = pdf.internal.getNumberOfPages()
-                                
+                                console.log(pdf.path());
                                     for (i = 1; i <= totalPages; i++) {
 
                                         pdf.setPage(i)
@@ -8004,7 +8018,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                                         pdf.setTextColor(150)
                                         pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
                                     }
-
+                                    
                                 }).save().then(() => {
 
                                     if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
@@ -8497,6 +8511,37 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 document.body.removeChild(textArea)
             }
 
+        } else if (k0 === "mail()") {
+
+            if (isParam({ _window, string: args[1] })) {
+
+                var _options = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+                _options.body = _options.body || _options.text || _options.content
+                _options.subject = _options.subject || _options.header || _options.title
+                // window.open(`mailto:${_options.email}?subject=${_options.subject}&body=${_options.body}`)
+                
+                try{
+                    var theApp = new ActiveXObject("Outlook.Application");
+                    var objNS = theApp.GetNameSpace('MAPI');
+                    var theMailItem = theApp.CreateItem(0); // value 0 = MailItem
+                    theMailItem.to = ('test@gmail.com');
+                    theMailItem.Subject = ('test');
+                    theMailItem.Body = ('test');
+                    // theMailItem.Attachments.Add("C:\\file.txt");
+                    theMailItem.display();
+                }
+                catch (err) {
+                    alert(err.message);
+                }
+
+            } else {
+
+                var _email = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+                var _subject = toValue({ req, res, _window, id, e, _, __, _i, value: args[2], params })
+                var _body = toValue({ req, res, _window, id, e, _, __, _i, value: args[3], params })
+                window.open(`mailto:${_email}?subject=${_subject}&body=${_body}`)
+            }
+
         } else if (k0 === "addClass()") {
             
             var _o, _class
@@ -8832,6 +8877,7 @@ const refresh = ({ id, update = {} }) => {
     views[id].index = index
     views[id].parent = parent.id
     views[id].style = views[id].style || {}
+    views[id]["my-views"] = [...view["my-views"]]
     views[id].style.opacity = "0"
     if (timer) views[id].style.transition = `opacity ${timer}ms`
     
@@ -10255,6 +10301,7 @@ module.exports = {
       views[id].id = id
       views[id].index = index
       views[id].parent = view.id
+      views[id]["my-views"] = [...view["my-views"]]
       
       return createElement({ _window, id, req, res })
       
@@ -10605,33 +10652,18 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     id = viewId
 
-    var path = typeof key === "string" ? key.split(".") : [], timer
-    var path0 = path[0].split(":")[0]
-    var underscored = path0.charAt(0) === "_"
+    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false
 
-    // implemented function
-    /*if (path0.slice(-2) === "()" && path0 !== "()" && view && (view[underscored ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
-      
-      console.log("function");
-
-      var string = decode({ _window, string: view[path0].string }), _params = view[path0].params
-      if (_params.length > 0) {
-        _params.map((param, index) => {
-          var _index = 0
-          while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
-            var _replacemenet = path[0].split(":").slice(1)[index]
-            if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
-            string = string.replace(param, _replacemenet)
-            _index += 1
-          }
-        })
+    // function
+    if (path.length === 1 && key.slice(-2) === "()" && !key.includes(":")) clone(view["my-views"]).reverse().map(view => {
+      if (!isFn) {
+        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === key)
+        if (isFn) isFn = (global.data.view[view].functions || {})[isFn]
+        // console.log(isFn, key, view, global.data.view);
       }
-      
-      string = toCode({ _window, string })
-      
-      if (view[path0]) return toParam({ _window, ...view[path0], string, object, _, __ })
-      else if (underscored && view[path0.slice(1)]) return toParam({ _window, ...view[path0], string, _, __, _i, _: object })
-    }*/
+    })
+
+    if (isFn) return toParam({ _window, string: isFn, e, id, req, res, mount, object, _, __, _i, asyncer, createElement, params, executer })
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -10667,6 +10699,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
+
+    if (view && view.doc) view.Data = view.doc
+    if (params.doc) params.Data = params.doc
 
     // mount data directly when found
     if (mount && !mountDataUsed && ((params.data !== undefined && (!view.Data || !global[view.Data])) || params.Data || (view && view.data !== undefined && !view.Data))) {
@@ -11018,7 +11053,18 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   // string
   // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
-  var path = typeof value === "string" ? value.split(".") : []
+  var path = typeof value === "string" ? value.split(".") : [], isFn = false
+
+  // function
+  if (path.length === 1 && value.slice(-2) === "()" && !value.includes(":")) clone(view["my-views"]).reverse().map(view => {
+    if (!isFn) {
+      isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === key)
+      if (isFn) isFn = (global.data.view[view].functions || {})[isFn]
+      // console.log(isFn, value, view, global.data.view[view].functions);
+    }
+  })
+
+  if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)
@@ -11275,6 +11321,7 @@ const toggleView = async ({ toggle, id }) => {
       views[id].index = index
       views[id].parent = view.id
       views[id].style = {}
+      views[id]["my-views"] = [...view["my-views"], viewId]
       views[id].style.transition = toggle.fadein.before.transition || null
       views[id].style.opacity = toggle.fadein.before.opacity || "0"
       views[id].style.transform = toggle.fadein.before.transform || null
@@ -11377,6 +11424,7 @@ const update = ({ id, update = {} }) => {
     views[id].index = index
     views[id].parent = view.id
     views[id].style = views[id].style || {}
+    views[id]["my-views"] = [...view["my-views"]]
     //views[id].style.opacity = "0"
     //if (timer) views[id].style.transition = `opacity ${timer}ms`
     
@@ -11492,6 +11540,7 @@ const updateSelf = ({ id, update = {} }) => {
     views[id].index = index
     views[id].parent = parent.id
     views[id].style = views[id].style || {}
+    views[id]["my-views"] = [...view["my-views"]]
     //views[id].style.opacity = "0"
     //if (timer) views[id].style.transition = `opacity ${timer}ms`
     

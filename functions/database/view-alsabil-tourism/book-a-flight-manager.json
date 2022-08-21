@@ -1,7 +1,8 @@
 {
-  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;flights-booked:()=_array;search-engine-req:()=book-a-flight",
+  "id": "book-a-flight-manager",
   "children": [
     {
+      "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]",
       "children": [
         {
           "children": [
@@ -17,7 +18,7 @@
         {
           "children": [
             {
-              "type": "Icon?class=flexbox pointer;name=bi-trash;tooltip.text=erase;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
+              "type": "Icon?log():[()];class=flexbox pointer;name=bi-trash;tooltip.text=erase;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             },
             {
               "type": "Icon?class=flexbox pointer;name=bi-download;tooltip.text=import;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
@@ -26,6 +27,7 @@
               "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             },
             {
+              "type": "View?class=flexbox pointer;tooltip.text=book;style:[height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover:[style:[backgroundColor=#f6f6f6]]",
               "children": [
                 {
                   "type": "Icon?class=flexbox;name=backpack;google.outlined;style:[color=#666;fontSize=2.2rem;transition=.3s];hover:[style:[color=blue];id=parent()]"
@@ -35,14 +37,12 @@
                 {
                   "event": "click?():book-btn.click()"
                 }
-              ],
-              "type": "View?class=flexbox pointer;tooltip.text=book;style:[height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover:[style:[backgroundColor=#f6f6f6]]"
+              ]
             }
           ],
           "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
         }
-      ],
-      "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]"
+      ]
     },
     {
       "type": "View?view=search-engine"
@@ -51,7 +51,6 @@
       "type": "View?view=book-a-flight-list;flights:().del()"
     },
     {
-      "type": "View?id=pricing-bar;class=flex align-center;style:[position=absolute;top=calc(100vh - 8rem);left=12.5rem;right=12.5rem;height=3.5rem;backgroundColor=#222;borderRadius=1rem 1rem 0 0;zIndex=10;padding=0 1.5rem;cursor=default]",
       "children": [
         {
           "type": "View?class=grid align-center;style:[height=100%;width=100%;gridTemplateColumns=1fr 1fr 1fr 1.25fr 1fr 1fr 1fr 1fr 1.5fr;gap=1rem]",
@@ -68,7 +67,6 @@
               ]
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Taxes;style:[fontSize=1.1rem;color=#fff]"
@@ -76,9 +74,11 @@
                 {
                   "type": "Text?id=pricing-taxes;text=[[booking-details:().():total-taxes-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Fees;style:[fontSize=1.1rem;color=#fff]"
@@ -86,8 +86,7 @@
                 {
                   "type": "Text?id=pricing-fees;text=[[booking-details:().():total-fees-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
               "type": "View?class=flexbox",
@@ -120,6 +119,7 @@
               ]
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Commission;style:[fontSize=1.1rem;color=#fff]"
@@ -127,8 +127,7 @@
                 {
                   "type": "Text?id=pricing-commission;text=[[booking-details:().():total-commission-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
               "children": [
@@ -155,7 +154,6 @@
               "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between;height=100%]",
               "children": [
                 {
                   "type": "Text:book-btn?text=Book;class=flexbox pointer;style:[fontSize=1.2rem;color=#fff;height=70%;width=9rem;borderRadius=.5rem;marginLeft=auto;backgroundColor=#1867ed;transition=.2s];hover.style.backgroundColor=#0853d1",
@@ -165,12 +163,14 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between;height=100%]"
             }
           ]
         }
-      ]
+      ],
+      "type": "View?id=pricing-bar;class=flex align-center;style:[position=absolute;top=calc(100vh - 8rem);left=12.5rem;right=12.5rem;height=3.5rem;backgroundColor=#222;borderRadius=1rem 1rem 0 0;zIndex=10;padding=0 1.5rem;cursor=default]"
     }
   ],
-  "id": "book-a-flight-manager"
+  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;flights-booked:()=_array;search-engine-req:()=book-a-flight"
 }

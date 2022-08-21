@@ -54,6 +54,7 @@ const update = ({ id, update = {} }) => {
     views[id].index = index
     views[id].parent = view.id
     views[id].style = views[id].style || {}
+    views[id]["my-views"] = [...view["my-views"]]
     //views[id].style.opacity = "0"
     //if (timer) views[id].style.transition = `opacity ${timer}ms`
     

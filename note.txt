@@ -13,3 +13,28 @@ IIV- firebase re authentication: firebase login --reauth
 
 npm install -g localtunnel
 lt --port 80
+
+
+{
+    "type": "View?class=flex align-center;style:[height=2.75rem;backgroundColor=#f0f0f0;width=100%]?false",
+    "children": [
+    {
+        "type": "View?style:[width=1px;height=50%;backgroundColor=#ccc]"
+    },
+    {
+        "type": "Text?class=flexbox pointer funct-btn;style:[height=100%;padding=0 2rem;fontSize=1.3rem;transition=.2s];text=Project;mouseenter:[if():[!clicked]:[style():[backgroundColor=#f6f6f6]]];mouseleave:[if():[!clicked]:[style():[backgroundColor=inherit]]];click:[className():funct-btn.():[clicked=false;style():[backgroundColor=inherit]];clicked=true;style():[backgroundColor=#fff]]"
+    },
+    {
+        "type": "View?style:[width=1px;height=50%;backgroundColor=#ccc]"
+    },
+    {
+        "type": "Text?class=flexbox pointer funct-btn;style:[height=100%;padding=0 2rem;fontSize=1.3rem;transition=.2s];text=Page;mouseenter:[if():[!clicked]:[style():[backgroundColor=#f6f6f6]]];mouseleave:[if():[!clicked]:[style():[backgroundColor=inherit]]];click:[className():funct-btn.():[clicked=false;style():[backgroundColor=inherit]];clicked=true;style():[backgroundColor=#fff]]"
+    },
+    {
+        "type": "View?style:[width=1px;height=50%;backgroundColor=#ccc]"
+    },
+    {
+        "type": "Text?class=flexbox pointer funct-btn;style:[height=100%;padding=0 2rem;fontSize=1.3rem;transition=.2s];text=View;mouseenter:[if():[!clicked]:[style():[backgroundColor=#f6f6f6]]];mouseleave:[if():[!clicked]:[style():[backgroundColor=inherit]]];click:[className():funct-btn.():[clicked=false;style():[backgroundColor=inherit]];clicked=true;style():[backgroundColor=#fff]]"
+    }
+    ]
+},

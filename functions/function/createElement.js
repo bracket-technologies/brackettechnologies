@@ -51,6 +51,7 @@ const createElement = ({ _window, id, req, res }) => {
 
   // view is empty
   if (!view.type) return
+  if (!view["my-views"]) view["my-views"] = [...views[parent]["my-views"]]
 
   // code []
   view.type = toCode({ _window, string: view.type })
@@ -83,7 +84,7 @@ const createElement = ({ _window, id, req, res }) => {
   view.class = view.class || ""
   
   // Data
-  view.Data = view.Data || parent.Data
+  view.Data = view.Data || view.doc || parent.Data
 
   // derivations
   view.derivations = view.derivations || [...(parent.derivations || [])]
@@ -139,6 +140,7 @@ const createElement = ({ _window, id, req, res }) => {
 
       var viewId = params.view || view.type
       delete view.view
+      view["my-views"].push(params.view)
       
       views[id] = { ...view, ...clone(global.data.view[viewId]) }
       return createElement({ _window, id, req, res })

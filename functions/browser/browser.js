@@ -8,6 +8,7 @@ const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
 const { toCode } = require("../function/toCode")
 const { clone } = require("../function/clone")
+// const downloadsFolder = require('downloads-folder')
 
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -49,7 +50,7 @@ window.onfocus = () => {
     views.root.element.click()
     document.activeElement.blur()
 }
-
+//console.log(downloadsFolder())
 // body clicked
 var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, events, once, controls, index, event }, e) => {
     

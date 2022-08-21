@@ -110,7 +110,18 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   // string
   // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
-  var path = typeof value === "string" ? value.split(".") : []
+  var path = typeof value === "string" ? value.split(".") : [], isFn = false
+
+  // function
+  if (path.length === 1 && value.slice(-2) === "()" && !value.includes(":")) clone(view["my-views"]).reverse().map(view => {
+    if (!isFn) {
+      isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === key)
+      if (isFn) isFn = (global.data.view[view].functions || {})[isFn]
+      // console.log(isFn, value, view, global.data.view[view].functions);
+    }
+  })
+
+  if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)

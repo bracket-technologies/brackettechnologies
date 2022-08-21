@@ -243,7 +243,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()"
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "doc()" || path0 === "mail()"
+    || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()"
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
     || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
@@ -266,12 +267,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
-          path.unshift("doc()")
-          path0 = "doc()"
+          path.unshift("document()")
+          path0 = "document()"
 
       } else {
 
-          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "Data()" && path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()") {
+          if (view && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "Data()" && path0 !== "doc()" && 
+          path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()") {
 
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
@@ -302,13 +304,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     : path0 === "e()" ? e
     : path0 === "_" ? _
     : path0 === "__" ? __
-    : (path0 === "document()" || path0 === "doc()") ? document
+    : (path0 === "document()") ? document
     : (path0 === "window()" || path0 === "win()") ? _window || window
     : path0 === "history()" ? history
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
     : _object !== undefined ? _object : object
 
-    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" || path0 === "doc()" || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
+    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" 
+    || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
         
     if (!_object && _object !== 0 && _object !== false) {
 
@@ -535,7 +538,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         if (o === undefined) return o
 
-        else if (k0 !== "data()" && k0 !== "Data()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
+        else if (k0 !== "data()" && k0 !== "Data()" && k0 !== "doc()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
             
             var el = k
             breakRequest = i + 1
@@ -627,7 +630,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 answer = reducer({ req, res, _window, id, value, key: path[i + 1] === undefined ? key : false, path: _path, object, params, _, __, _i,e })
             }
             
-        } else if (k0 === "Data()") {
+        } else if (k0 === "Data()" || k0 === "doc()") {
 
             var _path = args[1], _Data
 
@@ -2694,7 +2697,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (typeof o === "string") {
 
                     if (format.split("/").length > 1) {
-                        console.log(o);
+                        
                         var _date = o.split("/")
                         format.split("/").map((format, i) => {
                             if (format === "dd") day = _date[i]
@@ -2727,7 +2730,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                         var minutes = Math.floor(total_seconds / 60) % 60;
                      
                         return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
-                     }
+                    }
                     return ExcelDateToJSDate(o)
                 }
 
@@ -2739,10 +2742,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 var _month = _date.getMonth() + 1
                 var _day = _date.getDate()
                 var _dayofWeek = _date.getDay()
+                var _hour = _date.getHours()
+                var _mins = _date.getMinutes()
 
                 var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
-                return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}`
+                return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
             }
 
         } else if (k0 === "toDateInputFormat()") { // returns date for input in format yyyy-mm-dd
@@ -3526,7 +3531,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                                 } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
                                     var totalPages = pdf.internal.getNumberOfPages()
-                                
+                                console.log(pdf.path());
                                     for (i = 1; i <= totalPages; i++) {
 
                                         pdf.setPage(i)
@@ -3534,7 +3539,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                                         pdf.setTextColor(150)
                                         pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
                                     }
-
+                                    
                                 }).save().then(() => {
 
                                     if (args[2]) toParam({ req, res, _window, id, e, _, string: args[2] })
@@ -4025,6 +4030,37 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 if (navigator.clipboard) navigator.clipboard.writeText(text)
                 else document.execCommand("copy")
                 document.body.removeChild(textArea)
+            }
+
+        } else if (k0 === "mail()") {
+
+            if (isParam({ _window, string: args[1] })) {
+
+                var _options = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+                _options.body = _options.body || _options.text || _options.content
+                _options.subject = _options.subject || _options.header || _options.title
+                // window.open(`mailto:${_options.email}?subject=${_options.subject}&body=${_options.body}`)
+                
+                try{
+                    var theApp = new ActiveXObject("Outlook.Application");
+                    var objNS = theApp.GetNameSpace('MAPI');
+                    var theMailItem = theApp.CreateItem(0); // value 0 = MailItem
+                    theMailItem.to = ('test@gmail.com');
+                    theMailItem.Subject = ('test');
+                    theMailItem.Body = ('test');
+                    // theMailItem.Attachments.Add("C:\\file.txt");
+                    theMailItem.display();
+                }
+                catch (err) {
+                    alert(err.message);
+                }
+
+            } else {
+
+                var _email = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+                var _subject = toValue({ req, res, _window, id, e, _, __, _i, value: args[2], params })
+                var _body = toValue({ req, res, _window, id, e, _, __, _i, value: args[3], params })
+                window.open(`mailto:${_email}?subject=${_subject}&body=${_body}`)
             }
 
         } else if (k0 === "addClass()") {

@@ -7,7 +7,6 @@
       "type": "View?class=vertical;style:[flex=1;gap=.75rem;padding=.75rem 0;position=absolute;right=0;left=0;top=0.4rem;height=3rem;minHeight=3rem;overflow=hidden;backgroundColor=inherit;borderRadius=.5rem]",
       "children": [
         {
-          "type": "[View]?path=booking-details;class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 1fr]",
           "children": [
             {
               "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]",
@@ -29,12 +28,12 @@
                   "type": "View?class=flex align-center;style:[width=10rem]"
                 },
                 {
-                  "type": "View?class=flex align-center;style:[flex=1]",
                   "children": [
                     {
                       "type": "Text?class=flex align-center;text=data().departure-time.toClock():[hr;min];style:[fontSize=1.2rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[flex=1]"
                 }
               ]
             },
@@ -42,12 +41,12 @@
               "type": "View?class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 10rem 1fr]",
               "children": [
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=flex align-center;text=data().arrival-airport.split(): .0;style:[fontSize=1.2rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "type": "View?class=flex align-center;style:[width=10rem]",
@@ -67,7 +66,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "[View]?path=booking-details;class=grid align-center;style:[flex=1;gridTemplateColumns=1fr 1fr]"
         }
       ]
     },

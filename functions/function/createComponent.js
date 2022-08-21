@@ -10,11 +10,13 @@ module.exports = {
   createComponent: ({ _window, id, req, res }) => {
     
     var views = _window ? _window.views : window.views
-    var global = _window ? _window.global : window.global
     var view = views[id], parent = view.parent
     
     if (!component[view.type]) return
     views[id] = view = component[view.type](view)
+
+    // my views
+    if (!view["my-views"]) view["my-views"] = [...views[view.parent]["my-views"]]
 
     // destructure type, params, & conditions from type
     view.type = toCode({ _window, id, string: view.type })

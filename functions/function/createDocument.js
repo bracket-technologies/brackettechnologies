@@ -44,12 +44,14 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
       id: "root",
       type: "View",
       parent: "body",
+      "my-views": [],
       style: { backgroundColor: "#fff" },
     },
     public: {
       id: "public",
       type: "View",
       parent: "body",
+      "my-views": [],
       children: Object.values(global.public),
     },
   };
@@ -211,6 +213,9 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   var language = global.language = global.data.page[currentPage].language || "en"
   var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
   var _window = { global, views, db }
+
+  // inherit view name
+  views.root["my-views"].push(global.data.page[currentPage].view)
 
   // create html
   var innerHTML = ""
