@@ -193,18 +193,22 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     id = viewId
 
-    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false
+    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && key.slice(-2) === "()" && !key.includes(":")) clone(view["my-views"]).reverse().map(view => {
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
       if (!isFn) {
-        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === key)
-        if (isFn) isFn = (global.data.view[view].functions || {})[isFn]
+        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
         // console.log(isFn, key, view, global.data.view);
       }
     })
 
-    if (isFn) return toParam({ _window, string: isFn, e, id, req, res, mount, object, _, __, _i, asyncer, createElement, params, executer })
+    if (isFn) {
+      var _params = path[0].split(":")[1]
+      if (_params) _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
+      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params ? _params : _), __: (_params ? _ : __), _i, asyncer, createElement, params, executer })
+    }
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -213,9 +217,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       if (key === "break()" && value !== false) return view.break = true
       var _path = clone(params.path)
       delete params.path
-
+      
       // mount state & value
-      if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
+      if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || path[0].includes(")(") || path[0].includes("_") || object) {
 
         var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, object, mount, createElement })
         if (timer) {
@@ -228,7 +232,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
       } else {
         
-        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, _i, mount, createElement })
+        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, _i, mount, object, createElement })
         reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, mount, object: params })
       }
       if (!params.path && _path !== undefined) params.path = _path

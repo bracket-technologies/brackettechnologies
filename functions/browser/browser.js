@@ -101,7 +101,7 @@ document.body.addEventListener('click', e => {
     if (global.clickedElement.id === "droplist") delete global["droplist-item-clicked"]
     else if (views.droplist.element.contains(global.clickedElement)) {
         global["droplist-item-clicked"] = global["droplist-item"] = global.clickedElement
-        global["droplist-item-txt"] = global["droplist-txt"] = global.clickedElement.innerHTML
+        global["droplist-item-txt"] = global["droplist-txt"] = global.clickedElement.innerHTML.replace("&amp;", "&")
     }
 
     // actionlist

@@ -12,7 +12,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, mount, createElement }) => {
+const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, mount, asyncer, createElement, executer }) => {
 
   const { toParam } = require("./toParam")
 
@@ -110,18 +110,23 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   // string
   // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
-  var path = typeof value === "string" ? value.split(".") : [], isFn = false
+  var path = typeof value === "string" ? value.split(".") : [], isFn = false, path0 = path[0].split(":")[0]
 
   // function
-  if (path.length === 1 && value.slice(-2) === "()" && !value.includes(":")) clone(view["my-views"]).reverse().map(view => {
+  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
     if (!isFn) {
-      isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === key)
-      if (isFn) isFn = (global.data.view[view].functions || {})[isFn]
+      isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+      if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
       // console.log(isFn, value, view, global.data.view[view].functions);
     }
   })
 
-  if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
+  if (isFn) {
+    var _params = path[0].split(":")[1]
+    if (_params) _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
+    return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params ? _params : _), __: (_params ? _ : __), _i, asyncer, createElement, params, executer })
+  }
+  // if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)

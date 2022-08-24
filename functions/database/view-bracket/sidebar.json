@@ -215,7 +215,7 @@
                 "event": "mousedown?mousedown=true;document().style().cursor=ew-resize;():[sidebar-open-manager:()].style().transition=null;width=():[sidebar-open-manager:()].style().width.split():rem.0.num();screenX=screenX:()"
                 },
                 {
-                "event": "mousemove:body?diff=[[screenX:()]-[().screenX]].divide():10;():[sidebar-open-manager:()].style().width=[().width+().diff]+rem;():data-viewer.style().width='calc(100vw - '+[().width+().diff+4.5]+'rem)';():functions.style().width='calc(100vw - '+[().width+().diff+4.5]+'rem)'?mousedown"
+                "event": "mousemove:body?diff=[[screenX:()]-[().screenX]].divide():10;():[sidebar-open-manager:()].style().width=[().width+().diff]+rem;():data-viewer.style().width='calc(100vw - '+[().width+().diff+4.5]+'rem)';():my-functions.style().width='calc(100vw - '+[().width+().diff+4.5]+'rem)'?mousedown"
                 },
                 {
                 "event": "mouseup:body?mousedown=false;document().style().cursor=default;():[sidebar-open-manager:()].style().transition=.2s"

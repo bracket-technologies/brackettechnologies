@@ -1,16 +1,30 @@
 {
-  "type": "View?id=sidebar;style:[minWidth=4.5rem;maxWidth=4.5rem;width=4.5rem;backgroundColor=#f6f6f6;height=100%]",
+  "functions": {
+    "close-invoices": "invoices-opened:()=false;close-expand-more-invoice();deselect-invoice-btns()",
+    "open-expand-more-flight": "():my-flights.style().height=if():[user:().admin;agent:().admin]:[15.1rem]:[10.1rem];():[flight-expand-more].1stChild().style().transform=rotate(180deg);flights-opened:()=true",
+    "deselect-hotel-btns": "():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888]",
+    "close-expand-more-invoice": "():my-invoices.style().height=0;():[invoice-expand-more].1stChild().style().transform=rotate(0);invoices-opened:()=false",
+    "close-flights": "flights-opened:()=false;close-expand-more-flight();deselect-flight-btns()",
+    "deselect-invoice-btns": "():my-invoices.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888]",
+    "deselect-flight-btns": "():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888]",
+    "open-manager": "toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=_.manager]:[opened-manager:()=_.manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=_.manager;timer=200]]:[opened-manager:().del()]",
+    "close-expand-more-flight": "():my-flights.style().height=0;():[flight-expand-more].1stChild().style().transform=rotate(0);flights-opened:()=false",
+    "open-expand-more-invoice": "():my-invoices.style().height=if():[user:().admin;agent:().admin]:[15.1rem]:[10.1rem];():[invoice-expand-more].1stChild().style().transform=rotate(180deg);invoices-opened:()=true",
+    "deselect-sidebar-btns": "():sidebar.children().pullItems():[id=my-flights||id=my-hotels||id=my-invoices].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false]",
+    "close-hotels": "hotels-opened:()=false;close-expand-more-hotel();deselect-hotel-btns()"
+  },
+  "id": "sidebar",
   "children": [
     {
+      "type": "View?id=dashboard-sidebar-btn;tooltip.text=Dashboard;opened-manager:()=dashboard-manager;class=flexbox pointer;style():[if():[!agent:().admin]:[display=none];height=5rem;transition=.2s;borderRight=if():[opened-manager:()=dashboard-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
       "children": [
         {
           "type": "Icon?name=speed;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=dashboard-manager]:blue:#888]"
         }
       ],
-      "type": "View?id=dashboard-sidebar-btn;tooltip.text=Dashboard;opened-manager:()=dashboard-manager;class=flexbox pointer;style():[if():[!agent:().admin]:[display=none];height=5rem;transition=.2s;borderRight=if():[opened-manager:()=dashboard-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
       "controls": [
         {
-          "event": "click?mail();close-invoices();#():[hotel-expand-more].1stChild().style().transform=rotate(180deg);hotels-opened:()=false;():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-hotels.style().height=0;():hotels-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];if():[flights-opened:()]:[():[flight-expand-more].1stChild().style().transform=rotate(180deg);flights-opened:()=false];():my-flights.style().height=0;flights-opened:()=false;():sidebar.children().pullItems():[id=flights||id=my-hotels||id=my-invoices].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=dashboard-manager]:[opened-manager:()=dashboard-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=dashboard-manager;timer=200]]:[opened-manager:().del()]"
+          "event": "click?close-flights();close-invoices();deselect-sidebar-btns();open-manager():[manager=dashboard-manager]"
         }
       ]
     },
@@ -21,22 +35,22 @@
           "type": "Icon?name=flight_takeoff;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=book-a-flight-manager]:blue:#888]"
         },
         {
-          "type": "View:flight-expand-more?class=flexbox;style:[width=0;height=3rem;borderRadius=0 .5rem .5rem 0;pointerEvents=none;position=absolute;right=0;transition=.2s;cursor=pointer;zIndex=1;backgroundColor=#e6e6e6;overflow=hidden]",
+          "controls": [
+            {
+              "event": "click?if():[flights-opened:()]:[close-expand-more-flight()]:[open-expand-more-flight()]"
+            }
+          ],
           "children": [
             {
               "type": "Icon?name=expand_more;google.outlined;style:[fontSize=2rem;transition=.2s]"
             }
           ],
-          "controls": [
-            {
-              "event": "click?if():[flights-opened:()]:[():my-flights.style().height=0;1stChild().style().transform=rotate(0);flights-opened:()=false]:[():my-flights.style().height=if():[user:().admin;agent:().admin]:[15.1rem]:[10.1rem];1stChild().style().transform=rotate(180deg);flights-opened:()=true]"
-            }
-          ]
+          "type": "View:flight-expand-more?class=flexbox;style:[width=0;height=3rem;borderRadius=0 .5rem .5rem 0;pointerEvents=none;position=absolute;right=0;transition=.2s;cursor=pointer;zIndex=1;backgroundColor=#e6e6e6;overflow=hidden]"
         }
       ],
       "controls": [
         {
-          "event": "click?close-invoices();():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-hotels.style().height=0;():my-hotels.style().height=0;():hotels-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];():sidebar.children().pullItems():[id=my-flights||id=accounting].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=book-a-flight-manager]:[opened-manager:()=book-a-flight-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=book-a-flight-manager;timer=200]]:[opened-manager:().del()]?!2ndChild().contains():[clicked:()]"
+          "event": "click?close-flights();close-invoices();deselect-sidebar-btns();open-manager():[manager=book-a-flight-manager]?!2ndChild().contains():[clicked:()]"
         },
         {
           "event": "mouseenter?clearTimer():[().expand-timer];2ndChild().style():[width=2.5rem;right=-2.8rem;pointerEvents=auto]"
@@ -56,36 +70,36 @@
           ],
           "controls": [
             {
-              "event": "click?close-invoices();():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-hotels.style().height=0;():my-hotels.style().height=0;():hotels-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];1stChild().():[style():[transform=translateY(-1rem);opacity=0];timer():[style():[transition=0s;transform=translateY(1rem)]]:400;timer():[style():[transition=.4s;transform=translateY(0);opacity=1]]:450];():sidebar.children().pullItems():[id=my-flights||id=accounting].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=flights-manager]:[opened-manager:()=flights-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=flights-manager;timer=200];():my-flights.style().height=if():[user:().admin;agent:().admin]:[15.1rem]:[10.1rem];():[flight-expand-more].1stChild().style().transform=rotate(180deg);flights-opened:()=true]:[opened-manager:().del()]"
+              "event": "click?close-invoices();deselect-sidebar-btns();deselect-flight-btns();open-expand-more-flight();open-manager():[manager=flights-manager]"
             }
           ],
           "type": "View?id=flight-sidebar-btn;tooltip.text=flights;class=flexbox pointer;style:[if():[!user:().admin||!agent:().admin]:[display=none];height=5rem;minHeight=5rem;flex=1;transition=.2s;position=relative;borderRight=if():[opened-manager:()=flights-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6"
         },
         {
+          "type": "View?id=flight-booking-sidebar-btn;tooltip.text=my bookings;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=bookings-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
+          "controls": [
+            {
+              "event": "click?close-invoices();deselect-sidebar-btns();deselect-flight-btns();open-expand-more-flight();open-manager():[manager=bookings-manager]"
+            }
+          ],
           "children": [
             {
               "type": "Icon?name=backpack;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=flights-manager]:blue:#888]"
             }
-          ],
-          "type": "View?id=flight-booking-sidebar-btn;tooltip.text=my bookings;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=bookings-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
-          "controls": [
-            {
-              "event": "click?close-invoices();():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-hotels.style().height=0;():my-hotels.style().height=0;():hotels-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];():sidebar.children().pullItems():[id=my-flights||id=accounting].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=bookings-manager]:[opened-manager:()=bookings-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=bookings-manager;timer=200];():my-flights.style().height=if():[user:().admin;agent:().admin]:[15.1rem]:[10.1rem];():'flight-expand-more'.1stChild().style().transform=rotate(180deg);flights-opened:()=true]:[opened-manager:().del()]"
-            }
           ]
         },
         {
-          "controls": [
-            {
-              "event": "click?close-invoices();():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-hotels.style().height=0;():my-hotels.style().height=0;():hotels-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];():sidebar.children().pullItems():[id=my-flights||id=accounting].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=tickets-manager]:[opened-manager:()=tickets-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=tickets-manager;timer=200];():my-flights.style().height=if():[user:().admin;agent:().admin]:[15.1rem]:[10.1rem];():'flight-expand-more'.1stChild().style().transform=rotate(180deg);flights-opened:()=true]:[opened-manager:().del()]"
-            }
-          ],
           "children": [
             {
               "type": "Icon?name=airplane_ticket;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=flights-manager]:blue:#888]"
             }
           ],
-          "type": "View?id=flight-ticket-sidebar-btn;tooltip.text=my tickets;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=tickets-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6"
+          "type": "View?id=flight-ticket-sidebar-btn;tooltip.text=my tickets;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=tickets-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
+          "controls": [
+            {
+              "event": "click?close-invoices();deselect-sidebar-btns();deselect-flight-btns();open-expand-more-flight();open-manager():[manager=tickets-manager]"
+            }
+          ]
         },
         {
           "type": "View?class=flexbox;style:[width=90%;height=1px;marginLeft=5%;borderBottom=1px solid #ddd]"
@@ -94,12 +108,6 @@
       "type": "View?id=my-flights;class=vertical;style:[width=4.5rem;height=0;transition=.2s;overflow=hidden]"
     },
     {
-      "type": "View:hotels-btn?tooltip.text=book a hotel room;class=flexbox pointer column;style:[height=5rem;minHeight=5rem;transition=.2s;position=relative;borderRight=if():[opened-manager:()=book-a-hotel-manager]:2px solid #FF4340:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
-      "controls": [
-        {
-          "event": "click?if():[invoices-opened:()]:[():[invoice-expand-more].1stChild().style().transform=rotate(180deg);invoices-opened:()=false];flights-opened:()=false;():my-invoices.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-invoices.style().height=0;():my-invoices.style().height=0;():invoices-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];():my-flights.style().height=0;flights-opened:()=false;():sidebar.children().pullItems():[id=my-flights||id=my-accounting||id=my-hotels].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=book-a-hotel-manager]:[2ndChild().style():[color=#FF4340];1stChild().children().():[style():[color=#FF4340]];opened-manager:()=book-a-hotel-manager;style():[borderRight=2px solid #FF4340];hover.disable=true;toggleView():[parent=manager-view;view=book-a-hotel-manager;timer=200]]:[opened-manager:().del()]"
-        }
-      ],
       "children": [
         {
           "type": "View?class=flexbox;style.gap=.1rem",
@@ -118,34 +126,40 @@
         {
           "type": "Icon?name=apartment;google;outlined;style:[color=#888;fontSize=2.7rem;transition=.2s]"
         }
+      ],
+      "type": "View:hotels-btn?tooltip.text=book a hotel room;class=flexbox pointer column;style:[height=5rem;minHeight=5rem;transition=.2s;position=relative;borderRight=if():[opened-manager:()=book-a-hotel-manager]:2px solid #FF4340:2px solid #00000000];hover.style.backgroundColor=#e6e6e6?false",
+      "controls": [
+        {
+          "event": "click"
+        }
       ]
     },
     {
       "type": "View?id=my-hotels;class=vertical;style:[width=4.5rem;height=0;transition=.2s;overflow=hidden]"
     },
     {
-      "type": "View:invoice-sidebar-btn?tooltip.text=my invoices;class=flexbox pointer;style:[height=5rem;minWidth=100%;minHeight=5rem;transition=.2s;position=relative;borderRight=if():[opened-manager:()=invoices-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
       "children": [
         {
           "type": "Icon?name=shopping_cart;google.outlined;style:[fontSize=2.8rem;color=if():[opened-manager:()=invoices-manager]:blue:#888;transition=.4s]"
         },
         {
+          "controls": [
+            {
+              "event": "click?if():[invoices-opened:()]:[close-expand-more-invoice()]:[open-expand-more-invoice()]"
+            }
+          ],
+          "type": "View:invoice-expand-more?class=flexbox;style:[width=0;height=3rem;borderRadius=0 .5rem .5rem 0;pointerEvents=none;position=absolute;right=0;transition=.2s;cursor=pointer;zIndex=1;backgroundColor=#e6e6e6;overflow=hidden]",
           "children": [
             {
               "type": "Icon?name=expand_more;google.outlined;style:[fontSize=2rem;transition=.2s]"
             }
-          ],
-          "controls": [
-            {
-              "event": "click?if():[invoices-opened:()]:[():my-invoices.style().height=0;1stChild().style().transform=rotate(0);invoices-opened:()=false]:[():my-invoices.style().height=15.1rem;1stChild().style().transform=rotate(180deg);invoices-opened:()=true]"
-            }
-          ],
-          "type": "View:invoice-expand-more?class=flexbox;style:[width=0;height=3rem;borderRadius=0 .5rem .5rem 0;pointerEvents=none;position=absolute;right=0;transition=.2s;cursor=pointer;zIndex=1;backgroundColor=#e6e6e6;overflow=hidden]"
+          ]
         }
       ],
+      "type": "View:invoice-sidebar-btn?tooltip.text=my invoices;class=flexbox pointer;style:[height=5rem;minWidth=100%;minHeight=5rem;transition=.2s;position=relative;borderRight=if():[opened-manager:()=invoices-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
       "controls": [
         {
-          "event": "click?#():[hotel-expand-more].1stChild().style().transform=rotate(180deg);hotels-opened:()=false;#():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];#():my-hotels.style().height=0;#():my-hotels.style().height=0;():hotels-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];if():[flights-opened:()]:[():[flight-expand-more].1stChild().style().transform=rotate(180deg);flights-opened:()=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888];():my-flights.style().height=0;():my-flights.style().height=0;():flights-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];():sidebar.children().pullItems():[id=my-flights||id=my-hotels||id=my-invoices].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-invoices.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=invoices-manager]:[opened-manager:()=invoices-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=invoices-manager;timer=200]]:[opened-manager:().del()]?!2ndChild().contains():[clicked:()]"
+          "event": "click?close-invoices();close-flights();deselect-sidebar-btns();open-manager():[manager=invoices-manager]?!2ndChild().contains():[clicked:()]"
         },
         {
           "event": "mouseenter?clearTimer():[().expand-timer];2ndChild().style():[width=2.5rem;right=-2.8rem;pointerEvents=auto]"
@@ -161,7 +175,7 @@
           "type": "View?id=deposit-sidebar-btn;tooltip.text=my deposits;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=deposits-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
           "controls": [
             {
-              "event": "click?if():[flights-opened:()]:[():[flight-expand-more].1stChild().style().transform=rotate(180deg);flights-opened:()=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888];():my-flights.style().height=0;():my-flights.style().height=0;():flights-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];#():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-hotels.style().height=0;():hotels-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];():sidebar.children().pullItems():[id=my-flights||id=my-hotels||id=my-invoices].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-invoices.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=deposits-manager]:[opened-manager:()=deposits-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=deposits-manager;timer=200];():my-invoices.style().height=15.1rem;():[invoice-expand-more].1stChild().style().transform=rotate(180deg);invoices-opened:()=true]:[opened-manager:().del()]"
+              "event": "click?close-flights();deselect-sidebar-btns();deselect-invoice-btns();open-expand-more-invoice();open-manager():[manager=deposits-manager]"
             }
           ],
           "children": [
@@ -173,15 +187,15 @@
         {
           "controls": [
             {
-              "event": "click?if():[flights-opened:()]:[():[flight-expand-more].1stChild().style().transform=rotate(180deg);flights-opened:()=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888];():my-flights.style().height=0;():my-flights.style().height=0;():flights-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];#():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-hotels.style().height=0;():hotels-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];():sidebar.children().pullItems():[id=my-flights||id=my-hotels||id=my-invoices].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-invoices.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=agents-manager]:[opened-manager:()=agents-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=agents-manager;timer=200];():my-invoices.style().height=15.1rem;():[invoice-expand-more].1stChild().style().transform=rotate(180deg);invoices-opened:()=true]:[opened-manager:().del()]"
+              "event": "click?close-flights();deselect-sidebar-btns();deselect-invoice-btns();open-expand-more-invoice();open-manager():[manager=agents-manager]"
             }
           ],
+          "type": "View?id=agent-sidebar-btn;tooltip.text=my agents;class=flexbox pointer;style:[if():[!agent:().admin||!user:().admin]:[display=none];height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=agents-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
           "children": [
             {
               "type": "Icon?name=badge;google.outlined;style:[fontSize=2.5rem;color=if():[opened-manager:()=agents-manager]:blue:#888]"
             }
-          ],
-          "type": "View?id=agent-sidebar-btn;tooltip.text=my agents;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=agents-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6"
+          ]
         },
         {
           "type": "View?id=user-sidebar-btn;tooltip.text=my users;class=flexbox pointer;style:[height=5rem;minHeight=5rem;transition=.2s;flex=1;borderRight=if():[opened-manager:()=users-manager]:2px solid blue:2px solid #00000000];hover.style.backgroundColor=#e6e6e6",
@@ -192,7 +206,7 @@
           ],
           "controls": [
             {
-              "event": "click?if():[flights-opened:()]:[():[flight-expand-more].1stChild().style().transform=rotate(180deg);flights-opened:()=false];():my-flights.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888];():my-flights.style().height=0;():my-flights.style().height=0;():flights-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];#():my-hotels.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-hotels.style().height=0;():hotels-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]];():sidebar.children().pullItems():[id=my-flights||id=my-hotels||id=my-invoices].():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];():my-invoices.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000];1stChild().style().color=#888;hover.disable=false];toggleView():[parent=manager-view;view=loading-manager;timer=200];if():[opened-manager:()!=users-manager]:[opened-manager:()=users-manager;style():[borderRight=2px solid blue];1stChild().style():[color=blue];hover.disable=true;toggleView():[parent=manager-view;view=users-manager;timer=200];():my-invoices.style().height=15.1rem;():[invoice-expand-more].1stChild().style().transform=rotate(180deg);invoices-opened:()=true]:[opened-manager:().del()]"
+              "event": "click?close-flights();deselect-sidebar-btns();deselect-invoice-btns();open-expand-more-invoice();open-manager():[manager=users-manager]"
             }
           ]
         },
@@ -203,8 +217,5 @@
       "type": "View?id=my-invoices;class=vertical;style:[width=4.5rem;height=0;transition=.2s;overflow=hidden]"
     }
   ],
-  "id": "sidebar",
-  "functions": {
-    "close-invoices()": "if():[invoices-opened:()]:[():[invoice-expand-more].1stChild().style().transform=rotate(180deg);invoices-opened:()=false];():my-invoices.children().():[style():[backgroundColor=inherit;borderRight=2px solid #00000000]];():my-invoices.style().height=0;():my-invoices.style().height=0;():invoices-btn.():[2ndChild().style():[color=#888];1stChild().children().():[style():[color=#888]]]"
-  }
+  "type": "View?id=sidebar;style:[minWidth=4.5rem;maxWidth=4.5rem;width=4.5rem;backgroundColor=#f6f6f6;height=100%]"
 }

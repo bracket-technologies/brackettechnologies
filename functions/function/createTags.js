@@ -35,7 +35,7 @@ const createTags = ({ _window, id, req, res }) => {
     view.length = data.length || 1
 
     // arrange
-    if (view.arrange) data = arrange({ data, arrange: view.arrange, id, _window })
+    if (view.arrange || view.sort) data = arrange({ data, arrange: view.arrange, id, _window })
 
     delete views[id]
     delete view.mapType

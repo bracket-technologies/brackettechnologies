@@ -327,7 +327,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             else if (path0 === "log()") {
                 
-                _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg || "here", params, _, __, _i, e, object }))
+                var _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg || "here", params, _, __, _i, e, object }))
                 console.log(..._log)
             }
 
@@ -1932,7 +1932,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "return()") {
 
-            var args = k.split(":")
             answer = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, _i,e })
             
         } else if (k0 === "reload()") {
@@ -1941,21 +1940,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "isSameNode()" || k0 === "isSame()") {
 
-            var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, _i,e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = _next === o
             
         } else if (k0 === "isnotSameNode()" || k0 === "isnotSame()") {
 
-            var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, _i,e }) || {}
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = _next !== o
             
         } else if (k0 === "inOrSame()" || k0 === "insideOrSame()") {
 
-            var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, _i,e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = _next.contains(o) || _next === o
@@ -2579,7 +2575,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             if (isParam({ _window, string: args[1] })) {
 
-                _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
                 _params.length = _params.length || _params.len || 5
                 _params.number = _params.number || _params.num
                 answer = generate(_params)
@@ -3531,7 +3527,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                                 } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
                                     var totalPages = pdf.internal.getNumberOfPages()
-                                console.log(pdf.path());
+                                    
                                     for (i = 1; i <= totalPages; i++) {
 
                                         pdf.setPage(i)
@@ -4314,7 +4310,7 @@ const exportHTMLToPDF = async (pages, opt) => {
         await Promise.all(promises)
 
         promises.map((pageImage, i) => {
-            console.log(i);
+            console.log(i + 1);
             if (i != 0) { doc.addPage() }
             doc.addImage(pageImage._result.src, 'jpeg', 0.1, 0.1, pageSize.width - 0.2, pageSize.height - 0.2);
         })
@@ -4322,9 +4318,10 @@ const exportHTMLToPDF = async (pages, opt) => {
     } else {
 
         for (let i = 0; i < pages.length; i++) {
+
             const page = pages[i]
             const pageImage = await html2pdf().from(page).set(opt).outputImg()
-            console.log(i);
+            console.log(i + 1);
             if (i != 0) { doc.addPage() }
             doc.addImage(pageImage.src, 'jpeg', 0.1, 0.1, pageSize.width - 0.2, pageSize.height - 0.2);
         }
@@ -4332,7 +4329,6 @@ const exportHTMLToPDF = async (pages, opt) => {
     
     doc.save(opt.filename)
 }
-
 
 const toDataURL = url => fetch(url)
 .then(response => response.blob())

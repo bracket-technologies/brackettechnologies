@@ -102,7 +102,7 @@ document.body.addEventListener('click', e => {
     if (global.clickedElement.id === "droplist") delete global["droplist-item-clicked"]
     else if (views.droplist.element.contains(global.clickedElement)) {
         global["droplist-item-clicked"] = global["droplist-item"] = global.clickedElement
-        global["droplist-item-txt"] = global["droplist-txt"] = global.clickedElement.innerHTML
+        global["droplist-item-txt"] = global["droplist-txt"] = global.clickedElement.innerHTML.replace("&amp;", "&")
     }
 
     // actionlist
@@ -1008,9 +1008,9 @@ module.exports = (component) => {
                 }, {
                     type: "View?style.minWidth=2rem;text=?data().type()!=map;data().type()!=array"
                 }, {
-                    type: "Input?preventDefault;#mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;#mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=path().lastElement();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?parent().parent().parent().data().type()!=array",
+                    type: "Input?preventDefault;#mode.dark.style.color=#8cdcfe;style.height=3.2rem;style.border=1px solid #ffffff00;#mode.dark.style.border=1px solid #131313;hover.style.border=1px solid #ddd;input.style.color=blue;input.value=path().lastElement();style.borderRadius=.5rem;style.minWidth=fit-content;style.width=fit-content?2ndParent().parent().data().type()!=array",
                     controls: [{
-                        event: "input?Data():[path().clone().replaceLast():val()]=data().clone();data().del();parent().parent().deepChildren().():[derivations.[path().lastIndex()]=val()]"
+                        event: "input?Data():[path().clone().replaceLast():val()]=data().clone();data().del();2ndParent().deepChildren().():[derivations.[path().lastIndex()]=val()]"
                     }, {
                         event: "keyup?if():[)(:droplist-positioner;)(:keyup-index]:[():droplist.children().[)(:keyup-index].click();timer():[)(:keyup-index.del()]:200;().break=true];)(:keyup-index=0;if():[)(:droplist-positioner!=next().id]:[next().click()];timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter;!ctrlKey:()"
                     }, {
@@ -1018,10 +1018,10 @@ module.exports = (component) => {
                     }, {
                         event: "keyup?():droplist.children().[)(:keyup-index].mouseleave();)(:keyup-index=if():[e().keyCode=40]:[)(:keyup-index+1]:[)(:keyup-index-1];():droplist.children().[)(:keyup-index].mouseenter()?e().keyCode=40||e().keyCode=38;)(:droplist-positioner;if():[e().keyCode=38]:[)(:keyup-index>0].elif():[e().keyCode=40]:[)(:keyup-index<next().droplist.items.lastIndex()]"
                     }, {
-                        event: "keyup?insert-index:()=3rdParent().children().findIndex():[id=parent().parent().id]+1;if():[data().type()=string]:[data()=_list];if():[path().lastEl()=children]:[data().push():[_map:type:_string]];if():[path().lastEl()=controls]:[data().push():[_map:event:_string]];update():2ndParent();update:().view.inputs().lastEl().focus()?e().key=Enter;ctrlKey:();path().lastEl()=controls||path().lastEl()=children"
+                        event: "keyup?insert-index:()=3rdParent().children().findIndex():[id=2ndParent().id]+1;if():[data().type()=string]:[data()=_list];if():[path().lastEl()=children]:[data().push():[_map:type:_string]];if():[path().lastEl()=controls]:[data().push():[_map:event:_string]];update():2ndParent();update:().view.inputs().lastEl().focus()?e().key=Enter;ctrlKey:();path().lastEl()=controls||path().lastEl()=children"
                     }]
                 }, {
-                    type: "Text?text=path().lastElement();class=flex-box;#mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?parent().parent().parent().data().type()=array"
+                    type: "Text?text=path().lastElement();class=flex-box;#mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?2ndParent().parent().data().type()=array"
                 }, {
                     type: "Text?text=:;class=flex-box pointer;#mode.dark.style.color=#888;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_array:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
                 }, {
@@ -1037,20 +1037,20 @@ module.exports = (component) => {
                         children: [{
                             type: "Input?#mode.dark.style.color=#c39178;if():[path().lastElement()=id]:[input.readonly=true];style.maxHeight=3.2rem;style.height=3.2rem;#mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#a35521",
                             controls: [{
-                                event: "keyup?insert-index:()=parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().id]+1;if():[parent().parent().parent().parent().parent().data().type()=map]:[parent().parent().parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[parent().parent().parent().parent().parent().data().len()+1];parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
-                                actions: "wait():[insert:[parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().parent().parent().data().type()=array]:[parent().parent().parent().parent().parent().derivations.clone().push():[insert-index:()]].else():[parent().parent().parent().parent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.getInput().focus()]"
+                                event: "keyup?insert-index:()=2ndParent().2ndParent().parent().children().findIndex():[id=2ndParent().2ndParent().id]+1;if():[2ndParent().2ndParent().parent().data().type()=map]:[2ndParent().2ndParent().parent().data().[_string]=_string];if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[2ndParent().2ndParent().parent().data().len()+1];2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
+                                actions: "wait():[insert:[2ndParent().2ndParent().parent().id]]?insert.component=2ndParent().2ndParent().parent().children.1;insert.path=if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().derivations.clone().push():[insert-index:()]].else():[2ndParent().2ndParent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.getInput().focus()]"
                             },
                             {
-                                event: "keyup?insert-index:()=parent().parent().parent().parent().parent().parent().parent().parent().children().findIndex():[id=parent().parent().parent().parent().parent().parent().parent().id]+1;parent().parent().parent().parent().parent().parent().parent().parent().data().splice():[if():[path().lastEl()=type]:[_map:type:_string].elif():[path().lastEl()=event||path().lastEl()=actions]:[_map:event:_string]]:[insert-index:()];if():[insert-index:().less():[parent().parent().parent().parent().parent().parent().parent().parent().data().len()+1]]:[parent().parent().parent().parent().parent().parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;ctrlKey:();path().lastEl()=type||path().lastEl()=event||path().lastEl()=actions",
-                                actions: "wait():[insert:[parent().parent().parent().parent().parent().parent().parent().parent().id]]?insert.component=parent().parent().parent().parent().parent().parent().parent().parent().children.1;insert.path=parent().parent().parent().parent().parent().parent().parent().parent().derivations.clone().push():[insert-index:()];insert.index=insert-index:();wait():[().insert.view.inputs().1.focus()]"
+                                event: "keyup?insert-index:()=2ndParent().2ndParent().2ndParent().2ndParent().children().findIndex():[id=2ndParent().2ndParent().2ndParent().parent().id]+1;2ndParent().2ndParent().2ndParent().2ndParent().data().splice():[if():[path().lastEl()=type]:[_map:type:_string].elif():[path().lastEl()=event||path().lastEl()=actions]:[_map:event:_string]]:[insert-index:()];if():[insert-index:().less():[2ndParent().2ndParent().2ndParent().2ndParent().data().len()+1]]:[2ndParent().2ndParent().2ndParent().2ndParent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;ctrlKey:();path().lastEl()=type||path().lastEl()=event||path().lastEl()=actions",
+                                actions: "wait():[insert:[2ndParent().2ndParent().2ndParent().2ndParent().id]]?insert.component=2ndParent().2ndParent().2ndParent().2ndParent().children.1;insert.path=2ndParent().2ndParent().2ndParent().2ndParent().derivations.clone().push():[insert-index:()];insert.index=insert-index:();wait():[().insert.view.inputs().1.focus()]"
                             }]
                         }]
                     }]
                 }, {
                     type: "Input?style.height=3.2rem;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.type=number;input.style.color=olive;style.width=fit-content;style.borderRadius=.5rem?data().type()=number",
                     controls: [{
-                        event: "keyup?insert-index:()=parent().parent().parent().children().findIndex():[id=parent().parent().id]+1;if():[parent().parent().parent().data().type()=map]:[parent().parent().parent().data().[_string]=_string];if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[parent().parent().parent().data().len()+1];parent().parent().parent().data().type()=array]:[parent().parent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
-                        actions: "wait():[insert:[parent().parent().parent().id]]?insert.component=parent().parent().parent().children.1;insert.path=if():[parent().parent().parent().data().type()=array]:[parent().parent().parent().derivations.clone().push():[insert-index:()]]:[parent().parent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.input().focus()]"
+                        event: "keyup?insert-index:()=2ndParent().parent().children().findIndex():[id=2ndParent().id]+1;if():[2ndParent().parent().data().type()=map]:[2ndParent().parent().data().[_string]=_string];if():[2ndParent().parent().data().type()=array]:[2ndParent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[2ndParent().parent().data().len()+1];2ndParent().parent().data().type()=array]:[2ndParent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
+                        actions: "wait():[insert:[2ndParent().parent().id]]?insert.component=2ndParent().parent().children.1;insert.path=if():[2ndParent().parent().data().type()=array]:[2ndParent().parent().derivations.clone().push():[insert-index:()]]:[2ndParent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.input().focus()]"
                     }]
                 }, {
                     type: "Input?style.height=3.2rem;readonly;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.color=purple;style.width=fit-content;style.borderRadius=.5rem;droplist.items=_array:true:false?data().type()=boolean"
@@ -2268,7 +2268,7 @@ const createTags = ({ _window, id, req, res }) => {
     view.length = data.length || 1
 
     // arrange
-    if (view.arrange) data = arrange({ data, arrange: view.arrange, id, _window })
+    if (view.arrange || view.sort) data = arrange({ data, arrange: view.arrange, id, _window })
 
     delete views[id]
     delete view.mapType
@@ -4806,7 +4806,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             else if (path0 === "log()") {
                 
-                _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg || "here", params, _, __, _i, e, object }))
+                var _log = args.slice(1).map(arg => toValue({ req, res, _window, id, value: arg || "here", params, _, __, _i, e, object }))
                 console.log(..._log)
             }
 
@@ -6411,7 +6411,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "return()") {
 
-            var args = k.split(":")
             answer = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, _i,e })
             
         } else if (k0 === "reload()") {
@@ -6420,21 +6419,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
         } else if (k0 === "isSameNode()" || k0 === "isSame()") {
 
-            var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, _i,e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = _next === o
             
         } else if (k0 === "isnotSameNode()" || k0 === "isnotSame()") {
 
-            var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, _i,e }) || {}
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = _next !== o
             
         } else if (k0 === "inOrSame()" || k0 === "insideOrSame()") {
 
-            var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, _i,e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = _next.contains(o) || _next === o
@@ -7058,7 +7054,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             if (isParam({ _window, string: args[1] })) {
 
-                _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
                 _params.length = _params.length || _params.len || 5
                 _params.number = _params.number || _params.num
                 answer = generate(_params)
@@ -8010,7 +8006,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                                 } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
                                     var totalPages = pdf.internal.getNumberOfPages()
-                                console.log(pdf.path());
+                                    
                                     for (i = 1; i <= totalPages; i++) {
 
                                         pdf.setPage(i)
@@ -8793,7 +8789,7 @@ const exportHTMLToPDF = async (pages, opt) => {
         await Promise.all(promises)
 
         promises.map((pageImage, i) => {
-            console.log(i);
+            console.log(i + 1);
             if (i != 0) { doc.addPage() }
             doc.addImage(pageImage._result.src, 'jpeg', 0.1, 0.1, pageSize.width - 0.2, pageSize.height - 0.2);
         })
@@ -8801,9 +8797,10 @@ const exportHTMLToPDF = async (pages, opt) => {
     } else {
 
         for (let i = 0; i < pages.length; i++) {
+
             const page = pages[i]
             const pageImage = await html2pdf().from(page).set(opt).outputImg()
-            console.log(i);
+            console.log(i + 1);
             if (i != 0) { doc.addPage() }
             doc.addImage(pageImage.src, 'jpeg', 0.1, 0.1, pageSize.width - 0.2, pageSize.height - 0.2);
         }
@@ -8811,7 +8808,6 @@ const exportHTMLToPDF = async (pages, opt) => {
     
     doc.save(opt.filename)
 }
-
 
 const toDataURL = url => fetch(url)
 .then(response => response.blob())
@@ -9891,11 +9887,14 @@ module.exports = {switchMode}
 },{"./capitalize":34,"./clone":36,"./style":97}],99:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
+const { clone } = require("./clone")
+const { toCode } = require("./toCode")
 
 const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
+  const { toParam } = require("./function")
 
   // no string but object exists
   if (!string)
@@ -9982,8 +9981,23 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
     }
     
     // to path
-    var keygen = generate()
-    var path = typeof key === "string" ? key.split(".") : []
+    var keygen = generate(), isFn
+    var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0]
+
+    // function
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
+      if (!isFn) {
+        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+        // console.log(isFn, key, view, global.data.view);
+      }
+    })
+
+    if (isFn) {
+      var _params = path[0].split(":")[1]
+      if (_params) _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
+      return approval = toApproval({ _window, string: isFn, e, id, req, res, object, _: (_params ? _params : _), __: (_params ? _ : __)})
+    }
 
     if (!key && object !== undefined) view[keygen] = object
     else if (key === "false" || key === "undefined") view[keygen] = false
@@ -10012,7 +10026,7 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
 
 module.exports = { toApproval }
 
-},{"./generate":61,"./isEqual":69,"./reducer":82,"./toValue":118}],100:[function(require,module,exports){
+},{"./clone":36,"./function":60,"./generate":61,"./isEqual":69,"./reducer":82,"./toCode":104,"./toValue":118}],100:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? [...data] : [data]) : [];
 }
@@ -10652,18 +10666,22 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     id = viewId
 
-    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false
+    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && key.slice(-2) === "()" && !key.includes(":")) clone(view["my-views"]).reverse().map(view => {
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
       if (!isFn) {
-        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === key)
-        if (isFn) isFn = (global.data.view[view].functions || {})[isFn]
+        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
         // console.log(isFn, key, view, global.data.view);
       }
     })
 
-    if (isFn) return toParam({ _window, string: isFn, e, id, req, res, mount, object, _, __, _i, asyncer, createElement, params, executer })
+    if (isFn) {
+      var _params = path[0].split(":")[1]
+      if (_params) _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
+      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params ? _params : _), __: (_params ? _ : __), _i, asyncer, createElement, params, executer })
+    }
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
@@ -10672,9 +10690,9 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       if (key === "break()" && value !== false) return view.break = true
       var _path = clone(params.path)
       delete params.path
-
+      
       // mount state & value
-      if (path[0].includes("()") || path[0].includes(")(") || path[0].includes("_") || object) {
+      if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || path[0].includes(")(") || path[0].includes("_") || object) {
 
         var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, object, mount, createElement })
         if (timer) {
@@ -10687,7 +10705,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
       } else {
         
-        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, _i, mount, createElement })
+        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, _i, mount, object, createElement })
         reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, mount, object: params })
       }
       if (!params.path && _path !== undefined) params.path = _path
@@ -10955,7 +10973,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, mount, createElement }) => {
+const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, mount, asyncer, createElement, executer }) => {
 
   const { toParam } = require("./toParam")
 
@@ -11053,18 +11071,23 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   // string
   // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
-  var path = typeof value === "string" ? value.split(".") : [], isFn = false
+  var path = typeof value === "string" ? value.split(".") : [], isFn = false, path0 = path[0].split(":")[0]
 
   // function
-  if (path.length === 1 && value.slice(-2) === "()" && !value.includes(":")) clone(view["my-views"]).reverse().map(view => {
+  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
     if (!isFn) {
-      isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === key)
-      if (isFn) isFn = (global.data.view[view].functions || {})[isFn]
+      isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+      if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
       // console.log(isFn, value, view, global.data.view[view].functions);
     }
   })
 
-  if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
+  if (isFn) {
+    var _params = path[0].split(":")[1]
+    if (_params) _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
+    return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params ? _params : _), __: (_params ? _ : __), _i, asyncer, createElement, params, executer })
+  }
+  // if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
 
   /* value */
   if (!isNaN(value) && value !== " ") value = parseFloat(value)

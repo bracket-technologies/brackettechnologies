@@ -1,7 +1,7 @@
 {
-  "creation-date": 1660839217963,
   "id": "agent-window",
   "type": "View:agent-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
+  "creation-date": 1660839217963,
   "children": [
     {
       "children": [
@@ -22,17 +22,17 @@
                   ]
                 },
                 {
-                  "controls": [
-                    {
-                      "event": "click?():save-agent.click()"
-                    }
-                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=save;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s?!agent-edit-readonly:()",
                   "children": [
                     {
                       "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.2rem"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=save;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s?!agent-edit-readonly:()"
+                  "controls": [
+                    {
+                      "event": "click?():save-agent.click()"
+                    }
+                  ]
                 },
                 {
                   "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
@@ -56,6 +56,7 @@
                   ]
                 },
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s;display=none];hover.style.backgroundColor=#fff",
                   "controls": [
                     {
                       "event": "click?style():[id=agent-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():agent-form-header.style().display=flex;():agent-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():agent-window].borderRadius=1rem"
@@ -65,8 +66,7 @@
                     {
                       "type": "Icon?name=crop;google.outlined;style.fontSize=2.2rem"
                     }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s;display=none];hover.style.backgroundColor=#fff"
+                  ]
                 },
                 {
                   "controls": [
@@ -74,12 +74,12 @@
                       "event": "click?style():[id=agent-window;transition=.2s;padding=10vh 5vw;bottom=0];():agent-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw];1stChild():agent-window.style().borderRadius=1rem;agent-data:().del();new-agent:().del();my-logo:()"
                     }
                   ],
+                  "type": "View?class=flexbox pointer;tooltip.text=cancel;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff",
                   "children": [
                     {
                       "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.7rem"
                     }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=cancel;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff"
+                  ]
                 }
               ]
             }
@@ -90,11 +90,13 @@
           "type": "View:agent-form-body?class=flex column;style:[width=100%;gap=2rem;padding=.5rem]",
           "children": [
             {
+              "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=1rem]",
               "children": [
                 {
                   "type": "Text?text=Upload Logo;style:[fontSize=1.4rem]"
                 },
                 {
+                  "type": "View?class=flexbox pointer;style:[borderRadius=.5rem;border=1px solid #ddd;overflow=hidden;position=relative;height=3rem;width=3.25rem;backgroundColor=#fff]",
                   "children": [
                     {
                       "type": "Icon?class=flexbox pointer;name=bi-download;style:[color=#666;fontSize=1.6rem;transition=.3s]"
@@ -107,14 +109,11 @@
                       ],
                       "type": "Input?class=pointer;input.type=file;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]"
                     }
-                  ],
-                  "type": "View?class=flexbox pointer;style:[borderRadius=.5rem;border=1px solid #ddd;overflow=hidden;position=relative;height=3rem;width=3.25rem;backgroundColor=#fff]"
+                  ]
                 }
-              ],
-              "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=1rem]"
+              ]
             },
             {
-              "type": "View?class=grid;doc=agent-data;style:[gridTemplateColumns=4fr 40rem;gap=2rem]",
               "children": [
                 {
                   "type": "View?class=flex column;style:[width=100%;gap=2rem]",
@@ -150,7 +149,6 @@
                       "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     },
                     {
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=General Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -172,7 +170,8 @@
                           ],
                           "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=2fr .5fr .5fr 2fr;padding=1rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     }
                   ]
                 },
@@ -185,7 +184,6 @@
                   ]
                 },
                 {
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 2fr;padding=1rem]",
                   "children": [
                     {
                       "type": "Input?label:[text=Owner Name;location=outside;style.fontSize=1.3rem];path=owner-name;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -202,9 +200,11 @@
                     {
                       "type": "Input?label:[text=Email;location=outside;style.fontSize=1.3rem];path=email;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 2fr;padding=1rem]"
                 }
-              ]
+              ],
+              "type": "View?class=grid;doc=agent-data;style:[gridTemplateColumns=4fr 40rem;gap=2rem]"
             }
           ]
         },
