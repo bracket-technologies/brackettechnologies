@@ -4,7 +4,7 @@ const { toCode } = require("./toCode")
 var _window = { global: {}, views: {} }
 
 var getdb = async ({ req, res, db }) => {
-  
+
   var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
   
@@ -13,6 +13,20 @@ var getdb = async ({ req, res, db }) => {
 
   var collection = search.collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
+
+  if (false) {
+    // developer data => force reload
+    var forceReload, developerData
+    await db.collection("_developer_").doc(req.headers["project"]).get().then(doc => {
+      developerData = doc.data() || {}
+      forceReload = developerData.forceReload
+    })
+    if (forceReload) {
+      developerData.forceReload = false
+      db.collection("_developer_").doc(req.headers["project"]).set(developerData)
+      return res.send({ message: "Force reload!" })
+    }
+  }
 
   var doc = search.document || search.doc,
     docs = search.documents || search.docs,
@@ -34,11 +48,9 @@ var getdb = async ({ req, res, db }) => {
     if (url.slice(-1) === "/") url = url.slice(0, -1)
     
     try {
-      data = await require("axios").get(url, {
-        timeout: 1000 * 10
-      })
+      data = await require("axios").get(url, { timeout: 1000 * 10 })
       .then(res => res.doesNotExist.throwAnError)
-      .catch(err => err);
+      .catch(err => err)
 
       data = data.data
       if (typeof data === "string") {
@@ -154,37 +166,62 @@ var getdb = async ({ req, res, db }) => {
     return res.send({ data, success, message })
   }
 
-  // search field
-  if (field) Object.entries(field).map(([key, value]) => {
+  const myPromise = () => new Promise(async (resolve, rej) => {
 
-    var operator = Object.keys(value)[0]
-    ref = ref.where(key, toFirebaseOperator(operator), value[operator])
-  })
-  
-  if (search.orderBy) ref = ref.orderBy(search.orderBy)
-  if (search.limit || 100) ref = ref.limit(search.limit || 100)
-  if (search.offset) ref = ref.endAt(search.offset)
-  if (search.limitToLast) ref = ref.limitToLast(search.limitToLast)
+    // search field
+    var multiIN = false, _ref = ref
+    if (field) Object.entries(field).map(([key, value]) => {
 
-  if (search.startAt) ref = ref.startAt(search.startAt)
-  if (search.startAfter) ref = ref.startAfter(search.startAfter)
+      var _value = value[Object.keys(value)[0]]
+      var operator = toFirebaseOperator(Object.keys(value)[0])
+      if (operator === "in" && _value.length > 10) {
 
-  if (search.endAt) ref = ref.endAt(search.endAt)
-  if (search.endBefore) ref = ref.endBefore(search.endBefore)
-
-  // retrieve data
-  await ref.get().then(query => {
-
-    success = true
-    query.docs.forEach(doc => data[doc.id] = doc.data())
-    message = `Documents mounted successfuly!`
-
-  }).catch(error => {
+        field[key][Object.keys(value)[0]] = [..._value.slice(10)]
+        _value = [..._value.slice(0, 10)]
+        multiIN = true
+      }
+      _ref = _ref.where(key, operator, _value)
+    })
     
-    success = false
-    message = error
-  })
+    if (search.orderBy) _ref = _ref.orderBy(search.orderBy)
+    if (search.limit || 100) _ref = _ref.limit(search.limit || 100)
+    if (search.offset) _ref = _ref.endAt(search.offset)
+    if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
+
+    if (search.startAt) _ref = _ref.startAt(search.startAt)
+    if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
+
+    if (search.endAt) _ref = _ref.endAt(search.endAt)
+    if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
+
+    // retrieve data
+    await _ref.get().then(query => {
+
+      success = true
+      query.docs.forEach(doc => data[doc.id] = doc.data())
+      message = `Documents mounted successfuly!`
+
+    }).catch(error => {
+      
+      success = false
+      message = error
+    })
+
+    if (multiIN) {
+
+      var { data: _data } = await myPromise()
+      data = { ...data, ..._data }
+    }
     
+    resolve({ data, success, message })
+    /*setTimeout(() => {
+      res("foo")
+    }, 10000)*/
+  })
+
+  var { data, success, message } = await myPromise()
+    
+  /*
   await Promise.all(promises)
   if (project["access-key"] !== req.headers["access-key"]) {
 
@@ -192,7 +229,7 @@ var getdb = async ({ req, res, db }) => {
     message = `Your are not verified!`
     return res.send({ success, message })
   }
-
+  */
   return res.send({ data, success, message })
 }
 

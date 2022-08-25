@@ -17,7 +17,7 @@ const save = async ({ id, e, ...params }) => {
 
   if (save.doc || save.id || (typeof _data === "object" && !Array.isArray(_data) && _data.id)) save.doc = save.doc || save.id || _data.id
   if (!save.doc && (Array.isArray(data) ? !data.find(data => !data.id) : false)) return
-  // delete save.data
+  delete save.data
   
   var { data } = await require("axios").post(`/${store}`, { save, data: _data }, {
     headers: {

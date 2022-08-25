@@ -9,6 +9,7 @@ const { toValue } = require("./toValue")
 
 const myViews = [
   "View",
+  "Box",
   "Text",
   "Icon",
   "Image",

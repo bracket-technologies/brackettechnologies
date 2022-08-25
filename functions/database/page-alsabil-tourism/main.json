@@ -38,10 +38,10 @@
     "book-a-flight-list",
     "search-engine"
   ],
+  "view": "main",
+  "name": "Al Sabil Travel",
   "path": "/",
   "id": "main",
-  "view": "main",
-  "title": "Al Sabil Travel",
   "creation-date": 1651335662000,
-  "name": "Al Sabil Travel"
+  "title": "Al Sabil Travel"
 }

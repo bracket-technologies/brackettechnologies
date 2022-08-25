@@ -243,7 +243,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "doc()" || path0 === "mail()"
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "doc()" || path0 === "mail()" || path0 === "action()" || path0 === "exec()"
     || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()"
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
@@ -311,7 +311,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     : _object !== undefined ? _object : object
 
     if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" 
-    || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
+    || path0 === "window()" || path0 === "win()" || path0 === "history()"/* || path0 === "return()"*/) path = path.slice(1)
         
     if (!_object && _object !== 0 && _object !== false) {
 
@@ -3587,26 +3587,30 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "newTab()") {
 
-            var _params = toParam({ req, res, _window, id, e, _,/* params,*/ string: args[1] })
+            var _params = toParam({ req, res, _window, id, e, _,/* params,*/ __, string: args[1] })
             window.open(_params.url || _params.URL, _params.name, _params.specs || "")
 
         } else if (k0 === "action()") {
             
-            answer = execute({ _window, id, actions: path[i - 1], params, e })
+            answer = execute({ _window, id, actions: args[1], params, e })
+            
+        } else if (k0 === "exec()") {
+            
+            answer = toParam({ req, res, _window, id, e, _, __, string: args[1] })
             
         } else if (k0 === "exportCSV()") {
             
-            var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+            var _params = toParam({ req, res, _window, id, e, _, __, string: args[1] })
             require("./toCSV").toCSV(_params)
             
         } else if (k0 === "exportExcel()") {
             
-            var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+            var _params = toParam({ req, res, _window, id, e, _, __, string: args[1] })
             require("./toExcel").toExcel(_params)
             
         } else if (k0 === "exportPdf()") {
             
-            var options = toParam({ req, res, _window, id, e, _, string: args[1] })
+            var options = toParam({ req, res, _window, id, e, _, __, string: args[1] })
             require("./toPdf").toPdf({ options })
             
         } else if (k0 === "toPrice()" || k0 === "price()") {
@@ -3914,7 +3918,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return require("./upload").upload({ id, e, _, __, _i, upload: _upload, asyncer: true, await: _await })
           }
 
-          return require("./upload").upload({ id, e, save: { upload: { file: global.upload } } })
+          return require("./upload").upload({ id, e, save: { upload: { file: global.upload } }, _, __ })
 
         } else if (k0 === "confirmEmail()") {
           
@@ -3942,25 +3946,25 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
           var _save = { collection: _collection, doc: _doc, data: _data }
 
-          return require("./save").save({ id, e, save: _save })
+          return require("./save").save({ id, e, save: _save, _, __ })
 
         } else if (k0 === "search()") {
           
           if (isParam({ _window, string: args[1] })) {
 
             var _await = ""
-            var _search = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+            var _search = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
             if (args[2]) _await = global.codes[args[2]]
             
             return require("./search").search({ id, e, _, __, _i,search: _search, asyncer: true, await: _await })
           }
 
-          var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-          var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
-          var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
+          var _collection = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+          var _doc = toValue({ req, res, _window, id, e, _, __, _i, value: args[2], params })
+          var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[3], params })
           var _search = { collection: _collection, doc: _doc, data: _data }
 
-          return require("./search").search({ id, e, search: _search })
+          return require("./search").search({ id, e, search: _search, _, __ })
 
         } else if (k0 === "erase()") {
           
@@ -3976,7 +3980,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
             var _erase = { collection: _collection, doc: _doc }
   
-            return require("./erase").erase({ id, e, save: _erase })
+            return require("./erase").erase({ id, e, save: _erase, _, __ })
   
           } else if (k0 === "setPosition()" || k0 === "position()") {
           

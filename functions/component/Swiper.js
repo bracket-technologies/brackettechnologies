@@ -16,9 +16,9 @@ module.exports = (component) => {
     
     return {
         ...component,
-        type: "View?class=swiper",
+        type: "Box?class=swiper",
         children: [{
-            type: "View?style.display=inline-flex;style.alignItems=center;style.height=100%",
+            type: "Box?style.display=inline-flex;style.alignItems=center;style.height=100%",
             ...component.innerbox,
             children: component.children
         }]

@@ -15,7 +15,7 @@ module.exports = {
     
     // innerHTML
     var text = view.text !== undefined ? view.text.toString() : typeof view.data !== "object" ? view.data : ''
-    var innerHTML = view.type !== "View" ? text : ""
+    var innerHTML = view.type !== "View" && view.type !== "Box" ? text : ""
     var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
     
     innerHTML = toArray(view.children).map((child, index) => {
@@ -42,7 +42,7 @@ module.exports = {
     var tag, style = toStyle({ _window, id })
     if (typeof value === 'object') value = ''
     
-    if (view.type === "View") {
+    if (view.type === "View" || view.type === "Box") {
       tag = `<div ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML || view.text || ""}\n</div>`
     } else if (view.type === "Image") {
       tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index}' src='${view.src}'>${innerHTML}</img>`

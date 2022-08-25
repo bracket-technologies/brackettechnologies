@@ -1,6 +1,7 @@
 {
-  "creation-date": 1652284306902,
   "type": "View?id=manager-mini-views",
+  "id": "manager-mini-views",
+  "creation-date": 1652284306902,
   "children": [
     {
       "type": "View?view=flights-mini-window"
@@ -20,6 +21,5 @@
     {
       "type": "View?view=agent-window"
     }
-  ],
-  "id": "manager-mini-views"
+  ]
 }

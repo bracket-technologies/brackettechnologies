@@ -196,7 +196,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && view) clone(view["my-views"]).reverse().map(view => {
       if (!isFn) {
         isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
         if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
@@ -245,42 +245,45 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
-    if (view && view.doc) view.Data = view.doc
-    if (params.doc) params.Data = params.doc
-
-    // mount data directly when found
-    if (mount && !mountDataUsed && ((params.data !== undefined && (!view.Data || !global[view.Data])) || params.Data || (view && view.data !== undefined && !view.Data))) {
-
-      if (params.Data || (params.data !== undefined && !view.Data)) view.derivations = []
-      mountDataUsed = true
-      params.Data = view.Data = params.Data || view.Data || generate()
-      params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
-
-      // duplicated element
-      if (view.duplicatedElement) {
-
-        delete view.path
-        delete view.data
-      }
-    }
-  
-    // mount path directly when found
-    if (mount && !mountPathUsed && params.path && createElement) {
-
-      mountPathUsed = true
+    if (mount) {
       
-      // path & derivations
-      var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : params.path || []
-          
-      if (path.length > 0) {
-        
-        if (!view.Data) {
+      if (view && view.doc) view.Data = view.doc
+      if (params.doc) params.Data = params.doc
 
-          view.Data = generate()
-          global[view.Data] = view.data || {}
+      // mount data directly when found
+      if (mount && !mountDataUsed && ((params.data !== undefined && (!view.Data || !global[view.Data])) || params.Data || (view && view.data !== undefined && !view.Data))) {
+
+        if (params.Data || (params.data !== undefined && !view.Data)) view.derivations = []
+        mountDataUsed = true
+        params.Data = view.Data = params.Data || view.Data || generate()
+        params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
+
+        // duplicated element
+        if (view.duplicatedElement) {
+
+          delete view.path
+          delete view.data
         }
+      }
+    
+      // mount path directly when found
+      if (mount && !mountPathUsed && params.path && createElement) {
 
-        view.derivations.push(...path)
+        mountPathUsed = true
+        
+        // path & derivations
+        var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : params.path || []
+            
+        if (path.length > 0) {
+          
+          if (!view.Data) {
+
+            view.Data = generate()
+            global[view.Data] = view.data || {}
+          }
+
+          view.derivations.push(...path)
+        }
       }
     }
   

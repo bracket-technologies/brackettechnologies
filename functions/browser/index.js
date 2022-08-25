@@ -1116,9 +1116,9 @@ module.exports = (component) => {
     
     return {
         ...component,
-        type: "View?class=swiper",
+        type: "Box?class=swiper",
         children: [{
-            type: "View?style.display=inline-flex;style.alignItems=center;style.height=100%",
+            type: "Box?style.display=inline-flex;style.alignItems=center;style.height=100%",
             ...component.innerbox,
             children: component.children
         }]
@@ -1139,9 +1139,9 @@ module.exports = (component) => {
 
   return {
     ...component,
-    type: `View?class=flexbox pointer;hover.style.backgroundColor=#ddd;style.justifyContent=flex-start;style.width=5rem;style.height=2.4rem;style.position=relative;style.borderRadius=2.2rem;style.backgroundColor=#eee;${toString({ style })}`,
+    type: `Box?class=flexbox pointer;hover.style.backgroundColor=#ddd;style.justifyContent=flex-start;style.width=5rem;style.height=2.4rem;style.position=relative;style.borderRadius=2.2rem;style.backgroundColor=#eee;${toString({ style })}`,
     children: [{
-      type: `View?class=flexbox;style.transition=.3s;style.width=2rem;style.height=2rem;style.borderRadius=2rem;style.backgroundColor=#fff;style.position=absolute;style.left=0.3rem;${toString(pin)}`,
+      type: `Box?class=flexbox;style.transition=.3s;style.width=2rem;style.height=2rem;style.borderRadius=2rem;style.backgroundColor=#fff;style.position=absolute;style.left=0.3rem;${toString(pin)}`,
       children: [{
           type: `Icon?style.color=red;style.fontSize=1.8rem;style.position=absolute;style.transition=.3s;${toString(icon.off)}?[${icon.off.name}]`
         }, {
@@ -1847,14 +1847,14 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     },
     root: {
       id: "root",
-      type: "View",
+      type: "Box",
       parent: "body",
       "my-views": [],
       style: { backgroundColor: "#fff" },
     },
     public: {
       id: "public",
-      type: "View",
+      type: "Box",
       parent: "body",
       "my-views": [],
       children: Object.values(global.public),
@@ -2079,6 +2079,7 @@ const { toValue } = require("./toValue")
 
 const myViews = [
   "View",
+  "Box",
   "Text",
   "Icon",
   "Image",
@@ -4722,7 +4723,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "doc()" || path0 === "mail()"
+    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "doc()" || path0 === "mail()" || path0 === "action()" || path0 === "exec()"
     || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()"
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
@@ -4790,7 +4791,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     : _object !== undefined ? _object : object
 
     if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" 
-    || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "return()") path = path.slice(1)
+    || path0 === "window()" || path0 === "win()" || path0 === "history()"/* || path0 === "return()"*/) path = path.slice(1)
         
     if (!_object && _object !== 0 && _object !== false) {
 
@@ -8066,26 +8067,30 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "newTab()") {
 
-            var _params = toParam({ req, res, _window, id, e, _,/* params,*/ string: args[1] })
+            var _params = toParam({ req, res, _window, id, e, _,/* params,*/ __, string: args[1] })
             window.open(_params.url || _params.URL, _params.name, _params.specs || "")
 
         } else if (k0 === "action()") {
             
-            answer = execute({ _window, id, actions: path[i - 1], params, e })
+            answer = execute({ _window, id, actions: args[1], params, e })
+            
+        } else if (k0 === "exec()") {
+            
+            answer = toParam({ req, res, _window, id, e, _, __, string: args[1] })
             
         } else if (k0 === "exportCSV()") {
             
-            var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+            var _params = toParam({ req, res, _window, id, e, _, __, string: args[1] })
             require("./toCSV").toCSV(_params)
             
         } else if (k0 === "exportExcel()") {
             
-            var _params = toParam({ req, res, _window, id, e, _, string: args[1] })
+            var _params = toParam({ req, res, _window, id, e, _, __, string: args[1] })
             require("./toExcel").toExcel(_params)
             
         } else if (k0 === "exportPdf()") {
             
-            var options = toParam({ req, res, _window, id, e, _, string: args[1] })
+            var options = toParam({ req, res, _window, id, e, _, __, string: args[1] })
             require("./toPdf").toPdf({ options })
             
         } else if (k0 === "toPrice()" || k0 === "price()") {
@@ -8393,7 +8398,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             return require("./upload").upload({ id, e, _, __, _i, upload: _upload, asyncer: true, await: _await })
           }
 
-          return require("./upload").upload({ id, e, save: { upload: { file: global.upload } } })
+          return require("./upload").upload({ id, e, save: { upload: { file: global.upload } }, _, __ })
 
         } else if (k0 === "confirmEmail()") {
           
@@ -8421,25 +8426,25 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
           var _save = { collection: _collection, doc: _doc, data: _data }
 
-          return require("./save").save({ id, e, save: _save })
+          return require("./save").save({ id, e, save: _save, _, __ })
 
         } else if (k0 === "search()") {
           
           if (isParam({ _window, string: args[1] })) {
 
             var _await = ""
-            var _search = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+            var _search = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
             if (args[2]) _await = global.codes[args[2]]
             
             return require("./search").search({ id, e, _, __, _i,search: _search, asyncer: true, await: _await })
           }
 
-          var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-          var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
-          var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
+          var _collection = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+          var _doc = toValue({ req, res, _window, id, e, _, __, _i, value: args[2], params })
+          var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[3], params })
           var _search = { collection: _collection, doc: _doc, data: _data }
 
-          return require("./search").search({ id, e, search: _search })
+          return require("./search").search({ id, e, search: _search, _, __ })
 
         } else if (k0 === "erase()") {
           
@@ -8455,7 +8460,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
             var _erase = { collection: _collection, doc: _doc }
   
-            return require("./erase").erase({ id, e, save: _erase })
+            return require("./erase").erase({ id, e, save: _erase, _, __ })
   
           } else if (k0 === "setPosition()" || k0 === "position()") {
           
@@ -9181,7 +9186,7 @@ const save = async ({ id, e, ...params }) => {
 
   if (save.doc || save.id || (typeof _data === "object" && !Array.isArray(_data) && _data.id)) save.doc = save.doc || save.id || _data.id
   if (!save.doc && (Array.isArray(data) ? !data.find(data => !data.id) : false)) return
-  // delete save.data
+  delete save.data
   
   var { data } = await require("axios").post(`/${store}`, { save, data: _data }, {
     headers: {
@@ -9230,6 +9235,7 @@ module.exports = {
     
     view.search = global.search = clone(data)
     console.log(data)
+    if (data.message === "Force reload!") return location.reload()
     
     // await params
     if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
@@ -9923,10 +9929,7 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
     id = mainId
     var view = views[id] || {}
 
-    if (condition.includes("#()") || condition.includes("#:")) {
-      view["#"] = toArray(view["#"])
-      return view["#"].push(condition.slice(4))
-    }
+    if (condition.charAt(0) === "#") return
 
     // or
     if (condition.includes("||")) {
@@ -10049,15 +10052,14 @@ module.exports = {
 
     // get params
     awaits = require("./toCode").toCode({ string: awaits, e })
-    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true })
+    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true, _: params._, __: params.__ })
     if (_params && _params.break) return
 
     // override params
     if (_params) params = { ...params, ..._params }
-    if (awaiter) execute({ id, e, actions: awaiter, params })
+    if (awaiter) execute({ id, e, actions: awaiter, params, _: params._, __: params.__ })
   }
 }
-
 },{"./execute":55,"./toCode":104,"./toParam":112}],102:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
@@ -10304,7 +10306,7 @@ module.exports = {
     
     // innerHTML
     var text = view.text !== undefined ? view.text.toString() : typeof view.data !== "object" ? view.data : ''
-    var innerHTML = view.type !== "View" ? text : ""
+    var innerHTML = view.type !== "View" && view.type !== "Box" ? text : ""
     var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
     
     innerHTML = toArray(view.children).map((child, index) => {
@@ -10331,7 +10333,7 @@ module.exports = {
     var tag, style = toStyle({ _window, id })
     if (typeof value === 'object') value = ''
     
-    if (view.type === "View") {
+    if (view.type === "View" || view.type === "Box") {
       tag = `<div ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML || view.text || ""}\n</div>`
     } else if (view.type === "Image") {
       tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index}' src='${view.src}'>${innerHTML}</img>`
@@ -10669,7 +10671,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && view) clone(view["my-views"]).reverse().map(view => {
       if (!isFn) {
         isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
         if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
@@ -10718,42 +10720,45 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
-    if (view && view.doc) view.Data = view.doc
-    if (params.doc) params.Data = params.doc
-
-    // mount data directly when found
-    if (mount && !mountDataUsed && ((params.data !== undefined && (!view.Data || !global[view.Data])) || params.Data || (view && view.data !== undefined && !view.Data))) {
-
-      if (params.Data || (params.data !== undefined && !view.Data)) view.derivations = []
-      mountDataUsed = true
-      params.Data = view.Data = params.Data || view.Data || generate()
-      params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
-
-      // duplicated element
-      if (view.duplicatedElement) {
-
-        delete view.path
-        delete view.data
-      }
-    }
-  
-    // mount path directly when found
-    if (mount && !mountPathUsed && params.path && createElement) {
-
-      mountPathUsed = true
+    if (mount) {
       
-      // path & derivations
-      var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : params.path || []
-          
-      if (path.length > 0) {
-        
-        if (!view.Data) {
+      if (view && view.doc) view.Data = view.doc
+      if (params.doc) params.Data = params.doc
 
-          view.Data = generate()
-          global[view.Data] = view.data || {}
+      // mount data directly when found
+      if (mount && !mountDataUsed && ((params.data !== undefined && (!view.Data || !global[view.Data])) || params.Data || (view && view.data !== undefined && !view.Data))) {
+
+        if (params.Data || (params.data !== undefined && !view.Data)) view.derivations = []
+        mountDataUsed = true
+        params.Data = view.Data = params.Data || view.Data || generate()
+        params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
+
+        // duplicated element
+        if (view.duplicatedElement) {
+
+          delete view.path
+          delete view.data
         }
+      }
+    
+      // mount path directly when found
+      if (mount && !mountPathUsed && params.path && createElement) {
 
-        view.derivations.push(...path)
+        mountPathUsed = true
+        
+        // path & derivations
+        var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : params.path || []
+            
+        if (path.length > 0) {
+          
+          if (!view.Data) {
+
+            view.Data = generate()
+            global[view.Data] = view.data || {}
+          }
+
+          view.derivations.push(...path)
+        }
       }
     }
   
@@ -11074,7 +11079,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   var path = typeof value === "string" ? value.split(".") : [], isFn = false, path0 = path[0].split(":")[0]
 
   // function
-  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
+  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && view) clone(view["my-views"]).reverse().map(view => {
     if (!isFn) {
       isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
       if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
@@ -11090,7 +11095,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   // if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
 
   /* value */
-  if (!isNaN(value) && value !== " ") value = parseFloat(value)
+  if (!isNaN(value) && value !== " " && (value.length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
   else if (value === " ") return value
   else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "min") value = "min(" + global.codes[value.slice(3, 15)] + ")"
   else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "max") value = "max(" + global.codes[value.slice(3, 15)] + ")"

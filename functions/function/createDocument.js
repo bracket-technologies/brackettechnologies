@@ -42,14 +42,14 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     },
     root: {
       id: "root",
-      type: "View",
+      type: "Box",
       parent: "body",
       "my-views": [],
       style: { backgroundColor: "#fff" },
     },
     public: {
       id: "public",
-      type: "View",
+      type: "Box",
       parent: "body",
       "my-views": [],
       children: Object.values(global.public),

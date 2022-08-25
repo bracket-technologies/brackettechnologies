@@ -27,6 +27,7 @@ module.exports = {
     
     view.search = global.search = clone(data)
     console.log(data)
+    if (data.message === "Force reload!") return location.reload()
     
     // await params
     if (params.asyncer) require("./toAwait").toAwait({ id, e, params })

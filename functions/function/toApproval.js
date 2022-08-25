@@ -36,10 +36,7 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
     id = mainId
     var view = views[id] || {}
 
-    if (condition.includes("#()") || condition.includes("#:")) {
-      view["#"] = toArray(view["#"])
-      return view["#"].push(condition.slice(4))
-    }
+    if (condition.charAt(0) === "#") return
 
     // or
     if (condition.includes("||")) {

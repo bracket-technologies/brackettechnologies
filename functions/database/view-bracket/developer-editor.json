@@ -216,13 +216,13 @@
                   "type": "View:data-viewer-bar?class=inline-flex;style.height=3.5rem;style.backgroundColor=#f0f0f0;style.display=if():[open-docs:().len()=0]:none:flex"
                 },
                 {
-                  "type": "View?style:[position=relative;height=calc(100vh - 7.5rem);overflowY=auto]",
+                  "type": "View?style:[position=relative;height=calc(100vh - 7.5rem)]",
                   "children": [
                     {
-                      "type": "View:data-viewer?style:[width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=calc(100% - 20rem);overflowY=auto]",
+                      "type": "View:data-viewer?style:[width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+'rem)';height=calc(100% - 20rem)]",
                       "children": [
                         {
-                          "type": "View?class=data-viewer;style:[height=100%;width=100%]?open-map:()",
+                          "type": "View?class=data-viewer;style:[height=100%;width=100%;overflowY=auto]?open-map:()",
                           "children": [
                             {
                               "type": "View?class=flex column;style:[width=100%]",

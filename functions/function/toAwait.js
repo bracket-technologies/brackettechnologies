@@ -13,11 +13,11 @@ module.exports = {
 
     // get params
     awaits = require("./toCode").toCode({ string: awaits, e })
-    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true })
+    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true, _: params._, __: params.__ })
     if (_params && _params.break) return
 
     // override params
     if (_params) params = { ...params, ..._params }
-    if (awaiter) execute({ id, e, actions: awaiter, params })
+    if (awaiter) execute({ id, e, actions: awaiter, params, _: params._, __: params.__ })
   }
 }

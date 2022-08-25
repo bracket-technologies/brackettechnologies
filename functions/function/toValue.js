@@ -113,7 +113,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   var path = typeof value === "string" ? value.split(".") : [], isFn = false, path0 = path[0].split(":")[0]
 
   // function
-  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
+  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && view) clone(view["my-views"]).reverse().map(view => {
     if (!isFn) {
       isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
       if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
@@ -129,7 +129,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   // if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
 
   /* value */
-  if (!isNaN(value) && value !== " ") value = parseFloat(value)
+  if (!isNaN(value) && value !== " " && (value.length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
   else if (value === " ") return value
   else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "min") value = "min(" + global.codes[value.slice(3, 15)] + ")"
   else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "max") value = "max(" + global.codes[value.slice(3, 15)] + ")"
