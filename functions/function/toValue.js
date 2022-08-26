@@ -123,8 +123,12 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
 
   if (isFn) {
     var _params = path[0].split(":")[1]
-    if (_params) _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
-    return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params ? _params : _), __: (_params ? _ : __), _i, asyncer, createElement, params, executer })
+    if (_params) {
+      if (isParam({ _window, string: _params }))
+        _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
+      else _params = toValue({ req, res, _window, id, e, _, __, _i, value: _params })
+    }
+    return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), _i, asyncer, createElement, params, executer })
   }
   // if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
 

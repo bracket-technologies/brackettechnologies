@@ -1,5 +1,6 @@
 {
-  "creation-date": 1653729664265,
+  "type": "View?id=bookings-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[unreset-bookings:()]:[unreset-bookings:()=false]:[bookings:()=_list];search-booking:()=search-booking:()||_map",
+  "id": "bookings-manager",
   "children": [
     {
       "type": "View?class=flex align-center;style:[minHeight=4.5rem;height=4.5rem]",
@@ -12,12 +13,12 @@
             {
               "children": [
                 {
+                  "type": "View?class=flexbox;style:[height=100%;borderRadius=.5rem]",
                   "children": [
                     {
                       "type": "Text?text=Bookings Manager;style:[fontSize=1.6rem]"
                     }
-                  ],
-                  "type": "View?class=flexbox;style:[height=100%;borderRadius=.5rem]"
+                  ]
                 },
                 {
                   "type": "Text?text=Manager;style:[color=#444;fontSize=1.6rem];click:[prev().1stChild().click()]?false"
@@ -34,7 +35,6 @@
         {
           "children": [
             {
-              "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem;width=0;transition=.2s;overflow=hidden]",
               "children": [
                 {
                   "type": "Icon?class=flexbox pointer;name=bi-eye;tooltip.text=show hidden;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6];click:[():[tickets-list-data].children().pullLast().():[if():[data().status=Canceled]:[1stChild().style().backgroundColor=#f27979].elif():[data().status=Booked]:[1stChild().style().backgroundColor=#fcfc4c]:[1stChild().style().backgroundColor=#fff];1stChild().style():[height=4rem;overflow=visible];1stChild().hidden=false;1stChild().1stChild().():[2ndChild().style().display=flex;3rdChild().style().display=none]]]"
@@ -54,7 +54,8 @@
                 {
                   "type": "Icon?class=flexbox pointer;name=bi-grid;tooltip.text=each ticket will be printed alone;style:[if():[print-by-ticket:()]:[display=flex]:[display=none];color=#666;fontSize=1.6rem;minHeight=3.25rem;minWidth=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6];click:[print-by-ticket:()=false;prev().style().display=flex;style().display=none]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem;width=0;transition=.2s;overflow=hidden]"
             },
             {
               "type": "Icon?class=flexbox pointer;name=bi-printer;tooltip.text=print options;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6];click:[if():[prev().style().width=0px]:[prev().style().width=7.5rem]:[prev().style().width=0]]"
@@ -69,12 +70,12 @@
               "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             },
             {
-              "type": "Icon?class=flexbox pointer;name=bi-plus;tooltip.text=create new;style:[color=#666;fontSize=2.4rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]",
               "controls": [
                 {
                   "event": "click?():bookings-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];)(:new-booking=true;booking-data:()=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:created-by:[)(:user.id]:created-by-name:[)(:user.first-name+ +)(:user.last-name]:note:_string:status:Booked:description:_string:class:Economy:age:Adult:gender:Male:title:'Mr.':nationality:Lebanese:contact-number:_array:passport-issuer:Lebanon:booking-end-date:[todayStart().timestamp()+172800000];)(:booking-copied.del();)(:booking-edit-readonly=false;update():bookings-mini-window?false"
                 }
-              ]
+              ],
+              "type": "Icon?class=flexbox pointer;name=bi-plus;tooltip.text=create new;style:[color=#666;fontSize=2.4rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             }
           ],
           "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
@@ -93,26 +94,28 @@
       ]
     },
     {
+      "type": "View:booking-search-engine?Data=search-booking;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]",
       "children": [
         {
           "children": [
             {
+              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]",
               "children": [
                 {
+                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase().split():' '.join():'';txt()=data()"
                     }
-                  ],
-                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                  ]
                 },
                 {
-                  "type": "Input?path=names;label.text=Name;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF?false",
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase();txt()=data()"
                     }
-                  ]
+                  ],
+                  "type": "Input?path=names;label.text=Name;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF?false"
                 },
                 {
                   "type": "Input?id=flight;path=flight;label.text=Flight Number;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
@@ -133,7 +136,6 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                       "children": [
                         {
                           "type": "Text?id=booking-date-text;class=flex align-center;if():[data().booking-date]:[text=data().booking-date.toDateFormat()];style:[fontSize=1.2rem]"
@@ -141,7 +143,8 @@
                         {
                           "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().booking-date.del();prev().txt()=;parent().prev().():[click();input().txt()=null];input():travel-date.min()=null]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
                     }
                   ],
                   "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
@@ -192,20 +195,17 @@
                 {
                   "type": "View?style:[flex=1]"
                 }
-              ],
-              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]"
+              ]
             }
           ],
           "type": "View?class=flexbox;style:[gap=1rem;width=100%]"
         }
-      ],
-      "type": "View:booking-search-engine?Data=search-booking;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]"
+      ]
     },
     {
       "type": "View?view=bookings-list"
     }
   ],
-  "id": "bookings-manager",
-  "type": "View?id=bookings-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[unreset-bookings:()]:[unreset-bookings:()=false]:[bookings:()=_list];search-booking:()=search-booking:()||_map",
+  "creation-date": 1653729664265,
   "functions": {}
 }

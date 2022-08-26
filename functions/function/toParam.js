@@ -4,6 +4,7 @@ const { generate } = require("./generate")
 const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
+const { isParam } = require("./isParam")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -206,8 +207,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     if (isFn) {
       var _params = path[0].split(":")[1]
-      if (_params) _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
-      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params ? _params : _), __: (_params ? _ : __), _i, asyncer, createElement, params, executer })
+      if (_params) {
+        if (isParam({ _window, string: _params }))
+          _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
+        else _params = toValue({ req, res, _window, id, e, _, __, _i, value: _params })
+      }
+      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), _i, asyncer, createElement, params, executer })
     }
 
     // object structure
