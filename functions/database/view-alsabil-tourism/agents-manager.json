@@ -1,16 +1,15 @@
 {
-  "type": "View:agents-manager?class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-agents:()]:[agents:()=_list];unreset-agents:()=false;search-agent:()=search-agent:()||_map",
+  "functions": {},
   "id": "agents-manager",
+  "type": "View:agents-manager?class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-agents:()]:[agents:()=_list];unreset-agents:()=false;search-agent:()=search-agent:()||_map",
   "creation-date": 1660816421743,
   "controls": [
     {
       "event": "loaded?loader.show;search():[collection=agent]:[agents:()=search:().data.values();update():[agent-list];loader.hide]"
     }
   ],
-  "functions": {},
   "children": [
     {
-      "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem",
       "children": [
         {
           "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
@@ -41,22 +40,23 @@
             {
               "controls": [
                 {
-                  "event": "click?style():[id=agent-window;opacity=1;pointerEvents=auto];agent-data:()=_map:id:[gen():20]:active:true:creation-date:[today().timestamp()]:created-by:[user:().id]:created-by-name:[user:().username]:note:_string:description:_string:admin:false:type:Agent:balance-usd:0:bookings:0:company-head-office-city:Beirut:company-head-office-country:Lebanon:uses:0:users:0;new-agent:()=true;agent-copied:().del();agent-edit-readonly:()=false;update():agent-window"
+                  "event": "click?style():[id=agent-window;opacity=1;pointerEvents=auto];new-agent:()=true;agent-copied:().del();agent-edit-readonly:()=false;agent-data:()=_map;update():agent-window"
                 }
               ],
               "type": "Icon?class=flexbox pointer;name=bi-plus;tooltip.text=create new agent;style:[color=#666;fontSize=2.4rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             }
           ]
         }
-      ]
+      ],
+      "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem"
     },
     {
+      "type": "View:agent-search-engine?doc=search-agent;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]",
       "children": [
         {
           "type": "View?class=flexbox;style:[width=100%;gap=1rem]",
           "children": [
             {
-              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]",
               "children": [
                 {
                   "type": "Input?path=agent;if():[data()]:[input.value=agents:().find():[id=data()].company-name];label.text=Agent;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='agents:().():company-name';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin",
@@ -99,9 +99,15 @@
                   ],
                   "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
                 }
-              ]
+              ],
+              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]"
             },
             {
+              "children": [
+                {
+                  "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"
+                }
+              ],
               "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6",
               "controls": [
                 {
@@ -111,17 +117,11 @@
                 {
                   "event": "click?note():'Kindly fill any of the required blanks!':danger?!search-agent:().code;!search-agent:().name;!search-agent:().last-visit;!search-agent:().city;!search-agent:().country;false"
                 }
-              ],
-              "children": [
-                {
-                  "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"
-                }
               ]
             }
           ]
         }
-      ],
-      "type": "View:agent-search-engine?Data=search-agent;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]"
+      ]
     },
     {
       "children": [
@@ -131,25 +131,26 @@
             {
               "children": [
                 {
+                  "type": "View?class=grid align-center;style:[borderBottom=1px solid #ddd;gridTemplateColumns=3rem 22rem 6rem .5fr 10rem .5fr .5fr 20rem 15rem 15rem .5fr 1.5fr 2fr 11rem;height=4rem;width=100%]",
                   "children": [
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=#;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
-                          "type": "Text?class=pointer;text=Agency Name;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                           "controls": [
                             {
                               "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=company-name;descending];update():agents-list-data;loader.hide]:50"
                             }
-                          ]
+                          ],
+                          "type": "Text?class=pointer;text=Agency Name;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
                       ]
                     },
@@ -157,12 +158,12 @@
                       "type": "View?class=flex align-center;style:[height=100%;width=6rem]",
                       "children": [
                         {
+                          "type": "Text?class=pointer dots;text=Type;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                           "controls": [
                             {
                               "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=type;descending];update():agents-list-data;loader.hide]:50"
                             }
-                          ],
-                          "type": "Text?class=pointer dots;text=Type;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                          ]
                         }
                       ]
                     },
@@ -170,12 +171,12 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
+                          "type": "Text?class=pointer;text=code;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                           "controls": [
                             {
                               "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=code;descending];update():agents-list-data;loader.hide]:50"
                             }
-                          ],
-                          "type": "Text?class=pointer;text=code;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                          ]
                         }
                       ]
                     },
@@ -193,17 +194,17 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
+                          "type": "Text?class=pointer;text=Country;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                           "controls": [
                             {
                               "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=company-head-office-country;descending];update():[agents-list-data];loader.hide]:50"
                             }
-                          ],
-                          "type": "Text?class=pointer;text=Country;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                          ]
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "children": [
@@ -245,20 +246,19 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
-                          "type": "Text?class=pointer;text=Email;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                           "controls": [
                             {
                               "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=email;descending];update():[agents-list-data];loader.hide]:50"
                             }
-                          ]
+                          ],
+                          "type": "Text?class=pointer;text=Email;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "controls": [
@@ -268,9 +268,11 @@
                           ],
                           "type": "Text?class=pointer;text=Users;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
+                      "type": "View?class=flexbox vertical;style:[width=100%;height=100%;backgroundColor=#ffff0044]",
                       "children": [
                         {
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -281,6 +283,7 @@
                           ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1;width=100%]",
                           "children": [
                             {
                               "controls": [
@@ -299,18 +302,16 @@
                               "type": "Text?class=pointer;text=Traffic;style:[color=#888;fontSize=1.2rem;transition=.3s;flex=1];hover.style.color=#444"
                             },
                             {
-                              "type": "Text?class=pointer;text=Buyings;style:[color=#888;fontSize=1.2rem;transition=.3s;flex=1];hover.style.color=#444",
                               "controls": [
                                 {
                                   "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=today-buyings-usd;descending];update():[agents-list-data];loader.hide]:50"
                                 }
-                              ]
+                              ],
+                              "type": "Text?class=pointer;text=Buyings;style:[color=#888;fontSize=1.2rem;transition=.3s;flex=1];hover.style.color=#444"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1;width=100%]"
+                          ]
                         }
-                      ],
-                      "type": "View?class=flexbox vertical;style:[width=100%;height=100%;backgroundColor=#ffff0044]"
+                      ]
                     },
                     {
                       "children": [
@@ -326,12 +327,12 @@
                           "type": "View?class=flex align-center;style:[height=100%;flex=1;width=100%]",
                           "children": [
                             {
-                              "type": "Text?class=pointer;text=Bookings;style:[color=#888;fontSize=1.2rem;transition=.3s;flex=1];hover.style.color=#444",
                               "controls": [
                                 {
                                   "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=bookings;descending];update():[agents-list-data];loader.hide]:50"
                                 }
-                              ]
+                              ],
+                              "type": "Text?class=pointer;text=Bookings;style:[color=#888;fontSize=1.2rem;transition=.3s;flex=1];hover.style.color=#444"
                             },
                             {
                               "controls": [
@@ -342,12 +343,12 @@
                               "type": "Text?class=pointer;text=Traffic;style:[color=#888;fontSize=1.2rem;transition=.3s;flex=1];hover.style.color=#444"
                             },
                             {
-                              "type": "Text?class=pointer;text=Buyings;style:[color=#888;fontSize=1.2rem;transition=.3s;flex=1];hover.style.color=#444",
                               "controls": [
                                 {
                                   "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=buyings-usd;descending];update():[agents-list-data];loader.hide]:50"
                                 }
-                              ]
+                              ],
+                              "type": "Text?class=pointer;text=Buyings;style:[color=#888;fontSize=1.2rem;transition=.3s;flex=1];hover.style.color=#444"
                             },
                             {
                               "type": "Text?class=pointer;text=Balance;style:[color=#888;fontSize=1.2rem;transition=.3s;flex=1];hover.style.color=#444",
@@ -365,57 +366,54 @@
                     {
                       "type": "View?style:[flex=1;minWidth=100%]"
                     }
-                  ],
-                  "type": "View?class=grid align-center;style:[borderBottom=1px solid #ddd;gridTemplateColumns=3rem 22rem 6rem .5fr 10rem .5fr .5fr 20rem 15rem 15rem .5fr 1.5fr 2fr 11rem;height=4rem;width=100%]"
+                  ]
                 },
                 {
-                  "type": "View:agents-list-data?Data=agents;class=vertical;style:[width=100%;zIndex=0]",
                   "children": [
                     {
-                      "type": "[View]?class=flex align-center;style:[width=100%]?data().len()>0",
                       "children": [
                         {
                           "type": "View?class=grid align-center;style:[gridTemplateColumns=3rem 22rem 6rem .5fr 10rem .5fr .5fr 20rem 15rem 15rem .5fr .5fr .5fr .5fr .5fr .5fr .5fr .5fr 11rem;height=5rem;transition=.2s;width=100%;cursor=default;if():[data().active=false]:[backgroundColor=#f27979]];hover:[if():[data().active=false]:[style.backgroundColor=#d84e4e]:[style.backgroundColor=#f6f6f6]];if():[!user:().permissions.readonly]:[mouseenter.lastChild().style().opacity=1;mouseleave.lastChild().style().opacity=0]",
                           "children": [
                             {
-                              "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                               "children": [
                                 {
                                   "type": "Text?class=flex dots;text=3rdParent().mapIndex+1;style:[fontSize=1.2rem]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                             },
                             {
-                              "type": "View?class=flex align-center;style:[height=100%;width=22rem;gap=1rem]",
                               "children": [
                                 {
-                                  "type": "View?class=flex align-center;style:[height=4rem]",
                                   "children": [
                                     {
                                       "type": "Image?class=flex;src=data().logo;style:[maxHeight=4rem;maxWidth=6rem]"
                                     }
-                                  ]
+                                  ],
+                                  "type": "View?class=flex align-center;style:[height=4rem]"
                                 },
                                 {
                                   "type": "Text?class=flex dots;text=data().company-name;tooltip.text=data().company-name;style:[fontSize=1.2rem;width=15rem]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=flex align-center;style:[height=100%;width=22rem;gap=1rem]"
                             },
                             {
+                              "type": "View?class=flex align-center;style:[height=100%;width=6rem]",
                               "children": [
                                 {
                                   "type": "Text?class=flex dots;text=data().type;tooltip.text=data().type;style:[fontSize=1.2rem]"
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[height=100%;width=6rem]"
+                              ]
                             },
                             {
+                              "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                               "children": [
                                 {
                                   "type": "Text?class=flex dots;text=data().code;style:[fontSize=1.2rem]"
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                              ]
                             },
                             {
                               "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
@@ -426,44 +424,44 @@
                               ]
                             },
                             {
+                              "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                               "children": [
                                 {
                                   "type": "Text?class=flex dots;text=data().company-head-office-country;style:[fontSize=1.2rem]"
+                                }
+                              ]
+                            },
+                            {
+                              "children": [
+                                {
+                                  "type": "Text?class=flex dots;text=data().company-head-office-city;style:[fontSize=1.2rem]"
                                 }
                               ],
                               "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                             },
                             {
-                              "type": "View?class=flex align-center;style:[height=100%;flex=1]",
+                              "type": "View?class=flex align-center;style:[height=100%;width=20rem]",
                               "children": [
                                 {
-                                  "type": "Text?class=flex dots;text=data().company-head-office-city;style:[fontSize=1.2rem]"
+                                  "type": "Text?class=flex dots;text=data().company-head-office-address;tooltip.text=data().company-head-office-address;style:[fontSize=1.2rem]"
                                 }
                               ]
                             },
                             {
                               "children": [
                                 {
-                                  "type": "Text?class=flex dots;text=data().company-head-office-address;tooltip.text=data().company-head-office-address;style:[fontSize=1.2rem]"
+                                  "type": "Text?class=dots;text=data().contact-number;tooltip.text=data().contact-number;style:[fontSize=1.2rem]"
                                 }
                               ],
-                              "type": "View?class=flex align-center;style:[height=100%;width=20rem]"
+                              "type": "View?class=flex align-center;style:[height=100%;width=15rem]"
                             },
                             {
                               "type": "View?class=flex align-center;style:[height=100%;width=15rem]",
                               "children": [
                                 {
-                                  "type": "Text?class=dots;text=data().contact-number;tooltip.text=data().contact-number;style:[fontSize=1.2rem]"
-                                }
-                              ]
-                            },
-                            {
-                              "children": [
-                                {
                                   "type": "Text?class=dots;text=data().email;tooltip.text=data().email;style:[fontSize=1.2rem]"
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[height=100%;width=15rem]"
+                              ]
                             },
                             {
                               "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -476,25 +474,26 @@
                             {
                               "children": [
                                 {
+                                  "type": "Text?class=dots pointer;text=if():[data().today=todayStart().timestamp()]:[data().today-bookings||0]:0;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]",
                                   "controls": [
                                     {
                                       "event": "click?loader.show;search():[collection=flight-booking;field.day.equal=todayStart().timestamp();field.agent.equal=data().id]:[bookings:()=search:().data.values();unreset-bookings:()=true;():[flight-booking-sidebar-btn].click();loader.hide]"
                                     }
-                                  ],
-                                  "type": "Text?class=dots pointer;text=if():[data().today=todayStart().timestamp()]:[data().today-bookings||0]:0;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
+                                  ]
                                 }
                               ],
                               "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#ffff0044]"
                             },
                             {
+                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;text=if():[data().today=todayStart().timestamp()]:[data().today-uses||0]:0;style:[fontSize=1.2rem]"
                                 }
-                              ],
-                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]"
+                              ]
                             },
                             {
+                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]",
                               "children": [
                                 {
                                   "type": "Text?first=false;second=false;class=dots pointer;text=if():[data().today=todayStart().timestamp()]:[[data().today-buyings-usd||0].round():2+$]:'0.00$';style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]",
@@ -504,16 +503,15 @@
                                     }
                                   ]
                                 }
-                              ],
-                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]"
+                              ]
                             },
                             {
+                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;text=[data().bookings||0];style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ],
-                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]"
+                              ]
                             },
                             {
                               "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]",
@@ -524,12 +522,12 @@
                               ]
                             },
                             {
-                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;text=[data().buyings-usd||0].round():2+$;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]"
                             },
                             {
                               "children": [
@@ -543,31 +541,33 @@
                               "type": "View?class=flex align-center;style:[width=11rem;gap=.5rem;justifyContent=flex-end;transition=.2s;opacity=0;height=100%]?!user:().permissions.readonly",
                               "children": [
                                 {
-                                  "type": "Icon?class=flexbox pointer;name=account_balance_wallet;tooltip.text=charge account;google.outlined;style:[fontSize=2.2rem;color=#888;transition=.1s;width=3rem;borderRadius=3rem];hover.style.color=#444;click:[my-agent:()=data().clone();payment-data:()=_map:agent:[data().id]:agent-name:[data().company-name]:user:[user:().id]:user-name:[user:().username]:voucher-number:[gen():6];update():[payment-window];():[payment-window].style():[opacity=1;pointerEvents=auto]]"
+                                  "type": "Icon?class=flexbox pointer;name=account_balance_wallet;tooltip.text=charge account;google.outlined;style:[fontSize=2.2rem;color=#888;transition=.1s;width=3rem;borderRadius=3rem];hover.style.color=#444;click:[my-agent:()=data().clone();payment-data:()=_map:agent:[data().id]:agent-name:[data().company-name]:user:[user:().id]:user-name:[user:().username]:voucher-number:[gen():6.uppercase()];update():[payment-window];():[payment-window].style():[opacity=1;pointerEvents=auto]]"
                                 },
                                 {
                                   "type": "Icon?class=flexbox pointer;name=person_add;tooltip.text=add new user;google.outlined;style:[fontSize=2.2rem;color=#888;transition=.1s;width=3rem;borderRadius=3rem];hover.style.color=#444"
                                 },
                                 {
-                                  "type": "Icon?class=flexbox actions pointer;name=bi-three-dots-vertical;style:[fontSize=2.2rem;color=#888;transition=.1s;width=3rem;borderRadius=3rem];hover.style.color=blue",
                                   "controls": [
                                     {
                                       "event": "click?if():[style():action-list.pointerEvents=none||agent-data:()!=data()]:[style():[pointerEvents=auto;opacity=1;transform=scale(1);id=action-list]]:[style():[id=action-list;pointerEvents=none;opacity=0;transform=scale(.5)]];agent-data:()=data().clone();agent-edit:()=true;action-lister:()=agents;update():[action-list];position():[id=action-list;positioner=().id;placement=left;align=center]?!user:().permissions.readonly;false"
                                     }
-                                  ]
+                                  ],
+                                  "type": "Icon?class=flexbox actions pointer;name=bi-three-dots-vertical;style:[fontSize=2.2rem;color=#888;transition=.1s;width=3rem;borderRadius=3rem];hover.style.color=blue"
                                 }
                               ]
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "type": "[View]?class=flex align-center;style:[width=100%]?data().len()>0"
                     }
-                  ]
+                  ],
+                  "type": "View:agents-list-data?Data=agents;class=vertical;style:[width=100%;zIndex=0]"
                 },
                 {
-                  "type": "View?class=vertical;style:[width=100%]",
                   "children": [
                     {
+                      "type": "View?class=flex align-center;style:[width=100%;borderTop=1px solid #ddd]?agents:().len()>0;agent:().admin;user:().admin",
                       "children": [
                         {
                           "children": [
@@ -620,6 +620,7 @@
                               "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                             },
                             {
+                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#ffff0044]",
                               "children": [
                                 {
                                   "controls": [
@@ -629,8 +630,7 @@
                                   ],
                                   "type": "Text?class=dots pointer;today-bookings=0;agents:()._():[if():[_.today=todayStart().timestamp()]:[().today-bookings=().today-bookings+[_.today-bookings||0]]];text=().today-bookings;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ],
-                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#ffff0044]"
+                              ]
                             },
                             {
                               "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]",
@@ -641,25 +641,17 @@
                               ]
                             },
                             {
-                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;today-buyings-usd=0;agents:()._():[if():[_.today=todayStart().timestamp()]:[().today-buyings-usd=().today-buyings-usd+[_.today-buyings-usd||0]]];text=().today-buyings-usd.round():2+$;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]"
                             },
                             {
-                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;text=agents:().():bookings.sum();style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
-                                }
-                              ]
-                            },
-                            {
-                              "children": [
-                                {
-                                  "type": "Text?class=dots pointer;text=agents:().():uses.sum();style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
                               ],
                               "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]"
@@ -668,9 +660,17 @@
                               "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]",
                               "children": [
                                 {
-                                  "type": "Text?class=dots pointer;text=agents:().():[buyings-usd].sum().round():2+$;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
+                                  "type": "Text?class=dots pointer;text=agents:().():uses.sum();style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
                               ]
+                            },
+                            {
+                              "children": [
+                                {
+                                  "type": "Text?class=dots pointer;text=agents:().():[buyings-usd].sum().round():2+$;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
+                                }
+                              ],
+                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]"
                             },
                             {
                               "children": [
@@ -686,10 +686,10 @@
                           ],
                           "type": "View?class=grid align-center;style:[gridTemplateColumns=3rem 22rem 6rem .5fr 10rem .5fr .5fr 20rem 15rem 15rem .5fr .5fr .5fr .5fr .5fr .5fr .5fr .5fr 11rem;height=4.5rem;transition=.2s;width=100%;cursor=default;if():[data().active=false]:[backgroundColor=#f27979]]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[width=100%;borderTop=1px solid #ddd]?agents:().len()>0;agent:().admin;user:().admin"
+                      ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=vertical;style:[width=100%]"
                 }
               ],
               "type": "View?class=vertical;style:[width=100%;minHeight=30rem;gap=.5rem]"

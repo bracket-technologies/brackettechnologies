@@ -78,7 +78,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }*/
 
     // multiplication
-    if (path.join(".").includes("*")) {
+    if (path.join(".").includes("*") && !key) {
 
         var values = path.join(".").split("*").map(value => toValue({ _window, value, params, _, __, _i,id, e, req, res, object, mount }))
         var newVal = values[0]
@@ -102,7 +102,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // addition
-    if (path.join(".").includes("+")) {
+    if (path.join(".").includes("+") && !key) {
   
       var values = path.join(".").split("+").map(value => toValue({ _window, value, params, _, __, _i,id, e, req, res, object }))
       var answer = values[0]
@@ -111,14 +111,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // subtraction
-    if (path.join(".").includes("-")) {
+    if (path.join(".").includes("-") && !key) {
   
         var _value = calcSubs({ _window, value: path.join("."), params, _, __, _i,id, e, req, res, object })
         if (_value !== path.join(".")) return _value
     }
 
     // coded
-    if (path0.slice(0, 7) === "coded()" && path.length === 1) {
+    if (path0.slice(0, 7) === "coded()" && path.length === 1 && object === undefined) {
         
         coded = true
         return toValue({ req, res, _window, object, id, value: global.codes[path[0]], params, _, __, _i,e })
@@ -582,7 +582,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _coded
             if (k0.slice(0, 7) === "coded()") _coded = toValue({ req, res, _window, id, e, value: global.codes[k], params, _, __, _i })
             else if (k0.slice(0, 8) === "codedS()") _coded = global.codes[k]
-
+console.log(o, _coded, value);
             if (i === lastIndex && key && value !== undefined) answer = o[_coded] = value
             else answer = o[_coded]
             /*
@@ -3459,10 +3459,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof o === "object" && !Array.isArray(o)) notArray = true
             if (k[0] === "_") {
 
-                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: _, _: o, e, _i: index, object }) )
-                answer = o
+                answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: _, _: o, e, _i: index, object }) )
                 
-            } else answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, params, _, __, e, _i: index }) )
+            } else {
+                
+                answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, params, _, __, e, _i: index }) )
+            }
 
             if (notArray) answer = o[0]
 
@@ -3618,7 +3620,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _price
             if (args[1]) _price = toValue({ req, res, _window, id, e, _, __, _i,params, value: args[1] })
             else _price = o
-            answer = o = toPrice(toNumber(_price))
+            var decimalDigits = (_price.toString().split(".")[1] || []).length
+            answer = parseFloat(_price).toLocaleString()
+            var afterDigits = (answer.toString().split(".")[1] || []).length
+            while (afterDigits < decimalDigits) {
+                if (afterDigits === 0) answer += '.'
+                answer += '0'
+                afterDigits += 1
+            }
             
         } else if (k0 === "toBoolean()" || k0 === "boolean()" || k0 === "bool()") {
 
