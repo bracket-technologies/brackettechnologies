@@ -11,7 +11,7 @@ module.exports = {
     
     var { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
-    var views = window.views, appendTo = insert.id
+    var views = window.views, appendTo = (insert.id || insert.parent)
     if (appendTo && typeof appendTo === "object") appendTo = appendTo.id
     else if (!appendTo) appendTo = id
     var view = views[appendTo], lDiv
@@ -44,7 +44,7 @@ module.exports = {
         views[id].reservedStyles = /*toParam({ id, string: views[id].type.split("?")[1] || "" }).style ||*/ {}
         views[id].style.transition = null
         views[id].style.opacity = "0"
-        views[id]["my-views"] = [...view["my-views"]]
+        views[id]["my-views"] = [...views[appendTo]["my-views"]]
         
         return createElement({ id })
 

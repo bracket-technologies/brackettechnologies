@@ -1,5 +1,7 @@
 {
+  "id": "bookings-flights",
   "creation-date": 1654022032235,
+  "type": "View?id=bookings-flights;class=vertical;style:[gap=.5rem;width=100%]",
   "children": [
     {
       "type": "Text?class=flex;text=Booking Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -37,7 +39,6 @@
                       "type": "Input?label:[text=Arrival Time;location=outside;style.fontSize=1.3rem];readonly;tooltip.text=country timing;input.type=time;path=arrival-time;if():data():[input.value=data().toClock():[hr;min]];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                     },
                     {
-                      "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]",
                       "children": [
                         {
                           "controls": [
@@ -48,14 +49,15 @@
                           "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
                         },
                         {
-                          "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                           "controls": [
                             {
                               "event": "click?)(:booking-data.flights.push():_map:[parent().parent().parent().mapIndex+1];update():[parent().parent().parent().parent()]"
                             }
-                          ]
+                          ],
+                          "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox;style:[gap=1rem;marginBottom=auto;marginTop=2rem;height=3.5rem;justifyContent=flex-end]"
                     }
                   ],
                   "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=6rem 2fr 1fr 1fr 2fr 1fr 1fr 6rem]"
@@ -69,7 +71,5 @@
         }
       ]
     }
-  ],
-  "type": "View?id=bookings-flights;class=vertical;style:[gap=.5rem;width=100%]",
-  "id": "bookings-flights"
+  ]
 }

@@ -5,6 +5,7 @@ const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 const { isParam } = require("./isParam")
+const { toArray } = require("./toArray")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -197,6 +198,38 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       view.loaded = view.loaded || ""
       return view.loaded += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
     }
+
+    // children
+    if (param.slice(0, 8) === "children") {
+
+      var _children = []
+      param = param.slice(9)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        _children.push({ type: param })
+      })
+
+      view.children = toArray(view.children)
+      view.children.unshift(..._children)
+      return view.children
+    }
+
+    // children
+    if (param.slice(0, 5) === "child") {
+
+      var _children = []
+      param = param.slice(6)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        _children.push({ type: param })
+      })
+
+      view.children = toArray(view.children)
+      view.children.unshift(..._children)
+      return view.children
+    }
   }
 
     // show loader
@@ -267,7 +300,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       
     } else if (key) {
       
-      if (mount) view[key] = value
+      if (id && view && mount) view[key] = value
       params[key] = value
     }
 

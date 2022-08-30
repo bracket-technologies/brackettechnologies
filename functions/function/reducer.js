@@ -20,6 +20,7 @@ const { toApproval } = require("./toApproval")
 const { toCode } = require("./toCode")
 const { note } = require("./note")
 const { isParam } = require("./isParam")
+const { isCondition } = require("./isCondition")
 const { toAwait } = require("./toAwait")
 const toCSV = require("./toCSV")
 
@@ -29,6 +30,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     const { toValue, calcSubs } = require("./toValue")
     const { execute } = require("./execute")
     const { toParam } = require("./toParam")
+    const { insert } = require("./insert")
 
     var views = _window ? _window.views : window.views
     var view = views[id], breakRequest, coded, mainId = id
@@ -136,29 +138,28 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     if (path0 === "if()") {
         
       var approved = toApproval({ _window, e, string: args[1], id, _, __, _i, req, res, object })
-      
+
       if (!approved) {
           
         if (args[3]) {
-            if (condition) return toApproval({ _window, e, string: args[3], id, _, __, _i,req, res, object })
-            return toValue({ req, res, _window, id, value: args[3], params, _, __, _i,e, object, mount, createElement })
+            if (condition) return toApproval({ _window, e, string: args[3], id, _, __, _i, req, res, object })
+            return toValue({ req, res, _window, id, value: args[3], params, _, __, _i, e, object, mount, createElement })
         }
 
-        if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], params, _, __, _i,e, object, mount })
+        if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], params, _, __, _i, e, object, mount })
 
         if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
 
             var _path = path.slice(2)
             _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
-            var _ds = reducer({ _window, id, value, key, path: _path, params, object, params, _, __, _i,e, req, res, mount })
-            return _ds
+            return reducer({ _window, id, value, key, path: _path, params, object, params, _, __, _i, e, req, res, mount })
 
         } else return 
 
       } else {
 
-        if (condition) return toApproval({ _window, e, string: args[2], id, _, __, _i,req, res, object })
-        _object = toValue({ req, res, _window, id, value: args[2], params, _, __, _i,e, object, mount, createElement })
+        if (condition) return toApproval({ _window, e, string: args[2], id, _, __, _i, req, res, object })
+        _object = toValue({ req, res, _window, id, value: args[2], params, _, __, _i, e, object, mount, createElement })
 
         path.shift()
         while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
@@ -244,7 +245,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
     // initialize by methods
     if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "doc()" || path0 === "mail()" || path0 === "action()" || path0 === "exec()"
-    || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()"
+    || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()" || path0 === "insert()"
     || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
     || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
     || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
@@ -582,7 +583,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _coded
             if (k0.slice(0, 7) === "coded()") _coded = toValue({ req, res, _window, id, e, value: global.codes[k], params, _, __, _i })
             else if (k0.slice(0, 8) === "codedS()") _coded = global.codes[k]
-console.log(o, _coded, value);
+
             if (i === lastIndex && key && value !== undefined) answer = o[_coded] = value
             else answer = o[_coded]
             /*
@@ -2407,10 +2408,10 @@ console.log(o, _coded, value);
             
         } else if (k0 === "pullItems()") {
 
-            if (isParam({ _window, string: args[1] })) {
+            if (isParam({ _window, string: args[1] }) || isCondition({ _window, string: args[1] })) {
             
                 var _items
-    
+                
                 if (k[0] === "_") _items = o.filter((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
                 else _items = o.filter((o, index) => toApproval({ _window, e, string: args[1], id, object: o, _i: index, req, res, _, __ }))
                 
@@ -2418,12 +2419,13 @@ console.log(o, _coded, value);
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
                 })
-    
+                
                 answer = o
                 
             } else {
 
                 var _items = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object })
+                
                 _items.map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
@@ -2434,7 +2436,7 @@ console.log(o, _coded, value);
             
         } else if (k0 === "pullItem()") {
 
-            if (isParam({ _window, string: args[1] })) {
+            if (isParam({ _window, string: args[1] }) || isCondition({ _window, string: args[1] })) {
 
                 var _index
 
@@ -3273,7 +3275,15 @@ console.log(o, _coded, value);
           else _url = o
           open(_url)
           
-      } else if (k0 === "removeMapping()") {
+        } else if (k0 === "insert()") {
+
+            if (isParam({ _window, string: args[1] })) {
+
+                var _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+                insert({ id, insert: _params })
+            }
+
+        } else if (k0 === "removeMapping()") {
             
             if (o.type.slice(0, 1) === "[") {
                 var _type = o.type.slice(1).split("]")[0]
@@ -3285,7 +3295,7 @@ console.log(o, _coded, value);
             
           answer = [...e.target.files]
           
-      } else if (k0 === "replace()") { //replace():prev:new
+        } else if (k0 === "replace()") { //replace():prev:new
 
             var rec0, rec1
             
@@ -3459,7 +3469,8 @@ console.log(o, _coded, value);
             if (typeof o === "object" && !Array.isArray(o)) notArray = true
             if (k[0] === "_") {
 
-                answer = toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: _, _: o, e, _i: index, object }) )
+                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: _, _: o, e, _i: index, object }) )
+                answer = o
                 
             } else {
                 

@@ -17,6 +17,7 @@ module.exports = {
     var text = view.text !== undefined ? view.text.toString() : typeof view.data !== "object" ? view.data : ''
     var innerHTML = view.type !== "View" && view.type !== "Box" ? text : ""
     var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
+    if (view.children) view.children = toArray(view.children)
     
     innerHTML = toArray(view.children).map((child, index) => {
 

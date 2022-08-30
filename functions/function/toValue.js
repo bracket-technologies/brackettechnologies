@@ -160,7 +160,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
       })
       value = val0
 
-    } else value = reducer({ _window, id, e, path, params, object, _, __, _i, req, res })
+    } else value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
   } else if (path[1] || path[0].includes(")(") || path[0].includes("()")) value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
   else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, id, e, path, params, object, _, __, _i, req, res, mount })
   else if (value === "()") value = view

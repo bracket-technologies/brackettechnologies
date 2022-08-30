@@ -1,7 +1,9 @@
 {
+  "id": "tickets-manager",
   "type": "View?id=tickets-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-tickets:()]:[tickets:()=_list];unreset-tickets:()=false;search-ticket:()=search-ticket:()||_map",
   "children": [
     {
+      "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem",
       "children": [
         {
           "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
@@ -36,8 +38,7 @@
             }
           ]
         }
-      ],
-      "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem"
+      ]
     },
     {
       "type": "View?view=search-engine;search-engine-req:()=ticket",
@@ -53,10 +54,8 @@
     {
       "children": [
         {
-          "type": "View?class=flexbox;style:[width=100%;gap=1rem]",
           "children": [
             {
-              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]",
               "children": [
                 {
                   "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
@@ -75,12 +74,12 @@
                   ]
                 },
                 {
+                  "type": "Input?id=Flight;path=flight;label.text=Flight Number;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase().split():' '.join():'';txt()=data()"
                     }
-                  ],
-                  "type": "Input?id=Flight;path=flight;label.text=Flight Number;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                  ]
                 },
                 {
                   "type": "Input?path=names;label.text=Name;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF?false",
@@ -91,6 +90,7 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
                       "type": "Input?path=reservation-date;label.text=Issuing Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
@@ -107,12 +107,11 @@
                           "type": "Text?id=ticket-date-text;class=flex align-center;if():[data().reservation-date]:[text=data().reservation-date.toDateFormat()];style:[fontSize=1.2rem]"
                         },
                         {
-                          "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().reservation-date.del();prev().txt()=;parent().prev().():[click();input().txt()=null];input():travel-date.min()=null]"
+                          "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().reservation-date.del();prev().txt()=;parent().prev().():[click();input().txt()=null]]"
                         }
                       ]
                     }
-                  ],
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
+                  ]
                 },
                 {
                   "type": "Input?id=ticket-status;path=status;label.text=Status;label.style.fontSize=1.3rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='collections:().ticket-status.status';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem]"
@@ -126,19 +125,21 @@
                   "type": "Input?path=agent;if():[data()]:[input.value=agents:().find():[id=data()].company-name];label.text=Agent;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='agents:().():company-name';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin"
                 },
                 {
+                  "type": "Input?path=user;if():[data()]:[input.value=users:().find():[id=data()].username];label.text=User;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='users:().():username';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin",
                   "controls": [
                     {
                       "event": "click:droplist?data()=users:().find():[username=data()].id"
                     }
-                  ],
-                  "type": "Input?path=user;if():[data()]:[input.value=users:().find():[id=data()].username];label.text=User;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='users:().():username';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin"
+                  ]
                 },
                 {
                   "type": "View?style:[flex=1]"
                 }
-              ]
+              ],
+              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[width=100%;gap=1rem]"
         }
       ],
       "type": "View:ticket-search-engine?Data=search-ticket;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]"
@@ -147,6 +148,5 @@
       "type": "View?view=tickets-list"
     }
   ],
-  "functions": {},
-  "id": "tickets-manager"
+  "functions": {}
 }
