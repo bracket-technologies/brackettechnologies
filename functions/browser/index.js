@@ -1692,36 +1692,31 @@ module.exports = { controls, setControls }
 },{"./event":55,"./toArray":102,"./watch":126}],41:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
-  var d = new Date()
-  d.setTime(d.getTime() + (expiry*24*60*60*1000))
-  var expires = "expires="+ d.toUTCString()
-
-  document.cookie = name + "=" + value + ";" + expires + ";path=/"
+  var cookie = document.cookie || ""
+  var decodedCookie = decodeURIComponent(cookie)
+  var __session = JSON.parse((decodedCookie.split('; ').find(cookie => cookie.split("=")[0] === "__session") || "").split("=").slice(1).join("=") || "{}")
+  __session[name] = value
+  document.cookie = `__session=${JSON.stringify(__session)}`
 }
 
 const getCookie = ({ name, req }) => {
-  
-  var cookie = req ? req.headers.cookie : document ? document.cookie : ""
-  if (!name || !cookie) return cookie
-  name = name + "="
-  
-  var decodedCookie = decodeURIComponent(cookie)
-  var ca = decodedCookie.split(';')
-  cookie = ""
 
-  for (var i = 0; i <ca.length; i++) {
-    var c = ca[i]
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1)
-    }
-    if (c.indexOf(name) === 0) cookie = c.substring(name.length, c.length)
-  }
-  
-  return cookie
+  if (req) return req.cookies[name]
+
+  var cookie = document.cookie || ""
+  var decodedCookie = decodeURIComponent(cookie)
+  var __session = JSON.parse((decodedCookie.split('; ').find(cookie => cookie.split("=")[0] === "__session") || "").split("=").slice(1).join("=") || "{}")
+  return __session[name]
 }
 
 const eraseCookie = ({ _window, name }) => {
-  document.cookie = name +'=; Max-Age=-99999999;'  
+
+  var cookie = document.cookie || ""
+  var decodedCookie = decodeURIComponent(cookie)
+  var __session = JSON.parse((decodedCookie.split('; ').find(cookie => cookie.split("=")[0] === "__session") || "").split("=").slice(1).join("=") || "{}")
+
+  delete __session[name]
+  document.cookie = `__session=${JSON.stringify(__session)}`
 }
 
 module.exports = {setCookie, getCookie, eraseCookie}
@@ -2082,7 +2077,7 @@ const createDocument = async ({ req, res, realtimedb }) => {
   // language & direction
   var language = global.language = global.data.page[currentPage].language || "en"
   var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
-
+console.log(views.root.children);
   // create html
   var innerHTML = ""
   innerHTML += createElement({ _window, id: "root", req, res })
@@ -9284,7 +9279,7 @@ module.exports = {
           // controls & views
           views.root.controls = clone(global.data.page[currentPage].controls || [])
           views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
-
+          
           // inherit view name
           views.root["my-views"] = [global.data.page[currentPage].view]
 
@@ -9294,7 +9289,7 @@ module.exports = {
             if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
               toParam({ req, res, _window, string: event.split("?")[1], req, res })
           })
-
+          console.log("here");
           return
         }
 

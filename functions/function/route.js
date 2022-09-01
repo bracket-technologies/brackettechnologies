@@ -45,7 +45,7 @@ module.exports = {
           // controls & views
           views.root.controls = clone(global.data.page[currentPage].controls || [])
           views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
-
+          
           // inherit view name
           views.root["my-views"] = [global.data.page[currentPage].view]
 
@@ -55,7 +55,7 @@ module.exports = {
             if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
               toParam({ req, res, _window, string: event.split("?")[1], req, res })
           })
-
+          console.log("here");
           return
         }
 

@@ -1,5 +1,4 @@
 {
-  "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]",
   "id": "booking-seat-passenger",
   "creation-date": 1654011294803,
   "children": [
@@ -28,27 +27,28 @@
       ]
     },
     {
+      "type": "View?id=passenger-details;class=vertical;style:[padding=1rem;gap=1rem]",
       "children": [
         {
           "type": "View?class=vertical;path=booking-details.0;style:[gap=4rem;width=100%]",
           "children": [
             {
+              "type": "[View]?class=vertical;path=seats;style:[gap=4rem;width=100%]",
               "children": [
                 {
+                  "type": "[View]?class=vertical;path=passengers-details;style:[gap=4rem;width=100%]",
                   "children": [
                     {
                       "type": "View?view=booking-passenger"
                     }
-                  ],
-                  "type": "[View]?class=vertical;path=passengers-details;style:[gap=4rem;width=100%]"
+                  ]
                 }
-              ],
-              "type": "[View]?class=vertical;path=seats;style:[gap=4rem;width=100%]"
+              ]
             }
           ]
         }
-      ],
-      "type": "View?id=passenger-details;class=vertical;style:[padding=1rem;gap=1rem]"
+      ]
     }
-  ]
+  ],
+  "type": "View?id=booking-seat-passenger;class=flex column;style:[gap=1rem;width=100%]"
 }

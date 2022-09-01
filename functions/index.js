@@ -121,6 +121,7 @@ app.delete("*", (req, res) => {
 app.get("*", async (req, res) => {
 
   req.db = db
+  req.cookies = JSON.parse(req.cookies.__session || "{}")
   var path = req.url.split("/")
   /*var host = req.headers["x-forwarded-host"] || req.headers["host"]
   

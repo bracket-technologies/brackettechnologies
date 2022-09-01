@@ -34,27 +34,28 @@
                   "type": "View?class=flexbox pointer;tooltip.text=save;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s?!agent-edit-readonly:()"
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
                   "children": [
                     {
                       "type": "Icon?name=print;google.outlined;style.fontSize=2.2rem"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s"
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
+                  "controls": [
+                    {
+                      "event": "click?style():[id=agent-window;transition=.2s;padding=0;minHeight=100%];style().display=none;style():next().display=flex;1stChild():agent-window.style():[borderRadius=0];():agent-form-header.style().display=flex;():agent-form-footer.style().display=flex"
+                    }
+                  ],
                   "children": [
                     {
                       "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
                     }
                   ],
-                  "controls": [
-                    {
-                      "event": "click?style():[id=agent-window;transition=.2s;padding=0;minHeight=100%];style().display=none;style():next().display=flex;1stChild():agent-window.style():[borderRadius=0];():agent-form-header.style().display=flex;():agent-form-footer.style().display=flex"
-                    }
-                  ]
+                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s"
                 },
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s;display=none];hover.style.backgroundColor=#fff",
                   "children": [
                     {
                       "type": "Icon?name=crop;google.outlined;style.fontSize=2.2rem"
@@ -64,8 +65,7 @@
                     {
                       "event": "click?style():[id=agent-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():agent-form-header.style().display=flex;():agent-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():agent-window].borderRadius=1rem"
                     }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s;display=none];hover.style.backgroundColor=#fff"
+                  ]
                 },
                 {
                   "type": "View?class=flexbox pointer;tooltip.text=cancel;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff;click:[():[close-agent-window].click()]",
@@ -80,7 +80,6 @@
           ]
         },
         {
-          "type": "View:agent-form-body?class=flex column;style:[width=100%;gap=2rem;padding=.5rem]",
           "children": [
             {
               "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=1rem]",
@@ -89,25 +88,24 @@
                   "type": "Text?text=Upload Logo;style:[fontSize=1.4rem]"
                 },
                 {
-                  "type": "View?class=flexbox pointer;style:[borderRadius=.5rem;border=1px solid #ddd;overflow=hidden;position=relative;height=3rem;width=3.25rem;backgroundColor=#fff]",
                   "children": [
                     {
                       "type": "Icon?class=flexbox pointer;name=bi-download;style:[color=#666;fontSize=1.6rem;transition=.3s]"
                     },
                     {
+                      "type": "Input?class=pointer;input.type=file;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]",
                       "controls": [
                         {
                           "event": "change?files:()._():[fileReader():_:[my-logo:()=e().target.result;update():[agent-logo]]]"
                         }
-                      ],
-                      "type": "Input?class=pointer;input.type=file;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]"
+                      ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox pointer;style:[borderRadius=.5rem;border=1px solid #ddd;overflow=hidden;position=relative;height=3rem;width=3.25rem;backgroundColor=#fff]"
                 }
               ]
             },
             {
-              "type": "View?class=grid;doc=agent-data;style:[gridTemplateColumns=4fr 40rem;gap=2rem]",
               "children": [
                 {
                   "children": [
@@ -117,6 +115,7 @@
                           "type": "Text?class=flex;text=Registration Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                         },
                         {
+                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1.5fr 1fr .75fr;padding=1rem]",
                           "children": [
                             {
                               "type": "Input?label:[text=Registration Id;location=outside;style.fontSize=1.3rem];copyable;readonly;copyable;path=id;if():[!data()]:[data()=gen():20];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -135,8 +134,7 @@
                               ],
                               "type": "Input?label:[text=Active;location=outside;style.fontSize=1.3rem];readonly;path=active;if():[!data();data()!=false]:[data()=true];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];input.value=if():[data()]:Active:Inactive;droplist.items=_array:Active:Inactive;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.preventDefault"
                             }
-                          ],
-                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1.5fr 1fr .75fr;padding=1rem]"
+                          ]
                         }
                       ],
                       "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
@@ -167,13 +165,11 @@
                       "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     },
                     {
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Address Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                         },
                         {
-                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]",
                           "children": [
                             {
                               "type": "Input?label:[text=Country;location=outside;style.fontSize=1.3rem];path=company-head-office-country;readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=_list:Lebanon:Syria:Iraq:Iran;droplist.item.style:[fontSize=1.2rem;minHeight=3.5rem]"
@@ -184,12 +180,13 @@
                             {
                               "type": "Input?textarea;label:[text=Address;location=outside;style.fontSize=1.3rem];path=company-head-office-address;clicked.style.border=2px solid #0080ff;style:[width=100%;minHeight=8rem;borderRadius=.5rem;fontSize=1.3rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     },
                     {
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Owner Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -208,7 +205,8 @@
                           ],
                           "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     },
                     {
                       "type": "View?class=flex column;style.gap=1rem;style.width=100%;doc().members=[doc().members||_list];path=members",
@@ -268,9 +266,11 @@
                   ],
                   "type": "View:agent-logo?class=flexbox;style:[height=30rem;width=40rem;borderRadius=.5rem;overflow=hidden;border=1px solid #ddd]"
                 }
-              ]
+              ],
+              "type": "View?class=grid;doc=agent-data;style:[gridTemplateColumns=4fr 40rem;gap=2rem]"
             }
-          ]
+          ],
+          "type": "View:agent-form-body?class=flex column;style:[width=100%;gap=2rem;padding=.5rem]"
         },
         {
           "children": [
@@ -299,8 +299,8 @@
       ]
     }
   ],
-  "type": "View:agent-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
+  "creation-date": 1660839217963,
   "id": "agent-window",
-  "functions": {},
-  "creation-date": 1660839217963
+  "type": "View:agent-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
+  "functions": {}
 }
