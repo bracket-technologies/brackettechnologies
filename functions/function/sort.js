@@ -4,7 +4,7 @@ const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 const { toNumber } = require("./toNumber")
 
-const sort = ({ sort = {}, id, e }) => {
+const sort = ({ _window, sort = {}, id, e }) => {
 
   var view = window.views[id]
   if (!view) return
@@ -22,7 +22,7 @@ const sort = ({ sort = {}, id, e }) => {
 
   // path
   var path = sort.path
-  if (typeof sort.path === "string") path = toArray(toCode({ string: path, e }).split("."))
+  if (typeof sort.path === "string") path = toArray(toCode({ _window, string: path, e }).split("."))
   if (!path) path = []
   var isDate = false
   

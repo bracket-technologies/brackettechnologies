@@ -6,6 +6,7 @@
       "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem",
       "children": [
         {
+          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
           "children": [
             {
               "type": "View?style:[height=60%;width=2px;backgroundColor=blue;borderRadius=1rem]"
@@ -13,8 +14,7 @@
             {
               "type": "Text?text=Invoices Manager;style:[color=#444;fontSize=1.6rem]"
             }
-          ],
-          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%"
+          ]
         },
         {
           "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
@@ -29,12 +29,12 @@
               "type": "Icon?class=flexbox pointer;name=bi-download;tooltip.text=import;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             },
             {
-              "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]",
               "controls": [
                 {
                   "event": "click"
                 }
-              ]
+              ],
+              "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             }
           ]
         }
@@ -43,18 +43,17 @@
     {
       "children": [
         {
-          "type": "View?class=flexbox;style:[width=100%;gap=1rem]",
           "children": [
             {
               "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]",
               "children": [
                 {
-                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase().split():' '.join():'';txt()=data()"
                     }
-                  ]
+                  ],
+                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                 },
                 {
                   "type": "Input?id=E-Ticket;path=e-ticket;label.text=E-Ticket;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
@@ -74,14 +73,15 @@
                   "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
-                      "type": "Input?path=from-date;label.text=From Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "change?data()=data().timestamp();txt():from-date-text=data().toDateFormat()"
                         }
-                      ]
+                      ],
+                      "type": "Input?path=from-date;label.text=From Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                       "children": [
                         {
                           "type": "Text?id=from-date-text;class=flex align-center;if():[data().from-date]:[text=data().from-date.toDateFormat()];style:[fontSize=1.2rem]"
@@ -89,12 +89,12 @@
                         {
                           "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().from-date.del();prev().txt()=;parent().prev().():[click();input().txt()=null]]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
+                      ]
                     }
                   ]
                 },
                 {
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
                       "type": "Input?path=to-date;label.text=To Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
@@ -115,16 +115,15 @@
                       ],
                       "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
                     }
-                  ],
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
+                  ]
                 },
                 {
+                  "type": "Input?path=agent;if():[data()]:[input.value=agents:().find():[id=data()].company-name];label.text=Agent;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='agents:().():company-name';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin",
                   "controls": [
                     {
                       "event": "click:droplist?data()=agents:().find():[company-name=data()].id;loader.show;search():[collection=user;field.agent.equal=data()]:[users:()=search:().data.values();loader.hide]"
                     }
-                  ],
-                  "type": "Input?path=agent;if():[data()]:[input.value=agents:().find():[id=data()].company-name];label.text=Agent;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='agents:().():company-name';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin"
+                  ]
                 },
                 {
                   "type": "View?style:[flex=1]"
@@ -139,20 +138,21 @@
                     "wait():search:[update:invoices-list]?search.collection=flight-reservation;search.limit=250;search.field:[if():[search-invoice:().pnr]:[pnr.equal=search-invoice:().pnr];if():[search-invoice:().e-ticket]:[e-ticket.equal=search-invoice:().e-ticket];if():[search-invoice:().name]:[passengers-name.lessOrEqual=search-invoice:().name];if():[search-invoice:().from-date]:[if():[search-invoice:().to-date]:[day.greaterOrEqual=search-invoice:().from-date;day.lessOrEqual=search-invoice:().to-date]:[day.greaterOrEqual=search-invoice:().from-date;day.lessOrEqual=todayStart().timestamp()]];if():[search-invoice:().status]:[status.equal=search-invoice:().status];if():[search-invoice:().agent]:[agent.equal=search-invoice:().agent]:[agent.equal=agent:().id]];wait():[().first=true;if():[invoices:().len()=0]:[invoices:()=search:().data.values().clone()._():[_.type=Flight;_.status=Confirmed]]:[invoices:().push():[search:().data.values().clone()._():[_.type=Flight;_.status=Confirmed]]];invoices:()=invoices:().sort():[path=creation-date;ascending];if():[first;second;third]:[update():[invoices-list-data];loader.hide]]",
                     "wait():search:[update:invoices-list]?search.collection=payment;search.limit=250;search.field:[if():[search-invoice:().from-date]:[if():[search-invoice:().to-date]:[day.greaterOrEqual=search-invoice:().from-date;day.lessOrEqual=search-invoice:().to-date]:[day.greaterOrEqual=search-invoice:().from-date;day.lessOrEqual=todayStart().timestamp()]];if():[search-invoice:().agent]:[agent.equal=search-invoice:().agent]:[agent.equal=agent:().id]];wait():[().third=true;invoices:().push():[search:().data.values().clone()._():[_.type=Payment;_.status=Collected]];invoices:()=invoices:().sort():[path=creation-date;ascending];if():[first;second;third]:[update():[invoices-list-data];loader.hide]]"
                   ],
-                  "event": "click?loader.show;invoices:()=_list;first=false;second=false;third=false?search-invoice:().pnr||search-invoice:().e-ticket||search-invoice:().name||search-invoice:().from-date||search-invoice:().agent"
+                  "event": "click?loader.show;invoices:()=_list;first=false;second=false;third=false?search-invoice:().pnr||search-invoice:().e-ticket||search-invoice:().name||search-invoice:().from-date"
                 },
                 {
-                  "event": "click?note():'Kindly fill any of the required blanks!':danger?!search-invoice:().pnr;!search-invoice:().e-ticket;!search-invoice:().name;!search-invoice:().from-date;!search-invoice:().agent"
+                  "event": "click?note():'Kindly fill any of the required blanks!':danger?!search-invoice:().pnr;!search-invoice:().e-ticket;!search-invoice:().name;!search-invoice:().from-date"
                 }
               ],
-              "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6",
               "children": [
                 {
                   "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[width=100%;gap=1rem]"
         }
       ],
       "type": "View:invoice-search-engine?doc=search-invoice;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd;borderTop=1px solid #ddd]"

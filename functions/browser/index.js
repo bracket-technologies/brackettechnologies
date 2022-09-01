@@ -8,7 +8,6 @@ const { toParam } = require("../function/toParam")
 const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
 const { toCode } = require("../function/toCode")
-const { clone } = require("../function/clone")
 // const downloadsFolder = require('downloads-folder')
 
 window.views = JSON.parse(document.getElementById("views").textContent)
@@ -20,14 +19,13 @@ var views = window.views
 var global = window.global
 
 // access key
-global["access-key"] = getCookie({ name: "_key" })
+// document.cookie = "s_id=" + global.session.id + ";" + global.session["expiry-date"] + ";path=/"
 global["body-click-events"] = {}
 global["body-mousemove-events"] = {}
 global["body-mousedown-events"] = {}
 global["body-mouseup-events"] = {}
 global["before-print-events"] = {}
 global["after-print-events"] = {}
-
 global["click-events"] = []
 global["key-events"] = []
 
@@ -121,11 +119,16 @@ document.body.addEventListener('click', e => {
 
 }, false)
 
+var lastVisit = (new Date()).getTime()
+
 // mousemove
 document.body.addEventListener('mousemove', (e) => {
     global.screenX = e.screenX
     global.screenY = e.screenY
     Object.values(window.global["body-mousemove-events"]).flat().map(o => bodyEventListener(o, e))
+    currentTime = (new Date()).getTime()
+    // if (currentTime - lastVisit > 3600000 && global.data.page[global.currentPage]["recaptcha-required"]) 
+    lastVisit = currentTime
 }, false)
 
 document.addEventListener("mousedown", (e) => {
@@ -221,7 +224,7 @@ window.addEventListener('appinstalled', () => {
   // Log install to analytics
   console.log('INSTALL: Success')
 })
-},{"../function/clone":36,"../function/cookie":40,"../function/execute":55,"../function/setElement":93,"../function/starter":96,"../function/toApproval":100,"../function/toCode":105,"../function/toParam":113}],2:[function(require,module,exports){
+},{"../function/cookie":41,"../function/execute":56,"../function/setElement":94,"../function/starter":97,"../function/toApproval":101,"../function/toCode":106,"../function/toParam":114}],2:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -241,7 +244,7 @@ module.exports = (component) => {
     }]
   }
 }
-},{"../function/toComponent":106}],3:[function(require,module,exports){
+},{"../function/toComponent":107}],3:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
@@ -493,7 +496,7 @@ const Entry = (component) => {
 }
 
 module.exports = Entry
-},{"../function/clone":36,"../function/merge":76,"../function/toComponent":106,"../function/toString":117}],4:[function(require,module,exports){
+},{"../function/clone":37,"../function/merge":77,"../function/toComponent":107,"../function/toString":118}],4:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
@@ -820,7 +823,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":36,"../function/generate":61,"../function/merge":76,"../function/toComponent":106,"../function/toString":117}],5:[function(require,module,exports){
+},{"../function/clone":37,"../function/generate":62,"../function/merge":77,"../function/toComponent":107,"../function/toString":118}],5:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -959,7 +962,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":106}],6:[function(require,module,exports){
+},{"../function/toComponent":107}],6:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1097,7 +1100,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":106}],7:[function(require,module,exports){
+},{"../function/toComponent":107}],7:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1124,7 +1127,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":106}],8:[function(require,module,exports){
+},{"../function/toComponent":107}],8:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 const { toString } = require("../function/toString")
 
@@ -1156,7 +1159,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":106,"../function/toString":117}],9:[function(require,module,exports){
+},{"../function/toComponent":107,"../function/toString":118}],9:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Item : require("./Item"),
@@ -1236,7 +1239,7 @@ module.exports = {
   loaded: require("./loaded"),
   contentful: require("../function/contentful").contentful
 }
-},{"../function/contentful":38,"./actionlist":10,"./change":11,"./click":12,"./clicked":13,"./droplist":15,"./hover":16,"./item":17,"./keydown":18,"./keypress":19,"./keyup":20,"./list":21,"./loaded":22,"./mininote":23,"./mousedown":24,"./mouseenter":25,"./mouseleave":26,"./mouseover":27,"./mouseup":28,"./popup":29,"./pricable":30,"./tooltip":31}],15:[function(require,module,exports){
+},{"../function/contentful":39,"./actionlist":10,"./change":11,"./click":12,"./clicked":13,"./droplist":15,"./hover":16,"./item":17,"./keydown":18,"./keypress":19,"./keyup":20,"./list":21,"./loaded":22,"./mininote":23,"./mousedown":24,"./mouseenter":25,"./mouseleave":26,"./mouseover":27,"./mouseup":28,"./popup":29,"./pricable":30,"./tooltip":31}],15:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   window.views[id].droplist.id = controls.id = id = controls.id || id
@@ -1420,6 +1423,30 @@ module.exports = ({ controls, id }) => {
   }]
 }
 },{}],32:[function(require,module,exports){
+module.exports=[
+  "data()", "Data()", "doc()", "mail()", "action()", "exec()"
+ , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()"
+ , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()" 
+ , "3rdLastChild()", "2ndLastChild()", "parent()", "next()", "text()", "val()", "txt()" 
+ , "element()", "el()", "checked()", "check()", "prev()", "format()", "lastSibling()" 
+ , "1stSibling()", "derivations()", "path()", "mouseleave()", "mouseenter()", "mouseup()", "blur()"
+ , "mousedown()", "copyToClipBoard()", "mininote()", "note()", "date()", "tooltip()", "update()" 
+ , "refresh()", "save()", "search()", "override()", "click()", "is()", "setPosition()" 
+ , "gen()", "generate()", "route()", "getInput()", "input()", "getEntry()", "entry()" 
+ , "getEntries()", "entries()", "toggleView()", "clearTimer()", "timer()", "range()", "focus()" 
+ , "siblings()", "todayStart()", "time()", "remove()", "rem()", "removeChild()", "remChild()" 
+ , "getBoundingClientRect()", "contains()", "contain()", "def()", "price()", "clone()", "uuid()" 
+ , "timezone()", "timeDifference", "position()", "setPosition()", "classList()", "csvToJson()"
+ , "classlist()", "nextSibling()", "2ndNextSibling()", "axios()", "newTab()", "droplist()", "sort()" 
+ , "fileReader()", "src()", "addClass()", "removeClass()", "remClass()", "wait()", "print()" 
+ , "monthStart()", "monthEnd()", "nextMonthStart()", "nextMonthEnd()", "prevMonthStart()", "prevMonthEnd()"
+ , "yearStart()", "month()", "year()", "yearEnd()", "nextYearStart()", "nextYearEnd()", "prevYearStart()" 
+ , "prevYearEnd()", "counter()", "exportCSV()", "exportPdf()", "readonly()", "html()", "csvToJson()"
+ , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "html2pdf()", "dblclick()"
+ , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()"
+ , "replaceItem()", "grandParent()", "grandChild()", "grandChildren()", "open()", "2ndNext()", "isNaN()"
+]
+},{}],33:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
 
 const axios = async ({ id, ...params }) => {
@@ -1463,7 +1490,7 @@ const axios = async ({ id, ...params }) => {
 }
 
 module.exports = { axios }
-},{"./toAwait":102,"axios":126}],33:[function(require,module,exports){
+},{"./toAwait":103,"axios":127}],34:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -1486,7 +1513,7 @@ const blur = ({ id }) => {
 
 module.exports = {blur}
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 const capitalize = (string, minimize) => {
   if (typeof string !== "string") return string
 
@@ -1511,7 +1538,7 @@ const capitalizeFirst = (string, minimize) => {
 
 module.exports = {capitalize, capitalizeFirst}
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 const {clone} = require("./clone");
 
 const clearValues = (obj) => {
@@ -1553,7 +1580,7 @@ const clearValues = (obj) => {
 
 module.exports = {clearValues};
 
-},{"./clone":36}],36:[function(require,module,exports){
+},{"./clone":37}],37:[function(require,module,exports){
 const clone = (obj) => {
 
   var copy
@@ -1573,7 +1600,7 @@ const clone = (obj) => {
 
 module.exports = {clone}
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = {
     compare: (value1, operator, value2) => {
         if (operator === "==") return value1 === value2
@@ -1584,7 +1611,7 @@ module.exports = {
         else if (operator === "in") return value1.includes(value2)
     }
 }
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = {
     contentful: ({ id }) => {
         var local = window.views[id]
@@ -1630,7 +1657,7 @@ module.exports = {
         }))
     }
 }
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 const controls = ({ _window, controls, id, req, res }) => {
@@ -1662,12 +1689,13 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":54,"./toArray":101,"./watch":125}],40:[function(require,module,exports){
-const setCookie = ({ name = "", value, expiry = 360 }) => {
+},{"./event":55,"./toArray":102,"./watch":126}],41:[function(require,module,exports){
+const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var d = new Date()
   d.setTime(d.getTime() + (expiry*24*60*60*1000))
   var expires = "expires="+ d.toUTCString()
+
   document.cookie = name + "=" + value + ";" + expires + ";path=/"
 }
 
@@ -1692,12 +1720,12 @@ const getCookie = ({ name, req }) => {
   return cookie
 }
 
-const eraseCookie = ({ name }) => {   
+const eraseCookie = ({ _window, name }) => {
   document.cookie = name +'=; Max-Age=-99999999;'  
 }
 
 module.exports = {setCookie, getCookie, eraseCookie}
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports = {
   counter: ({ length = 0, counter = 0, end, reset = "daily", timer }) => {
 
@@ -1734,7 +1762,7 @@ module.exports = {
     return { counter: _counter, length, reset, timer: timestamp }
   }
 }
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 const control = require("../control/control")
 
 const createActions = ({ params, id }) => {
@@ -1749,7 +1777,7 @@ const createActions = ({ params, id }) => {
 
 module.exports = {createActions}
 
-},{"../control/control":14,"./execute":55}],43:[function(require,module,exports){
+},{"../control/control":14,"./execute":56}],44:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
@@ -1802,21 +1830,26 @@ module.exports = {
   }
 }
 
-},{"../component/component":9,"./clone":36,"./generate":61,"./toApproval":100,"./toCode":105,"./toParam":113}],44:[function(require,module,exports){
+},{"../component/component":9,"./clone":37,"./generate":62,"./toApproval":101,"./toCode":106,"./toParam":114}],45:[function(require,module,exports){
 const { createElement } = require("./createElement");
 const { getJsonFiles } = require("./jsonFiles");
-const fs = require("fs")
+const fs = require("fs");
+const { generate } = require("./generate");
+const { toArray } = require("./toArray");
+const { toParam } = require("./toParam");
+const { toCode } = require("./toCode");
+const { clone } = require("./clone");
 //
 require("dotenv").config();
 
-const createDocument = async ({ req, res, db, realtimedb }) => {
+const createDocument = async ({ req, res, realtimedb }) => {
   
   // Create a cookies object
-  var host = req.headers["x-forwarded-host"] || req.headers["host"]
+  var host = req.headers["x-forwarded-host"] || req.headers["host"], db = req.db
   if (req.url.split("/")[1] === "undefined") return res.send("")
 
   // current page
-  var currentPage = req.url.split("/")[1] || ""
+  var currentPage = req.url.split("/")[1] || "", promises = []
   currentPage = currentPage || "main"
   
   // get assets & views
@@ -1839,6 +1872,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     os: req.headers["sec-ch-ua-platform"],
     browser: req.headers["sec-ch-ua"],
     country: req.headers["x-country-code"],
+    headers: req.headers,
+    promises: []
   };
 
   var views = {
@@ -1889,9 +1924,26 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
   // project not found
   if (!project) return res.send("Project not found!");
-  global.projectId = project.id;
+  global.projectId = project.id
+
+  if (global) {
+    
+  } else {
+    // session
+   /* global.session = {
+      id: generate({ length: 20 }),
+      "creation-date": (new Date()).getTime(),
+      "expiry-date": (new Date()).getTime() + 1800000,
+      "host": host,
+      "counter": 0 // max requests (max requests depends on project session max requests data)
+    }
+    db.collection("_session_").doc(global.session.id).set(global.session)
+*/
+
+  }
 
   if (isBracket) {
+
     // get page
     console.log("before page", new Date().getTime() - global.timer);
     global.data.page = page = getJsonFiles({
@@ -1925,7 +1977,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
       if (!fs.existsSync(`database/view-${project.id}`)) fs.mkdirSync(`database/view-${project.id}`)
     }
     
-    await db
+    promises.push(db
       .collection(`page-${project.id}`)
       .get()
       .then(q => {
@@ -1933,11 +1985,12 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
           global.data.page[doc.id] = doc.data()
           if (host.includes("localhost")) require("fs").writeFileSync(`database/page-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
         })
-        console.log("after page", new Date().getTime() - global.timer);
-      })
+        console.log("after page", new Date().getTime() - global.timer)
 
-    // page doesnot exist
-    if (!global.data.page[currentPage]) return res.send("Page not found!");
+        // page doesnot exist
+        if (!global.data.page[currentPage]) return res.send("Page not found!");
+      }))
+
 
       /*
       view = realtimedb.ref(`view-${project.id}`).once("value").then(snapshot => {
@@ -1949,7 +2002,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     // load views
     console.log("before view / firestore", new Date().getTime() - global.timer);
 
-    await db
+    promises.push(db
     .collection(`view-${project.id}`)
     .get()
     .then(q => {
@@ -1958,7 +2011,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         if (host.includes("localhost")) require("fs").writeFileSync(`database/view-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
       })
       console.log("after view", new Date().getTime() - global.timer);
-    })
+    }))
     
     /*if (global.data.page[currentPage].views.length > 0) {
 
@@ -1993,19 +2046,31 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     }*/
   }
 
-  console.log("Document Ready.");
+  await Promise.all(promises)
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
 
   // mount globals
-  if (global.data.page[currentPage].global)
+  /*if (global.data.page[currentPage].global)
     Object.entries(global.data.page[currentPage].global).map(
       ([key, value]) => (global[key] = value)
-    )
+    )*/
     
   // controls & views
-  views.root.controls = global.data.page[currentPage].controls || []
-  views.root.children = [global.data.view[global.data.page[currentPage].view]]
+  views.root.controls = clone(global.data.page[currentPage].controls || [])
+  views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
+
+  // inherit view name
+  views.root["my-views"] = [global.data.page[currentPage].view]
+  
+  var _window = { global, views, db }
+
+  // controls
+  /*toArray(views.root.controls).map((controls = {}) => {
+    var event = toCode({ _window, string: controls.event || "" })
+    if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ _window, req, res, string: event.split('?')[2] }))
+      toParam({ _window, string: event.split("?")[1], req, res })
+  })*/
   
   // meta
   global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
@@ -2017,10 +2082,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   // language & direction
   var language = global.language = global.data.page[currentPage].language || "en"
   var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
-  var _window = { global, views, db }
-
-  // inherit view name
-  views.root["my-views"].push(global.data.page[currentPage].view)
 
   // create html
   var innerHTML = ""
@@ -2028,6 +2089,18 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   innerHTML += createElement({ _window, id: "public", req, res })
 
   global.idList = innerHTML.split("id='").slice(1).map((id) => id.split("'")[0])
+  
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
+  
+  console.log("Document Ready.");
+
+  if (global.promises.length > 0) {
+    var { promises, ..._global } = global
+    global = { ..._global }
+  }
 
   res.send(
     `<!DOCTYPE html>
@@ -2067,7 +2140,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
 module.exports = { createDocument };
 
-},{"./createElement":45,"./jsonFiles":73,"dotenv":157,"fs":156}],45:[function(require,module,exports){
+},{"./clone":37,"./createElement":46,"./generate":62,"./jsonFiles":74,"./toArray":102,"./toCode":106,"./toParam":114,"dotenv":158,"fs":157}],46:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -2076,6 +2149,7 @@ const { createTags } = require("./createTags")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 const { toValue } = require("./toValue")
+const { toArray } = require("./toArray")
 
 const myViews = [
   "View",
@@ -2178,6 +2252,13 @@ const createElement = ({ _window, id, req, res }) => {
     return ""
   }
 
+  // before loading controls
+  toArray(view.controls).map((controls = {}) => {
+    var event = toCode({ _window, string: controls.event || "" })
+    if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2] }))
+      toParam({ req, res, _window, id, string: event.split("?")[1] })
+  })
+
   // push destructured params from type to view
   if (params) {
     
@@ -2231,7 +2312,7 @@ const createElement = ({ _window, id, req, res }) => {
 
 module.exports = { createElement }
 
-},{"./clone":36,"./createTags":46,"./generate":61,"./reducer":83,"./toApproval":100,"./toCode":105,"./toParam":113,"./toValue":119}],46:[function(require,module,exports){
+},{"./clone":37,"./createTags":47,"./generate":62,"./reducer":84,"./toApproval":101,"./toArray":102,"./toCode":106,"./toParam":114,"./toValue":120}],47:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2409,7 +2490,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":36,"./createComponent":43,"./createElement":45,"./execute":55,"./generate":61,"./toArray":101,"./toHtml":109}],47:[function(require,module,exports){
+},{"./clone":37,"./createComponent":44,"./createElement":46,"./execute":56,"./generate":62,"./toArray":102,"./toHtml":110}],48:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -2427,7 +2508,7 @@ const createView = ({ view, id = generate() }) => {
 }
 
 module.exports = {createView}
-},{"./clone":36,"./generate":61,"./toArray":101,"./update":121}],48:[function(require,module,exports){
+},{"./clone":37,"./generate":62,"./toArray":102,"./update":122}],49:[function(require,module,exports){
 const { toParam } = require("./toParam");
 
 module.exports = {
@@ -2478,7 +2559,7 @@ module.exports = {
         reader.readAsBinaryString(e.target.files[0]);
     }
 }
-},{"./toParam":113}],49:[function(require,module,exports){
+},{"./toParam":114}],50:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -2516,7 +2597,7 @@ const clearData = ({ id, e, clear = {} }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":36,"./reducer":83,"./setContent":91,"./setData":92}],50:[function(require,module,exports){
+},{"./clone":37,"./reducer":84,"./setContent":92,"./setData":93}],51:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -2542,7 +2623,7 @@ const decode = ({ _window, string }) => {
 
 module.exports = {decode}
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -2705,7 +2786,7 @@ const defaultInputHandler = ({ id }) => {
 }
 
 module.exports = { defaultInputHandler }
-},{"./data":49,"./isArabic":68,"./resize":87}],52:[function(require,module,exports){
+},{"./data":50,"./isArabic":69,"./resize":88}],53:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -2855,11 +2936,11 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":36,"./reducer":83,"./toString":117,"./toValue":119,"./update":121}],53:[function(require,module,exports){
+},{"./clone":37,"./reducer":84,"./toString":118,"./toValue":120,"./update":122}],54:[function(require,module,exports){
 const axios = require("axios");
 const { toString } = require("./toString")
 
-const erase = async ({ id, e, ...params }) => {
+const erase = async ({ _window, req, res, id, e, ...params }) => {
 
   var global = window.global
   var erase = params.erase || {}
@@ -2876,7 +2957,7 @@ const erase = async ({ id, e, ...params }) => {
   headers.erase = encodeURI(toString({ erase }))
 
   // access key
-  if (global["access-key"]) headers["access-key"] = global["access-key"]
+  if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
 
   var { data } = await axios.delete(`/${store}`, {
     headers: {
@@ -2885,14 +2966,15 @@ const erase = async ({ id, e, ...params }) => {
     }
   })
 
+  if (!view) return
   view.erase = global.erase = data
   console.log(data)
 
-  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, params })
 }
 
 module.exports = { erase }
-},{"./toAwait":102,"./toString":117,"axios":126}],54:[function(require,module,exports){
+},{"./toAwait":103,"./toString":118,"axios":127}],55:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -3064,7 +3146,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       }
       
       // onload event
-      if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _view.element })
+      if (event === "loaded"/* || event === "loading" || event === "beforeLoading"*/) return myFn({ target: _view.element })
       else if (id === "window") return window.addEventListener(event, myFn)
 
       // body event
@@ -3212,7 +3294,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":36,"./execute":55,"./generate":61,"./toApproval":100,"./toArray":101,"./toCode":105,"./toParam":113,"./toValue":119}],55:[function(require,module,exports){
+},{"./clone":37,"./execute":56,"./generate":62,"./toApproval":101,"./toArray":102,"./toCode":106,"./toParam":114,"./toValue":120}],56:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -3367,7 +3449,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
 module.exports = { execute }
 
-},{"./function":60,"./isParam":71,"./toApproval":100,"./toArray":101,"./toAwait":102,"./toCode":105,"./toParam":113,"./toValue":119}],56:[function(require,module,exports){
+},{"./function":61,"./isParam":72,"./toApproval":101,"./toArray":102,"./toAwait":103,"./toCode":106,"./toParam":114,"./toValue":120}],57:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -3383,7 +3465,7 @@ module.exports = {
         // linkElement.delete()
     }
 }
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 const { toValue } = require("./function")
 
 module.exports = {
@@ -3394,7 +3476,7 @@ module.exports = {
         reader.readAsDataURL(file)
     }
 }
-},{"./function":60}],58:[function(require,module,exports){
+},{"./function":61}],59:[function(require,module,exports){
 (function (global){(function (){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
@@ -3457,7 +3539,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":36,"./compare":37,"./isEqual":70,"./toArray":101,"./toOperator":112}],59:[function(require,module,exports){
+},{"./clone":37,"./compare":38,"./isEqual":71,"./toArray":102,"./toOperator":113}],60:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -3493,7 +3575,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -3671,7 +3753,7 @@ module.exports = {
   insert,
   axios
 }
-},{"./axios":32,"./blur":33,"./capitalize":34,"./clearValues":35,"./clone":36,"./compare":37,"./contentful":38,"./controls":39,"./cookie":40,"./createActions":42,"./createComponent":43,"./createDocument":44,"./createElement":45,"./createView":47,"./data":49,"./decode":50,"./defaultInputHandler":51,"./droplist":52,"./erase":53,"./event":54,"./execute":55,"./exportJson":56,"./fileReader":57,"./filter":58,"./focus":59,"./generate":61,"./getDateTime":62,"./getDaysInMonth":63,"./getParam":64,"./importJson":66,"./insert":67,"./isArabic":68,"./isEqual":70,"./isPath":72,"./jsonFiles":73,"./keys":74,"./log":75,"./merge":76,"./note":77,"./overflow":78,"./popup":79,"./position":80,"./preventDefault":81,"./reducer":83,"./refresh":84,"./reload":85,"./remove":86,"./resize":87,"./route":88,"./save":89,"./search":90,"./setContent":91,"./setData":92,"./setElement":93,"./setPosition":94,"./sort":95,"./starter":96,"./state":97,"./style":98,"./switchMode":99,"./toApproval":100,"./toArray":101,"./toAwait":102,"./toCSV":103,"./toCode":105,"./toComponent":106,"./toControls":107,"./toHtml":109,"./toId":110,"./toNumber":111,"./toOperator":112,"./toParam":113,"./toString":117,"./toStyle":118,"./toValue":119,"./toggleView":120,"./update":121,"./upload":123,"./wait":124}],61:[function(require,module,exports){
+},{"./axios":33,"./blur":34,"./capitalize":35,"./clearValues":36,"./clone":37,"./compare":38,"./contentful":39,"./controls":40,"./cookie":41,"./createActions":43,"./createComponent":44,"./createDocument":45,"./createElement":46,"./createView":48,"./data":50,"./decode":51,"./defaultInputHandler":52,"./droplist":53,"./erase":54,"./event":55,"./execute":56,"./exportJson":57,"./fileReader":58,"./filter":59,"./focus":60,"./generate":62,"./getDateTime":63,"./getDaysInMonth":64,"./getParam":65,"./importJson":67,"./insert":68,"./isArabic":69,"./isEqual":71,"./isPath":73,"./jsonFiles":74,"./keys":75,"./log":76,"./merge":77,"./note":78,"./overflow":79,"./popup":80,"./position":81,"./preventDefault":82,"./reducer":84,"./refresh":85,"./reload":86,"./remove":87,"./resize":88,"./route":89,"./save":90,"./search":91,"./setContent":92,"./setData":93,"./setElement":94,"./setPosition":95,"./sort":96,"./starter":97,"./state":98,"./style":99,"./switchMode":100,"./toApproval":101,"./toArray":102,"./toAwait":103,"./toCSV":104,"./toCode":106,"./toComponent":107,"./toControls":108,"./toHtml":110,"./toId":111,"./toNumber":112,"./toOperator":113,"./toParam":114,"./toString":118,"./toStyle":119,"./toValue":120,"./toggleView":121,"./update":122,"./upload":124,"./wait":125}],62:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -3691,7 +3773,7 @@ const generate = (params = {}) => {
 
 module.exports = {generate}
 
-},{}],62:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 module.exports = {
     getDateTime: (time) => {
         
@@ -3712,13 +3794,13 @@ module.exports = {
         return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 const getParam = ({ string, param, defValue }) => {
@@ -3742,7 +3824,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":113}],65:[function(require,module,exports){
+},{"./toParam":114}],66:[function(require,module,exports){
 module.exports = {
   getType: (value) => {
     if (typeof value === "boolean" || value === "true" || value === "false") return "boolean"
@@ -3761,7 +3843,7 @@ module.exports = {
     }
   }
 }
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 (function (global){(function (){
 const { toAwait } = require("./toAwait")
 
@@ -3802,7 +3884,7 @@ const importJson = ({ id, e, ...params }) => {
 
 module.exports = {importJson, getJson}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":102}],67:[function(require,module,exports){
+},{"./toAwait":103}],68:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
 const { starter } = require("./starter")
@@ -3891,7 +3973,7 @@ module.exports = {
     }
   }
 }
-},{"./clone":36,"./createElement":45,"./generate":61,"./setElement":93,"./starter":96,"./toArray":101,"./toParam":113}],68:[function(require,module,exports){
+},{"./clone":37,"./createElement":46,"./generate":62,"./setElement":94,"./starter":97,"./toArray":102,"./toParam":114}],69:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -3926,7 +4008,7 @@ const isArabic = ({ id, value, text }) => {
 
 module.exports = { isArabic }
 
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = {
     isCondition: ({ _window, string }) => {
         
@@ -3938,7 +4020,7 @@ module.exports = {
         return false
     }
 }
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -4030,7 +4112,7 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual}
 
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = {
     isParam: ({ _window, string }) => {
         
@@ -4043,7 +4125,7 @@ module.exports = {
         return false
     }
 }
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
@@ -4060,7 +4142,7 @@ module.exports = {
   },
 };
 
-},{}],73:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -4234,20 +4316,20 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":101,"./toOperator":112,"fs":156}],74:[function(require,module,exports){
+},{"./toArray":102,"./toOperator":113,"fs":157}],75:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],75:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -4312,7 +4394,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":36,"./toArray":101}],77:[function(require,module,exports){
+},{"./clone":37,"./toArray":102}],78:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -4348,7 +4430,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":68}],78:[function(require,module,exports){
+},{"./isArabic":69}],79:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var view = window.views[id]
@@ -4405,14 +4487,14 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 const popup = ({ id }) => {
   
 }
 
 module.exports = {popup}
 
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 const { converter } = require("./resize")
 
 const getPadding = (el) => {
@@ -4459,14 +4541,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":87}],81:[function(require,module,exports){
+},{"./resize":88}],82:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],82:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 module.exports = {
@@ -4486,7 +4568,7 @@ module.exports = {
         window.print()
     }
 }
-},{"./toParam":113}],83:[function(require,module,exports){
+},{"./toParam":114}],84:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -4512,6 +4594,7 @@ const { isParam } = require("./isParam")
 const { isCondition } = require("./isCondition")
 const { toAwait } = require("./toAwait")
 const toCSV = require("./toCSV")
+const actions = require("./actions.json")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, __, _i, e, req, res, mount, condition, createElement }) => {
     
@@ -4733,27 +4816,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "doc()" || path0 === "mail()" || path0 === "action()" || path0 === "exec()"
-    || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()" || path0 === "insert()"
-    || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
-    || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
-    || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
-    || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "blur()"
-    || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" 
-    || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" 
-    || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" 
-    || path0 === "getEntries()" || path0 === "entries()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" 
-    || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" 
-    || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" 
-    || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "csvToJson()"
-    || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "sort()" 
-    || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()" 
-    || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
-    || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
-    || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
-    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
-    || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()"
-    || path0 === "replaceItem()" || path0 === "grandParent()" || path0 === "grandChild()" || path0 === "grandChildren()" || path0 === "open()" || path0 === "2ndNext()" || path0 === "isNaN()")) {
+    if (!object && actions.includes(path0)) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -4829,38 +4892,46 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             else if (path0 === "getCookie()") {
 
-                // getCookie():name
-                if (isParam({ _window, string: args[1] })) {
-                    var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
-                    return getCookie({ ..._params, req, res })
-                }
-                var _name = toValue({ req, res, _window, id, e, _, __, _i, value: args[1] })
-                _object = getCookie({ name: _name, req, res })
-                if (!_object) return
+              // if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
+
+              // getCookie():name
+              if (isParam({ _window, string: args[1], req, res })) {
+                  var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
+                  return getCookie({ ..._params, req, res, _window })
+              }
+              var _name = toValue({ req, res, _window, id, e, _, __, _i, value: args[1] })
+              _object = getCookie({ name: _name, req, res, _window })
+              if (!_object) return
                 
             } else if (path0 === "eraseCookie()") {
 
+              if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
+
                 // getCookie():name
-                if (isParam({ _window, string: args[1] })) {
+                if (isParam({ _window, req, res, string: args[1] })) {
                     var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
-                    return eraseCookie({ ..._params, req, res })
+                    return eraseCookie({ ..._params, req, res, _window })
                 }
                 var _name = toValue({ req, res, _window, id, e, _, __, _i, value: args[1] })
-                _object = eraseCookie({ name: _name, req, res })
+                _object = eraseCookie({ name: _name, req, res, _window })
                 if (!_object) return
                 
             } else if (path0 === "setCookie()") {
+
+              if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
     
                 // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
                 var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
-                return setCookie({ ..._params, req, res })
+                return setCookie({ ..._params, req, res, _window })
     
             } else if (path0 === "cookie()") {
 
                 var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
-                if (params.method === "post") return setCookie({ ..._params, req, res })
-                if (params.method === "delete") return eraseCookie({ ..._params, req, res })
-                if (params.method === "get") return getCookie({ ..._params, req, res })
+
+                if (_window && params.method === "post" || params.method === "delete") return views.root.controls.push({ event: `loading?${path.join(".")}` })
+                if (params.method === "post") return setCookie({ ..._params, req, res, _window })
+                if (params.method === "delete") return eraseCookie({ ..._params, req, res, _window })
+                if (params.method === "get") return getCookie({ ..._params, req, res, _window })
             }
             
             else if (path0 === "today()") _object = new Date()
@@ -5946,7 +6017,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             // map not loaded yet
             if (view.status === "Loading") {
                 view.controls = toArray(view.controls)
-                view.controls.push({
+                return view.controls.push({
                     event: `loaded?${key}`
                 })
                 return 
@@ -5980,22 +6051,30 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "click()") {
             
-            var _params = {}, _o
-            if (args[1]) {
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
 
-                if (isParam({ _window, string: args[1] })) {
+          var _params = {}, _o
+          if (args[1]) {
 
-                    _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
+              if (isParam({ _window, string: args[1] })) {
 
-                } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-            } else _o = o
-            
-            if (typeof _o === "string" && views[_o]) views[_o].element.click()
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
-            else if (typeof _o === "object" && _o.element) _o.element.click()
+                  _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                  _o = _params.view || _params.id || _params.el || _params.element || o
+
+              } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+          } else _o = o
+          
+          if (typeof _o === "string" && views[_o]) views[_o].element.click()
+          else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
+          else if (typeof _o === "object" && _o.element) _o.element.click()
 
         } else if (k0 === "dblclick()") {
+            
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
             
             var _params = {}, _o
             if (args[1]) {
@@ -6019,6 +6098,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }, 0)
 
         } else if (k0 === "focus()") {
+            
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
 
             var _params = {}, _o
             if (args[1]) {
@@ -6036,6 +6119,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             focus({ id: _o.id })
 
         } else if (k0 === "blur()") { // blur
+            
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
 
             var _params = {}, _o
             if (args[1]) {
@@ -8284,13 +8371,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, _i })
-                require("./route").route({ id, route })
+                require("./route").route({ _window, req, res, id, route })
                 
             } else {
                 
                 var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, _i })
                 var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, _, __, _i })
-                require("./route").route({ id, route: { path: _path, page: _page } })
+                require("./route").route({ _window, id, req, res, route: { path: _path, page: _page } })
             }
 
         } else if (k0 === "toggleView()") {
@@ -8302,7 +8389,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _, __, _i })
             var _timer = toValue({ req, res, _window, id, e, value: args[4] || "", params, _, __, _i })
             */
-            require("./toggleView").toggleView({ _window, toggle, id })
+            require("./toggleView").toggleView({ _window, req, res, toggle, id })
 
         } else if (k0 === "preventDefault()") {
             
@@ -8350,14 +8437,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             var _text = k.split(":")[1]
             _text = toValue({ req, res, _window, id, e, _, __, _i,value: _text, params })
-            var mininoteControls = toCode({ string: `():mininote-text.txt()=${_text};clearTimer():[)(:mininote-timer];():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000` })
+            var mininoteControls = toCode({ _window, string: `():mininote-text.txt()=${_text};clearTimer():[)(:mininote-timer];():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _, __, _i })
 
         } else if (k0 === "tooltip()") {
           
             var _text = k.split(":")[1]
             _text = toValue({ req, res, _window, id, e, _, __, _i,value: _text, params })
-            var mininoteControls = toCode({ string: `():tooltip-text.txt()=${_text};clearTimer():[)(:tooltip-timer];():tooltip.style():[opacity=1;transform=scale(1)];)(:tooltip-timer=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
+            var mininoteControls = toCode({ _window, string: `():tooltip-text.txt()=${_text};clearTimer():[)(:tooltip-timer];():tooltip.style():[opacity=1;transform=scale(1)];)(:tooltip-timer=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _, __, _i })
 
         } else if (k0 === "readonly()") {
@@ -8400,6 +8487,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "update()") {
           
           var __id, _id, _params, _self
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
           
           if (isParam({ _window, string: args[1] })) {
 
@@ -8414,8 +8504,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
           if (!_id && o.id) _id = o.id
           
-          if (_self) return require("./updateSelf").updateSelf({ id: _id })
-          else return require("./update").update({ id: _id })
+          if (_self) return require("./updateSelf").updateSelf({ _window, req, res, id: _id })
+          else return require("./update").update({ _window, req, res, id: _id })
 
         } else if (k0 === "upload()") {
           
@@ -8424,10 +8514,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _await = ""
             var _upload = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
             if (args[2]) _await = global.codes[args[2]]
-            return require("./upload").upload({ id, e, _, __, _i, upload: _upload, asyncer: true, await: _await })
+            return require("./upload").upload({ _window, req, res, id, e, _, __, _i, upload: _upload, asyncer: true, await: _await })
           }
 
-          return require("./upload").upload({ id, e, save: { upload: { file: global.upload } }, _, __ })
+          return require("./upload").upload({ _window, req, res, id, e, save: { upload: { file: global.upload } }, _, __ })
 
         } else if (k0 === "confirmEmail()") {
           
@@ -8447,7 +8537,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _await = ""
             var _save = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
             if (args[2]) _await = global.codes[args[2]]
-            return require("./save").save({ id, e, _, __, _i, save: _save, asyncer: true, await: _await })
+            return require("./save").save({ _window, req, res, id, e, _, __, _i, save: _save, asyncer: true, await: _await })
           }
 
           var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
@@ -8455,7 +8545,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
           var _save = { collection: _collection, doc: _doc, data: _data }
 
-          return require("./save").save({ id, e, save: _save, _, __ })
+          return require("./save").save({ _window, req, res, id, e, save: _save, _, __ })
 
         } else if (k0 === "search()") {
           
@@ -8465,7 +8555,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _search = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
             if (args[2]) _await = global.codes[args[2]]
             
-            return require("./search").search({ id, e, _, __, _i,search: _search, asyncer: true, await: _await })
+            return require("./search").search({ _window, id, e, _, __, _i, req, res, search: _search, asyncer: true, await: _await })
           }
 
           var _collection = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
@@ -8473,7 +8563,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[3], params })
           var _search = { collection: _collection, doc: _doc, data: _data }
 
-          return require("./search").search({ id, e, search: _search, _, __ })
+          return require("./search").search({ _window, req, res, id, e, search: _search, _, __ })
 
         } else if (k0 === "erase()") {
           
@@ -8482,14 +8572,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
               var _await = ""
               var _erase = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
               if (args[2]) _await = global.codes[args[2]]
-              return require("./erase").erase({ id, e, _, __, _i, erase: _erase, asyncer: true, await: _await })
+              return require("./erase").erase({ _window, req, res, id, e, _, __, _i, erase: _erase, asyncer: true, await: _await })
             }
   
             var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
             var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
             var _erase = { collection: _collection, doc: _doc }
   
-            return require("./erase").erase({ id, e, save: _erase, _, __ })
+            return require("./erase").erase({ _window, req, res, id, e, save: _erase, _, __ })
   
           } else if (k0 === "setPosition()" || k0 === "position()") {
           
@@ -8865,7 +8955,7 @@ const open = (url) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./axios":32,"./capitalize":34,"./clone":36,"./cookie":40,"./counter":41,"./csvToJson":48,"./decode":50,"./droplist":52,"./erase":53,"./execute":55,"./exportJson":56,"./focus":59,"./generate":61,"./getDateTime":62,"./getDaysInMonth":63,"./getType":65,"./importJson":66,"./insert":67,"./isCondition":69,"./isEqual":70,"./isParam":71,"./note":77,"./print":82,"./refresh":84,"./remove":86,"./route":88,"./save":89,"./search":90,"./setPosition":94,"./sort":95,"./toApproval":100,"./toArray":101,"./toAwait":102,"./toCSV":103,"./toClock":104,"./toCode":105,"./toExcel":108,"./toId":110,"./toNumber":111,"./toParam":113,"./toPdf":114,"./toPrice":115,"./toSimplifiedDate":116,"./toValue":119,"./toggleView":120,"./update":121,"./updateSelf":122,"./upload":123,"uuid":161}],84:[function(require,module,exports){
+},{"./actions.json":32,"./axios":33,"./capitalize":35,"./clone":37,"./cookie":41,"./counter":42,"./csvToJson":49,"./decode":51,"./droplist":53,"./erase":54,"./execute":56,"./exportJson":57,"./focus":60,"./generate":62,"./getDateTime":63,"./getDaysInMonth":64,"./getType":66,"./importJson":67,"./insert":68,"./isCondition":70,"./isEqual":71,"./isParam":72,"./note":78,"./print":83,"./refresh":85,"./remove":87,"./route":89,"./save":90,"./search":91,"./setPosition":95,"./sort":96,"./toApproval":101,"./toArray":102,"./toAwait":103,"./toCSV":104,"./toClock":105,"./toCode":106,"./toExcel":109,"./toId":111,"./toNumber":112,"./toParam":114,"./toPdf":115,"./toPrice":116,"./toSimplifiedDate":117,"./toValue":120,"./toggleView":121,"./update":122,"./updateSelf":123,"./upload":124,"uuid":162}],85:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -8953,20 +9043,20 @@ const refresh = ({ id, update = {} }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":36,"./createElement":45,"./generate":61,"./setElement":93,"./starter":96,"./toArray":101,"./update":121}],85:[function(require,module,exports){
+},{"./clone":37,"./createElement":46,"./generate":62,"./setElement":94,"./starter":97,"./toArray":102,"./update":122}],86:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 
-const remove = ({ remove: _remove, id }) => {
+const remove = ({ _window, remove: _remove, id }) => {
 
   var views = window.views
   var view = window.views[id]
@@ -8989,13 +9079,13 @@ const remove = ({ remove: _remove, id }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
   // close actionlist
   if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
   }
 
@@ -9045,7 +9135,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":36,"./reducer":83,"./toCode":105,"./toParam":113,"./update":121}],87:[function(require,module,exports){
+},{"./clone":37,"./reducer":84,"./toCode":106,"./toParam":114,"./update":122}],88:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -9146,20 +9236,23 @@ var converter = (dimension) => {
 
 module.exports = {resize, dimensions, converter}
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
+const { clone } = require("./clone")
+const { toParam } = require("./toParam")
 const { search } = require("./search")
+const { toArray } = require("./toArray")
+const { toCode } = require("./toCode")
 const { update } = require("./update")
+const { toApproval } = require("./toApproval")
 
 module.exports = {
-    route: async ({ id, route = {} }) => {
+    route: async ({ _window, route = {}, req, res }) => {
 
-        var views = window.views
-        var global = window.global
+        var views = _window ? _window.views : window.views
+        var global = _window ? _window.global : window.global
         var path = route.path || global.path
         var currentPage = global.currentPage = route.page || path.split("/")[1] || "main"
         // var notAvailableViews = []
-        
-        document.getElementsByClassName("loader-container")[0].style.display = "flex"
 
         /*if (!global.data.page[currentPage]) {
             
@@ -9186,23 +9279,45 @@ module.exports = {
         global.currentPage = currentPage
         global.path = route.path ? path : currentPage === "main" ? "/" : currentPage
 
+        if (res) {
+
+          // controls & views
+          views.root.controls = clone(global.data.page[currentPage].controls || [])
+          views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
+
+          // inherit view name
+          views.root["my-views"] = [global.data.page[currentPage].view]
+
+          // controls
+          toArray(views.root.controls).map((controls = {}) => {
+            var event = toCode({ _window, string: controls.event || "" })
+            if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
+              toParam({ req, res, _window, string: event.split("?")[1], req, res })
+          })
+
+          return
+        }
+
         history.pushState(null, title, global.path)
         document.title = title
         
-        update({ id: "root" })
+        document.getElementsByClassName("loader-container")[0].style.display = "flex"
+
+        update({ _window, req, res, id: "root" })
         document.body.scrollTop = document.documentElement.scrollTop = 0
         
         document.getElementsByClassName("loader-container")[0].style.display = "none"
     }
 }
-},{"./search":90,"./update":121}],89:[function(require,module,exports){
+},{"./clone":37,"./search":91,"./toApproval":101,"./toArray":102,"./toCode":106,"./toParam":114,"./update":122}],90:[function(require,module,exports){
 var { clone } = require("./clone")
 
-const save = async ({ id, e, ...params }) => {
+const save = async ({ _window, req, res, id, e, ...params }) => {
 
-  var global = window.global
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.global : window.global
   var save = params.save || {}
-  var view = window.views[id]
+  var view = views[id]
   var _data = clone(save.data)
   var headers = clone(save.headers) || {}
   var store = save.store || "database"
@@ -9211,66 +9326,311 @@ const save = async ({ id, e, ...params }) => {
   delete save.headers
 
   // access key
-  if (global["access-key"]) headers["access-key"] = global["access-key"]
+  if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
 
   if (save.doc || save.id || (typeof _data === "object" && !Array.isArray(_data) && _data.id)) save.doc = save.doc || save.id || _data.id
-  if (!save.doc && (Array.isArray(data) ? !data.find(data => !data.id) : false)) return
-  delete save.data
+  if (!save.doc && (Array.isArray(_data) ? _data.find(data => !data.id) : false)) return
+    
+  if (_window) {
+    
+    var collection = save.collection, success, message
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   
-  var { data } = await require("axios").post(`/${store}`, { save, data: _data }, {
-    headers: {
-      "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...headers
+    var ref = req.db.collection(collection)
+    if (Array.isArray(save.data)) {
+
+      save.data.map(data => {
+
+        global.promises.push(ref.doc(data.id.toString()).set(data).then(() => {
+
+          success = true
+          message = `Document saved successfuly!`
+    
+        }).catch(error => {
+    
+          success = false
+          message = error
+        }))
+      })
+
+    } else if (save.doc) {
+
+      global.promises.push(ref.doc(save.doc.toString() || save.id.toString() || save.data.id.toString()).set(save.data).then(() => {
+
+        success = true
+        message = `Document saved successfuly!`
+
+      }).catch(error => {
+
+        success = false
+        message = error
+      }))
     }
-  })
-
-  if (store === "confirmEmail") view.confirmEmail = data
-  else view.save = global.save = data
-
-  console.log(data)
-
-  // await params
-  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
-}
-
-module.exports = { save }
-},{"./clone":36,"./toAwait":102,"axios":126}],90:[function(require,module,exports){
-const axios = require('axios')
-const { toString } = require('./toString')
-const { clone } = require('./clone')
-
-module.exports = {
-  search: async ({ id = "", e, ...params }) => {
-      
-    var global = window.global
-    var search = params.search || {}
-    var view = window.views[id]
-    var headers = search.headers || {}
-    headers.project = headers.project || global.projectId
-    var store = search.store || "database"
     
-    if (global["access-key"]) headers["access-key"] = global["access-key"]
-    delete search.headers
+    await global.promises[global.promises.length - 1]
+    _data = { data: save.data, success, message }
 
-    // search
-    headers.search = encodeURI(toString({ search }))
+  } else {
     
-    var { data } = await axios.get(`/${store}`, {
+    delete save.data
+    
+    var { data: _data } = await require("axios").post(`/${store}`, { save, data: _data }, {
       headers: {
         "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
         ...headers
       }
     })
+  }
+
+  if (!view) return
+  if (store === "confirmEmail") view.confirmEmail = _data
+  else view.save = global.save = _data
+
+  if (!_window) console.log(_data)
+
+  // await params
+  if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, params })
+}
+
+module.exports = { save }
+},{"./clone":37,"./toAwait":103,"axios":127}],91:[function(require,module,exports){
+const axios = require('axios')
+const { toString } = require('./toString')
+const { clone } = require('./clone')
+
+module.exports = {
+  search: async ({ _window, id = "", req, res, e, ...params }) => {
+      
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+
+    var view = views[id], _data
+    var search = params.search || {}
+    var headers = search.headers || {}
+    var store = search.store || "database"
+    headers.project = headers.project || global.projectId
     
-    view.search = global.search = clone(data)
-    console.log(data)
-    if (data.message === "Force reload!") return location.reload()
+    if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
+    delete search.headers
+    
+    if (_window) {
+      
+      var collection = search.collection
+      if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${headers["project"]}`
+
+      var doc = search.document || search.doc,
+      docs = search.documents || search.docs,
+      field = search.field || search.fields,
+      limit = search.limit || 25,
+      data = {}, success, message,
+      ref = req.db.collection(collection),
+      promises = [], project
+    
+      /////////////////// verify access key ///////////////////// access key is stopped
+      // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
+      project = { ["accesskey"]: req.headers["accesskey"] }
+      
+      if (search.url) {
+
+        var url = search.url
+        delete search.url
+
+        if (url.slice(-1) === "/") url = url.slice(0, -1)
+        
+        try {
+          data = await axios.get(url, { timeout: 1000 * 10 })
+          .then(res => res.doesNotExist.throwAnError)
+          .catch(err => err)
+
+          data = data.data
+          //data = JSON.parse(data)
+          success = true
+          message = `Document/s mounted successfuly!`
+
+        } catch (err) {
+          data = {}
+          success = false
+          message = `Error!`
+        }
+
+        _data = { data, success, message }
+      }
+
+      else if (docs) {
+
+        var _docs = [], index = 1, length = Math.floor(search.docs.length / 10) + (search.docs.length % 10 > 0 ? 1 : 0), promises = []
+        while (index <= length) {
+          _docs.push(search.docs.slice((index - 1) * 10, index * 10))
+          index += 1
+        }
+        
+        _docs.map(docList => {
+          promises.push(ref.where("id", "in", docList).get().then(docs => {
+
+            success = true
+            docs.forEach(doc => data[doc.id] = doc.data())
+            message = `Documents mounted successfuly!`
+
+          }).catch(error => {
+
+            success = false
+            message = `An error occured!`
+
+          }))
+        })
+
+        global.promises.push(...promises)
+        await Promise.all(promises)
+        /*
+        if (project["accesskey"] !== req.headers["accesskey"]) {
+
+          success = false
+          message = `Your are not verified!`
+          return res.send({ success, message })
+        }
+        */
+      
+        _data = { data, success, message }
+      }
+
+      else if (doc) {
+        
+        global.promises.push(ref.doc(doc.toString()).get().then(doc => {
+          
+          success = true
+          data = doc.data()
+          message = `Document mounted successfuly!`
+
+        }).catch(error => {
+
+          success = false
+          message = `An error Occured!`
+        }))
+        
+        // await Promise.all(promises)
+        if (project["accesskey"] !== req.headers["accesskey"]) {
+
+          success = false
+          message = `Your are not verified!`
+          _data = { success, message }
+        }
+        
+        await global.promises[global.promises.length - 1]
+        _data = { data, success, message }
+      }
+
+      else if (!doc && !field) {
+
+        if (limit) ref = ref.limit(limit)
+        
+        global.promises.push(ref.get().then(q => {
+          
+          q.forEach(doc => data[doc.id] = doc.data())
+
+          success = true
+          message = `Documents mounted successfuly!`
+
+        }).catch(error => {
+          
+          success = false
+          message = `An error Occured!`
+        }))
+        
+        // await Promise.all(promises)
+        if (project["accesskey"] !== req.headers["accesskey"]) {
+
+          success = false
+          message = `Your are not verified!`
+          return res.send({ success, message })
+        }
+
+        await global.promises[global.promises.length - 1]
+        _data = { data, success, message }
+      }
+
+      else {
+        const myPromise = () => new Promise(async (resolve, rej) => {
+
+          // search field
+          var multiIN = false, _ref = ref
+          if (field) Object.entries(field).map(([key, value]) => {
+
+            var _value = value[Object.keys(value)[0]]
+            var operator = toFirebaseOperator(Object.keys(value)[0])
+            if (operator === "in" && _value.length > 10) {
+
+              field[key][Object.keys(value)[0]] = [..._value.slice(10)]
+              _value = [..._value.slice(0, 10)]
+              multiIN = true
+            }
+            _ref = _ref.where(key, operator, _value)
+          })
+          
+          if (search.orderBy) _ref = _ref.orderBy(search.orderBy)
+          if (search.limit || 100) _ref = _ref.limit(search.limit || 100)
+          if (search.offset) _ref = _ref.endAt(search.offset)
+          if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
+
+          if (search.startAt) _ref = _ref.startAt(search.startAt)
+          if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
+
+          if (search.endAt) _ref = _ref.endAt(search.endAt)
+          if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
+
+          // retrieve data
+          await _ref.get().then(query => {
+
+            success = true
+            query.docs.forEach(doc => data[doc.id] = doc.data())
+            message = `Documents mounted successfuly!`
+
+          }).catch(error => {
+            
+            success = false
+            message = error
+          })
+
+          if (multiIN) {
+
+            var { data: _data } = await myPromise()
+            data = { ...data, ..._data }
+          }
+          
+          resolve({ data, success, message })
+          /*setTimeout(() => {
+            res("foo")
+          }, 10000)*/
+        })
+
+        global.promises.push(myPromise())
+        
+        await global.promises[global.promises.length - 1]
+        _data = { data, success, message }
+      }
+
+    } else {
+
+      // search
+      headers.search = encodeURI(toString({ search }))
+
+      var { data: _data } = await axios.get(`/${store}`, {
+        headers: {
+          "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+          ...headers
+        }
+      })
+    }
+    
+    if (!view) return
+    view.search = global.search = clone(_data)
+    if (!_window) console.log(_data)
+    if (_data.message === "Force reload!") return location.reload()
     
     // await params
-    if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
+    if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res })
   }
 }
-},{"./clone":36,"./toAwait":102,"./toString":117,"axios":126}],91:[function(require,module,exports){
+},{"./clone":37,"./toAwait":103,"./toString":118,"axios":127}],92:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -9293,7 +9653,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":68}],92:[function(require,module,exports){
+},{"./isArabic":69}],93:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
@@ -9337,27 +9697,27 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":36,"./reducer":83}],93:[function(require,module,exports){
-(function (global){(function (){
+},{"./clone":37,"./reducer":84}],94:[function(require,module,exports){
 const { controls } = require("./controls")
+const { toParam } = require("./toParam")
+const { toApproval } = require("./toApproval")
 // const { starter } = require("./starter")
 const { toArray } = require("./toArray")
+const { toCode } = require("./toCode")
 
-const setElement = ({ id }) => {
+const setElement = ({ _window, id }) => {
 
     var view = window.views[id]
     if (!view) return console.log("No Element", id)
     
-    // before loading event
-    var beforeLoadingControls = view.controls && toArray(view.controls).filter(controls => controls.event && toArray(controls.event)[0].split("?")[0].includes("beforeLoading"))
-    if (beforeLoadingControls) {
-
-        var currentPage = global.currentPage
-        controls({ controls: beforeLoadingControls, id })
-        view.controls = toArray(view.controls).filter(controls => controls.event ? !toArray(controls.event)[0].includes("beforeLoading") : true)
-
-        // page routed
-        if (currentPage !== global.currentPage) return true
+    // loading controls
+    if (view.controls) {
+      
+      toArray(view.controls).map((controls = {}) => {
+        var event = toCode({ _window, string: controls.event || "" })
+        if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "loading") && toApproval({ id, string: controls.event.split('?')[2] })) 
+          toParam({ id, string: controls.event.split("?")[1] })
+      })
     }
 
     // status
@@ -9371,8 +9731,7 @@ const setElement = ({ id }) => {
 }
     
 module.exports = { setElement }
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./controls":39,"./toArray":101}],94:[function(require,module,exports){
+},{"./controls":40,"./toApproval":101,"./toArray":102,"./toCode":106,"./toParam":114}],95:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
   
   var views = window.views
@@ -9546,7 +9905,7 @@ const setPosition = ({ position, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -9554,7 +9913,7 @@ const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 const { toNumber } = require("./toNumber")
 
-const sort = ({ sort = {}, id, e }) => {
+const sort = ({ _window, sort = {}, id, e }) => {
 
   var view = window.views[id]
   if (!view) return
@@ -9572,7 +9931,7 @@ const sort = ({ sort = {}, id, e }) => {
 
   // path
   var path = sort.path
-  if (typeof sort.path === "string") path = toArray(toCode({ string: path, e }).split("."))
+  if (typeof sort.path === "string") path = toArray(toCode({ _window, string: path, e }).split("."))
   if (!path) path = []
   var isDate = false
   
@@ -9673,7 +10032,7 @@ const sort = ({ sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":36,"./reducer":83,"./toArray":101,"./toCode":105,"./toNumber":111}],96:[function(require,module,exports){
+},{"./clone":37,"./reducer":84,"./toArray":102,"./toCode":106,"./toNumber":112}],97:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -9730,12 +10089,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":14,"./controls":39,"./defaultInputHandler":51,"./event":54,"./isArabic":68,"./resize":87,"./toArray":101,"./toParam":113}],97:[function(require,module,exports){
+},{"../control/control":14,"./controls":40,"./defaultInputHandler":52,"./event":55,"./isArabic":69,"./resize":88,"./toArray":102,"./toParam":114}],98:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -9845,7 +10204,7 @@ const mountAfterStyles = ({ id }) => {
       if (view.element) myFn()
       else {
         view.controls = toArray(view.controls)
-        view.controls.push({
+        return view.controls.push({
           event: `loaded?().element.style.${key}=${value}`
         })
       }
@@ -9855,7 +10214,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":87,"./toArray":101}],99:[function(require,module,exports){
+},{"./resize":88,"./toArray":102}],100:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -9919,7 +10278,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":34,"./clone":36,"./style":98}],100:[function(require,module,exports){
+},{"./capitalize":35,"./clone":37,"./style":99}],101:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 const { clone } = require("./clone")
@@ -9930,6 +10289,7 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
   const { toParam } = require("./function")
+  var _functions = require("./function")
 
   // no string but object exists
   if (!string)
@@ -10017,13 +10377,14 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
     var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
-      if (!isFn) {
-        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-        // console.log(isFn, key, view, global.data.view);
-      }
-    })
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)]) {
+      clone(view["my-views"]).reverse().map(view => {
+        if (!isFn) {
+          isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+        }
+      })
+    }
 
     if (isFn) {
       var _params = path[0].split(":")[1]
@@ -10058,16 +10419,16 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
 
 module.exports = { toApproval }
 
-},{"./clone":36,"./function":60,"./generate":61,"./isEqual":70,"./reducer":83,"./toCode":105,"./toValue":119}],101:[function(require,module,exports){
+},{"./clone":37,"./function":61,"./generate":62,"./isEqual":71,"./reducer":84,"./toCode":106,"./toValue":120}],102:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],102:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 module.exports = {
-  toAwait: ({ id, e, params = {} }) => {
+  toAwait: ({ _window, id, e, params = {}, req, res }) => {
 
     const { execute } = require("./execute")
     const { toParam } = require("./toParam")
@@ -10080,16 +10441,16 @@ module.exports = {
     delete params.await
 
     // get params
-    awaits = require("./toCode").toCode({ string: awaits, e })
-    if (awaits && awaits.length > 0) _params = toParam({ id, e, string: awaits, asyncer: true, _: params._, __: params.__ })
+    awaits = require("./toCode").toCode({ _window, string: awaits, e })
+    if (awaits && awaits.length > 0) _params = toParam({ _window, id, e, string: awaits, asyncer: true, _: params._, __: params.__, req, res })
     if (_params && _params.break) return
 
     // override params
     if (_params) params = { ...params, ..._params }
-    if (awaiter) execute({ id, e, actions: awaiter, params, _: params._, __: params.__ })
+    if (awaiter) execute({ _window, id, e, actions: awaiter, params, _: params._, __: params.__, req, res})
   }
 }
-},{"./execute":55,"./toCode":105,"./toParam":113}],103:[function(require,module,exports){
+},{"./execute":56,"./toCode":106,"./toParam":114}],104:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -10164,7 +10525,7 @@ module.exports = {
         }
     }
 }
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -10185,7 +10546,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
@@ -10254,7 +10615,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
 module.exports = { toCode }
 
-},{"./generate":61}],106:[function(require,module,exports){
+},{"./generate":62}],107:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -10287,12 +10648,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":61,"./toArray":101}],107:[function(require,module,exports){
+},{"./generate":62,"./toArray":102}],108:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 const XLSX = require("xlsx")
 
 module.exports = {
@@ -10317,7 +10678,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{"xlsx":177}],109:[function(require,module,exports){
+},{"xlsx":178}],110:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
@@ -10436,7 +10797,7 @@ module.exports = {
     return tag
   }
 }
-},{"./clone":36,"./createElement":45,"./generate":61,"./toArray":101,"./toStyle":118}],110:[function(require,module,exports){
+},{"./clone":37,"./createElement":46,"./generate":62,"./toArray":102,"./toStyle":119}],111:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -10465,7 +10826,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":61}],111:[function(require,module,exports){
+},{"./generate":62}],112:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -10486,7 +10847,7 @@ module.exports = {
   },
 };
 
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -10502,7 +10863,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -10511,6 +10872,7 @@ const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 const { isParam } = require("./isParam")
 const { toArray } = require("./toArray")
+const actions = require("./actions.json")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -10521,7 +10883,9 @@ function sleep(milliseconds) {
 }
 
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, _i, asyncer, createElement, params = {}, executer }) => {
+  
   const { toApproval } = require("./toApproval")
+  var _functions = require("./function")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
   var views = _window ? _window.views : window.views
@@ -10581,189 +10945,191 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
 
     // events attached to type
-  if (createElement) {
+    if (createElement) {
 
-    // mouseenter
-    if (param.slice(0, 10) === "mouseenter") {
+      // mouseenter
+      if (param.slice(0, 10) === "mouseenter") {
 
-      param = param.slice(11)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mouseenter = view.mouseenter || ""
-      return view.mouseenter += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // click
-    if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
-
-      param = param.slice(6)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.click = view.click || ""
-      return view.click += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // change
-    if (param.slice(0, 6) === "change") {
-
-      param = param.slice(7)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.change = view.change || ""
-      return view.change += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // mouseleave
-    if (param.slice(0, 10) === "mouseleave") {
-
-      param = param.slice(11)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mouseleave = view.mouseleave || ""
-      return view.mouseleave += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // mouseover
-    if (param.slice(0, 9) === "mouseover") {
-
-      param = param.slice(10)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mouseover = view.mouseover || ""
-      return view.mouseover += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // mousedown
-    if (param.slice(0, 9) === "mousedown") {
-
-      param = param.slice(10)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mousedown = view.mousedown || ""
-      return view.mousedown += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // mouseup
-    if (param.slice(0, 7) === "mouseup") {
-
-      param = param.slice(8)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mouseup = view.mouseup || ""
-      return view.mouseup += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // keypress
-    if (param.slice(0, 8) === "keypress") {
-
-      param = param.slice(9)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.keypress = view.keypress || ""
-      return view.keypress += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // keyup
-    if (param.slice(0, 5) === "keyup") {
-
-      param = param.slice(6)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.keyup = view.keyup || ""
-      return view.keyup += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // keydown
-    if (param.slice(0, 7) === "keydown") {
-
-      param = param.slice(8)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.keydown = view.keydown || ""
-      return view.keydown += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // loaded
-    if (param.slice(0, 6) === "loaded") {
-
-      param = param.slice(7)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.loaded = view.loaded || ""
-      return view.loaded += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // children
-    if (param.slice(0, 8) === "children") {
-
-      var _children = []
-      param = param.slice(9)
-      param.split(":").map(param => {
-
+        param = param.slice(11)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
         if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        _children.push({ type: param })
-      })
+        view.mouseenter = view.mouseenter || ""
+        return view.mouseenter += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
 
-      view.children = toArray(view.children)
-      view.children.unshift(..._children)
-      return view.children
-    }
+      // click
+      if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
 
-    // children
-    if (param.slice(0, 5) === "child") {
-
-      var _children = []
-      param = param.slice(6)
-      param.split(":").map(param => {
-
+        param = param.slice(6)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
         if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        _children.push({ type: param })
-      })
+        view.click = view.click || ""
+        return view.click += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
 
-      view.children = toArray(view.children)
-      view.children.unshift(..._children)
-      return view.children
+      // change
+      if (param.slice(0, 6) === "change") {
+
+        param = param.slice(7)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.change = view.change || ""
+        return view.change += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // mouseleave
+      if (param.slice(0, 10) === "mouseleave") {
+
+        param = param.slice(11)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.mouseleave = view.mouseleave || ""
+        return view.mouseleave += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // mouseover
+      if (param.slice(0, 9) === "mouseover") {
+
+        param = param.slice(10)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.mouseover = view.mouseover || ""
+        return view.mouseover += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // mousedown
+      if (param.slice(0, 9) === "mousedown") {
+
+        param = param.slice(10)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.mousedown = view.mousedown || ""
+        return view.mousedown += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // mouseup
+      if (param.slice(0, 7) === "mouseup") {
+
+        param = param.slice(8)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.mouseup = view.mouseup || ""
+        return view.mouseup += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // keypress
+      if (param.slice(0, 8) === "keypress") {
+
+        param = param.slice(9)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.keypress = view.keypress || ""
+        return view.keypress += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // keyup
+      if (param.slice(0, 5) === "keyup") {
+
+        param = param.slice(6)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.keyup = view.keyup || ""
+        return view.keyup += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // keydown
+      if (param.slice(0, 7) === "keydown") {
+
+        param = param.slice(8)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.keydown = view.keydown || ""
+        return view.keydown += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // loaded
+      if (param.slice(0, 6) === "loaded") {
+
+        param = param.slice(7)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.loaded = view.loaded || ""
+        return view.loaded += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // children
+      if (param.slice(0, 8) === "children") {
+
+        var _children = []
+        param = param.slice(9)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _children.push({ type: param })
+        })
+
+        view.children = toArray(view.children)
+        view.children.unshift(..._children)
+        return view.children
+      }
+
+      // children
+      if (param.slice(0, 5) === "child") {
+
+        var _children = []
+        param = param.slice(6)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _children.push({ type: param })
+        })
+
+        view.children = toArray(view.children)
+        view.children.unshift(..._children)
+        return view.children
+      }
     }
-  }
 
     // show loader
-    if (param === "loader.show") {
+    if (!_window && param === "loader.show") {
       document.getElementsByClassName("loader-container")[0].style.display = "flex"
       return sleep(10)
     }
     
     // hide loader
-    if (param === "loader.hide") {
+    if (!_window && param === "loader.hide") {
       document.getElementsByClassName("loader-container")[0].style.display = "none"
       return sleep(10)
     }
 
     if (value === undefined) value = generate()
-    else value = toValue({ _window, id, e, value, params, req, res, _, __ })
+    else value = toValue({ _window, req, res, id, e, value, params, _, __ })
 
     id = viewId
 
     var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && view) clone(view["my-views"]).reverse().map(view => {
-      if (!isFn) {
-        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-        // console.log(isFn, key, view, global.data.view);
-      }
-    })
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()") {
+      
+      clone(view["my-views"]).reverse().map(view => {
+        if (!isFn) {
+          isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+        }
+      })
+    }
 
     if (isFn) {
       var _params = path[0].split(":")[1]
@@ -10772,6 +11138,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
           _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
         else _params = toValue({ req, res, _window, id, e, _, __, _i, value: _params })
       }
+      
       return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), _i, asyncer, createElement, params, executer })
     }
 
@@ -10861,7 +11228,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
 module.exports = { toParam }
 
-},{"./clone":36,"./decode":50,"./generate":61,"./isParam":71,"./reducer":83,"./toApproval":100,"./toArray":101,"./toCode":105,"./toValue":119}],114:[function(require,module,exports){
+},{"./actions.json":32,"./clone":37,"./decode":51,"./function":61,"./generate":62,"./isParam":72,"./reducer":84,"./toApproval":101,"./toArray":102,"./toCode":106,"./toValue":120}],115:[function(require,module,exports){
 module.exports = {
     toPdf: async ({ id, options }) => {
 
@@ -10890,14 +11257,14 @@ module.exports = {
         }
     }
 }
-},{}],115:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 module.exports = {
   toPrice: (string) => {
     return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 };
 
-},{}],116:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -10945,7 +11312,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -10979,7 +11346,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],118:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -11054,7 +11421,7 @@ module.exports = {
   }
 }
 
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 const { clone } = require("./clone");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
@@ -11075,6 +11442,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
 
   var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
+  var _functions = require("./function")
 
   // no value
   if (!value) return value
@@ -11170,11 +11538,10 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   var path = typeof value === "string" ? value.split(".") : [], isFn = false, path0 = path[0].split(":")[0]
 
   // function
-  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && view) clone(view["my-views"]).reverse().map(view => {
+  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)]) clone(view["my-views"]).reverse().map(view => {
     if (!isFn) {
       isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
       if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-      // console.log(isFn, value, view, global.data.view[view].functions);
     }
   })
 
@@ -11320,7 +11687,7 @@ const calcSubs = ({ _window, value, params, _, __, _i, id, e, req, res, object }
 
 module.exports = { toValue, calcSubs }
 
-},{"./clone":36,"./generate":61,"./isParam":71,"./reducer":83,"./toCode":105,"./toParam":113}],120:[function(require,module,exports){
+},{"./clone":37,"./function":61,"./generate":62,"./isParam":72,"./reducer":84,"./toCode":106,"./toParam":114}],121:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -11331,10 +11698,10 @@ const { search } = require("./search")
 const { toCode } = require("./toCode")
 const { toParam } = require("./toParam")
 
-const toggleView = async ({ toggle, id }) => {
+const toggleView = async ({ _window, toggle, id, res }) => {
 
-  var views = window.views
-  var global = window.global
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.global : window.global
   var togglePage = toggle.page, view = {}
   var viewId = toggle.viewId || toggle.view
   var toggleId = toggle.id
@@ -11360,8 +11727,7 @@ const toggleView = async ({ toggle, id }) => {
   var children = []
   if (togglePage) {
 
-    var currentPage = global.currentPage = togglePage.split("/")[0]
-    var notAvailableViews = []
+    /*var notAvailableViews = []
 
     if (!global.data.page[global.currentPage]) {
 
@@ -11369,7 +11735,6 @@ const toggleView = async ({ toggle, id }) => {
       global.data.page[currentPage] = views.root.search.data
     }
 
-    viewId = global.data.page[currentPage].view
 
     // check availability of views
     global.data.page[currentPage].views.map(viewId => {
@@ -11382,26 +11747,17 @@ const toggleView = async ({ toggle, id }) => {
       Object.entries(views.root.search.data).map(([doc, data]) => {
         global.data.view[doc] = data
       })
-    }
+    }*/
 
-    var title = global.data.page[global.currentPage].title
+    var currentPage = global.currentPage = togglePage.split("/")[0]
+    var title = global.data.page[currentPage].title
+    
+    viewId = global.data.page[currentPage].view
     global.path = togglePage = togglePage === "main" ? "/" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title
     view = views.root
-    /*
-    await global.data.page[global.currentPage]["views"].map(async view => {
-
-    // view doesnot exist? => get from database
-      if (!global.data.view[view]) {
-
-        
-      }
-
-      children.push(global.data.view[view])
-    })
-    */
 
   } else view = views[parentId]
 
@@ -11412,14 +11768,21 @@ const toggleView = async ({ toggle, id }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
   // close actionlist
   if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
+  }
+        
+  if (res) {
+    
+    views.root.controls = clone(global.data.page[currentPage].controls || [])
+    views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
+    return
   }
 
   // fadeout
@@ -11490,7 +11853,7 @@ const toggleView = async ({ toggle, id }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":36,"./createElement":45,"./generate":61,"./search":90,"./setElement":93,"./starter":96,"./toCode":105,"./toParam":113,"./update":121}],121:[function(require,module,exports){
+},{"./clone":37,"./createElement":46,"./generate":62,"./search":91,"./setElement":94,"./starter":97,"./toCode":106,"./toParam":114,"./update":122}],122:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -11500,25 +11863,26 @@ const { clone } = require("./clone")
 const { controls } = require("./controls")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
+const { toApproval } = require("./toApproval")
 
-const update = ({ id, update = {} }) => {
+const update = ({ id, _window, req, res, update = {} }) => {
 
-  var views = window.views
-  var global = window.global
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.views : window.global
   var view = views[id]
   
   if (!view || !view.element) return
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
-    toParam({ string: closeDroplist, id: "droplist" })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    toParam({ _window, req, res, string: closeDroplist, id: "droplist" })
   }
   
   // close actionlist
   if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
-    toParam({ string: closeActionlist, id: "actionlist" })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    toParam({ _window, req, res, string: closeActionlist, id: "actionlist" })
   }
 
   // children
@@ -11528,14 +11892,22 @@ const update = ({ id, update = {} }) => {
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") views.root.children = children = clone([global.data.view[global.data.page[global.currentPage].view]])
+  if (id === "root") {
+    views.root.children = children = clone([global.data.view[global.data.page[global.currentPage].view]])
+    children.controls = toArray(children.controls)
 
-  // onloading
-  if (id === "root" && global.data.page[global.currentPage].controls) {
+    // page controls
+    if (global.data.page[global.currentPage].controls) children.controls.push(global.data.page[global.currentPage].controls)
+  }
 
-    var loadingEventControls = toArray(global.data.page[global.currentPage].controls)
-      .find(controls => controls.event.split("?")[0].includes("loading"))
-    if (loadingEventControls) controls({ id: "root", controls: loadingEventControls })
+  // before loading controls
+  if (children.controls) {
+    
+    toArray(children.controls).map((controls = {}) => {
+      var event = toCode({ _window, string: controls.event || "" })
+      if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ _window, req, res, id, string: event.split('?')[2] })) 
+        toParam({ _window, req, res, id, string: event.split("?")[1] })
+    })
   }
   
   var innerHTML = children
@@ -11548,10 +11920,8 @@ const update = ({ id, update = {} }) => {
     views[id].parent = view.id
     views[id].style = views[id].style || {}
     views[id]["my-views"] = [...view["my-views"]]
-    //views[id].style.opacity = "0"
-    //if (timer) views[id].style.transition = `opacity ${timer}ms`
     
-    return createElement({ id })
+    return createElement({ _window, req, res, id })
 
   }).join("")
   
@@ -11560,8 +11930,8 @@ const update = ({ id, update = {} }) => {
 
   var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   
-  idList.map(id => setElement({ id }))
-  idList.map(id => starter({ id }))
+  idList.map(id => setElement({ _window, req, res, id }))
+  idList.map(id => starter({ _window, req, res, id }))
   
   /*var children = [...view.element.children]
   if (timer) setTimeout(() => {
@@ -11607,7 +11977,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":36,"./controls":39,"./createElement":45,"./generate":61,"./setElement":93,"./starter":96,"./toArray":101,"./toCode":105,"./toParam":113}],122:[function(require,module,exports){
+},{"./clone":37,"./controls":40,"./createElement":46,"./generate":62,"./setElement":94,"./starter":97,"./toApproval":101,"./toArray":102,"./toCode":106,"./toParam":114}],123:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -11617,7 +11987,7 @@ const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 const { toCode } = require("./toCode")
 
-const updateSelf = ({ id, update = {} }) => {
+const updateSelf = ({ _window, id, update = {} }) => {
 
   var views = window.views
   var view = views[id]
@@ -11630,13 +12000,13 @@ const updateSelf = ({ id, update = {} }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
   // close actionlist
   if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
   }
 
@@ -11713,13 +12083,13 @@ const updateSelf = ({ id, update = {} }) => {
 }
 
 module.exports = {updateSelf}
-},{"./clone":36,"./createElement":45,"./generate":61,"./setElement":93,"./starter":96,"./toArray":101,"./toCode":105,"./update":121}],123:[function(require,module,exports){
+},{"./clone":37,"./createElement":46,"./generate":62,"./setElement":94,"./starter":97,"./toArray":102,"./toCode":106,"./update":122}],124:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const upload = async ({ id, e, ...params }) => {
+const upload = async ({ id, _window, req, res, e, ...params }) => {
         
   var upload = params.upload, promises = []
   var global = window.global
@@ -11753,11 +12123,12 @@ const upload = async ({ id, e, ...params }) => {
     file = file.replace(regex, "")
     
     // access key
-    if (global["access-key"]) headers["access-key"] = global["access-key"]
+    if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
 
     // data
     upload.data = clone(data)
     
+    if (!view) return
     promises.push(await axios.post(`/storage`, { upload, file }, {
       headers: {
         "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
@@ -11769,6 +12140,7 @@ const upload = async ({ id, e, ...params }) => {
 
       promises.map(({ data }, i) => {
 
+        if (!view) return
         if (i === 0) {
           view.uploads = []
           global.uploads = []
@@ -11786,7 +12158,7 @@ const upload = async ({ id, e, ...params }) => {
       })
     
       // await params
-      if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
+      if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, params })
     }
   })
 }
@@ -11832,7 +12204,7 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./clone":36,"./generate":61,"./toArray":101,"./toAwait":102,"axios":126}],124:[function(require,module,exports){
+},{"./clone":37,"./generate":62,"./toArray":102,"./toAwait":103,"axios":127}],125:[function(require,module,exports){
 const wait = async ({ id, e, ...params }) => {
 
   // await params
@@ -11840,7 +12212,7 @@ const wait = async ({ id, e, ...params }) => {
 }
 
 module.exports = { wait }
-},{"./toAwait":102}],125:[function(require,module,exports){
+},{"./toAwait":103}],126:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -11848,14 +12220,14 @@ const { toValue } = require("./toValue")
 const { isEqual } = require("./isEqual")
 const { toCode } = require("./toCode")
 
-const watch = ({ controls, id }) => {
+const watch = ({ _window, controls, id }) => {
 
     const { execute } = require("./execute")
 
     var view = window.views[id]
     if (!view) return
 
-    var watch = toCode({ id, string: controls.watch })
+    var watch = toCode({ _window, id, string: controls.watch })
 
     // 'string'
     if (watch.split("'").length > 2) watch = toCode({ _window, string: watch, start: "'", end: "'" })
@@ -11909,9 +12281,9 @@ const watch = ({ controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":36,"./execute":55,"./isEqual":70,"./toApproval":100,"./toCode":105,"./toParam":113,"./toValue":119}],126:[function(require,module,exports){
+},{"./clone":37,"./execute":56,"./isEqual":71,"./toApproval":101,"./toCode":106,"./toParam":114,"./toValue":120}],127:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":128}],127:[function(require,module,exports){
+},{"./lib/axios":129}],128:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12102,7 +12474,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":134,"../core/createError":135,"./../core/settle":139,"./../helpers/buildURL":143,"./../helpers/cookies":145,"./../helpers/isURLSameOrigin":148,"./../helpers/parseHeaders":150,"./../utils":153}],128:[function(require,module,exports){
+},{"../core/buildFullPath":135,"../core/createError":136,"./../core/settle":140,"./../helpers/buildURL":144,"./../helpers/cookies":146,"./../helpers/isURLSameOrigin":149,"./../helpers/parseHeaders":151,"./../utils":154}],129:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -12160,7 +12532,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":129,"./cancel/CancelToken":130,"./cancel/isCancel":131,"./core/Axios":132,"./core/mergeConfig":138,"./defaults":141,"./helpers/bind":142,"./helpers/isAxiosError":147,"./helpers/spread":151,"./utils":153}],129:[function(require,module,exports){
+},{"./cancel/Cancel":130,"./cancel/CancelToken":131,"./cancel/isCancel":132,"./core/Axios":133,"./core/mergeConfig":139,"./defaults":142,"./helpers/bind":143,"./helpers/isAxiosError":148,"./helpers/spread":152,"./utils":154}],130:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12181,7 +12553,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],130:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -12240,14 +12612,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":129}],131:[function(require,module,exports){
+},{"./Cancel":130}],132:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],132:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12397,7 +12769,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":143,"../helpers/validator":152,"./../utils":153,"./InterceptorManager":133,"./dispatchRequest":136,"./mergeConfig":138}],133:[function(require,module,exports){
+},{"../helpers/buildURL":144,"../helpers/validator":153,"./../utils":154,"./InterceptorManager":134,"./dispatchRequest":137,"./mergeConfig":139}],134:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12453,7 +12825,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":153}],134:[function(require,module,exports){
+},{"./../utils":154}],135:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -12475,7 +12847,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":144,"../helpers/isAbsoluteURL":146}],135:[function(require,module,exports){
+},{"../helpers/combineURLs":145,"../helpers/isAbsoluteURL":147}],136:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -12495,7 +12867,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":137}],136:[function(require,module,exports){
+},{"./enhanceError":138}],137:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12579,7 +12951,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":131,"../defaults":141,"./../utils":153,"./transformData":140}],137:[function(require,module,exports){
+},{"../cancel/isCancel":132,"../defaults":142,"./../utils":154,"./transformData":141}],138:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12623,7 +12995,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],138:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -12712,7 +13084,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":153}],139:[function(require,module,exports){
+},{"../utils":154}],140:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -12739,7 +13111,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":135}],140:[function(require,module,exports){
+},{"./createError":136}],141:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12763,7 +13135,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":141,"./../utils":153}],141:[function(require,module,exports){
+},{"./../defaults":142,"./../utils":154}],142:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -12901,7 +13273,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":127,"./adapters/xhr":127,"./core/enhanceError":137,"./helpers/normalizeHeaderName":149,"./utils":153,"_process":160}],142:[function(require,module,exports){
+},{"./adapters/http":128,"./adapters/xhr":128,"./core/enhanceError":138,"./helpers/normalizeHeaderName":150,"./utils":154,"_process":161}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -12914,7 +13286,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],143:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12986,7 +13358,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":153}],144:[function(require,module,exports){
+},{"./../utils":154}],145:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13002,7 +13374,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],145:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13057,7 +13429,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":153}],146:[function(require,module,exports){
+},{"./../utils":154}],147:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13073,7 +13445,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],147:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13086,7 +13458,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],148:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13156,7 +13528,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":153}],149:[function(require,module,exports){
+},{"./../utils":154}],150:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -13170,7 +13542,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":153}],150:[function(require,module,exports){
+},{"../utils":154}],151:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13225,7 +13597,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":153}],151:[function(require,module,exports){
+},{"./../utils":154}],152:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13254,7 +13626,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],152:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -13361,7 +13733,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":154}],153:[function(require,module,exports){
+},{"./../../package.json":155}],154:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -13712,7 +14084,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":142}],154:[function(require,module,exports){
+},{"./helpers/bind":143}],155:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -13798,11 +14170,11 @@ module.exports={
   ]
 }
 
-},{}],155:[function(require,module,exports){
-
 },{}],156:[function(require,module,exports){
-arguments[4][155][0].apply(exports,arguments)
-},{"dup":155}],157:[function(require,module,exports){
+
+},{}],157:[function(require,module,exports){
+arguments[4][156][0].apply(exports,arguments)
+},{"dup":156}],158:[function(require,module,exports){
 (function (process){(function (){
 /* @flow */
 /*::
@@ -13924,7 +14296,7 @@ module.exports.config = config
 module.exports.parse = parse
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":160,"fs":156,"os":158,"path":159}],158:[function(require,module,exports){
+},{"_process":161,"fs":157,"os":159,"path":160}],159:[function(require,module,exports){
 exports.endianness = function () { return 'LE' };
 
 exports.hostname = function () {
@@ -13975,7 +14347,7 @@ exports.homedir = function () {
 	return '/'
 };
 
-},{}],159:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -14508,7 +14880,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":160}],160:[function(require,module,exports){
+},{"_process":161}],161:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -14694,7 +15066,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],161:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14774,7 +15146,7 @@ var _stringify = _interopRequireDefault(require("./stringify.js"));
 var _parse = _interopRequireDefault(require("./parse.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./nil.js":163,"./parse.js":164,"./stringify.js":168,"./v1.js":169,"./v3.js":170,"./v4.js":172,"./v5.js":173,"./validate.js":174,"./version.js":175}],162:[function(require,module,exports){
+},{"./nil.js":164,"./parse.js":165,"./stringify.js":169,"./v1.js":170,"./v3.js":171,"./v4.js":173,"./v5.js":174,"./validate.js":175,"./version.js":176}],163:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14998,7 +15370,7 @@ function md5ii(a, b, c, d, x, s, t) {
 
 var _default = md5;
 exports.default = _default;
-},{}],163:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15007,7 +15379,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _default = '00000000-0000-0000-0000-000000000000';
 exports.default = _default;
-},{}],164:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15053,7 +15425,7 @@ function parse(uuid) {
 
 var _default = parse;
 exports.default = _default;
-},{"./validate.js":174}],165:[function(require,module,exports){
+},{"./validate.js":175}],166:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15062,7 +15434,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
 exports.default = _default;
-},{}],166:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15089,7 +15461,7 @@ function rng() {
 
   return getRandomValues(rnds8);
 }
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15194,7 +15566,7 @@ function sha1(bytes) {
 
 var _default = sha1;
 exports.default = _default;
-},{}],168:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15234,7 +15606,7 @@ function stringify(arr, offset = 0) {
 
 var _default = stringify;
 exports.default = _default;
-},{"./validate.js":174}],169:[function(require,module,exports){
+},{"./validate.js":175}],170:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15342,7 +15714,7 @@ function v1(options, buf, offset) {
 
 var _default = v1;
 exports.default = _default;
-},{"./rng.js":166,"./stringify.js":168}],170:[function(require,module,exports){
+},{"./rng.js":167,"./stringify.js":169}],171:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15359,7 +15731,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const v3 = (0, _v.default)('v3', 0x30, _md.default);
 var _default = v3;
 exports.default = _default;
-},{"./md5.js":162,"./v35.js":171}],171:[function(require,module,exports){
+},{"./md5.js":163,"./v35.js":172}],172:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15438,7 +15810,7 @@ function _default(name, version, hashfunc) {
   generateUUID.URL = URL;
   return generateUUID;
 }
-},{"./parse.js":164,"./stringify.js":168}],172:[function(require,module,exports){
+},{"./parse.js":165,"./stringify.js":169}],173:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15476,7 +15848,7 @@ function v4(options, buf, offset) {
 
 var _default = v4;
 exports.default = _default;
-},{"./rng.js":166,"./stringify.js":168}],173:[function(require,module,exports){
+},{"./rng.js":167,"./stringify.js":169}],174:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15493,7 +15865,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const v5 = (0, _v.default)('v5', 0x50, _sha.default);
 var _default = v5;
 exports.default = _default;
-},{"./sha1.js":167,"./v35.js":171}],174:[function(require,module,exports){
+},{"./sha1.js":168,"./v35.js":172}],175:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15511,7 +15883,7 @@ function validate(uuid) {
 
 var _default = validate;
 exports.default = _default;
-},{"./regex.js":165}],175:[function(require,module,exports){
+},{"./regex.js":166}],176:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15533,7 +15905,7 @@ function version(uuid) {
 
 var _default = version;
 exports.default = _default;
-},{"./validate.js":174}],176:[function(require,module,exports){
+},{"./validate.js":175}],177:[function(require,module,exports){
 (function (Buffer){(function (){
 /*! cpexcel.js (C) 2013-present SheetJS -- http://sheetjs.com */
 /*jshint -W100 */
@@ -17043,7 +17415,7 @@ if (typeof module !== 'undefined' && module.exports && typeof DO_NOT_EXPORT_CODE
 }));
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":155}],177:[function(require,module,exports){
+},{"buffer":156}],178:[function(require,module,exports){
 (function (process,Buffer){(function (){
 /*! xlsx.js (C) 2013-present SheetJS -- http://sheetjs.com */
 /* vim: set ts=2: */
@@ -41533,4 +41905,4 @@ else make_xlsx_lib(XLSX);
 if(typeof window !== 'undefined' && !window.XLSX) try { window.XLSX = XLSX; } catch(e) {}
 
 }).call(this)}).call(this,require('_process'),require("buffer").Buffer)
-},{"./dist/cpexcel.js":176,"_process":160,"buffer":155,"fs":155,"stream":155}]},{},[1]);
+},{"./dist/cpexcel.js":177,"_process":161,"buffer":156,"fs":156,"stream":156}]},{},[1]);

@@ -107,7 +107,7 @@ const mountAfterStyles = ({ id }) => {
       if (view.element) myFn()
       else {
         view.controls = toArray(view.controls)
-        view.controls.push({
+        return view.controls.push({
           event: `loaded?().element.style.${key}=${value}`
         })
       }

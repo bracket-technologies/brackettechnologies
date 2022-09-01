@@ -7,7 +7,7 @@ const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 const { toCode } = require("./toCode")
 
-const updateSelf = ({ id, update = {} }) => {
+const updateSelf = ({ _window, id, update = {} }) => {
 
   var views = window.views
   var view = views[id]
@@ -20,13 +20,13 @@ const updateSelf = ({ id, update = {} }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
   // close actionlist
   if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
   }
 

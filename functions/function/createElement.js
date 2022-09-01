@@ -6,6 +6,7 @@ const { createTags } = require("./createTags")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 const { toValue } = require("./toValue")
+const { toArray } = require("./toArray")
 
 const myViews = [
   "View",
@@ -107,6 +108,13 @@ const createElement = ({ _window, id, req, res }) => {
     delete views[id]
     return ""
   }
+
+  // before loading controls
+  toArray(view.controls).map((controls = {}) => {
+    var event = toCode({ _window, string: controls.event || "" })
+    if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2] }))
+      toParam({ req, res, _window, id, string: event.split("?")[1] })
+  })
 
   // push destructured params from type to view
   if (params) {

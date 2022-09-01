@@ -3,7 +3,7 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const upload = async ({ id, e, ...params }) => {
+const upload = async ({ id, _window, req, res, e, ...params }) => {
         
   var upload = params.upload, promises = []
   var global = window.global
@@ -37,11 +37,12 @@ const upload = async ({ id, e, ...params }) => {
     file = file.replace(regex, "")
     
     // access key
-    if (global["access-key"]) headers["access-key"] = global["access-key"]
+    if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
 
     // data
     upload.data = clone(data)
     
+    if (!view) return
     promises.push(await axios.post(`/storage`, { upload, file }, {
       headers: {
         "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
@@ -53,6 +54,7 @@ const upload = async ({ id, e, ...params }) => {
 
       promises.map(({ data }, i) => {
 
+        if (!view) return
         if (i === 0) {
           view.uploads = []
           global.uploads = []
@@ -70,7 +72,7 @@ const upload = async ({ id, e, ...params }) => {
       })
     
       // await params
-      if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
+      if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, params })
     }
   })
 }

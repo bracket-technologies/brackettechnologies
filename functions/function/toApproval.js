@@ -8,6 +8,7 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
   const { toParam } = require("./function")
+  var _functions = require("./function")
 
   // no string but object exists
   if (!string)
@@ -95,13 +96,14 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object }) => {
     var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":")) clone(view["my-views"]).reverse().map(view => {
-      if (!isFn) {
-        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-        // console.log(isFn, key, view, global.data.view);
-      }
-    })
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)]) {
+      clone(view["my-views"]).reverse().map(view => {
+        if (!isFn) {
+          isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+        }
+      })
+    }
 
     if (isFn) {
       var _params = path[0].split(":")[1]

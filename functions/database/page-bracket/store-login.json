@@ -4,7 +4,7 @@
     ],
     "id": "store-login",
     "title": "Stores | Bracket",
-    "access-key-required": true,
+    "accesskey-required": true,
     "description": "Choose store page",
     "view": "store-login"
 }

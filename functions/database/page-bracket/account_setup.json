@@ -3,7 +3,7 @@
     "path": "/account_setup",
     "name": "Account Setup",
     "id": "account_setup",
-    "access-key-required": true,
+    "accesskey-required": true,
     "meta": {
         "description": "",
         "title": ""

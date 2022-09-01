@@ -1,5 +1,4 @@
 {
-  "id": "bookings-flights",
   "creation-date": 1654022032235,
   "type": "View?id=bookings-flights;class=vertical;style:[gap=.5rem;width=100%]",
   "children": [
@@ -7,7 +6,6 @@
       "type": "Text?class=flex;text=Booking Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
     },
     {
-      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]",
       "children": [
         {
           "type": "View?id=flights-in-booking;class=vertical;style:[gap=3rem;padding=.5rem;borderRadius=.5rem];flights-booked:()=flights-booked:().filter();data().flights=flights-booked:()._():[_map:departure-airport:[_.departure-airport]:departure-day:[_.departure-day]:departure-time:[_.departure-time]:arrival-airport:[_.arrival-airport]:arrival-day:[_.arrival-day]:arrival-time:[_.arrival-time]:seats:[_.seats]]",
@@ -41,12 +39,12 @@
                     {
                       "children": [
                         {
+                          "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                           "controls": [
                             {
                               "event": "click?)(:booking-data.flights.pull():[parent().parent().parent().mapIndex];if():[)(:booking-data.flights.len()=0]:[)(:booking-data.flights.push():_map];update():[parent().parent().parent().parent()]"
                             }
-                          ],
-                          "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
+                          ]
                         },
                         {
                           "controls": [
@@ -69,7 +67,9 @@
             }
           ]
         }
-      ]
+      ],
+      "type": "View?class=vertical;style:[padding=1rem;gap=1rem]"
     }
-  ]
+  ],
+  "id": "bookings-flights"
 }

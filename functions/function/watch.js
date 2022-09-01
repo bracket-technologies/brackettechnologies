@@ -5,14 +5,14 @@ const { toValue } = require("./toValue")
 const { isEqual } = require("./isEqual")
 const { toCode } = require("./toCode")
 
-const watch = ({ controls, id }) => {
+const watch = ({ _window, controls, id }) => {
 
     const { execute } = require("./execute")
 
     var view = window.views[id]
     if (!view) return
 
-    var watch = toCode({ id, string: controls.watch })
+    var watch = toCode({ _window, id, string: controls.watch })
 
     // 'string'
     if (watch.split("'").length > 2) watch = toCode({ _window, string: watch, start: "'", end: "'" })

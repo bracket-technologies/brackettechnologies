@@ -18,6 +18,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
 
   var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
+  var _functions = require("./function")
 
   // no value
   if (!value) return value
@@ -113,11 +114,10 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   var path = typeof value === "string" ? value.split(".") : [], isFn = false, path0 = path[0].split(":")[0]
 
   // function
-  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && view) clone(view["my-views"]).reverse().map(view => {
+  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)]) clone(view["my-views"]).reverse().map(view => {
     if (!isFn) {
       isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
       if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-      // console.log(isFn, value, view, global.data.view[view].functions);
     }
   })
 

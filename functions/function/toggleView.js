@@ -8,10 +8,10 @@ const { search } = require("./search")
 const { toCode } = require("./toCode")
 const { toParam } = require("./toParam")
 
-const toggleView = async ({ toggle, id }) => {
+const toggleView = async ({ _window, toggle, id, res }) => {
 
-  var views = window.views
-  var global = window.global
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.global : window.global
   var togglePage = toggle.page, view = {}
   var viewId = toggle.viewId || toggle.view
   var toggleId = toggle.id
@@ -37,8 +37,7 @@ const toggleView = async ({ toggle, id }) => {
   var children = []
   if (togglePage) {
 
-    var currentPage = global.currentPage = togglePage.split("/")[0]
-    var notAvailableViews = []
+    /*var notAvailableViews = []
 
     if (!global.data.page[global.currentPage]) {
 
@@ -46,7 +45,6 @@ const toggleView = async ({ toggle, id }) => {
       global.data.page[currentPage] = views.root.search.data
     }
 
-    viewId = global.data.page[currentPage].view
 
     // check availability of views
     global.data.page[currentPage].views.map(viewId => {
@@ -59,26 +57,17 @@ const toggleView = async ({ toggle, id }) => {
       Object.entries(views.root.search.data).map(([doc, data]) => {
         global.data.view[doc] = data
       })
-    }
+    }*/
 
-    var title = global.data.page[global.currentPage].title
+    var currentPage = global.currentPage = togglePage.split("/")[0]
+    var title = global.data.page[currentPage].title
+    
+    viewId = global.data.page[currentPage].view
     global.path = togglePage = togglePage === "main" ? "/" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title
     view = views.root
-    /*
-    await global.data.page[global.currentPage]["views"].map(async view => {
-
-    // view doesnot exist? => get from database
-      if (!global.data.view[view]) {
-
-        
-      }
-
-      children.push(global.data.view[view])
-    })
-    */
 
   } else view = views[parentId]
 
@@ -89,14 +78,21 @@ const toggleView = async ({ toggle, id }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
   // close actionlist
   if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
+  }
+        
+  if (res) {
+    
+    views.root.controls = clone(global.data.page[currentPage].controls || [])
+    views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
+    return
   }
 
   // fadeout

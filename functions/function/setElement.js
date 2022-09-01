@@ -1,22 +1,23 @@
 const { controls } = require("./controls")
+const { toParam } = require("./toParam")
+const { toApproval } = require("./toApproval")
 // const { starter } = require("./starter")
 const { toArray } = require("./toArray")
+const { toCode } = require("./toCode")
 
-const setElement = ({ id }) => {
+const setElement = ({ _window, id }) => {
 
     var view = window.views[id]
     if (!view) return console.log("No Element", id)
     
-    // before loading event
-    var beforeLoadingControls = view.controls && toArray(view.controls).filter(controls => controls.event && toArray(controls.event)[0].split("?")[0].includes("beforeLoading"))
-    if (beforeLoadingControls) {
-
-        var currentPage = global.currentPage
-        controls({ controls: beforeLoadingControls, id })
-        view.controls = toArray(view.controls).filter(controls => controls.event ? !toArray(controls.event)[0].includes("beforeLoading") : true)
-
-        // page routed
-        if (currentPage !== global.currentPage) return true
+    // loading controls
+    if (view.controls) {
+      
+      toArray(view.controls).map((controls = {}) => {
+        var event = toCode({ _window, string: controls.event || "" })
+        if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "loading") && toApproval({ id, string: controls.event.split('?')[2] })) 
+          toParam({ id, string: controls.event.split("?")[1] })
+      })
     }
 
     // status

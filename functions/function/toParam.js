@@ -6,6 +6,7 @@ const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 const { isParam } = require("./isParam")
 const { toArray } = require("./toArray")
+const actions = require("./actions.json")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -16,7 +17,9 @@ function sleep(milliseconds) {
 }
 
 const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, _i, asyncer, createElement, params = {}, executer }) => {
+  
   const { toApproval } = require("./toApproval")
+  var _functions = require("./function")
 
   var viewId = id, mountDataUsed = false, mountPathUsed = false
   var views = _window ? _window.views : window.views
@@ -76,189 +79,191 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
 
     // events attached to type
-  if (createElement) {
+    if (createElement) {
 
-    // mouseenter
-    if (param.slice(0, 10) === "mouseenter") {
+      // mouseenter
+      if (param.slice(0, 10) === "mouseenter") {
 
-      param = param.slice(11)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mouseenter = view.mouseenter || ""
-      return view.mouseenter += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // click
-    if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
-
-      param = param.slice(6)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.click = view.click || ""
-      return view.click += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // change
-    if (param.slice(0, 6) === "change") {
-
-      param = param.slice(7)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.change = view.change || ""
-      return view.change += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // mouseleave
-    if (param.slice(0, 10) === "mouseleave") {
-
-      param = param.slice(11)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mouseleave = view.mouseleave || ""
-      return view.mouseleave += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // mouseover
-    if (param.slice(0, 9) === "mouseover") {
-
-      param = param.slice(10)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mouseover = view.mouseover || ""
-      return view.mouseover += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // mousedown
-    if (param.slice(0, 9) === "mousedown") {
-
-      param = param.slice(10)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mousedown = view.mousedown || ""
-      return view.mousedown += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // mouseup
-    if (param.slice(0, 7) === "mouseup") {
-
-      param = param.slice(8)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.mouseup = view.mouseup || ""
-      return view.mouseup += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // keypress
-    if (param.slice(0, 8) === "keypress") {
-
-      param = param.slice(9)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.keypress = view.keypress || ""
-      return view.keypress += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // keyup
-    if (param.slice(0, 5) === "keyup") {
-
-      param = param.slice(6)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.keyup = view.keyup || ""
-      return view.keyup += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // keydown
-    if (param.slice(0, 7) === "keydown") {
-
-      param = param.slice(8)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.keydown = view.keydown || ""
-      return view.keydown += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // loaded
-    if (param.slice(0, 6) === "loaded") {
-
-      param = param.slice(7)
-      var conditions = param.split(":")[1]
-      if (conditions) param = param.split(":")[0]
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.loaded = view.loaded || ""
-      return view.loaded += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
-    }
-
-    // children
-    if (param.slice(0, 8) === "children") {
-
-      var _children = []
-      param = param.slice(9)
-      param.split(":").map(param => {
-
+        param = param.slice(11)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
         if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        _children.push({ type: param })
-      })
+        view.mouseenter = view.mouseenter || ""
+        return view.mouseenter += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
 
-      view.children = toArray(view.children)
-      view.children.unshift(..._children)
-      return view.children
-    }
+      // click
+      if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
 
-    // children
-    if (param.slice(0, 5) === "child") {
-
-      var _children = []
-      param = param.slice(6)
-      param.split(":").map(param => {
-
+        param = param.slice(6)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
         if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        _children.push({ type: param })
-      })
+        view.click = view.click || ""
+        return view.click += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
 
-      view.children = toArray(view.children)
-      view.children.unshift(..._children)
-      return view.children
+      // change
+      if (param.slice(0, 6) === "change") {
+
+        param = param.slice(7)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.change = view.change || ""
+        return view.change += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // mouseleave
+      if (param.slice(0, 10) === "mouseleave") {
+
+        param = param.slice(11)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.mouseleave = view.mouseleave || ""
+        return view.mouseleave += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // mouseover
+      if (param.slice(0, 9) === "mouseover") {
+
+        param = param.slice(10)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.mouseover = view.mouseover || ""
+        return view.mouseover += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // mousedown
+      if (param.slice(0, 9) === "mousedown") {
+
+        param = param.slice(10)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.mousedown = view.mousedown || ""
+        return view.mousedown += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // mouseup
+      if (param.slice(0, 7) === "mouseup") {
+
+        param = param.slice(8)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.mouseup = view.mouseup || ""
+        return view.mouseup += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // keypress
+      if (param.slice(0, 8) === "keypress") {
+
+        param = param.slice(9)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.keypress = view.keypress || ""
+        return view.keypress += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // keyup
+      if (param.slice(0, 5) === "keyup") {
+
+        param = param.slice(6)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.keyup = view.keyup || ""
+        return view.keyup += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // keydown
+      if (param.slice(0, 7) === "keydown") {
+
+        param = param.slice(8)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.keydown = view.keydown || ""
+        return view.keydown += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // loaded
+      if (param.slice(0, 6) === "loaded") {
+
+        param = param.slice(7)
+        var conditions = param.split(":")[1]
+        if (conditions) param = param.split(":")[0]
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.loaded = view.loaded || ""
+        return view.loaded += `${conditions ? `if():${conditions}:[` : ""}${param}${conditions ? "]" : ""};`
+      }
+
+      // children
+      if (param.slice(0, 8) === "children") {
+
+        var _children = []
+        param = param.slice(9)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _children.push({ type: param })
+        })
+
+        view.children = toArray(view.children)
+        view.children.unshift(..._children)
+        return view.children
+      }
+
+      // children
+      if (param.slice(0, 5) === "child") {
+
+        var _children = []
+        param = param.slice(6)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _children.push({ type: param })
+        })
+
+        view.children = toArray(view.children)
+        view.children.unshift(..._children)
+        return view.children
+      }
     }
-  }
 
     // show loader
-    if (param === "loader.show") {
+    if (!_window && param === "loader.show") {
       document.getElementsByClassName("loader-container")[0].style.display = "flex"
       return sleep(10)
     }
     
     // hide loader
-    if (param === "loader.hide") {
+    if (!_window && param === "loader.hide") {
       document.getElementsByClassName("loader-container")[0].style.display = "none"
       return sleep(10)
     }
 
     if (value === undefined) value = generate()
-    else value = toValue({ _window, id, e, value, params, req, res, _, __ })
+    else value = toValue({ _window, req, res, id, e, value, params, _, __ })
 
     id = viewId
 
     var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && view) clone(view["my-views"]).reverse().map(view => {
-      if (!isFn) {
-        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-        // console.log(isFn, key, view, global.data.view);
-      }
-    })
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()") {
+      
+      clone(view["my-views"]).reverse().map(view => {
+        if (!isFn) {
+          isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+        }
+      })
+    }
 
     if (isFn) {
       var _params = path[0].split(":")[1]
@@ -267,6 +272,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
           _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
         else _params = toValue({ req, res, _window, id, e, _, __, _i, value: _params })
       }
+      
       return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), _i, asyncer, createElement, params, executer })
     }
 

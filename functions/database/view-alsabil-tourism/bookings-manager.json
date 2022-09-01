@@ -1,11 +1,9 @@
 {
-  "creation-date": 1653729664265,
-  "id": "bookings-manager",
   "children": [
     {
+      "type": "View?class=flex align-center;style:[minHeight=4.5rem;height=4.5rem]",
       "children": [
         {
-          "type": "View?class=flexbox;style:[height=100%]",
           "children": [
             {
               "type": "View?style:[height=60%;width=2px;backgroundColor=blue;borderRadius=1rem]"
@@ -13,12 +11,12 @@
             {
               "children": [
                 {
-                  "type": "View?class=flexbox;style:[height=100%;borderRadius=.5rem]",
                   "children": [
                     {
                       "type": "Text?text=Bookings Manager;style:[fontSize=1.6rem]"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox;style:[height=100%;borderRadius=.5rem]"
                 },
                 {
                   "type": "Text?text=Manager;style:[color=#444;fontSize=1.6rem];click:[prev().1stChild().click()]?false"
@@ -29,9 +27,11 @@
               ],
               "type": "View?class=flexbox pointer;style:[gap=.4rem;height=70%;padding=0 1rem]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[height=100%]"
         },
         {
+          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
           "children": [
             {
               "type": "View?class=flexbox;style:[gap=1rem;width=0;transition=.2s;overflow=hidden]",
@@ -73,11 +73,9 @@
                 }
               ]
             }
-          ],
-          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
+          ]
         }
-      ],
-      "type": "View?class=flex align-center;style:[minHeight=4.5rem;height=4.5rem]"
+      ]
     },
     {
       "type": "View?view=search-engine;search-engine-req:()=booking",
@@ -91,6 +89,7 @@
       ]
     },
     {
+      "type": "View:booking-search-engine?Data=search-booking;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]",
       "children": [
         {
           "type": "View?class=flexbox;style:[gap=1rem;width=100%]",
@@ -99,12 +98,12 @@
               "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]",
               "children": [
                 {
+                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase().split():' '.join():'';txt()=data()"
                     }
-                  ],
-                  "type": "Input?id=PNR;path=pnr;label.text=PNR;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                  ]
                 },
                 {
                   "controls": [
@@ -115,23 +114,22 @@
                   "type": "Input?path=names;label.text=Name;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF?false"
                 },
                 {
-                  "type": "Input?id=flight;path=flight;label.text=Flight Number;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase().split():' '.join():'';txt()=data()"
                     }
-                  ]
+                  ],
+                  "type": "Input?id=flight;path=flight;label.text=Flight Number;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                 },
                 {
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
-                      "type": "Input?path=booking-date;label.text=Booking Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat();style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "change?data()=data().timestamp();txt():booking-date-text=data().toDateFormat()"
                         }
-                      ]
+                      ],
+                      "type": "Input?path=booking-date;label.text=Booking Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat();style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                     },
                     {
                       "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
@@ -144,18 +142,18 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
                 },
                 {
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
+                      "type": "Input?path=reservation-date;label.text=Issuing Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "change?data()=data().timestamp();txt():reservation-date-text=data().toDateFormat()"
                         }
-                      ],
-                      "type": "Input?path=reservation-date;label.text=Issuing Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                      ]
                     },
                     {
                       "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
@@ -168,7 +166,8 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
                 },
                 {
                   "type": "Input?id=booking-status;path=status;label.text=Status;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='collections:().booking-status.status';droplist.item.style:[minHeight=3.5rem;fontSize=1.3rem]"
@@ -182,12 +181,12 @@
                   ]
                 },
                 {
+                  "type": "Input?path=user;if():[data()]:[input.value=users:().find():[id=data()].username];label.text=User;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='users:().():username';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin",
                   "controls": [
                     {
                       "event": "click:droplist?data()=users:().find():[username=data()].id"
                     }
-                  ],
-                  "type": "Input?path=user;if():[data()]:[input.value=users:().find():[id=data()].username];label.text=User;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='users:().():username';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin"
+                  ]
                 },
                 {
                   "type": "View?style:[flex=1]"
@@ -196,13 +195,14 @@
             }
           ]
         }
-      ],
-      "type": "View:booking-search-engine?Data=search-booking;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]"
+      ]
     },
     {
       "type": "View?view=bookings-list"
     }
   ],
+  "functions": {},
   "type": "View?id=bookings-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[unreset-bookings:()]:[unreset-bookings:()=false]:[bookings:()=_list];search-booking:()=search-booking:()||_map",
-  "functions": {}
+  "id": "bookings-manager",
+  "creation-date": 1653729664265
 }

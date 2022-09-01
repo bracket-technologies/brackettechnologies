@@ -169,7 +169,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       }
       
       // onload event
-      if (event === "loaded" || event === "loading" || event === "beforeLoading") return myFn({ target: _view.element })
+      if (event === "loaded"/* || event === "loading" || event === "beforeLoading"*/) return myFn({ target: _view.element })
       else if (id === "window") return window.addEventListener(event, myFn)
 
       // body event

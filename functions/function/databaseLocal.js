@@ -10,7 +10,7 @@ var getdb = async ({ req, res }) => {
   var promises = []
   
   // verify access key
-  var project, accessKey = req.headers["access-key"], projectId = req.headers["project"]
+  var project, accessKey = req.headers["accesskey"], projectId = req.headers["project"]
 
   promises.push(
     db.collection("_project_").doc(projectId).get().then(doc => {
@@ -52,7 +52,7 @@ var getdb = async ({ req, res }) => {
   message = `Your are not verified!`
   /*
   Promise.all(promises)
-  if (project["access-key"] !== accessKey) return res.send({ success, message })
+  if (project["accesskey"] !== accessKey) return res.send({ success, message })
   */
   success = true
   message = `File/s mounted successfuly!`
@@ -78,7 +78,7 @@ var postdb = async ({ req, res }) => {
   return res.send({ data, success, message })
 }
 
-var deletedb = async ({ req, res }) => {
+var deletedb = async ({ _window, req, res }) => {
 
   var collection = req.url.split("/")[2]
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`

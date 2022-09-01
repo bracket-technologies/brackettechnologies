@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { toString } = require("./toString")
 
-const erase = async ({ id, e, ...params }) => {
+const erase = async ({ _window, req, res, id, e, ...params }) => {
 
   var global = window.global
   var erase = params.erase || {}
@@ -18,7 +18,7 @@ const erase = async ({ id, e, ...params }) => {
   headers.erase = encodeURI(toString({ erase }))
 
   // access key
-  if (global["access-key"]) headers["access-key"] = global["access-key"]
+  if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
 
   var { data } = await axios.delete(`/${store}`, {
     headers: {
@@ -27,10 +27,11 @@ const erase = async ({ id, e, ...params }) => {
     }
   })
 
+  if (!view) return
   view.erase = global.erase = data
   console.log(data)
 
-  if (params.asyncer) require("./toAwait").toAwait({ id, e, params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, params })
 }
 
 module.exports = { erase }

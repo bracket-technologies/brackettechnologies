@@ -65,7 +65,7 @@ const postFile = async ({ req, res, storage, db }) => {
   return res.send({ data, success, message })
 }
 
-const deleteFile = async ({ req, res, storage, db }) => {
+const deleteFile = async ({ _window, req, res, storage, db }) => {
   
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })

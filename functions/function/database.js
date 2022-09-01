@@ -3,8 +3,9 @@ const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
 var _window = { global: {}, views: {} }
 
-var getdb = async ({ req, res, db }) => {
+var getdb = async ({ req, res }) => {
 
+  var db = req.db
   var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
   
@@ -15,6 +16,7 @@ var getdb = async ({ req, res, db }) => {
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
 
   if (false) {
+
     // developer data => force reload
     var forceReload, developerData
     await db.collection("_developer_").doc(req.headers["project"]).get().then(doc => {
@@ -38,7 +40,7 @@ var getdb = async ({ req, res, db }) => {
   
   /////////////////// verify access key ///////////////////// access key is stopped
   // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
-  project = { ["access-key"]: req.headers["access-key"] }
+  project = { ["accesskey"]: req.headers["accesskey"] }
   
   if (search.url) {
 
@@ -67,7 +69,7 @@ var getdb = async ({ req, res, db }) => {
     }
     /*
     await Promise.all(promises)
-    if (project["access-key"] !== req.headers["access-key"]) {
+    if (project["accesskey"] !== req.headers["accesskey"]) {
 
       success = false
       message = `Your are not verified!`
@@ -102,7 +104,7 @@ var getdb = async ({ req, res, db }) => {
     
     await Promise.all(promises)
     /*
-    if (project["access-key"] !== req.headers["access-key"]) {
+    if (project["accesskey"] !== req.headers["accesskey"]) {
 
       success = false
       message = `Your are not verified!`
@@ -128,7 +130,7 @@ var getdb = async ({ req, res, db }) => {
     })
 
     await Promise.all(promises)
-    if (project["access-key"] !== req.headers["access-key"]) {
+    if (project["accesskey"] !== req.headers["accesskey"]) {
 
       success = false
       message = `Your are not verified!`
@@ -156,7 +158,7 @@ var getdb = async ({ req, res, db }) => {
     })
     
     await Promise.all(promises)
-    if (project["access-key"] !== req.headers["access-key"]) {
+    if (project["accesskey"] !== req.headers["accesskey"]) {
 
       success = false
       message = `Your are not verified!`
@@ -223,7 +225,7 @@ var getdb = async ({ req, res, db }) => {
     
   /*
   await Promise.all(promises)
-  if (project["access-key"] !== req.headers["access-key"]) {
+  if (project["accesskey"] !== req.headers["accesskey"]) {
 
     success = false
     message = `Your are not verified!`
@@ -247,10 +249,10 @@ var postdb = async ({ req, res, db }) => {
   /////////////////// verify access key ///////////////////// access key is stopped
   // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
   /*
-  project = { ["access-key"]: req.headers["access-key"] }
+  project = { ["accesskey"]: req.headers["accesskey"] }
 
   await Promise.all(promises)
-  if (project["access-key"] !== req.headers["access-key"]) {
+  if (project["accesskey"] !== req.headers["accesskey"]) {
 
     success = false
     message = `Your are not verified!`
@@ -258,7 +260,7 @@ var postdb = async ({ req, res, db }) => {
   }
 */
 
-  if (Array.isArray(data)/* && !data.find(data => !data.id)*/) {
+  if (Array.isArray(data)) {
 
     data.map(data => {
 
@@ -307,10 +309,10 @@ var deletedb = async ({ req, res, db, storage }) => {
 
   /////////////////// verify access key ///////////////////// access key is stopped
   // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
-  project = { ["access-key"]: req.headers["access-key"] }
+  project = { ["accesskey"]: req.headers["accesskey"] }
   
   await Promise.all(promises)
-  if (project["access-key"] !== req.headers["access-key"]) {
+  if (project["accesskey"] !== req.headers["accesskey"]) {
 
     success = false
     message = `Your are not verified!`
@@ -335,7 +337,7 @@ var deletedb = async ({ req, res, db, storage }) => {
   }
     
   await Promise.all(promises)
-  if (project["access-key"] !== req.headers["access-key"]) {
+  if (project["accesskey"] !== req.headers["accesskey"]) {
 
     success = false
     message = `Your are not verified!`

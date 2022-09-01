@@ -1,47 +1,14 @@
 {
-  "view": "main",
-  "name": "Al Sabil Travel",
-  "views": [
-    "booking-change-cancelation",
-    "booking-passenger",
-    "booking-seat-passenger",
-    "bookings-flights",
-    "bookings-list",
-    "bookings-manager",
-    "bookings-mini-window",
-    "canceled-bookings-manager",
-    "canceled-reservations-manager",
-    "classes",
-    "dashboard-manager",
-    "flight-connections",
-    "flight-list",
-    "flight-overall",
-    "flight-references",
-    "flights-manager",
-    "flights-mini-window",
-    "loading-manager",
-    "main",
-    "manager-mini-views",
-    "manager-view",
-    "refunds-manager",
-    "reservations-list",
-    "reservations-manager",
-    "reservations-mini-window",
-    "seats-prices-baggage",
-    "sellings-manager",
-    "sidebar",
-    "taxes-overall",
-    "reservation-flight-list",
-    "tickets-manager",
-    "tickets-mini-window",
-    "ticket-flight-list",
-    "tickets-list",
-    "book-a-flight-manager",
-    "book-a-flight-list",
-    "search-engine"
-  ],
-  "title": "Al Sabil Travel",
   "creation-date": 1651335662000,
+  "controls": [
+    {
+      "event": "beforeLoading?route():login?!headers:().accesskey;false"
+    }
+  ],
+  "path": "/",
+  "functions": {},
+  "name": "Al Sabil Travel",
+  "title": "Al Sabil Travel",
   "id": "main",
-  "path": "/"
+  "view": "main"
 }

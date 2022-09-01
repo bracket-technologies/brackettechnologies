@@ -19,7 +19,7 @@
     "aws-sdk": "^2.1135.0",
     "axios": "*",
     "body-parser": "*",
-    "cookie-parser": "*",
+    "cookie-parser": "^1.4.6",
     "dom-to-image": "^2.6.0",
     "dotenv": "*",
     "downloads-folder": "^3.0.3",

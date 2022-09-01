@@ -3,6 +3,9 @@ var express = require("express")
 var device = require('express-device')
 var cookieParser = require('cookie-parser')
 var firebase = require("firebase-admin")
+var myGlobal = {
+  today: (new Date()).getDay()
+}
 // require("firebase/firestore")
 
 // var bracketDomains = ["bracketjs.com", "localhost", "bracket.localhost"]
@@ -11,7 +14,7 @@ var firebase = require("firebase-admin")
 require('dotenv').config()
 
 // firebase
-firebase.initializeApp({ 
+firebase.initializeApp({
   credential: firebase.credential.cert(JSON.parse(process.env.FBSA)), 
   databaseURL: process.env.DBU,
   apiKey: process.env.AK,
@@ -116,6 +119,8 @@ app.delete("*", (req, res) => {
 
 // get
 app.get("*", async (req, res) => {
+
+  req.db = db
   var path = req.url.split("/")
   /*var host = req.headers["x-forwarded-host"] || req.headers["host"]
   
@@ -141,11 +146,14 @@ app.get("*", async (req, res) => {
   // database
   if (path[1] === "database") return getdb({ req, res, db, realtimedb })
 
+  // storage
+  if (path[1] === "function") return func({ req, res, db, storage })
+
   // favicon
   if (req.url === "/favicon.ico") return res.sendStatus(204)
 
   // respond
-  return createDocument({ req, res, db, realtimedb })
+  return createDocument({ req, res, realtimedb })
 })
 
 // book a ticket

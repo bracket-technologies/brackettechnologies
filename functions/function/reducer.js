@@ -23,6 +23,7 @@ const { isParam } = require("./isParam")
 const { isCondition } = require("./isCondition")
 const { toAwait } = require("./toAwait")
 const toCSV = require("./toCSV")
+const actions = require("./actions.json")
 
 const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, __, _i, e, req, res, mount, condition, createElement }) => {
     
@@ -244,27 +245,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     }
 
     // initialize by methods
-    if (!object && (path0 === "data()" || path0 === "Data()" || path0 === "doc()" || path0 === "mail()" || path0 === "action()" || path0 === "exec()"
-    || path0 === "style()" || path0 === "className()" || path0 === "getChildrenByClassName()" || path0 === "erase()" || path0 === "insert()"
-    || path0 === "deepChildren()" || path0 === "children()" || path0 === "1stChild()" || path0 === "lastChild()" || path0 === "2ndChild()" || path0 === "3rdChild()" 
-    || path0 === "3rdLastChild()" || path0 === "2ndLastChild()" || path0 === "parent()" || path0 === "next()" || path0 === "text()" || path0 === "val()" || path0 === "txt()" 
-    || path0 === "element()" || path0 === "el()" || path0 === "checked()" || path0 === "check()" || path0 === "prev()" || path0 === "format()" || path0 === "lastSibling()" 
-    || path0 === "1stSibling()" || path0 === "derivations()" || path0 === "path()" || path0 === "mouseleave()" || path0 === "mouseenter()" || path0 === "mouseup()" || path0 === "blur()"
-    || path0 === "mousedown()" || path0 === "copyToClipBoard()" || path0 === "mininote()" || path0 === "note()" || path0 === "date()" || path0 === "tooltip()" || path0 === "update()" 
-    || path0 === "refresh()" || path0 === "save()" || path0 === "search()" || path0 === "override()" || path0 === "click()" || path0 === "is()" || path0 === "setPosition()" 
-    || path0 === "gen()" || path0 === "generate()" || path0 === "route()" || path0 === "getInput()" || path0 === "input()" || path0 === "getEntry()" || path0 === "entry()" 
-    || path0 === "getEntries()" || path0 === "entries()" || path0 === "toggleView()" || path0 === "clearTimer()" || path0 === "timer()" || path0 === "range()" || path0 === "focus()" 
-    || path0 === "siblings()" || path0 === "todayStart()" || path0 === "time()" || path0 === "remove()" || path0 === "rem()" || path0 === "removeChild()" || path0 === "remChild()" 
-    || path0 === "getBoundingClientRect()" || path0 === "contains()" || path0 === "contain()" || path0 === "def()" || path0 === "price()" || path0 === "clone()" || path0 === "uuid()" 
-    || path0 === "timezone()" || path0 === "timeDifference" || path0 === "position()" || path0 === "setPosition()" || path0 === "classList()" || path0 === "csvToJson()"
-    || path0 === "classlist()" || path0 === "nextSibling()" || path0 === "2ndNextSibling()" || path0 === "axios()" || path0 === "newTab()" || path0 === "droplist()" || path0 === "sort()" 
-    || path0 === "fileReader()" || path0 === "src()" || path0 === "addClass()" || path0 === "removeClass()" || path0 === "remClass()" || path0 === "wait()" || path0 === "print()" 
-    || path0 === "monthStart()" || path0 === "monthEnd()" || path0 === "nextMonthStart()" || path0 === "nextMonthEnd()" || path0 === "prevMonthStart()" || path0 === "prevMonthEnd()"
-    || path0 === "yearStart()" || path0 === "month()" || path0 === "year()" || path0 === "yearEnd()" || path0 === "nextYearStart()" || path0 === "nextYearEnd()" || path0 === "prevYearStart()" 
-    || path0 === "prevYearEnd()" || path0 === "counter()" || path0 === "exportCSV()" || path0 === "exportPdf()" || path0 === "readonly()" || path0 === "html()" || path0 === "csvToJson()"
-    || path0 === "upload()" || path0 === "timestamp()" || path0 === "confirmEmail()" || path0 === "files()" || path0 === "share()" || path0 === "html2pdf()" || path0 === "dblclick()"
-    || path0 === "exportExcel()" || path0 === "2nd()" || path0 === "2ndPrev()" || path0 === "3rdPrev()" || path0 === "2ndParent()" || path0 === "3rdParent()" || path0 === "installApp()"
-    || path0 === "replaceItem()" || path0 === "grandParent()" || path0 === "grandChild()" || path0 === "grandChildren()" || path0 === "open()" || path0 === "2ndNext()" || path0 === "isNaN()")) {
+    if (!object && actions.includes(path0)) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
@@ -340,38 +321,46 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             else if (path0 === "getCookie()") {
 
-                // getCookie():name
-                if (isParam({ _window, string: args[1] })) {
-                    var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
-                    return getCookie({ ..._params, req, res })
-                }
-                var _name = toValue({ req, res, _window, id, e, _, __, _i, value: args[1] })
-                _object = getCookie({ name: _name, req, res })
-                if (!_object) return
+              // if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
+
+              // getCookie():name
+              if (isParam({ _window, string: args[1], req, res })) {
+                  var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
+                  return getCookie({ ..._params, req, res, _window })
+              }
+              var _name = toValue({ req, res, _window, id, e, _, __, _i, value: args[1] })
+              _object = getCookie({ name: _name, req, res, _window })
+              if (!_object) return
                 
             } else if (path0 === "eraseCookie()") {
 
+              if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
+
                 // getCookie():name
-                if (isParam({ _window, string: args[1] })) {
+                if (isParam({ _window, req, res, string: args[1] })) {
                     var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
-                    return eraseCookie({ ..._params, req, res })
+                    return eraseCookie({ ..._params, req, res, _window })
                 }
                 var _name = toValue({ req, res, _window, id, e, _, __, _i, value: args[1] })
-                _object = eraseCookie({ name: _name, req, res })
+                _object = eraseCookie({ name: _name, req, res, _window })
                 if (!_object) return
                 
             } else if (path0 === "setCookie()") {
+
+              if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
     
                 // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
                 var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
-                return setCookie({ ..._params, req, res })
+                return setCookie({ ..._params, req, res, _window })
     
             } else if (path0 === "cookie()") {
 
                 var _params = toParam({ req, res, _window, id, e, _, __, _i,params, string: args[1] })
-                if (params.method === "post") return setCookie({ ..._params, req, res })
-                if (params.method === "delete") return eraseCookie({ ..._params, req, res })
-                if (params.method === "get") return getCookie({ ..._params, req, res })
+
+                if (_window && params.method === "post" || params.method === "delete") return views.root.controls.push({ event: `loading?${path.join(".")}` })
+                if (params.method === "post") return setCookie({ ..._params, req, res, _window })
+                if (params.method === "delete") return eraseCookie({ ..._params, req, res, _window })
+                if (params.method === "get") return getCookie({ ..._params, req, res, _window })
             }
             
             else if (path0 === "today()") _object = new Date()
@@ -1457,7 +1446,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             // map not loaded yet
             if (view.status === "Loading") {
                 view.controls = toArray(view.controls)
-                view.controls.push({
+                return view.controls.push({
                     event: `loaded?${key}`
                 })
                 return 
@@ -1491,22 +1480,30 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "click()") {
             
-            var _params = {}, _o
-            if (args[1]) {
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
 
-                if (isParam({ _window, string: args[1] })) {
+          var _params = {}, _o
+          if (args[1]) {
 
-                    _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
+              if (isParam({ _window, string: args[1] })) {
 
-                } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
-            } else _o = o
-            
-            if (typeof _o === "string" && views[_o]) views[_o].element.click()
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
-            else if (typeof _o === "object" && _o.element) _o.element.click()
+                  _params = toParam({ req, res, _window, id, e, _, __, _i,string: args[1] })
+                  _o = _params.view || _params.id || _params.el || _params.element || o
+
+              } else _o = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
+          } else _o = o
+          
+          if (typeof _o === "string" && views[_o]) views[_o].element.click()
+          else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
+          else if (typeof _o === "object" && _o.element) _o.element.click()
 
         } else if (k0 === "dblclick()") {
+            
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
             
             var _params = {}, _o
             if (args[1]) {
@@ -1530,6 +1527,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }, 0)
 
         } else if (k0 === "focus()") {
+            
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
 
             var _params = {}, _o
             if (args[1]) {
@@ -1547,6 +1548,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             focus({ id: _o.id })
 
         } else if (k0 === "blur()") { // blur
+            
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
 
             var _params = {}, _o
             if (args[1]) {
@@ -3795,13 +3800,13 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, _i })
-                require("./route").route({ id, route })
+                require("./route").route({ _window, req, res, id, route })
                 
             } else {
                 
                 var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, _i })
                 var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, _, __, _i })
-                require("./route").route({ id, route: { path: _path, page: _page } })
+                require("./route").route({ _window, id, req, res, route: { path: _path, page: _page } })
             }
 
         } else if (k0 === "toggleView()") {
@@ -3813,7 +3818,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _, __, _i })
             var _timer = toValue({ req, res, _window, id, e, value: args[4] || "", params, _, __, _i })
             */
-            require("./toggleView").toggleView({ _window, toggle, id })
+            require("./toggleView").toggleView({ _window, req, res, toggle, id })
 
         } else if (k0 === "preventDefault()") {
             
@@ -3861,14 +3866,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           
             var _text = k.split(":")[1]
             _text = toValue({ req, res, _window, id, e, _, __, _i,value: _text, params })
-            var mininoteControls = toCode({ string: `():mininote-text.txt()=${_text};clearTimer():[)(:mininote-timer];():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000` })
+            var mininoteControls = toCode({ _window, string: `():mininote-text.txt()=${_text};clearTimer():[)(:mininote-timer];():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _, __, _i })
 
         } else if (k0 === "tooltip()") {
           
             var _text = k.split(":")[1]
             _text = toValue({ req, res, _window, id, e, _, __, _i,value: _text, params })
-            var mininoteControls = toCode({ string: `():tooltip-text.txt()=${_text};clearTimer():[)(:tooltip-timer];():tooltip.style():[opacity=1;transform=scale(1)];)(:tooltip-timer=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
+            var mininoteControls = toCode({ _window, string: `():tooltip-text.txt()=${_text};clearTimer():[)(:tooltip-timer];():tooltip.style():[opacity=1;transform=scale(1)];)(:tooltip-timer=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _, __, _i })
 
         } else if (k0 === "readonly()") {
@@ -3911,6 +3916,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "update()") {
           
           var __id, _id, _params, _self
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
           
           if (isParam({ _window, string: args[1] })) {
 
@@ -3925,8 +3933,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
           if (!_id && o.id) _id = o.id
           
-          if (_self) return require("./updateSelf").updateSelf({ id: _id })
-          else return require("./update").update({ id: _id })
+          if (_self) return require("./updateSelf").updateSelf({ _window, req, res, id: _id })
+          else return require("./update").update({ _window, req, res, id: _id })
 
         } else if (k0 === "upload()") {
           
@@ -3935,10 +3943,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _await = ""
             var _upload = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
             if (args[2]) _await = global.codes[args[2]]
-            return require("./upload").upload({ id, e, _, __, _i, upload: _upload, asyncer: true, await: _await })
+            return require("./upload").upload({ _window, req, res, id, e, _, __, _i, upload: _upload, asyncer: true, await: _await })
           }
 
-          return require("./upload").upload({ id, e, save: { upload: { file: global.upload } }, _, __ })
+          return require("./upload").upload({ _window, req, res, id, e, save: { upload: { file: global.upload } }, _, __ })
 
         } else if (k0 === "confirmEmail()") {
           
@@ -3958,7 +3966,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _await = ""
             var _save = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
             if (args[2]) _await = global.codes[args[2]]
-            return require("./save").save({ id, e, _, __, _i, save: _save, asyncer: true, await: _await })
+            return require("./save").save({ _window, req, res, id, e, _, __, _i, save: _save, asyncer: true, await: _await })
           }
 
           var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
@@ -3966,7 +3974,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           var _data = toValue({ req, res, _window, id, e, _, __, _i,value: args[3], params })
           var _save = { collection: _collection, doc: _doc, data: _data }
 
-          return require("./save").save({ id, e, save: _save, _, __ })
+          return require("./save").save({ _window, req, res, id, e, save: _save, _, __ })
 
         } else if (k0 === "search()") {
           
@@ -3976,7 +3984,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _search = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
             if (args[2]) _await = global.codes[args[2]]
             
-            return require("./search").search({ id, e, _, __, _i,search: _search, asyncer: true, await: _await })
+            return require("./search").search({ _window, id, e, _, __, _i, req, res, search: _search, asyncer: true, await: _await })
           }
 
           var _collection = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
@@ -3984,7 +3992,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[3], params })
           var _search = { collection: _collection, doc: _doc, data: _data }
 
-          return require("./search").search({ id, e, search: _search, _, __ })
+          return require("./search").search({ _window, req, res, id, e, search: _search, _, __ })
 
         } else if (k0 === "erase()") {
           
@@ -3993,14 +4001,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
               var _await = ""
               var _erase = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
               if (args[2]) _await = global.codes[args[2]]
-              return require("./erase").erase({ id, e, _, __, _i, erase: _erase, asyncer: true, await: _await })
+              return require("./erase").erase({ _window, req, res, id, e, _, __, _i, erase: _erase, asyncer: true, await: _await })
             }
   
             var _collection = toValue({ req, res, _window, id, e, _, __, _i,value: args[1], params })
             var _doc = toValue({ req, res, _window, id, e, _, __, _i,value: args[2], params })
             var _erase = { collection: _collection, doc: _doc }
   
-            return require("./erase").erase({ id, e, save: _erase, _, __ })
+            return require("./erase").erase({ _window, req, res, id, e, save: _erase, _, __ })
   
           } else if (k0 === "setPosition()" || k0 === "position()") {
           

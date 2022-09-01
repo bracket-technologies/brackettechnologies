@@ -7,7 +7,6 @@ const { toParam } = require("../function/toParam")
 const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
 const { toCode } = require("../function/toCode")
-const { clone } = require("../function/clone")
 // const downloadsFolder = require('downloads-folder')
 
 window.views = JSON.parse(document.getElementById("views").textContent)
@@ -19,14 +18,13 @@ var views = window.views
 var global = window.global
 
 // access key
-global["access-key"] = getCookie({ name: "_key" })
+// document.cookie = "s_id=" + global.session.id + ";" + global.session["expiry-date"] + ";path=/"
 global["body-click-events"] = {}
 global["body-mousemove-events"] = {}
 global["body-mousedown-events"] = {}
 global["body-mouseup-events"] = {}
 global["before-print-events"] = {}
 global["after-print-events"] = {}
-
 global["click-events"] = []
 global["key-events"] = []
 
@@ -120,11 +118,16 @@ document.body.addEventListener('click', e => {
 
 }, false)
 
+var lastVisit = (new Date()).getTime()
+
 // mousemove
 document.body.addEventListener('mousemove', (e) => {
     global.screenX = e.screenX
     global.screenY = e.screenY
     Object.values(window.global["body-mousemove-events"]).flat().map(o => bodyEventListener(o, e))
+    currentTime = (new Date()).getTime()
+    // if (currentTime - lastVisit > 3600000 && global.data.page[global.currentPage]["recaptcha-required"]) 
+    lastVisit = currentTime
 }, false)
 
 document.addEventListener("mousedown", (e) => {

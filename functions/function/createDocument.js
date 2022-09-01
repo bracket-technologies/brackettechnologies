@@ -1,17 +1,22 @@
 const { createElement } = require("./createElement");
 const { getJsonFiles } = require("./jsonFiles");
-const fs = require("fs")
+const fs = require("fs");
+const { generate } = require("./generate");
+const { toArray } = require("./toArray");
+const { toParam } = require("./toParam");
+const { toCode } = require("./toCode");
+const { clone } = require("./clone");
 //
 require("dotenv").config();
 
-const createDocument = async ({ req, res, db, realtimedb }) => {
+const createDocument = async ({ req, res, realtimedb }) => {
   
   // Create a cookies object
-  var host = req.headers["x-forwarded-host"] || req.headers["host"]
+  var host = req.headers["x-forwarded-host"] || req.headers["host"], db = req.db
   if (req.url.split("/")[1] === "undefined") return res.send("")
 
   // current page
-  var currentPage = req.url.split("/")[1] || ""
+  var currentPage = req.url.split("/")[1] || "", promises = []
   currentPage = currentPage || "main"
   
   // get assets & views
@@ -34,6 +39,8 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     os: req.headers["sec-ch-ua-platform"],
     browser: req.headers["sec-ch-ua"],
     country: req.headers["x-country-code"],
+    headers: req.headers,
+    promises: []
   };
 
   var views = {
@@ -84,9 +91,26 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
 
   // project not found
   if (!project) return res.send("Project not found!");
-  global.projectId = project.id;
+  global.projectId = project.id
+
+  if (global) {
+    
+  } else {
+    // session
+   /* global.session = {
+      id: generate({ length: 20 }),
+      "creation-date": (new Date()).getTime(),
+      "expiry-date": (new Date()).getTime() + 1800000,
+      "host": host,
+      "counter": 0 // max requests (max requests depends on project session max requests data)
+    }
+    db.collection("_session_").doc(global.session.id).set(global.session)
+*/
+
+  }
 
   if (isBracket) {
+
     // get page
     console.log("before page", new Date().getTime() - global.timer);
     global.data.page = page = getJsonFiles({
@@ -120,7 +144,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
       if (!fs.existsSync(`database/view-${project.id}`)) fs.mkdirSync(`database/view-${project.id}`)
     }
     
-    await db
+    promises.push(db
       .collection(`page-${project.id}`)
       .get()
       .then(q => {
@@ -128,11 +152,12 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
           global.data.page[doc.id] = doc.data()
           if (host.includes("localhost")) require("fs").writeFileSync(`database/page-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
         })
-        console.log("after page", new Date().getTime() - global.timer);
-      })
+        console.log("after page", new Date().getTime() - global.timer)
 
-    // page doesnot exist
-    if (!global.data.page[currentPage]) return res.send("Page not found!");
+        // page doesnot exist
+        if (!global.data.page[currentPage]) return res.send("Page not found!");
+      }))
+
 
       /*
       view = realtimedb.ref(`view-${project.id}`).once("value").then(snapshot => {
@@ -144,7 +169,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     // load views
     console.log("before view / firestore", new Date().getTime() - global.timer);
 
-    await db
+    promises.push(db
     .collection(`view-${project.id}`)
     .get()
     .then(q => {
@@ -153,7 +178,7 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
         if (host.includes("localhost")) require("fs").writeFileSync(`database/view-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
       })
       console.log("after view", new Date().getTime() - global.timer);
-    })
+    }))
     
     /*if (global.data.page[currentPage].views.length > 0) {
 
@@ -188,19 +213,31 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
     }*/
   }
 
-  console.log("Document Ready.");
+  await Promise.all(promises)
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
 
   // mount globals
-  if (global.data.page[currentPage].global)
+  /*if (global.data.page[currentPage].global)
     Object.entries(global.data.page[currentPage].global).map(
       ([key, value]) => (global[key] = value)
-    )
+    )*/
     
   // controls & views
-  views.root.controls = global.data.page[currentPage].controls || []
-  views.root.children = [global.data.view[global.data.page[currentPage].view]]
+  views.root.controls = clone(global.data.page[currentPage].controls || [])
+  views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
+
+  // inherit view name
+  views.root["my-views"] = [global.data.page[currentPage].view]
+  
+  var _window = { global, views, db }
+
+  // controls
+  /*toArray(views.root.controls).map((controls = {}) => {
+    var event = toCode({ _window, string: controls.event || "" })
+    if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ _window, req, res, string: event.split('?')[2] }))
+      toParam({ _window, string: event.split("?")[1], req, res })
+  })*/
   
   // meta
   global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
@@ -212,10 +249,6 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   // language & direction
   var language = global.language = global.data.page[currentPage].language || "en"
   var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
-  var _window = { global, views, db }
-
-  // inherit view name
-  views.root["my-views"].push(global.data.page[currentPage].view)
 
   // create html
   var innerHTML = ""
@@ -223,6 +256,18 @@ const createDocument = async ({ req, res, db, realtimedb }) => {
   innerHTML += createElement({ _window, id: "public", req, res })
 
   global.idList = innerHTML.split("id='").slice(1).map((id) => id.split("'")[0])
+  
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
+  
+  console.log("Document Ready.");
+
+  if (global.promises.length > 0) {
+    var { promises, ..._global } = global
+    global = { ..._global }
+  }
 
   res.send(
     `<!DOCTYPE html>

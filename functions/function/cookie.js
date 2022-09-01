@@ -1,8 +1,9 @@
-const setCookie = ({ name = "", value, expiry = 360 }) => {
+const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var d = new Date()
   d.setTime(d.getTime() + (expiry*24*60*60*1000))
   var expires = "expires="+ d.toUTCString()
+
   document.cookie = name + "=" + value + ";" + expires + ";path=/"
 }
 
@@ -27,7 +28,7 @@ const getCookie = ({ name, req }) => {
   return cookie
 }
 
-const eraseCookie = ({ name }) => {   
+const eraseCookie = ({ _window, name }) => {
   document.cookie = name +'=; Max-Age=-99999999;'  
 }
 
