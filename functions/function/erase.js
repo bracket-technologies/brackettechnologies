@@ -1,4 +1,6 @@
 const axios = require("axios");
+const { clone } = require("./clone");
+const { toArray } = require("./toArray");
 const { toString } = require("./toString")
 
 const erase = async ({ _window, req, res, id, e, ...params }) => {
@@ -10,8 +12,8 @@ const erase = async ({ _window, req, res, id, e, ...params }) => {
   headers.project = headers.project || global.projectId
   var store = erase.store || "database"
   
-  erase.doc = erase.doc || erase.id || (erase.data && erase.data.id)
-  if (erase.doc === undefined) return
+  erase.docs = toArray(erase.doc || erase.docs || erase.id || (erase.data && clone(toArray(erase.data.map(data => data.id)))))
+  if (erase.docs.length === 0) return
   delete erase.data
 
   // erase

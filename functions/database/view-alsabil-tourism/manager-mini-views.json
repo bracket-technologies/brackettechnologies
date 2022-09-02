@@ -1,7 +1,6 @@
 {
-  "type": "View?id=manager-mini-views",
-  "id": "manager-mini-views",
   "creation-date": 1652284306902,
+  "id": "manager-mini-views",
   "functions": {},
   "children": [
     {
@@ -25,5 +24,6 @@
     {
       "type": "View?view=payment-window"
     }
-  ]
+  ],
+  "type": "View?id=manager-mini-views"
 }

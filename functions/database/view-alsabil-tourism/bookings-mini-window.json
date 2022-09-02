@@ -1,8 +1,8 @@
 {
-  "type": "View?id=bookings-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=1000;transition=.2s;padding=10vh 5vw];booking-data:().del()",
-  "id": "bookings-mini-window",
+  "creation-date": 1653754089875,
   "children": [
     {
+      "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%;position=relative]?booking-data:()",
       "controls": [
         {
           "event": "loaded?search():[collection=agent;doc=booking-data:().agent]:[my-agent:()=().search.data;bookind-data:().():[agent=my-agent:().id;agent-name=my-agent:().company-name];update():booking-agent]"
@@ -10,41 +10,41 @@
       ],
       "children": [
         {
+          "type": "View?id=booking-form-header;class=flex align-center;style:[width=100%;backgroundColor=#ddd;borderRadius=1rem 1rem 0 0;padding=0.5rem 1rem]",
           "children": [
             {
               "type": "Text?text=Booking form +if():[booking-copied:()]:(Duplicate).elif():[booking-edit-readonly:()]:(Display).elif():[booking-edit:()]:(Edit):(New);style:[fontSize=1.5rem]"
             },
             {
-              "type": "View?class=flexbox;style.gap=1.5rem;style.marginLeft=auto",
               "children": [
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=erase;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s];hover.style.backgroundColor=#fff?!new-booking:();!booking-edit-readonly:()",
                   "children": [
                     {
                       "type": "Icon?name=bi-trash;style.fontSize=2rem"
                     }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=erase;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s];hover.style.backgroundColor=#fff?!new-booking:();!booking-edit-readonly:()"
+                  ]
                 },
                 {
-                  "children": [
-                    {
-                      "type": "Icon?name=print;google.outlined;style.fontSize=2.2rem"
-                    }
-                  ],
                   "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
                   "controls": [
                     {
                       "event": "click?():bookings-mini-window.style():[padding=0;transition=null;minHeight=100%;zIndex=99999];next().style().display=none;next().next().style().display=flex;1stChild():bookings-mini-window.style().borderRadius=0;():booking-form-header.style().display=none;():booking-form-footer.style().display=none;#exportPdf():[html=():tickets-mini-window.1stChild().html();name=gen()];print():[id=1stChild():'bookings-mini-window'.id;after-print='next().next().click()']"
                     }
+                  ],
+                  "children": [
+                    {
+                      "type": "Icon?name=print;google.outlined;style.fontSize=2.2rem"
+                    }
                   ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
                   "children": [
                     {
                       "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
                     }
                   ],
+                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
                   "controls": [
                     {
                       "event": "click?style():[id=bookings-mini-window;transition=.2s;padding=0;minHeight=100%];style().display=none;style():next().display=flex;1stChild():bookings-mini-window.style():[borderRadius=0];():booking-form-header.style().display=flex;():booking-form-footer.style().display=flex"
@@ -52,12 +52,12 @@
                   ]
                 },
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none",
                   "children": [
                     {
                       "type": "Icon?name=crop;google.outlined;style.fontSize=2.2rem"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none",
                   "controls": [
                     {
                       "event": "click?style():[id=bookings-mini-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():booking-form-header.style().display=flex;():booking-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():bookings-mini-window].borderRadius=1rem"
@@ -65,26 +65,28 @@
                   ]
                 },
                 {
-                  "children": [
-                    {
-                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.7rem"
-                    }
-                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=close;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff",
                   "controls": [
                     {
                       "event": "click?style():[id=bookings-mini-window;transition=.2s;padding=10vh 5vw;bottom=0];():bookings-mini-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw];1stChild():bookings-mini-window.style().borderRadius=1rem;booking-data:().del();new-booking:().del()"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=close;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff"
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.7rem"
+                    }
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style.gap=1.5rem;style.marginLeft=auto"
             }
-          ],
-          "type": "View?id=booking-form-header;class=flex align-center;style:[width=100%;backgroundColor=#ddd;borderRadius=1rem 1rem 0 0;padding=0.5rem 1rem]"
+          ]
         },
         {
+          "type": "View:booking-av-balance?class=flexbox;style:[width=100%]?booking-data:().status=Loading",
           "children": [
             {
+              "type": "View?class=flexbox;style:[gap=1rem;padding=.75rem 2rem;borderRadius=.5rem;backgroundColor=#ddd]",
               "children": [
                 {
                   "type": "Icon?class=pointer;name=account_balance_wallet;tooltip.text=charge agent account;google.outlined;style:[fontSize=2.4rem;color=#888;transition=.2s];hover.style.color=#000;click:[my-voucher:().del();payment-data:()=_map;update():payment-window;():payment-window.style():[opacity=1;pointerEvents=auto]]:[agent:().admin]"
@@ -98,11 +100,9 @@
                 {
                   "type": "Text?text=Not enough balance!;style:[fontSize=1.3rem;if():[my-agent:().balance-usd<booking-data:().total-payable-usd]:[color=red]]?my-agent:().balance-usd<booking-data:().total-payable-usd"
                 }
-              ],
-              "type": "View?class=flexbox;style:[gap=1rem;padding=.75rem 2rem;borderRadius=.5rem;backgroundColor=#ddd]"
+              ]
             }
-          ],
-          "type": "View:booking-av-balance?class=flexbox;style:[width=100%]?booking-data:().status=Loading"
+          ]
         },
         {
           "children": [
@@ -114,27 +114,27 @@
                 },
                 {
                   "type": "View?class=flexbox pointer;style:[height=3.5rem;width=3.5rem;borderRadius=.5rem;border=1px solid #ccc;transition=.2s];mouseenter:[style().backgroundColor=#ddd;1stChild().style().color=#444];mouseleave:[style().backgroundColor=#fff;1stChild().style().color=#888];droplist:[items='agents:().():company-name';item.style:[minHeight=3rem;fontSize=1.2rem];preventDefault;align=right]",
-                  "controls": [
-                    {
-                      "event": "click:droplist?my-agent:()=agents:().find():[company-name=droplist-txt:()].clone();loader.show;search():[collection=agent;doc=my-agent:().id]:[my-agent:()=search:().data;agents:().replaceItem():[my-agent:().clone()];booking-data:().():[agent=my-agent:().id;agent-name=my-agent:().company-name];update():[booking-agent];update():[booking-av-balance];loader.hide]"
-                    }
-                  ],
                   "children": [
                     {
                       "type": "Icon?name=manage_accounts;google.outlined;style:[fontSize=2rem;color=#888]"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click:droplist?my-agent:()=agents:().find():[company-name=droplist-txt:()].clone();loader.show;search():[collection=agent;doc=my-agent:().id]:[my-agent:()=search:().data;agents:().replaceItem():[my-agent:().clone()];booking-data:().():[agent=my-agent:().id;agent-name=my-agent:().company-name];update():[booking-agent];update():[booking-av-balance];loader.hide]"
                     }
                   ]
                 },
                 {
                   "type": "View?class=flexbox pointer;tooltip.text=add new agent;style:[height=3.5rem;width=3.5rem;borderRadius=.5rem;border=1px solid #ccc;transition=.2s];mouseenter:[style().backgroundColor=#ddd;1stChild().style().color=#444];mouseleave:[style().backgroundColor=#fff;1stChild().style().color=#888]",
-                  "controls": [
-                    {
-                      "event": "click?style():[id=agent-window;opacity=1;pointerEvents=auto];new-agent:()=true;agent-copied:().del();agent-edit-readonly:()=false;agent-data:()=_map;update():[agent-window]"
-                    }
-                  ],
                   "children": [
                     {
                       "type": "Icon?name=person_add;google.outlined;style:[fontSize=2rem;color=#888]"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?style():[id=agent-window;opacity=1;pointerEvents=auto];new-agent:()=true;agent-copied:().del();agent-edit-readonly:()=false;agent-data:()=_map;update():[agent-window]"
                     }
                   ]
                 }
@@ -146,12 +146,12 @@
                 {
                   "children": [
                     {
-                      "type": "View?class=flex;style:[height=13rem;width=100%]",
                       "children": [
                         {
                           "type": "Image?src=my-agent:().logo;style:[maxHeight=100%;maxWidth=100%]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex;style:[height=13rem;width=100%]"
                     },
                     {
                       "type": "View?class=flex;style:[gap=1rem;marginLeft=auto]",
@@ -171,7 +171,6 @@
                               ]
                             },
                             {
-                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
                               "children": [
                                 {
                                   "type": "Text?text=Address;style:[color=#000;fontSize=1.4rem;fontWeight=bold;textAlign=left;width=12.5rem]"
@@ -179,7 +178,8 @@
                                 {
                                   "type": "Text?text=my-agent:().company-head-office-country+', '+my-agent:().company-head-office-city+', '+my-agent:().company-head-office-address;style:[color=#000;fontSize=1.4rem;textAlign=left;maxWidth=25rem]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
                             },
                             {
                               "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
@@ -249,29 +249,27 @@
               "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
             },
             {
-              "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?class=flex;text=Flight Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1.5fr 1.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]",
                   "children": [
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Airline;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Travel Date;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "children": [
@@ -282,28 +280,28 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=From;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Text?class=pointer;text=To;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
+                        }
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
-                          "type": "Text?class=pointer;text=To;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
-                        }
-                      ]
-                    },
-                    {
-                      "children": [
-                        {
                           "type": "Text?class=pointer;text=Dep;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -314,36 +312,35 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Stops;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Aircraft;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Duration;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     }
-                  ]
+                  ],
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1.5fr 1.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]"
                 },
                 {
-                  "type": "[View]?path=booking-details;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1.5fr 1.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]",
                   "children": [
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1;gap=1rem]",
                       "children": [
                         {
                           "type": "Image?class=flexbox;src=collections:().airlines.airlines.find():[code=data().airline.slice():0:2].image-url;style:[maxWidth=4rem;maxHeight=6rem]"
@@ -351,7 +348,8 @@
                         {
                           "type": "Text?class=flex;text=data().airline.slice():3;style:[fontSize=1.3rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1;gap=1rem]"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -370,20 +368,20 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().departure-airport.split(): .0;style:[fontSize=1.3rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().arrival-airport.split(): .0;style:[fontSize=1.3rem]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -425,28 +423,30 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "[View]?path=booking-details;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1.5fr 1.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]"
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
             },
             {
               "type": "View?view=booking-seat-passenger"
             },
             {
+              "type": "View:total-pricing-booking?class=flex column;style.gap=.5rem;style.width=100%;style.padding=2rem",
               "children": [
                 {
                   "type": "Text?class=flex;text=Pricing Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]?false"
                 },
                 {
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=if():[!agent:().admin]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr];borderRadius=.5rem;marginBottom=1rem]",
                   "children": [
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "children": [
@@ -465,12 +465,12 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=;style:[color=#888;fontSize=1.3rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "children": [
@@ -497,20 +497,20 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Fees;style:[color=#888;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]?!agent:().admin",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Commission;style:[color=#888;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]?!agent:().admin"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -528,7 +528,8 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=if():[!agent:().admin]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr];borderRadius=.5rem;marginBottom=1rem]"
                 },
                 {
                   "type": "View?style:[gap=1rem;height=3.5rem;width=100%;display=grid;gridTemplateColumns=if():[!agent:().admin]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr]:[1fr 1fr .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr];borderRadius=.5rem;borderTop=1px solid #ddd]",
@@ -549,36 +550,36 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=data().total-base-fare-usd.round():2+'$';style:[color=#000;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
+                        }
+                      ]
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Text?class=pointer;text=data().total-taxes-usd.round():2+'$';style:[color=#000;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
                         }
                       ],
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
-                      "children": [
-                        {
-                          "type": "Text?class=pointer;text=data().total-taxes-usd.round():2+'$';style:[color=#000;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=data().total-fees-usd.round():2+'$';style:[color=#000;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]?!agent:().admin",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=data().total-commission-usd.round():2+'$';style:[color=#000;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]?!agent:().admin"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -589,52 +590,48 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=[data().total-payable-usd+data().total-additional-profit-usd].round():2+$;style:[color=#000;fontSize=1.3rem;transition=.3s;marginLeft=auto];hover.style.color=#444"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     }
                   ]
                 }
-              ],
-              "type": "View:total-pricing-booking?class=flex column;style.gap=.5rem;style.width=100%;style.padding=2rem"
+              ]
             },
             {
+              "type": "View?class=grid column;style:[gap=.5rem;width=100%;padding=2rem;gridTemplateColumns=1fr 1fr 1fr;gap=1rem]",
               "children": [
                 {
                   "type": "Input?textarea;label:[text=Notes;location=outside;style.fontSize=1.3rem];path=note;if():[booking-edit-readonly:()]:readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=10rem;borderRadius=.5rem;fontSize=1.3rem]"
                 }
-              ],
-              "type": "View?class=grid column;style:[gap=.5rem;width=100%;padding=2rem;gridTemplateColumns=1fr 1fr 1fr;gap=1rem]"
+              ]
             }
           ],
           "type": "View:booking-form-body?class=flex column;data=booking-data:();style:[width=100%;gap=2rem;padding=.5rem;marginBottom=2rem]"
         },
         {
-          "type": "View:booking-form-footer?class=flexbox;style:[width=100%;borderTop=1px solid #ddd;padding=2rem;justifyContent=flex-end;gap=1rem;marginTop=2rem;marginBottom=-1rem;position=relative]",
           "children": [
             {
-              "type": "View?class=flexbox;style:[position=absolute;left=0;gap=1rem;padding=0 2rem]",
               "children": [
                 {
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];booking-data:().accept-terms-and-conditions=booking-data:().accept-terms-and-conditions||false;checked=booking-data:().accept-terms-and-conditions",
+                      "children": [
+                        {
+                          "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
+                        }
+                      ],
                       "controls": [
                         {
                           "event": "click?checked()=checked().opp();1stChild().style().opacity=if():checked():1:0;if():checked():[booking-data:().accept-terms-and-conditions=true]:[booking-data:().accept-terms-and-conditions=false]?booking-data:().status=Loading"
                         }
                       ],
-                      "children": [
-                        {
-                          "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
-                        }
-                      ]
+                      "type": "View?class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];booking-data:().accept-terms-and-conditions=booking-data:().accept-terms-and-conditions||false;checked=booking-data:().accept-terms-and-conditions"
                     },
                     {
-                      "type": "View?class=flexbox;style:[gap=.25rem]",
                       "children": [
                         {
                           "type": "Text?text=I agree to the;style:[fontSize=1.2rem]"
@@ -642,12 +639,14 @@
                         {
                           "type": "Text?link.path='/terms-and-conditions';text=Terms & Conditions;style:[color=blue;fontSize=1.2rem;color=blue]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox;style:[gap=.25rem]"
                     }
                   ],
                   "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[position=absolute;left=0;gap=1rem;padding=0 2rem]"
             },
             {
               "controls": [
@@ -667,7 +666,6 @@
               "type": "Text?class=flexbox pointer;text=Issue;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=green;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!booking-edit-readonly:();booking-data:().status=Booked||booking-data:().status=Loading"
             },
             {
-              "type": "Text?class=flexbox pointer;text=Split;tooltip.text=split selected;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#f202ca;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?user:().admin;agent:().admin;booking-data:().status=Booked||booking-data:().status=Issued;booking-data:().total-seats>1",
               "controls": [
                 {
                   "event": "click?loader.show;new-booking:().del();bookings:().pullItem():[id=booking-data:().id];splited-data=className():passenger-checker.filter():checked.():data().clone();counters=_list;splited-data._():[().counters.push():[_.counter];_.infants._():[().counter.push():[_.counter]]];new-booking-data:()=booking-data:().clone();new-booking-data:().booking-details.():[seats._():[_.[passengers-details].pullItems():[!counter.in():[().counters]]].pullItems():[passengers-details.len()=0]];booking-data:().booking-details.():[seats._():[_.[passengers-details].pullItems():[counter.in():[().counters]]].pullItems():[passengers-details.len()=0]];updateBookingDataSplit();updateNewBookingDataSplit();updateTicketsDataSplit()?booking-data:().accept-terms-and-conditions;className():passenger-checker.find():[checked=true];booking-data:().total-seats>1;booking-data:().status=Issued"
@@ -675,10 +673,10 @@
                 {
                   "event": "click?note():[text=Select Passengers you want to split!;type=warning]?booking-data:().accept-terms-and-conditions;!className():passenger-checker.find():[checked=true];booking-data:().total-seats>1;booking-data:().status=Issued"
                 }
-              ]
+              ],
+              "type": "Text?class=flexbox pointer;text=Split;tooltip.text=split selected;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#f202ca;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?user:().admin;agent:().admin;booking-data:().status=Booked||booking-data:().status=Issued;booking-data:().total-seats>1"
             },
             {
-              "type": "Text?id=book-seats-btn;class=flexbox pointer;text=Save;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!booking-edit-readonly:();booking-data:().status=Booked||booking-data:().status=Issued",
               "controls": [
                 {
                   "event": "click?loader.show;booking-data:().():[history=[booking-data:().history||_list].list();history.push():[_map:user:[user:().id]:user-name:[user:().username]:agent:[agent:().id]:agent-name:[agent:().company-name]:description:['Booking has been edited.']:status:Confirmed:date:[today().timestamp()]];lastEdit-day=todayStart();lastEdit-month=monthStart();lastEdit-year=yearStart();lastEdited-by=user:().id;lastEdited-by-name=user:().username;lastEdited-by-agent=agent:().id;lastEdited-by-agent-name=agent:().company-name;lastEdited-date=today().timestamp()];save():[collection=flight-booking;data=booking-data:()]:[booking-data:()=().save.data;note():[text=Booking has been edited!];bookings:().replaceItem():[booking-data:().clone()];booking-data:().del();booking-edit:().del();update():'bookings-list';loader.hide;next().click()]?booking-data:().accept-terms-and-conditions;booking-data:().status=Booked"
@@ -689,10 +687,10 @@
                 {
                   "event": "click?note():[text=Check I agree to the terms and conditions to continue!;type=danger]?!booking-data:().accept-terms-and-conditions"
                 }
-              ]
+              ],
+              "type": "Text?id=book-seats-btn;class=flexbox pointer;text=Save;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!booking-edit-readonly:();booking-data:().status=Booked||booking-data:().status=Issued"
             },
             {
-              "type": "Text?id=book-seats-btn;class=flexbox pointer;text=Book;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!booking-edit-readonly:();!booking-edit:();booking-data:().status=Loading",
               "controls": [
                 {
                   "event": "click?note():[text=Check terms and conditions to continue!;type=danger]?!booking-data:().accept-terms-and-conditions"
@@ -700,7 +698,8 @@
                 {
                   "event": "click?loader.show;new-booking:().del();booking-data:().():[history=[booking-data:().history||_list].list();history.push():[_map:user:[user:().id]:user-name:[user:().username]:agent:[agent:().id]:agent-name:[agent:().company-name]:description:['New booking has been booked.']:status:Confirmed:date:[today().timestamp()]];booking-day=todayStart();booking-month=monthStart();booking-year=yearStart();booked-by=user:().id;booked-by-name=user:().username;booked-by-agent=agent:().id;booked-by-agent-name=agent:().company-name;status=Booked;booking-date=today().timestamp();flights=my-flights:().():id.clone();travel-date=my-flights:().0.departure-day;go-departure-airport=my-flights:().0.departure-airport;go-departure-time=my-flights:().0.departure-time;go-arrival-airport=my-flights:().0.arrival-airport;go-arrival-time=my-flights:().0.arrival-time;if():[my-flights:().len()=2]:[return-date=my-flights:().1.departure-day;return-departure-airport=my-flights:().1.departure-airport;return-departure-time=my-flights:().1.departure-time;return-arrival-airport=my-flights:().1.arrival-airport;return-arrival-time=my-flights:().1.arrival-time]];booking-data:().booking-details._():[my-flights:().find():[id=_.flight-id]._():[_.total-av-seats=[_.total-av-seats||_.total-seats]-[__.total-seats];__.seats._():[__.seats.find():[sub-class=_.class]._():[_.av-seats=[_.av-seats]-[__.total-seats]]]];my-flight-invoices:().find():[flight-id=_.flight-id]._():[_.pnrs.push():[booking-data:().pnr];_.open-bookings=[_.open-bookings||_list];_.open-bookings.push():[booking-data:().id];_.bookings.push():[booking-data:().id];_.total-booked-base-fare-usd=_.total-booked-base-fare-usd+__.total-base-fare-usd;_.total-booked-taxes-usd=_.total-booked-taxes-usd+__.total-taxes-usd;_.total-booked-fees-usd=_.total-booked-fees-usd+__.total-fees-usd;_.total-booked-additional-profit-usd=_.total-booked-additional-profit-usd+__.total-additional-profit-usd;_.total-booked-usd=_.total-booked-usd+__.total-usd;_.total-booked-commission-usd=_.total-booked-commission-usd+__.total-commission-usd;_.total-booked-payable-usd=_.total-booked-payable-usd+__.total-payable-usd;_.total-av-seats=[_.total-av-seats||_.total-seats]-[__.total-seats];_.total-booked-seats=_.total-booked-seats+__.total-seats;_.total-booked-passengers=_.total-booked-passengers+__.total-passengers;__.seats._():[__.seats.find():[sub-class=_.class]._():[_.total-booked-base-fare-usd=[_.total-booked-base-fare-usd||0]+__.total-base-fare-usd;_.total-booked-taxes-usd=_.total-booked-taxes-usd+__.total-taxes-usd;_.total-booked-fees-usd=_.total-booked-fees-usd+__.total-fees-usd;_.total-booked-additional-profit-usd=_.total-booked-additional-profit-usd+__.total-additional-profit-usd;_.total-booked-usd=_.total-booked-usd+__.total-usd;_.total-booked-commission-usd=_.total-booked-commission-usd+__.total-commission-usd;_.total-booked-payable-usd=_.total-booked-payable-usd+__.total-payable-usd;_.total-av-seats=[_.total-av-seats]-[__.total-seats];_.total-booked-seats=_.total-booked-seats+__.total-seats;_.total-booked-passengers=_.total-booked-passengers+__.total-passengers]];_.total-open-bookings-base-fare-usd=[_.total-open-bookings-base-fare-usd||0]+__.total-base-fare-usd;_.total-open-bookings-taxes-usd=[_.total-open-bookings-taxes-usd||0]+__.total-taxes-usd;_.total-open-bookings-fees-usd=[_.total-open-bookings-fees-usd||0]+__.total-fees-usd;_.total-open-bookings-additional-profit-usd=[_.total-open-bookings-additional-profit-usd||0]+__.total-additional-profit-usd;_.total-open-bookings-usd=[_.total-open-bookings-usd||0]+__.total-usd;_.total-open-bookings-commission-usd=[_.total-open-bookings-commission-usd||0]+__.total-commission-usd;_.total-open-bookings-payable-usd=[_.total-open-bookings-payable-usd||0]+__.total-payable-usd;_.total-open-bookings-seats=[_.total-open-bookings-seats||0]+__.total-seats;_.total-open-bookings-passengers=[_.total-open-bookings-passengers||0]+__.total-passengers;__.seats._():[__.seats.find():[sub-class=_.class]._():[_.total-open-bookings-base-fare-usd=[_.total-open-bookings-base-fare-usd||0]+__.total-base-fare-usd;_.total-open-bookings-taxes-usd=[_.total-open-bookings-taxes-usd||0]+__.total-taxes-usd;_.total-open-bookings-fees-usd=[_.total-open-bookings-fees-usd||0]+__.total-fees-usd;_.total-open-bookings-additional-profit-usd=[_.total-open-bookings-additional-profit-usd||0]+__.total-additional-profit-usd;_.total-open-bookings-usd=[_.total-open-bookings-usd||0]+__.total-usd;_.total-open-bookings-commission-usd=[_.total-open-bookings-commission-usd||0]+__.total-commission-usd;_.total-open-bookings-payable-usd=[_.total-open-bookings-payable-usd||0]+__.total-payable-usd;_.total-open-bookings-seats=[_.total-open-bookings-seats||0]+__.total-seats;_.total-open-bookings-passengers=[_.total-open-bookings-passengers||0]+__.total-passengers]]]];save():[collection=flight-booking;data=booking-data:()]:[booking-details:()=_list;flights:()=_list;flights-booked:()=_list];save():[collection=flight;data=my-flights:()]:[my-flights:()=_list];save():[collection=flight-invoice;data=my-flight-invoices:()]:[my-flight-invoices:()=_list];():book-a-flight-list.children().():rem();():flight-booking-sidebar-btn.click();update():[pricing-bar];note():[text=Seats booked successfully!];bookings:()=_list:[booking-data:().clone()];booking-data:().del();update():[bookings-list];next().click();loader.hide?booking-data:().accept-terms-and-conditions;if():[booking-data:().clone().booking-details.find():[seats.find():[passengers-details.find():[!last-name||!first-name||if():[infants.len()>0]:[infants.find():[!first-name||!last-name]]:false]]]]:[if():[agent:().admin]:true:false]:true"
                 }
-              ]
+              ],
+              "type": "Text?id=book-seats-btn;class=flexbox pointer;text=Book;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!booking-edit-readonly:();!booking-edit:();booking-data:().status=Loading"
             },
             {
               "type": "Text:close-bookings-window?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1",
@@ -710,18 +709,19 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "View:booking-form-footer?class=flexbox;style:[width=100%;borderTop=1px solid #ddd;padding=2rem;justifyContent=flex-end;gap=1rem;marginTop=2rem;marginBottom=-1rem;position=relative]"
         }
-      ],
-      "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%;position=relative]?booking-data:()"
+      ]
     }
   ],
+  "type": "View?id=bookings-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=1000;transition=.2s;padding=10vh 5vw];booking-data:().del()",
+  "id": "bookings-mini-window",
   "functions": {
-    "setAgentBuyingsBookings": "if():[my-agent:().today=todayStart().timestamp()]:[my-agent:().today-buyings-usd=[my-agent:().today-buyings-usd||0]+[booking-data:().total-payable-usd];my-agent:().today-bookings=[my-agent:().today-bookings||0]+1]:[my-agent:().today=todayStart().timestamp();my-agent:().today-buyings-usd=booking-data:().total-payable-usd;my-agent:().today-bookings=1]",
-    "updateFlightInvoiceSplit": "search():[collection=flight-invoice;field.flight-id.in=booking-data:().flights]:[my-invoices:()=search:().data.values();my-invoices:().():[bookings.push():[new-booking-data:().id];pnrs.push():[new-booking-data:().pnr]];save():[collection=flight-invoice;data=my-invoices:()]:[my-invoices:().del()];save():[collection=flight-reservation;data=my-reservations:()]:[my-reservations:().del()];save():[collection=flight-booking;data=_list:[booking-data:()]:[new-booking-data:()]]:[bookings:().push():[new-booking-data:().clone()];bookings:().push():[booking-data:().clone()];update():[bookings-list];new-booking-data:().del();booking-data:().del();():close-bookings-window.click();loader.hide]]",
-    "updateNewBookingDataSplit": "new-booking-data:().():[pnr=gen():6.touppercase();id=gen():20;history=_list:[_map:user:[user:().id]:user-name:[user:().username]:agent:[agent:().id]:agent-name:[agent:().company-name]:description:['Booking created from a split from pnr '+booking-data:().pnr]:status:Confirmed:date:[today().timestamp()]]];new-booking-data:()._():[_.creation-date=_.creation-date+1;_.issuing-date=[_.issuing-date||_.issue-date]+1;_.booking-details._():[_.seats._():[_.total-seats=_.[passengers-details].len();_.adults=_.[passengers-details].filter():[age=ADT].len();_.children=_.[passengers-details].filter():[age=CHD].len();_.infants=_.[passengers-details].filter():[infants.len()>0].len();_.total-passengers=_.[passengers-details].len()+_.infants;_.passengers=_.total-passengers;_.total-base-fare-usd=_.[passengers-details].():[base-fare-usd].sum();_.total-commission-usd=_.[passengers-details].():[commission-usd].sum();_.total-taxes-usd=_.[passengers-details].():[taxes-usd].sum();_.total-fees-usd=_.[passengers-details].():[fees-usd].sum();_.total-additional-profit-usd=_.[passengers-details].():[additional-profit-usd].sum();_.total-usd=_.[passengers-details].():[total-usd].sum();_.total-payable-usd=_.[passengers-details].():[payable-usd].sum()];_.total-seats=_.seats.():[total-seats].sum();_.total-adults=_.seats.():[adults].sum();_.total-children=_.seats.():[children].sum();_.total-infants=_.seats.():[infants].sum();_.total-passengers=_.seats.():[total-passengers].sum();_.total-base-fare-usd=_.seats.():[total-base-fare-usd].sum();_.total-commission-usd=_.seats.():[total-commission-usd].sum();_.total-taxes-usd=_.seats.():[total-taxes-usd].sum();_.total-fees-usd=_.seats.():[total-fees-usd].sum();_.total-additional-profit-usd=_.seats.():[total-additional-profit-usd].sum();_.total-usd=_.seats.():[total-usd].sum();_.total-payable-usd=_.seats.():[total-payable-usd].sum()];_.total-seats=_.booking-details.0.total-seats;_.total-passengers=_.booking-details.0.total-passengers;_.total-base-fare-usd=_.booking-details.():[total-base-fare-usd].sum();_.total-commission-usd=_.booking-details.():[total-commission-usd].sum();_.total-taxes-usd=_.booking-details.():[total-taxes-usd].sum();_.total-fees-usd=_.booking-details.():[total-fees-usd].sum();_.total-additional-profit-usd=_.booking-details.():[total-additional-profit-usd].sum();_.total-usd=_.booking-details.():[total-usd].sum();_.total-payable-usd=_.booking-details.():[total-payable-usd].sum();if():[booking-data:().end-balance-usd]:[_.start-balance-usd=booking-data:().end-balance-usd;_.end-balance-usd=_.start-balance-usd+_.total-payable-usd]]",
     "updateBookingDataSplit": "booking-data:().():[history=[booking-data:().history||_list];history.push():[_map:user:[user:().id]:user-name:[user:().username]:agent:[agent:().id]:agent-name:[agent:().company-name]:description:['Split tickets: '+().splited-data.clone().():[type+ +first-name+ +last-name]]:status:Confirmed:date:[today().timestamp()]];splited=().splited-data;edit-day=todayStart();edit-month=monthStart();edit-year=yearStart();edited-by=user:().id;edited-by-name=user:().username;edited-by-agent=agent:().id;edited-by-agent-name=agent:().company-name;status=Issued;edit-date=today().timestamp()];booking-data:()._():[_.booking-details._():[_.seats._():[_.total-seats=_.[passengers-details].len();_.adults=_.[passengers-details].filter():[age=ADT].len();_.children=_.[passengers-details].filter():[age=CHD].len();_.infants=_.[passengers-details].filter():[infants.len()>0].len();_.total-passengers=_.[passengers-details].len()+_.infants;_.passengers=_.total-passengers;_.total-base-fare-usd=_.[passengers-details].():[base-fare-usd].sum();_.total-commission-usd=_.[passengers-details].():[commission-usd].sum();_.total-taxes-usd=_.[passengers-details].():[taxes-usd].sum();_.total-fees-usd=_.[passengers-details].():[fees-usd].sum();_.total-additional-profit-usd=_.[passengers-details].():[additional-profit-usd].sum();_.total-usd=_.[passengers-details].():[total-usd].sum();_.total-payable-usd=_.[passengers-details].():[payable-usd].sum()];_.total-seats=_.seats.():[total-seats].sum();_.total-adults=_.seats.():[adults].sum();_.total-children=_.seats.():[children].sum();_.total-infants=_.seats.():[infants].sum();_.total-passengers=_.seats.():[total-passengers].sum();_.total-base-fare-usd=_.seats.():[total-base-fare-usd].sum();_.total-commission-usd=_.seats.():[total-commission-usd].sum();_.total-taxes-usd=_.seats.():[total-taxes-usd].sum();_.total-fees-usd=_.seats.():[total-fees-usd].sum();_.total-additional-profit-usd=_.seats.():[total-additional-profit-usd].sum();_.total-usd=_.seats.():[total-usd].sum();_.total-payable-usd=_.seats.():[total-payable-usd].sum()];_.total-seats=_.booking-details.0.total-seats;_.total-passengers=_.booking-details.0.total-passengers;_.total-base-fare-usd=_.booking-details.():[total-base-fare-usd].sum();_.total-commission-usd=_.booking-details.():[total-commission-usd].sum();_.total-taxes-usd=_.booking-details.():[total-taxes-usd].sum();_.total-fees-usd=_.booking-details.():[total-fees-usd].sum();_.total-additional-profit-usd=_.booking-details.():[total-additional-profit-usd].sum();_.total-usd=_.booking-details.():[total-usd].sum();_.total-payable-usd=_.booking-details.():[total-payable-usd].sum();_.start-balance-usd=_.start-balance-usd;if():[_.start-balance-usd]:[_.end-balance-usd=_.start-balance-usd+_.total-payable-usd]]",
-    "updateTicketsDataSplit": "search():[collection=flight-reservation;docs=booking-data:().reservations]:[my-reservations:()=search:().data.values();booking-data:().():[reservations=_list;tickets=_list];new-booking-data:().():[reservations=_list;tickets=_list];my-reservations:()._():[if():[_.reservation-details.0.counter.in():[().counters]]:[new-booking-data:().():[reservations.push():[_.id];tickets.push():[_.e-ticket]];_.pnr=new-booking-data:().pnr;_.booking=new-booking-data:().id;_.reservation-details.():[pnr=new-booking-data:().pnr]]:[booking-data:().():[reservations.push():[_.id];tickets.push():[_.e-ticket]]]];updateFlightInvoiceSplit()]"
-  },
-  "creation-date": 1653754089875
+    "setAgentBuyingsBookings": "if():[my-agent:().today=todayStart().timestamp()]:[my-agent:().today-buyings-usd=[my-agent:().today-buyings-usd||0]+[booking-data:().total-payable-usd];my-agent:().today-bookings=[my-agent:().today-bookings||0]+1]:[my-agent:().today=todayStart().timestamp();my-agent:().today-buyings-usd=booking-data:().total-payable-usd;my-agent:().today-bookings=1]",
+    "updateTicketsDataSplit": "search():[collection=flight-reservation;docs=booking-data:().reservations]:[my-reservations:()=search:().data.values();booking-data:().():[reservations=_list;tickets=_list];new-booking-data:().():[reservations=_list;tickets=_list];my-reservations:()._():[if():[_.reservation-details.0.counter.in():[().counters]]:[new-booking-data:().():[reservations.push():[_.id];tickets.push():[_.e-ticket]];_.pnr=new-booking-data:().pnr;_.booking=new-booking-data:().id;_.reservation-details.():[pnr=new-booking-data:().pnr]]:[booking-data:().():[reservations.push():[_.id];tickets.push():[_.e-ticket]]]];updateFlightInvoiceSplit()]",
+    "updateFlightInvoiceSplit": "search():[collection=flight-invoice;field.flight-id.in=booking-data:().flights]:[my-invoices:()=search:().data.values();my-invoices:().():[bookings.push():[new-booking-data:().id];pnrs.push():[new-booking-data:().pnr]];save():[collection=flight-invoice;data=my-invoices:()]:[my-invoices:().del()];save():[collection=flight-reservation;data=my-reservations:()]:[my-reservations:().del()];save():[collection=flight-booking;data=_list:[booking-data:()]:[new-booking-data:()]]:[bookings:().push():[new-booking-data:().clone()];bookings:().push():[booking-data:().clone()];update():[bookings-list];new-booking-data:().del();booking-data:().del();():close-bookings-window.click();loader.hide]]",
+    "updateNewBookingDataSplit": "new-booking-data:().():[pnr=gen():6.touppercase();id=gen():20;history=_list:[_map:user:[user:().id]:user-name:[user:().username]:agent:[agent:().id]:agent-name:[agent:().company-name]:description:['Booking created from a split from pnr '+booking-data:().pnr]:status:Confirmed:date:[today().timestamp()]]];new-booking-data:()._():[_.creation-date=_.creation-date+1;_.issuing-date=[_.issuing-date||_.issue-date]+1;_.booking-details._():[_.seats._():[_.total-seats=_.[passengers-details].len();_.adults=_.[passengers-details].filter():[age=ADT].len();_.children=_.[passengers-details].filter():[age=CHD].len();_.infants=_.[passengers-details].filter():[infants.len()>0].len();_.total-passengers=_.[passengers-details].len()+_.infants;_.passengers=_.total-passengers;_.total-base-fare-usd=_.[passengers-details].():[base-fare-usd].sum();_.total-commission-usd=_.[passengers-details].():[commission-usd].sum();_.total-taxes-usd=_.[passengers-details].():[taxes-usd].sum();_.total-fees-usd=_.[passengers-details].():[fees-usd].sum();_.total-additional-profit-usd=_.[passengers-details].():[additional-profit-usd].sum();_.total-usd=_.[passengers-details].():[total-usd].sum();_.total-payable-usd=_.[passengers-details].():[payable-usd].sum()];_.total-seats=_.seats.():[total-seats].sum();_.total-adults=_.seats.():[adults].sum();_.total-children=_.seats.():[children].sum();_.total-infants=_.seats.():[infants].sum();_.total-passengers=_.seats.():[total-passengers].sum();_.total-base-fare-usd=_.seats.():[total-base-fare-usd].sum();_.total-commission-usd=_.seats.():[total-commission-usd].sum();_.total-taxes-usd=_.seats.():[total-taxes-usd].sum();_.total-fees-usd=_.seats.():[total-fees-usd].sum();_.total-additional-profit-usd=_.seats.():[total-additional-profit-usd].sum();_.total-usd=_.seats.():[total-usd].sum();_.total-payable-usd=_.seats.():[total-payable-usd].sum()];_.total-seats=_.booking-details.0.total-seats;_.total-passengers=_.booking-details.0.total-passengers;_.total-base-fare-usd=_.booking-details.():[total-base-fare-usd].sum();_.total-commission-usd=_.booking-details.():[total-commission-usd].sum();_.total-taxes-usd=_.booking-details.():[total-taxes-usd].sum();_.total-fees-usd=_.booking-details.():[total-fees-usd].sum();_.total-additional-profit-usd=_.booking-details.():[total-additional-profit-usd].sum();_.total-usd=_.booking-details.():[total-usd].sum();_.total-payable-usd=_.booking-details.():[total-payable-usd].sum();if():[booking-data:().end-balance-usd]:[_.start-balance-usd=booking-data:().end-balance-usd;_.end-balance-usd=_.start-balance-usd+_.total-payable-usd]]"
+  }
 }

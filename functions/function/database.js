@@ -309,7 +309,7 @@ var deletedb = async ({ req, res, db, storage }) => {
 
   /////////////////// verify access key ///////////////////// access key is stopped
   // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
-  project = { ["accesskey"]: req.headers["accesskey"] }
+  /*project = { ["accesskey"]: req.headers["accesskey"] }
   
   await Promise.all(promises)
   if (project["accesskey"] !== req.headers["accesskey"]) {
@@ -317,32 +317,34 @@ var deletedb = async ({ req, res, db, storage }) => {
     success = false
     message = `Your are not verified!`
     return res.send({ success, message })
-  }
+  }*/
 
-  await ref.doc(erase.doc.toString()).delete().then(() => {
-
-    success = true,
-    message = `Document erased successfuly!`
-
-  }).catch(error => {
-
-    success = false
-    message = error
-  })
-
-  if (erase.collection === "storage") {
-
-    var exists = await storage.bucket().file(`${collection}/${erase.doc}`).exists()
-    if (exists) await storage.bucket().file(`${collection}/${erase.doc}`).delete()
-  }
+  erase.docs.map(async doc => {
     
-  await Promise.all(promises)
+    await ref.doc(doc.toString()).delete().then(() => {
+
+      success = true,
+      message = `Document erased successfuly!`
+
+    }).catch(error => {
+
+      success = false
+      message = error
+    })
+
+    if (erase.collection === "storage") {
+
+      var exists = await storage.bucket().file(`${collection}/${doc}`).exists()
+      if (exists) await storage.bucket().file(`${collection}/${doc}`).delete()
+    }
+  })
+  /*await Promise.all(promises)
   if (project["accesskey"] !== req.headers["accesskey"]) {
 
     success = false
     message = `Your are not verified!`
     return res.send({ success, message })
-  }
+  }*/
   
   return res.send({ success, message })
 }

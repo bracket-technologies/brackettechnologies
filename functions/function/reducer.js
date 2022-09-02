@@ -3281,11 +3281,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           open(_url)
           
         } else if (k0 === "insert()") {
-
+            
+            var _id = id
+            if (o.type) _id = o.id
+            
             if (isParam({ _window, string: args[1] })) {
 
                 var _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
-                insert({ id, insert: _params })
+                insert({ id: _id, insert: _params })
             }
 
         } else if (k0 === "removeMapping()") {

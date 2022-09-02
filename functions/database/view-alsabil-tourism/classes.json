@@ -1,4 +1,6 @@
 {
+  "creation-date": 1652953190230,
+  "type": "View?id=classes;class=flex column;style:[gap=1rem;width=100%]",
   "children": [
     {
       "type": "Text?class=flex;text=Classes & Lists;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=0.5rem 0]"
@@ -15,6 +17,14 @@
               "type": "View?path=economy-classes;class=vertical;style:[gap=.5rem]",
               "children": [
                 {
+                  "controls": [
+                    {
+                      "event": "keyup?parent().data().push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
+                    },
+                    {
+                      "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().len()-1"
+                    }
+                  ],
                   "children": [
                     {
                       "type": "Input?style:[flex=1;height=100%;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
@@ -28,15 +38,7 @@
                       ]
                     }
                   ],
-                  "type": "[View]?class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
-                  "controls": [
-                    {
-                      "event": "keyup?parent().data().push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
-                    },
-                    {
-                      "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().len()-1"
-                    }
-                  ]
+                  "type": "[View]?class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
                 }
               ]
             }
@@ -51,7 +53,6 @@
             {
               "children": [
                 {
-                  "type": "[View]?path=business-classes;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                   "controls": [
                     {
                       "event": "keyup?parent().data().business-classes.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
@@ -60,6 +61,7 @@
                       "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().business-classes.len()-1"
                     }
                   ],
+                  "type": "[View]?path=business-classes;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                   "children": [
                     {
                       "type": "Input?style:[flex=1;height=100%;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
@@ -80,11 +82,13 @@
           ]
         },
         {
+          "type": "View?class=vertical;style:[gap=.5rem]",
           "children": [
             {
               "type": "Text?class=flex align-center;text=First Class;style:[fontSize=1.3rem]"
             },
             {
+              "type": "View?class=vertical;style:[gap=.5rem]",
               "children": [
                 {
                   "controls": [
@@ -101,20 +105,18 @@
                       "type": "Input?style:[flex=1;height=100%;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
                     },
                     {
-                      "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=#fff;borderRadius=.5rem];hover.style:[color=#000]",
                       "controls": [
                         {
                           "event": "click?data().del();)(:focus-classes=true;update():[parent().parent().id]"
                         }
-                      ]
+                      ],
+                      "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=#fff;borderRadius=.5rem];hover.style:[color=#000]"
                     }
                   ]
                 }
-              ],
-              "type": "View?class=vertical;style:[gap=.5rem]"
+              ]
             }
-          ],
-          "type": "View?class=vertical;style:[gap=.5rem]"
+          ]
         },
         {
           "type": "View?class=vertical;style:[gap=.5rem]",
@@ -123,6 +125,7 @@
               "type": "Text?class=flex align-center;text=Goshow Class;style:[fontSize=1.3rem]"
             },
             {
+              "type": "View?class=vertical;style:[gap=.5rem]",
               "children": [
                 {
                   "children": [
@@ -130,15 +133,14 @@
                       "type": "Input?style:[flex=1;height=100%;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true]"
                     },
                     {
-                      "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=#fff;borderRadius=.5rem];hover.style:[color=#000]",
                       "controls": [
                         {
                           "event": "click?data().del();)(:focus-classes=true;update():[parent().parent().id]"
                         }
-                      ]
+                      ],
+                      "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=#fff;borderRadius=.5rem];hover.style:[color=#000]"
                     }
                   ],
-                  "type": "[View]?path=goshow-classes;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                   "controls": [
                     {
                       "event": "keyup?parent().data().goshow-classes.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
@@ -146,10 +148,10 @@
                     {
                       "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().goshow-classes.len()-1"
                     }
-                  ]
+                  ],
+                  "type": "[View]?path=goshow-classes;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
                 }
-              ],
-              "type": "View?class=vertical;style:[gap=.5rem]"
+              ]
             }
           ]
         },
@@ -213,6 +215,7 @@
                       "type": "Icon?name=bi-x-lg;class=flexbox pointer;style:[height=100%;width=2rem;fontSize=1.4rem;color=#666;borderRadius=.5rem;transition=.2s;opacity=0;position=absolute;right=.1rem;backgroundColor=#fff;borderRadius=.5rem];hover.style:[color=#000]"
                     }
                   ],
+                  "type": "[View]?data().trips=Data().trips||_list;if():[data().trips.len()=0]:[data().trips.push():Round Trip];path=trips;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                   "controls": [
                     {
                       "event": "keyup?parent().data().trips.push():_string;)(:focus-classes=true;update():[parent().id]?e().key=Enter"
@@ -220,8 +223,7 @@
                     {
                       "event": "loaded?click();focus();)(:focus-classes.del()?)(:focus-classes;().mapIndex=parent().data().trips.len()-1"
                     }
-                  ],
-                  "type": "[View]?data().trips=Data().trips||_list;if():[data().trips.len()=0]:[data().trips.push():Round Trip];path=trips;class=flexbox;style:[minWidth=5rem;padding=.1rem;height=3.5rem;maxHeight=3.5rem;border=1px solid #ccc;borderRadius=.5rem;position=relative];clicked.style.border=2px solid #0080ff;mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
+                  ]
                 }
               ]
             }
@@ -231,7 +233,5 @@
       "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr;padding=1rem]"
     }
   ],
-  "type": "View?id=classes;class=flex column;style:[gap=1rem;width=100%]",
-  "id": "classes",
-  "creation-date": 1652953190230
+  "id": "classes"
 }

@@ -218,6 +218,22 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
         return view.children
       }
 
+      // controls
+      if (param.slice(0, 8) === "controls") {
+
+        var _controls = []
+        param = param.slice(9)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _controls.push({ event: param })
+        })
+
+        view.controls = toArray(view.controls)
+        view.controls.unshift(..._controls)
+        return view.controls
+      }
+
       // children
       if (param.slice(0, 5) === "child") {
 

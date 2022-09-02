@@ -2077,7 +2077,14 @@ const createDocument = async ({ req, res, realtimedb }) => {
   // language & direction
   var language = global.language = global.data.page[currentPage].language || "en"
   var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
-console.log(views.root.children);
+
+  // controls
+  toArray(views.root.controls).map((controls = {}) => {
+    var event = toCode({ _window, string: controls.event || "" })
+    if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
+      toParam({ req, res, _window, string: event.split("?")[1], req, res })
+  })
+
   // create html
   var innerHTML = ""
   innerHTML += createElement({ _window, id: "root", req, res })
@@ -2933,6 +2940,8 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 module.exports = { droplist }
 },{"./clone":37,"./reducer":84,"./toString":118,"./toValue":120,"./update":122}],54:[function(require,module,exports){
 const axios = require("axios");
+const { clone } = require("./clone");
+const { toArray } = require("./toArray");
 const { toString } = require("./toString")
 
 const erase = async ({ _window, req, res, id, e, ...params }) => {
@@ -2944,8 +2953,8 @@ const erase = async ({ _window, req, res, id, e, ...params }) => {
   headers.project = headers.project || global.projectId
   var store = erase.store || "database"
   
-  erase.doc = erase.doc || erase.id || (erase.data && erase.data.id)
-  if (erase.doc === undefined) return
+  erase.docs = toArray(erase.doc || erase.docs || erase.id || (erase.data && clone(toArray(erase.data.map(data => data.id)))))
+  if (erase.docs.length === 0) return
   delete erase.data
 
   // erase
@@ -2969,7 +2978,7 @@ const erase = async ({ _window, req, res, id, e, ...params }) => {
 }
 
 module.exports = { erase }
-},{"./toAwait":103,"./toString":118,"axios":127}],55:[function(require,module,exports){
+},{"./clone":37,"./toArray":102,"./toAwait":103,"./toString":118,"axios":127}],55:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -7847,11 +7856,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           open(_url)
           
         } else if (k0 === "insert()") {
-
+            
+            var _id = id
+            if (o.type) _id = o.id
+            
             if (isParam({ _window, string: args[1] })) {
 
                 var _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
-                insert({ id, insert: _params })
+                insert({ id: _id, insert: _params })
             }
 
         } else if (k0 === "removeMapping()") {
@@ -11077,6 +11089,22 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
         view.children = toArray(view.children)
         view.children.unshift(..._children)
         return view.children
+      }
+
+      // controls
+      if (param.slice(0, 8) === "controls") {
+
+        var _controls = []
+        param = param.slice(9)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _controls.push({ event: param })
+        })
+
+        view.controls = toArray(view.controls)
+        view.controls.unshift(..._controls)
+        return view.controls
       }
 
       // children

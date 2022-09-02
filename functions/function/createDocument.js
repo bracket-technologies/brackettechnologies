@@ -249,7 +249,14 @@ const createDocument = async ({ req, res, realtimedb }) => {
   // language & direction
   var language = global.language = global.data.page[currentPage].language || "en"
   var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
-console.log(views.root.children);
+
+  // controls
+  toArray(views.root.controls).map((controls = {}) => {
+    var event = toCode({ _window, string: controls.event || "" })
+    if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
+      toParam({ req, res, _window, string: event.split("?")[1], req, res })
+  })
+
   // create html
   var innerHTML = ""
   innerHTML += createElement({ _window, id: "root", req, res })
