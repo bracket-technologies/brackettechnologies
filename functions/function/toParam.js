@@ -271,8 +271,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()") {
-      
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
+
       clone(view["my-views"]).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))

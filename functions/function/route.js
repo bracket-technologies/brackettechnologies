@@ -5,9 +5,10 @@ const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 const { update } = require("./update")
 const { toApproval } = require("./toApproval")
+const { createElement } = require("./createElement")
 
 module.exports = {
-    route: async ({ _window, route = {}, req, res }) => {
+    route: async ({ id, _window, route = {}, req, res }) => {
 
         var views = _window ? _window.views : window.views
         var global = _window ? _window.global : window.global
@@ -55,7 +56,8 @@ module.exports = {
             if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
               toParam({ req, res, _window, string: event.split("?")[1], req, res })
           })
-          console.log("here");
+
+          if (id !== "root") global.innerHTML.root = createElement({ _window, id: "root", req, res })
           return
         }
 

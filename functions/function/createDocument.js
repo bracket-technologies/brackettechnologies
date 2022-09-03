@@ -29,6 +29,7 @@ const createDocument = async ({ req, res, realtimedb }) => {
       editor: {},
       project: {},
     },
+    innerHTML: {},
     codes: {},
     host,
     currentPage,
@@ -256,11 +257,16 @@ const createDocument = async ({ req, res, realtimedb }) => {
     if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
       toParam({ req, res, _window, string: event.split("?")[1], req, res })
   })
-
+  
   // create html
-  var innerHTML = ""
-  innerHTML += createElement({ _window, id: "root", req, res })
-  innerHTML += createElement({ _window, id: "public", req, res })
+  var rootInnerHTML = createElement({ _window, id: "root", req, res })
+  var publicInnerHTML = createElement({ _window, id: "public", req, res })
+
+  if (global.innerHTML.root) rootInnerHTML = global.innerHTML.root
+  if (global.innerHTML.public) publicInnerHTML = global.innerHTML.public
+
+  var innerHTML = rootInnerHTML + publicInnerHTML
+  delete global.innerHTML
 
   global.idList = innerHTML.split("id='").slice(1).map((id) => id.split("'")[0])
   

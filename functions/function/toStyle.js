@@ -34,6 +34,7 @@ module.exports = {
         else if (k === "letterSpacing") k = "letter-spacing";
         else if (k === "textOverflow") k = "text-overflow";
         else if (k === "whiteSpace") k = "white-space";
+        else if (k === "backgroundImage") k = "background-image";
         else if (k === "backgroundColor") k = "background-color";
         else if (k === "zIndex") k = "z-index";
         else if (k === "boxShadow") k = "box-shadow";

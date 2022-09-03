@@ -1857,6 +1857,7 @@ const createDocument = async ({ req, res, realtimedb }) => {
       editor: {},
       project: {},
     },
+    innerHTML: {},
     codes: {},
     host,
     currentPage,
@@ -2084,11 +2085,16 @@ const createDocument = async ({ req, res, realtimedb }) => {
     if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
       toParam({ req, res, _window, string: event.split("?")[1], req, res })
   })
-
+  
   // create html
-  var innerHTML = ""
-  innerHTML += createElement({ _window, id: "root", req, res })
-  innerHTML += createElement({ _window, id: "public", req, res })
+  var rootInnerHTML = createElement({ _window, id: "root", req, res })
+  var publicInnerHTML = createElement({ _window, id: "public", req, res })
+
+  if (global.innerHTML.root) rootInnerHTML = global.innerHTML.root
+  if (global.innerHTML.public) publicInnerHTML = global.innerHTML.public
+
+  var innerHTML = rootInnerHTML + publicInnerHTML
+  delete global.innerHTML
 
   global.idList = innerHTML.split("id='").slice(1).map((id) => id.split("'")[0])
   
@@ -9251,9 +9257,10 @@ const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 const { update } = require("./update")
 const { toApproval } = require("./toApproval")
+const { createElement } = require("./createElement")
 
 module.exports = {
-    route: async ({ _window, route = {}, req, res }) => {
+    route: async ({ id, _window, route = {}, req, res }) => {
 
         var views = _window ? _window.views : window.views
         var global = _window ? _window.global : window.global
@@ -9301,7 +9308,8 @@ module.exports = {
             if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
               toParam({ req, res, _window, string: event.split("?")[1], req, res })
           })
-          console.log("here");
+
+          if (id !== "root") global.innerHTML.root = createElement({ _window, id: "root", req, res })
           return
         }
 
@@ -9316,7 +9324,7 @@ module.exports = {
         document.getElementsByClassName("loader-container")[0].style.display = "none"
     }
 }
-},{"./clone":37,"./search":91,"./toApproval":101,"./toArray":102,"./toCode":106,"./toParam":114,"./update":122}],90:[function(require,module,exports){
+},{"./clone":37,"./createElement":46,"./search":91,"./toApproval":101,"./toArray":102,"./toCode":106,"./toParam":114,"./update":122}],90:[function(require,module,exports){
 var { clone } = require("./clone")
 
 const save = async ({ _window, req, res, id, e, ...params }) => {
@@ -11144,8 +11152,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, path0 = path[0].split(":")[0]
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()") {
-      
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
+
       clone(view["my-views"]).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
@@ -11406,6 +11414,7 @@ module.exports = {
         else if (k === "letterSpacing") k = "letter-spacing";
         else if (k === "textOverflow") k = "text-overflow";
         else if (k === "whiteSpace") k = "white-space";
+        else if (k === "backgroundImage") k = "background-image";
         else if (k === "backgroundColor") k = "background-color";
         else if (k === "zIndex") k = "z-index";
         else if (k === "boxShadow") k = "box-shadow";
@@ -11591,6 +11600,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   else if (value.slice(9, 16) === "coded()" && value.slice(0, 9) === "translate") value = "translate(" + global.codes[value.slice(9, 21)] + ")"
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
+  else if (value.slice(15, 22) === "coded()" && value.slice(0, 15) === "linear-gradient") value = "linear-gradient(" + global.codes[value.slice(15, 27)] + ")"
   else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
   else if (object) {
     //value = value + ".clone()"
