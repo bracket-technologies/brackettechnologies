@@ -20,4 +20,5 @@
  , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "html2pdf()", "dblclick()"
  , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()"
  , "replaceItem()", "grandParent()", "grandChild()", "grandChildren()", "open()", "2ndNext()", "isNaN()"
+ , "send()"
 ]

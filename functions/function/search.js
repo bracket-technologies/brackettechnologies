@@ -225,10 +225,9 @@ module.exports = {
       })
     }
     
-    if (!view) return
-    view.search = global.search = clone(_data)
     if (!_window) console.log(_data)
     if (_data.message === "Force reload!") return location.reload()
+    view.search = global.search = clone(_data)
     
     // await params
     if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res })

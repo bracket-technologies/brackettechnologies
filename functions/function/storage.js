@@ -1,6 +1,7 @@
 const fs = require("fs")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
+var _window = { global: {}, views: {} }
 const mime = {
   html: "text/html",
   txt: "text/plain",
@@ -22,8 +23,10 @@ var getFile = ({ req, res, storage }) => {
   //
 }
 
-const postFile = async ({ req, res, storage, db }) => {
+const postFile = async ({ req, res }) => {
 
+  var db = req.db
+  var storage = req.storage
   var file = req.body.file, url
   var upload = req.body.upload
   var collection = upload.collection
@@ -65,8 +68,10 @@ const postFile = async ({ req, res, storage, db }) => {
   return res.send({ data, success, message })
 }
 
-const deleteFile = async ({ _window, req, res, storage, db }) => {
+const deleteFile = async ({ req, res }) => {
   
+  var db = req.db
+  var storage = req.storage
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   

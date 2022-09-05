@@ -268,7 +268,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     id = viewId
 
-    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, path0 = path[0].split(":")[0]
+    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, backendFn = false, path0 = path[0].split(":")[0]
 
     // function
     if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
@@ -279,10 +279,35 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
           if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
         }
       })
+      
+      if (!isFn) {
+        isFn = global.functions.find(fn => fn === path0.slice(0, -2))
+        if (isFn) backendFn = true
+      }
     }
 
     if (isFn) {
-      var _params = path[0].split(":")[1]
+      var _params = path[0].split(":")[1], args = path[0].split(":")
+
+      if (backendFn) {
+        
+        if (isParam({ _window, string: args[1] })) {
+
+          var _await = ""
+          var _data = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+          var _func = { function: isFn, data: _data }
+          if (args[2]) _await = global.codes[args[2]]
+          
+          return require("./func").func({ _window, id, e, _, __, _i, req, res, func: _func, asyncer: true, await: _await })
+        }
+        
+        var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+        var _func = { function: isFn, data: _data }
+        if (args[2]) _await = global.codes[args[2]]
+        
+        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, asyncer: true, await: _await })
+      }
+
       if (_params) {
         if (isParam({ _window, string: _params }))
           _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })

@@ -22,7 +22,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
   if (_window) {
     
     var collection = save.collection, success, message
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${headers["project"]}`
   
     var ref = req.db.collection(collection)
     if (Array.isArray(save.data)) {
@@ -70,9 +70,8 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
     })
   }
 
-  if (!view) return
+  view.save = global.save = _data
   if (store === "confirmEmail") view.confirmEmail = _data
-  else view.save = global.save = _data
 
   if (!_window) console.log(_data)
 

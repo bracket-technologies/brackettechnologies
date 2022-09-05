@@ -1,8 +1,8 @@
 {
   "type": "View?id=invoices-list;class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]",
-  "creation-date": 1655930948086,
   "children": [
     {
+      "type": "View?style:[width=100%];data=invoices:()",
       "children": [
         {
           "children": [
@@ -18,17 +18,30 @@
                   "type": "View?class=flexbox align-center;style:[height=100%;flex=1]"
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
+                      "type": "Text?class=pointer;text=Date;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                       "controls": [
                         {
                           "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=creation-date;descending];update():[invoices-list-data];loader.hide]:50"
                         }
-                      ],
-                      "type": "Text?class=pointer;text=Date;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                      ]
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
+                },
+                {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Type;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
+                      "controls": [
+                        {
+                          "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=type;descending];update():invoices-list-data;loader.hide]:50"
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -36,25 +49,12 @@
                     {
                       "controls": [
                         {
-                          "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=type;descending];update():invoices-list-data;loader.hide]:50"
-                        }
-                      ],
-                      "type": "Text?class=pointer;text=Type;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
-                    }
-                  ]
-                },
-                {
-                  "children": [
-                    {
-                      "type": "Text?class=pointer;text=Voucher;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
-                      "controls": [
-                        {
                           "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=pnr;descending];update():invoices-list-data;loader.hide]:50"
                         }
-                      ]
+                      ],
+                      "type": "Text?class=pointer;text=Voucher;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -83,36 +83,10 @@
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
-                  "children": [
-                    {
-                      "type": "Text?class=pointer;text=Description;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444;#from-to class bag"
-                    }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
-                },
-                {
-                  "children": [
-                    {
-                      "type": "Text?class=pointer;text=Status;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
-                      "controls": [
-                        {
-                          "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=status;descending];update():[invoices-list-data];loader.hide]:50"
-                        }
-                      ]
-                    }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
-                },
-                {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
-                      "controls": [
-                        {
-                          "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=issued-by-name;descending];update():[invoices-list-data];loader.hide]:50"
-                        }
-                      ],
-                      "type": "Text?class=pointer;text=Issuer;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                      "type": "Text?class=pointer;text=Description;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444;#from-to class bag"
                     }
                   ]
                 },
@@ -121,10 +95,36 @@
                     {
                       "controls": [
                         {
-                          "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=total-payable-usd;descending];update():[invoices-list-data];loader.hide]:50"
+                          "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=status;descending];update():[invoices-list-data];loader.hide]:50"
                         }
                       ],
-                      "type": "Text?class=pointer;text=Debit;style:[color=#888;fontSize=1.2rem;transition=.3s;width=100%;textAlign=right];hover.style.color=#444"
+                      "type": "Text?class=pointer;text=Status;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Issuer;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
+                      "controls": [
+                        {
+                          "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=issued-by-name;descending];update():[invoices-list-data];loader.hide]:50"
+                        }
+                      ]
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Debit;style:[color=#888;fontSize=1.2rem;transition=.3s;width=100%;textAlign=right];hover.style.color=#444",
+                      "controls": [
+                        {
+                          "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=total-payable-usd;descending];update():[invoices-list-data];loader.hide]:50"
+                        }
+                      ]
                     }
                   ],
                   "type": "View?class=flex align-center;style:[height=100%;width=100%]"
@@ -143,17 +143,17 @@
                   "type": "View?class=flex align-center;style:[height=100%;width=100%]"
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;width=100%]",
                   "children": [
                     {
-                      "type": "Text?class=pointer;text=Balance;style:[color=#888;fontSize=1.2rem;transition=.3s;width=100%;textAlign=right];hover.style.color=#444",
                       "controls": [
                         {
                           "event": "click?loader.show;timer():[invoices:()=sort():[data=invoices:();path=end-balance-usd;descending];update():[invoices-list-data];loader.hide]:50"
                         }
-                      ]
+                      ],
+                      "type": "Text?class=pointer;text=Balance;style:[color=#888;fontSize=1.2rem;transition=.3s;width=100%;textAlign=right];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;width=100%]"
                 },
                 {
                   "type": "View?style:[flex=1]"
@@ -161,11 +161,11 @@
               ]
             },
             {
+              "type": "View:invoices-list-data?doc=invoices;class=vertical;style:[width=100%;zIndex=0]",
               "children": [
                 {
                   "children": [
                     {
-                      "type": "View?class=grid align-center flight;style:[gridTemplateColumns=3rem 10rem 10rem 10rem 10rem 1fr 40rem 8rem 10rem 8rem 8rem 8rem 4rem;minHeight=4rem;transition=.2s;width=100%;cursor=default];if():[!user:().permissions.readonly]:[mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]]",
                       "children": [
                         {
                           "type": "View?class=flexbox align-center;style:[height=100%;flex=1;position=relative];mouseenter:[2ndChild().style().opacity=1;3rdChild().style().opacity=1];mouseleave:[2ndChild().style().opacity=0;3rdChild().style().opacity=0]"
@@ -190,28 +190,28 @@
                           ]
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=;style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;width=100%]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=;style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;width=100%]"
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;width=40rem;flexWrap=wrap]",
                           "children": [
                             {
                               "type": "Text?class=dots;text=Start balance on date +search-invoice:().from-date.toDateFormat();style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;width=40rem;flexWrap=wrap]"
                         },
                         {
                           "children": [
@@ -238,23 +238,22 @@
                           ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=100%]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=;style:[fontSize=1.2rem;textAlign=right;width=100%]"
+                            }
+                          ]
+                        },
+                        {
+                          "children": [
+                            {
+                              "type": "Text?class=flex dots;text=[if():[invoices:().0.status=Canceled]:[invoices:().0.canceled-start-balance-usd]:[invoices:().0.start-balance-usd]||0].round():2+$;style:[fontSize=1.2rem;textAlign=right;width=100%]"
                             }
                           ],
                           "type": "View?class=flex align-center;style:[height=100%;width=100%]"
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;width=100%]",
-                          "children": [
-                            {
-                              "type": "Text?class=flex dots;text=[if():[invoices:().0.status=Canceled]:[invoices:().0.canceled-start-balance-usd]:[invoices:().0.start-balance-usd]||0].round():2+$;style:[fontSize=1.2rem;textAlign=right;width=100%]"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "View?class=flex align-center;style:[flex=1;gap=1rem;justifyContent=flex-end;transition=.2s;opacity=0]?!user:().permissions.readonly",
                           "children": [
                             {
                               "controls": [
@@ -264,14 +263,17 @@
                               ],
                               "type": "Icon?class=flexbox actions pointer;name=bi-three-dots-vertical;style:[fontSize=2.2rem;color=#888;transition=.1s;height=3rem;width=3rem;borderRadius=3rem];hover.style.color=blue"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[flex=1;gap=1rem;justifyContent=flex-end;transition=.2s;opacity=0]?!user:().permissions.readonly"
                         }
-                      ]
+                      ],
+                      "type": "View?class=grid align-center flight;style:[gridTemplateColumns=3rem 10rem 10rem 10rem 10rem 1fr 40rem 8rem 10rem 8rem 8rem 8rem 4rem;minHeight=4rem;transition=.2s;width=100%;cursor=default];if():[!user:().permissions.readonly]:[mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]]"
                     }
                   ],
                   "type": "View?style:[width=100%;transition=height .1s;overflow=hidden;borderBottom=1px solid #ddd];mouseenter:[if():[hidden]:[style().height=4rem]];mouseleave:[if():[hidden]:[style().height=2px]]?data().len()>0"
                 },
                 {
+                  "type": "[View]?style:[width=100%;transition=height .1s;overflow=hidden];mouseenter:[if():[hidden]:[style().height=4rem]];mouseleave:[if():[hidden]:[style().height=2px]]?data().len()>0",
                   "children": [
                     {
                       "type": "View?class=grid align-center flight;style:[gridTemplateColumns=3rem 10rem 10rem 10rem 10rem 1fr 40rem 8rem 10rem 8rem 8rem 8rem 4rem;minHeight=4rem;transition=.2s;width=100%;cursor=default];if():[!user:().permissions.readonly]:[mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]]",
@@ -309,12 +311,12 @@
                         {
                           "children": [
                             {
-                              "type": "Text?class=flexbox pointer dots;text=if():[data().type=Payment]:[data().voucher-number]:[data().pnr];style:[fontSize=1.2rem;padding=.5rem;borderRadius=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]",
                               "controls": [
                                 {
                                   "event": "click?loader.show;search():[collection=if():[data().type=Flight]:[flight-booking];field.pnr.equal=data().pnr]:[bookings:()=search:().data.values();unreset-bookings:()=true;():[flight-booking-sidebar-btn].click();loader.hide]"
                                 }
-                              ]
+                              ],
+                              "type": "Text?class=flexbox pointer dots;text=if():[data().type=Payment]:[data().voucher-number]:[data().pnr];style:[fontSize=1.2rem;padding=.5rem;borderRadius=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                             }
                           ],
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
@@ -328,12 +330,12 @@
                           ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=1fr;flexWrap=wrap]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;tooltip.text=if():[data().type!=Payment]:[[data().reservation-details.0.age+' '+data().reservation-details.0.title+' '+data().reservation-details.0.first-name+' '+data().reservation-details.0.last-name].uppercase()]:;text=if():[data().type!=Payment]:[[data().reservation-details.0.age+' '+data().reservation-details.0.title+' '+data().reservation-details.0.first-name+ +data().reservation-details.0.last-name].uppercase()]:;style:[fontSize=1.2rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=1fr;flexWrap=wrap]"
+                          ]
                         },
                         {
                           "children": [
@@ -344,28 +346,28 @@
                           "type": "View?class=flex align-center;style:[height=100%;width=40rem;flexWrap=wrap]"
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
                           "children": [
                             {
                               "type": "Text?class=dots;text=data().status;style:[fontSize=1.2rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]"
+                          ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[width=10rem;height=100%]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;tooltip.text=data().user-name;text=data().user-name;style:[fontSize=1.2rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[width=10rem;height=100%]"
+                          ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=100%]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=if():[data().type=Flight||data().type=Hotel]:[if():[data().status=Confirmed]:[[data().total-payable-usd||data().total-usd].round():2+$]:''].elif():[data().type=Payment]:[if():[data().status=Canceled]:[data().canceled-amount-usd.round():2+$]:'']:'';style:[fontSize=1.2rem;textAlign=right;width=100%;color=blue]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=100%]"
+                          ]
                         },
                         {
                           "type": "View?class=flex align-center;style:[height=100%;width=100%]",
@@ -398,11 +400,9 @@
                         }
                       ]
                     }
-                  ],
-                  "type": "[View]?style:[width=100%;transition=height .1s;overflow=hidden];mouseenter:[if():[hidden]:[style().height=4rem]];mouseleave:[if():[hidden]:[style().height=2px]]?data().len()>0"
+                  ]
                 },
                 {
-                  "type": "View?style:[width=100%;transition=height .1s;overflow=hidden;borderTop=1px solid #ddd];mouseenter:[if():[hidden]:[style().height=4rem]];mouseleave:[if():[hidden]:[style().height=2px]]?data().len()>0",
                   "children": [
                     {
                       "type": "View?class=grid align-center flight;style:[gridTemplateColumns=3rem 10rem 10rem 10rem 10rem 1fr 40rem 8rem 10rem 8rem 8rem 8rem 4rem;minHeight=4rem;transition=.2s;width=100%;cursor=default];if():[!user:().permissions.readonly]:[mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]]",
@@ -443,20 +443,20 @@
                           ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=1fr]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=;style:[fontSize=1.2rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=1fr]"
+                          ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=40rem;flexWrap=wrap]",
                           "children": [
                             {
                               "type": "Text?class=dots;text=End balance on date +if():[search-invoice:().to-date]:[search-invoice:().to-date.toDateFormat()]:[search-invoice:().from-date.toDateFormat()];style:[fontSize=1.3rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=40rem;flexWrap=wrap]"
+                          ]
                         },
                         {
                           "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
@@ -503,18 +503,18 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?style:[width=100%;transition=height .1s;overflow=hidden;borderTop=1px solid #ddd];mouseenter:[if():[hidden]:[style().height=4rem]];mouseleave:[if():[hidden]:[style().height=2px]]?data().len()>0"
                 }
-              ],
-              "type": "View:invoices-list-data?doc=invoices;class=vertical;style:[width=100%;zIndex=0]"
+              ]
             }
           ],
           "type": "View?class=vertical;style:[width=100%;minHeight=30rem]?invoices:().len()>0;invoices:().0.len()>0"
         }
-      ],
-      "type": "View?style:[width=100%];data=invoices:()"
+      ]
     }
   ],
-  "id": "invoices-list",
-  "functions": {}
+  "creation-date": 1655930948086,
+  "functions": {},
+  "id": "invoices-list"
 }

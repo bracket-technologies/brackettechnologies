@@ -3,6 +3,7 @@ const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
+const actions = require("./actions.json")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -111,18 +112,47 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   // string
   // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
-  var path = typeof value === "string" ? value.split(".") : [], isFn = false, path0 = path[0].split(":")[0]
+  var path = typeof value === "string" ? value.split(".") : [], isFn = false, backendFn = false, path0 = path[0].split(":")[0]
 
   // function
-  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)]) clone(view["my-views"]).reverse().map(view => {
+  if (view && path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
+
+    clone(view["my-views"] || []).reverse().map(view => {
+      if (!isFn) {
+        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+      }
+    })
+
+    // backend function
     if (!isFn) {
-      isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-      if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+      isFn = global.functions.find(fn => fn === path0.slice(0, -2))
+      if (isFn) backendFn = true
     }
-  })
+  }
 
   if (isFn) {
-    var _params = path[0].split(":")[1]
+    var _params = path[0].split(":")[1], args = path[0].split(":")
+
+    if (backendFn) {
+      
+      if (isParam({ _window, string: args[1] })) {
+
+        var _await = ""
+        var _data = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+        var _func = { function: isFn, data: _data }
+        if (args[2]) _await = global.codes[args[2]]
+        
+        return require("./func").func({ _window, id, e, _, __, _i, req, res, func: _func, asyncer: true, await: _await })
+      }
+      
+      var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+      var _func = { function: isFn, data: _data }
+      if (args[2]) _await = global.codes[args[2]]
+
+      return require("./func").func({ _window, req, res, id, e, func: _func, _, __, asyncer: true, await: _await })
+    }
+
     if (_params) {
       if (isParam({ _window, string: _params }))
         _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })

@@ -3980,7 +3980,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           return require("./save").save({ _window, req, res, id, e, save: _save, _, __ })
 
         } else if (k0 === "search()") {
-          
+
           if (isParam({ _window, string: args[1] })) {
 
             var _await = ""
@@ -4013,7 +4013,14 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
   
             return require("./erase").erase({ _window, req, res, id, e, save: _erase, _, __ })
   
-          } else if (k0 === "setPosition()" || k0 === "position()") {
+        } else if (k0 === "send()") {
+            
+            breakRequest = true
+            if (!res) return
+            var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+            res.send({ success: true, message: "Function executed successfully!", data: _data })
+
+        } else if (k0 === "setPosition()" || k0 === "position()") {
           
             // setPosition():toBePositioned:positioner:placement:align
             /*

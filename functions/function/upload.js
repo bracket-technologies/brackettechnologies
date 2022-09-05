@@ -61,14 +61,13 @@ const upload = async ({ id, _window, req, res, e, ...params }) => {
         }
         
         view.uploads.push(clone(data))
-        global.uploads.push(clone(data))
-        
         view.upload = clone(data)
+        
         global.upload = clone(data)
+        global.uploads.push(clone(data))
     
         if (files.length > 1) console.log(view.uploads)
         else console.log(view.upload)
-    
       })
     
       // await params

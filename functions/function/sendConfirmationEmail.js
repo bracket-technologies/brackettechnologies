@@ -11,8 +11,9 @@ const transport = nodemailer.createTransport({
 })
 
 module.exports = {
-  sendConfirmationEmail: async ({ req, res, db }) => {
+  sendConfirmationEmail: async ({ req, res }) => {
 
+    var db = req.db
     var data = req.body.data
     var collection = "_confirmEmail_"
     var ref = db.collection(collection)

@@ -3,8 +3,9 @@ var express = require("express")
 var device = require('express-device')
 var cookieParser = require('cookie-parser')
 var firebase = require("firebase-admin")
-var myGlobal = {
-  today: (new Date()).getDay()
+var Global = {
+  today: (new Date()).getDay(),
+  functions: {}
 }
 // require("firebase/firestore")
 
@@ -41,6 +42,7 @@ var { getdb, postdb, deletedb } = require("./function/database")
 var { getFile, postFile, deleteFile } = require("./function/storage")
 var { createDocument } = require("./function/createDocument")
 var { sendConfirmationEmail } = require("./function/sendConfirmationEmail")
+var { execFunction } = require("./function/execFunction")
 
 var app = express()
 
@@ -74,6 +76,12 @@ exports.app = functions.https.onRequest(app)
 
 // post
 app.post("*", (req, res) => {
+
+  req.db = db
+  req.global = Global
+  req.storage = storage
+  req.realtimedb = realtimedb
+  req.cookies = JSON.parse(req.cookies.__session || "{}")
   var path = req.url.split("/")
 
   // bracket
@@ -86,18 +94,27 @@ app.post("*", (req, res) => {
     if (path[1] === "database") return require("./function/databaseLocal").postdb({ req, res })
   }*/
 
+  // function
+  if (path[1] === "function") return execFunction({ req, res })
+
   // confirmEmail
-  if (path[1] === "confirmEmail") return sendConfirmationEmail({ req, res, db })
+  if (path[1] === "confirmEmail") return sendConfirmationEmail({ req, res })
 
   // storage
-  if (path[1] === "storage") return postFile({ req, res, db, storage })
+  if (path[1] === "storage") return postFile({ req, res })
 
   // database
-  if (path[1] === "database") return postdb({ req, res, db, realtimedb })
+  if (path[1] === "database") return postdb({ req, res })
 })
 
 // delete
 app.delete("*", (req, res) => {
+
+  req.db = db
+  req.global = Global
+  req.storage = storage
+  req.realtimedb = realtimedb
+  req.cookies = JSON.parse(req.cookies.__session || "{}")
   var path = req.url.split("/")
 
   // bracket
@@ -111,16 +128,19 @@ app.delete("*", (req, res) => {
   }*/
 
   // storage
-  if (path[1] === "storage") return deleteFile({ req, res, db, storage })
+  if (path[1] === "storage") return deleteFile({ req, res })
 
   // database
-  if (path[1] === "database") return deletedb({ req, res, db, realtimedb, storage })
+  if (path[1] === "database") return deletedb({ req, res })
 })
 
 // get
 app.get("*", async (req, res) => {
 
   req.db = db
+  req.global = Global
+  req.storage = storage
+  req.realtimedb = realtimedb
   req.cookies = JSON.parse(req.cookies.__session || "{}")
   var path = req.url.split("/")
   /*var host = req.headers["x-forwarded-host"] || req.headers["host"]
@@ -142,19 +162,16 @@ app.get("*", async (req, res) => {
   // if (path[1] === "image") return require("./function/getImage").getImage({ req, res })
 
   // storage
-  if (path[1] === "storage") return getFile({ req, res, db, storage })
+  if (path[1] === "storage") return getFile({ req, res })
 
   // database
-  if (path[1] === "database") return getdb({ req, res, db, realtimedb })
-
-  // storage
-  if (path[1] === "function") return func({ req, res, db, storage })
+  if (path[1] === "database") return getdb({ req, res })
 
   // favicon
   if (req.url === "/favicon.ico") return res.sendStatus(204)
 
   // respond
-  return createDocument({ req, res, realtimedb })
+  return createDocument({ req, res })
 })
 
 // book a ticket

@@ -1,6 +1,8 @@
 {
-  "creation-date": 1660839217963,
   "functions": {},
+  "type": "View:agent-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
+  "id": "agent-window",
+  "creation-date": 1660839217963,
   "children": [
     {
       "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%];if():[agent-data:().keys().len()=0]:[agent-data:()=_map:users:0:admin:false:type:Agent:last-visit:0:today-uses:0:today-bookings:0:today-buyings-usd:0:today:0:buyings-usd:0:uses:0:balance-usd:0:bookings:0:company-head-office-city:Beirut:company-head-office-country:Lebanon]?agent-data:()",
@@ -15,41 +17,41 @@
               "type": "View?class=flexbox;style.gap=1.5rem;style.marginLeft=auto",
               "children": [
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=erase;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s];hover.style.backgroundColor=#fff?!new-agent:();!agent-edit-readonly:()",
                   "children": [
                     {
                       "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.7rem"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=erase;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s];hover.style.backgroundColor=#fff?!new-agent:();!agent-edit-readonly:()"
                 },
                 {
-                  "controls": [
-                    {
-                      "event": "click?():save-agent.click()"
-                    }
-                  ],
                   "type": "View?class=flexbox pointer;tooltip.text=save;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s?!agent-edit-readonly:()",
                   "children": [
                     {
                       "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.2rem"
                     }
-                  ]
-                },
-                {
-                  "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
-                  "children": [
+                  ],
+                  "controls": [
                     {
-                      "type": "Icon?name=print;google.outlined;style.fontSize=2.2rem"
+                      "event": "click?():save-agent.click()"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
+                  "children": [
+                    {
+                      "type": "Icon?name=print;google.outlined;style.fontSize=2.2rem"
+                    }
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=print;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s"
+                },
+                {
                   "children": [
                     {
                       "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
                     }
                   ],
+                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
                   "controls": [
                     {
                       "event": "click?style():[id=agent-window;transition=.2s;padding=0;minHeight=100%];style().display=none;style():next().display=flex;1stChild():agent-window.style():[borderRadius=0];():agent-form-header.style().display=flex;():agent-form-footer.style().display=flex"
@@ -57,25 +59,25 @@
                   ]
                 },
                 {
+                  "controls": [
+                    {
+                      "event": "click?style():[id=agent-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():agent-form-header.style().display=flex;():agent-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():agent-window].borderRadius=1rem"
+                    }
+                  ],
                   "children": [
                     {
                       "type": "Icon?name=crop;google.outlined;style.fontSize=2.2rem"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s;display=none];hover.style.backgroundColor=#fff",
-                  "controls": [
-                    {
-                      "event": "click?style():[id=agent-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():agent-form-header.style().display=flex;():agent-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():agent-window].borderRadius=1rem"
-                    }
-                  ]
+                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s;display=none];hover.style.backgroundColor=#fff"
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=cancel;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff;click:[():[close-agent-window].click()]",
                   "children": [
                     {
                       "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.7rem"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=cancel;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff;click:[():[close-agent-window].click()]"
                 }
               ]
             }
@@ -113,6 +115,7 @@
                   "type": "View?class=flex column;style:[width=100%;gap=2rem]",
                   "children": [
                     {
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Registration Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -139,16 +142,15 @@
                             }
                           ]
                         }
-                      ],
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
+                      ]
                     },
                     {
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=General Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                         },
                         {
+                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=2fr 1fr 1fr 2fr;padding=1rem]",
                           "children": [
                             {
                               "type": "Input?label:[text=Agent Name;location=outside;style.fontSize=1.3rem];path=company-name;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -162,18 +164,18 @@
                             {
                               "type": "Input?label:[text=Office Email;location=outside;style.fontSize=1.3rem];path=email;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                             }
-                          ],
-                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=2fr 1fr 1fr 2fr;padding=1rem]"
+                          ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     },
                     {
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Address Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                         },
                         {
+                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]",
                           "children": [
                             {
                               "type": "Input?label:[text=Country;location=outside;style.fontSize=1.3rem];path=company-head-office-country;readonly;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=_list:Lebanon:Syria:Iraq:Iran;droplist.item.style:[fontSize=1.2rem;minHeight=3.5rem]"
@@ -184,19 +186,17 @@
                             {
                               "type": "Input?textarea;label:[text=Address;location=outside;style.fontSize=1.3rem];path=company-head-office-address;clicked.style.border=2px solid #0080ff;style:[width=100%;minHeight=8rem;borderRadius=.5rem;fontSize=1.3rem]"
                             }
-                          ],
-                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]"
+                          ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     },
                     {
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Owner Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                         },
                         {
-                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]",
                           "children": [
                             {
                               "type": "Input?label:[text=Name;location=outside;style.fontSize=1.3rem];path=owner-name;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -207,11 +207,14 @@
                             {
                               "type": "Input?label:[text=Email;location=outside;style.fontSize=1.3rem];path=owner-email;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     },
                     {
+                      "type": "View?class=flex column;style.gap=1rem;style.width=100%;doc().members=[doc().members||_list];path=members",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Members Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -243,6 +246,7 @@
                               "type": "Input?path=email;clearable;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem;border=1px solid #ccc]"
                             },
                             {
+                              "type": "View?class=flex align-center;style:[flex=1;gap=1rem]",
                               "children": [
                                 {
                                   "type": "View?class=pointer flexbox;style:[height=3.5rem;width=3rem;opacity=.6;transition=.2s;marginTop=auto];hover.style.opacity=1;children:[Icon?name=remove;google.outlined;style:[fontSize=2.2rem]];click:[2ndParent().rem()]:[doc().members.len()>1]"
@@ -250,23 +254,21 @@
                                 {
                                   "type": "View?class=pointer flexbox;style:[height=3.5rem;width=3rem;opacity=.6;transition=.2s;marginTop=auto];hover.style.opacity=1;children:[Icon?name=add;google.outlined;style:[fontSize=2.2rem]];click:[doc().members.push():_map;insert():[view=3rdParent().children.2;parent=3rdParent();path=_list:members:[doc().members.len()-1]]]"
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[flex=1;gap=1rem]"
+                              ]
                             }
                           ]
                         }
-                      ],
-                      "type": "View?class=flex column;style.gap=1rem;style.width=100%;doc().members=[doc().members||_list];path=members"
+                      ]
                     }
                   ]
                 },
                 {
-                  "type": "View:agent-logo?class=flexbox;style:[height=30rem;width=40rem;borderRadius=.5rem;overflow=hidden;border=1px solid #ddd]",
                   "children": [
                     {
                       "type": "Image?src=[data().logo||my-logo:()||];style:[maxWidth=100%;maxHeight=100%;height=fit-content;width=fit-content]?my-logo:()||data().logo"
                     }
-                  ]
+                  ],
+                  "type": "View:agent-logo?class=flexbox;style:[height=30rem;width=40rem;borderRadius=.5rem;overflow=hidden;border=1px solid #ddd]"
                 }
               ],
               "type": "View?class=grid;doc=agent-data;style:[gridTemplateColumns=4fr 40rem;gap=2rem]"
@@ -278,6 +280,7 @@
           "type": "View:agent-form-footer?class=flexbox;style:[width=100%;borderTop=1px solid #ddd;padding=2rem;justifyContent=flex-end;gap=1rem;marginTop=2rem;marginBottom=-1rem]",
           "children": [
             {
+              "type": "Text:save-agent?class=flexbox pointer;text=Save;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!agent-edit-readonly:()",
               "controls": [
                 {
                   "event": "click?loader.show;upload():[file=files:().0]:[agent-data:().logo=upload:().data.url;search():[collection=collection;doc=counter]:[collections:().counter.agent=counter():[collections:().counter.agent];agent-data:().code=collections:().counter.agent.counter;save():[collection=agent;data=agent-data:()]:[agents:().push():[agent-data:().clone()];save():[collection=collection;doc=counter;data=collections:().counter];update():[agents-list-data];loader.hide;():[close-agent-window].click()]]]?agent-data:().email;agent-data:().contact-number;my-logo:()"
@@ -285,22 +288,19 @@
                 {
                   "event": "click?loader.show;search():[collection=collection;doc=counter]:[collections:().counter.agent=counter():[collections:().counter.agent];agent-data:().code=collections:().counter.agent.counter;save():[collection=agent;data=agent-data:()]:[agents:().push():[agent-data:().clone()];save():[collection=collection;doc=counter;data=collections:().counter];update():[agents-list-data];loader.hide;():[close-agent-window].click()]]?agent-data:().email;agent-data:().contact-number;agent-data:().logo"
                 }
-              ],
-              "type": "Text:save-agent?class=flexbox pointer;text=Save;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!agent-edit-readonly:()"
+              ]
             },
             {
+              "type": "Text:close-agent-window?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1",
               "controls": [
                 {
                   "event": "click?():agent-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw];agent-data:().del();new-agent:().del();my-logo:().del()"
                 }
-              ],
-              "type": "Text:close-agent-window?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1"
+              ]
             }
           ]
         }
       ]
     }
-  ],
-  "type": "View:agent-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
-  "id": "agent-window"
+  ]
 }

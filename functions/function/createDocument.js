@@ -9,7 +9,7 @@ const { clone } = require("./clone");
 //
 require("dotenv").config();
 
-const createDocument = async ({ req, res, realtimedb }) => {
+const createDocument = async ({ req, res }) => {
   
   // Create a cookies object
   var host = req.headers["x-forwarded-host"] || req.headers["host"], db = req.db
@@ -41,7 +41,8 @@ const createDocument = async ({ req, res, realtimedb }) => {
     browser: req.headers["sec-ch-ua"],
     country: req.headers["x-country-code"],
     headers: req.headers,
-    promises: []
+    promises: [],
+    functions: []
   };
 
   var views = {
@@ -61,8 +62,8 @@ const createDocument = async ({ req, res, realtimedb }) => {
       parent: "body",
       "my-views": [],
       children: Object.values(global.public),
-    },
-  };
+    }
+  }
 
   var bracketDomains = ["bracketjs.com", "localhost", "bracket.localhost"];
 
@@ -85,8 +86,10 @@ const createDocument = async ({ req, res, realtimedb }) => {
     .then((doc) => {
       if (doc.docs[0] && doc.docs[0].exists)
         global.data.project = project = doc.docs[0].data();
-      console.log("after project", new Date().getTime() - global.timer);
-    });
+        global.functions = Object.keys(project.functions || {})
+        global.projectFunctions = project.functions || {}
+        console.log("after project", new Date().getTime() - global.timer);
+    })
 
   await Promise.resolve(project);
 
@@ -109,19 +112,32 @@ const createDocument = async ({ req, res, realtimedb }) => {
 */
 
   }
+  
+  /*promises.push(db
+    .collection("_function_")
+    .doc(project.id)
+    .get()
+    .then((doc) => {
+      if (doc.data()) {
+        // req.global.functions[project.id] = doc.data() || {}
+        global.functions = Object.keys(doc.data() || {})
+        global.projectFunctions = doc.data() || {}
+      } else global.functions = []
+        console.log("after functions", new Date().getTime() - global.timer);
+    }))*/
 
   if (isBracket) {
 
     // get page
     console.log("before page", new Date().getTime() - global.timer);
-    global.data.page = page = getJsonFiles({
+    global.data.page = getJsonFiles({
       search: { collection: `page-${project.id}` },
     });
     console.log("after page", new Date().getTime() - global.timer);
 
     // get view
     console.log("before view", new Date().getTime() - global.timer);
-    global.data.view = view = getJsonFiles({
+    global.data.view = getJsonFiles({
       search: { collection: `view-${project.id}` },
     });
     console.log("after view", new Date().getTime() - global.timer);
@@ -215,6 +231,8 @@ const createDocument = async ({ req, res, realtimedb }) => {
   }
 
   await Promise.all(promises)
+  if (!isBracket) delete global.data.functions;
+  
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
 
@@ -281,6 +299,8 @@ const createDocument = async ({ req, res, realtimedb }) => {
     var { promises, ..._global } = global
     global = { ..._global }
   }
+
+  delete global.projectFunctions
 
   res.send(
     `<!DOCTYPE html>

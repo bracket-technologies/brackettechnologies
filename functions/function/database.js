@@ -1,11 +1,11 @@
 const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
-var _window = { global: {}, views: {} }
 
 var getdb = async ({ req, res }) => {
 
   var db = req.db
+  var _window = { global: { codes: {} }, views: {} }
   var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
   
@@ -235,8 +235,9 @@ var getdb = async ({ req, res }) => {
   return res.send({ data, success, message })
 }
 
-var postdb = async ({ req, res, db }) => {
+var postdb = async ({ req, res }) => {
   
+  var db = req.db
   var data = req.body.data
   var save = req.body.save || {}
 
@@ -293,8 +294,11 @@ var postdb = async ({ req, res, db }) => {
   return res.send({ data, success, message })
 }
 
-var deletedb = async ({ req, res, db, storage }) => {
+var deletedb = async ({ req, res }) => {
   
+  var db = req.db
+  var storage = req.storage
+  var _window = { global: { codes: {} }, views: {} }
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   
