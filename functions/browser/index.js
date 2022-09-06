@@ -183,8 +183,8 @@ window.onmousedown = (e) => {
 Object.entries(views).map(([id, views]) => {
     if (views.status === "Loading") delete views[id]
 })
-navigator.geolocation.getCurrentPosition((position) => { console.log(position) })
-console.log(navigator.geolocation);
+
+navigator.geolocation.getCurrentPosition((position) => { console.log(position); global.position = position })
 
 document.addEventListener('scroll', () => {
     
@@ -2132,6 +2132,7 @@ const createDocument = async ({ req, res }) => {
   }
 
   delete global.projectFunctions
+  delete global.headers
 
   res.send(
     `<!DOCTYPE html>
@@ -2988,6 +2989,7 @@ const erase = async ({ _window, req, res, id, e, ...params }) => {
 
   // erase
   headers.erase = encodeURI(toString({ erase }))
+  headers.timestamp = (new Date()).getTime()
 
   // access key
   if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
@@ -9436,8 +9438,11 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
       save.data.map(data => {
 
         if (!data.id) data.id = generate({ length: 20 })
-        if (!data["creation-date"]) data["creation-date"] = (new Date())
-        
+        if (!data["creation-date"]) {
+          data["creation-date"] = (new Date()).getTime()
+          data.timezone = "GMT"
+        }
+
         global.promises.push(ref.doc(data.id.toString()).set(data).then(() => {
 
           success = true
@@ -9452,7 +9457,14 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
 
     } else if (save.doc) {
 
-      global.promises.push(ref.doc(save.doc.toString() || save.id.toString() || save.data.id.toString()).set(save.data).then(() => {
+      var data = save.data
+      if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
+      if (!data["creation-date"]) {
+        data["creation-date"] = (new Date()).getTime()
+        data.timezone = "GMT"
+      }
+
+      global.promises.push(ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
 
         success = true
         message = `Document saved successfuly!`
@@ -9471,6 +9483,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
     
     delete save.data
     
+    headers.timestamp = (new Date()).getTime()
     var { data: _data } = await require("axios").post(`/${store}`, { save, data: _data }, {
       headers: {
         "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
@@ -9708,6 +9721,7 @@ module.exports = {
 
       // search
       headers.search = encodeURI(toString({ search }))
+      headers.timestamp = (new Date()).getTime()
 
       var { data: _data } = await axios.get(`/${store}`, {
         headers: {
@@ -10896,7 +10910,7 @@ module.exports = {
       if (view.textarea) {
         tag = `<textarea ${view.draggable ? "draggable='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${value}</textarea>`
       } else {
-        tag = `<input ${view.draggable ? "draggable='true'" : ""} ${view.multiple?"multiple":""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}/*"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index}'/>`
+        tag = `<input ${view.draggable ? "draggable='true'" : ""} ${view.multiple?"multiple":""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index}'/>`
       }
     } else if (view.type === "Paragraph") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index}'>${text}</textarea>`

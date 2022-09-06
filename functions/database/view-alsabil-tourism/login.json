@@ -1,19 +1,12 @@
 {
-  "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]",
-  "functions": {
-    "update-uses-and-last-visit": "agent:().[today-uses]=agent:().[today-uses]+1;agent:().uses=agent:().uses+1;agent:().last-visit=today().timestamp();user:().uses=user:().uses+1;user:().[today-uses]=user:().[today-uses]+1;user:().last-visit=today().timestamp()",
-    "update-user-and-agent": "reset-user-and-agent();update-uses-and-last-visit();save-user-and-agent();get-all-agents()",
-    "reset-user-and-agent": "if():[agent:().today!=todayStart().timestamp()]:[agent:().():[today=todayStart().timestamp();[today-uses]=0;today-bookings=0;today-buyings-usd=0]];if():[user:().today!=todayStart().timestamp()]:[user:().():[today=todayStart().timestamp();[today-uses]=0;today-bookings=0;today-buyings-usd=0]]",
-    "get-all-agents": "if():[agent:().admin;user:().admin]:[search():[collection=agent]:[agents:()=search:().data.values()]]",
-    "save-user-and-agent": "save():[collection=user;data=user:()];save():[collection=agent;data=agent:()]"
-  },
   "creation-date": 1651335662000,
   "id": "login",
+  "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]",
   "children": [
     {
-      "type": "View?Data=signin;class=flex column;style():[width=40rem;borderRadius=1rem;backgroundColor=#fff;gap=2rem;padding=5rem 3rem]",
       "children": [
         {
+          "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
               "type": "Text?class=flexbox;text=Agent Login;style():[fontSize=2.2rem]"
@@ -21,8 +14,7 @@
             {
               "type": "Text?id=incorrect-data;class=flexbox;style():[color=#ff0000ee;fontSize=1.3rem;opacity=0];text=User name or password is incorrect!"
             }
-          ],
-          "type": "View?class=flex column;style.gap=0.5rem"
+          ]
         },
         {
           "children": [
@@ -44,9 +36,9 @@
           "type": "View?class=flex column;style.gap=0.5rem"
         },
         {
+          "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
-              "type": "Input?id=password;path=password;label.text=Password;container.style.width=100%;clicked.style.border=2px solid #3299FF;password;input.value=_string",
               "controls": [
                 {
                   "event": "input?style().backgroundColor=#fff;():password-req.style().opacity=0"
@@ -60,18 +52,18 @@
                 {
                   "event": "keydown?():signin-btn.click()?e().key=Enter"
                 }
-              ]
+              ],
+              "type": "Input?id=password;path=password;label.text=Password;container.style.width=100%;clicked.style.border=2px solid #3299FF;password;input.value=_string"
             },
             {
               "type": "Text?id=password-req;class=flex;style():[color=#ff0000ee;fontSize=1.2rem;opacity=0];text=Password is required!"
             }
-          ],
-          "type": "View?class=flex column;style.gap=0.5rem"
+          ]
         },
         {
+          "type": "View?class=flex column;style():[gap=1rem;marginTop=3rem;width=100%]",
           "children": [
             {
-              "type": "Text?id=signin-btn;class=flexbox pointer;style():[backgroundColor=#3299FF;height=4.5rem;width=100%;borderRadius=.5rem;fontSize=1.6rem;color=#fff;transition=.3s];text=Sign in;hover.style.backgroundColor=#2d8eed",
               "controls": [
                 {
                   "event": "click?loader.show;search():[collection=user;field.username.equal=signin:().username;field.password.equal=signin:().password]:[if():[search:().data.value()]:[user:()=search:().data.value();search():[collection=agent;doc=user:().agent]:[agent:()=search:().data;setCookie():[name=_id;value=user:().id];setCookie():[name=_key;value=user:().access-key];setCookie():[name=_agent;value=user:().agent];loader.hide;update-user-and-agent();toggleView():[id=login;page=main;timer=200]]]:[():incorrect-data.style().opacity=1;loader.hide]]?signin:().username;signin:().password"
@@ -82,15 +74,23 @@
                 {
                   "event": "beforeLoading?loader.show;search():[collection=user;doc=getCookie():[name=_id]]:[user:()=search:().data;if():[user:()]:[search():[collection=agent;doc=user:().agent]:[agent:()=search:().data;setCookie():[name=_id;value=user:().id];setCookie():[name=_key;value=user:().access-key];setCookie():[name=_agent;value=user:().agent];update-user-and-agent();loader.hide;toggleView():[id=login;page=main;timer=200]]]]?getCookie():_id;getCookie():_key;false"
                 }
-              ]
+              ],
+              "type": "Text?id=signin-btn;class=flexbox pointer;style():[backgroundColor=#3299FF;height=4.5rem;width=100%;borderRadius=.5rem;fontSize=1.6rem;color=#fff;transition=.3s];text=Sign in;hover.style.backgroundColor=#2d8eed"
             },
             {
               "type": "Text?link.path=/forgot-your-password;link.style.marginRight=auto;class=pointer;text='Forgot your password?';style():[color=#3299FF;fontSize=1.2rem;marginRight=auto];hover.style.textDecoration=underline"
             }
-          ],
-          "type": "View?class=flex column;style():[gap=1rem;marginTop=3rem;width=100%]"
+          ]
         }
-      ]
+      ],
+      "type": "View?Data=signin;class=flex column;style():[width=40rem;borderRadius=1rem;backgroundColor=#fff;gap=2rem;padding=5rem 3rem]"
     }
-  ]
+  ],
+  "functions": {
+    "update-user-and-agent": "reset-user-and-agent();update-uses-and-last-visit();save-user-and-agent();get-all-agents()",
+    "get-all-agents": "if():[agent:().admin;user:().admin]:[search():[collection=agent]:[agents:()=search:().data.values()]]",
+    "update-uses-and-last-visit": "agent:().[today-uses]=agent:().[today-uses]+1;agent:().uses=agent:().uses+1;agent:().last-visit=today().timestamp();user:().uses=user:().uses+1;user:().[today-uses]=user:().[today-uses]+1;user:().last-visit=today().timestamp()",
+    "reset-user-and-agent": "if():[agent:().today!=todayStart().timestamp()]:[agent:().():[today=todayStart().timestamp();[today-uses]=0;today-bookings=0;today-buyings-usd=0]];if():[user:().today!=todayStart().timestamp()]:[user:().():[today=todayStart().timestamp();[today-uses]=0;today-bookings=0;today-buyings-usd=0]]",
+    "save-user-and-agent": "save():[collection=user;data=user:()];save():[collection=agent;data=agent:()]"
+  }
 }

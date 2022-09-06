@@ -1,5 +1,8 @@
 {
+  "type": "View?id=manager-mini-views",
+  "creation-date": 1652284306902,
   "id": "manager-mini-views",
+  "functions": {},
   "children": [
     {
       "type": "View?view=flights-mini-window"
@@ -22,8 +25,5 @@
     {
       "type": "View?view=payment-window"
     }
-  ],
-  "functions": {},
-  "creation-date": 1652284306902,
-  "type": "View?id=manager-mini-views"
+  ]
 }

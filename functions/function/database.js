@@ -292,7 +292,6 @@ var postdb = async ({ req, res }) => {
 
   } else if (save.doc) {
 
-    var data = save.data
     if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
     if (!data["creation-date"]) {
       if (req.headers.timestamp) {
