@@ -1,4 +1,5 @@
 var { clone } = require("./clone")
+const { generate } = require("./generate")
 
 const save = async ({ _window, req, res, id, e, ...params }) => {
 
@@ -29,6 +30,12 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
 
       save.data.map(data => {
 
+        if (!data.id) data.id = generate({ length: 20 })
+        if (!data["creation-date"]) {
+          data["creation-date"] = (new Date()).getTime()
+          data.timezone = "GMT"
+        }
+
         global.promises.push(ref.doc(data.id.toString()).set(data).then(() => {
 
           success = true
@@ -43,7 +50,14 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
 
     } else if (save.doc) {
 
-      global.promises.push(ref.doc(save.doc.toString() || save.id.toString() || save.data.id.toString()).set(save.data).then(() => {
+      var data = save.data
+      if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
+      if (!data["creation-date"]) {
+        data["creation-date"] = (new Date()).getTime()
+        data.timezone = "GMT"
+      }
+
+      global.promises.push(ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
 
         success = true
         message = `Document saved successfuly!`
@@ -62,6 +76,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
     
     delete save.data
     
+    headers.timestamp = (new Date()).getTime()
     var { data: _data } = await require("axios").post(`/${store}`, { save, data: _data }, {
       headers: {
         "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",

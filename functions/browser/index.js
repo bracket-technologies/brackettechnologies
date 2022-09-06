@@ -183,6 +183,8 @@ window.onmousedown = (e) => {
 Object.entries(views).map(([id, views]) => {
     if (views.status === "Loading") delete views[id]
 })
+navigator.geolocation.getCurrentPosition((position) => { console.log(position) })
+console.log(navigator.geolocation);
 
 document.addEventListener('scroll', () => {
     
@@ -9402,6 +9404,7 @@ module.exports = {
 }
 },{"./clone":37,"./createElement":46,"./search":92,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":115,"./update":123}],91:[function(require,module,exports){
 var { clone } = require("./clone")
+const { generate } = require("./generate")
 
 const save = async ({ _window, req, res, id, e, ...params }) => {
 
@@ -9432,6 +9435,9 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
 
       save.data.map(data => {
 
+        if (!data.id) data.id = generate({ length: 20 })
+        if (!data["creation-date"]) data["creation-date"] = (new Date())
+        
         global.promises.push(ref.doc(data.id.toString()).set(data).then(() => {
 
           success = true
@@ -9483,7 +9489,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
 }
 
 module.exports = { save }
-},{"./clone":37,"./toAwait":104,"axios":128}],92:[function(require,module,exports){
+},{"./clone":37,"./generate":63,"./toAwait":104,"axios":128}],92:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { clone } = require('./clone')

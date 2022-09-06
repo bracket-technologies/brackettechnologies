@@ -301,6 +301,7 @@ const createDocument = async ({ req, res }) => {
   }
 
   delete global.projectFunctions
+  delete global.headers
 
   res.send(
     `<!DOCTYPE html>

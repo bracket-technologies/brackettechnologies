@@ -1,39 +1,38 @@
 {
+  "creation-date": 1657214427578,
   "type": "View:search-engine?class=vertical;style:[width=100%;position=relative;backgroundColor=#f6f6f6];pax-details:()=if():[old-booking:()]:[pax-details:()]:[_map:adt:[if():[search-flight:().0.pax]:[if():[search-flight:().0.pax<10]:[search-flight:().0.pax||1]:9]:1]:chd:0:inf:0];search-flight:()=[search-flight:().list()||_list:[_map:class:Economy:pax:[pax-details:().adt+pax-details:().chd]]];bookings:()=[bookings:()||_array];log():[search-type:()];search-type:()=[search-type:()||Individual];log():[search-type:()]",
   "functions": {
-    "searchFlightFields": "if():[search-flight:().0.travel-date]:[travel-date.equal=search-flight:().0.travel-date];if():[search-flight:().0.from]:[go-departure-airport.equal=search-flight:().0.from];if():[search-flight:().0.to]:[go-arrival-airport.equal=search-flight:().0.to];if():[search-by:()=Round trip]:[if():[search-flight:().0.return-date]:[return-date.equal=search-flight:().0.return-date];if():[search-flight:().0.to]:[return-departure-airport.equal=search-flight:().0.to];if():[search-flight:().0.from]:[return-arrival-airport.equal=search-flight:().0.from]];if():[search-by:()=Multi city]:[if():[search-flight:().1.travel-date]:[return-date.equal=search-flight:().1.travel-date];if():[search-flight:().1.from]:[return-departure-airport.equal=search-flight:().1.from];if():[search-flight:().1.to]:[return-arrival-airport.equal=search-flight:().1.to]]",
-    "searchTicketFields": "if():[search-ticket:().pnr]:[pnr.equal=search-ticket:().pnr];if():[search-ticket:().flight]:[flights.contain=search-ticket:().flight];if():[search-ticket:().e-ticket]:[e-ticket.equal=search-ticket:().e-ticket];if():[search-ticket:().names]:[names.lessOrEqual=search-ticket:().names];if():[search-ticket:().reservation-date]:[day.equal=search-ticket:().reservation-date];if():[search-ticket:().user]:[user.equal=search-ticket:().user];if():[search-ticket:().agent]:[agent.equal=search-ticket:().agent];if():[search-ticket:().status]:[status.equal=search-ticket:().status];if():[!agent:().admin]:[agent.equal=agent:().id]",
     "searchBookingFields": "if():[search-booking:().pnr]:[pnr.equal=search-booking:().pnr];if():[search-booking:().flight]:[flights.contain=search-booking:().flight];if():[!agent:().admin]:[agent.equal=agent:().id];if():[search-booking:().names]:[names.lessOrEqual=search-booking:().names];if():[search-booking:().reservation-date]:[issuing-day.equal=search-booking:().reservation-date];if():[search-booking:().booking-date]:[day.equal=search-booking:().booking-date];if():[search-booking:().travel-date]:[travel-date.equal=search-booking:().travel-date];if():[search-booking:().status]:[status.equal=search-booking:().status];if():[search-booking:().agent]:[agent.equal=search-booking:().agent];if():[search-booking:().user]:[user.equal=search-booking:().user];if():[!agent:().admin]:[agent.equal=agent:().id]",
+    "oneWaySearch": "search():[collection=_.collection;field:[if():[_.ticket]:searchTicketFields():searchBookingFields();if():[search-flight:().0.travel-date]:[return-date.equal=search-flight:().0.travel-date];if():[search-flight:().0.from]:[return-departure-airport.equal=search-flight:().0.from];if():[search-flight:().0.to]:[return-arrival-airport.equal=search-flight:().0.to]]]:[if():[_.ticket]:[tickets:().push():[search:().data.values()||_list];update():[tickets-list]]:[bookings:().push():[search:().data.values()||_list];update():[bookings-list]];loader.hide]",
     "searchMultiFlight": "if():[search-by:()=Multi city;search-flight:().1.from;search-flight:().1.to;search-flight:().1.travel-date]:[search():[collection=flight;field:[active.equal=true;departure-airport.equal=search-flight:().0.from;arrival-airport.equal=search-flight:().0.to;departure-day.equal=search-flight:().0.travel-date]]:[flights:().1=search:().data.values();afterSearchFlight()]]",
+    "searchGoingFlight": "search():[collection=flight;field:[active.equal=true;departure-airport.equal=search-flight:().0.from;arrival-airport.equal=search-flight:().0.to;departure-day.equal=search-flight:().0.travel-date]]:[flights:().0=search:().data.values();if():[search:().data.len()>0]:[flights:().0.sort():departure-time;if():[search-by:()=One way]:[insert():[view=():book-a-flight-list.children.0.children.0;id=():book-a-flight-list.1stChild()];#if():[flights:().0.filter():[seats.():av-seats.sum()>search-flight:().0.pax||seats.():av-seats.sum()=search-flight:().0.pax].len()>0]:[]:[note():[text=Not enough seats available on this date!;type=danger]];loader.hide]:afterSearchFlight()]:[if():[search-by:()=One way]:[note():[text=No flights available on this date!;type=danger];loader.hide]]]",
+    "startSearchFlight": "loader.show;():'book-a-flight-list'.1stChild().children().():rem();flights:()=_list;flights-booked:()=_list;booking-details:()=_list",
     "afterSearchFlight": "if():[flights:().len()=2;search-by:()=Round trip||search-by:()=Multi city]:[if():[flights:().0.len()>0;flights:().1.len()>0]:[if():[flights:().find():[filter():[seats.():av-seats.sum()>search-flight:().0.pax||seats.():av-seats.sum()=search-flight:().0.pax].len()=0]]:[flights:().():[insert():[id=():book-a-flight-list.1stChild();view=():'book-a-flight-list'.children.0.children.0]];#if():[flights:().filter():[filter():[seats.():av-seats.sum()>search-flight:().0.pax||seats.():av-seats.sum()=search-flight:().0.pax].len()=0].len()=2]:[note():[text=No enough seats available on this date!;type=danger]]:[if():[flights:().0.filter():[seats.():av-seats.sum()>search-flight:().0.pax||seats.():av-seats.sum()=search-flight:().0.pax].len()=0]:[note():[text=No enough seats available on going flights on this date!;type=danger]]:[note():[text=No enough seats available on return flights on this date!;type=danger]]]]:[flights:().():[insert():[id=():book-a-flight-list.1stChild();view=():'book-a-flight-list'.children.0.children.0]]]]:[if():[flights:().0.len()=0;flights:().1.len()=0]:[note():[text=No flights available on this date!;type=danger]].elif():[flights:().0.len()=0]:[note():[text=No going flight available on this date!;type=danger]]:[note():[text=No return flight available on this date!;type=danger]]]];loader.hide",
     "getTickets": "search():[collection=flight-reservation;limit=250;field:[searchTicketFields();searchFlightFields()]]:[tickets:()=search:().data.values();if():[search-by:()=One way;search-flight:().from||search-flight:().to||search-flight:().travel-date||search-flight:().return-date]:[oneWaySearch():[collection=flight-reservation;ticket]]:[update():[tickets-list];loader.hide]]",
-    "oneWaySearch": "search():[collection=_.collection;field:[if():[_.ticket]:searchTicketFields():searchBookingFields();if():[search-flight:().0.travel-date]:[return-date.equal=search-flight:().0.travel-date];if():[search-flight:().0.from]:[return-departure-airport.equal=search-flight:().0.from];if():[search-flight:().0.to]:[return-arrival-airport.equal=search-flight:().0.to]]]:[if():[_.ticket]:[tickets:().push():[search:().data.values()||_list];update():[tickets-list]]:[bookings:().push():[search:().data.values()||_list];update():[bookings-list]];loader.hide]",
-    "searchGoingFlight": "search():[collection=flight;field:[active.equal=true;departure-airport.equal=search-flight:().0.from;arrival-airport.equal=search-flight:().0.to;departure-day.equal=search-flight:().0.travel-date]]:[flights:().0=search:().data.values();if():[search:().data.len()>0]:[flights:().0.sort():departure-time;if():[search-by:()=One way]:[insert():[view=():book-a-flight-list.children.0.children.0;id=():book-a-flight-list.1stChild()];#if():[flights:().0.filter():[seats.():av-seats.sum()>search-flight:().0.pax||seats.():av-seats.sum()=search-flight:().0.pax].len()>0]:[]:[note():[text=Not enough seats available on this date!;type=danger]];loader.hide]:afterSearchFlight()]:[if():[search-by:()=One way]:[note():[text=No flights available on this date!;type=danger];loader.hide]]]",
-    "searchReturnFlight": "if():[search-by:()=Round trip;search-flight:().0.from;search-flight:().0.to;search-flight:().0.travel-date;search-flight:().0.return-date]:[search():[collection=flight;field:[active.equal=true;departure-airport.equal=search-flight:().0.to;arrival-airport.equal=search-flight:().0.from;departure-day.equal=search-flight:().0.return-date]]:[flights:().1=search:().data.values();afterSearchFlight()]]",
-    "startSearchFlight": "loader.show;():'book-a-flight-list'.1stChild().children().():rem();flights:()=_list;flights-booked:()=_list;booking-details:()=_list",
-    "getBookings": "search():[collection=flight-booking;limit=250;field:[searchBookingFields();searchFlightFields()]]:[bookings:()=search:().data.values();if():[search-by:()=One way;search-flight:().from||search-flight:().to||search-flight:().travel-date||search-flight:().return-date]:[oneWaySearch():[collection=flight-booking;booking]]:[update():[bookings-list];loader.hide]]"
+    "getBookings": "search():[collection=flight-booking;limit=250;field:[searchBookingFields();searchFlightFields()]]:[bookings:()=search:().data.values();if():[search-by:()=One way;search-flight:().from||search-flight:().to||search-flight:().travel-date||search-flight:().return-date]:[oneWaySearch():[collection=flight-booking;booking]]:[update():[bookings-list];loader.hide]]",
+    "searchFlightFields": "if():[search-flight:().0.travel-date]:[travel-date.equal=search-flight:().0.travel-date];if():[search-flight:().0.from]:[go-departure-airport.equal=search-flight:().0.from];if():[search-flight:().0.to]:[go-arrival-airport.equal=search-flight:().0.to];if():[search-by:()=Round trip]:[if():[search-flight:().0.return-date]:[return-date.equal=search-flight:().0.return-date];if():[search-flight:().0.to]:[return-departure-airport.equal=search-flight:().0.to];if():[search-flight:().0.from]:[return-arrival-airport.equal=search-flight:().0.from]];if():[search-by:()=Multi city]:[if():[search-flight:().1.travel-date]:[return-date.equal=search-flight:().1.travel-date];if():[search-flight:().1.from]:[return-departure-airport.equal=search-flight:().1.from];if():[search-flight:().1.to]:[return-arrival-airport.equal=search-flight:().1.to]]",
+    "searchTicketFields": "if():[search-ticket:().pnr]:[pnr.equal=search-ticket:().pnr];if():[search-ticket:().flight]:[flights.contain=search-ticket:().flight];if():[search-ticket:().e-ticket]:[e-ticket.equal=search-ticket:().e-ticket];if():[search-ticket:().names]:[names.lessOrEqual=search-ticket:().names];if():[search-ticket:().reservation-date]:[day.equal=search-ticket:().reservation-date];if():[search-ticket:().user]:[user.equal=search-ticket:().user];if():[search-ticket:().agent]:[agent.equal=search-ticket:().agent];if():[search-ticket:().status]:[status.equal=search-ticket:().status];if():[!agent:().admin]:[agent.equal=agent:().id]",
+    "searchReturnFlight": "if():[search-by:()=Round trip;search-flight:().0.from;search-flight:().0.to;search-flight:().0.travel-date;search-flight:().0.return-date]:[search():[collection=flight;field:[active.equal=true;departure-airport.equal=search-flight:().0.to;arrival-airport.equal=search-flight:().0.from;departure-day.equal=search-flight:().0.return-date]]:[flights:().1=search:().data.values();afterSearchFlight()]]"
   },
-  "creation-date": 1657214427578,
+  "id": "search-engine",
   "children": [
     {
       "type": "View?style:[height=1px;width=100%;backgroundColor=#ddd;position=absolute;top=0;left=0]"
     },
     {
+      "type": "View?class=flexbox pointer unselectable;style:[width=6rem;left=calc(50% - 3rem);transition=.2s;borderRadius=0 0 1rem 1rem;backgroundColor=#fff;overflow=hidden;border=1px solid #ddd;borderTop=0;position=absolute;top=0;zIndex=1];open=true;click:[if():[!open]:[1stChild().style().transform=rotate(180deg);timer():[next().style().height=if():[search-flight:().len()>1]:[17.5rem]:[12.5rem];next().lastChild().style().display=flex]:20;next().style():[padding=1rem];2ndNext().style().display=flex]:[1stChild().style().transform=rotate(0deg);next().style().height=0;timer():[next().style().padding=0 1rem]:150;timer():[next().lastChild().style().display=none]:200;2ndNext()._():[if():[_.open]:[_.click()];_.style().display=none]];open=().open.opp()]",
       "children": [
         {
           "type": "Icon?class=unselectable;name=expand_more;google.outlined;style:[transition=.2s;fontSize=2.2rem;transform=rotate(180deg)]"
         }
-      ],
-      "type": "View?class=flexbox pointer unselectable;style:[width=6rem;left=calc(50% - 3rem);transition=.2s;borderRadius=0 0 1rem 1rem;backgroundColor=#fff;overflow=hidden;border=1px solid #ddd;borderTop=0;position=absolute;top=0;zIndex=1];open=true;click:[if():[!open]:[1stChild().style().transform=rotate(180deg);timer():[next().style().height=if():[search-flight:().len()>1]:[17.5rem]:[12.5rem];next().lastChild().style().display=flex]:20;next().style():[padding=1rem];2ndNext().style().display=flex]:[1stChild().style().transform=rotate(0deg);next().style().height=0;timer():[next().style().padding=0 1rem]:150;timer():[next().lastChild().style().display=none]:200;2ndNext()._():[if():[_.open]:[_.click()];_.style().display=none]];open=().open.opp()]"
+      ]
     },
     {
       "type": "View:search-engine-view?class=vertical;style:[width=100%;gap=1rem;padding=1rem;overflow=hidden;if():[search-flight:().len()>1]:[height=17.5rem]:[height=12.5rem];transition=.2s]",
       "children": [
         {
-          "type": "View?class=flex align-center;style:[height=6rem;borderBottom=1px solid #f6f6f6;gap=4rem;backgroundColor=#f6f6f6;padding=0 1rem]?false",
           "children": [
             {
-              "type": "View?class=flex;style:[gap=1rem;height=4rem;width=40rem;padding=0 1rem;borderRadius=.5rem;border=1px solid #d6d6d6;backgroundColor=#fff]",
               "children": [
                 {
                   "type": "Icon?class=flexbos pointer;style:[color=#888;fontSize=1.6rem];name=bi-search"
@@ -41,12 +40,18 @@
                 {
                   "type": "Input?input.placeholder=Search by id, flight number, airline...;style():[height=100%;flex=1;fontSize=1.3rem;borderRadius=.5rem]"
                 }
-              ]
+              ],
+              "type": "View?class=flex;style:[gap=1rem;height=4rem;width=40rem;padding=0 1rem;borderRadius=.5rem;border=1px solid #d6d6d6;backgroundColor=#fff]"
             },
             {
-              "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=2rem]",
               "children": [
                 {
+                  "controls": [
+                    {
+                      "event": "click:droplist?data()=droplist-item-txt:();1stChild().txt()=droplist-item-txt:()"
+                    }
+                  ],
+                  "type": "View?class=flexbox pointer;style:[gap=.5rem;border=1px solid #ddd;borderRadius=.5rem;height=3rem;padding=0 1rem;backgroundColor=#fff];droplist.items=_array:All Flights:Upcoming Flights:Ongoing Flights:Outgoing Flights;droplist.placement=bottom;droplist.align=right;droplist.item:[hover.style:[backgroundColor=#222];style:[fontSize=1.2rem;color=#fff;minHeight=3rem]];droplist.style:[backgroundColor=#000;opacity=.9];droplist.preventDefault",
                   "children": [
                     {
                       "type": "Text?id=filter-by-going-date-flight;class=flex;style.fontSize=1.2rem;text=All Flights"
@@ -54,15 +59,10 @@
                     {
                       "type": "Icon?name=bi-chevron-down;style:[fontSize=1.2rem]"
                     }
-                  ],
-                  "controls": [
-                    {
-                      "event": "click:droplist?data()=droplist-item-txt:();1stChild().txt()=droplist-item-txt:()"
-                    }
-                  ],
-                  "type": "View?class=flexbox pointer;style:[gap=.5rem;border=1px solid #ddd;borderRadius=.5rem;height=3rem;padding=0 1rem;backgroundColor=#fff];droplist.items=_array:All Flights:Upcoming Flights:Ongoing Flights:Outgoing Flights;droplist.placement=bottom;droplist.align=right;droplist.item:[hover.style:[backgroundColor=#222];style:[fontSize=1.2rem;color=#fff;minHeight=3rem]];droplist.style:[backgroundColor=#000;opacity=.9];droplist.preventDefault"
+                  ]
                 },
                 {
+                  "type": "View?class=flexbox pointer;style:[gap=1rem;border=1px solid #ddd;borderRadius=.5rem;height=3rem;padding=0 1rem;backgroundColor=#fff];droplist.items=_array:All dates:This week:This month:This 3 months:Next week:Next month:Next 3 months:Previous week:Previous month:Previous 3 months;droplist.placement=bottom;droplist.align=right;droplist.item:[hover.style:[backgroundColor=#222];style:[fontSize=1.2rem;color=#fff;minHeight=3rem]];droplist.style:[backgroundColor=#000;opacity=.9];droplist.preventDefault",
                   "children": [
                     {
                       "type": "Text?id=filter-by-travel-date-flight;class=flex;style.fontSize=1.2rem;text=All dates"
@@ -71,30 +71,30 @@
                       "type": "Icon?name=bi-calendar-event;style:[fontSize=1.2rem]"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;style:[gap=1rem;border=1px solid #ddd;borderRadius=.5rem;height=3rem;padding=0 1rem;backgroundColor=#fff];droplist.items=_array:All dates:This week:This month:This 3 months:Next week:Next month:Next 3 months:Previous week:Previous month:Previous 3 months;droplist.placement=bottom;droplist.align=right;droplist.item:[hover.style:[backgroundColor=#222];style:[fontSize=1.2rem;color=#fff;minHeight=3rem]];droplist.style:[backgroundColor=#000;opacity=.9];droplist.preventDefault",
                   "controls": [
                     {
                       "event": "click:droplist?data()=droplist-item-txt:();1stChild().txt()=droplist-item-txt:()"
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=2rem]"
             }
-          ]
+          ],
+          "type": "View?class=flex align-center;style:[height=6rem;borderBottom=1px solid #f6f6f6;gap=4rem;backgroundColor=#f6f6f6;padding=0 1rem]?false"
         },
         {
-          "type": "View?class=flex align-center;style:[gap=1rem];search-by:()=search-by:()||Round trip",
           "children": [
             {
+              "controls": [
+                {
+                  "event": "click?1stChild():[search-engine-req:()+'s-list'].children().():rem();flights:()=_array;flights-booked:()=_array;if():[search-by:()=Multi city]:[search-flight:()=search-flight:().0.arr()];search-by:()=Round trip;parent().children().():[style():[backgroundColor=inherit];1stChild().style().color=blue];style():[backgroundColor=blue];1stChild().style().color=#fff;className():return-date-flight.():[parent().style().display=flex;if():[search-flight:().0.travel-date]:[search-flight:().0.return-date=search-flight:().0.travel-date+604800000]];className():stay-duration-flight.():[parent().parent().style().display=flex;():stay-duration-flight-field.style().display=flex;():return-date-flight-field.style().display=flex;className():add-rem-root.():[style().display=none];booking-details:()=_list;update():pricing-bar;update():search-engine-flight?search-by:()!=Round trip"
+                }
+              ],
               "type": "View:round-trip?class=flexbox pointer;style:[padding=0 1rem;height=2.75rem;borderRadius=.5rem;backgroundColor=if():[search-by:()=Round trip]:blue:inherit;transition=.3s]",
               "children": [
                 {
                   "type": "Text?text=Round trip;style:[color=if():[)(:search-by=Round trip]:#fff:blue;fontSize=1.2rem]"
-                }
-              ],
-              "controls": [
-                {
-                  "event": "click?1stChild():[search-engine-req:()+'s-list'].children().():rem();flights:()=_array;flights-booked:()=_array;if():[search-by:()=Multi city]:[search-flight:()=search-flight:().0.arr()];search-by:()=Round trip;parent().children().():[style():[backgroundColor=inherit];1stChild().style().color=blue];style():[backgroundColor=blue];1stChild().style().color=#fff;className():return-date-flight.():[parent().style().display=flex;if():[search-flight:().0.travel-date]:[search-flight:().0.return-date=search-flight:().0.travel-date+604800000]];className():stay-duration-flight.():[parent().parent().style().display=flex;():stay-duration-flight-field.style().display=flex;():return-date-flight-field.style().display=flex;className():add-rem-root.():[style().display=none];booking-details:()=_list;update():pricing-bar;update():search-engine-flight?search-by:()!=Round trip"
                 }
               ]
             },
@@ -104,23 +104,23 @@
                   "type": "Text?text=One way;style:[color=if():[)(:search-by=One way]:#fff:blue;fontSize=1.2rem]"
                 }
               ],
-              "type": "View:one-way?class=flexbox pointer;style:[padding=0 1rem;height=2.75rem;borderRadius=.5rem;backgroundColor=if():[search-by:()=One way]:blue:inherit;transition=.3s]",
               "controls": [
                 {
                   "event": "click?1stChild():[search-engine-req:()+'s-list'].children().():rem();)(:flights=_array;)(:flights-booked=_array;if():[)(:search-by=Multi city]:[)(:search-flight=)(:search-flight.0.arr()];)(:search-by=One way;parent().children().():[style():[backgroundColor=inherit];1stChild().style().color=blue];style():[backgroundColor=blue];1stChild().style().color=#fff;)(:search-flight.return-date.del();className():return-date-flight.():[txt()=;2ndParent().style().display=none];className():stay-duration-flight.():[txt()=;parent().parent().style().display=none];():stay-duration-flight-field.style().display=none;():return-date-flight-field.style().display=none;className():add-rem-root.():[style().display=none];booking-details:()=_list;update():pricing-bar;update():search-engine-flight?)(:search-by!=One way"
                 }
-              ]
+              ],
+              "type": "View:one-way?class=flexbox pointer;style:[padding=0 1rem;height=2.75rem;borderRadius=.5rem;backgroundColor=if():[search-by:()=One way]:blue:inherit;transition=.3s]"
             },
             {
               "type": "View:multi-city?class=flexbox pointer;style:[padding=0 1rem;height=2.75rem;borderRadius=.5rem;backgroundColor=if():[)(:search-by=Multi city]:blue:inherit;transition=.3s]",
-              "controls": [
-                {
-                  "event": "click?1stChild():[search-engine-req:()+'s-list'].children().():rem();flights:()=_array;flights-booked:()=_array;search-flight:()=search-flight:().list();search-by:()=Multi city;parent().children().():[style():[backgroundColor=inherit];1stChild().style().color=blue];style():[backgroundColor=blue];1stChild().style().color=#fff;search-flight:().0.return-date.del();className():return-date-flight.():[txt()=;2ndParent().style().display=none];className():stay-duration-flight.():[txt()=;2ndParent().style().display=none];():stay-duration-flight-field.style().display=none;():return-date-flight-field.style().display=none;className():add-rem-root.():[style().display=flex];booking-details:()=_list;update():pricing-bar?search-by:()!=Multi city"
-                }
-              ],
               "children": [
                 {
                   "type": "Text?text=Multi city;style:[color=if():[)(:search-by=Multi city]:#fff:blue;fontSize=1.2rem]"
+                }
+              ],
+              "controls": [
+                {
+                  "event": "click?1stChild():[search-engine-req:()+'s-list'].children().():rem();flights:()=_array;flights-booked:()=_array;search-flight:()=search-flight:().list();search-by:()=Multi city;parent().children().():[style():[backgroundColor=inherit];1stChild().style().color=blue];style():[backgroundColor=blue];1stChild().style().color=#fff;search-flight:().0.return-date.del();className():return-date-flight.():[txt()=;2ndParent().style().display=none];className():stay-duration-flight.():[txt()=;2ndParent().style().display=none];():stay-duration-flight-field.style().display=none;():return-date-flight-field.style().display=none;className():add-rem-root.():[style().display=flex];booking-details:()=_list;update():pricing-bar?search-by:()!=Multi city"
                 }
               ]
             },
@@ -155,35 +155,35 @@
                   }
                 },
                 {
+                  "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
                   "children": [
                     {
-                      "type": "View?id=direct-flights;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];checked=true;search-flight:().direct-flights=true",
+                      "controls": [
+                        {
+                          "event": "click?checked()=checked().opp();)(:search-flight.direct-flights=checked();1stChild().style().opacity=if():checked():1:0"
+                        }
+                      ],
                       "children": [
                         {
                           "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
                         }
                       ],
-                      "controls": [
-                        {
-                          "event": "click?checked()=checked().opp();)(:search-flight.direct-flights=checked();1stChild().style().opacity=if():checked():1:0"
-                        }
-                      ]
+                      "type": "View?id=direct-flights;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];checked=true;search-flight:().direct-flights=true"
                     },
                     {
                       "type": "Text?text=Direct flights;style:[color=blue;fontSize=1.2rem]"
                     }
-                  ],
-                  "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
+                  ]
                 }
               ]
             }
-          ]
+          ],
+          "type": "View?class=flex align-center;style:[gap=1rem];search-by:()=search-by:()||Round trip"
         },
         {
           "type": "View?class=flex align-center;style:[gap=1rem]",
           "children": [
             {
-              "type": "View?class=flex;style:[gap=.5rem;width=22.5rem]",
               "children": [
                 {
                   "type": "Icon?name=bi-geo-alt;style:[fontSize=1.5rem;color=#888]"
@@ -191,7 +191,8 @@
                 {
                   "type": "Text?text=From;style:[fontSize=1.3rem]"
                 }
-              ]
+              ],
+              "type": "View?class=flex;style:[gap=.5rem;width=22.5rem]"
             },
             {
               "type": "View?class=flex;style:[gap=.5rem;width=1.5rem]"
@@ -219,6 +220,7 @@
               ]
             },
             {
+              "type": "View:return-date-flight-field?class=flex;style:[gap=.5rem;width=15rem;display=if():[)(:search-by=Round trip]:flex:none]",
               "children": [
                 {
                   "type": "Icon?name=bi-calendar3;style:[fontSize=1.3rem;color=#888]"
@@ -226,8 +228,7 @@
                 {
                   "type": "Text?text=Return Date;style:[fontSize=1.3rem]"
                 }
-              ],
-              "type": "View:return-date-flight-field?class=flex;style:[gap=.5rem;width=15rem;display=if():[)(:search-by=Round trip]:flex:none]"
+              ]
             },
             {
               "type": "View:stay-duration-flight-field?class=flex;style:[gap=.5rem;width=10rem;display=if():[)(:search-by=Round trip||)(:search-by=Open return]:flex:none]",
@@ -241,7 +242,6 @@
               ]
             },
             {
-              "type": "View:pax-flight-field?class=flex;style:[gap=.5rem;width=8rem]?opened-manager:()=book-a-flight-manager",
               "children": [
                 {
                   "type": "Icon?name=bi-person;style:[fontSize=1.7rem;color=#888]"
@@ -249,10 +249,10 @@
                 {
                   "type": "Text?text=Pax;style:[fontSize=1.3rem]"
                 }
-              ]
+              ],
+              "type": "View:pax-flight-field?class=flex;style:[gap=.5rem;width=8rem]?opened-manager:()=book-a-flight-manager"
             },
             {
-              "type": "View:flight-class-field?class=horizontal;style:[gap=.5rem;width=11rem]?opened-manager:()=book-a-flight-manager",
               "children": [
                 {
                   "type": "Icon?name=airline_seat_recline_normal;google.outlined;style:[fontSize=1.8rem;color=#888]"
@@ -260,25 +260,24 @@
                 {
                   "type": "Text?text=Cabin Class;style:[fontSize=1.3rem]"
                 }
-              ]
+              ],
+              "type": "View:flight-class-field?class=horizontal;style:[gap=.5rem;width=11rem]?opened-manager:()=book-a-flight-manager"
             }
           ]
         },
         {
-          "type": "View:search-engine-flight?class=flex align-center;style:[gap=1rem]",
           "children": [
             {
-              "type": "View?doc=search-flight;class=flex column;style:[gap=1rem]",
               "children": [
                 {
                   "children": [
                     {
+                      "type": "View?class=flex column;style:[gap=1rem;width=22.5rem]",
                       "children": [
                         {
                           "type": "Input?clearable;class=from-flight;path=from;style:[fontSize=1.3rem;height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='collections:().international-airports.clone().airports.():[code+' '+name]';droplist.searchable;droplist.item.style:[fontSize=1.2rem;minHeight=3rem]"
                         }
-                      ],
-                      "type": "View?class=flex column;style:[gap=1rem;width=22.5rem]"
+                      ]
                     },
                     {
                       "type": "View?class=flexbox column;style:[gap=1rem;width=1.5rem]",
@@ -297,6 +296,7 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex column;style:[gap=1rem;width=15rem;position=relative]",
                       "children": [
                         {
                           "controls": [
@@ -318,7 +318,6 @@
                           ]
                         }
                       ],
-                      "type": "View?class=flex column;style:[gap=1rem;width=15rem;position=relative]",
                       "controls": [
                         {
                           "event": "loaded?if():[search-by:()=Round trip;data().travel-date]:[data().return-date=data().travel-date+604800000;className():return-date-flight.0.():[parent().prev().min()=data().travel-date.toDateInputFormat();txt()=data().return-date.toDateFormat()];2ndChild().1stChild().txt()=data().travel-date.toDateFormat();1stChild().txt()=data().travel-date.toDateInputFormat()]?false"
@@ -326,6 +325,7 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex column;style:[gap=1rem;width=15rem;position=relative;display=if():[search-by:()=Round trip]:flex:none]",
                       "children": [
                         {
                           "type": "Input?if():[data().travel-date]:[input.min=data().travel-date.toDateInputFormat()];path=return-date;if():data():[input.value=data().toDateInputFormat()];input.type=date;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s];clicked.style.border=2px solid #0080FF",
@@ -336,6 +336,7 @@
                           ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                           "children": [
                             {
                               "type": "Text?class=flex align-center return-date-flight;if():[data().return-date]:[text=data().return-date.toDateFormat()];style:[fontSize=1.3rem]"
@@ -343,21 +344,14 @@
                             {
                               "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().return-date.del();prev().txt()=;parent().prev().():[click();input().txt()=null]]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
+                          ]
                         }
-                      ],
-                      "type": "View?class=flex column;style:[gap=1rem;width=15rem;position=relative;display=if():[search-by:()=Round trip]:flex:none]"
+                      ]
                     },
                     {
                       "type": "View?class=flex column;style:[gap=1rem;width=10rem;display=if():[search-by:()=Round trip||search-by:()=Open return]:flex:none]",
                       "children": [
                         {
-                          "controls": [
-                            {
-                              "event": "click?droplist();className():stay-duration-flight.():[txt()=txt()];if():[data().travel-date]:[if():[txt()=3 days]:[data().return-date=data().travel-date+259200000].elif():[txt()=5 days]:[data().return-date=data().travel-date+432000000].elif():[txt()=1 week]:[data().return-date=data().travel-date+604800000].elif():[txt()=10 days]:[data().return-date=data().travel-date+864000000].elif():[txt()=15 days]:[data().return-date=data().travel-date+1296000000].elif():[txt()=1 month]:[data().return-date=data().travel-date+2592000000];className():return-date-flight.0.():[txt()=Data().0.return-date.toDateFormat();prev().input().txt()=Data().0.return-date.toDateInputFormat()]]"
-                            }
-                          ],
                           "type": "View?class=flex align-center pointer;style:[padding=0 1rem;gap=1rem;position=relative;height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items=_array:3 days:5 days:1 week:10 days:15 days:1 month;droplist.placement=bottom;droplist.align=left;droplist.preventDefault;droplist.item.style:[minHeight=3rem;fontSize=1.3rem]",
                           "children": [
                             {
@@ -365,6 +359,11 @@
                             },
                             {
                               "type": "Icon?name=bi-chevron-down;style:[fontSize=1.3rem;position=absolute;right=1rem;top=1.5rem]"
+                            }
+                          ],
+                          "controls": [
+                            {
+                              "event": "click?droplist();className():stay-duration-flight.():[txt()=txt()];if():[data().travel-date]:[if():[txt()=3 days]:[data().return-date=data().travel-date+259200000].elif():[txt()=5 days]:[data().return-date=data().travel-date+432000000].elif():[txt()=1 week]:[data().return-date=data().travel-date+604800000].elif():[txt()=10 days]:[data().return-date=data().travel-date+864000000].elif():[txt()=15 days]:[data().return-date=data().travel-date+1296000000].elif():[txt()=1 month]:[data().return-date=data().travel-date+2592000000];className():return-date-flight.0.():[txt()=Data().0.return-date.toDateFormat();prev().input().txt()=Data().0.return-date.toDateInputFormat()]]"
                             }
                           ]
                         }
@@ -374,12 +373,6 @@
                       "type": "View?class=flex align-center;data().pax=[Data().0.pax||[pax-details:().adt+pax-details:().chd||1]];style:[gap=.5rem;width=8rem]?opened-manager:()=book-a-flight-manager",
                       "children": [
                         {
-                          "type": "View?class=flex align-center pointer individual-pax;style:[padding=0 1rem;gap=1rem;position=relative;height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s;display=if():[search-type:()=Individual]:flex:none];clicked.style.border=2px solid #0080FF;droplist.items=range():1:10;droplist.placement=bottom;droplist.align=left;droplist.preventDefault",
-                          "controls": [
-                            {
-                              "event": "click:droplist?pax-details:().adt=[droplist-txt:().num()]-[pax-details:().chd.num()];if():[pax-details:().adt<0]:[pax-details:().chd=pax-details:().chd.num()+pax-details:().adt.num();pax-details:().adt=0];className():pax-flight.():[txt()=droplist-txt:()];search-flight:().0.pax=droplist-txt:().num();():adt-num.txt()=pax-details:().adt;():chd-num.txt()=pax-details:().chd;flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():[pricing-bar]"
-                            }
-                          ],
                           "children": [
                             {
                               "type": "Text?class=pax-flight;text=search-flight:().0.pax;style:[fontSize=1.4rem]"
@@ -387,33 +380,38 @@
                             {
                               "type": "Icon?name=bi-chevron-down;style:[fontSize=1.35rem;position=absolute;right=1rem;top=1.5rem]"
                             }
-                          ]
+                          ],
+                          "controls": [
+                            {
+                              "event": "click:droplist?pax-details:().adt=[droplist-txt:().num()]-[pax-details:().chd.num()];if():[pax-details:().adt<0]:[pax-details:().chd=pax-details:().chd.num()+pax-details:().adt.num();pax-details:().adt=0];className():pax-flight.():[txt()=droplist-txt:()];search-flight:().0.pax=droplist-txt:().num();():adt-num.txt()=pax-details:().adt;():chd-num.txt()=pax-details:().chd;flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():[pricing-bar]"
+                            }
+                          ],
+                          "type": "View?class=flex align-center pointer individual-pax;style:[padding=0 1rem;gap=1rem;position=relative;height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s;display=if():[search-type:()=Individual]:flex:none];clicked.style.border=2px solid #0080FF;droplist.items=range():1:10;droplist.placement=bottom;droplist.align=left;droplist.preventDefault"
                         },
                         {
                           "children": [
                             {
-                              "type": "Input?class=pax-flight;path=pax;input.type=number;style:[backgroundColor=#fff;borderRadius=.5rem;border=1px solid #ddd;padding=0 1rem;height=4rem;flex=1]",
                               "controls": [
                                 {
                                   "event": "input?pax-details:().adt=[txt().num()]-[pax-details:().chd.num()]-[pax-details:().inf.num()];if():[pax-details:().adt<0]:[pax-details:().inf=0;pax-details:().chd=pax-details:().chd.num()+pax-details:().adt.num();pax-details:().adt=0];className():pax-flight.():[txt()=txt()];search-flight:().0.pax=txt().num();():adt-num.txt()=pax-details:().adt;():chd-num.txt()=pax-details:().chd;flights:()=_list;booking-details:()=_list;booking-data:()=_map;update():[search-engine-req:()+'-list'];update():pricing-bar"
                                 }
-                              ]
+                              ],
+                              "type": "Input?class=pax-flight;path=pax;input.type=number;style:[backgroundColor=#fff;borderRadius=.5rem;border=1px solid #ddd;padding=0 1rem;height=4rem;flex=1]"
                             }
                           ],
                           "type": "View?class=flex align-center group-pax;style:[gap=.5rem;width=8rem;display=if():[search-type:()=Group]:flex:none]"
                         },
                         {
-                          "type": "Icon?class=pax-details-btn;class=flexbox pointer;name=bi-diagram-3;style:[backgroundColor=#fff;fontSize=1.4rem;width=fit-content;height=4rem;padding=0 .5rem;borderRadius=.5rem;transition=.2s;border=1px solid #ddd]",
                           "controls": [
                             {
                               "event": "click?if():[():pax-details.style().pointerEvents=none]:[update():pax-details;():pax-details.style():[opacity=1;pointerEvents=auto];position():[id=pax-details;positioner=().id;placement=bottom;align=center]]:[():pax-details.style():[opacity=0;pointerEvents=none]]"
                             }
-                          ]
+                          ],
+                          "type": "Icon?class=pax-details-btn;class=flexbox pointer;name=bi-diagram-3;style:[backgroundColor=#fff;fontSize=1.4rem;width=fit-content;height=4rem;padding=0 .5rem;borderRadius=.5rem;transition=.2s;border=1px solid #ddd]"
                         }
                       ]
                     },
                     {
-                      "type": "View?class=flex column pointer;style:[gap=1rem;width=11rem;position=relative]?opened-manager:()=book-a-flight-manager",
                       "children": [
                         {
                           "type": "Input?class=from-flight;path=class;style:[fontSize=1.3rem;height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;transition=.1s];readonly;clicked.style.border=2px solid #0080FF;droplist.items=')(:collections.seat-classes.classes';droplist.item.style:[fontSize=1.3rem;minHeight=3rem]"
@@ -421,18 +419,12 @@
                         {
                           "type": "Icon?name=bi-chevron-down;style:[fontSize=1.35rem;position=absolute;right=1rem;top=1.5rem];click.prev().click()"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column pointer;style:[gap=1rem;width=11rem;position=relative]?opened-manager:()=book-a-flight-manager"
                     },
                     {
-                      "type": "View?class=flexbox pointer add-rem-root;style:[gap=1rem;marginTop=auto;marginBottom=.5rem;padding=0 1rem;display=if():[search-by:()=Multi city]:flex:none]?opened-manager:()=book-a-flight-manager||opened-manager:()=flights-manager",
                       "children": [
                         {
-                          "type": "View?class=flexbox;style:[backgroundColor=#fff;height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s]",
-                          "children": [
-                            {
-                              "type": "Icon?name=bi-dash-lg;style:[color=#888;fontSize=2.2rem;transition=.3s]"
-                            }
-                          ],
                           "controls": [
                             {
                               "event": "mouseenter?1stChild().style().color=#444"
@@ -443,7 +435,13 @@
                             {
                               "event": "click?data().del();update():3rdParent();():search-engine-view.style().height=12.5rem?search-flight:().type()=array;search-flight:().len()>1"
                             }
-                          ]
+                          ],
+                          "children": [
+                            {
+                              "type": "Icon?name=bi-dash-lg;style:[color=#888;fontSize=2.2rem;transition=.3s]"
+                            }
+                          ],
+                          "type": "View?class=flexbox;style:[backgroundColor=#fff;height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s]"
                         },
                         {
                           "controls": [
@@ -457,19 +455,21 @@
                               "event": "click?search-flight:()=search-flight:().list();search-flight:().push():[_map:direct-flights:[():direct-flights.checked||false]:class:Economy:from:[data().to||_string]:pax:[data().pax]:travel-date:[data().travel-date||today().timestamp()]]:[2ndParent().mapIndex+1];update():search-engine-flight;():search-engine-view.style().height=17.5rem?search-flight:().len()<2"
                             }
                           ],
-                          "type": "View?class=flexbox;style:[backgroundColor=#fff;height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s]",
                           "children": [
                             {
                               "type": "Icon?name=bi-plus;style:[color=#888;fontSize=2.4rem;transition=.3s]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flexbox;style:[backgroundColor=#fff;height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox pointer add-rem-root;style:[gap=1rem;marginTop=auto;marginBottom=.5rem;padding=0 1rem;display=if():[search-by:()=Multi city]:flex:none]?opened-manager:()=book-a-flight-manager||opened-manager:()=flights-manager"
                     }
                   ],
                   "type": "[View]?class=flex align-center;style:[gap=1rem]"
                 }
-              ]
+              ],
+              "type": "View?doc=search-flight;class=flex column;style:[gap=1rem]"
             },
             {
               "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginBottom=auto]",
@@ -486,12 +486,12 @@
                   "event": "click?startSearchFlight();searchGoingFlight();searchReturnFlight();searchMultiFlight()?search-engine-req:()=book-a-flight;search-flight:().0.from;search-flight:().0.to;search-flight:().0.travel-date;if():[search-by:()=Multi city;!search-flight:().1]:[note():[text=Multi city shall have at least 2 segments! Instead search by One way.;type=warning]]:true;if():[search-by:()=Multi city;!search-flight:().1]:false:true;search-flight:().0.pax>0"
                 },
                 {
+                  "event": "click?loader.show;abort-search:()=false;1stChild():'book-a-flight-list'.children().():rem();flights:()=_array;flights-booked:()=_array;booking-details:()=_list?search-engine-req:()=book-a-flight;search-flight:().0.from;search-flight:().0.to;search-flight:().0.travel-date;if():[search-by:()=Multi city;!search-flight:().1]:[note():[text=Multi city shall have at least 2 segments! Instead search by One way.;type=warning]]:true;if():[search-by:()=Multi city;!search-flight:().1]:false:true;search-flight:().0.pax>0;false",
                   "actions": [
                     "wait():search:[insert:[1stChild():'book-a-flight-list']??flights:().0]?search.collection=flight;search.field:[#total-av-seats.greater=search-flight:().0.pax;active.equal=true;departure-airport.equal=search-flight:().0.from;arrival-airport.equal=search-flight:().0.to;departure-day.equal=search-flight:().0.travel-date];wait():[if():[search.data.len()>0]:[flights:().0=().search.data.values();flights:().0.sort():departure-time;insert.view=():book-a-flight-list.children.0.children.0;insert.index=0]:[if():[search-by:()=Round trip||search-by:()=Multi City]:[abort-search:()=true;():'book-a-flight-list'.1stChild().children().():rem();update():pricing-bar];note():[text=Going flight is unavailable!;type=danger]];if():[search-by:()!=Round trip;search-by:()!=Multi city||[search-by:()=Multi city;!search-flight:().1]]:[loader.hide]]?search-flight:().0.from;search-flight:().0.to;search-flight:().0.travel-date",
                     "wait():search:[insert:[1stChild():'book-a-flight-list']??flights:().1.len()>0]?search.collection=flight;search.field:[#total-av-seats.greater=search-flight:().0.pax;active.equal=true;departure-airport.equal=search-flight:().0.to;arrival-airport.equal=search-flight:().0.from;departure-day.equal=search-flight:().0.return-date];wait():[if():[abort-search:()]:[():'book-a-flight-list'.1stChild().children().():rem();update():pricing-bar;loader.hide]:[if():[().search.data.len()>0]:[flights:().1=().search.data.values();flights:().1.sort():departure-time;insert.view=():'book-a-flight-list'.children.0.children.0;insert.index=1]:[():book-a-flight-list.1stChild().children().():rem();note():[text='Going Flight is not available!';type=danger];update():pricing-bar]];loader.hide]?search-by:()=Round trip;search-flight:().0.from;search-flight:().0.to;search-flight:().0.travel-date;search-flight:().0.return-date",
                     "wait():search:[insert:[1stChild():'book-a-flight-list']??flights:().1.len()>0]?search.collection=flight;search.field:[#total-av-seats.greater=search-flight:().1.pax;active.equal=true;departure-airport.equal=search-flight:().1.from;arrival-airport.equal=search-flight:().1.to;departure-day.equal=search-flight:().1.travel-date];wait():[if():[abort-search:()]:[abort-search:()=false;():[book-a-flight-list].1stChild().children().():rem();update():[pricing-bar];loader.hide]:[if():[().search.data.len()>0]:[flights:().1=().search.data.values();flights:().1.sort():departure-time;insert.view=():[book-a-flight-list].children.0.children.0;insert.index=1]:[():book-a-flight-list.1stChild().children().():rem();note():[text='Return Flight is not available!';type=danger];update():pricing-bar]];loader.hide]?search-by:()=Multi city;search-flight:().1.from;search-flight:().1.to;search-flight:().1.travel-date"
-                  ],
-                  "event": "click?loader.show;abort-search:()=false;1stChild():'book-a-flight-list'.children().():rem();flights:()=_array;flights-booked:()=_array;booking-details:()=_list?search-engine-req:()=book-a-flight;search-flight:().0.from;search-flight:().0.to;search-flight:().0.travel-date;if():[search-by:()=Multi city;!search-flight:().1]:[note():[text=Multi city shall have at least 2 segments! Instead search by One way.;type=warning]]:true;if():[search-by:()=Multi city;!search-flight:().1]:false:true;search-flight:().0.pax>0;false"
+                  ]
                 },
                 {
                   "actions": [
@@ -512,7 +512,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "type": "View:search-engine-flight?class=flex align-center;style:[gap=1rem]"
         },
         {
           "type": "View?style:[height=1px;width=100%;backgroundColor=#ddd;position=absolute;bottom=0;left=0]"
@@ -527,6 +528,5 @@
         }
       ]
     }
-  ],
-  "id": "search-engine"
+  ]
 }

@@ -265,6 +265,19 @@ var postdb = async ({ req, res }) => {
 
     data.map(data => {
 
+      if (!data.id) data.id = generate({ length: 20 })
+      if (!data["creation-date"]) {
+        if (req.headers.timestamp) {
+
+          data["creation-date"] = req.headers.timestamp
+
+        } else {
+
+          data["creation-date"] = (new Date()).getTime()
+          data.timezone = "GMT"
+        }
+      }
+
       ref.doc(data.id.toString()).set(data).then(() => {
 
         success = true
@@ -278,6 +291,20 @@ var postdb = async ({ req, res }) => {
     })
 
   } else if (save.doc) {
+
+    var data = save.data
+    if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
+    if (!data["creation-date"]) {
+      if (req.headers.timestamp) {
+
+        data["creation-date"] = req.headers.timestamp
+
+      } else {
+
+        data["creation-date"] = (new Date()).getTime()
+        data.timezone = "GMT"
+      }
+    }
 
     await ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
 

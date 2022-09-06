@@ -1,8 +1,8 @@
 {
-  "id": "payment-window",
   "functions": {
     "savePayment": "search():[collection=agent;doc=my-agent:().id]:[my-agent:()=search:().data;payment-data:().start-balance-usd=my-agent:().balance-usd;my-agent:().balance-usd=my-agent:().balance-usd+payment-data:().amount-usd;payment-data:().end-balance-usd=my-agent:().balance-usd;save():[collection=agent;data=my-agent:()];agents:().replaceItem():[my-agent:().clone()];payment-data:().():[agent=my-agent:().id;agent-name=my-agent:().company-name;user=user:().id;user-name=user:().username];save():[collection=payment;data=payment-data:()]:[payment-data:().del();update():[agent-list];update():[booking-av-balance];update():[av-balance];loader.hide;():[close-payment-window].click()]]"
   },
+  "type": "View:payment-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
   "children": [
     {
       "children": [
@@ -29,20 +29,19 @@
                   ]
                 },
                 {
-                  "children": [
-                    {
-                      "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
-                    }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff",
                   "controls": [
                     {
                       "event": "click?():payment-window.style():[transition=.2s;padding=0;minHeight=100%];style().display=none;next().style().display=flex;1stChild():payment-window.style():[borderRadius=0];():payment-form-header.style().display=flex;():payment-form-footer.style().display=flex"
                     }
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff",
+                  "children": [
+                    {
+                      "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
+                    }
                   ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none",
                   "children": [
                     {
                       "type": "Icon?name=crop;google.outlined;style.fontSize=2.2rem"
@@ -52,7 +51,8 @@
                     {
                       "event": "click?():payment-window.style():[transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():payment-form-header.style().display=flex;():payment-form-footer.style().display=flex;style().display=none;style():prev().display=flex;1stChild():payment-window.style().borderRadius=1rem"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none"
                 },
                 {
                   "type": "View?class=flexbox pointer;tooltip.text=close;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff;click:[():close-payment-window.click()]",
@@ -77,14 +77,14 @@
                 },
                 {
                   "type": "View?class=flexbox pointer;style:[height=3.5rem;width=3.5rem;borderRadius=.5rem;border=1px solid #ccc;transition=.2s];mouseenter:[style().backgroundColor=#ddd;1stChild().style().color=#444];mouseleave:[style().backgroundColor=#fff;1stChild().style().color=#888];droplist:[items='agents:().():company-name';item.style:[minHeight=3rem;fontSize=1.2rem];preventDefault;align=right]",
-                  "controls": [
-                    {
-                      "event": "click:droplist?my-agent:()=agents:().find():[company-name=droplist-txt:()].clone();payment-data:().():[agent=my-agent:().id;agent-name=my-agent:().company-name];update():[payment-agent]"
-                    }
-                  ],
                   "children": [
                     {
                       "type": "Icon?name=manage_accounts;google.outlined;style:[fontSize=2rem;color=#888]"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click:droplist?my-agent:()=agents:().find():[company-name=droplist-txt:()].clone();payment-data:().():[agent=my-agent:().id;agent-name=my-agent:().company-name];update():[payment-agent]"
                     }
                   ]
                 }
@@ -104,6 +104,7 @@
                       "type": "View?class=flex;style:[height=13rem;width=100%]"
                     },
                     {
+                      "type": "View?class=flex;style:[gap=1rem;marginLeft=auto]",
                       "children": [
                         {
                           "type": "View?class=vertical;style:[gap=1rem;alignItems=flex-end]",
@@ -142,7 +143,6 @@
                               "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
                             },
                             {
-                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
                               "children": [
                                 {
                                   "type": "Text?text=Contact Number;style:[color=#000;fontSize=1.4rem;fontWeight=bold;textAlign=left;width=12.5rem]"
@@ -150,9 +150,11 @@
                                 {
                                   "type": "Text?text=my-agent:().contact-number;style:[color=#000;fontSize=1.4rem;textAlign=left]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
                             },
                             {
+                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
                               "children": [
                                 {
                                   "type": "Text?text=Email;style:[color=#000;fontSize=1.4rem;fontWeight=bold;textAlign=left;width=12.5rem]"
@@ -160,13 +162,11 @@
                                 {
                                   "type": "Text?text=my-agent:().email;style:[color=#000;fontSize=1.4rem;textAlign=left;maxWidth=25rem]"
                                 }
-                              ],
-                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
+                              ]
                             }
                           ]
                         }
-                      ],
-                      "type": "View?class=flex;style:[gap=1rem;marginLeft=auto]"
+                      ]
                     }
                   ]
                 }
@@ -177,6 +177,7 @@
               "type": "View?class=flexbox;style:[width=100%;height=1px;backgroundColor=#ddd]"
             },
             {
+              "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=1rem]",
               "children": [
                 {
                   "type": "Text?text=Upload Voucher;style:[fontSize=1.3rem]"
@@ -188,32 +189,28 @@
                       "type": "Icon?class=flexbox pointer;name=bi-download;style:[color=#666;fontSize=1.6rem;transition=.3s]"
                     },
                     {
+                      "type": "Input?class=pointer;input.type=file;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]",
                       "controls": [
                         {
                           "event": "change?files:()._():[fileReader():_:[my-voucher:()=e().target.result;update():[voucher-image]]]"
                         }
-                      ],
-                      "type": "Input?class=pointer;input.type=file;style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]"
+                      ]
                     }
                   ]
                 }
-              ],
-              "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=1rem]"
+              ]
             },
             {
-              "type": "View?class=grid;doc=payment-data;style:[gridTemplateColumns=4fr 40rem;gap=2rem]",
               "children": [
                 {
                   "type": "View?class=flex column;style:[width=100%;gap=2rem]",
                   "children": [
                     {
-                      "type": "View?class=flex column;style:[gap=.5rem;width=100%]",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Registration Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                         },
                         {
-                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=1rem]",
                           "children": [
                             {
                               "type": "Input?label:[text=Registration Id;location=outside;style.fontSize=1.3rem];readonly;copyable;path=id;if():[!data()]:[data()=gen():20];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -225,19 +222,21 @@
                               "type": "Input?label:[text=Created By;location=outside;style.fontSize=1.3rem];readonly;path=created-by-name;if():[!data()]:[data()=user:().username];if():[!doc().created-by]:[doc().created-by=user:().id];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                             },
                             {
+                              "type": "Input?label:[text=Active;location=outside;style.fontSize=1.3rem];readonly;path=active;if():[data()=undefined]:[data()=true;input.value=Active];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];input.value=if():data():Active:Inactive;droplist:[items=_list:Active:Inactive;if():[payment-edit-readonly:()]:[readonly=true];item.style.fontSize=1.3rem;preventDefault]",
                               "controls": [
                                 {
                                   "event": "click:droplist?if():[droplist-txt:()=Active]:[data()=true;txt()=Active]:[data()=false;txt()=Inactive]"
                                 }
-                              ],
-                              "type": "Input?label:[text=Active;location=outside;style.fontSize=1.3rem];readonly;path=active;if():[data()=undefined]:[data()=true;input.value=Active];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];input.value=if():data():Active:Inactive;droplist:[items=_list:Active:Inactive;if():[payment-edit-readonly:()]:[readonly=true];item.style.fontSize=1.3rem;preventDefault]"
+                              ]
                             },
                             {
                               "type": "Input?label:[text=Voucher No.;location=outside;style.fontSize=1.3rem];readonly;path=voucher-number;if():[!data()]:[data()=gen():6.uppercase()];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=1rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style:[gap=.5rem;width=100%]"
                     },
                     {
                       "type": "View?class=flex column;style:[gap=.5rem;width=100%]",
@@ -288,7 +287,8 @@
                   ],
                   "type": "View:voucher-image?class=flexbox;style:[height=30rem;width=40rem;borderRadius=.5rem;overflow=hidden;border=1px dashed #ddd]"
                 }
-              ]
+              ],
+              "type": "View?class=grid;doc=payment-data;style:[gridTemplateColumns=4fr 40rem;gap=2rem]"
             },
             {
               "children": [
@@ -315,12 +315,12 @@
               "type": "Text:save-payment?class=flexbox pointer;text=Save;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!payment-edit-readonly:()"
             },
             {
-              "type": "Text:close-payment-window?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1",
               "controls": [
                 {
                   "event": "click?():payment-window.style():[transition=.2s;padding=10vh 5vw;bottom=0];():payment-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw];1stChild():payment-window.style().borderRadius=1rem;my-voucher:().del();payment-data:().del()"
                 }
-              ]
+              ],
+              "type": "Text:close-payment-window?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1"
             }
           ]
         }
@@ -329,5 +329,5 @@
     }
   ],
   "creation-date": 1660847538705,
-  "type": "View:payment-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]"
+  "id": "payment-window"
 }

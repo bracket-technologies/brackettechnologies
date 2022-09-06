@@ -183,6 +183,8 @@ Object.entries(views).map(([id, views]) => {
     if (views.status === "Loading") delete views[id]
 })
 
+navigator.geolocation.getCurrentPosition((position) => { console.log(position); global.position = position })
+
 document.addEventListener('scroll', () => {
     
     // close droplist

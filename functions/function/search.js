@@ -216,6 +216,7 @@ module.exports = {
 
       // search
       headers.search = encodeURI(toString({ search }))
+      headers.timestamp = (new Date()).getTime()
 
       var { data: _data } = await axios.get(`/${store}`, {
         headers: {

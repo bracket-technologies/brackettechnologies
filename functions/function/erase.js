@@ -18,6 +18,7 @@ const erase = async ({ _window, req, res, id, e, ...params }) => {
 
   // erase
   headers.erase = encodeURI(toString({ erase }))
+  headers.timestamp = (new Date()).getTime()
 
   // access key
   if (global["accesskey"]) headers["accesskey"] = global["accesskey"]

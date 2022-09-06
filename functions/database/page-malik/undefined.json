@@ -1,4 +1,6 @@
 {
+  "creation-date": 1647263580324,
+  "view": "main",
   "views": [
     "centers-manager",
     "centers-mini-window",
@@ -27,9 +29,7 @@
     "stations-views"
   ],
   "language": "ar",
-  "path": "/",
-  "view": "main",
   "title": "نظام مالك | إدارة أعمال الأفراد",
-  "creation-date": 1647263580324,
-  "name": "نظام مالك الإداري"
+  "name": "نظام مالك الإداري",
+  "path": "/"
 }
