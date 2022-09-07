@@ -322,7 +322,7 @@ var postdb = async ({ req, res }) => {
 
 var deletedb = async ({ req, res }) => {
   
-  var db = req.db
+  var db = req.db, docs
   var storage = req.storage
   var _window = { global: { codes: {} }, views: {} }
   var string = decodeURI(req.headers.erase), params = {}
@@ -349,7 +349,68 @@ var deletedb = async ({ req, res }) => {
     return res.send({ success, message })
   }*/
 
-  erase.docs.map(async doc => {
+  if (erase.collection === "storage" && erase.field) {
+
+    var field = erase.field
+    const myPromise = () => new Promise(async (resolve, rej) => {
+
+      // search field
+      var multiIN = false, _ref = ref
+      if (field) Object.entries(field).map(([key, value]) => {
+  
+        var _value = value[Object.keys(value)[0]]
+        var operator = toFirebaseOperator(Object.keys(value)[0])
+        if (operator === "in" && _value.length > 10) {
+  
+          field[key][Object.keys(value)[0]] = [..._value.slice(10)]
+          _value = [..._value.slice(0, 10)]
+          multiIN = true
+        }
+        _ref = _ref.where(key, operator, _value)
+      })
+      
+      if (search.orderBy) _ref = _ref.orderBy(search.orderBy)
+      if (search.limit || 100) _ref = _ref.limit(search.limit || 100)
+      if (search.offset) _ref = _ref.endAt(search.offset)
+      if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
+  
+      if (search.startAt) _ref = _ref.startAt(search.startAt)
+      if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
+  
+      if (search.endAt) _ref = _ref.endAt(search.endAt)
+      if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
+  
+      // retrieve data
+      await _ref.get().then(query => {
+  
+        success = true
+        query.docs.forEach(doc => data[doc.id] = doc.data())
+        message = `Documents mounted successfuly!`
+  
+      }).catch(error => {
+        
+        success = false
+        message = error
+      })
+  
+      if (multiIN) {
+  
+        var { data: _data } = await myPromise()
+        data = { ...data, ..._data }
+      }
+      
+      resolve({ data, success, message })
+      /*setTimeout(() => {
+        res("foo")
+      }, 10000)*/
+    })
+  
+    var { data, success, message } = await myPromise()
+    docs = Object.keys(data)
+  }
+
+  docs = erase.docs
+  docs.map(async doc => {
     
     await ref.doc(doc.toString()).delete().then(() => {
 
@@ -368,6 +429,7 @@ var deletedb = async ({ req, res }) => {
       if (exists) await storage.bucket().file(`${collection}/${doc}`).delete()
     }
   })
+
   /*await Promise.all(promises)
   if (project["accesskey"] !== req.headers["accesskey"]) {
 

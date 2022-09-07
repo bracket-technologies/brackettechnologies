@@ -1,10 +1,14 @@
 {
+  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;flights-booked:()=_array;search-engine-req:()=book-a-flight;if():[!unreset-book-a-seat:()]:[old-booking:().del()];unreset-book-a-seat:().del()",
+  "functions": {
+    "setPassengerDetails": "().my-passengers=old-booking:().booking-details.0.seats.():[passengers-details].flat().clone();booking-data:().booking-details.():[seats.():[passengers-details._():[_.infants=().my-passengers.[_.counter-1].infants;_.type=().my-passengers.[_.counter-1].type.uppercase();_.title=().my-passengers.[_.counter-1].title.uppercase();_.gender=().my-passengers.[_.counter-1].gender.uppercase();_.first-name=().my-passengers.[_.counter-1].first-name.uppercase();_.last-name=().my-passengers.[_.counter-1].last-name.uppercase();_.dob=().my-passengers.[_.counter-1].dob;_.nationality=().my-passengers.[_.counter-1].nationality.uppercase();_.passport-number=().my-passengers.[_.counter-1].passport-number.uppercase();_.passport-issuer=().my-passengers.[_.counter-1].passport-issuer.uppercase();_.passport-expiry-date=().my-passengers.[_.counter-1].passport-expiry-date;_.contact-number=().my-passengers.[_.counter-1].contact-number;_.email=().my-passengers.[_.counter-1].email.uppercase();_.id-number=().my-passengers.[_.counter-1].id-number.uppercase()]]]"
+  },
+  "id": "book-a-flight-manager",
   "children": [
     {
       "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]",
       "children": [
         {
-          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
           "children": [
             {
               "type": "View?style:[height=60%;width=2px;backgroundColor=blue;borderRadius=1rem]"
@@ -12,9 +16,11 @@
             {
               "type": "Text?text=Book a Flight Seat;style:[color=#444;fontSize=1.6rem]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%"
         },
         {
+          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
           "children": [
             {
               "type": "Icon?class=flexbox pointer;name=bi-trash;tooltip.text=erase;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
@@ -26,20 +32,19 @@
               "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             },
             {
+              "children": [
+                {
+                  "type": "Icon?class=flexbox;name=backpack;google.outlined;style:[color=#666;fontSize=2.2rem;transition=.3s];hover:[style:[color=blue];id=parent()]"
+                }
+              ],
               "controls": [
                 {
                   "event": "click?():book-btn.click()"
                 }
               ],
-              "type": "View?class=flexbox pointer;tooltip.text=book;style:[height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover:[style:[backgroundColor=#f6f6f6]]",
-              "children": [
-                {
-                  "type": "Icon?class=flexbox;name=backpack;google.outlined;style:[color=#666;fontSize=2.2rem;transition=.3s];hover:[style:[color=blue];id=parent()]"
-                }
-              ]
+              "type": "View?class=flexbox pointer;tooltip.text=book;style:[height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover:[style:[backgroundColor=#f6f6f6]]"
             }
-          ],
-          "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
+          ]
         }
       ]
     },
@@ -88,15 +93,14 @@
               "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
-              "type": "View?class=flexbox",
               "children": [
                 {
                   "type": "Text?id=pricing-pax;text=[booking-details:().0.total-adults||pax-details:().adt]+' Adt | '+if():[booking-details:().0.total-children]:[booking-details:().0.total-children+' Chd | '].elif():[!booking-details:().0.total-adults]:[pax-details:().chd+' Chd | ']:''+if():[booking-details:().0.total-infants]:[booking-details:().0.total-infants+' Inf'].elif():[!booking-details:().0.total-adults]:[pax-details:().inf+' Inf']:'';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox"
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between;backgroundColor=red;height=100%;width=100%;padding=0 1rem]",
               "children": [
                 {
                   "type": "Text?text=Total;style:[fontSize=1.1rem;color=#fff]"
@@ -104,10 +108,10 @@
                 {
                   "type": "Text?id=pricing-total;text=[[booking-details:().():[total-usd].sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between;backgroundColor=red;height=100%;width=100%;padding=0 1rem]"
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Bookable;style:[fontSize=1.1rem;color=#fff]"
@@ -115,7 +119,8 @@
                 {
                   "type": "Text?id=pricing-bookable;text=Yes;style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
               "children": [
@@ -129,28 +134,28 @@
               "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text='Profit +';style:[fontSize=1.1rem;color=#fff]"
                 },
                 {
+                  "type": "View?class=flexbox;style:[borderRadius=.5rem;border=1px solid #fff;padding=.25rem]",
                   "children": [
                     {
+                      "type": "Input?id=pricing-additional-profit;input.type=number;input.value=[booking-details:().():total-additional-profit-usd.sum()||0].round():2;style:[fontSize=1.1rem;color=#fff;padding=0;border=0]",
                       "controls": [
                         {
                           "event": "input?txt()=[txt()||0];booking-details:()._():[_.total-additional-profit-usd=txt().num().divide():[booking-details:().len()];_.seats._():[_.total-additional-profit-usd=__.total-additional-profit-usd.divide():[__.seats.len()];_.adt-additional-profit-usd=_.total-adt-additional-profit-usd.divide():[_.adults];_.adt-additional-profit-usd=_.total-adt-additional-profit-usd.divide():[_.adults];_.'passengers-details'._():[_.additional-profit-usd=__.total-additional-profit-usd.divide():[__.'passengers-details'.len()]]]];():pricing-total.txt()=booking-details:().():[[total-base-fare-usd]+[total-taxes-usd]+[total-fees-usd]-[total-commission-usd]].sum()+txt().num()"
                         }
-                      ],
-                      "type": "Input?id=pricing-additional-profit;input.type=number;input.value=[booking-details:().():total-additional-profit-usd.sum()||0].round():2;style:[fontSize=1.1rem;color=#fff;padding=0;border=0]"
+                      ]
                     },
                     {
                       "type": "Text?text=$;style:[color=#fff;fontSize=1.1rem]"
                     }
-                  ],
-                  "type": "View?class=flexbox;style:[borderRadius=.5rem;border=1px solid #fff;padding=.25rem]"
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
               "type": "View?class=flexbox;style:[justifyContent=space-between;height=100%]",
@@ -173,10 +178,5 @@
       ],
       "type": "View?id=pricing-bar;class=flex align-center;style:[position=absolute;top=calc(100vh - 8rem);left=12.5rem;right=12.5rem;height=3.5rem;backgroundColor=#222;borderRadius=1rem 1rem 0 0;zIndex=10;padding=0 1.5rem;cursor=default]"
     }
-  ],
-  "id": "book-a-flight-manager",
-  "functions": {
-    "setPassengerDetails": "().my-passengers=old-booking:().booking-details.0.seats.():[passengers-details].flat().clone();booking-data:().booking-details.():[seats.():[passengers-details._():[_.infants=().my-passengers.[_.counter-1].infants;_.type=().my-passengers.[_.counter-1].type.uppercase();_.title=().my-passengers.[_.counter-1].title.uppercase();_.gender=().my-passengers.[_.counter-1].gender.uppercase();_.first-name=().my-passengers.[_.counter-1].first-name.uppercase();_.last-name=().my-passengers.[_.counter-1].last-name.uppercase();_.dob=().my-passengers.[_.counter-1].dob;_.nationality=().my-passengers.[_.counter-1].nationality.uppercase();_.passport-number=().my-passengers.[_.counter-1].passport-number.uppercase();_.passport-issuer=().my-passengers.[_.counter-1].passport-issuer.uppercase();_.passport-expiry-date=().my-passengers.[_.counter-1].passport-expiry-date;_.contact-number=().my-passengers.[_.counter-1].contact-number;_.email=().my-passengers.[_.counter-1].email.uppercase();_.id-number=().my-passengers.[_.counter-1].id-number.uppercase()]]]"
-  },
-  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;flights-booked:()=_array;search-engine-req:()=book-a-flight;if():[!unreset-book-a-seat:()]:[old-booking:().del()];unreset-book-a-seat:().del()"
+  ]
 }

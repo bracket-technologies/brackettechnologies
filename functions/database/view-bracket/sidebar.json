@@ -171,7 +171,7 @@
                     "controls": [
                         {
                             "event": "click?parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];():hotels-btn.deepChildren().():[style().color=#888];1stChild():flight-btn.style().color=#888;1stChild():store-btn.style().color=#888;1stChild():post-btn.style().color=#888;1stChild():review-btn.style().color=#888;1stChild():page-view-btn.style().color=#888;1stChild():account-btn.style().color=#888;1stChild():collection-btn.style().color=#888;1stChild():accounting-btn.style().color=#888;if():open:[style().borderRight=2px solid #000;style().color=#000;sidebar-item-open:()=().id];parent().parent().children().slice():1:-1.():[style().width=0px];():gallery-view.style().display=if():open:grid:none;():data-viewer.children().():[style().display=none];():gallery-view.style().display=grid;style():[borderRight=2px solid #000;color=#000];open=true",
-                            "actions": "wait():search:[update:gallery-view]?search.collection=storage;search.headers.project=project:();search.limit=25;wait():[gallery-images:()=().search.data.values()]"
+                            "actions": "wait():search:[update:gallery-view]?search.collection=storage;search.headers.project=project:();search.limit=250;wait():[gallery-images:()=().search.data.values().sort():[path=creation-date]]"
                         }
                     ]
                 }
