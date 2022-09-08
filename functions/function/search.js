@@ -19,8 +19,8 @@ module.exports = {
     
     if (_window) {
       
-      var collection = search.collection
-      if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${headers["project"]}`
+      var collection = search.collection, project = headers.project || req.headers.project
+      if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${project}`
 
       var doc = search.document || search.doc,
       docs = search.documents || search.docs,

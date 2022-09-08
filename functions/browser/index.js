@@ -9429,9 +9429,9 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
     
   if (_window) {
     
-    var collection = save.collection, success, message
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${headers["project"]}`
-  
+    var collection = save.collection, success, message, project = headers.project || req.headers.project
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
+
     var ref = req.db.collection(collection)
     if (Array.isArray(save.data)) {
 
@@ -9524,8 +9524,8 @@ module.exports = {
     
     if (_window) {
       
-      var collection = search.collection
-      if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${headers["project"]}`
+      var collection = search.collection, project = headers.project || req.headers.project
+      if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${project}`
 
       var doc = search.document || search.doc,
       docs = search.documents || search.docs,

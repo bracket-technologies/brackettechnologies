@@ -1,10 +1,10 @@
 {
-  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]",
-  "creation-date": 0,
+  "id": "manager-view",
   "children": [
     {
       "type": "View?view=dashboard-manager?opened-manager:()=dashboard-manager"
     }
   ],
-  "id": "manager-view"
+  "creation-date": 0,
+  "type": "View?id=manager-view;style():[height=100%;width=100%;position=relative]"
 }

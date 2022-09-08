@@ -22,9 +22,9 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
     
   if (_window) {
     
-    var collection = save.collection, success, message
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${headers["project"]}`
-  
+    var collection = save.collection, success, message, project = headers.project || req.headers.project
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
+
     var ref = req.db.collection(collection)
     if (Array.isArray(save.data)) {
 
