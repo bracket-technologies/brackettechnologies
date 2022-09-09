@@ -1,6 +1,4 @@
 {
-  "type": "View:profile-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
-  "creation-date": 1660334922954,
   "children": [
     {
       "type": "View?old-pass:()=user:().password;class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%]?user:()",
@@ -48,6 +46,7 @@
                           "type": "View?class=vertical;style:[gap=1rem;alignItems=flex-end]",
                           "children": [
                             {
+                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
                               "children": [
                                 {
                                   "type": "Text?text=Travel Agency;style:[color=#000;fontSize=1.4rem;fontWeight=bold;textAlign=left;width=12.5rem]"
@@ -55,8 +54,7 @@
                                 {
                                   "type": "Text?text=agent:().company-name;style:[color=#000;fontSize=1.4rem;textAlign=left;maxWidth=25rem]"
                                 }
-                              ],
-                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
+                              ]
                             },
                             {
                               "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
@@ -70,6 +68,7 @@
                               ]
                             },
                             {
+                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
                               "children": [
                                 {
                                   "type": "Text?text=Contact Number;style:[color=#000;fontSize=1.4rem;fontWeight=bold;textAlign=left;width=12.5rem]"
@@ -77,10 +76,10 @@
                                 {
                                   "type": "Text?text=agent:().contact-number;style:[color=#000;fontSize=1.4rem;textAlign=left]"
                                 }
-                              ],
-                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
+                              ]
                             },
                             {
+                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]",
                               "children": [
                                 {
                                   "type": "Text?text=Email;style:[color=#000;fontSize=1.4rem;fontWeight=bold;textAlign=left;width=12.5rem]"
@@ -88,8 +87,7 @@
                                 {
                                   "type": "Text?text=agent:().email;style:[color=#000;fontSize=1.4rem;textAlign=left;maxWidth=25rem]"
                                 }
-                              ],
-                              "type": "View?class=horizontal;style:[gap=1rem;marginRight=auto]"
+                              ]
                             }
                           ]
                         }
@@ -126,11 +124,13 @@
               ]
             },
             {
+              "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?class=flex;text=User Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr;padding=1rem]",
                   "children": [
                     {
                       "type": "Input?label:[text=First Name;location=outside;style.fontSize=1.3rem];path=first-name;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -139,12 +139,12 @@
                       "type": "Input?label:[text=Last Name;location=outside;style.fontSize=1.3rem];path=last-name;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                     },
                     {
+                      "type": "Input:contact-number?label:[text=Contact Number;location=outside;style.fontSize=1.3rem];required.text=Enter a valid contact number!;path=contact-number;if():[!data()||data().split():' '.join():''.isNaN()||data().inc():'.']:[valid-contact-number:()=false;required.style.opacity=1]:[valid-contact-number:()=true];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]",
                       "controls": [
                         {
                           "event": "input?():[contact-number-required].style().opacity=0;if():[!data()||data().split():' '.join():''.isNaN()||data().inc():'.']:[():[contact-number-required].style().opacity=1;valid-contact-number:()=false]:[valid-contact-number:()=true]"
                         }
-                      ],
-                      "type": "Input:contact-number?label:[text=Contact Number;location=outside;style.fontSize=1.3rem];required.text=Enter a valid contact number!;path=contact-number;if():[!data()||data().split():' '.join():''.isNaN()||data().inc():'.']:[valid-contact-number:()=false;required.style.opacity=1]:[valid-contact-number:()=true];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
+                      ]
                     },
                     {
                       "type": "Input:email?label:[text=Email;location=outside;style.fontSize=1.3rem];path=email;if():[!data()||!data().inc():'@'||!data().inc():'.'||data().lastEl()='.']:[valid-email:()=false;required.style.opacity=1]:[valid-email:()=true];required.text=Enter a valid email!;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]",
@@ -154,19 +154,17 @@
                         }
                       ]
                     }
-                  ],
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr;padding=1rem]"
+                  ]
                 }
-              ],
-              "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
+              ]
             },
             {
+              "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?class=flex;text=Account Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr;padding=1rem]",
                   "children": [
                     {
                       "type": "Input?label:[text=Username;location=outside;style.fontSize=1.3rem];readonly;path=username;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -179,10 +177,10 @@
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr;padding=1rem]"
                 }
-              ],
-              "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
+              ]
             }
           ],
           "type": "View?class=flex column;Data=my-user;style:[width=100%;gap=2rem;padding=.5rem;marginBottom=2rem];my-user:()=user:().clone()"
@@ -201,8 +199,10 @@
       ]
     }
   ],
+  "type": "View:profile-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
+  "id": "profile-window",
+  "creation-date": 1660334922954,
   "functions": {
     "fn": ""
-  },
-  "id": "profile-window"
+  }
 }

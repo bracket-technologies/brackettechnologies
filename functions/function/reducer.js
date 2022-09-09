@@ -3518,7 +3518,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 margin:       [0.1, 0.1],
                 filename:     _params.name || generate({ length: 20 }),
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2.5, dpi: 192 },
+                html2canvas:  { scale: 1.5, dpi: 192 },
                 jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
                 execludeImages: _params.execludeImages || false
             }

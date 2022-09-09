@@ -1,11 +1,10 @@
 {
-  "functions": {},
   "id": "tickets-list",
   "children": [
     {
+      "type": "View?style:[width=100%];data=tickets:()",
       "children": [
         {
-          "type": "View?class=vertical;style:[width=100%;minHeight=30rem]?tickets:().len()>0;tickets:().0.len()>0",
           "children": [
             {
               "children": [
@@ -18,38 +17,12 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=PNR;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                       "controls": [
                         {
                           "event": "click?loader.show;timer():[tickets:()=sort():[data=tickets:();path=pnr;descending];update():tickets-list-data;loader.hide]:50"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
-                  "children": [
-                    {
-                      "type": "Text?class=pointer;text=E-Ticket;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
-                      "controls": [
-                        {
-                          "event": "click?loader.show;timer():[tickets:()=sort():[data=tickets:();path=e-ticket;descending];update():tickets-list-data;loader.hide]:50"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "children": [
-                    {
-                      "type": "Text?class=pointer;text=Creation Date;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
-                      "controls": [
-                        {
-                          "event": "click?loader.show;timer():[tickets:()=sort():[data=tickets:();path=creation-date;descending];update():tickets-list-data;loader.hide]:50"
                         }
                       ]
                     }
@@ -62,17 +35,42 @@
                     {
                       "controls": [
                         {
-                          "event": "click?loader.show;timer():[tickets:()=sort():[data=tickets:();path='reservation-details.0.first-name+ +reservation-details.0.last-name';descending];update():[tickets-list-data];loader.hide]:50"
+                          "event": "click?loader.show;timer():[tickets:()=sort():[data=tickets:();path=e-ticket;descending];update():tickets-list-data;loader.hide]:50"
                         }
                       ],
-                      "type": "Text?class=pointer;text=Passenger Name;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                      "type": "Text?class=pointer;text=E-Ticket;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Creation Date;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
+                      "controls": [
+                        {
+                          "event": "click?loader.show;timer():[tickets:()=sort():[data=tickets:();path=creation-date;descending];update():tickets-list-data;loader.hide]:50"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Passenger Name;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
+                      "controls": [
+                        {
+                          "event": "click?loader.show;timer():[tickets:()=sort():[data=tickets:();path='reservation-details.0.first-name+ +reservation-details.0.last-name';descending];update():[tickets-list-data];loader.hide]:50"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
                   "children": [
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "controls": [
@@ -82,10 +80,10 @@
                           ],
                           "type": "Text?class=pointer;text=From;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=To;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
@@ -95,7 +93,8 @@
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;width=100%]",
@@ -135,19 +134,20 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
-                      "type": "Text?class=pointer;text=Agent;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                       "controls": [
                         {
                           "event": "click?loader.show;timer():[tickets:()=sort():[data=tickets:();path=issued-by-agent-name;descending];update():[tickets-list-data];loader.hide]:50"
                         }
-                      ]
+                      ],
+                      "type": "Text?class=pointer;text=Agent;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Issuer;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
@@ -157,8 +157,7 @@
                         }
                       ]
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;width=100%]",
@@ -185,6 +184,7 @@
                     {
                       "children": [
                         {
+                          "type": "View?class=flexbox align-center;style:[height=100%;flex=1;position=relative];mouseenter:[2ndChild().style().opacity=1;3rdChild().style().opacity=1];mouseleave:[2ndChild().style().opacity=0;3rdChild().style().opacity=0]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=parent().parent().parent().mapIndex+1;style:[fontSize=1.2rem]"
@@ -195,10 +195,10 @@
                             {
                               "type": "Icon?class=flexbox pointer;style:[fontSize=1.2rem];name=bi-eye;style:[fontSize=2rem;display=none;opacity=0;position=absolute;backgroundColor=inherit;transition=.2];click:[style().display=none;prev().style().display=flex;2ndParent().hidden=false;2ndParent().style():[height=4rem;if():[data().status=Canceled]:[backgroundColor=#d84e4e]:[backgroundColor=#f6f6f6];overflow=visible]]"
                             }
-                          ],
-                          "type": "View?class=flexbox align-center;style:[height=100%;flex=1;position=relative];mouseenter:[2ndChild().style().opacity=1;3rdChild().style().opacity=1];mouseleave:[2ndChild().style().opacity=0;3rdChild().style().opacity=0]"
+                          ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "controls": [
@@ -208,8 +208,7 @@
                               ],
                               "type": "Text?class=flexbox pointer dots;text=data().pnr;style:[fontSize=1.2rem;padding=.5rem;borderRadius=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                          ]
                         },
                         {
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -220,12 +219,12 @@
                           ]
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;tooltip.text=data().creation-date.toDateFormat():time;text=data().creation-date.toDateFormat():time;style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]"
                         },
                         {
                           "children": [
@@ -239,12 +238,12 @@
                           "type": "View?view=ticket-flight-list"
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
                           "children": [
                             {
                               "type": "Text?class=dots;text=data().status;style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]"
                         },
                         {
                           "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
@@ -255,14 +254,15 @@
                           ]
                         },
                         {
-                          "type": "View?class=flex align-center;style:[width=10rem;height=100%]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;tooltip.text=data().user-name;text=data().user-name;style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[width=10rem;height=100%]"
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=100%]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=if():[data().status=Confirmed]:[[data().total-payable-usd||data().total-usd].round():2+'$']:'0.00$';style:[fontSize=1.2rem;textAlign=right;width=100%]",
@@ -275,8 +275,7 @@
                                 }
                               ]
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=100%]"
+                          ]
                         },
                         {
                           "children": [
@@ -297,12 +296,12 @@
                                   ]
                                 }
                               ],
+                              "type": "View?popup;class=flexbox pointer;tooltip.text=Cancel Ticket;style:[position=relative;backgroundColor=#f9f9f9;borderRadius=1.5rem;opacity=0.7;transition=.3s];hover.style.opacity=1?data().status=Confirmed;agent:().admin",
                               "controls": [
                                 {
                                   "event": "click:popup?loader.show;data().history=[data().history||_list];data().():[history.push():[_map:day:todayStart():month:monthStart():year:yearStart():user:[user:().id]:user-name:[user:().username]:agent:[agent:().id]:agent-name:[agent:().company-name]:description:['All segments of Ticket e-ticket: '+data().e-ticket+' was canceled.']:status:Confirmed:date:[today().timestamp()]];cancelation-day=todayStart();cancelation-month=monthStart();cancelation-year=yearStart();canceled-by=user:().id;canceled-by-name=user:().username;canceled-by-agent=agent:().id;canceled-by-agent-name=agent:().company-name;cancelation-date=today().timestamp();status=Canceled;total-canceled-base-fare-usd=data().total-base-fare-usd;total-canceled-fees-usd=data().total-fees-usd;total-canceled-taxes-usd=data().total-taxes-usd;total-canceled-commission-usd=[data().total-commission-usd||0];total-canceled-usd=data().total-usd;total-canceled-payable-usd=data().total-payable-usd;reservation-details._():[_.canceled-base-fare-usd=_.base-fare-usd;_.canceled-fees-usd=_.fees-usd;_.canceled-taxes-usd=_.taxes-usd;_.canceled-commission-usd=[_.commission-usd||0];_.canceled-total-usd=_.total-usd;_.canceled-payable-usd=_.payable-usd;_.status=Canceled;_.infants._():[_.canceled-base-fare-usd=_.base-fare-usd;_.canceled-fees-usd=_.fees-usd;_.canceled-taxes-usd=_.taxes-usd;_.canceled-commission-usd=[_.commission-usd||0];_.canceled-total-usd=_.total-usd;_.canceled-payable-usd=_.payable-usd;_.status=Canceled]]];search():[collection=flight-booking;field.pnr.equal=data().pnr]:[my-bookings:()=search:().data.values();my-bookings:()._():[_.canceled-tickets=[_.canceled-tickets||0];_.canceled-tickets.push():[data().e-ticket];_.history=[_.history||_list];_.history.push():[_map:day:todayStart():month:monthStart():year:yearStart():user:[user:().id]:user-name:[user:().username]:agent:[agent:().id]:agent-name:[agent:().company-name]:description:['All segments of ticket e-ticket: '+data().e-ticket+' was canceled.']:status:Confirmed:date:[today().timestamp()]];_.total-canceled-passengers=[_.total-canceled-passengers||0]+1;if():[_.total-canceled-seats=_.total-seats]:[_.status=Canceled];_.total-canceled-seats=[_.total-canceled-seats||0]+1;_.total-canceled-base-fare-usd=[_.total-canceled-base-fare-usd||0]+data().total-base-fare-usd;_.total-canceled-fees-usd=[_.total-canceled-fees-usd||0]+data().total-fees-usd;_.total-canceled-taxes-usd=[_.total-canceled-taxes-usd||0]+data().total-taxes-usd;_.total-canceled-commission-usd=[_.total-canceled-commission-usd||0]+data().total-commission-usd;_.total-canceled-usd=[_.total-canceled-usd||0]+data().total-usd;_.total-canceled-payable-usd=[_.total-canceled-payable-usd||0]+data().total-payable-usd;data().reservation-details._():[__.booking-details.find():[flight-id=_.flight-id]._():[_.total-canceled-passengers=[_.total-canceled-passengers||0]+1;if():[_.total-canceled-seats=_.total-seats]:[_.status=Canceled];_.total-canceled-seats=[_.total-canceled-seats||0]+1;_.total-canceled-base-fare-usd=[_.total-canceled-base-fare-usd||0]+__.base-fare-usd;_.total-canceled-fees-usd=[_.total-canceled-fees-usd||0]+__.fees-usd;_.total-canceled-taxes-usd=[_.total-canceled-taxes-usd||0]+__.taxes-usd;_.total-canceled-commission-usd=[_.total-commission-usd||0]+__.commission-usd;_.total-canceled-usd=[_.total-canceled-usd||0]+__.total-usd;_.total-canceled-payable-usd=[_.total-canceled-payable-usd||0]+__.payable-usd;__._():[__.seats.find():[class=_.class]._():[_.total-canceled-passengers=[_.total-canceled-passengers||0]+1;_.total-canceled-seats=[_.total-canceled-seats||0]+1;if():[_.total-canceled-seats=_.total-seats]:[_.status=Canceled];_.total-canceled-base-fare-usd=[_.total-canceled-base-fare-usd||0]+__.base-fare-usd;_.total-canceled-fees-usd=[_.total-canceled-fees-usd||0]+__.fees-usd;_.total-canceled-taxes-usd=[_.total-canceled-taxes-usd||0]+__.taxes-usd;_.total-canceled-commission-usd=[_.total-commission-usd||0]+__.commission-usd;_.total-canceled-usd=[_.total-canceled-usd||0]+__.total-usd;_.total-canceled-payable-usd=[_.total-canceled-payable-usd||0]+__.payable-usd;__._():[__.passengers-details.find():[counter=_.counter]._():[_.canceled-base-fare-usd=__.base-fare-usd;_.canceled-fees-usd=__.fees-usd;_.canceled-taxes-usd=__.taxes-usd;_.canceled-commission-usd=[__.commission-usd||0];_.canceled-total-usd=__.total-usd;_.canceled-payable-usd=__.payable-usd;_.status=Canceled]]]]]]];search():[collection=flight;docs=data().flights]:[my-flights:()=search:().data.values();my-flights:()._():[_.total-av-seats=[_.total-av-seats||0]+1];data().reservation-details._():[my-flights:().find():[id=_.flight-id].seats.find():[sub-class=_.class]._():[_.av-seats=[_.av-seats||0]+1]];search():[collection=flight-invoice;field.flight-id.in=data().flights]:[my-flight-invoices:()=search:().data.values();data().reservation-details._():[my-flight-invoices:().find():[flight-id=_.flight-id]._():[_.total-canceled-reserved-base-fare-usd=[_.total-canceled-reserved-base-fare-usd||0]+__.base-fare-usd;_.total-canceled-reserved-taxes-usd=[_.total-canceled-reserved-taxes-usd||0]+__.taxes-usd;_.total-canceled-reserved-fees-usd=[_.total-canceled-reserved-fees-usd||0]+__.fees-usd;_.total-canceled-reserved-additional-profit-usd=[_.total-canceled-reserved-additional-profit-usd||0]+__.additional-profit-usd;_.total-canceled-reserved-usd=[_.total-canceled-reserved-usd||0]+__.total-usd;_.total-canceled-reserved-commission-usd=[_.total-canceled-reserved-commission-usd||0]+__.commission-usd;_.total-canceled-reserved-payable-usd=[_.total-canceled-reserved-payable-usd||0]+__.payable-usd;_.total-canceled-reserved-seats=[_.total-canceled-reserved-seats||0]+1;_.total-canceled-reserved-passengers=[_.total-canceled-reserved-passengers||0]+1;_.total-av-seats=[_.total-av-seats||0]+1;__._():[__.seats.find():[sub-class=_.class]._():[_.total-canceled-reserved-base-fare-usd=[_.total-canceled-reserved-base-fare-usd||0]+__.base-fare-usd;_.total-canceled-reserved-taxes-usd=[_.total-canceled-reserved-taxes-usd||0]+__.taxes-usd;_.total-canceled-reserved-fees-usd=[_.total-canceled-reserved-fees-usd||0]+__.fees-usd;_.total-canceled-reserved-additional-profit-usd=[_.total-canceled-reserved-additional-profit-usd||0]+__.additional-profit-usd;_.total-canceled-reserved-usd=[_.total-canceled-reserved-usd||0]+__.total-usd;_.total-canceled-reserved-commission-usd=[_.total-canceled-reserved-commission-usd||0]+__.commission-usd;_.total-canceled-reserved-payable-usd=[_.total-canceled-reserved-payable-usd||0]+__.payable-usd;_.total-av-seats=[_.total-av-seats]+1;_.total-canceled-reserved-seats=[_.total-canceled-reserved-seats||0]+1;_.total-canceled-reserved-passengers=[_.total-canceled-reserved-passengers||0]+1]]]];save():[collection=flight-reservation;data=data()];save():[collection=flight-invoice;data=my-flight-invoices:()]:[my-flight-invoices:()=_list];save():[collection=flight;data=my-flights:()]:[my-flights:()=_list];save():[collection=flight-booking;data=my-bookings:()]:[my-bookings:()=_list];update():[tickets-list];note():[text=Ticket has been Canceled!];loader.hide]]]?data().status=Confirmed;data().reservation-details.0.infants.len()=0;false"
                                 }
-                              ],
-                              "type": "View?popup;class=flexbox pointer;tooltip.text=Cancel Ticket;style:[position=relative;backgroundColor=#f9f9f9;borderRadius=1.5rem;opacity=0.7;transition=.3s];hover.style.opacity=1?data().status=Confirmed;agent:().admin"
+                              ]
                             },
                             {
                               "type": "Icon?class=flexbox actions pointer;name=bi-three-dots-vertical;style:[fontSize=2.2rem;color=#888;transition=.1s;height=3rem;width=3rem;borderRadius=3rem];hover.style.color=blue",
@@ -321,6 +320,7 @@
                   ]
                 },
                 {
+                  "type": "View?style:[width=100%]?data().len()>0",
                   "children": [
                     {
                       "children": [
@@ -333,23 +333,15 @@
                           ]
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flexbox pointer dots;text=;style:[fontSize=1.2rem]"
-                            }
-                          ]
-                        },
-                        {
-                          "children": [
-                            {
-                              "type": "Text?class=flex dots;text=;style:[fontSize=1.2rem]"
                             }
                           ],
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=;style:[fontSize=1.2rem]"
@@ -362,34 +354,42 @@
                               "type": "Text?class=flex dots;text=;style:[fontSize=1.2rem]"
                             }
                           ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=20rem]"
+                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]"
+                        },
+                        {
+                          "type": "View?class=flex align-center;style:[height=100%;width=20rem]",
+                          "children": [
+                            {
+                              "type": "Text?class=flex dots;text=;style:[fontSize=1.2rem]"
+                            }
+                          ]
                         },
                         {
                           "type": "View?class=flex align-center;style:[flex=1]"
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
                           "children": [
                             {
                               "type": "Text?class=dots;text=;style:[fontSize=1.2rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]"
+                          ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
                           "children": [
                             {
                               "type": "Text?class=dots;text=;style:[fontSize=1.2rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;width=10rem]"
+                          ]
                         },
                         {
-                          "type": "View?class=flex align-center;style:[width=10rem;height=100%]",
                           "children": [
                             {
                               "type": "Text?class=flex dots;text=Total;style:[fontSize=1.3rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[width=10rem;height=100%]"
                         },
                         {
                           "type": "View?class=flex align-center;style:[height=100%;width=7rem]",
@@ -405,17 +405,17 @@
                       ],
                       "type": "View?class=grid align-center flight;style:[gridTemplateColumns=3rem .75fr 1.25fr 10rem 20rem 5fr 8rem 10rem 10rem 7rem .75fr;height=4rem;transition=.2s;width=100%;cursor=default;borderTop=1px solid #ddd]"
                     }
-                  ],
-                  "type": "View?style:[width=100%]?data().len()>0"
+                  ]
                 }
               ]
             }
-          ]
+          ],
+          "type": "View?class=vertical;style:[width=100%;minHeight=30rem]?tickets:().len()>0;tickets:().0.len()>0"
         }
-      ],
-      "type": "View?style:[width=100%];data=tickets:()"
+      ]
     }
   ],
-  "creation-date": 1655930948086,
-  "type": "View?id=tickets-list;class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]"
+  "functions": {},
+  "type": "View?id=tickets-list;class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]",
+  "creation-date": 1655930948086
 }
