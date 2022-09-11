@@ -2377,7 +2377,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                   _index += 1
               })
 
-          } else o.splice(_index, 0, _item)
+          } else if (Array.isArray(o)) o.splice(_index, 0, _item)
           answer = o
             
         } else if (k0.includes("push()")) {
@@ -2400,7 +2400,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     _index += 1
                 })
 
-            } else o.splice(_index, 0, _item)
+            } else if (Array.isArray(o)) o.splice(_index, 0, _item)
             answer = o
             
         } else if (k0 === "pull()") {
@@ -2431,7 +2431,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
                 var _items = toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object })
                 
-                _items.map(_item => {
+                toArray(_items).map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
                 })

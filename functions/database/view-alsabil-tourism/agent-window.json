@@ -1,8 +1,6 @@
 {
-  "creation-date": 1660839217963,
   "children": [
     {
-      "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%];if():[agent-data:().keys().len()=0]:[agent-data:()=_map:users:0:admin:false:type:Agent:last-visit:0:today-uses:0:today-bookings:0:today-buyings-usd:0:today:0:buyings-usd:0:uses:0:balance-usd:0:bookings:0:company-head-office-city:Beirut:company-head-office-country:Lebanon]?agent-data:()",
       "children": [
         {
           "children": [
@@ -22,14 +20,14 @@
                 },
                 {
                   "type": "View?class=flexbox pointer;tooltip.text=save;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s?!agent-edit-readonly:()",
-                  "children": [
-                    {
-                      "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.2rem"
-                    }
-                  ],
                   "controls": [
                     {
                       "event": "click?():save-agent.click()"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.2rem"
                     }
                   ]
                 },
@@ -42,25 +40,25 @@
                   ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s",
+                  "children": [
+                    {
+                      "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
+                    }
+                  ],
                   "controls": [
                     {
                       "event": "click?style():[id=agent-window;transition=.2s;padding=0;minHeight=100%];style().display=none;style():next().display=flex;1stChild():agent-window.style():[borderRadius=0];():agent-form-header.style().display=flex;():agent-form-footer.style().display=flex"
                     }
                   ],
-                  "children": [
-                    {
-                      "type": "Icon?name=aspect_ratio;google.outlined;style.fontSize=2.2rem"
-                    }
-                  ]
+                  "type": "View?class=flexbox pointer;tooltip.text=maximize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s"
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s;display=none];hover.style.backgroundColor=#fff",
                   "controls": [
                     {
                       "event": "click?style():[id=agent-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():agent-form-header.style().display=flex;():agent-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():agent-window].borderRadius=1rem"
                     }
                   ],
+                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s;display=none];hover.style.backgroundColor=#fff",
                   "children": [
                     {
                       "type": "Icon?name=crop;google.outlined;style.fontSize=2.2rem"
@@ -81,6 +79,7 @@
           "type": "View:agent-form-header?class=flex align-center;style:[width=100%;backgroundColor=#ddd;borderRadius=1rem 1rem 0 0;padding=0.5rem 1rem]"
         },
         {
+          "type": "View:agent-form-body?class=flex column;style:[width=100%;gap=2rem;padding=.5rem]",
           "children": [
             {
               "children": [
@@ -94,12 +93,12 @@
                       "type": "Icon?class=flexbox pointer;name=bi-download;style:[color=#666;fontSize=1.6rem;transition=.3s]"
                     },
                     {
-                      "type": "Input:agent-logo-input?class=pointer;input.type=file;accept='image/*';style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]",
                       "controls": [
                         {
                           "event": "change?files:()._():[fileReader():_:[my-logo:()=result:();update():[agent-logo]]]"
                         }
-                      ]
+                      ],
+                      "type": "Input:agent-logo-input?class=pointer;input.type=file;accept='image/*';style:[height=3rem;borderRadius=.5rem;opacity=0;position=absolute;top=0;left=0;bottom=0;zIndex=1rem;width=20rem]"
                     }
                   ]
                 }
@@ -107,12 +106,11 @@
               "type": "View?class=flexbox pointer;style:[marginLeft=auto;gap=1rem]"
             },
             {
+              "type": "View?class=grid;doc=agent-data;style:[gridTemplateColumns=4fr 40rem;gap=2rem]",
               "children": [
                 {
-                  "type": "View?class=flex column;style:[width=100%;gap=2rem]",
                   "children": [
                     {
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Registration Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -139,7 +137,8 @@
                           ],
                           "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1.5fr 1fr .75fr;padding=1rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     },
                     {
                       "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
@@ -167,7 +166,6 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Address Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -186,14 +184,17 @@
                           ],
                           "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
                     },
                     {
+                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Owner Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                         },
                         {
+                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]",
                           "children": [
                             {
                               "type": "Input?label:[text=Name;location=outside;style.fontSize=1.3rem];path=owner-name;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -204,19 +205,17 @@
                             {
                               "type": "Input?label:[text=Email;location=outside;style.fontSize=1.3rem];path=owner-email;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                             }
-                          ],
-                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=1rem]"
+                          ]
                         }
-                      ],
-                      "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
+                      ]
                     },
                     {
-                      "type": "View?class=flex column;style.gap=1rem;style.width=100%;doc().members=[doc().members||_list];path=members",
                       "children": [
                         {
                           "type": "Text?class=flex;text=Members Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                         },
                         {
+                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=0 1rem]",
                           "children": [
                             {
                               "type": "Text?text=Name;style:[flex=1;fontSize=1.3rem;textAlign=left]"
@@ -227,8 +226,7 @@
                             {
                               "type": "Text?text=Email;style:[flex=1;fontSize=1.3rem;textAlign=left]"
                             }
-                          ],
-                          "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=0 1rem]"
+                          ]
                         },
                         {
                           "type": "[View]?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 2fr 1fr 1fr;padding=0 1rem]",
@@ -255,9 +253,11 @@
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex column;style.gap=1rem;style.width=100%;doc().members=[doc().members||_list];path=members"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex column;style:[width=100%;gap=2rem]"
                 },
                 {
                   "children": [
@@ -270,16 +270,15 @@
                   ],
                   "type": "View:agent-logo?class=flexbox;style:[height=30rem;width=40rem;borderRadius=.5rem;overflow=hidden;border=1px solid #ddd;position=relative];mouseenter:[2ndChild().style().opacity=1];mouseleave:[2ndChild().style().opacity=0]"
                 }
-              ],
-              "type": "View?class=grid;doc=agent-data;style:[gridTemplateColumns=4fr 40rem;gap=2rem]"
+              ]
             }
-          ],
-          "type": "View:agent-form-body?class=flex column;style:[width=100%;gap=2rem;padding=.5rem]"
+          ]
         },
         {
           "type": "View:agent-form-footer?class=flexbox;style:[width=100%;borderTop=1px solid #ddd;padding=2rem;justifyContent=flex-end;gap=1rem;marginTop=2rem;marginBottom=-1rem]",
           "children": [
             {
+              "type": "Text:save-agent?class=flexbox pointer;text=Save;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!agent-edit-readonly:()",
               "controls": [
                 {
                   "event": "click?loader.show;upload():[file=files:().0]:[agent-data:().logo=upload:().data.url;search():[collection=collection;doc=counter]:[collections:().counter.agent=counter():[collections:().counter.agent];agent-data:().code=collections:().counter.agent.counter;save():[collection=agent;data=agent-data:()]:[agents:().push():[agent-data:().clone()];save():[collection=collection;doc=counter;data=collections:().counter];update():[agents-list-data];loader.hide;():[close-agent-window].click()]]]?#agent-data:().email;#agent-data:().contact-number;my-logo:()"
@@ -290,23 +289,24 @@
                 {
                   "event": "click?erase():[collection=storage;field.logo.equal=my-old-logo:()]:[my-old-logo:().del()]?my-old-logo:()"
                 }
-              ],
-              "type": "Text:save-agent?class=flexbox pointer;text=Save;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!agent-edit-readonly:()"
+              ]
             },
             {
-              "type": "Text:close-agent-window?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1",
               "controls": [
                 {
                   "event": "click?():agent-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw];agent-data:().del();new-agent:().del();my-logo:().del()"
                 }
-              ]
+              ],
+              "type": "Text:close-agent-window?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1"
             }
           ]
         }
-      ]
+      ],
+      "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%];if():[agent-data:().keys().len()=0]:[agent-data:()=_map:users:0:admin:false:type:Agent:last-visit:0:today-uses:0:today-bookings:0:today-buyings-usd:0:today:0:buyings-usd:0:uses:0:balance-usd:0:bookings:0:company-head-office-city:Beirut:company-head-office-country:Lebanon]?agent-data:()"
     }
   ],
-  "functions": {},
   "id": "agent-window",
-  "type": "View:agent-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]"
+  "functions": {},
+  "type": "View:agent-window?class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
+  "creation-date": 1660839217963
 }
