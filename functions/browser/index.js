@@ -1447,7 +1447,7 @@ module.exports=[
  , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "html2pdf()", "dblclick()"
  , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()"
  , "replaceItem()", "grandParent()", "grandChild()", "grandChildren()", "open()", "2ndNext()", "isNaN()"
- , "send()"
+ , "send()", "removeDuplicates()", "stopWatchers()"
 ]
 },{}],33:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
@@ -7891,6 +7891,36 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
 
+        } else if (k0 === "removeDuplicates()") {
+
+            if (!Array.isArray(o)) return o
+            var removeDuplicates = (array) => {
+                for (let i = 0; i < array.length; i++) {
+                    if (array.filter(el => isEqual(el, array[i])).length > 1) {
+
+                        array.splice(i, 1);
+                        removeDuplicates(array);
+                        break;
+                    }
+                }
+            }
+
+            removeDuplicates(o);
+            return o
+
+        } else if (k0 === "stopWatchers()") {
+            
+            var _view
+            if (args[1]) _view = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+            else _view = o
+            if (typeof o === "string") o = views[id]
+
+            // clear time out
+            Object.entries(o).map(([k, v]) => {
+
+                if (k.includes("-timer")) clearTimeout(v)
+            })
+
         } else if (k0 === "prevYearEnd()") {
             
             var _date
@@ -8444,12 +8474,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "clean()") {
             
             answer = o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
-            
-        } else if (k0 === "removeDuplicates()") {
-            
-            var _array = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, _i })
-            if (!_array) _array = o
-            answer = [...new Set(_array)]
             
         } else if (k0 === "route()") {
 
@@ -12458,6 +12482,7 @@ const watch = ({ _window, controls, id }) => {
             
             var value = toValue({ id, value: _watch })
 
+            console.log("here");
             if ((value === undefined && view[`${_watch}-watch`] === undefined) || isEqual(value, view[`${_watch}-watch`])) return
 
             view[`${_watch}-watch`] = clone(value)

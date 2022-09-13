@@ -237,7 +237,7 @@
                       ]
                     },
                     {
-                      "type": "View:my-functions?class=flex column box-shadow-2;style:[display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=20rem;marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s]",
+                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=20rem;marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s]",
                       "children": [
                         {
                           "type": "Text?class=flexbox;text=Actions;style:[fontSize=1.3rem;position=absolute;top=0;height=2rem;width=10rem;backgroundColor=#ddd;borderRadius=0 0 1.5rem 1.5rem;left=calc(50% - 5rem);cursor=default]"
