@@ -31,7 +31,6 @@ const watch = ({ _window, controls, id }) => {
             
             var value = toValue({ id, value: _watch })
 
-            console.log("here");
             if ((value === undefined && view[`${_watch}-watch`] === undefined) || isEqual(value, view[`${_watch}-watch`])) return
 
             view[`${_watch}-watch`] = clone(value)
