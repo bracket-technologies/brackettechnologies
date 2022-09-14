@@ -294,32 +294,32 @@ const Input = (component) => {
 
         } else return myView
     }
-
+    
     if (model === 'classic') {
         
-        return {
-            ..._component,
-            style: {
-                cursor: readonly ? "pointer" : "auto",
-                border: "0",
-                width: "fit-content",
-                padding: '0.5rem',
-                color: '#444',
-                color: input.type === "number" ? "blue" : '#444',
-                backgroundColor: 'inherit',
-                height: 'fit-content',
-                borderRadius: '0.25rem',
-                fontSize: '1.4rem',
-                transition: "border .1s",
-                ...input.style,
-                ...style,
-            },
-            controls: [...controls, {
-                event: `clickfocus;keyfocus?if():[labeled]:[if():[!().labeled.contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
-            }, {
-                event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
-            }]
-        }
+      return {
+          ..._component,
+          style: {
+              cursor: readonly ? "pointer" : "auto",
+              border: "0",
+              width: "fit-content",
+              padding: '0.5rem',
+              color: '#444',
+              color: input.type === "number" ? "blue" : '#444',
+              backgroundColor: 'inherit',
+              height: 'fit-content',
+              borderRadius: '0.25rem',
+              fontSize: '1.4rem',
+              transition: "border .1s",
+              ...input.style,
+              ...style,
+          },
+          controls: [...controls, {
+              event: `clickfocus;keyfocus?if():[labeled]:[if():[!().labeled.contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
+          }, {
+              event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
+          }]
+      }
     }
 }
 

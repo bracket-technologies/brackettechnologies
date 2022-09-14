@@ -4,6 +4,9 @@ const { toApproval } = require("./toApproval")
 // const { starter } = require("./starter")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
+const { defaultInputHandler } = require("./defaultInputHandler")
+const { isArabic } = require("./isArabic")
+const { resize } = require("./resize")
 
 const setElement = ({ _window, id }) => {
 
@@ -25,6 +28,18 @@ const setElement = ({ _window, id }) => {
     
     view.element = document.getElementById(id)
     if (!view.element) return delete window.views[id]
+  
+    // input handlers
+    defaultInputHandler({ id })
+  
+    // arabic text
+    isArabic({ id })
+    
+    var timer = (new Date()).getTime()
+    // resize
+    /*setTimeout(() => { */if (view.type === "Input" || view.type === "Entry") resize({ id }) //}, 0)
+    global.myTimer += (new Date()).getTime() - timer
+    timer = (new Date()).getTime()
 
     // status
     view.status = "Element Loaded"

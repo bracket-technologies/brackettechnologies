@@ -1,34 +1,33 @@
 {
+  "type": "View?id=flight-connections;class=flex column;style.gap=1rem;style.width=100%",
   "children": [
     {
       "type": "Text?class=flex;text=Connections;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=0.5rem 0]"
     },
     {
-      "type": "View?class=vertical;style:[gap=1rem;padding=1rem]",
       "children": [
         {
+          "type": "View?class=flex align-center;style:[gap=1rem]",
           "children": [
             {
-              "children": [
-                {
-                  "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
-                }
-              ],
               "controls": [
                 {
                   "event": "click?checked()=checked().opp();flight-data:().connected=checked();1stChild().style().opacity=if():checked():1:0;if():checked():[)(:flight-data.connected=true;parent().next().style().display=flex;)(:flight-data.connections=_array:[_map:type:Return Trip];update():[parent().next()]]:[)(:flight-data.connections=_array;parent().next().style().display=none]?!)(:flight-edit-readonly"
                 }
               ],
-              "type": "View?id=connected;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().connected=flight-data:().connected||false;checked=flight-data:().connected"
+              "type": "View?id=connected;class=flexbox pointer;style:[position=relative;borderRadius=.5rem;border=1px solid #aaa;height=1.75rem;width=1.75rem;backgroundColor=#fff];flight-data:().connected=flight-data:().connected||false;checked=flight-data:().connected",
+              "children": [
+                {
+                  "type": "Icon?name=bi-check2;style:[color=blue;fontSize=2.4rem;position=absolute;opacity=if():[parent().checked]:1:0;transition=.3s;left=-.1rem;bottom=-.2rem]"
+                }
+              ]
             },
             {
               "type": "Text?text=Connected;style:[fontSize=1.3rem]"
             }
-          ],
-          "type": "View?class=flex align-center;style:[gap=1rem]"
+          ]
         },
         {
-          "type": "View:connections?class=vertical;style:[gap=1rem;padding=.5rem;backgroundColor=#f9f9f9;borderRadius=.5rem;display=if():[flight-data:().connections.0.len()>0]:flex:none]",
           "children": [
             {
               "children": [
@@ -47,12 +46,12 @@
                 {
                   "children": [
                     {
+                      "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
                       "controls": [
                         {
                           "event": "click?)(:flight-data.connections.pull():[parent().parent().mapIndex];if():[)(:flight-data.connections.len()=0]:[():connected.click()];update():connections"
                         }
-                      ],
-                      "type": "Icon?class=pointer;name=bi-dash-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000"
+                      ]
                     },
                     {
                       "type": "Icon?class=pointer;name=bi-plus-lg;style:[color=#888;fontSize=1.8rem;transition=.3s];hover.style.color=#000",
@@ -98,12 +97,13 @@
               ],
               "type": "[View]?path=connections;style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=2rem 1rem]?data().connections.len()>0"
             }
-          ]
+          ],
+          "type": "View:connections?class=vertical;style:[gap=1rem;padding=.5rem;backgroundColor=#f9f9f9;borderRadius=.5rem;display=if():[flight-data:().connections.0.len()>0]:flex:none]"
         }
-      ]
+      ],
+      "type": "View?class=vertical;style:[gap=1rem;padding=1rem]"
     }
   ],
-  "type": "View?id=flight-connections;class=flex column;style.gap=1rem;style.width=100%",
-  "id": "flight-connections",
-  "creation-date": 1653036755929
+  "creation-date": 1653036755929,
+  "id": "flight-connections"
 }

@@ -3,7 +3,7 @@ const resize = ({ id }) => {
   var view = window.views[id]
   if (!view) return
   
-  if (view.type !== "Input" && view.type !== "Entry") return
+  if (view.type !== "Input" && view.type !== "Entry" && (width !== "fit-content" || height !== "fit-content")) return
 
   var results = dimensions({ id })
 
@@ -66,17 +66,14 @@ const dimensions = ({ id, text }) => {
   lDiv.style.left = "-1000px"
   lDiv.style.top = "-1000px"
   lDiv.style.opacity = "0"
-
   lDiv.innerHTML = pText
   
-  if (pStyle.width === "100%")
-  lDiv.style.width = (view.element ? view.element.clientWidth : lDiv.style.width) + "px"
-  lDiv.style.width = lDiv.clientWidth + 2 + "px"
-
-  var height = lDiv.clientHeight
-  var width = lDiv.clientWidth
+  if (pStyle.width === "100%") lDiv.style.width = (view.element ? view.element.clientWidth : lDiv.style.width) + "px"
+  var height, width = lDiv.clientWidth + 2
 
   if (view.element.tagName === "TEXTAREA") {
+
+    height = lDiv.clientHeight
     if (lDiv.clientHeight < view.element.scrollHeight) height = view.element.scrollHeight
     if (!pText) height = lDiv.clientHeight
   }

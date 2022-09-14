@@ -1,18 +1,16 @@
 {
+  "functions": {},
   "controls": [
     {
       "event": "beforeLoading?loader.show;search():[collection=agent;limit=250]:[agents:()=search:().data.values().sort():[path=creation-date];update():[agent-list];loader.hide]"
     }
   ],
-  "type": "View:agents-manager?class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-agents:()]:[agents:()=_list];unreset-agents:()=false;search-agent:()=search-agent:()||_map",
-  "functions": {},
-  "id": "agents-manager",
+  "creation-date": 1660816421743,
   "children": [
     {
       "type": "View?class=flex align-center;style.height=4.5rem;style.minHeight=4.5rem",
       "children": [
         {
-          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
           "children": [
             {
               "type": "View?style:[height=60%;width=2px;backgroundColor=blue;borderRadius=1rem]"
@@ -20,7 +18,8 @@
             {
               "type": "Text?text=Agents Manager;style:[color=#444;fontSize=1.6rem]"
             }
-          ]
+          ],
+          "type": "View?class=flexbox;style:[gap=1rem];style.height=100%"
         },
         {
           "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]",
@@ -38,12 +37,12 @@
               "type": "Icon?class=flexbox pointer;name=bi-person;tooltip.text=create new user;style:[color=#666;fontSize=1.8rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
             },
             {
+              "type": "Icon?class=flexbox pointer;name=bi-plus;tooltip.text=create new agent;style:[color=#666;fontSize=2.4rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]",
               "controls": [
                 {
                   "event": "click?style():[id=agent-window;opacity=1;pointerEvents=auto];new-agent:()=true;agent-copied:().del();agent-edit-readonly:()=false;agent-data:()=_map;update():agent-window"
                 }
-              ],
-              "type": "Icon?class=flexbox pointer;name=bi-plus;tooltip.text=create new agent;style:[color=#666;fontSize=2.4rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
+              ]
             }
           ]
         }
@@ -58,12 +57,12 @@
             {
               "children": [
                 {
-                  "type": "Input?path=agent;if():[data()]:[input.value=agents:().find():[id=data()].company-name];label.text=Agent;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='agents:().():company-name';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin",
                   "children": [
                     {
                       "event": "click:droplist?data()=agents:().find():[company-name=data()].id"
                     }
-                  ]
+                  ],
+                  "type": "Input?path=agent;if():[data()]:[input.value=agents:().find():[id=data()].company-name];label.text=Agent;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='agents:().():company-name';droplist.item.style:[minHeight=3.5rem;fontSize=1.2rem];droplist.searchable?agent:().admin;user:().admin"
                 },
                 {
                   "type": "Input?path=code;label.text=Code;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
@@ -75,6 +74,7 @@
                   "type": "Input?path=city;label.text=City;label.style.fontSize=1.2rem;clearable;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF;droplist.items='if():[Data().country=Lebanon]:[_list:Beirut:Baalbeck:Sidon:Nabatiyeh:Tyre].elif():[Data().country=Syria]:[_list:Damascus:Tartous].elif():[Data().country=Iraq]:[_list:Najaf:Baghdad:Soliemenieh:Basrah:Erbil:Samarra:Karbala:Ramadi:Mosul].elif():[Data().country=Iran]:[_list:Tehran:Mashhad:Qom:Isfahan:Shiraz:Kish:Yazd]';droplist.item.style:[fontSize=1.2rem;minHeight=3.5rem]"
                 },
                 {
+                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
                       "controls": [
@@ -85,6 +85,7 @@
                       "type": "Input?path=last-visit;label.text=Last Visit Date;label.style.fontSize=1.2rem;input.type=date;style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                       "children": [
                         {
                           "type": "Text:last-visit-date-txt?class=flex align-center;if():[data().last-visit-date]:[text=data().last-visit-date.toDateFormat()];style:[fontSize=1.2rem]"
@@ -92,22 +93,20 @@
                         {
                           "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().[last-visit].del();prev().txt()=;parent().prev().click()]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
+                      ]
                     }
-                  ],
-                  "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]"
+                  ]
                 }
               ],
               "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]"
             },
             {
+              "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6",
               "children": [
                 {
                   "type": "Text?text=Search;style:[color=#fff;fontSize=1.3rem]"
                 }
               ],
-              "type": "View?class=flexbox pointer;style:[height=3.25rem;padding=0 3rem;backgroundColor=blue;borderRadius=.5rem;transition=.3s;marginLeft=auto;marginTop=auto;marginBottom=.5rem];hover.style.backgroundColor=#0000d6",
               "controls": [
                 {
                   "event": "click?loader.show",
@@ -123,10 +122,8 @@
       ]
     },
     {
-      "type": "View:agent-list?class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]",
       "children": [
         {
-          "type": "View?style:[width=100%]",
           "children": [
             {
               "children": [
@@ -134,40 +131,41 @@
                   "type": "View?class=grid align-center;style:[borderBottom=1px solid #ddd;gap=.2rem;gridTemplateColumns=3rem 22rem 6rem .5fr 10rem .5fr .5fr 20rem 15rem 15rem .5fr 17.4rem 24.6rem 11rem;height=4rem;width=100%]",
                   "children": [
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=#;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                        }
+                      ]
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Text?class=pointer;text=Agency Name;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
+                          "controls": [
+                            {
+                              "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=company-name;descending];update():agents-list-data;loader.hide]:50"
+                            }
+                          ]
                         }
                       ],
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
-                          "controls": [
-                            {
-                              "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=company-name;descending];update():agents-list-data;loader.hide]:50"
-                            }
-                          ],
-                          "type": "Text?class=pointer;text=Agency Name;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "View?class=flex align-center;style:[height=100%;width=6rem]",
-                      "children": [
-                        {
+                          "type": "Text?class=pointer dots;text=Type;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                           "controls": [
                             {
                               "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=type;descending];update():agents-list-data;loader.hide]:50"
                             }
-                          ],
-                          "type": "Text?class=pointer dots;text=Type;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                          ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;width=6rem]"
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=code;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
@@ -177,19 +175,18 @@
                             }
                           ]
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                      ]
                     },
                     {
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
-                          "type": "Text?class=pointer;text=Last Visit;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                           "controls": [
                             {
                               "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=last-visit;descending];update():agents-list-data;loader.hide]:50"
                             }
-                          ]
+                          ],
+                          "type": "Text?class=pointer;text=Last Visit;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
                       ]
                     },
@@ -207,6 +204,7 @@
                       ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "controls": [
@@ -216,16 +214,28 @@
                           ],
                           "type": "Text?class=pointer;text=City;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
+                      ]
+                    },
+                    {
+                      "children": [
+                        {
+                          "controls": [
+                            {
+                              "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=company-head-office-address;descending];update():[agents-list-data];loader.hide]:50"
+                            }
+                          ],
+                          "type": "Text?class=pointer;text=Address;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                        }
                       ],
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
                       "children": [
                         {
-                          "type": "Text?class=pointer;text=Address;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
+                          "type": "Text?class=pointer;text=Contact #;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
                           "controls": [
                             {
-                              "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=company-head-office-address;descending];update():[agents-list-data];loader.hide]:50"
+                              "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=contact-number;descending];update():[agents-list-data];loader.hide]:50"
                             }
                           ]
                         }
@@ -233,20 +243,6 @@
                       "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "children": [
-                        {
-                          "controls": [
-                            {
-                              "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=contact-number;descending];update():[agents-list-data];loader.hide]:50"
-                            }
-                          ],
-                          "type": "Text?class=pointer;text=Contact #;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
-                        }
-                      ],
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
-                    },
-                    {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "controls": [
@@ -256,10 +252,10 @@
                           ],
                           "type": "Text?class=pointer;text=Email;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                       "children": [
                         {
                           "type": "Text?class=pointer;text=Users;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444",
@@ -269,18 +265,18 @@
                             }
                           ]
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                     },
                     {
-                      "type": "View?class=flexbox vertical;style:[width=100%;height=100%;backgroundColor=#ffff0044]",
                       "children": [
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=pointer;text=Today;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
                           "children": [
@@ -293,27 +289,29 @@
                               ]
                             },
                             {
+                              "type": "Text?class=pointer;text=Traffic;style:[color=#888;fontSize=1.2rem;transition=.3s;width=5rem];hover.style.color=#444",
                               "controls": [
                                 {
                                   "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=today-uses;descending];update():[agents-list-data];loader.hide]:50"
                                 }
-                              ],
-                              "type": "Text?class=pointer;text=Traffic;style:[color=#888;fontSize=1.2rem;transition=.3s;width=5rem];hover.style.color=#444"
+                              ]
                             },
                             {
-                              "type": "Text?class=pointer;text=Buyings;style:[color=#888;fontSize=1.2rem;transition=.3s;width=7rem];hover.style.color=#444",
                               "controls": [
                                 {
                                   "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=today-buyings-usd;descending];update():[agents-list-data];loader.hide]:50"
                                 }
-                              ]
+                              ],
+                              "type": "Text?class=pointer;text=Buyings;style:[color=#888;fontSize=1.2rem;transition=.3s;width=7rem];hover.style.color=#444"
                             }
                           ],
                           "type": "View?class=flex align-center;style:[height=100%;flex=1;width=100%;gap=.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flexbox vertical;style:[width=100%;height=100%;backgroundColor=#ffff0044]"
                     },
                     {
+                      "type": "View?class=flexbox vertical;style:[width=100%;height=100%;backgroundColor=#00ff0033]",
                       "children": [
                         {
                           "children": [
@@ -324,15 +322,14 @@
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1;width=100%;gap=.2rem]",
                           "children": [
                             {
-                              "type": "Text?class=pointer;text=Bookings;style:[color=#888;fontSize=1.2rem;transition=.3s;width=5rem];hover.style.color=#444",
                               "controls": [
                                 {
                                   "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=bookings;descending];update():[agents-list-data];loader.hide]:50"
                                 }
-                              ]
+                              ],
+                              "type": "Text?class=pointer;text=Bookings;style:[color=#888;fontSize=1.2rem;transition=.3s;width=5rem];hover.style.color=#444"
                             },
                             {
                               "controls": [
@@ -351,17 +348,17 @@
                               "type": "Text?class=pointer;text=Buyings;style:[color=#888;fontSize=1.2rem;transition=.3s;width=7rem];hover.style.color=#444"
                             },
                             {
+                              "type": "Text?class=pointer;text=Balance;style:[color=#888;fontSize=1.2rem;transition=.3s;width=7rem];hover.style.color=#444",
                               "controls": [
                                 {
                                   "event": "click?loader.show;timer():[agents:()=sort():[data=agents:();path=balance-usd;descending];update():[agents-list-data];loader.hide]:50"
                                 }
-                              ],
-                              "type": "Text?class=pointer;text=Balance;style:[color=#888;fontSize=1.2rem;transition=.3s;width=7rem];hover.style.color=#444"
+                              ]
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1;width=100%;gap=.2rem]"
                         }
-                      ],
-                      "type": "View?class=flexbox vertical;style:[width=100%;height=100%;backgroundColor=#00ff0033]"
+                      ]
                     },
                     {
                       "type": "View?style:[flex=1;minWidth=100%]"
@@ -374,14 +371,15 @@
                       "type": "[View]?class=flex align-center;style:[width=100%]?data().len()>0",
                       "children": [
                         {
+                          "type": "View?class=grid align-center;style:[gap=.2rem;gridTemplateColumns=3rem 22rem 6rem .5fr 10rem .5fr .5fr 20rem 15rem 15rem .5fr 5rem 5rem 7rem 5rem 5rem 7rem 7rem 11rem;height=5rem;transition=.2s;width=100%;cursor=default;if():[data().active=false]:[backgroundColor=#f27979]];hover:[if():[data().active=false]:[style.backgroundColor=#d84e4e]:[style.backgroundColor=#f6f6f6]];if():[!user:().permissions.readonly]:[mouseenter.lastChild().style().opacity=1;mouseleave.lastChild().style().opacity=0]",
                           "children": [
                             {
+                              "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                               "children": [
                                 {
                                   "type": "Text?class=flex dots;text=3rdParent().mapIndex+1;style:[fontSize=1.2rem]"
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                              ]
                             },
                             {
                               "children": [
@@ -408,20 +406,20 @@
                               "type": "View?class=flex align-center;style:[height=100%;width=6rem]"
                             },
                             {
-                              "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                               "children": [
                                 {
                                   "type": "Text?class=flex dots;text=data().code;style:[fontSize=1.2rem]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                             },
                             {
+                              "type": "View?class=flex align-center;style:[height=100%;width=10rem]",
                               "children": [
                                 {
                                   "type": "Text?class=flex dots;text=data().last-visit.toDateFormat();style:[fontSize=1.2rem]"
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[height=100%;width=10rem]"
+                              ]
                             },
                             {
                               "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -448,30 +446,31 @@
                               ]
                             },
                             {
+                              "type": "View?class=flex align-center;style:[height=100%;width=15rem]",
                               "children": [
                                 {
                                   "type": "Text?class=dots;text=data().contact-number;tooltip.text=data().contact-number;style:[fontSize=1.2rem]"
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[height=100%;width=15rem]"
+                              ]
                             },
                             {
+                              "type": "View?class=flex align-center;style:[height=100%;width=15rem]",
                               "children": [
                                 {
                                   "type": "Text?class=dots;text=data().email;tooltip.text=data().email;style:[fontSize=1.2rem]"
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[height=100%;width=15rem]"
+                              ]
                             },
                             {
+                              "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;text=data().users;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                              ]
                             },
                             {
+                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#ffff0044]",
                               "children": [
                                 {
                                   "controls": [
@@ -481,16 +480,15 @@
                                   ],
                                   "type": "Text?class=dots pointer;text=if():[data().today=todayStart().timestamp()]:[data().today-bookings||0]:0;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ],
-                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#ffff0044]"
+                              ]
                             },
                             {
+                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;text=if():[data().today=todayStart().timestamp()]:[data().today-uses||0]:0;style:[fontSize=1.2rem]"
                                 }
-                              ],
-                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]"
+                              ]
                             },
                             {
                               "children": [
@@ -514,12 +512,12 @@
                               ]
                             },
                             {
+                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;text=[data().uses||0];style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ],
-                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]"
+                              ]
                             },
                             {
                               "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]",
@@ -538,6 +536,7 @@
                               ]
                             },
                             {
+                              "type": "View?class=flex align-center;style:[width=11rem;gap=.5rem;justifyContent=flex-end;transition=.2s;opacity=0;height=100%]?!user:().permissions.readonly",
                               "children": [
                                 {
                                   "type": "Icon?class=flexbox pointer;name=account_balance_wallet;tooltip.text=charge account;google.outlined;style:[fontSize=2.2rem;color=#888;transition=.1s;width=3rem;borderRadius=3rem];hover.style.color=#444;click:[my-agent:()=data().clone();payment-data:()=_map:agent:[data().id]:agent-name:[data().company-name]:user:[user:().id]:user-name:[user:().username]:voucher-number:[gen():6.uppercase()];update():[payment-window];():[payment-window].style():[opacity=1;pointerEvents=auto]]"
@@ -553,11 +552,9 @@
                                     }
                                   ]
                                 }
-                              ],
-                              "type": "View?class=flex align-center;style:[width=11rem;gap=.5rem;justifyContent=flex-end;transition=.2s;opacity=0;height=100%]?!user:().permissions.readonly"
+                              ]
                             }
-                          ],
-                          "type": "View?class=grid align-center;style:[gap=.2rem;gridTemplateColumns=3rem 22rem 6rem .5fr 10rem .5fr .5fr 20rem 15rem 15rem .5fr 5rem 5rem 7rem 5rem 5rem 7rem 7rem 11rem;height=5rem;transition=.2s;width=100%;cursor=default;if():[data().active=false]:[backgroundColor=#f27979]];hover:[if():[data().active=false]:[style.backgroundColor=#d84e4e]:[style.backgroundColor=#f6f6f6]];if():[!user:().permissions.readonly]:[mouseenter.lastChild().style().opacity=1;mouseleave.lastChild().style().opacity=0]"
+                          ]
                         }
                       ]
                     }
@@ -565,7 +562,6 @@
                   "type": "View:agents-list-data?Data=agents;class=vertical;style:[width=100%;zIndex=0]"
                 },
                 {
-                  "type": "View?class=vertical;style:[width=100%]",
                   "children": [
                     {
                       "children": [
@@ -621,6 +617,7 @@
                               "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                             },
                             {
+                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#ffff0044]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;today-bookings=0;agents:()._():[if():[_.today=todayStart().timestamp()]:[().today-bookings=().today-bookings+[_.today-bookings||0]]];text=().today-bookings;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]",
@@ -630,16 +627,15 @@
                                     }
                                   ]
                                 }
-                              ],
-                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#ffff0044]"
+                              ]
                             },
                             {
-                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;today-uses=0;agents:()._():[if():[_.today=todayStart().timestamp()]:[().today-uses=().today-uses+[_.today-uses||0]]];text=().today-uses;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]"
                             },
                             {
                               "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#ffff0044]",
@@ -650,12 +646,12 @@
                               ]
                             },
                             {
+                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;text=agents:().():bookings.sum();style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ],
-                              "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]"
+                              ]
                             },
                             {
                               "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]",
@@ -674,12 +670,12 @@
                               "type": "View?class=flexbox align-center;style:[flex=1;height=100%;backgroundColor=#00ff0033]"
                             },
                             {
-                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#00ff0033]",
                               "children": [
                                 {
                                   "type": "Text?class=dots pointer;text=agents:().():[balance-usd].sum().round():2+$;style:[fontSize=1.2rem;borderRadius=.5rem;padding=.5rem;transition=.2s];hover.style:[color=blue;backgroundColor=#ddd]"
                                 }
-                              ]
+                              ],
+                              "type": "View?class=flexbox align-center;style:[height=100%;flex=1;backgroundColor=#00ff0033]"
                             },
                             {
                               "type": "View?class=flex align-center;style:[width=11rem;gap=.5rem;justifyContent=flex-end;transition=.2s;opacity=0;height=100%]"
@@ -689,15 +685,19 @@
                       ],
                       "type": "View?class=flex align-center;style:[width=100%;borderTop=1px solid #ddd]?agents:().len()>0;agent:().admin;user:().admin"
                     }
-                  ]
+                  ],
+                  "type": "View?class=vertical;style:[width=100%]"
                 }
               ],
               "type": "View?class=vertical;style:[width=100%;minHeight=30rem;gap=.5rem]"
             }
-          ]
+          ],
+          "type": "View?style:[width=100%]"
         }
-      ]
+      ],
+      "type": "View:agent-list?class=flex column;style:[width=100%;padding=1rem;backgroundColor=#fff;overflowY=auto]"
     }
   ],
-  "creation-date": 1660816421743
+  "id": "agents-manager",
+  "type": "View:agents-manager?class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[!unreset-agents:()]:[agents:()=_list];unreset-agents:()=false;search-agent:()=search-agent:()||_map"
 }

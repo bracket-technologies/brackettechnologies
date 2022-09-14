@@ -795,32 +795,32 @@ const Input = (component) => {
 
         } else return myView
     }
-
+    
     if (model === 'classic') {
         
-        return {
-            ..._component,
-            style: {
-                cursor: readonly ? "pointer" : "auto",
-                border: "0",
-                width: "fit-content",
-                padding: '0.5rem',
-                color: '#444',
-                color: input.type === "number" ? "blue" : '#444',
-                backgroundColor: 'inherit',
-                height: 'fit-content',
-                borderRadius: '0.25rem',
-                fontSize: '1.4rem',
-                transition: "border .1s",
-                ...input.style,
-                ...style,
-            },
-            controls: [...controls, {
-                event: `clickfocus;keyfocus?if():[labeled]:[if():[!().labeled.contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
-            }, {
-                event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
-            }]
-        }
+      return {
+          ..._component,
+          style: {
+              cursor: readonly ? "pointer" : "auto",
+              border: "0",
+              width: "fit-content",
+              padding: '0.5rem',
+              color: '#444',
+              color: input.type === "number" ? "blue" : '#444',
+              backgroundColor: 'inherit',
+              height: 'fit-content',
+              borderRadius: '0.25rem',
+              fontSize: '1.4rem',
+              transition: "border .1s",
+              ...input.style,
+              ...style,
+          },
+          controls: [...controls, {
+              event: `clickfocus;keyfocus?if():[labeled]:[if():[!().labeled.contains():[clicked:()]]:[1stChild().click()]]:[if():[!contains():[clicked:()]]:click()]`
+          }, {
+              event: "input?parent().required.mount=false;parent().click()?parent().required.mount;e().target.value.exist()"
+          }]
+      }
     }
 }
 
@@ -973,9 +973,9 @@ module.exports = (component) => {
     
     return {
         ...component,
-        type: "View?if():[!)(:opened-maps]:[)(:opened-maps=_array];class=flex-column;style.width=100%;if():[().isField]:[style():[marginLeft=2rem;borderLeft=1px solid #ddd;width=calc(100% - 2rem)]];#mode.dark.style.borderLeft=1px solid #888",
+        type: "View?if():[!)(:opened-maps]:[)(:opened-maps=_array];class=flex-column;style.width=100%;if():[().isField]:[style():[marginLeft=2rem;borderLeft=1px solid #ddd;width=calc(100% - 2rem)]]:[line-counter:()=0];#mode.dark.style.borderLeft=1px solid #888",
         children: [{
-            type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?!parent().isField",
+            type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem;style.position=relative?!parent().isField",
             controls: [{
                 event: "click?().opened=1stChild().style().transform.inc():rotate(90deg);parent().children().pull():0.pullLast().():[style().display=if():[().opened]:none:flex];1stChild().style().transform=if():[().opened]:rotate(0deg):rotate(90deg);2ndLastChild().style().display=if():[().opened]:flex:none;lastSibling().style().display=if():[().opened]:none:flex;3rdLastChild().style().display=if():[().opened]:flex:none?clicked:().id!=2ndChild().id;clicked:().id!=3rdChild().id;clicked:().id!=lastChild().1stChild().id"
             }, {
@@ -998,7 +998,7 @@ module.exports = (component) => {
                 }]
             }]
         }, {
-            type: "[View]?class=flex column;sort;arrange=parent().arrange;style.marginLeft=if():[!parent().isField]:2rem:0?data().isdefined();data()!=_array;data()!=_map",
+            type: "[View]?class=flex column;sort;arrange=parent().arrange;style.marginLeft=if():[!parent().isField]:2rem:0;style.position=relative?data().isdefined();data()!=_array;data()!=_map",
             children: [{
                 type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem",
                 controls: [{
@@ -1035,6 +1035,8 @@ module.exports = (component) => {
                     type: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=array"
                 }, {
                     type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
+                }, {
+                    type: "Text?line-counter:()++;text=line-counter:();class=flexbox line-counter;style:[fontSize=1.2rem;height=100%;width=2rem;position=absolute;left=path().len()*(-2.1)+rem]"
                 }, {
                     type: "View?style.overflow=auto;style.whiteSpace=nowrap?data().type()=string",
                     children: [{
@@ -1076,7 +1078,7 @@ module.exports = (component) => {
                 }, {
                     type: `Text?text=";#mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#a35521;style.fontSize=1.4rem?data().type()=string`
                 }, {
-                    type: "Text?=flexbox;=pointer;style.display=none;#mode.dark.style.color=#888;text='...';style.fontSize=1.4rem"
+                    type: "Text?class=flexbox pointer;style.display=none;#mode.dark.style.color=#888;text='...';style.fontSize=1.4rem"
                 }, {
                     type: "Text?style.display=none;text=];style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?data().type()=array"
                 }, {
@@ -2285,7 +2287,7 @@ const createElement = ({ _window, id, req, res }) => {
   }
 
   // before loading controls
-  toArray(view.controls).map((controls = {}) => {
+  toArray(view.controls).map(async (controls = {}) => {
     var event = toCode({ _window, string: controls.event || "" })
     if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2] }))
       toParam({ req, res, _window, id, string: event.split("?")[1] })
@@ -4041,13 +4043,13 @@ module.exports = {
     else view.element.insertBefore(el, view.element.children[index])
 
     var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-    
     idList.map(id => setElement({ id }))
     idList.map(id => starter({ id }))
-
+    
     views[el.id].style.transition = views[el.id].element.style.transition = (views[el.id].reservedStyles && views[el.id].reservedStyles.transition) || null
     views[el.id].style.opacity = views[el.id].element.style.opacity = (views[el.id].reservedStyles && views[el.id].reservedStyles.opacity) || "1"
     delete views[el.id].reservedStyles
+
     view.insert = { view: views[el.id], message: "View inserted succefully!", success: true }
     
     if (lDiv) {
@@ -7248,7 +7250,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             }
 
         } else if (k0 === "includes()" || k0 === "inc()") {
-            
+          
             var _include = toValue({ req, res, _window, id, e, value: args[1], params, _, __, _i })
             answer = o.includes(_include)
             
@@ -9258,7 +9260,7 @@ const resize = ({ id }) => {
   var view = window.views[id]
   if (!view) return
   
-  if (view.type !== "Input" && view.type !== "Entry") return
+  if (view.type !== "Input" && view.type !== "Entry" && (width !== "fit-content" || height !== "fit-content")) return
 
   var results = dimensions({ id })
 
@@ -9321,17 +9323,14 @@ const dimensions = ({ id, text }) => {
   lDiv.style.left = "-1000px"
   lDiv.style.top = "-1000px"
   lDiv.style.opacity = "0"
-
   lDiv.innerHTML = pText
   
-  if (pStyle.width === "100%")
-  lDiv.style.width = (view.element ? view.element.clientWidth : lDiv.style.width) + "px"
-  lDiv.style.width = lDiv.clientWidth + 2 + "px"
-
-  var height = lDiv.clientHeight
-  var width = lDiv.clientWidth
+  if (pStyle.width === "100%") lDiv.style.width = (view.element ? view.element.clientWidth : lDiv.style.width) + "px"
+  var height, width = lDiv.clientWidth + 2
 
   if (view.element.tagName === "TEXTAREA") {
+
+    height = lDiv.clientHeight
     if (lDiv.clientHeight < view.element.scrollHeight) height = view.element.scrollHeight
     if (!pText) height = lDiv.clientHeight
   }
@@ -9831,12 +9830,16 @@ const setData = ({ id, data }) => {
 module.exports = { setData }
 
 },{"./clone":37,"./reducer":85}],95:[function(require,module,exports){
+(function (global){(function (){
 const { controls } = require("./controls")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
 // const { starter } = require("./starter")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
+const { defaultInputHandler } = require("./defaultInputHandler")
+const { isArabic } = require("./isArabic")
+const { resize } = require("./resize")
 
 const setElement = ({ _window, id }) => {
 
@@ -9858,13 +9861,26 @@ const setElement = ({ _window, id }) => {
     
     view.element = document.getElementById(id)
     if (!view.element) return delete window.views[id]
+  
+    // input handlers
+    defaultInputHandler({ id })
+  
+    // arabic text
+    isArabic({ id })
+    
+    var timer = (new Date()).getTime()
+    // resize
+    /*setTimeout(() => { */if (view.type === "Input" || view.type === "Entry") resize({ id }) //}, 0)
+    global.myTimer += (new Date()).getTime() - timer
+    timer = (new Date()).getTime()
 
     // status
     view.status = "Element Loaded"
 }
     
 module.exports = { setElement }
-},{"./controls":40,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":115}],96:[function(require,module,exports){
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./controls":40,"./defaultInputHandler":52,"./isArabic":70,"./resize":89,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":115}],96:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
   
   var views = window.views
@@ -10186,19 +10202,10 @@ const starter = ({ id }) => {
 
   /* Defaults must start before controls */
   
-  // arabic text
-  isArabic({ id })
-  
-  // input handlers
-  defaultInputHandler({ id })
-  
   // on loaded image
   // if (view.type === 'Image') view.element.src = view.src
 
   /* End of default handlers */
-
-  // resize
-  if (view.type === "Input" || view.type === "Entry") resize({ id })
 
   // lunch auto controls
   Object.entries(control).map(([type, control]) => {
@@ -11084,6 +11091,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     } else key = param
 
+    // increment
+    if (key && value === undefined && key.slice(-2) === "++") {
+      key = key.slice(0, -2)
+      value = `${key}+1`
+    }
+
     // await
     if ((asyncer || executer) && (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():")) {
 
@@ -11697,12 +11710,21 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   }
   
   if (value.includes("+")) { // addition
-    
-    var values = value.split("+").map(value => toValue({ _window, value, params, _, __, _i, id, e, req, res, object, mount }))
-    var newVal = values[0]
-    values.slice(1).map(val => newVal += val)
-    return value = newVal
 
+    // increment
+    if (value.slice(-2) === "++") {
+      
+      value = value.slice(0, -2)
+      value = `${value}=${value}+1`
+      toParam({ req, res, _window, id, e, string: value, _, __, _i, object, mount, params, createElement })
+
+    } else {
+
+      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, _i, id, e, req, res, object, mount }))
+      var newVal = values[0]
+      values.slice(1).map(val => newVal += val)
+      return value = newVal
+    }
   }
   
   if (value.includes("-")) { // subtraction
@@ -12482,7 +12504,6 @@ const watch = ({ _window, controls, id }) => {
             
             var value = toValue({ id, value: _watch })
 
-            console.log("here");
             if ((value === undefined && view[`${_watch}-watch`] === undefined) || isEqual(value, view[`${_watch}-watch`])) return
 
             view[`${_watch}-watch`] = clone(value)

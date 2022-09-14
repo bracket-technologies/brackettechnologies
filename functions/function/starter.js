@@ -18,19 +18,10 @@ const starter = ({ id }) => {
 
   /* Defaults must start before controls */
   
-  // arabic text
-  isArabic({ id })
-  
-  // input handlers
-  defaultInputHandler({ id })
-  
   // on loaded image
   // if (view.type === 'Image') view.element.src = view.src
 
   /* End of default handlers */
-
-  // resize
-  if (view.type === "Input" || view.type === "Entry") resize({ id })
 
   // lunch auto controls
   Object.entries(control).map(([type, control]) => {

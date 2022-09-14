@@ -54,6 +54,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
     } else key = param
 
+    // increment
+    if (key && value === undefined && key.slice(-2) === "++") {
+      key = key.slice(0, -2)
+      value = `${key}+1`
+    }
+
     // await
     if ((asyncer || executer) && (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():")) {
 

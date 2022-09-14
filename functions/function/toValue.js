@@ -67,12 +67,21 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   }
   
   if (value.includes("+")) { // addition
-    
-    var values = value.split("+").map(value => toValue({ _window, value, params, _, __, _i, id, e, req, res, object, mount }))
-    var newVal = values[0]
-    values.slice(1).map(val => newVal += val)
-    return value = newVal
 
+    // increment
+    if (value.slice(-2) === "++") {
+      
+      value = value.slice(0, -2)
+      value = `${value}=${value}+1`
+      toParam({ req, res, _window, id, e, string: value, _, __, _i, object, mount, params, createElement })
+
+    } else {
+
+      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, _i, id, e, req, res, object, mount }))
+      var newVal = values[0]
+      values.slice(1).map(val => newVal += val)
+      return value = newVal
+    }
   }
   
   if (value.includes("-")) { // subtraction

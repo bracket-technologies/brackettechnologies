@@ -110,7 +110,7 @@ const createElement = ({ _window, id, req, res }) => {
   }
 
   // before loading controls
-  toArray(view.controls).map((controls = {}) => {
+  toArray(view.controls).map(async (controls = {}) => {
     var event = toCode({ _window, string: controls.event || "" })
     if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2] }))
       toParam({ req, res, _window, id, string: event.split("?")[1] })

@@ -1,6 +1,4 @@
 {
-  "id": "reservation-flight-list",
-  "creation-date": 1656873798264,
   "type": "View?class=flex align-center;style:[width=32rem;position=relative;height=100%]",
   "children": [
     {
@@ -12,22 +10,23 @@
               "type": "[View]?path=booking-details;class=flex align-center;style:[width=30rem]",
               "children": [
                 {
+                  "type": "View?class=flex align-center;style:[width=30rem]",
                   "children": [
                     {
+                      "type": "View?class=flex align-center;style:[width=10rem]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().departure-airport.split(): .0+' - '+data().arrival-airport.split(): .0;style:[fontSize=1.2rem]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[width=10rem]"
+                      ]
                     },
                     {
+                      "type": "View?class=flex align-center;style:[width=5rem]?false",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=[data().flight-number||];style:[fontSize=1.2rem]"
                         }
-                      ],
-                      "type": "View?class=flex align-center;style:[width=5rem]?false"
+                      ]
                     },
                     {
                       "type": "View?class=flex align-center;style:[width=12rem]",
@@ -46,15 +45,14 @@
                       ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[width=4rem]",
                       "children": [
                         {
                           "type": "Text?class=flex align-center;text=data().arrival-time.toClock():[hr;min];style:[fontSize=1.2rem]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[width=4rem]"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[width=30rem]"
+                  ]
                 }
               ]
             }
@@ -67,5 +65,7 @@
       "type": "View?class=pointer vertical;style:[width=32rem;padding=.75rem 0;position=absolute;right=0;left=0;top=0.4rem;height=3rem;minHeight=3rem;overflow=hidden;backgroundColor=inherit;borderRadius=.5rem];click:[if():[style().height=fit-content]:[style():[height=3rem;backgroundColor=inherit;zIndex=0;left=0rem;right=0rem;padding=.75rem 0;width=32rem];removeClass():box-shadow-4]:[style():[height=fit-content;left=-1rem;right=-1rem;padding=.75rem 1rem;backgroundColor=#fff;zIndex=1;width=33rem];addClass():box-shadow-4]];if():[data().booking-details.len()>1]:[mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]]"
     }
   ],
-  "functions": {}
+  "creation-date": 1656873798264,
+  "functions": {},
+  "id": "reservation-flight-list"
 }
