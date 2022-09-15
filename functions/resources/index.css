@@ -15,6 +15,10 @@ body {
   float: none;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .page-break {
   page-break-after: always;
   page-break-inside: avoid;

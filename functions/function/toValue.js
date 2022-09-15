@@ -135,7 +135,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
 
     // backend function
     if (!isFn) {
-      isFn = global.functions.find(fn => fn === path0.slice(0, -2))
+      isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
       if (isFn) backendFn = true
     }
   }

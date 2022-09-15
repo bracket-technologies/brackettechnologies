@@ -1,32 +1,31 @@
 {
+  "id": "devices-mini-window",
+  "type": "View?id=devices-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
   "children": [
     {
-      "type": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto?devices-data:()",
       "children": [
         {
-          "type": "View?class=flex align-device;style.width=100%",
           "children": [
             {
               "type": "Text?text=إستمارة جهاز +if():[)(:devices-copied]:(منسوخ).elif():[)(:devices-edit-readonly]:(عرض).elif():[)(:devices-edit]:(تعديل).else():(جديد);style.fontSize=1.8rem;style.fontWeight=bolder"
             },
             {
-              "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto",
               "children": [
                 {
+                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-devices;!)(:devices-edit-readonly",
                   "children": [
                     {
                       "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
                     }
-                  ],
-                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-devices;!)(:devices-edit-readonly"
+                  ]
                 },
                 {
+                  "type": "View:save-device?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:devices-edit-readonly",
                   "controls": [
                     {
                       "event": "click?new-devices:().del();save():[collection=resources-devices;data=devices-data:()]:[devices:().pullItem():[id=devices-data:().id].push():[devices-data:()];note():[text=تم حفظ الجهاز بنجاح];():devices-mini-window.style():[opacity=0;pointerEvents=none];update():'devices-views';if():[devices-data:().monitor;monitors:().find():[id=devices-data:().monitor]]:[monitors:().find():[id=devices-data:().monitor].devices.replace():[devices-data:().id];save():[collection=resources-monitors;data=monitors:().find():[id=devices-data:().monitor]]];if():[devices-data:().network;networks:().find():[id=devices-data:().network]]:[networks:().find():[id=devices-data:().network].devices.replace():[devices-data:().id];save():[collection=resources-networks;data=networks:().find():[id=devices-data:().network]]];if():[devices-data:().center;centers:().find():[id=devices-data:().center]]:[centers:().find():[id=devices-data:().center].devices.replace():[devices-data:().id];save():[collection=resources-centers;data=centers:().find():[id=devices-data:().center]]];if():[devices-data:().station;stations:().find():[id=devices-data:().station]]:[stations:().find():[id=devices-data:().station].devices.replace():[devices-data:().id];save():[collection=resources-stations;data=stations:().find():[id=devices-data:().station]]];if():[devices-data:().reference-device;reference-devices:().find():[id=devices-data:().reference-device]]:[reference-devices:().find():[id=devices-data:().reference-device].devices.replace():[devices-data:().id];save():[collection=resources-reference-devices;data=reference-devices:().find():[id=devices-data:().reference-device]]];if():[devices-data:().in-devices.len()>0;devices:().find():[id.in():[devices-data:().in-devices]]]:[devices:().filter():[id.in():[devices-data:().in-devices]]._():[_.out-devices.replace():[devices-data:().id];save():[collection=resources-devices;data=_]]];if():[devices-data:().out-devices.len()>0;devices:().find():[id.in():[devices-data:().out-devices]]]:[devices:().filter():[id.in():[devices-data:().out-devices]]._():[_.in-devices.replace():[devices-data:().id];save():[collection=resources-devices;data=_]]]]"
                     }
                   ],
-                  "type": "View:save-device?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:devices-edit-readonly",
                   "children": [
                     {
                       "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
@@ -34,21 +33,23 @@
                   ]
                 },
                 {
-                  "controls": [
-                    {
-                      "event": "click?():devices-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:devices-data.del();)(:new-devices.del()"
-                    }
-                  ],
                   "children": [
                     {
                       "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.8rem"
                     }
                   ],
+                  "controls": [
+                    {
+                      "event": "click?():devices-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:devices-data.del();)(:new-devices.del()"
+                    }
+                  ],
                   "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto"
             }
-          ]
+          ],
+          "type": "View?class=flex align-device;style.width=100%"
         },
         {
           "type": "View?style.width=100%;style.height=1px;style.backgroundColor=#ddd"
@@ -57,7 +58,6 @@
           "type": "View?class=flex column;style.width=100%;data=)(:devices-data;style.gap=2rem",
           "children": [
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات التسجيل;style.padding=1rem 0;style.fontWeight=bold"
@@ -72,16 +72,17 @@
                       "type": "Input?style.width=100%;style.height=4rem;label.text=تاريخ التسجيل;label.location=outside;readonly;input.value=data().creation-date.toSimplifiedDateTimeAr();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
                     },
                     {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;path=active;input.value=if():data():فعّال:غير فعّال;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[)(:devices-edit-readonly]:[droplist.readonly=true]",
                       "controls": [
                         {
                           "event": "click:droplist?data()=if():[txt()=فعّال]:true:false"
                         }
-                      ],
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;path=active;input.value=if():data():فعّال:غير فعّال;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[)(:devices-edit-readonly]:[droplist.readonly=true]"
+                      ]
                     }
                   ]
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
               "type": "View?class=flex column;style.gap=1rem;style.width=100%",
@@ -90,37 +91,36 @@
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=إسم الجهاز;label.location=outside;path=name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[readonly=true]"
                     },
                     {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=مرجع الجهاز;label.location=outside;readonly;path=reference-device;if():data():[input.value=reference-devices:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='reference-devices:().():name';if():[)(:devices-edit-readonly]:[droplist.readonly=true];droplist.align=right",
                       "controls": [
                         {
                           "event": "click:droplist?data()=reference-devices:().find():[name=data()].id"
                         }
-                      ],
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=مرجع الجهاز;label.location=outside;readonly;path=reference-device;if():data():[input.value=reference-devices:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items='reference-devices:().():name';if():[)(:devices-edit-readonly]:[droplist.readonly=true];droplist.align=right"
+                      ]
                     },
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=رقم الجهاز التسلسلي;label.location=outside;path=serial-number;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[readonly=true]"
                     },
                     {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=الشبكة;label.location=outside;readonly;path=network;if():data():[input.value=networks:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;readonly;droplist.items='networks:().():name';style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[droplist.readonly=true];droplist.align=right",
                       "controls": [
                         {
                           "event": "click:droplist?data()=networks:().find():[name=data()].id"
                         }
-                      ],
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=الشبكة;label.location=outside;readonly;path=network;if():data():[input.value=networks:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;readonly;droplist.items='networks:().():name';style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[droplist.readonly=true];droplist.align=right"
+                      ]
                     },
                     {
-                      "type": "Input?style.width=100%;input.type=date;style.height=4rem;label.text=تاريخ التركيب;label.location=outside;path=installation-date;if():[data()]:[input.value=data().toDateInputFormat()];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[readonly=true]",
                       "controls": [
                         {
                           "event": "input?data()=data().timestamp()"
                         }
-                      ]
+                      ],
+                      "type": "Input?style.width=100%;input.type=date;style.height=4rem;label.text=تاريخ التركيب;label.location=outside;path=installation-date;if():[data()]:[input.value=data().toDateInputFormat()];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[readonly=true]"
                     },
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=الحالة;label.location=outside;readonly;path=status;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=)(:data.collection.devices-status.status;droplist.align=right;if():[)(:devices-edit-readonly]:[droplist.readonly=true]"
@@ -128,33 +128,34 @@
                     {
                       "type": "Input?style.width=100%;style.height=4rem;label.text=IP Address;label.location=outside;path=ip-address;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[readonly=true]"
                     }
-                  ]
+                  ],
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem"
                 }
               ]
             },
             {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%;style.marginBottom=1rem",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات أخرى;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=1.5rem;style.width=100%;class=flex column;style.padding=0 1rem",
                   "children": [
                     {
                       "type": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
-                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=[data().monitor||false]",
+                          "controls": [
+                            {
+                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().monitor.del();data().name-on-monitor.del()]?!)(:devices-edit-readonly"
+                            }
+                          ],
                           "children": [
                             {
                               "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                             }
                           ],
-                          "controls": [
-                            {
-                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().monitor.del();data().name-on-monitor.del()]?!)(:devices-edit-readonly"
-                            }
-                          ]
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=[data().monitor||false]"
                         },
                         {
                           "type": "Text?text=يظهر الجهاز على شاشة المراقبة;style.fontSize=1.6rem"
@@ -162,7 +163,6 @@
                       ]
                     },
                     {
-                      "type": "View?style.gap=2rem;style.width=100%;style.display=if():[data().monitor]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr",
                       "children": [
                         {
                           "type": "Input?style.width=100%;style.height=4rem;label.text=رقم الشاشة;path=monitor;readonly;if():data():[input.value=monitors:().find():[id=data()].serial-number];style.borderRadius=.5rem;clicked.style.border=2px solid #0080ff;style.border=1px solid #ccc;style.borderRadius=.5rem;tooltip.text=أدخل رقم شاشة المراقبة;droplist.items='monitors:().():[serial-number]';if():[)(:devices-edit-readonly]:[droplist.readonly=true];droplist.align=right",
@@ -173,27 +173,28 @@
                           ]
                         },
                         {
-                          "type": "Input?style.width=100%;style.height=4rem;label.text=إسم الجهاز على الشاشة;path=name-on-monitor;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[readonly=true]",
                           "controls": [
                             {
                               "event": "input?data().del()?!data()"
                             }
-                          ]
+                          ],
+                          "type": "Input?style.width=100%;style.height=4rem;label.text=إسم الجهاز على الشاشة;path=name-on-monitor;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[readonly=true]"
                         }
-                      ]
+                      ],
+                      "type": "View?style.gap=2rem;style.width=100%;style.display=if():[data().monitor]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr"
                     },
                     {
                       "children": [
                         {
-                          "children": [
-                            {
-                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
-                            }
-                          ],
-                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=data().device-installed.else():false",
                           "controls": [
                             {
                               "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;if():[().checked]:[parent().next().style().display=grid;data().device-installed=true;data().device-installed-in=مركز;parent().next().getInput().val()=مركز]:[parent().next().style().display=none;data().device-installed=false;data().device-installed-in.del();data().station.del();data().center.del()]?!)(:devices-edit-readonly"
+                            }
+                          ],
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=data().device-installed.else():false",
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                             }
                           ]
                         },
@@ -224,25 +225,22 @@
                       ],
                       "type": "View?style.gap=2rem;style.width=100%;style.display=if():[data().device-installed]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr"
                     }
-                  ]
+                  ],
+                  "type": "View?style.gap=1.5rem;style.width=100%;class=flex column;style.padding=0 1rem"
                 }
-              ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%;style.marginBottom=1rem"
+              ]
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الأجهزة المتصلة (داخل);style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?class=flex column;path=in-devices",
                   "children": [
                     {
                       "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                       "children": [
                         {
-                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
                           "children": [
                             {
                               "type": "Input?style.width=100%;style.height=4rem;if():data():[input.value=devices:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;readonly;droplist.items='devices:().():name';if():[)(:devices-edit-readonly]:[droplist.readonly=true];droplist.align=right",
@@ -253,6 +251,7 @@
                               ]
                             },
                             {
+                              "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
                               "controls": [
                                 {
                                   "event": "click?Data().in-devices=_array;parent().getInput().text()=_string?Data().in-devices.len()=1;!)(:in-devices-edit-readonly"
@@ -261,30 +260,32 @@
                                   "event": "click??Data().in-devices.len()>1;!)(:devices-edit-readonly",
                                   "actions": "remove:[parent().id]"
                                 }
-                              ],
-                              "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
+                              ]
                             }
-                          ]
+                          ],
+                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
                         },
                         {
+                          "type": "View?class=flex;style.gap=1rem",
                           "children": [
                             {
+                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                               "controls": [
                                 {
                                   "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:in-devices:[Data().in-devices.len()-1];insert.index=parent().parent().children().len()-1",
                                   "event": "click?Data().in-devices.push():_string?Data().in-devices.len()>0;!)(:devices-edit-readonly"
                                 }
-                              ],
-                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
+                              ]
                             }
-                          ],
-                          "type": "View?class=flex;style.gap=1rem"
+                          ]
                         }
                       ]
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex column;path=in-devices"
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
               "type": "View?class=flex column;style.gap=1rem;style.width=100%",
@@ -296,7 +297,6 @@
                   "type": "View?class=flex column;path=out-devices",
                   "children": [
                     {
-                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                       "children": [
                         {
                           "children": [
@@ -314,8 +314,8 @@
                                   "event": "click?Data().out-devices=_array;parent().getInput().text()=_string?Data().out-devices.len()=1;!)(:out-devices-edit-readonly"
                                 },
                                 {
-                                  "actions": "remove:[parent().id]",
-                                  "event": "click??Data().out-devices.len()>1;!)(:devices-edit-readonly"
+                                  "event": "click??Data().out-devices.len()>1;!)(:devices-edit-readonly",
+                                  "actions": "remove:[parent().id]"
                                 }
                               ],
                               "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
@@ -326,31 +326,30 @@
                         {
                           "children": [
                             {
-                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                               "controls": [
                                 {
                                   "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:out-devices:[Data().out-devices.len()-1];insert.index=parent().parent().children().len()-1",
                                   "event": "click?Data().out-devices.push():_string?Data().out-devices.len()>0;!)(:devices-edit-readonly"
                                 }
-                              ]
+                              ],
+                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                             }
                           ],
                           "type": "View?class=flex;style.gap=1rem"
                         }
-                      ]
+                      ],
+                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
                     }
                   ]
                 }
               ]
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=ملفات الإعدادات;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;style.padding=1rem",
                   "children": [
                     {
                       "type": "Input?input.type=file;multiple;style:[width=100%;height=8rem;border=1px solid #ccc;borderRadius=.5rem;cursor=pointer]",
@@ -368,16 +367,20 @@
                       ],
                       "type": "[View]?class=flexbox;path=files;style:[width=100%;height=8rem;border=1px solid #ccc;borderRadius=.5rem;cursor=pointer;transition=.2s];hover.style:[border=1px solid #888];mouseenter:[1stChild().style().color=#444];mouseleave:[1stChild().style().color=#888];click:[open():data()]?data().files.len()>0"
                     }
-                  ]
+                  ],
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;style.padding=1rem"
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
+              "type": "View?if():[!data().contacts]:[data().contacts=_array:_map];class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=جهات الإتصال;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
+                  "type": "View?class=flex column;path=contacts",
                   "children": [
                     {
                       "children": [
@@ -391,7 +394,6 @@
                       "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem;style.paddingBottom=0"
                     },
                     {
-                      "type": "[View]?style.gapRow=2rem;style.gapColumn=1rem;style.width=100%;style.display=grid",
                       "children": [
                         {
                           "children": [
@@ -402,38 +404,37 @@
                               "type": "Input?style.width=100%;style.height=4rem;path=phone-number;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.border=1px solid #ccc;style.borderRadius=.5rem;if():[)(:devices-edit-readonly]:[readonly=true]"
                             },
                             {
+                              "type": "View?class=flex;style.gap=1rem",
                               "children": [
                                 {
                                   "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                                   "controls": [
                                     {
-                                      "actions": "insert:[parent().parent().parent().id]?insert.component=parent().parent().parent().children.0;insert.path=_array:contacts:[Data().contacts.len().subs():1]",
-                                      "event": "click?Data().contacts.push():_map?!)(:devices-edit-readonly"
+                                      "event": "click?Data().contacts.push():_map?!)(:devices-edit-readonly",
+                                      "actions": "insert:[parent().parent().parent().id]?insert.component=parent().parent().parent().children.0;insert.path=_array:contacts:[Data().contacts.len().subs():1]"
                                     }
                                   ]
                                 },
                                 {
+                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                                   "controls": [
                                     {
-                                      "actions": "remove:[parent().parent().id]",
-                                      "event": "click??Data().contacts.len()>1;!)(:devices-edit-readonly"
+                                      "event": "click??Data().contacts.len()>1;!)(:devices-edit-readonly",
+                                      "actions": "remove:[parent().parent().id]"
                                     }
-                                  ],
-                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
+                                  ]
                                 }
-                              ],
-                              "type": "View?class=flex;style.gap=1rem"
+                              ]
                             }
                           ],
                           "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
                         }
-                      ]
+                      ],
+                      "type": "[View]?style.gapRow=2rem;style.gapColumn=1rem;style.width=100%;style.display=grid"
                     }
-                  ],
-                  "type": "View?class=flex column;path=contacts"
+                  ]
                 }
-              ],
-              "type": "View?if():[!data().contacts]:[data().contacts=_array:_map];class=flex column;style.gap=1rem;style.width=100%"
+              ]
             },
             {
               "children": [
@@ -454,25 +455,24 @@
           ]
         },
         {
+          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem",
           "children": [
             {
               "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s;click:[():save-device.click()]?!)(:devices-edit-readonly"
             },
             {
-              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s",
               "controls": [
                 {
                   "event": "click?():devices-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:devices-data.del();)(:new-devices.del()"
                 }
-              ]
+              ],
+              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s"
             }
-          ],
-          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem"
+          ]
         }
-      ]
+      ],
+      "type": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto?devices-data:()"
     }
   ],
-  "functions": {},
-  "id": "devices-mini-window",
-  "type": "View?id=devices-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0"
+  "functions": {}
 }

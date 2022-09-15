@@ -8,5 +8,10 @@
     "creation-date": 1637494484000,
     "accesskey-required": true,
     "id": "developer-editor",
-    "meta": {}
+    "meta": {},
+    "controls": [
+      {
+        "event": "beforeLoading?if():[getCookie():_id]:[search():[collection=_account_;doc=getCookie():_id]:[if():[search:().data]:[data:().account=search:().data;data:().account.password.del()]:[route():login]]]:[route():login]"
+      }
+    ]
 }

@@ -32,6 +32,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     const { execute } = require("./execute")
     const { toParam } = require("./toParam")
     const { insert } = require("./insert")
+    var _functions = require("./function")
 
     var views = _window ? _window.views : window.views
     var view = views[id], breakRequest, coded, mainId = id
@@ -102,6 +103,55 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           }
         })
         return newVal
+    }
+    
+    var isFn = false, backendFn = false
+
+    // function
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
+
+      clone(view["my-views"] || []).reverse().map(view => {
+        if (!isFn) {
+          isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+        }
+      })
+      
+      if (!isFn) {
+        isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
+        if (isFn) backendFn = true
+      }
+    }
+
+    if (isFn) {
+      var _params = path[0].split(":")[1], args = path[0].split(":")
+
+      if (backendFn) {
+        
+        if (isParam({ _window, string: args[1] })) {
+
+          var _await = ""
+          var _data = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+          var _func = { function: isFn, data: _data }
+          if (args[2]) _await = global.codes[args[2]]
+          
+          return require("./func").func({ _window, id, e, _, __, _i, req, res, func: _func, asyncer: true, await: _await })
+        }
+        
+        var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+        var _func = { function: isFn, data: _data }
+        if (args[2]) _await = global.codes[args[2]]
+        
+        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, asyncer: true, await: _await })
+      }
+
+      if (_params) {
+        if (isParam({ _window, string: _params }))
+          _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
+        else _params = toValue({ req, res, _window, id, e, _, __, _i, value: _params })
+      }
+      
+      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), _i, createElement, params })
     }
 
     // addition
@@ -1687,10 +1737,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "installApp()") {
 
-          var event = new Event('beforeinstallprompt')
-          window.dispatchEvent(event)
+          const installApp = async () => {
 
-      } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
+            global["installApp"].prompt();
+            const { outcome } = await global["installApp"].userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+          }
+
+          installApp()
+
+        } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
 
             var _params = {}, _o, _timer
             if (args[1]) {
@@ -2788,6 +2844,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!isNaN(o) && (parseFloat(o) + "").length === 13) o = new Date(parseFloat(o))
             answer = o.toUTCString()
             
+        } else if (k0 === "getGeoLocation") {
+
+          navigator.geolocation.getCurrentPosition((position) => { console.log(position); global.geolocation = position })
+
         } else if (k0 === "uuid()") {
             
             answer = require("uuid").v4()

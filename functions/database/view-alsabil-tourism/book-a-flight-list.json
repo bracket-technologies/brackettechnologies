@@ -4,6 +4,7 @@
   "creation-date": 1654120726246,
   "children": [
     {
+      "type": "View?style:[width=100%]",
       "children": [
         {
           "type": "View?class=vertical;data=flights:().[().mapIndex].clone();style:[width=100%;minHeight=30rem]?flights:().[().mapIndex].len()>0",
@@ -36,20 +37,20 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=From;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ]
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=To;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -60,28 +61,28 @@
                   ]
                 },
                 {
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
                       "type": "Text?class=pointer;text=Arr;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
-                },
-                {
-                  "children": [
-                    {
-                      "type": "Text?class=pointer;text=Stops;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
-                    }
-                  ],
-                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                  ]
                 },
                 {
                   "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                   "children": [
                     {
-                      "type": "Text?class=pointer;text=Aircraft;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                      "type": "Text?class=pointer;text=Stops;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
                     }
                   ]
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Text?class=pointer;text=Aircraft;style:[color=#888;fontSize=1.2rem;transition=.3s];hover.style.color=#444"
+                    }
+                  ],
+                  "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                 },
                 {
                   "children": [
@@ -102,15 +103,14 @@
               ]
             },
             {
-              "type": "View?class=vertical;style:[width=100%];pullEmptyClasses();if():[doc().len()>0]:[data=doc()]?doc().len()>0",
               "children": [
                 {
+                  "type": "[View]?style:[width=100%]?data().len()>0",
                   "children": [
                     {
                       "type": "View?class=grid align-center flight;style:[gridTemplateColumns=2.5fr 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6fr 3rem;height=4rem;transition=.2s;width=100%;if():[old-booking:();old-booking:().flights.find():[=data().id]]:[backgroundImage=linear-gradient(to right, #b3fcb8, #fa9d9d)]];hover:[style.backgroundColor=#f6f6f6];mouseenter.lastChild().style().opacity=1;mouseleave.lastChild().style().opacity=0",
                       "children": [
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1;gap=1rem]",
                           "children": [
                             {
                               "children": [
@@ -123,7 +123,8 @@
                             {
                               "type": "Text?class=flex;text=data().airline.slice():3;style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1;gap=1rem]"
                         },
                         {
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -134,12 +135,12 @@
                           ]
                         },
                         {
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex align-center;text=data().flight-number;style:[fontSize=1.2rem]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
+                          ]
                         },
                         {
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]",
@@ -158,20 +159,20 @@
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex align-center;text=data().departure-time.toClock():[hr;min];style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flex align-center;text=data().arrival-time.toClock():[hr;min]+if():[data().departure-day<data().arrival-day]:' (+1)': ;style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
                           "children": [
@@ -182,12 +183,12 @@
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
-                          "type": "View?class=flex align-center;style:[height=100%;flex=1]",
                           "children": [
                             {
                               "type": "Text?class=flexbox;text=data().aircraft;style:[fontSize=1.2rem]"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
                           "children": [
@@ -198,6 +199,7 @@
                           "type": "View?class=flex align-center;style:[height=100%;flex=1]"
                         },
                         {
+                          "type": "View?class=flex align-center;style:[maxWidth=100%;position=relative;height=100%]",
                           "children": [
                             {
                               "children": [
@@ -226,44 +228,42 @@
                             {
                               "type": "Icon?class=flexbox pointer;name=bi-chevron-down;style:[width=2rem;height=2rem;fontSize=1.5rem;position=absolute;right=0;transition=.2s];click.if():[prev().style().height=fit-content]:[prev().style():[height=2.45rem;backgroundColor=inherit];prev().removeClass():box-shadow-4;style().transform=rotate(0)]:[prev().style():[height=fit-content;backgroundColor=#fff];prev().addClass():box-shadow-4;style().transform=rotate(180deg)]"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style:[maxWidth=100%;position=relative;height=100%]"
+                          ]
                         },
                         {
+                          "type": "View?class=flexbox pointer;style:[opacity=0]",
                           "children": [
                             {
+                              "type": "Icon?class=flexbox actions;name=bi-three-dots-vertical;style:[fontSize=2.2rem;color=#888;transition=.1s;height=3rem;width=3rem;borderRadius=3rem];hover.style.color=blue",
                               "controls": [
                                 {
                                   "event": "click?position():[id=action-list;positioner=().id;placement=left;align=center];if():[style():action-list.pointerEvents=none||)(:flight-data!=data()]:[style():[pointerEvents=auto;opacity=1;transform=scale(1);id=action-list]]:[style():[id=action-list;pointerEvents=none;opacity=0;transform=scale(.5)]];)(:flight-data=data().clone();flight-edit:()=true;action-lister:()=flight?false"
                                 }
-                              ],
-                              "type": "Icon?class=flexbox actions;name=bi-three-dots-vertical;style:[fontSize=2.2rem;color=#888;transition=.1s;height=3rem;width=3rem;borderRadius=3rem];hover.style.color=blue"
+                              ]
                             }
-                          ],
-                          "type": "View?class=flexbox pointer;style:[opacity=0]"
+                          ]
                         }
                       ]
                     }
-                  ],
-                  "type": "[View]?style:[width=100%]?data().len()>0"
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=vertical;style:[width=100%];pullEmptyClasses();if():[doc().len()>0]:[data=doc()]?doc().len()>0"
             }
           ]
         }
-      ],
-      "type": "View?style:[width=100%]"
+      ]
     }
   ],
   "functions": {
-    "checkTotalSeats": "().total-seats=booking-details:().0.total-seats;booking-details:().slice():1._():[if():[_.total-seats!=().total-seats]:[booking-details:()=_list]:[().total-seats=_.total-seats]]",
-    "setBookingSeats": "booking-details:().[().flight-index].seats.push():[_map:class:[_.sub-class]:head-class:[_.class]:meal-included:[_.meal-included]:adults:[().calc-adults]:baggage-kg:[_.baggage-kg]:adt-base-fare-usd:[_.pricing.find():[trip.tolowercase()=price-by:().tolowercase()].adt-base-fare-usd]:children:[().calc-children]:chd-base-fare-usd:[_.pricing.find():[trip.tolowercase()=price-by:().tolowercase()].chd-base-fare-usd]:infants:0:inf-base-fare-usd:[_.pricing.find():[trip.tolowercase()=price-by:().tolowercase()].inf-base-fare-usd||0]:passengers:[().calc-adults+().calc-children]:passengers-details:[range():0:[().calc-adults+().calc-children].():_map]:commission:[_.commission.num()||0]:commission-unit:[_.commission-unit]:additional-profit:[_.additional-profit.num()||booking-details:().[().flight-index].additional-profit||0]:additional-profit-unit:[_.additional-profit-unit]:booking-policy:[parent().data().clone().booking-policy.find():[classes.inc():[_.sub-class]].classes.del().class.del()]:change-policy:[parent().data().clone().change-policy.find():[classes.inc():[_.sub-class]].classes.del().class.del()]:cancelation-policy:[parent().data().clone().cancelation-policy.find():[classes.inc():[_.sub-class]].classes.del().class.del()]];booking-details:().[().flight-index].seats.find():[class=_.sub-class]._():[_.total-passengers=_.adults+_.children+[_.infants||0];_.total-seats=_.adults+_.children;_.total-taxes-usd=parent().data().taxes-usd.values().sum()*[_.total-seats];_.total-fees-usd=parent().data().fees-usd.values().sum()*[_.total-seats];_.adt-commission-usd=if():[_.commission-unit=%]:[_.commission*[0.01]*[_.adt-base-fare-usd]].elif():[_.commission-unit=$]:[_.commission];_.total-adt-commission-usd=_.adults*[_.adt-commission-usd];_.chd-commission-usd=if():[_.commission-unit=%]:[_.commission*[0.01]*[_.chd-base-fare-usd]].elif():[_.commission-unit=$]:[_.commission];_.total-chd-commission-usd=_.children*[_.chd-commission-usd];_.total-commission-usd=_.total-adt-commission-usd+_.total-chd-commission-usd;_.adt-additional-profit-usd=if():[_.additional-profit-unit=%]:[_.additional-profit*[0.01]*[_.adt-base-fare-usd]].elif():[_.additional-profit-unit=$]:[_.additional-profit];_.total-adt-additional-profit-usd=_.adults*[_.adt-additional-profit-usd];_.chd-additional-profit-usd=if():[_.additional-profit-unit=%]:[_.additional-profit*[0.01]*[_.chd-base-fare-usd]].elif():[_.additional-profit-unit=$]:[_.additional-profit];_.total-chd-additional-profit-usd=_.children*[_.chd-additional-profit-usd];_.total-additional-profit-usd=_.total-adt-additional-profit-usd+_.total-chd-additional-profit-usd;_.total-base-fare-usd=[_.adt-base-fare-usd*_.adults]+[_.chd-base-fare-usd*_.children]+[[_.inf-base-fare-usd||0]*[_.infants||0]];_.total-usd=_.total-base-fare-usd+_.total-taxes-usd+_.total-fees-usd;_.total-payable-usd=[_.total-usd]-[_.total-commission-usd]]",
-    "loopOverSeats": "while():[rem-seats>0]:[setFlightsBookedPassengers();().rem-seats=[().rem-seats]-[flights-booked:().[().flight-index].seats.0.av-seats];if():[rem-seats>0;().my-sibling.nextSibling()]:[setFlightsBookedSeats();().my-sibling=nextSibling();().my-counter=().my-counter+1]:[return:()=true]]",
-    "setBookingAcc": "booking-details:().[().flight-index]._():[_.total-base-fare-usd=_.seats.():[total-base-fare-usd].sum()+[pax-details:().inf.num()*_.seats.0.inf-base-fare-usd];_.total-adults=_.seats.():adults.sum();_.total-children=_.seats.():children.sum();_.total-infants=pax-details:().inf.num();_.total-passengers=_.total-adults+_.total-children+_.total-infants;_.total-seats=_.total-adults+_.total-children;_.total-commission-usd=_.seats.():[total-commission-usd].sum();_.total-additional-profit-usd=_.seats.():[total-additional-profit-usd].sum();_.total-taxes-usd=_.seats.():[total-taxes-usd].sum();_.total-fees-usd=_.seats.():[total-fees-usd].sum();_.total-usd=_.seats.():[total-usd].sum()+[pax-details:().inf.num()*_.seats.0.inf-base-fare-usd];_.total-payable-usd=_.seats.():[total-payable-usd].sum()+[pax-details:().inf.num()*_.seats.0.inf-base-fare-usd]]",
     "setFlightsBookedSeats": "flights-booked:().[().flight-index].seats.push():[parent().data().clone().seats.find():[sub-class=().my-sibling.nextSibling().1stChild().txt()]];flights-booked:().[().flight-index].seats=_list:[parent().data().clone().seats.find():[sub-class=1stChild().txt()]]",
+    "setBookingSeats": "booking-details:().[().flight-index].seats.push():[_map:class:[_.sub-class]:head-class:[_.class]:meal-included:[_.meal-included]:adults:[().calc-adults]:baggage-kg:[_.baggage-kg]:adt-base-fare-usd:[_.pricing.find():[trip.tolowercase()=price-by:().tolowercase()].adt-base-fare-usd]:children:[().calc-children]:chd-base-fare-usd:[_.pricing.find():[trip.tolowercase()=price-by:().tolowercase()].chd-base-fare-usd]:infants:0:inf-base-fare-usd:[_.pricing.find():[trip.tolowercase()=price-by:().tolowercase()].inf-base-fare-usd||0]:passengers:[().calc-adults+().calc-children]:passengers-details:[range():0:[().calc-adults+().calc-children].():_map]:commission:[_.commission.num()||0]:commission-unit:[_.commission-unit]:additional-profit:[_.additional-profit.num()||booking-details:().[().flight-index].additional-profit||0]:additional-profit-unit:[_.additional-profit-unit]:booking-policy:[parent().data().clone().booking-policy.find():[classes.inc():[_.sub-class]].classes.del().class.del()]:change-policy:[parent().data().clone().change-policy.find():[classes.inc():[_.sub-class]].classes.del().class.del()]:cancelation-policy:[parent().data().clone().cancelation-policy.find():[classes.inc():[_.sub-class]].classes.del().class.del()]];booking-details:().[().flight-index].seats.find():[class=_.sub-class]._():[_.total-passengers=_.adults+_.children+[_.infants||0];_.total-seats=_.adults+_.children;_.total-taxes-usd=parent().data().taxes-usd.values().sum()*[_.total-seats];_.total-fees-usd=parent().data().fees-usd.values().sum()*[_.total-seats];_.adt-commission-usd=if():[_.commission-unit=%]:[_.commission*[0.01]*[_.adt-base-fare-usd]].elif():[_.commission-unit=$]:[_.commission];_.total-adt-commission-usd=_.adults*[_.adt-commission-usd];_.chd-commission-usd=if():[_.commission-unit=%]:[_.commission*[0.01]*[_.chd-base-fare-usd]].elif():[_.commission-unit=$]:[_.commission];_.total-chd-commission-usd=_.children*[_.chd-commission-usd];_.total-commission-usd=_.total-adt-commission-usd+_.total-chd-commission-usd;_.adt-additional-profit-usd=if():[_.additional-profit-unit=%]:[_.additional-profit*[0.01]*[_.adt-base-fare-usd]].elif():[_.additional-profit-unit=$]:[_.additional-profit];_.total-adt-additional-profit-usd=_.adults*[_.adt-additional-profit-usd];_.chd-additional-profit-usd=if():[_.additional-profit-unit=%]:[_.additional-profit*[0.01]*[_.chd-base-fare-usd]].elif():[_.additional-profit-unit=$]:[_.additional-profit];_.total-chd-additional-profit-usd=_.children*[_.chd-additional-profit-usd];_.total-additional-profit-usd=_.total-adt-additional-profit-usd+_.total-chd-additional-profit-usd;_.total-base-fare-usd=[_.adt-base-fare-usd*_.adults]+[_.chd-base-fare-usd*_.children]+[[_.inf-base-fare-usd||0]*[_.infants||0]];_.total-usd=_.total-base-fare-usd+_.total-taxes-usd+_.total-fees-usd;_.total-payable-usd=[_.total-usd]-[_.total-commission-usd]]",
+    "pullEmptyClasses": "#doc().filter():[total-av-seats<search-flight:().0.pax]._():[doc().[_.id].del()];doc()._():[_.seats.filter():[av-seats=0]._():[__.seats.pullItem():_]];price-by:()=search-by:();if():[price-by:().tolowercase()='round trip';doc().find():[seats.find():[!pricing.find():[trip.tolowercase()='round trip']]]]:[doc()._():[_.seats.filter():[!pricing.find():[trip.tolowercase()='round trip']]._():[__.seats.pullItem():_]]];if():[price-by:().tolowercase()='round trip';#doc().find():[seats.len()=0]]:[doc().pullItems():[seats.len()=0];if():[doc().len()=0]:[price-by:()='One Way']:[doc().():[seats.pullItems():[!pricing.find():[trip.tolowercase()='round trip']]]]];if():[price-by:().tolowercase()='one way']:[doc()._():[_.seats.filter():[!pricing.find():[trip.tolowercase()='one way']]._():[__.seats.pullItem():_]]];#if():[doc().len()>0;price-by:().tolowercase()='one way';!doc().find():[seats.find():[pricing.find():[trip.tolowercase()='one way']]]]:[doc().filter():[!seats.find():[pricing.find():[trip.tolowercase()='One Way'.tolowercase()]]]._():[doc().[_.id].del()]];cheapest-flight:()=0;sortFlights()",
+    "setBookingAcc": "booking-details:().[().flight-index]._():[_.total-base-fare-usd=_.seats.():[total-base-fare-usd].sum()+[pax-details:().inf.num()*_.seats.0.inf-base-fare-usd];_.total-adults=_.seats.():adults.sum();_.total-children=_.seats.():children.sum();_.total-infants=pax-details:().inf.num();_.total-passengers=_.total-adults+_.total-children+_.total-infants;_.total-seats=_.total-adults+_.total-children;_.total-commission-usd=_.seats.():[total-commission-usd].sum();_.total-additional-profit-usd=_.seats.():[total-additional-profit-usd].sum();_.total-taxes-usd=_.seats.():[total-taxes-usd].sum();_.total-fees-usd=_.seats.():[total-fees-usd].sum();_.total-usd=_.seats.():[total-usd].sum()+[pax-details:().inf.num()*_.seats.0.inf-base-fare-usd];_.total-payable-usd=_.seats.():[total-payable-usd].sum()+[pax-details:().inf.num()*_.seats.0.inf-base-fare-usd]]",
     "sortFlights": "doc().sort():[path=seats.0.pricing.find():[trip.tolowercase()=price-by:().tolowercase()].adt-base-fare-usd;ascending]",
     "setFlightsBookedPassengers": "flights-booked:().[().flight-index].seats.[().my-counter].passengers=range():0:[if():[flights-booked:().[().flight-index].seats.[().my-counter].av-seats.len()>[pax-details:().adt+pax-details:().chd]||flights-booked:().[().flight-index].seats.[().my-counter].av-seats.len()=[pax-details:().adt+pax-details:().chd]]:[pax-details:().adt+pax-details:().chd]:[flights-booked:().[().flight-index].seats.[().my-counter].av-seats.len()]].():_map",
+    "loopOverSeats": "while():[rem-seats>0]:[setFlightsBookedPassengers();().rem-seats=[().rem-seats]-[flights-booked:().[().flight-index].seats.0.av-seats];if():[rem-seats>0;().my-sibling.nextSibling()]:[setFlightsBookedSeats();().my-sibling=nextSibling();().my-counter=().my-counter+1]:[return:()=true]]",
     "setFlightsBooked": "flights-booked:()=[flights-booked:()||_list];flights-booked:().[().flight-index]=parent().data().clone()",
-    "pullEmptyClasses": "#doc().filter():[total-av-seats<search-flight:().0.pax]._():[doc().[_.id].del()];doc()._():[_.seats.filter():[av-seats=0]._():[__.seats.pullItem():_]];price-by:()=search-by:();if():[price-by:().tolowercase()='round trip';doc().find():[seats.find():[!pricing.find():[trip.tolowercase()='round trip']]]]:[doc()._():[_.seats.filter():[!pricing.find():[trip.tolowercase()='round trip']]._():[__.seats.pullItem():_]]];if():[price-by:().tolowercase()='round trip';#doc().find():[seats.len()=0]]:[doc().pullItems():[seats.len()=0];if():[doc().len()=0]:[price-by:()='One Way']:[doc().():[seats.pullItems():[!pricing.find():[trip.tolowercase()='round trip']]]]];if():[price-by:().tolowercase()='one way']:[doc()._():[_.seats.filter():[!pricing.find():[trip.tolowercase()='one way']]._():[__.seats.pullItem():_]]];#if():[doc().len()>0;price-by:().tolowercase()='one way';!doc().find():[seats.find():[pricing.find():[trip.tolowercase()='one way']]]]:[doc().filter():[!seats.find():[pricing.find():[trip.tolowercase()='One Way'.tolowercase()]]]._():[doc().[_.id].del()]];cheapest-flight:()=0;sortFlights()"
+    "checkTotalSeats": "().total-seats=booking-details:().0.total-seats;booking-details:().slice():1._():[if():[_.total-seats!=().total-seats]:[booking-details:()=_list]:[().total-seats=_.total-seats]]"
   }
 }

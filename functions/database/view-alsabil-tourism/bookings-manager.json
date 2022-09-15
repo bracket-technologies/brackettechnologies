@@ -1,6 +1,4 @@
 {
-  "creation-date": 1653729664265,
-  "type": "View?id=bookings-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[unreset-bookings:()]:[unreset-bookings:()=false]:[bookings:()=_list];search-booking:()=search-booking:()||_map",
   "children": [
     {
       "type": "View?class=flex align-center;style:[minHeight=4.5rem;height=4.5rem]",
@@ -64,12 +62,12 @@
               "type": "Icon?class=flexbox pointer;name=bi-download;tooltip.text=import;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]?false"
             },
             {
+              "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]",
               "controls": [
                 {
                   "event": "click?loader.show;search():[collection=flight;docs=bookings:().():flights.flat().removeDuplicates()]:[my-flights:()=search:().data.values();name=if():[search-booking:().flight]:[search-booking:().flight+ +today()]:[my bookings +today().toDateFormat()];().my-counter=1;exportExcel():[data=bookings:().clone()._():[_.Sequence=().my-counter;().my-counter=().my-counter+1;_.PNR=_.pnr;_.Booking Date=_.booking-date.toDateFormat():time;_.Issue Date=[_.issue-date.toDateFormat():time||];_.From=_.booking-details.0.departure-airport.split(): .0;_.To=_.booking-details.0.arrival-airport.split(): .0;_.Flight No=my-flights:().find():[id=_.booking-details.0.flight-id].flight-number;_.Travel Date=_.booking-details.0.departure-day.toDateFormat();_.Departure=[_.booking-details.0.departure-time.toClock():[hr;min]];_.Arrival=[_.booking-details.0.arrival-time.toClock():[hr;min]];if():[_.booking-details.1]:[_.Return From=_.booking-details.1.departure-airport.split(): .0;_.Return To=_.booking-details.1.arrival-airport.split(): .0;_.Return Flight No=my-flights:().find():[id=_.booking-details.1.flight-id].flight-number;_.Return Date=_.booking-details.1.departure-day.toDateFormat();_.Return Departure=[_.booking-details.1.departure-time.toClock():[hr;min]];_.Return Arrival=[_.booking-details.1.arrival-time.toClock():[hr;min]]]:[_.Return From=;_.Return To=;_.Return Flight No=;_.Return Date=;_.Return Departure=;_.Return Arrival=];_.User=_.user-name;_.Agent=_.agent-name;_.Status=_.status;_.Seats=_.clone().booking-details.0.seats.():[passengers-details].flat().len()+ +if():[_.clone().booking-details.0.seats.():[passengers-details.():infants.flat()].flat().filter().len()>0]:['+'+_.clone().booking-details.0.seats.():[passengers-details.():infants.flat()].flat().filter().len()+' infant/s']:'';if():[_.status=Canceled]:[_.Seats=0];_.Payment=[[_.total-payable-usd||0]-[_.total-canceled-payable-usd||0]].round():2+$];name=().name;fields=_list:Sequence:PNR:Agent:User:Status:Booking Date:Issue Date:From:To:Flight No:Travel Date:Departure:Arrival:Return From:Return To:Return Flight No:Return Date:Return Departure:Return Arrival:Seats:Payment];loader.hide]?bookings:().len()>0"
                 }
-              ],
-              "type": "Icon?class=flexbox pointer;name=bi-upload;tooltip.text=export;style:[color=#666;fontSize=1.6rem;height=3.25rem;width=3.25rem;borderRadius=.5rem;border=1px solid #ddd;transition=.3s];hover.style:[color=#222;backgroundColor=#f6f6f6]"
+              ]
             },
             {
               "controls": [
@@ -96,10 +94,12 @@
       ]
     },
     {
+      "type": "View:booking-search-engine?Data=search-booking;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]",
       "children": [
         {
           "children": [
             {
+              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]",
               "children": [
                 {
                   "controls": [
@@ -118,23 +118,23 @@
                   ]
                 },
                 {
-                  "type": "Input?id=flight;path=flight;if():[data().len()=20]:[data()=];label.text=Flight Number;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                   "controls": [
                     {
                       "event": "input?data()=data().toUpperCase().split():' '.join():'';txt()=data()"
                     }
-                  ]
+                  ],
+                  "type": "Input?id=flight;path=flight;if():[data().len()=20]:[data()=];label.text=Flight Number;label.style.fontSize=1.2rem;clearable;style:[height=4rem;flex=1;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                 },
                 {
                   "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
-                      "type": "Input?path=booking-date;label.text=Booking Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat();style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "change?data()=data().timestamp();txt():booking-date-text=data().toDateFormat()"
                         }
-                      ]
+                      ],
+                      "type": "Input?path=booking-date;label.text=Booking Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat();style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
                     },
                     {
                       "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
@@ -153,15 +153,14 @@
                   "type": "View?class=flex column;style:[gap=1rem;width=100%;position=relative]",
                   "children": [
                     {
+                      "type": "Input?path=reservation-date;label.text=Issuing Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF",
                       "controls": [
                         {
                           "event": "change?data()=data().timestamp();txt():reservation-date-text=data().toDateFormat()"
                         }
-                      ],
-                      "type": "Input?path=reservation-date;label.text=Issuing Date;label.style.fontSize=1.2rem;input.type=date;input.max=todayStart().timestamp().toDateInputFormat()];style:[height=4rem;width=100%;borderRadius=.5rem;border=1px solid #ddd;backgroundColor=#fff;fontSize=1.2rem;transition=.1s];clicked.style.border=2px solid #0080FF"
+                      ]
                     },
                     {
-                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0",
                       "children": [
                         {
                           "type": "Text?id=reservation-date-text;class=flex align-center;if():[data().reservation-date]:[text=data().reservation-date.toDateFormat()];style:[fontSize=1.2rem]"
@@ -169,7 +168,8 @@
                         {
                           "type": "Icon?class=flexbox pointer;name=bi-x-lg;style:[height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=#fff;borderRadius=.5rem;right=0;position=absolute];click:[data().reservation-date.del();prev().txt()=;parent().prev().():[click();input().txt()=null]]"
                         }
-                      ]
+                      ],
+                      "type": "View?class=flex align-center;style:[padding=0 .5rem;height=3.6rem;backgroundColor=#fff;zIndex=1;left=2px;bottom=2px;width=80%;position=absolute;borderRadius=.5rem];mouseenter.2ndChild().style().opacity=1;mouseleave.2ndChild().style().opacity=0"
                     }
                   ]
                 },
@@ -195,19 +195,19 @@
                 {
                   "type": "View?style:[flex=1]"
                 }
-              ],
-              "type": "View?class=grid;style:[gap=1rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;flex=1]"
+              ]
             }
           ],
           "type": "View?class=flexbox;style:[gap=1rem;width=100%]"
         }
-      ],
-      "type": "View:booking-search-engine?Data=search-booking;class=flex align-center;style:[gap=1rem;backgroundColor=#f6f6f6;padding= 0 1rem;minHeight=8rem;height=0;transition=.2s;overflow=hidden;borderBottom=1px solid #ddd]"
+      ]
     },
     {
       "type": "View?view=bookings-list"
     }
   ],
+  "functions": {},
+  "type": "View?id=bookings-manager;class=flex-column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff];if():[unreset-bookings:()]:[unreset-bookings:()=false]:[bookings:()=_list];search-booking:()=search-booking:()||_map",
   "id": "bookings-manager",
-  "functions": {}
+  "creation-date": 1653729664265
 }

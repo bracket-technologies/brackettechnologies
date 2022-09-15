@@ -1,13 +1,12 @@
 {
-  "id": "networks-manager",
-  "functions": {},
-  "creation-date": 1650292186204,
   "type": "View?id=networks-manager;class=flex column;)(:networks-view-type=list;networks:()=_list",
+  "id": "networks-manager",
   "controls": [
     {
       "event": "loaded?search():[collection=resources-networks;limit=50]:[networks:()=().search.data.values();update():'networks-manager-list';lastChild():'all-networks'.txt()=networks:().len()];search():[collection=resources-centers]:[centers:()=[().search.data.values()||_list];if():[centers:().len()>0]:[className():'centers-in-network'.():update()]];search():[collection=resources-stations]:[stations:()=().search.data.values();if():[stations:().len()>0]:[className():'stations-in-network'.():update()]];search():[collection=resources-devices]:[devices:()=().search.data.values();if():[devices:().len()>0]:[className():'devices-in-network'.():update()]];search():[collection=resources-members]:[members:()=().search.data.values();if():[members:().len()>0]:[className():'members-in-network'.():update()]]"
     }
   ],
+  "functions": {},
   "children": [
     {
       "children": [
@@ -28,6 +27,7 @@
           "type": "View?class=flex align-center;style:[width=100%;padding=.5rem;height=4rem]"
         },
         {
+          "type": "View?class=flex column;style.borderRadius=1rem;style.overflow=hidden;style.minHeight=100%;style.width=100%",
           "children": [
             {
               "children": [
@@ -86,13 +86,13 @@
                           "type": "Icon?class=flexbox;style.color=#888;style.fontSize=2rem;style.minWidth=3rem;name=bi-funnel"
                         },
                         {
+                          "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، شبكة، نوع، وصف ...",
                           "controls": [
                             {
                               "event": "input",
                               "actions": "async():search:[update:networks-views]?search.collection=resources-networks;search.field.id.in=val();search.field.networks.in=val();search.field.name.in=val();search.field.type.in=val();search.field.address.in=val();search.field.note.in=val();search.field.status.in=val();search.operator=or;async():[)(:networks=().search.data]"
                             }
-                          ],
-                          "type": "Input?class=flexbox ar;style.width=100%;style.maxWidth=100%;style.border=0;style.height=100%;placeholder=إبحث عن إسم، شبكة، نوع، وصف ..."
+                          ]
                         },
                         {
                           "type": "Icon?class=flexbox pointer;style.color=blue;style.fontSize=2rem;style.minWidth=5rem;name=bi-sliders;style.borderRadius=2rem;style.backgroundColor=#f9f9f9;style.height=100%;style.transition=.2s;hover.style.backgroundColor=#eee"
@@ -103,15 +103,16 @@
                     {
                       "children": [
                         {
+                          "type": "View?id=networks-view-type;class=flexbox;style.height=4rem;style.border=1px solid #ddd;style.borderRadius=.5rem",
                           "children": [
                             {
+                              "type": "Icon?class=flexbox pointer;style.height=100%;style.width=4rem;style.borderLeft=1px solid #ddd;name=bi-list-task;style.color=if():[)(:networks-view-type=list]:blue.else():#888;style.fontSize=2.2rem;hover.style.backgroundColor=#f8f8f8;style.transition=.2s",
                               "controls": [
                                 {
-                                  "actions": "update:[parent().id];update:networks-views",
-                                  "event": "click?)(:networks-view-type=list?)(:networks-view-type=grid"
+                                  "event": "click?)(:networks-view-type=list?)(:networks-view-type=grid",
+                                  "actions": "update:[parent().id];update:networks-views"
                                 }
-                              ],
-                              "type": "Icon?class=flexbox pointer;style.height=100%;style.width=4rem;style.borderLeft=1px solid #ddd;name=bi-list-task;style.color=if():[)(:networks-view-type=list]:blue.else():#888;style.fontSize=2.2rem;hover.style.backgroundColor=#f8f8f8;style.transition=.2s"
+                              ]
                             },
                             {
                               "controls": [
@@ -122,20 +123,19 @@
                               ],
                               "type": "Icon?class=flexbox pointer;style.height=100%;style.width=4rem;style.borderRight=1px solid #ddd;name=bi-grid-3x3-gap;style.color=if():[)(:networks-view-type=grid]:blue.else():#888;style.fontSize=1.8rem;hover.style.backgroundColor=#f8f8f8;style.transition=.2s"
                             }
-                          ],
-                          "type": "View?id=networks-view-type;class=flexbox;style.height=4rem;style.border=1px solid #ddd;style.borderRadius=.5rem"
+                          ]
                         },
                         {
-                          "type": "View?class=flexbox pointer;style.gap=1rem;style.backgroundColor=blue;style.transition=.3s;style.borderRadius=2rem;style.padding=0 1rem;style.height=3.25rem;hover.style.backgroundColor=#0000bf",
                           "children": [
                             {
                               "type": "Text?class=flexbox ar;style.color=#fff;style.fontSize=1.2rem;text=إضافة شبكة جديد"
                             }
                           ],
+                          "type": "View?class=flexbox pointer;style.gap=1rem;style.backgroundColor=blue;style.transition=.3s;style.borderRadius=2rem;style.padding=0 1rem;style.height=3.25rem;hover.style.backgroundColor=#0000bf",
                           "controls": [
                             {
-                              "actions": "update:networks-mini-window",
-                              "event": "click?():networks-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];)(:new-network=true;)(:networks-data=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:note:_string:status:متصلة:type:سلكي:description:_string:stations:_array:centers:_array:managers:_array:devices:_array;)(:networks-copied.del();)(:networks-edit-readonly=false"
+                              "event": "click?():networks-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter];)(:new-network=true;)(:networks-data=_map:id:[generate():20]:active:true:creation-date:[today().timestamp()]:note:_string:status:متصلة:type:سلكي:description:_string:stations:_array:centers:_array:managers:_array:devices:_array;)(:networks-copied.del();)(:networks-edit-readonly=false",
+                              "actions": "update:networks-mini-window"
                             }
                           ]
                         }
@@ -149,33 +149,27 @@
                 }
               ]
             }
-          ],
-          "type": "View?class=flex column;style.borderRadius=1rem;style.overflow=hidden;style.minHeight=100%;style.width=100%"
+          ]
         }
       ],
       "type": "View?id=networks-manager-list;class=flex column;style.gap=2rem"
     },
     {
-      "controls": [
-        {
-          "event": "mouseleave?timer():[if():[!mouseenter]:[style():[opacity=0;pointerEvents=none;transform=scale(0.8)]]]:200"
-        }
-      ],
       "type": "View?id=networks-actions;class=flexbox column box-shadow-1;style.padding=.2rem;style.backgroundColor=#fff;style.borderRadius=.5rem;style.position=absolute;style.opacity=0;style.pointerEvents=none;style.transition=opacity .2s, transform .2s;style.transform=scale(0.8);style.zIndex=1",
       "children": [
         {
-          "type": "View?tooltip.text=عرض;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
           "controls": [
             {
-              "event": "click?)(:networks-edit-readonly=true",
-              "actions": "update:networks-mini-window?():networks-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+              "actions": "update:networks-mini-window?():networks-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
+              "event": "click?)(:networks-edit-readonly=true"
             }
           ],
           "children": [
             {
               "type": "Icon?name=bi-eye;style.fontSize=1.6rem;style.color=#666"
             }
-          ]
+          ],
+          "type": "View?tooltip.text=عرض;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee"
         },
         {
           "controls": [
@@ -184,14 +178,15 @@
               "event": "click?)(:networks-edit-readonly=false;)(:networks-edit=true"
             }
           ],
+          "type": "View?tooltip.text=تعديل;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee",
           "children": [
             {
               "type": "Icon?name=bi-pencil-square;style.fontSize=1.6rem;style.color=#666"
             }
-          ],
-          "type": "View?tooltip.text=تعديل;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#eee"
+          ]
         },
         {
+          "type": "View?tooltip.text=نسخ;class=flexbox pointer;style.height=4rem;style.width=3.5rem;hover.style.backgroundColor=#eee",
           "children": [
             {
               "type": "Icon?name=bi-files;style.fontSize=1.6rem;style.color=#666"
@@ -202,27 +197,36 @@
               "event": "click?)(:networks-edit-readonly=false;)(:networks-data.id=generate():20;)(:networks-data.creation-date=today().timestamp();)(:networks-copied",
               "actions": "update:networks-mini-window?():networks-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
             }
-          ],
-          "type": "View?tooltip.text=نسخ;class=flexbox pointer;style.height=4rem;style.width=3.5rem;hover.style.backgroundColor=#eee"
+          ]
         },
         {
-          "children": [
-            {
-              "type": "Icon?name=bi-trash;style.fontSize=1.6rem;style.color=#666"
-            }
-          ],
-          "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee",
           "controls": [
             {
               "actions": "setPosition:networks-remove-popup?position.positioner=().id;position.placement=right",
               "event": "click?if():[():networks-remove-popup.style().pointerEvents=none]:[():networks-remove-popup.style():[opacity=1;transform=scale(1);pointerEvents=auto]].else():[():networks-remove-popup.style():[opacity=0;transform=scale(0.5);pointerEvents=none]]"
             }
-          ]
+          ],
+          "children": [
+            {
+              "type": "Icon?name=bi-trash;style.fontSize=1.6rem;style.color=#666"
+            }
+          ],
+          "type": "View?tooltip.text=حذف;class=flexbox pointer;style.height=4rem;style.width=3.5rem;style.borderRadius= 0 0 .5rem .5rem;hover.style.backgroundColor=#eee"
+        }
+      ],
+      "controls": [
+        {
+          "event": "mouseleave?timer():[if():[!mouseenter]:[style():[opacity=0;pointerEvents=none;transform=scale(0.8)]]]:200"
         }
       ]
     },
     {
       "type": "View?class=box-shadow;id=networks-remove-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
+      "controls": [
+        {
+          "event": "mouseleave::200?style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
+        }
+      ],
       "children": [
         {
           "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
@@ -234,22 +238,22 @@
           ]
         },
         {
+          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
           "controls": [
             {
               "event": "click?parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
             }
-          ],
-          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem"
-        }
-      ],
-      "controls": [
-        {
-          "event": "mouseleave::200?style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
+          ]
         }
       ]
     },
     {
       "type": "View?class=box-shadow;id=networks-remove-all-popup;style.border=1px solid #f0f0f0;style.transform=scale(0.5);style.opacity=0;style.pointerEvents=none;style.position=absolute;style.overflowY=auto;style.borderRadius=.5rem;style.backgroundColor=#fff;style.transition=opacity 0.1s, transform 0.1s;style.zIndex=10",
+      "controls": [
+        {
+          "event": "mouseleave::200?style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
+        }
+      ],
       "children": [
         {
           "type": "Icon?class=pointer;name=bi-check2;tooltip.text=تثبيت;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
@@ -261,19 +265,15 @@
           ]
         },
         {
+          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
           "controls": [
             {
               "event": "click?parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
             }
-          ],
-          "type": "Icon?class=pointer;name=bi-x;tooltip.text=إلغاء;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem"
-        }
-      ],
-      "controls": [
-        {
-          "event": "mouseleave::200?style():[pointerEvents=none;opacity=0;transform=scale(0.5)]?!().mouseenter"
+          ]
         }
       ]
     }
-  ]
+  ],
+  "creation-date": 1650292186204
 }

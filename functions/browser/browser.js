@@ -1,8 +1,10 @@
 navigator.serviceWorker.register("/resources/dummy-sw.js")
 
+//const myWorker = new Worker('worker.js')
+//myWorker.terminate()
+
 const { starter } = require("../function/starter")
 const { setElement } = require("../function/setElement")
-const { getCookie } = require("../function/cookie")
 const { toParam } = require("../function/toParam")
 const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
@@ -183,8 +185,6 @@ Object.entries(views).map(([id, views]) => {
     if (views.status === "Loading") delete views[id]
 })
 
-navigator.geolocation.getCurrentPosition((position) => { console.log(position); global.position = position })
-
 document.addEventListener('scroll', () => {
     
     // close droplist
@@ -215,6 +215,7 @@ window.addEventListener('beforeinstallprompt', function (e) {
 
   // Prevent the mini-infobar from appearing on mobile
   e.preventDefault()
+  console.log('👍', 'beforeinstallprompt', e);
   
   // Stash the event so it can be triggered later.
   window.global["installApp"] = e
@@ -225,3 +226,11 @@ window.addEventListener('appinstalled', () => {
   // Log install to analytics
   console.log('INSTALL: Success')
 })
+
+/*if (window.location.protocol === 'http:') {
+
+  const requireHTTPS = document.getElementById('requireHTTPS');
+  const link = requireHTTPS.querySelector('a');
+  link.href = window.location.href.replace('http://', 'https://');
+  requireHTTPS.classList.remove('hidden');
+}*/

@@ -112,7 +112,7 @@
                 {
                   "controls": [
                     {
-                      "event": "click?data:().editor.account.del();parent().parent().prev().style().display=flex;parent().parent().style().display=none;parent().parent().getInput().val()=_string;parent().parent().prev().getInput().val()=_string"
+                      "event": "click?data:().editor.account.del();parent().parent().prev().style().display=flex;():Next.style().display=flex;parent().parent().style().display=none;parent().parent().getInput().val()=_string;parent().parent().prev().getInput().val()=_string"
                     }
                   ],
                   "type": "Text?text=Change email;style.color=#008060;link.path=login;hover.style.textDecoration=underline;style.fontSize=1.3rem"
@@ -128,18 +128,16 @@
         {
           "controls": [
             {
-              "event": "click;keyup:[prev().prev().input()]??if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display=none;prev().prev().getInput().val()",
-              "actions": "wait():search:[note??!data:().editor.account]:[update:[():login.1stChild().id]??data:().editor.account]?search.collection=_account_;search.field.email.equal=prev().prev().getInput().val();note.text=User email does not exist!;note.type=danger;wait():[data:().editor.account=().search.data.value()]"
+              "event": "click;keyup:[2ndPrev().input()]?checkEmail():[email=2ndPrev().input().txt()]:[if():[!func:().data.email]:[note():[text=Email does not exist!;type=danger]]:[data:().editor.account=func:().data;update():[():login.1stChild()]]]?if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display=none;prev().prev().getInput().val()"
             },
             {
-              "event": "click;keyup:[prev().input()]??if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display!=none;prev().getInput().val()",
-              "actions": "wait():search:[note??!data:().editor.password]:[route??data:().editor.password]?search.collection=_password_;search.field.user.equal=data:().editor.account.id;search.field.password.equal=prev().getInput().val();wait():[data:().editor.password=().search.data.value();if():[data:().editor.password]:[setCookie():[name=user_pass;value=data:().editor.password.password];setCookie():[name=user_id;value=data:().editor.account.id]];route.path=/store-login/+data:().editor.account.id];note.text=Password is incorrect!;note.type=danger"
+              "event": "click;keyup:[prev().input()]?checkPassword():[password=prev().input().txt();email=data:().editor.account.email]:[if():[!func:().data.email]:[note():[text=Password is incorrect!;type=danger]]:[data:().editor.account=func:().data;setCookie():[name=_id;value=data:().editor.account.id];route():[path=/store-login/+data:().editor.account.id]]]?if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display!=none;prev().getInput().val()"
             }
           ],
-          "type": "Text?style.display=if():[data:().editor.account]:none:flex;text=Next;style.fontWeigt=bold;style.color=#fff;style.padding=2rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#008060;class=flex-box pointer;hover.style.backgroundColor=#084C3F"
+          "type": "Text:Next?#style.display=if():[data:().editor.account]:none:flex;text=Next;style.fontWeigt=bold;style.color=#fff;style.padding=2rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#008060;class=flex-box pointer;hover.style.backgroundColor=#084C3F"
         },
         {
-          "type": "View?style.display=if():[data:().editor.account]:none:flex;style.marginTop=2.5rem;class=flexbox;style.gap=.5rem;style.justifyContent=flex-start",
+          "type": "View:get-started?style.display=flex;style.marginTop=2.5rem;class=flexbox;style.gap=.5rem;style.justifyContent=flex-start?false",
           "children": [
             {
               "type": "Text?text='New to Bracket?';style.color=#666;style.fontSize=1.4rem"
@@ -221,11 +219,8 @@
   "creation-date": 1639314993788,
   "controls": [
     {
-      "actions": [
-        "wait():search:[update:1stChild()??data:().editor.password]?search.collection=_password_;search.doc=getCookie():user_pass;wait():[data:().editor.password=().search.data]?getCookie():user_pass",
-        "wait():search:[update:1stChild()??data:().editor.account]?search.collection=_account_;search.doc=getCookie():user_id;wait():[data:().editor.account=().search.data]?getCookie():user_id"
-      ],
-      "event": "loaded"
+      "actions": "wait():search:[update:1stChild()??data:().editor.account]?",
+      "event": "beforeLoading?autoLogin():[_.id=getCookie():_id]:[if():[func:().data.email]:[data:().editor.account=func:().data;route():[path=/store-login/+data:().editor.account.id]]]?getCookie():_id"
     }
   ],
   "type": "View?id=login;style.backgroundColor=#084C3F;style.position=relative;style.overflow=hidden;style.minHeight=100vh"

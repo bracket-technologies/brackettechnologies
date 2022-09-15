@@ -1,12 +1,12 @@
 {
-  "path": "/login",
-  "name": "تسجيل دخول | برنامج مالك",
   "views": [
     "login"
   ],
-  "language": "ar",
-  "creation-date": 1647426596673,
-  "title": "تسجيل دخول | برنامج مالك",
+  "view": "login",
   "id": "login",
-  "view": "login"
+  "title": "تسجيل دخول | برنامج مالك",
+  "creation-date": 1647426596673,
+  "path": "/login",
+  "language": "ar",
+  "name": "تسجيل دخول | برنامج مالك"
 }

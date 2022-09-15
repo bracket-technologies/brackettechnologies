@@ -39,10 +39,10 @@ module.exports = {
         var title = route.title || global.data.page[currentPage].title
 
         global.currentPage = currentPage
-        global.path = route.path ? path : currentPage === "main" ? "/" : currentPage
+        global.path = route.path ? path : currentPage === "main" ? "/" : (currentPage.charAt(0) === "/" ? currentPage : `/${currentPage}`)
 
         if (res) {
-
+          
           // controls & views
           views.root.controls = clone(global.data.page[currentPage].controls || [])
           views.root.children = clone([global.data.view[global.data.page[currentPage].view]])

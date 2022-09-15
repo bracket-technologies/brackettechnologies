@@ -1,5 +1,6 @@
 {
   "creation-date": 1652280972498,
+  "type": "View?id=flights-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
   "children": [
     {
       "type": "View?class=flex column;style:[width=100%;padding=1rem;borderRadius=1rem;backgroundColor=#fff;cursor=default;gap=2rem;overflowY=auto;height=100%]?flight-data:()",
@@ -11,6 +12,7 @@
               "type": "Text?text=Flight form +if():[)(:flight-copied]:(Duplicate).elif():[)(:flight-edit-readonly]:(Display).elif():[)(:flight-edit]:(Edit).else():(New);style:[fontSize=1.5rem]"
             },
             {
+              "type": "View?class=flexbox;style.gap=1.5rem;style.marginLeft=auto",
               "children": [
                 {
                   "type": "View?class=flexbox pointer;tooltip.text=erase;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.3s];hover.style.backgroundColor=#fff?!new-flight:();!flight-edit-readonly:()",
@@ -22,14 +24,14 @@
                 },
                 {
                   "type": "View?class=flexbox pointer;tooltip.text=save;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s?!flight-edit-readonly:()",
-                  "children": [
-                    {
-                      "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.2rem"
-                    }
-                  ],
                   "controls": [
                     {
                       "event": "click?():save-flight.click()"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.2rem"
                     }
                   ]
                 },
@@ -60,12 +62,12 @@
                   ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none",
                   "controls": [
                     {
                       "event": "click?style():[id=flights-mini-window;transition=.2s;padding=10vh 5vw;bottom=0;minHeight=null;zIndex=10];():flight-form-header.style().display=flex;():flight-form-footer.style().display=flex;style().display=none;style():prev().display=flex;style():[1stChild():flights-mini-window].borderRadius=1rem"
                     }
                   ],
+                  "type": "View?class=flexbox pointer;tooltip.text=minimize;style.height=3rem;style.width=3rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#fff;style.transition=.2s;style.display=none",
                   "children": [
                     {
                       "type": "Icon?name=crop;google.outlined;style.fontSize=2.2rem"
@@ -73,20 +75,19 @@
                   ]
                 },
                 {
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.7rem"
+                    }
+                  ],
                   "type": "View?class=flexbox pointer;tooltip.text=cancel;style:[height=3rem;width=3rem;borderRadius=1.5rem;transition=.2s];hover.style.backgroundColor=#fff",
                   "controls": [
                     {
                       "event": "click?style():[id=flights-mini-window;transition=.2s;padding=10vh 5vw;bottom=0];():flights-mini-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw];1stChild():flights-mini-window.style().borderRadius=1rem;flight-data:().del();new-flight:().del()"
                     }
-                  ],
-                  "children": [
-                    {
-                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.7rem"
-                    }
                   ]
                 }
-              ],
-              "type": "View?class=flexbox;style.gap=1.5rem;style.marginLeft=auto"
+              ]
             }
           ]
         },
@@ -94,12 +95,12 @@
           "type": "View?id=flight-form-body;class=flex column;data=)(:flight-data;style:[width=100%;gap=2rem;padding=.5rem]",
           "children": [
             {
-              "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
               "children": [
                 {
                   "type": "Text?class=flex;text=Registration Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1.5fr 1fr .75fr .75fr;padding=1rem]",
                   "children": [
                     {
                       "type": "Input?label:[text=Registration Id;location=outside;style.fontSize=1.3rem];copyable;readonly;copyable;path=id;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
@@ -111,20 +112,20 @@
                       "type": "Input?label:[text=Created By;location=outside;style.fontSize=1.3rem];readonly;path=created-by-name;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem]"
                     },
                     {
-                      "type": "Input?id=flight-active;label:[text=Active;location=outside;style.fontSize=1.3rem];readonly;path=active;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];input.value=if():[data()]:Active:Inactive;droplist.items=_array:Active:Inactive;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.preventDefault",
                       "controls": [
                         {
                           "event": "click:droplist?if():[droplist-txt:()=Active]:[data()=true;txt()=Active]:[data()=false;txt()=Inactive]"
                         }
-                      ]
+                      ],
+                      "type": "Input?id=flight-active;label:[text=Active;location=outside;style.fontSize=1.3rem];readonly;path=active;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];input.value=if():[data()]:Active:Inactive;droplist.items=_array:Active:Inactive;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.preventDefault"
                     },
                     {
                       "type": "Input?id=flight-status;label:[text=Status;location=outside;style.fontSize=1.3rem];readonly;path=status;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items=)(:collections.flight-status.status;if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
                     }
-                  ],
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1.5fr 1fr .75fr .75fr;padding=1rem]"
+                  ]
                 }
-              ]
+              ],
+              "type": "View?class=flex column;style.gap=.5rem;style.width=100%"
             },
             {
               "type": "View?class=flex column;style.gap=.5rem;style.width=100%",
@@ -177,14 +178,15 @@
                   "type": "Text?class=flex;text=Travel Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
                 },
                 {
+                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=1rem]",
                   "children": [
                     {
+                      "type": "Input?clearable;label:[text=Departure Airport;location=outside;style.fontSize=1.3rem];path=departure-airport;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items='collections:().international-airports.airports.():[code+ +name].filter():[!=)(:flight-data.arrival-airport]';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.searchable;droplist.item.style:[minHeight=3rem;fontSize=1.3rem]",
                       "controls": [
                         {
                           "event": "click:droplist?Data().taxes-usd=collections:().airlines.airlines.find():[code=Data().airline.split():' '.slice():0:1.0].taxes-usd.[Data().departure-airport.slice():0:3+'-'+Data().arrival-airport.slice():0:3];Data().fees-usd=collections:().airlines.airlines.find():[code=Data().airline.split():' '.slice():0:1.0].fees-usd.[Data().departure-airport.slice():0:3+'-'+Data().arrival-airport.slice():0:3];update():[flight-taxes];update():[flight-fees];Data().terms-and-conditions=collections:().airlines.airlines.find():[code=Data().airline.split():' '.slice():0:1.0].terms-and-conditions;update():[terms-and-conditions]?flight-data:().departure-airport;flight-data:().arrival-airport;flight-data:().airline"
                         }
-                      ],
-                      "type": "Input?clearable;label:[text=Departure Airport;location=outside;style.fontSize=1.3rem];path=departure-airport;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items='collections:().international-airports.airports.():[code+ +name].filter():[!=)(:flight-data.arrival-airport]';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.searchable;droplist.item.style:[minHeight=3rem;fontSize=1.3rem]"
+                      ]
                     },
                     {
                       "type": "Input?label:[text=Departure Day;location=outside;style.fontSize=1.3rem];input.type=date;path=departure-day;if():data():[input.value=data().toDateInputFormat()];clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true];change:[data()=data().timestamp();flight-data:().arrival-day=data();():arrival-day.getInput().min()=data().toDateInputFormat();():arrival-day.input().txt()=data().toDateInputFormat()]"
@@ -204,12 +206,12 @@
                       "type": "View"
                     },
                     {
-                      "type": "Input?clearable;label:[text=Arrival Airport;location=outside;style.fontSize=1.3rem];path=arrival-airport;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items='collections:().international-airports.airports.():[code+ +name].filter():[!=)(:flight-data.departure-airport]';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.searchable;droplist.item.style:[minHeight=3rem;fontSize=1.3rem]",
                       "controls": [
                         {
                           "event": "click:droplist?Data().taxes-usd=collections:().airlines.airlines.find():[code=Data().airline.split():' '.slice():0:1.0].taxes-usd.[Data().departure-airport.slice():0:3+'-'+Data().arrival-airport.slice():0:3];Data().fees-usd=collections:().airlines.airlines.find():[code=Data().airline.split():' '.slice():0:1.0].fees-usd.[Data().departure-airport.slice():0:3+'-'+Data().arrival-airport.slice():0:3];update():[flight-taxes];update():[flight-fees];Data().terms-and-conditions=collections:().airlines.airlines.find():[code=Data().airline.split():' '.slice():0:1.0].terms-and-conditions;update():[terms-and-conditions]?flight-data:().departure-airport;flight-data:().arrival-airport;flight-data:().airline"
                         }
-                      ]
+                      ],
+                      "type": "Input?clearable;label:[text=Arrival Airport;location=outside;style.fontSize=1.3rem];path=arrival-airport;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];droplist.items='collections:().international-airports.airports.():[code+ +name].filter():[!=)(:flight-data.departure-airport]';if():[)(:flight-edit-readonly]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem;droplist.searchable;droplist.item.style:[minHeight=3rem;fontSize=1.3rem]"
                     },
                     {
                       "type": "Input:arrival-day?label:[text=Arrival Day;location=outside;style.fontSize=1.3rem];input.type=date;if():[data().arrival-day]:[input.value=data().arrival-day.toDateInputFormat()];path=arrival-day;clicked.style.border=2px solid #0080ff;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];if():[)(:flight-edit-readonly]:[readonly=true];change:[data()=data().timestamp();)(:flight-data.arrival-day=data();():arrival-day.getInput().min()=data().toDateInputFormat();():arrival-day.getInput().txt()=data().toDateInputFormat()]"
@@ -222,8 +224,7 @@
                         }
                       ]
                     }
-                  ],
-                  "type": "View?style:[gap=1rem;width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;padding=1rem]"
+                  ]
                 }
               ]
             },
@@ -275,20 +276,20 @@
         {
           "children": [
             {
+              "type": "Text:save-flight?class=flexbox pointer;text=Save;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!flight-edit-readonly:()",
               "controls": [
                 {
                   "event": "click?loader.show;flight-invoice:()=[flight-invoices:().find():[flight-id=flight-data:().id]||_map];flight-data:().clone()._():[flight-invoice:()._():[_.id=[_.id||gen():20];_.flight-id=[__.id];_.active=true;_.creation-date=[_.creation-date||today().timestamp()];_.created-by=[_.created-by||user:().id];_.created-by-name=[_.created-by-name||user:().first-name+ +user:().last-name];_.day=[_.day||todayStart()];_.month=[_.month||monthStart()];_.year=[_.year||yearStart()];_.status=[_.status||Open];_.note=[_.note||_string];_.description=[_.description||_string];_.bookings=[_.bookings||_list];_.canceled-bookings=[_.canceled-bookings||_list];_.pnrs=[_.pnrs||_list];_.canceled-pnrs=[_.canceled-pnrs||_list];_.reservations=[_.reservations||_list];_.canceled-reservations=[_.canceled-reservations||_list];_.tickets=[_.tickets||_list];_.canceled-tickets=[_.canceled-tickets||_list];_.total-base-fare-usd=[_.total-base-fare-usd||0];_.total-taxes-usd=[_.total-taxes-usd||0];_.total-fees-usd=[_.total-fees-usd||0];_.total-additional-profit-usd=[_.total-additional-profit-usd||0];_.total-usd=[_.total-usd||0];_.total-commission-usd=[_.total-commission-usd||0];_.total-payable-usd=[_.total-payable-usd||0];_.total-booked-base-fare-usd=[_.total-booked-base-fare-usd||0];_.total-booked-taxes-usd=[_.total-booked-taxes-usd||0];_.total-booked-fees-usd=[_.total-booked-fees-usd||0];_.total-booked-additional-profit-usd=[_.total-booked-additional-profit-usd||0];_.total-booked-usd=[_.total-booked-usd||0];_.total-booked-commission-usd=[_.total-booked-commission-usd||0];_.total-booked-payable-usd=[_.total-booked-payable-usd||0];_.seats=[__.total-seats];_.total-av-seats=[__.total-av-seats];_.total-seats=[_.total-seats||0];_.total-passengers=[_.total-passengers||0];_.total-individual-seats=[_.total-individual-seats||0];_.total-group-seats=[_.total-group-seats||0];_.total-booked-seats=[_.total-booked-seats||0];_.total-booked-passengers=[_.total-booked-passengers||0];_.total-individual-booked-seats=[_.total-individual-booked-seats||0];_.total-group-booked-seats=[_.total-group-booked-seats||0];_.total-noshow-seats=[_.total-noshow-seats||0];_.total-flown-seats=[_.total-flown-seats||0];_.seats=[_.seats||_list]]];if():[flight-data:().seats.len()>0]:[flight-invoice:().seats=flight-data:().clone().seats];flight-data:().seats.clone()._():[flight-invoice:().seats.find():[sub-class=_.sub-class]._():[_.sub-class=__.sub-class;_.class=__.class;_.commission=__.commission;_.commission-unit=[__.commission-unit];_.additional-profit=[__.additional-profit];_.additional-profit-unit=[__.additional-profit-unit];_.pricing=__.pricing;_.seats=__.seats;_.av-seats=__.av-seats;_.group-max-seats=__.group-max-seats;_.individual-max-seats=__.individual-max-seats;_.total-base-fare-usd=[_.total-base-fare-usd||0];_.total-taxes-usd=[_.total-taxes-usd||0];_.total-fees-usd=[_.total-fees-usd||0];_.total-additional-profit-usd=[_.total-additional-profit-usd||0];_.total-usd=[_.total-usd||0];_.total-commission-usd=[_.total-commission-usd||0];_.total-payable-usd=[_.total-payable-usd||0];_.total-booked-base-fare-usd=[_.total-booked-base-fare-usd||0];_.total-booked-taxes-usd=[_.total-booked-taxes-usd||0];_.total-booked-fees-usd=[_.total-booked-fees-usd||0];_.total-booked-additional-profit-usd=[_.total-booked-additional-profit-usd||0];_.total-booked-usd=[_.total-booked-usd||0];_.total-booked-commission-usd=[_.total-booked-commission-usd||0];_.total-booked-payable-usd=[_.total-booked-payable-usd||0];_.seats=__.seats;_.total-av-seats=[__.av-seats];_.total-seats=[_.total-seats||0];_.total-passengers=[_.total-passengers||0];_.total-individual-seats=[_.total-individual-seats||0];_.total-group-seats=[_.total-group-seats||0];_.total-booked-seats=[_.total-booked-seats||0];_.total-booked-passengers=[_.total-booked-passengers||0];_.total-individual-booked-seats=[_.total-individual-booked-seats||0];_.total-group-booked-seats=[_.total-group-booked-seats||0];_.total-noshow-seats=[_.total-noshow-seats||0];_.total-flown-seats=[_.total-flown-seats||0]]];save():[collection=flight-invoice;data=flight-invoice:()]:[flight-invoice:().del()];new-flight:().del();save():[collection=flight;data=flight-data:()]:[():flights-mini-window.style():[opacity=0;pointerEvents=none;zIndex=1];flights:()=_list;note():[text=Flight saved successfully!];update():[flight-list];loader.hide]"
                 }
-              ],
-              "type": "Text:save-flight?class=flexbox pointer;text=Save;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=blue;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1?!flight-edit-readonly:()"
+              ]
             },
             {
-              "type": "Text?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1",
               "controls": [
                 {
                   "event": "click?():flights-mini-window.style():[opacity=0;pointerEvents=none;padding=10vh 5vw;zIndex=1];flight-data:().del();new-flight:().del();flight-invoice:().del()"
                 }
-              ]
+              ],
+              "type": "Text?class=flexbox pointer;text=Cancel;style:[height=3rem;borderRadius=1.5rem;width=10rem;color=#fff;backgroundColor=#888;fontSize=1.3rem;opacity=0.8;transition=.3s];hover.style.opacity=1"
             }
           ],
           "type": "View:flight-form-footer?class=flexbox;style:[width=100%;borderTop=1px solid #ddd;padding=2rem;justifyContent=flex-end;gap=1rem;marginTop=2rem;marginBottom=-1rem]"
@@ -296,6 +297,5 @@
       ]
     }
   ],
-  "type": "View?id=flights-mini-window;class=flexbox pointer;style:[opacity=0;pointerEvents=none;position=fixed;top=0;left=0;right=0;bottom=0;backgroundColor=#00000060;zIndex=10;transition=.2s;padding=10vh 5vw]",
   "id": "flights-mini-window"
 }

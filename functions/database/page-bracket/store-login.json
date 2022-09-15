@@ -1,10 +1,15 @@
 {
-    "views": [
-        "store-login"
-    ],
-    "id": "store-login",
-    "title": "Stores | Bracket",
-    "accesskey-required": true,
-    "description": "Choose store page",
-    "view": "store-login"
+  "views": [
+    "store-login"
+  ],
+  "id": "store-login",
+  "title": "Stores | Bracket",
+  "accesskey-required": true,
+  "description": "Choose store page",
+  "view": "store-login",
+  "controls": [
+    {
+      "event": "beforeLoading?if():[getCookie():_id]:[search():[collection=_account_;doc=getCookie():_id]:[if():[search:().data]:[data:().account=search:().data;data:().account.password.del()]:[route():login]]]:[route():login]"
+    }
+  ]
 }

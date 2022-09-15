@@ -313,6 +313,10 @@ const createDocument = async ({ req, res }) => {
         <meta name="keywords" content="${global.data.page[currentPage].meta.keywords || ""}">
         <meta name="description" content="${global.data.page[currentPage].meta.description || ""}">
         <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="yes">
+        <meta name="apple-mobile-web-app-title" content="${global.data.page[currentPage].title}">
         <title>${global.data.page[currentPage].title}</title>
         <link rel="stylesheet" href="/resources/index.css"/>
         <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
@@ -324,6 +328,7 @@ const createDocument = async ({ req, res }) => {
         <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
         <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
         <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
+        <link rel="manifest" href="/resources/manifest.webmanifest" />
       </head>
       <body>
         ${innerHTML}

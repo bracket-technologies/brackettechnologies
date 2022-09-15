@@ -1,6 +1,7 @@
 const axios = require('axios')
 const { toString } = require('./toString')
 const { clone } = require('./clone')
+const { toFirebaseOperator } = require('./toFirebaseOperator')
 
 module.exports = {
   search: async ({ _window, id = "", req, res, e, ...params }) => {
