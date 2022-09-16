@@ -131,7 +131,7 @@
               "event": "click;keyup:[2ndPrev().input()]?checkEmail():[email=2ndPrev().input().txt()]:[if():[!func:().data.email]:[note():[text=Email does not exist!;type=danger]]:[data:().editor.account=func:().data;update():[():login.1stChild()]]]?if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display=none;prev().prev().getInput().val()"
             },
             {
-              "event": "click;keyup:[prev().input()]?checkPassword():[password=prev().input().txt();email=data:().editor.account.email]:[if():[!func:().data.email]:[note():[text=Password is incorrect!;type=danger]]:[data:().editor.account=func:().data;setCookie():[name=_id;value=data:().editor.account.id];route():[path=/store-login/+data:().editor.account.id]]]?if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display!=none;prev().getInput().val()"
+              "event": "click;keyup:[prev().input()]?checkPassword():[password=prev().input().txt();user=data:().editor.account.id]:[if():[!func:().data]:[note():[text=Password is incorrect!;type=danger]]:[setCookie():[name=_id;value=data:().editor.account.id];route():[path=/store-login/+data:().editor.account.id]]]?if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display!=none;prev().input().txt()"
             }
           ],
           "type": "Text:Next?#style.display=if():[data:().editor.account]:none:flex;text=Next;style.fontWeigt=bold;style.color=#fff;style.padding=2rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#008060;class=flex-box pointer;hover.style.backgroundColor=#084C3F"
@@ -217,11 +217,5 @@
     }
   ],
   "creation-date": 1639314993788,
-  "controls": [
-    {
-      "actions": "wait():search:[update:1stChild()??data:().editor.account]?",
-      "event": "beforeLoading?autoLogin():[_.id=getCookie():_id]:[if():[func:().data.email]:[data:().editor.account=func:().data;route():[path=/store-login/+data:().editor.account.id]]]?getCookie():_id"
-    }
-  ],
   "type": "View?id=login;style.backgroundColor=#084C3F;style.position=relative;style.overflow=hidden;style.minHeight=100vh"
 }

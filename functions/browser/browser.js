@@ -43,6 +43,8 @@ _ar.style.top = "-1000px"
 views.body.element.appendChild(_ar)
 
 history.pushState(null, global.data.page[global.currentPage].title, global.path)
+document.title = global.data.page[global.currentPage].title
+
 window.onfocus = () => {
     
     global["click-events"] = []

@@ -6,6 +6,7 @@ const { toArray } = require("./toArray");
 const { toParam } = require("./toParam");
 const { toCode } = require("./toCode");
 const { clone } = require("./clone");
+const { toApproval } = require("./toApproval");
 //
 require("dotenv").config();
 
@@ -87,7 +88,7 @@ const createDocument = async ({ req, res }) => {
       if (doc.docs[0] && doc.docs[0].exists)
         global.data.project = project = doc.docs[0].data();
         global.functions = Object.keys(project.functions || {})
-        global.projectFunctions = project.functions || {}
+        // global.projectFunctions = project.functions || {}
         console.log("after project", new Date().getTime() - global.timer);
     })
 
@@ -143,9 +144,6 @@ const createDocument = async ({ req, res }) => {
     console.log("after view", new Date().getTime() - global.timer);
 
   } else {
-
-    // do not send project details
-    delete global.data.project;
 
     // get page
     /*
@@ -231,7 +229,6 @@ const createDocument = async ({ req, res }) => {
   }
 
   await Promise.all(promises)
-  if (!isBracket) delete global.data.functions;
   
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
@@ -257,7 +254,7 @@ const createDocument = async ({ req, res }) => {
     if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ _window, req, res, string: event.split('?')[2] }))
       toParam({ _window, string: event.split("?")[1], req, res })
   })*/
-  
+
   // meta
   global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
 
@@ -271,10 +268,16 @@ const createDocument = async ({ req, res }) => {
 
   // controls
   toArray(views.root.controls).map((controls = {}) => {
+
     var event = toCode({ _window, string: controls.event || "" })
-    if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
-      toParam({ req, res, _window, string: event.split("?")[1], req, res })
+    if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ id: "root", req, res, _window, string: event.split('?')[2] })) {
+      toParam({ id: "root", req, res, _window, string: event.split("?")[1], req, res })
+    }
   })
+
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
   
   // create html
   var rootInnerHTML = createElement({ _window, id: "root", req, res })
@@ -300,8 +303,8 @@ const createDocument = async ({ req, res }) => {
     global = { ..._global }
   }
 
-  delete global.projectFunctions
   delete global.headers
+  delete global.data.project;
 
   res.send(
     `<!DOCTYPE html>

@@ -1,14 +1,5 @@
 {
-  "type": "View?id=developer-editor;style.overflowX=hidden;style.minHeight=100vh;mode.dark.style.backgroundColor=#131313;project:()=path:().split():/.2;)(:accesskey=getCookie():_key;if():[project:()=bracket]:[data:().editor=data:().clone()]:[data:().editor=_map]",
-  "controls": [
-    {
-      "actions": [
-        "wait():search:[update:user-file]?search.collection=_account_;search.field.projects.contains=project:();search.headers.project=project:();wait():[data:().editor.account=().search.data.value()]?!data:().editor.account",
-        "wait():search:[update:project-file:0]:[update:sidebar-items]:[update:other-collections]?search.collection=_project_;search.doc=project:();search.headers.project=project:();wait():[data:().editor.project=().search.data;loader.hide]?!data:().editor.project"
-      ],
-      "event": "loaded?loader.show?!data:().editor.account||!data:().editor.project"
-    }
-  ],
+  "type": "View?id=developer-editor;style.overflowX=hidden;style.minHeight=100vh;mode.dark.style.backgroundColor=#131313;project:()=path:().split():/.2",
   "creation-date": 1637494484000,
   "children": [
     {
@@ -240,7 +231,7 @@
                       "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=20rem;marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s]",
                       "children": [
                         {
-                          "type": "Text?class=flexbox;text=Actions;style:[fontSize=1.3rem;position=absolute;top=-2rem;height=2rem;width=10rem;backgroundColor=#ddd;borderRadius=1.5rem 1.5rem 0 0;left=calc(50% - 5rem);cursor=default]"
+                          "type": "Text?class=flexbox;text=Actions;style:[fontSize=1.3rem;position=absolute;top=-1rem;height=2rem;width=10rem;backgroundColor=#ddd;borderRadius=1.5rem;left=calc(50% - 5rem);cursor=default]"
                         },
                         {
                           "type": "View?style:[minWidth=100%;height=6px;backgroundColor=#34aeeb;cursor=ns-resize;position=absolute;left=0;top=0;zIndex=100;opacity=0;transition=.2s];hover.style.opacity=1",

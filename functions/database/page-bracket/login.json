@@ -10,5 +10,10 @@
     "view": "login",
     "views": [
         "login"
+    ],
+    "controls": [
+      {
+        "event": "beforeLoading?search():[collection=_account_;doc=getCookie():_id]:[data:().editor.account=search:().data;if():[search:().data]:[route():store-login]]?getCookie():_id"
+      }
     ]
 }

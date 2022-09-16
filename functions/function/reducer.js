@@ -4101,8 +4101,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             breakRequest = true
             if (!res) return
-            var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
-            res.send({ success: true, message: "Function executed successfully!", data: _data })
+            if (isParam({ _window, string: args[1] })) {
+              
+              var _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+              _params.success = _params.success !== undefined ? _params.success : true
+              _params.message = _params.message || "Function executed successfully!"
+              res.send(_params)
+
+            } else {
+              
+              var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+              res.send({ success: true, message: "Function executed successfully!", data: _data })
+            }
 
         } else if (k0 === "setPosition()" || k0 === "position()") {
           

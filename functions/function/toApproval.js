@@ -4,7 +4,7 @@ const { clone } = require("./clone")
 const { toCode } = require("./toCode")
 const actions = require("./actions.json")
 
-const toApproval = ({ _window, e, string, id, _, __, req, res, object, _i }) => {
+const toApproval = ({ _window, e, string, id = "", _, __, req, res, object, _i }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
@@ -99,7 +99,7 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object, _i }) => 
     // function
     if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
 
-      clone(view["my-views"]).reverse().map(view => {
+      clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
           if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
@@ -108,7 +108,7 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object, _i }) => 
 
       // backend function
       if (!isFn) {
-        isFn = global.functions.find(fn => fn === path0.slice(0, -2))
+        isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
         if (isFn) backendFn = true
       }
     }

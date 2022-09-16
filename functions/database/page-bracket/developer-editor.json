@@ -11,7 +11,7 @@
     "meta": {},
     "controls": [
       {
-        "event": "beforeLoading?if():[getCookie():_id]:[search():[collection=_account_;doc=getCookie():_id]:[if():[search:().data]:[data:().account=search:().data;data:().account.password.del()]:[route():login]]]:[route():login]"
+        "event": "beforeLoading?if():[getCookie():_id;path:().split():/.2]:[search():[collection=_account_;doc=getCookie():_id]:[if():[search:().data]:[data:().editor.account=search:().data;search():[collection=_project_;doc=path:().split():/.2]:[if():[search:().data]:[data:().editor.project=search:().data]:[route():login]]]:[route():login]]]:[route():login]"
       }
     ]
 }

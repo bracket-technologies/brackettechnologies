@@ -11,22 +11,25 @@ const execFunction = async ({ req, res }) => {
     var ref = db.collection("_project_")
     var project = req.headers["project"]
     var _window = { global: { codes: {}, promises: [] }, views: { backend: {}, "my-views": [] } }
-
-    if (!project) return res.send({ success: false, message: "You are not recognized!" })
+    var global = _window.global
     
+    if (Object.keys(req.cookies).length === 0 && req.body.cookies) req.cookies = req.body.cookies || {}
+    if (!project) return res.send({ success: false, message: "You are not recognized!" })
+  
     // if (!req.global.functions[project]) {
 
     await ref.doc(project).get().then(doc => {
 
-        success = true
-        // req.global.functions[project] = doc.data()
-        var _data = doc.data()
-        if (_data.functions) {
+      success = true
+      // req.global.functions[project] = doc.data()
+      var _data = doc.data()
+      if (_data.functions) {
 
-            functions = _data.functions
-            _window.global.functions = Object.keys(functions)
-            message = "Function executed successfully!"
-        }
+        global.data = { project: _data }
+        functions = _data.functions
+        _window.global.functions = Object.keys(functions)
+        message = "Function executed successfully!"
+      }
 
     }).catch(error => {
 

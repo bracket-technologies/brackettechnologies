@@ -1,10 +1,4 @@
 {
-  "controls": [
-    {
-      "actions": "wait():search:[update:[_array:projects:store-login-user-droplist:profile-droplist]]?search.collection=_account_;search.doc=)(:path.split():/.2;wait():[data:().editor.account=().search.data]?)(:path.split():/.2",
-      "event": "loaded??!data:().editor.account"
-    }
-  ],
   "children": [
     {
       "type": "View?style.backgroundColor=#fff;style.borderRadius=1rem;style.position=absolute;style.top=0;style.left=0;style.height=100%;style.width=50%;class=column;style.display=flex;style.overflow=auto;style.zIndex=1",
@@ -69,7 +63,7 @@
               "type": "[Text]?data=data:().editor.account.projects;hover.style.backgroundColor=#eee;style.padding=1rem;style.cursor=pointer;style.borderRadius=.5rem;style.borderBottom=1px solid #f9f9f9;style.height=4.5rem;class=flexbox;style.justifyContent=flex-start;style.fontSize=1.5rem;style.color=#000?data:().editor.account.projects.len()>0",
               "controls": [
                 {
-                  "event": "click?route-to-editor=true:();route():[path=/developer-editor/+txt()]"
+                  "event": "click?route-to-editor=true:();getProject():txt():[data:().editor.project=func:().data;if():[data:().editor.project]:[route():[path=/developer-editor/+txt()]]:[note():[text=func:().message]]]"
                 }
               ]
             },

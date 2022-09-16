@@ -7,13 +7,18 @@ const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
   document.cookie = `__session=${JSON.stringify(__session)}`
 }
 
-const getCookie = ({ name, req }) => {
+const getCookie = ({ name, req } = {}) => {
 
-  if (req) return req.cookies[name]
+  if (req) {
+    if (!name) return req.cookies
+    return req.cookies[name]
+  }
 
   var cookie = document.cookie || ""
   var decodedCookie = decodeURIComponent(cookie)
   var __session = JSON.parse((decodedCookie.split('; ').find(cookie => cookie.split("=")[0] === "__session") || "").split("=").slice(1).join("=") || "{}")
+
+  if (!name) return __session
   return __session[name]
 }
 

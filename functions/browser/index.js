@@ -44,6 +44,8 @@ _ar.style.top = "-1000px"
 views.body.element.appendChild(_ar)
 
 history.pushState(null, global.data.page[global.currentPage].title, global.path)
+document.title = global.data.page[global.currentPage].title
+
 window.onfocus = () => {
     
     global["click-events"] = []
@@ -1713,13 +1715,18 @@ const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
   document.cookie = `__session=${JSON.stringify(__session)}`
 }
 
-const getCookie = ({ name, req }) => {
+const getCookie = ({ name, req } = {}) => {
 
-  if (req) return req.cookies[name]
+  if (req) {
+    if (!name) return req.cookies
+    return req.cookies[name]
+  }
 
   var cookie = document.cookie || ""
   var decodedCookie = decodeURIComponent(cookie)
   var __session = JSON.parse((decodedCookie.split('; ').find(cookie => cookie.split("=")[0] === "__session") || "").split("=").slice(1).join("=") || "{}")
+
+  if (!name) return __session
   return __session[name]
 }
 
@@ -1848,6 +1855,7 @@ const { toArray } = require("./toArray");
 const { toParam } = require("./toParam");
 const { toCode } = require("./toCode");
 const { clone } = require("./clone");
+const { toApproval } = require("./toApproval");
 //
 require("dotenv").config();
 
@@ -1929,7 +1937,7 @@ const createDocument = async ({ req, res }) => {
       if (doc.docs[0] && doc.docs[0].exists)
         global.data.project = project = doc.docs[0].data();
         global.functions = Object.keys(project.functions || {})
-        global.projectFunctions = project.functions || {}
+        // global.projectFunctions = project.functions || {}
         console.log("after project", new Date().getTime() - global.timer);
     })
 
@@ -1985,9 +1993,6 @@ const createDocument = async ({ req, res }) => {
     console.log("after view", new Date().getTime() - global.timer);
 
   } else {
-
-    // do not send project details
-    delete global.data.project;
 
     // get page
     /*
@@ -2073,7 +2078,6 @@ const createDocument = async ({ req, res }) => {
   }
 
   await Promise.all(promises)
-  if (!isBracket) delete global.data.functions;
   
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
@@ -2099,7 +2103,7 @@ const createDocument = async ({ req, res }) => {
     if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ _window, req, res, string: event.split('?')[2] }))
       toParam({ _window, string: event.split("?")[1], req, res })
   })*/
-  
+
   // meta
   global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
 
@@ -2113,10 +2117,16 @@ const createDocument = async ({ req, res }) => {
 
   // controls
   toArray(views.root.controls).map((controls = {}) => {
+
     var event = toCode({ _window, string: controls.event || "" })
-    if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
-      toParam({ req, res, _window, string: event.split("?")[1], req, res })
+    if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ id: "root", req, res, _window, string: event.split('?')[2] })) {
+      toParam({ id: "root", req, res, _window, string: event.split("?")[1], req, res })
+    }
   })
+
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
+  await Promise.all(global.promises)
   
   // create html
   var rootInnerHTML = createElement({ _window, id: "root", req, res })
@@ -2142,8 +2152,8 @@ const createDocument = async ({ req, res }) => {
     global = { ..._global }
   }
 
-  delete global.projectFunctions
   delete global.headers
+  delete global.data.project;
 
   res.send(
     `<!DOCTYPE html>
@@ -2188,7 +2198,7 @@ const createDocument = async ({ req, res }) => {
 
 module.exports = { createDocument };
 
-},{"./clone":37,"./createElement":46,"./generate":63,"./jsonFiles":75,"./toArray":103,"./toCode":107,"./toParam":116,"dotenv":160,"fs":159}],46:[function(require,module,exports){
+},{"./clone":37,"./createElement":46,"./generate":63,"./jsonFiles":75,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"dotenv":160,"fs":159}],46:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -3629,8 +3639,9 @@ module.exports = {focus}
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
+const { getCookie } = require("./cookie")
 
-const func = async ({ _window, id = "", req, res, e, ...params }) => {
+const func = async ({ _window, id = "", req, _, __, res, e, ...params }) => {
   
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -3638,19 +3649,21 @@ const func = async ({ _window, id = "", req, res, e, ...params }) => {
   var view = views[id], data = {}
   var func = params.func || {}
   var headers = clone(func.headers || {})
-  var project = headers.project = headers.project || global.projectId
+  headers.project = headers.project || global.projectId
   delete func.headers
+  if (!_window && getCookie()) func.cookies = getCookie()
   
   if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
 
   if (_window) {
-    
-    if (!global.projectFunctions[func.function]) return
-    if (global.projectFunctions[func.function].includes("send()"))
-      global.projectFunctions[func.function] = global.projectFunctions[func.function].replace("send()", "")
 
-    var _func = toCode({ _window, string: global.projectFunctions[func.function] })
-    toParam({ _window, string: _func, req, res, _: func.data })
+    var functions = global.data.project.functions
+    if (!functions[func.function]) return
+    if (functions[func.function].includes("send()"))
+      functions[func.function] = functions[func.function].replace("send()", "")
+
+    var _func = toCode({ _window, string: functions[func.function] })
+    toParam({ _window, string: _func, req, res, _: func.data, __ })
 
   } else {
     
@@ -3667,14 +3680,18 @@ const func = async ({ _window, id = "", req, res, e, ...params }) => {
   if (view) view.function = view.func = clone(data)
   global.function = global.func = clone(data)
   console.log(data)
-  if (data.message === "Force reload!") return location.reload()
+
+  if (data.params) {
+    data.params = toCode({ _window, string: data.params, e })
+    params = { ...toParam({ _window, id, e, string: data.params, asyncer: true, _, __, req, res }), params }
+  }
   
   // await params
   if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res }) 
 }
 
 module.exports = { func }
-},{"./clone":37,"./toAwait":104,"./toCode":107,"./toParam":116,"axios":129}],62:[function(require,module,exports){
+},{"./clone":37,"./cookie":41,"./toAwait":104,"./toCode":107,"./toParam":116,"axios":129}],62:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -8771,8 +8788,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             breakRequest = true
             if (!res) return
-            var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
-            res.send({ success: true, message: "Function executed successfully!", data: _data })
+            if (isParam({ _window, string: args[1] })) {
+              
+              var _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+              _params.success = _params.success !== undefined ? _params.success : true
+              _params.message = _params.message || "Function executed successfully!"
+              res.send(_params)
+
+            } else {
+              
+              var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+              res.send({ success: true, message: "Function executed successfully!", data: _data })
+            }
 
         } else if (k0 === "setPosition()" || k0 === "position()") {
           
@@ -10500,7 +10527,7 @@ const { clone } = require("./clone")
 const { toCode } = require("./toCode")
 const actions = require("./actions.json")
 
-const toApproval = ({ _window, e, string, id, _, __, req, res, object, _i }) => {
+const toApproval = ({ _window, e, string, id = "", _, __, req, res, object, _i }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
@@ -10595,7 +10622,7 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object, _i }) => 
     // function
     if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
 
-      clone(view["my-views"]).reverse().map(view => {
+      clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
           if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
@@ -10604,7 +10631,7 @@ const toApproval = ({ _window, e, string, id, _, __, req, res, object, _i }) => 
 
       // backend function
       if (!isFn) {
-        isFn = global.functions.find(fn => fn === path0.slice(0, -2))
+        isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
         if (isFn) backendFn = true
       }
     }
