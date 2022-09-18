@@ -106,10 +106,10 @@ const defaultInputHandler = ({ id }) => {
       }
 
       if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
-    }
 
-    // resize
-    resize({ id })
+      // resize
+      resize({ id })
+    }
 
     // arabic values
     isArabic({ id, value })
@@ -128,7 +128,6 @@ const defaultInputHandler = ({ id }) => {
       // selected_node is the text node
       // that is inside the div
       //sel.collapse(selected_node, 3)
-      console.log(getCaretIndex(e.target));
     }
   }
 

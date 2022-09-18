@@ -2566,10 +2566,10 @@ const defaultInputHandler = ({ id }) => {
       }
 
       if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
-    }
 
-    // resize
-    resize({ id })
+      // resize
+      resize({ id })
+    }
 
     // arabic values
     isArabic({ id, value })
@@ -2588,33 +2588,10 @@ const defaultInputHandler = ({ id }) => {
       // selected_node is the text node
       // that is inside the div
       //sel.collapse(selected_node, 3)
-      console.log(getCaretIndex(e.target));
     }
   }
 
   view.element.addEventListener("input", myFn)
-}
-function getCaretIndex(element) {
-  let position = 0;
-  const isSupported = typeof window.getSelection !== "undefined";
-  console.log(isSupported);
-  if (isSupported) {
-    const selection = window.getSelection();
-    // Check if there is a selection (i.e. cursor in place)
-    if (selection.rangeCount !== 0) {
-      // Store the original range
-      const range = window.getSelection().getRangeAt(0);
-      // Clone the range
-      const preCaretRange = range.cloneRange();
-      // Select all textual contents from the contenteditable element
-      preCaretRange.selectNodeContents(element);
-      // And set the range end to the original clicked position
-      preCaretRange.setEnd(range.endContainer, range.endOffset);
-      // Return the text length from contenteditable start to the range end
-      position = preCaretRange.toString().length;
-    }
-  }
-  return position;
 }
 
 module.exports = { defaultInputHandler }
