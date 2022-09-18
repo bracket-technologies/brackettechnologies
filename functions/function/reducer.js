@@ -4103,10 +4103,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!res) return
             if (isParam({ _window, string: args[1] })) {
               
-              var _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
-              _params.success = _params.success !== undefined ? _params.success : true
-              _params.message = _params.message || "Function executed successfully!"
-              res.send(_params)
+              var _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] }), _params_ = {}
+              _params_.data = _params
+              _params_.success = _params.success !== undefined ? _params.success : true
+              _params_.message = _params.message || "Function executed successfully!"
+              
+              res.send(_params_)
 
             } else {
               

@@ -208,3 +208,35 @@ Object.entries(views).map(([doc, data]) => {
     console.log(error)
   })
 })*/
+
+/*
+// create alsabil tourism clone project
+
+Object.entries(require("./pages.json")).map(([key, data]) => {
+
+  db.collection("page-alsabil").doc(key).set(data).then(() => {console.log(key + " page saved successfully!")})
+})
+
+Object.entries(require("./views.json")).map(([key, data]) => {
+
+  db.collection("view-alsabil").doc(key).set(data).then(() => {console.log(key + " view saved successfully!")})
+})
+
+db.collection("_project_").doc("alsabil").set(require("./project.json")).then(() => {console.log("alsabil project saved successfully!")})
+
+Object.entries(require("./users.json")).map(([key, data]) => {
+
+  db.collection("user-alsabil").doc(key).set(data).then(() => {console.log(key + " user saved successfully!")})
+})
+
+Object.entries(require("./agents.json")).map(([key, data]) => {
+
+  db.collection("agent-alsabil").doc(key).set(data).then(() => {console.log(key + " agent saved successfully!")})
+})
+
+Object.entries(require("./collections.json")).map(([key, data]) => {
+
+  db.collection("collection-alsabil").doc(key).set(data).then(() => {console.log(key + " collection saved successfully!")})
+})
+
+*/
