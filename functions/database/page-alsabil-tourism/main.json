@@ -1,14 +1,14 @@
 {
-  "name": "Al Sabil Travel",
-  "title": "Al Sabil Travel",
+  "id": "main",
   "functions": {},
   "creation-date": 1651335662000,
+  "title": "Al Sabil Travel",
+  "path": "/",
+  "name": "Al Sabil Travel",
+  "view": "main",
   "controls": [
     {
       "event": "beforeLoading?route():login?!headers:().accesskey;false"
     }
-  ],
-  "id": "main",
-  "view": "main",
-  "path": "/"
+  ]
 }

@@ -35,11 +35,11 @@ const setElement = ({ _window, id }) => {
     // arabic text
     isArabic({ id })
     
-    var timer = (new Date()).getTime()
+    //var timer = (new Date()).getTime()
     // resize
     /*setTimeout(() => { */if (view.type === "Input" || view.type === "Entry") resize({ id }) //}, 0)
-    global.myTimer += (new Date()).getTime() - timer
-    timer = (new Date()).getTime()
+    /*global.myTimer += (new Date()).getTime() - timer
+    timer = (new Date()).getTime()*/
 
     // status
     view.status = "Element Loaded"

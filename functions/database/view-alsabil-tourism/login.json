@@ -1,18 +1,11 @@
 {
   "id": "login",
-  "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]",
-  "creation-date": 1651335662000,
-  "functions": {
-    "save-user-and-agent": "save():[collection=user;data=user:()];save():[collection=agent;data=agent:()]",
-    "get-all-agents": "if():[agent:().admin;user:().admin]:[search():[collection=agent]:[agents:()=search:().data.values()]]",
-    "reset-user-and-agent": "if():[agent:().today!=todayStart().timestamp()]:[agent:().():[today=todayStart().timestamp();[today-uses]=0;today-bookings=0;today-buyings-usd=0]];if():[user:().today!=todayStart().timestamp()]:[user:().():[today=todayStart().timestamp();[today-uses]=0;today-bookings=0;today-buyings-usd=0]]",
-    "update-uses-and-last-visit": "agent:().[today-uses]=agent:().[today-uses]+1;agent:().uses=agent:().uses+1;agent:().last-visit=today().timestamp();user:().uses=user:().uses+1;user:().[today-uses]=user:().[today-uses]+1;user:().last-visit=today().timestamp()",
-    "update-user-and-agent": "reset-user-and-agent();update-uses-and-last-visit();save-user-and-agent();get-all-agents()"
-  },
   "children": [
     {
+      "type": "View?Data=signin;class=flex column;style():[width=40rem;borderRadius=1rem;backgroundColor=#fff;gap=2rem;padding=5rem 3rem]",
       "children": [
         {
+          "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
               "type": "Text?class=flexbox;text=Agent Login;style():[fontSize=2.2rem]"
@@ -20,13 +13,12 @@
             {
               "type": "Text?id=incorrect-data;class=flexbox;style():[color=#ff0000ee;fontSize=1.3rem;opacity=0];text=User name or password is incorrect!"
             }
-          ],
-          "type": "View?class=flex column;style.gap=0.5rem"
+          ]
         },
         {
+          "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
-              "type": "Input?id=username;path=username;label.text=User Name;container.style.width=100%;clicked.style.border=2px solid #3299FF;input.value=_string",
               "controls": [
                 {
                   "event": "input?style().backgroundColor=#fff;():username-req.style().opacity=0"
@@ -34,15 +26,16 @@
                 {
                   "event": "keydown?style().backgroundColor=#fff;():root.click()?e().key=Tab"
                 }
-              ]
+              ],
+              "type": "Input?id=username;path=username;label.text=User Name;container.style.width=100%;clicked.style.border=2px solid #3299FF;input.value=_string"
             },
             {
               "type": "Text?id=username-req;class=flex;style():[color=#ff0000ee;fontSize=1.2rem;opacity=0];text=User name is required!"
             }
-          ],
-          "type": "View?class=flex column;style.gap=0.5rem"
+          ]
         },
         {
+          "type": "View?class=flex column;style.gap=0.5rem",
           "children": [
             {
               "type": "Input?id=password;path=password;label.text=Password;container.style.width=100%;clicked.style.border=2px solid #3299FF;password;input.value=_string",
@@ -64,8 +57,7 @@
             {
               "type": "Text?id=password-req;class=flex;style():[color=#ff0000ee;fontSize=1.2rem;opacity=0];text=Password is required!"
             }
-          ],
-          "type": "View?class=flex column;style.gap=0.5rem"
+          ]
         },
         {
           "type": "View?class=flex column;style():[gap=1rem;marginTop=3rem;width=100%]",
@@ -89,8 +81,16 @@
             }
           ]
         }
-      ],
-      "type": "View?Data=signin;class=flex column;style():[width=40rem;borderRadius=1rem;backgroundColor=#fff;gap=2rem;padding=5rem 3rem]"
+      ]
     }
-  ]
+  ],
+  "creation-date": 1651335662000,
+  "functions": {
+    "update-uses-and-last-visit": "agent:().[today-uses]=agent:().[today-uses]+1;agent:().uses=agent:().uses+1;agent:().last-visit=today().timestamp();user:().uses=user:().uses+1;user:().[today-uses]=user:().[today-uses]+1;user:().last-visit=today().timestamp()",
+    "save-user-and-agent": "save():[collection=user;data=user:()];save():[collection=agent;data=agent:()]",
+    "update-user-and-agent": "reset-user-and-agent();update-uses-and-last-visit();save-user-and-agent();get-all-agents()",
+    "get-all-agents": "if():[agent:().admin;user:().admin]:[search():[collection=agent]:[agents:()=search:().data.values()]]",
+    "reset-user-and-agent": "if():[agent:().today!=todayStart().timestamp()]:[agent:().():[today=todayStart().timestamp();[today-uses]=0;today-bookings=0;today-buyings-usd=0]];if():[user:().today!=todayStart().timestamp()]:[user:().():[today=todayStart().timestamp();[today-uses]=0;today-bookings=0;today-buyings-usd=0]]"
+  },
+  "type": "View?class=flexbox;style():[backgroundColor=#f6f6f6;minHeight=100vh;padding=5rem;cursor=default]"
 }

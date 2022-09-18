@@ -2,6 +2,8 @@ const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
 const { clone } = require("./clone")
+const { colorize } = require("./colorize")
+const { toCode } = require("./toCode")
 
 module.exports = {
   toHtml: ({ _window, id, req, res }) => {
@@ -31,24 +33,30 @@ module.exports = {
       
       return createElement({ _window, id, req, res })
       
-    }).join("\n")
+    }).join("")
     
     var value = ""
 
     if (view.type === "Input") value = (view.input && view.input.value) !== undefined ?
     view.input.value : view.data !== undefined ? view.data : ""
-    else if (view.type === "Entry") value = (view.entry && view.entry.value) !== undefined ?
-    view.entry.value : view.data !== undefined ? view.data : ""
 
     var tag, style = toStyle({ _window, id })
     if (typeof value === 'object') value = ''
+
+    // colorize
+    if (view.colorize) {
+
+      innerHTML = innerHTML || view.text || (view.editable ? view.data : "")
+      innerHTML = toCode({ _window, string: innerHTML })
+      innerHTML = colorize({ _window, string: innerHTML })
+    }
     
     if (view.type === "View" || view.type === "Box") {
-      tag = `<div ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML || view.text || ""}\n</div>`
+      tag = `<div ${view.draggable ? "draggable='true'" : ""} spellcheck="false" ${view.editable ? "contenteditable" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</div>`
     } else if (view.type === "Image") {
       tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index}' src='${view.src}'>${innerHTML}</img>`
     } else if (view.type === "Table") {
-      tag = `<table ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML}\n</table>`
+      tag = `<table ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</table>`
     } else if (view.type === "Row") {
       tag = `<tr ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</tr>`
     } else if (view.type === "Header") {
@@ -79,9 +87,9 @@ module.exports = {
       } else {
         tag = `<p ${view.editable || view.contenteditable ? "contenteditable ": ""}class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${text}</p>`
       }
-    } else if (view.type === "Entry") {
-      tag = `<p ${view.readonly ? "" : "contenteditable"} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${value}</p>`
-    } else if (view.type === "Icon") {
+    } /*else if (view.type === "Entry") {
+      tag = `<div ${view.readonly ? "" : "contenteditable"} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${value}</div>`
+    } */else if (view.type === "Icon") {
       tag = `<i ${view.draggable ? "draggable='true'" : ""} class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
     } else if (view.type === "Textarea") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${view.data || view.input.value || ""}</textarea>`

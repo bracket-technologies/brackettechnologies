@@ -2459,7 +2459,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else if (Array.isArray(o)) o.splice(_index, 0, _item)
             answer = o
             
-        } else if (k0 === "pull()") {
+        } else if (k0 === "pull()") { // pull by index
 
             // if no it pulls the last element
             var _pull = args[1] !== undefined ? toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object }) : o.length - 1
@@ -2467,7 +2467,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             o.splice(_pull,1)
             answer = o
             
-        } else if (k0 === "pullItems()") {
+        } else if (k0 === "pullItems()") { // pull by item
 
             if (isParam({ _window, string: args[1] }) || isCondition({ _window, string: args[1] })) {
             
@@ -2676,7 +2676,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _o
             if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _, __, _i })
             else _o = o
-            answer = _o.toUpperCase()
+            answer = typeof _o === "string" ? _o.toUpperCase() : _o
             
         } else if (k0 === "lowercase()" || k0 === "toLowerCase()" || k0 === "tolowercase()") {
             

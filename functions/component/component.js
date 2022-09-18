@@ -5,5 +5,5 @@ module.exports = {
   Checkbox : require("./Checkbox"),
   Map : require("./Map"),
   Swiper : require("./Swiper"),
-  Entry : require("./Entry")
+  // Entry : require("./Entry")
 }

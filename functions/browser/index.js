@@ -262,258 +262,6 @@ const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
 const { override } = require('../function/merge')
 const { clone } = require('../function/clone')
-
-const Entry = (component) => {
-
-    if (component.templated) return component
-
-    component.hover = component.hover || {}
-    component.style = component.style || {}
-    component.hover.style = component.hover.style || {}
-    component.style.after = component.style.after || {}
-
-    // container
-    component.container = component.container || {}
-
-    // icon
-    component.icon = component.icon || {}
-    component.icon.style = component.icon.style || {}
-    component.icon.hover = component.icon.hover || {}
-    component.icon.hover.style = component.icon.hover.style || {}
-    component.icon.style.after = component.icon.style.after || {}
-
-    // entry
-    component.entry = component.entry || {}
-    component.entry.hover = component.entry.hover || {}
-    component.entry.type = component.password && "password" || component.entry.type || 'text'
-    component.entry.style = component.entry.style || {}
-    component.entry.hover.style = component.entry.hover.style || {}
-    component.entry.style.after = component.entry.style.after || {}
-
-    // required
-    if (component.required) component.required = typeof component.required === "object" ? component.required : {}
-    
-    component = toComponent(component)
-
-    var { id, entry, droplist, readonly, style, controls, duplicated, duration, required,
-        placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
-        duplicatable, lang, unit, currency, google, key, minlength , children, container, generator
-    } = component
-    
-    if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
-    if (clearable && typeof clearable !== "object") clearable = {}
-    if (generator && typeof generator !== "object") component.generator = generator = {}
-
-    readonly = readonly ? true : false
-    removable = removable !== undefined ? (removable === false ? false : true) : false
-
-    if (duplicatable) removable = true
-    if (minlength === undefined) minlength = 1
-    if (droplist) droplist.align = droplist.align || "left"
-    
-    if (label && (label.location === "inside" || label.position === "inside")) {
-
-        var label = clone(component.label)
-        var derivations = clone(component.derivations)
-        var path = component.path
-        var parent = component.parent
-        var Data = component.Data
-        var password = component.password && true
-        var text = label.text
-        component.controls = component.controls || []
-        
-        delete component.parent
-        delete component.label
-        delete component.path
-        delete component.id
-        delete component.password
-        delete component.derivations
-        delete label.text
-
-        return {
-            id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true,
-            "type": `View?class=flex;style.alignItems=center;style.justifyContent=flex-start;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
-            "children": [{
-                "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
-                "children": [{
-                    "type": `Text?text='${text || "Label"}';style.color=#888;style.fontSize=1.1rem;style.width=fit-content;${toString(label)}`,
-                    "controls": [{
-                        "event": "click?next().getEntry().focus()"
-                    }]
-                }, Entry({ ...component, component: true, labeled: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
-                ]
-            }, {
-                "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${toString(password)}?${password}`,
-                "children": [{
-                    "type": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
-                    "controls": [{
-                        "event": "click?parent().prev().getEntry().element.type=text;next().style().display=flex;style().display=none"
-                    }]
-                }, {
-                    "type": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
-                    "controls": [{
-                        "event": "click?parent().prev().getEntry().element.type=password;prev().style().display=flex;style().display=none"
-                    }]
-                }]
-            }],
-            "controls": [{
-                "event": "click:body?style().border=if():[clicked:().outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked:()];!droplist.contains():[clicked:()]"
-            }, {
-                "event": "click?getEntry().focus()?!getEntry().focus"
-            }]
-        }
-    }
-    
-    if ((label && (label.location === "outside" || label.position === "outside")) || label) {
-
-        var label = clone(component.label)
-        var derivations = clone(component.derivations)
-        var path = component.path
-        var parent = component.parent
-        var Data = component.Data
-        var tooltip = component.tooltip
-        var text = label.text
-        component.clicked = component.clicked || { style: {} }
-        clickedBorder = component.clicked.style.border || "2px solid #008060"
-        component.clicked.preventDefault = true
-        if (component.clicked.style.border) delete component.clicked
-        component.controls = component.controls || []
-        
-        delete component.label
-        delete component.path
-        delete component.id
-        delete component.tooltip
-        delete label.text
-        label.tooltip = tooltip
-
-        return {
-            id, Data, parent, derivations, required, path, islabel: true,
-            "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
-            "children": [{
-                "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
-            }, 
-                Entry({ ...component, component: true, labeled: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
-            {
-                "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
-                "children": [{
-                    "type": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
-                }, {
-                    "type": `Text?text=Entry is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
-                }]
-            }],
-            "controls": [{
-                "event": `click:1stChild();click:2ndChild()?2ndChild().style().border=${clickedBorder}`
-            }, {
-                "event": `click:body?2ndChild().style().border=${style.border || "1px solid #ccc"}?!contains():[clicked:()];!droplist.contains():[clicked:()]`
-            }]
-        }
-    }
-    
-    return {
-        ...component,
-        type: 'View',
-        class: 'flexbox unselectable',
-        // remove from comp
-        controls: [{
-            event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]`
-        }, {
-            event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():generator:[():[${id}+'-generate'].style().opacity=0]`
-        }],
-        style: {
-            cursor: readonly ? "pointer" : "text",
-            display: "flex",
-            width: "fit-content",
-            maxWidth: "100%",
-            position: "relative",
-            backgroundColor: "inherit",
-            height: "fit-content",
-            borderRadius: "0.25rem",
-            overflow: "hidden",
-            transition: ".1s",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            border: entry.type === "file" ? "1px dashed #ccc" : "0",
-            ...style,
-        },
-        children: [...children, {
-            type: `Entry`,
-            id: `${id}-entry`,
-            class: `${component.class.includes("ar") ? "ar " : ""}${entry.class}`,
-            // droplist,
-            entry,
-            currency, 
-            readonly,
-            day,
-            unit,
-            key,
-            lang,
-            google,
-            duration,
-            textarea,
-            labeled,
-            placeholder,
-            duplicated,
-            disabled,
-            controls,
-            templated: true,
-            'placeholder-ar': component['placeholer-ar'],
-            hover: {
-                ...entry.hover,
-                style: {
-                    backgroundColor: style.after.backgroundColor,
-                    color: style.after.color || style.color,
-                    ...entry.style.after,
-                    ...entry.hover.style
-                }
-            },
-            style: {
-                display: "flex",
-                alignItems: "center",
-                alignSelf: "center",
-                justifyContent: "flex-start",
-                textAlign: "left",
-                width: password || clearable || removable || copyable || generator ? "100%" : "fit-content",
-                flex: "1",
-                borderRadius: style.borderRadius || '0.25rem',
-                backgroundColor: style.backgroundColor || 'inherit',
-                fontSize: style.fontSize || '1.4rem',
-                maxHeight: style.maxHeight || "initial",
-                border: '0',
-                padding: "0.5rem",
-                color: entry.type === "number" ? "blue" : '#444',
-                outline: 'none',
-                userSelect: password ? "none" : "initial",
-                ...entry.style
-            }
-        }, {
-            type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;right=if():[parent().password]:4rem:0;width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();():${id}-entry.txt()=;():${id}-entry.focus()].elif():[parent().clearable]:[():${id}-entry.focus()].elif():[parent().removable;!():${id}-entry.txt();parent().data().len()!=1]:[parent().rem()]]?parent().clearable||parent().removable`,
-        }, {
-            type: `Text?class=flexbox pointer;id=${id}+-generate;text=ID;style:[position=absolute;color=blue;right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-entry.txt()=().generated;():${id}-entry.focus()]?parent().generator`,
-        }, {
-            type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[position=absolute;right=if():[parent().clearable]:[2.5rem]:0;width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[():${id}-entry.txt()]:[data().copyToClipBoard();():${id}-entry.focus()]];mininote.text='copied!'?parent().copyable`,
-        }, {
-            type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
-            children: [{
-                type: `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
-                controls: [{
-                    event: "click?parent().prev().element.type=text;next().style().display=flex;style().display=none"
-                }]
-            }, {
-                type: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
-                controls: [{
-                    event: "click?parent().prev().element.type=password;prev().style().display=flex;style().display=none"
-                }]
-            }]
-        }]
-    }
-}
-
-module.exports = Entry
-},{"../function/clone":37,"../function/merge":78,"../function/toComponent":108,"../function/toString":120}],4:[function(require,module,exports){
-const { toComponent } = require('../function/toComponent')
-const { toString } = require('../function/toString')
-const { override } = require('../function/merge')
-const { clone } = require('../function/clone')
 const { generate } = require('../function/generate')
 
 const Input = (component) => {
@@ -836,7 +584,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":37,"../function/generate":63,"../function/merge":78,"../function/toComponent":108,"../function/toString":120}],5:[function(require,module,exports){
+},{"../function/clone":36,"../function/generate":63,"../function/merge":78,"../function/toComponent":108,"../function/toString":120}],4:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -975,7 +723,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":108}],6:[function(require,module,exports){
+},{"../function/toComponent":108}],5:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1053,7 +801,7 @@ module.exports = (component) => {
                     children: [{
                         type: "View?style.display=inline-flex",
                         children: [{
-                            type: "Input?#mode.dark.style.color=#c39178;if():[path().lastElement()=id]:[input.readonly=true];style.maxHeight=3.2rem;style.height=3.2rem;#mode.dark.style.border=1px solid #131313;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;style.borderRadius=.5rem;input.style.color=#a35521",
+                            type: "View?class=flex;colorize;editable;#mode.dark.style.color=#c39178;#mode.dark.border=1px solid #131313;if():[path().lastElement()=id]:[input.readonly=true];style:[alignItems=center;width=fit-content;minWidth=1rem;minHeight=3rem;maxHeight=3rem;height=3rem;border=1px solid #ffffff00;borderRadius=.5rem;color=#a35521;fontSize=1.4rem;padding=.5rem];hover.style.border=1px solid #ddd;input.style.color=#a35521",
                             controls: [{
                                 event: "keyup?insert-index:()=2ndParent().2ndParent().parent().children().findIndex():[id=2ndParent().2ndParent().id]+1;if():[2ndParent().2ndParent().parent().data().type()=map]:[2ndParent().2ndParent().parent().data().[_string]=_string];if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[2ndParent().2ndParent().parent().data().len()+1];2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
                                 actions: "wait():[insert:[2ndParent().2ndParent().parent().id]]?insert.component=2ndParent().2ndParent().parent().children.1;insert.path=if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().derivations.clone().push():[insert-index:()]].else():[2ndParent().2ndParent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.getInput().focus()]"
@@ -1115,7 +863,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":108}],7:[function(require,module,exports){
+},{"../function/toComponent":108}],6:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -1142,7 +890,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":108}],8:[function(require,module,exports){
+},{"../function/toComponent":108}],7:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 const { toString } = require("../function/toString")
 
@@ -1174,7 +922,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":108,"../function/toString":120}],9:[function(require,module,exports){
+},{"../function/toComponent":108,"../function/toString":120}],8:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Item : require("./Item"),
@@ -1182,10 +930,10 @@ module.exports = {
   Checkbox : require("./Checkbox"),
   Map : require("./Map"),
   Swiper : require("./Swiper"),
-  Entry : require("./Entry")
+  // Entry : require("./Entry")
 }
 
-},{"./Checkbox":2,"./Entry":3,"./Input":4,"./Item":5,"./Map":6,"./Swiper":7,"./Switch":8}],10:[function(require,module,exports){
+},{"./Checkbox":2,"./Input":3,"./Item":4,"./Map":5,"./Swiper":6,"./Switch":7}],9:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   window.views[id].actionlist.id = controls.id = id = controls.id || id
@@ -1195,21 +943,21 @@ module.exports = ({ controls, id }) => {
     actions: `async():[update:actionlist]:[setPosition:actionlist]?().actionlist.undeletable=():actionlist.undeletable||_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;)(:actionlist-caller=${id};)(:actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]?)(:actionlist-caller!=().id`
   }]
 }
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `change:[getInput().id]?${controls}??getInput().id`
     }]
 }
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `click?${controls}`
     }]
 }
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var local = window.views[id]
@@ -1229,7 +977,7 @@ module.exports = ({ controls, id }) => {
         "event": "click:body?if():[mode:()=default-mode:()]:[clicked.style.keys()._():[style()._=().style._||null]]?!required.mount;!parent().required.mount;!clicked.disable;!contains():[clicked:()];!droplist.contains():[clicked:()]"
     }]
 }
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = {
   item: require("./item"),
   list: require("./list"),
@@ -1254,7 +1002,7 @@ module.exports = {
   loaded: require("./loaded"),
   contentful: require("../function/contentful").contentful
 }
-},{"../function/contentful":39,"./actionlist":10,"./change":11,"./click":12,"./clicked":13,"./droplist":15,"./hover":16,"./item":17,"./keydown":18,"./keypress":19,"./keyup":20,"./list":21,"./loaded":22,"./mininote":23,"./mousedown":24,"./mouseenter":25,"./mouseleave":26,"./mouseover":27,"./mouseup":28,"./popup":29,"./pricable":30,"./tooltip":31}],15:[function(require,module,exports){
+},{"../function/contentful":39,"./actionlist":9,"./change":10,"./click":11,"./clicked":12,"./droplist":14,"./hover":15,"./item":16,"./keydown":17,"./keypress":18,"./keyup":19,"./list":20,"./loaded":21,"./mininote":22,"./mousedown":23,"./mouseenter":24,"./mouseleave":25,"./mouseover":26,"./mouseup":27,"./popup":28,"./pricable":29,"./tooltip":30}],14:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   window.views[id].droplist.id = controls.id = id = controls.id || id
@@ -1273,7 +1021,7 @@ module.exports = ({ controls, id }) => {
     event: `keyup:input()?():droplist.children().():mouseleave();keyup-index:()=if():[e().keyCode=40]:[keyup-index:()+1]:[[keyup-index:()]-1];():droplist.children().[keyup-index:()].mouseenter()?!():${id}.droplist.preventDefault;e().keyCode=40||e().keyCode=38;droplist-positioner:();if():[e().keyCode=38]:[keyup-index:()>0].elif():[e().keyCode=40]:[keyup-index:()<():droplist.children.lastIndex()]`
   }]
 }
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var view = window.views[id]
@@ -1297,7 +1045,7 @@ module.exports = ({ controls, id }) => {
         // "actions": "setStyle?style=().hover.default.style"
     }]
 }
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = ({params}) => [
   "setData?data.value=().text",
   `resetStyles?():[)(:${params.state}.0].mountonload=false??)(:${params.state}`,
@@ -1309,28 +1057,28 @@ module.exports = ({params}) => [
   `mountAfterStyles?().mountonload:)(:${params.state}.0??)(:${params.state}`,
 ];
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `keydown?${controls}`
     }]
 }
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
   return [{
     event: `keypress?${controls}`
   }]
 }
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `keyup?${controls}`
     }]
 }
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = ({ controls }) => {
 
   return [{
@@ -1349,14 +1097,14 @@ module.exports = ({ controls }) => {
   }]
 }
 
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
         event: `loaded?${controls}`
     }]
 }
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   id = controls.id || id
@@ -1367,42 +1115,42 @@ module.exports = ({ controls, id }) => {
     actions: "setPosition:mininote?position.positioner=mouse;position.placement=right"
   }]
 }
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mousedown?${controls}`
     }]
 }
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mouseenter?${controls}`
     }]
 }
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mouseleave?${controls}`
     }]
 }
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mouseover?${controls}`
     }]
 }
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = ({ controls }) => {
   
     return [{
       event: `mouseup?${controls}`
     }]
 }
-},{}],29:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   if (typeof window.views[id].popup !== "object") window.views[id].popup = {}
@@ -1413,7 +1161,7 @@ module.exports = ({ controls, id }) => {
     actions: `setPosition:popup?popup-positioner:()=${id};():popup.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "left"};position.distance=${controls.distance};position.align=${controls.align};().popup.style.keys()._():[():popup.style()._=().popup.style._];update():popup?popup-positioner:()!=().id`
   }]
 }
-},{}],30:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = ({ id }) => {
     
     var input_id = window.views[id].type === 'Input' ? id : `${id}-input`
@@ -1421,7 +1169,7 @@ module.exports = ({ id }) => {
         "event": `input:${input_id}?():${input_id}.data()=():${input_id}.element.value().toPrice().else().0;():${input_id}.element.value=():${input_id}.data().else().0`
     }]
 }
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -1437,7 +1185,7 @@ module.exports = ({ controls, id }) => {
     event: "mouseleave?clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0"
   }]
 }
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports=[
   "data()", "Data()", "doc()", "mail()", "action()", "exec()"
  , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()"
@@ -1462,7 +1210,7 @@ module.exports=[
  , "replaceItem()", "grandParent()", "grandChild()", "grandChildren()", "open()", "2ndNext()", "isNaN()"
  , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()"
 ]
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
 
 const axios = async ({ id, ...params }) => {
@@ -1506,7 +1254,7 @@ const axios = async ({ id, ...params }) => {
 }
 
 module.exports = { axios }
-},{"./toAwait":104,"axios":129}],34:[function(require,module,exports){
+},{"./toAwait":104,"axios":129}],33:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -1529,7 +1277,7 @@ const blur = ({ id }) => {
 
 module.exports = {blur}
 
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 const capitalize = (string, minimize) => {
   if (typeof string !== "string") return string
 
@@ -1554,7 +1302,7 @@ const capitalizeFirst = (string, minimize) => {
 
 module.exports = {capitalize, capitalizeFirst}
 
-},{}],36:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 const {clone} = require("./clone");
 
 const clearValues = (obj) => {
@@ -1596,7 +1344,7 @@ const clearValues = (obj) => {
 
 module.exports = {clearValues};
 
-},{"./clone":37}],37:[function(require,module,exports){
+},{"./clone":36}],36:[function(require,module,exports){
 const clone = (obj) => {
 
   var copy
@@ -1616,7 +1364,35 @@ const clone = (obj) => {
 
 module.exports = {clone}
 
-},{}],38:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
+const { generate } = require("./generate")
+const { toCode } = require("./toCode")
+const colors = ["#a35521", "#1E90FF", "#B22222", "#FF4500", "#FF1493", "#7FFF00", "#31313D"]
+
+const colorize = ({ _window, string, start = "[", end = "]", index = 0 }) => {
+    
+    var global = _window ? _window.global : window.global
+    if (typeof string !== "string") return string
+    while (string.includes("coded()")) {
+
+        var string0 = string.split("coded()")[0]
+        var key = global.codes["coded()" + string.split("coded()")[1].slice(0, 5)]
+        key = colorize({ string: start + key + end, index: index + 1 })
+        string = string0 + key + string.split("coded()")[1].slice(5) + (string.split("coded()").length > 2 ? "coded()" + string.split("coded()").slice(2).join("coded()") : "")
+    }
+
+    // equal
+    // string = string.split("=").join(`<span style="color:#444">=</span>`)
+  
+    // semicolon
+    string = string.split(";").join(`<span style="color:#000">;</span>`)
+
+    return `<span style="color:${colors[index]}">${string}</span>`
+}
+
+module.exports = { colorize }
+
+},{"./generate":63,"./toCode":107}],38:[function(require,module,exports){
 module.exports = {
     compare: (value1, operator, value2) => {
         if (operator === "==") return value1 === value2
@@ -1793,7 +1569,7 @@ const createActions = ({ params, id }) => {
 
 module.exports = {createActions}
 
-},{"../control/control":14,"./execute":56}],44:[function(require,module,exports){
+},{"../control/control":13,"./execute":56}],44:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
@@ -1846,7 +1622,7 @@ module.exports = {
   }
 }
 
-},{"../component/component":9,"./clone":37,"./generate":63,"./toApproval":102,"./toCode":107,"./toParam":116}],45:[function(require,module,exports){
+},{"../component/component":8,"./clone":36,"./generate":63,"./toApproval":102,"./toCode":107,"./toParam":116}],45:[function(require,module,exports){
 const { createElement } = require("./createElement");
 const { getJsonFiles } = require("./jsonFiles");
 const fs = require("fs");
@@ -2198,7 +1974,7 @@ const createDocument = async ({ req, res }) => {
 
 module.exports = { createDocument };
 
-},{"./clone":37,"./createElement":46,"./generate":63,"./jsonFiles":75,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"dotenv":160,"fs":159}],46:[function(require,module,exports){
+},{"./clone":36,"./createElement":46,"./generate":63,"./jsonFiles":75,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"dotenv":160,"fs":159}],46:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -2370,7 +2146,7 @@ const createElement = ({ _window, id, req, res }) => {
 
 module.exports = { createElement }
 
-},{"./clone":37,"./createTags":47,"./generate":63,"./reducer":85,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"./toValue":122}],47:[function(require,module,exports){
+},{"./clone":36,"./createTags":47,"./generate":63,"./reducer":85,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"./toValue":122}],47:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2548,7 +2324,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":37,"./createComponent":44,"./createElement":46,"./execute":56,"./generate":63,"./toArray":103,"./toHtml":112}],48:[function(require,module,exports){
+},{"./clone":36,"./createComponent":44,"./createElement":46,"./execute":56,"./generate":63,"./toArray":103,"./toHtml":112}],48:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -2566,7 +2342,7 @@ const createView = ({ view, id = generate() }) => {
 }
 
 module.exports = {createView}
-},{"./clone":37,"./generate":63,"./toArray":103,"./update":124}],49:[function(require,module,exports){
+},{"./clone":36,"./generate":63,"./toArray":103,"./update":124}],49:[function(require,module,exports){
 const { toParam } = require("./toParam");
 
 module.exports = {
@@ -2655,7 +2431,7 @@ const clearData = ({ id, e, clear = {} }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":37,"./reducer":85,"./setContent":93,"./setData":94}],51:[function(require,module,exports){
+},{"./clone":36,"./reducer":85,"./setContent":93,"./setData":94}],51:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -2685,6 +2461,8 @@ module.exports = {decode}
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
+const { colorize } = require("./colorize")
+const { toCode } = require("./toCode")
 
 const defaultInputHandler = ({ id }) => {
 
@@ -2692,7 +2470,7 @@ const defaultInputHandler = ({ id }) => {
   var global = window.global
 
   if (!view) return
-  if (view.type !== "Input" && view.type !== "Entry") return
+  if (view.type !== "Input" && view.type !== "Entry" && !view.editable) return
 
   // checkbox input
   if (view.input && view.input.type === "checkbox") {
@@ -2726,19 +2504,19 @@ const defaultInputHandler = ({ id }) => {
   view.element.addEventListener("keydown", (e) => {
     if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
   })
-  view.contenteditable = true
+
   var myFn = async (e) => {
     
     e.preventDefault()
     var value 
     if (view.type === "Input") value = e.target.value
-    else if (view.type === "Entry") value = e.target.innerHTML
+    else if (view.type === "Entry" || view.editable) value = (e.target.textContent===undefined) ? e.target.innerText : e.target.textContent
 
-    if (!view.contenteditable) {
+    /*if (!view.contenteditable) {
       if (view.type === "Input") e.target.value = view.prevValue
       else if (view.type === "Entry") e.target.innerHTML = view.prevValue
       return 
-    }
+    }*/
 
     // views[id] doesnot exist
     if (!window.views[id]) {
@@ -2746,7 +2524,7 @@ const defaultInputHandler = ({ id }) => {
       return 
     }
 
-    if (!view.preventDefault && view.input ? !view.input.preventDefault : view.entry ? !view.entry.preventDefault : false) {
+    if (!view.preventDefault && view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : false) {
       
       // for number inputs, strings are rejected
       if (view.type === "Input" && view.input) {
@@ -2776,56 +2554,18 @@ const defaultInputHandler = ({ id }) => {
             value = value.replace('&amp;','&')
             e.target.value = value
           }
+        }
 
-          /*if (e.data === "[") {
-            var _prev = value.slice(0, e.target.selectionStart - 1)
-            var _next = value.slice(e.target.selectionStart)
-            e.target.value = value = _prev + "[]" + _next
-            e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
+        if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
 
-          } else if (e.data === "(" && value[e.target.selectionStart - 2] !== ")") {
-            var _prev = value.slice(0, e.target.selectionStart - 1)
-            var _next = value.slice(e.target.selectionStart)
-            e.target.value = value = _prev + "()" + _next
-            e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
-
-          } else */if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
-            var _prev = value.slice(0, e.target.selectionStart - 1)
-            var _next = value.slice(e.target.selectionStart)
-            e.target.value = value = _prev + _next
-            e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
-
-          } /*else if (e.data === "]" && value[e.target.selectionStart - 2] === "[" && value[e.target.selectionStart] === "]") {
-            var _prev = value.slice(0, e.target.selectionStart)
-            var _next = value.slice(e.target.selectionStart + 1)
-            e.target.value = value = _prev + _next
-            e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
-
-          } else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
-            e.target.value = value = "Text?class=flexbox;text=;style:[]"
-            e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
-
-          } else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
-            e.target.value = value = "Icon?class=flexbox;name=;style:[]"
-            e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
-
-          } else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
-            e.target.value = value = "Input?style:[]"
-            e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
-
-          } else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
-            e.target.value = value = "Image?class=flexbox;src=;style:[]"
-            e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
-
-          } else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
-            e.target.value = value = "View?class=vertical;style:[]"
-            e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
-
-          }*/
+          var _prev = value.slice(0, e.target.selectionStart - 1)
+          var _next = value.slice(e.target.selectionStart)
+          e.target.value = value = _prev + _next
+          e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
         }
       }
 
-      if (view.Data && (view.input ? !view.input.preventDefault : view.entry ? !view.entry.preventDefault : true)) setData({ id, data: { value } })
+      if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
     }
 
     // resize
@@ -2833,18 +2573,93 @@ const defaultInputHandler = ({ id }) => {
 
     // arabic values
     isArabic({ id, value })
-
-    // prevValuew
-    view.prevValue = value
     
     console.log(value, global[view.Data], view.derivations)
+
+    // colorize
+    if (view.colorize) {
+      
+      value = toCode({ string: value })
+      if (view.type === "Input") e.target.value = colorize({ string: value })
+      else e.target.innerHTML = colorize({ string: value })
+
+      var sel = window.getSelection()
+      var selected_node = sel.anchorNode
+      // selected_node is the text node
+      // that is inside the div
+      //sel.collapse(selected_node, 3)
+      console.log(getCaretIndex(e.target));
+    }
   }
 
   view.element.addEventListener("input", myFn)
 }
+function getCaretIndex(element) {
+  let position = 0;
+  const isSupported = typeof window.getSelection !== "undefined";
+  console.log(isSupported);
+  if (isSupported) {
+    const selection = window.getSelection();
+    // Check if there is a selection (i.e. cursor in place)
+    if (selection.rangeCount !== 0) {
+      // Store the original range
+      const range = window.getSelection().getRangeAt(0);
+      // Clone the range
+      const preCaretRange = range.cloneRange();
+      // Select all textual contents from the contenteditable element
+      preCaretRange.selectNodeContents(element);
+      // And set the range end to the original clicked position
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      // Return the text length from contenteditable start to the range end
+      position = preCaretRange.toString().length;
+    }
+  }
+  return position;
+}
 
 module.exports = { defaultInputHandler }
-},{"./data":50,"./isArabic":70,"./resize":89}],53:[function(require,module,exports){
+
+
+/*if (e.data === "[") {
+  var _prev = value.slice(0, e.target.selectionStart - 1)
+  var _next = value.slice(e.target.selectionStart)
+  e.target.value = value = _prev + "[]" + _next
+  e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
+
+} else if (e.data === "(" && value[e.target.selectionStart - 2] !== ")") {
+  var _prev = value.slice(0, e.target.selectionStart - 1)
+  var _next = value.slice(e.target.selectionStart)
+  e.target.value = value = _prev + "()" + _next
+  e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
+
+} else */ /*else if (e.data === "]" && value[e.target.selectionStart - 2] === "[" && value[e.target.selectionStart] === "]") {
+  var _prev = value.slice(0, e.target.selectionStart)
+  var _next = value.slice(e.target.selectionStart + 1)
+  e.target.value = value = _prev + _next
+  e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
+
+} else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
+  e.target.value = value = "Text?class=flexbox;text=;style:[]"
+  e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
+
+} else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
+  e.target.value = value = "Icon?class=flexbox;name=;style:[]"
+  e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
+
+} else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
+  e.target.value = value = "Input?style:[]"
+  e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
+
+} else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
+  e.target.value = value = "Image?class=flexbox;src=;style:[]"
+  e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
+
+} else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
+  e.target.value = value = "View?class=vertical;style:[]"
+  e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
+
+}*/
+},{"./colorize":37,"./data":50,"./isArabic":70,"./resize":89,"./toCode":107}],53:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -2994,7 +2809,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":37,"./reducer":85,"./toString":120,"./toValue":122,"./update":124}],54:[function(require,module,exports){
+},{"./clone":36,"./reducer":85,"./toString":120,"./toValue":122,"./update":124}],54:[function(require,module,exports){
 const axios = require("axios");
 const { clone } = require("./clone");
 const { toArray } = require("./toArray");
@@ -3034,7 +2849,7 @@ const erase = async ({ _window, req, res, id, e, ...params }) => {
 }
 
 module.exports = { erase }
-},{"./clone":37,"./toArray":103,"./toAwait":104,"./toString":120,"axios":129}],55:[function(require,module,exports){
+},{"./clone":36,"./toArray":103,"./toAwait":104,"./toString":120,"axios":129}],55:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -3354,7 +3169,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":37,"./execute":56,"./generate":63,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"./toValue":122}],56:[function(require,module,exports){
+},{"./clone":36,"./execute":56,"./generate":63,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"./toValue":122}],56:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -3599,7 +3414,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":37,"./compare":38,"./isEqual":72,"./toArray":103,"./toOperator":115}],60:[function(require,module,exports){
+},{"./clone":36,"./compare":38,"./isEqual":72,"./toArray":103,"./toOperator":115}],60:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -3691,7 +3506,7 @@ const func = async ({ _window, id = "", req, _, __, res, e, ...params }) => {
 }
 
 module.exports = { func }
-},{"./clone":37,"./cookie":41,"./toAwait":104,"./toCode":107,"./toParam":116,"axios":129}],62:[function(require,module,exports){
+},{"./clone":36,"./cookie":41,"./toAwait":104,"./toCode":107,"./toParam":116,"axios":129}],62:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -3869,7 +3684,7 @@ module.exports = {
   insert,
   axios
 }
-},{"./axios":33,"./blur":34,"./capitalize":35,"./clearValues":36,"./clone":37,"./compare":38,"./contentful":39,"./controls":40,"./cookie":41,"./createActions":43,"./createComponent":44,"./createDocument":45,"./createElement":46,"./createView":48,"./data":50,"./decode":51,"./defaultInputHandler":52,"./droplist":53,"./erase":54,"./event":55,"./execute":56,"./exportJson":57,"./fileReader":58,"./filter":59,"./focus":60,"./generate":63,"./getDateTime":64,"./getDaysInMonth":65,"./getParam":66,"./importJson":68,"./insert":69,"./isArabic":70,"./isEqual":72,"./isPath":74,"./jsonFiles":75,"./keys":76,"./log":77,"./merge":78,"./note":79,"./overflow":80,"./popup":81,"./position":82,"./preventDefault":83,"./reducer":85,"./refresh":86,"./reload":87,"./remove":88,"./resize":89,"./route":90,"./save":91,"./search":92,"./setContent":93,"./setData":94,"./setElement":95,"./setPosition":96,"./sort":97,"./starter":98,"./state":99,"./style":100,"./switchMode":101,"./toApproval":102,"./toArray":103,"./toAwait":104,"./toCSV":105,"./toCode":107,"./toComponent":108,"./toControls":109,"./toHtml":112,"./toId":113,"./toNumber":114,"./toOperator":115,"./toParam":116,"./toString":120,"./toStyle":121,"./toValue":122,"./toggleView":123,"./update":124,"./upload":126,"./wait":127}],63:[function(require,module,exports){
+},{"./axios":32,"./blur":33,"./capitalize":34,"./clearValues":35,"./clone":36,"./compare":38,"./contentful":39,"./controls":40,"./cookie":41,"./createActions":43,"./createComponent":44,"./createDocument":45,"./createElement":46,"./createView":48,"./data":50,"./decode":51,"./defaultInputHandler":52,"./droplist":53,"./erase":54,"./event":55,"./execute":56,"./exportJson":57,"./fileReader":58,"./filter":59,"./focus":60,"./generate":63,"./getDateTime":64,"./getDaysInMonth":65,"./getParam":66,"./importJson":68,"./insert":69,"./isArabic":70,"./isEqual":72,"./isPath":74,"./jsonFiles":75,"./keys":76,"./log":77,"./merge":78,"./note":79,"./overflow":80,"./popup":81,"./position":82,"./preventDefault":83,"./reducer":85,"./refresh":86,"./reload":87,"./remove":88,"./resize":89,"./route":90,"./save":91,"./search":92,"./setContent":93,"./setData":94,"./setElement":95,"./setPosition":96,"./sort":97,"./starter":98,"./state":99,"./style":100,"./switchMode":101,"./toApproval":102,"./toArray":103,"./toAwait":104,"./toCSV":105,"./toCode":107,"./toComponent":108,"./toControls":109,"./toHtml":112,"./toId":113,"./toNumber":114,"./toOperator":115,"./toParam":116,"./toString":120,"./toStyle":121,"./toValue":122,"./toggleView":123,"./update":124,"./upload":126,"./wait":127}],63:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -4089,7 +3904,7 @@ module.exports = {
     }
   }
 }
-},{"./clone":37,"./createElement":46,"./generate":63,"./setElement":95,"./starter":98,"./toArray":103,"./toParam":116}],70:[function(require,module,exports){
+},{"./clone":36,"./createElement":46,"./generate":63,"./setElement":95,"./starter":98,"./toArray":103,"./toParam":116}],70:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -4510,7 +4325,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":37,"./toArray":103}],79:[function(require,module,exports){
+},{"./clone":36,"./toArray":103}],79:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -7146,7 +6961,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else if (Array.isArray(o)) o.splice(_index, 0, _item)
             answer = o
             
-        } else if (k0 === "pull()") {
+        } else if (k0 === "pull()") { // pull by index
 
             // if no it pulls the last element
             var _pull = args[1] !== undefined ? toValue({ req, res, _window, id, value: args[1], params, _, __, _i, e, object }) : o.length - 1
@@ -7154,7 +6969,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             o.splice(_pull,1)
             answer = o
             
-        } else if (k0 === "pullItems()") {
+        } else if (k0 === "pullItems()") { // pull by item
 
             if (isParam({ _window, string: args[1] }) || isCondition({ _window, string: args[1] })) {
             
@@ -7363,7 +7178,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _o
             if (args[1]) _o = toValue({ req, res, _window, id, e, value: args[1], params, _, __, _i })
             else _o = o
-            answer = _o.toUpperCase()
+            answer = typeof _o === "string" ? _o.toUpperCase() : _o
             
         } else if (k0 === "lowercase()" || k0 === "toLowerCase()" || k0 === "tolowercase()") {
             
@@ -8790,10 +8605,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (!res) return
             if (isParam({ _window, string: args[1] })) {
               
-              var _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
-              _params.success = _params.success !== undefined ? _params.success : true
-              _params.message = _params.message || "Function executed successfully!"
-              res.send(_params)
+              var _params = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] }), _params_ = {}
+              _params_.data = _params
+              _params_.success = _params.success !== undefined ? _params.success : true
+              _params_.message = _params.message || "Function executed successfully!"
+              
+              res.send(_params_)
 
             } else {
               
@@ -9175,7 +8992,7 @@ const open = (url) => {
 }
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./actions.json":32,"./axios":33,"./capitalize":35,"./clone":37,"./cookie":41,"./counter":42,"./csvToJson":49,"./decode":51,"./droplist":53,"./erase":54,"./execute":56,"./exportJson":57,"./focus":60,"./func":61,"./function":62,"./generate":63,"./getDateTime":64,"./getDaysInMonth":65,"./getType":67,"./importJson":68,"./insert":69,"./isCondition":71,"./isEqual":72,"./isParam":73,"./note":79,"./print":84,"./refresh":86,"./remove":88,"./route":90,"./save":91,"./search":92,"./setPosition":96,"./sort":97,"./toApproval":102,"./toArray":103,"./toAwait":104,"./toCSV":105,"./toClock":106,"./toCode":107,"./toExcel":110,"./toId":113,"./toNumber":114,"./toParam":116,"./toPdf":117,"./toPrice":118,"./toSimplifiedDate":119,"./toValue":122,"./toggleView":123,"./update":124,"./updateSelf":125,"./upload":126,"uuid":164}],86:[function(require,module,exports){
+},{"./actions.json":31,"./axios":32,"./capitalize":34,"./clone":36,"./cookie":41,"./counter":42,"./csvToJson":49,"./decode":51,"./droplist":53,"./erase":54,"./execute":56,"./exportJson":57,"./focus":60,"./func":61,"./function":62,"./generate":63,"./getDateTime":64,"./getDaysInMonth":65,"./getType":67,"./importJson":68,"./insert":69,"./isCondition":71,"./isEqual":72,"./isParam":73,"./note":79,"./print":84,"./refresh":86,"./remove":88,"./route":90,"./save":91,"./search":92,"./setPosition":96,"./sort":97,"./toApproval":102,"./toArray":103,"./toAwait":104,"./toCSV":105,"./toClock":106,"./toCode":107,"./toExcel":110,"./toId":113,"./toNumber":114,"./toParam":116,"./toPdf":117,"./toPrice":118,"./toSimplifiedDate":119,"./toValue":122,"./toggleView":123,"./update":124,"./updateSelf":125,"./upload":126,"uuid":164}],86:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -9263,7 +9080,7 @@ const refresh = ({ id, update = {} }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":37,"./createElement":46,"./generate":63,"./setElement":95,"./starter":98,"./toArray":103,"./update":124}],87:[function(require,module,exports){
+},{"./clone":36,"./createElement":46,"./generate":63,"./setElement":95,"./starter":98,"./toArray":103,"./update":124}],87:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
@@ -9355,7 +9172,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":37,"./reducer":85,"./toCode":107,"./toParam":116,"./update":124}],89:[function(require,module,exports){
+},{"./clone":36,"./reducer":85,"./toCode":107,"./toParam":116,"./update":124}],89:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -9528,7 +9345,7 @@ module.exports = {
         document.getElementsByClassName("loader-container")[0].style.display = "none"
     }
 }
-},{"./clone":37,"./createElement":46,"./search":92,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"./update":124}],91:[function(require,module,exports){
+},{"./clone":36,"./createElement":46,"./search":92,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"./update":124}],91:[function(require,module,exports){
 var { clone } = require("./clone")
 const { generate } = require("./generate")
 
@@ -9626,7 +9443,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
 }
 
 module.exports = { save }
-},{"./clone":37,"./generate":63,"./toAwait":104,"axios":129}],92:[function(require,module,exports){
+},{"./clone":36,"./generate":63,"./toAwait":104,"axios":129}],92:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { clone } = require('./clone')
@@ -9864,7 +9681,7 @@ module.exports = {
     if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res })
   }
 }
-},{"./clone":37,"./toAwait":104,"./toFirebaseOperator":111,"./toString":120,"axios":129}],93:[function(require,module,exports){
+},{"./clone":36,"./toAwait":104,"./toFirebaseOperator":111,"./toString":120,"axios":129}],93:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -9931,8 +9748,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":37,"./reducer":85}],95:[function(require,module,exports){
-(function (global){(function (){
+},{"./clone":36,"./reducer":85}],95:[function(require,module,exports){
 const { controls } = require("./controls")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -9970,18 +9786,17 @@ const setElement = ({ _window, id }) => {
     // arabic text
     isArabic({ id })
     
-    var timer = (new Date()).getTime()
+    //var timer = (new Date()).getTime()
     // resize
     /*setTimeout(() => { */if (view.type === "Input" || view.type === "Entry") resize({ id }) //}, 0)
-    global.myTimer += (new Date()).getTime() - timer
-    timer = (new Date()).getTime()
+    /*global.myTimer += (new Date()).getTime() - timer
+    timer = (new Date()).getTime()*/
 
     // status
     view.status = "Element Loaded"
 }
     
 module.exports = { setElement }
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./controls":40,"./defaultInputHandler":52,"./isArabic":70,"./resize":89,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116}],96:[function(require,module,exports){
 const setPosition = ({ position, id, e }) => {
   
@@ -10283,7 +10098,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":37,"./reducer":85,"./toArray":103,"./toCode":107,"./toNumber":114}],98:[function(require,module,exports){
+},{"./clone":36,"./reducer":85,"./toArray":103,"./toCode":107,"./toNumber":114}],98:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -10331,7 +10146,7 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":14,"./controls":40,"./defaultInputHandler":52,"./event":55,"./isArabic":70,"./resize":89,"./toArray":103,"./toParam":116}],99:[function(require,module,exports){
+},{"../control/control":13,"./controls":40,"./defaultInputHandler":52,"./event":55,"./isArabic":70,"./resize":89,"./toArray":103,"./toParam":116}],99:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
@@ -10520,7 +10335,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":35,"./clone":37,"./style":100}],102:[function(require,module,exports){
+},{"./capitalize":34,"./clone":36,"./style":100}],102:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 const { generate } = require("./generate")
 const { clone } = require("./clone")
@@ -10692,7 +10507,7 @@ const toApproval = ({ _window, e, string, id = "", _, __, req, res, object, _i }
 
 module.exports = { toApproval }
 
-},{"./actions.json":32,"./clone":37,"./func":61,"./function":62,"./generate":63,"./isEqual":72,"./reducer":85,"./toCode":107,"./toValue":122}],103:[function(require,module,exports){
+},{"./actions.json":31,"./clone":36,"./func":61,"./function":62,"./generate":63,"./isEqual":72,"./reducer":85,"./toCode":107,"./toValue":122}],103:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
@@ -10972,6 +10787,8 @@ const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
 const { clone } = require("./clone")
+const { colorize } = require("./colorize")
+const { toCode } = require("./toCode")
 
 module.exports = {
   toHtml: ({ _window, id, req, res }) => {
@@ -11001,24 +10818,30 @@ module.exports = {
       
       return createElement({ _window, id, req, res })
       
-    }).join("\n")
+    }).join("")
     
     var value = ""
 
     if (view.type === "Input") value = (view.input && view.input.value) !== undefined ?
     view.input.value : view.data !== undefined ? view.data : ""
-    else if (view.type === "Entry") value = (view.entry && view.entry.value) !== undefined ?
-    view.entry.value : view.data !== undefined ? view.data : ""
 
     var tag, style = toStyle({ _window, id })
     if (typeof value === 'object') value = ''
+
+    // colorize
+    if (view.colorize) {
+
+      innerHTML = innerHTML || view.text || (view.editable ? view.data : "")
+      innerHTML = toCode({ _window, string: innerHTML })
+      innerHTML = colorize({ _window, string: innerHTML })
+    }
     
     if (view.type === "View" || view.type === "Box") {
-      tag = `<div ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML || view.text || ""}\n</div>`
+      tag = `<div ${view.draggable ? "draggable='true'" : ""} spellcheck="false" ${view.editable ? "contenteditable" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</div>`
     } else if (view.type === "Image") {
       tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index}' src='${view.src}'>${innerHTML}</img>`
     } else if (view.type === "Table") {
-      tag = `<table ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>\n${innerHTML}\n</table>`
+      tag = `<table ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</table>`
     } else if (view.type === "Row") {
       tag = `<tr ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</tr>`
     } else if (view.type === "Header") {
@@ -11049,9 +10872,9 @@ module.exports = {
       } else {
         tag = `<p ${view.editable || view.contenteditable ? "contenteditable ": ""}class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${text}</p>`
       }
-    } else if (view.type === "Entry") {
-      tag = `<p ${view.readonly ? "" : "contenteditable"} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${value}</p>`
-    } else if (view.type === "Icon") {
+    } /*else if (view.type === "Entry") {
+      tag = `<div ${view.readonly ? "" : "contenteditable"} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${value}</div>`
+    } */else if (view.type === "Icon") {
       tag = `<i ${view.draggable ? "draggable='true'" : ""} class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
     } else if (view.type === "Textarea") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${view.data || view.input.value || ""}</textarea>`
@@ -11086,7 +10909,7 @@ module.exports = {
     return tag
   }
 }
-},{"./clone":37,"./createElement":46,"./generate":63,"./toArray":103,"./toStyle":121}],113:[function(require,module,exports){
+},{"./clone":36,"./colorize":37,"./createElement":46,"./generate":63,"./toArray":103,"./toCode":107,"./toStyle":121}],113:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -11564,7 +11387,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
 module.exports = { toParam }
 
-},{"./actions.json":32,"./clone":37,"./decode":51,"./func":61,"./function":62,"./generate":63,"./isParam":73,"./reducer":85,"./toApproval":102,"./toArray":103,"./toCode":107,"./toValue":122}],117:[function(require,module,exports){
+},{"./actions.json":31,"./clone":36,"./decode":51,"./func":61,"./function":62,"./generate":63,"./isParam":73,"./reducer":85,"./toApproval":102,"./toArray":103,"./toCode":107,"./toValue":122}],117:[function(require,module,exports){
 module.exports = {
     toPdf: async ({ id, options }) => {
 
@@ -12064,7 +11887,7 @@ const calcSubs = ({ _window, value, params, _, __, _i, id, e, req, res, object }
 
 module.exports = { toValue, calcSubs }
 
-},{"./actions.json":32,"./clone":37,"./func":61,"./function":62,"./generate":63,"./isParam":73,"./reducer":85,"./toCode":107,"./toParam":116}],123:[function(require,module,exports){
+},{"./actions.json":31,"./clone":36,"./func":61,"./function":62,"./generate":63,"./isParam":73,"./reducer":85,"./toCode":107,"./toParam":116}],123:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -12230,7 +12053,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":37,"./createElement":46,"./generate":63,"./search":92,"./setElement":95,"./starter":98,"./toCode":107,"./toParam":116,"./update":124}],124:[function(require,module,exports){
+},{"./clone":36,"./createElement":46,"./generate":63,"./search":92,"./setElement":95,"./starter":98,"./toCode":107,"./toParam":116,"./update":124}],124:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -12354,7 +12177,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":37,"./controls":40,"./createElement":46,"./generate":63,"./setElement":95,"./starter":98,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116}],125:[function(require,module,exports){
+},{"./clone":36,"./controls":40,"./createElement":46,"./generate":63,"./setElement":95,"./starter":98,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116}],125:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -12460,7 +12283,7 @@ const updateSelf = ({ _window, id, update = {} }) => {
 }
 
 module.exports = {updateSelf}
-},{"./clone":37,"./createElement":46,"./generate":63,"./setElement":95,"./starter":98,"./toArray":103,"./toCode":107,"./update":124}],126:[function(require,module,exports){
+},{"./clone":36,"./createElement":46,"./generate":63,"./setElement":95,"./starter":98,"./toArray":103,"./toCode":107,"./update":124}],126:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
@@ -12580,7 +12403,7 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./clone":37,"./generate":63,"./toArray":103,"./toAwait":104,"axios":129}],127:[function(require,module,exports){
+},{"./clone":36,"./generate":63,"./toArray":103,"./toAwait":104,"axios":129}],127:[function(require,module,exports){
 const wait = async ({ id, e, ...params }) => {
 
   // await params
@@ -12657,7 +12480,7 @@ const watch = ({ _window, controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":37,"./execute":56,"./isEqual":72,"./toApproval":102,"./toCode":107,"./toParam":116,"./toValue":122}],129:[function(require,module,exports){
+},{"./clone":36,"./execute":56,"./isEqual":72,"./toApproval":102,"./toCode":107,"./toParam":116,"./toValue":122}],129:[function(require,module,exports){
 module.exports = require('./lib/axios');
 },{"./lib/axios":131}],130:[function(require,module,exports){
 'use strict';
