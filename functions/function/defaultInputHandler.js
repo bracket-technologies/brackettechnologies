@@ -110,9 +110,9 @@ const defaultInputHandler = ({ id }) => {
 
       if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
 
-      // resize
-      resize({ id })
     }
+    // resize
+    resize({ id })
 
     // arabic values
     isArabic({ id, value })

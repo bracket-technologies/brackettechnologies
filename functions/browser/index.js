@@ -1390,9 +1390,6 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
     // equal
     // string = string.split("=").join(`<span style="color:#444">=</span>`)
-  
-    // semicolon
-    string = string.split(";").join(`<span contenteditable style="color:#000">;</span>`)
     
     if (index !== 0) {
       /*
@@ -1401,9 +1398,21 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
       views[_id] = { id: _id, parent: id, colorize: true, editable: true, type: "Span" }
       */
       return `<span contenteditable style="color:${colors[index]}">${string}</span>`
-    }
+    } else {
+      
+      // semicolon
+      string = string.split(";").join(`<span contenteditable style="color:#000">;</span>`)
 
-    else return string
+      // actions
+      /*var _actions = string.split("()"), _string = ""
+      _actions.slice(1).map((action, index) => {
+        if (_actions[index - 1].slice(-1) !== ":") {
+          _string += 
+        }
+      })*/
+
+      return string
+    }
 }
 
 module.exports = { colorize }
@@ -2611,9 +2620,9 @@ const defaultInputHandler = ({ id }) => {
 
       if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
 
-      // resize
-      resize({ id })
     }
+    // resize
+    resize({ id })
 
     // arabic values
     isArabic({ id, value })
