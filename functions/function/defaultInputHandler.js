@@ -45,6 +45,9 @@ const defaultInputHandler = ({ id }) => {
     if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
   })
 
+  if (view.type === "Input") view.prevValue = view.element.value
+  else if (view.type === "Entry" || view.editable) view.prevValue = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+  
   var myFn = async (e) => {
     
     e.preventDefault()
@@ -116,22 +119,56 @@ const defaultInputHandler = ({ id }) => {
     
     console.log(value, global[view.Data], view.derivations)
 
+    view.prevValue = value
+  }
+
+  var myFn1 = (e) => {
+
+    var value
+    if (view.type === "Input") value = view.element.value
+    else if (view.type === "Entry" || view.editable) value = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+    
     // colorize
     if (view.colorize) {
       
-      value = toCode({ string: value })
-      if (view.type === "Input") e.target.value = colorize({ string: value })
-      else e.target.innerHTML = colorize({ string: value })
-
+      // removeChildren({ id })
+      var _value = toCode({ string: value })
+      if (view.type === "Input") e.target.value = colorize({ string: _value })
+      else e.target.innerHTML = colorize({ string: _value })
+      /*
       var sel = window.getSelection()
       var selected_node = sel.anchorNode
-      // selected_node is the text node
-      // that is inside the div
-      //sel.collapse(selected_node, 3)
+      
+      var prevValue = view.prevValue.split("")
+      var position = value.split("").findIndex((char, i) => char !== prevValue[i])
+
+      sel.collapse(selected_node, position + 1)
+      */
     }
   }
 
   view.element.addEventListener("input", myFn)
+  view.element.addEventListener("blur", myFn1)
+}
+
+function getCaretIndex(element) {
+
+  let position = 0;
+  const isSupported = typeof window.getSelection !== "undefined";
+  if (isSupported) {
+    const selection = window.getSelection();
+    if (selection.rangeCount !== 0) {
+      const range = window.getSelection().getRangeAt(0);
+      const preCaretRange = range.cloneRange();
+      console.log(preCaretRange);
+      preCaretRange.selectNodeContents(element);
+      console.log(preCaretRange);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      console.log(preCaretRange);
+      position = preCaretRange.toString().length;
+    }
+  }
+  return position + 1;
 }
 
 module.exports = { defaultInputHandler }

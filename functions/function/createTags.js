@@ -99,14 +99,30 @@ const componentModifier = ({ _window, id }) => {
 
     view.icon = view.icon || {}
     view.icon.name = view.name || view.icon.name || ""
-    if (view.icon.google || view.google) {
+    if ((view.icon.google || view.google) && (!view.google.symbol && !view.symbol)) {
       
+      view.symbol = {}
+      view.google.symbol = {}
       if (view.google.outlined) view.outlined = true
       else if (view.google.filled) view.filled = true
       else if (view.google.rounded) view.rounded = true
       else if (view.google.sharp) view.sharp = true
       else if (view.google.twoTone) view.twoTone = true
-      else view.google = true
+      else view.google = {}
+
+    } else if ((view.icon.google || view.google) && (view.symbol || view.google.symbol)) {
+      
+      view.symbol = {}
+      if (view.google.symbol) view.symbol.outlined = true
+      else if (view.google.symbol.filled) view.symbol.filled = true
+      else if (view.google.symbol.rounded) view.symbol.rounded = true
+      else if (view.google.symbol.sharp) view.symbol.sharp = true
+      else if (view.google.symbol.twoTone) view.symbol.twoTone = true
+      else view.google = {}
+
+    } else {
+      
+      view.symbol = {}
     }
   }
 

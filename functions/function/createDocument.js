@@ -326,11 +326,6 @@ const createDocument = async ({ req, res }) => {
         <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
         <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
         <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
         <link rel="manifest" href="/resources/manifest.webmanifest" />
       </head>
       <body>
@@ -339,6 +334,13 @@ const createDocument = async ({ req, res }) => {
         <script id="views" type="application/json">${JSON.stringify(views)}</script>
         <script id="global" type="application/json">${JSON.stringify(global)}</script>
         <script src="/index.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -347,4 +349,11 @@ const createDocument = async ({ req, res }) => {
   );
 };
 
+/*
+<link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
+<link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
+<link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
+<link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
+<link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
+*/
 module.exports = { createDocument };

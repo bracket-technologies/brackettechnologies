@@ -1,6 +1,9 @@
 {
+  "id": "users-views",
+  "type": "View?id=users-views;class=flex column;style.gap=.2rem",
   "children": [
     {
+      "type": "View?id=users-list-view;style.flex=1;class=flex column;style.gap=.2rem;style.display=if():[)(:users-view-type=list]:flex.else():none?)(:users-view-type=list",
       "children": [
         {
           "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
@@ -9,6 +12,7 @@
               "type": "View?class=flexbox;style.height=100%;style.width=100%",
               "children": [
                 {
+                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "children": [
                     {
                       "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[().parent().checked]:1.else():0;style.transition=.3s"
@@ -18,29 +22,20 @@
                     {
                       "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;():users-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked]:[_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():users-views.getChildrenByClassName():checker.find():[checked.isTrue()]]:flex.else():none"
                     }
-                  ],
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                  ]
                 }
               ]
             },
             {
-              "type": "View?class=flex align-center",
               "children": [
                 {
                   "controls": [
                     {
-                      "actions": "sort;update:users-list-view?sort.Data=users;sort.path=active",
-                      "event": "click"
+                      "event": "click",
+                      "actions": "sort;update:users-list-view?sort.Data=users;sort.path=active"
                     }
                   ],
                   "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
-                }
-              ]
-            },
-            {
-              "children": [
-                {
-                  "type": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
               "type": "View?class=flex align-center"
@@ -49,57 +44,65 @@
               "type": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الإسم;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                  "type": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                }
+              ]
+            },
+            {
+              "children": [
+                {
                   "controls": [
                     {
                       "event": "click",
                       "actions": "sort;update:users-list-view?sort.Data=users;sort.path=name"
                     }
-                  ]
+                  ],
+                  "type": "Text?class=ar pointer;text=الإسم;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ]
+              ],
+              "type": "View?class=flex align-center"
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "controls": [
                     {
-                      "actions": "sort;update:users-list-view?sort.Data=users;sort.path=status",
-                      "event": "click"
+                      "event": "click",
+                      "actions": "sort;update:users-list-view?sort.Data=users;sort.path=status"
                     }
                   ],
                   "type": "Text?class=flexbox pointer;style.color=#888;style.fontWeight=bold;style.fontSize=1.3rem;text=الحالة"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=إسم حساب  المستخدم;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "actions": "async():sort:[update:users-list-view]?sort.Data=users;sort.path=username",
-                      "event": "click"
+                      "event": "click",
+                      "actions": "async():sort:[update:users-list-view]?sort.Data=users;sort.path=username"
                     }
-                  ]
+                  ],
+                  "type": "Text?class=ar pointer;text=إسم حساب  المستخدم;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
+              "type": "View?class=flex align-center",
               "children": [
                 {
                   "type": "Text?class=ar pointer;text=كلمة السر;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
-                      "event": "click",
-                      "actions": "async():sort:[update:password-list-view]?sort.Data=users;sort.path=password"
+                      "actions": "async():sort:[update:password-list-view]?sort.Data=users;sort.path=password",
+                      "event": "click"
                     }
                   ]
                 }
-              ],
-              "type": "View?class=flex align-center"
+              ]
             },
             {
               "children": [
@@ -107,8 +110,8 @@
                   "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
                   "controls": [
                     {
-                      "actions": "setPosition:users-remove-all-popup?position.placement=right;position.positioner=().id",
-                      "event": "click?if():[():users-remove-all-popup.style().pointerEvents=none]:[():users-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():users-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
+                      "event": "click?if():[():users-remove-all-popup.style().pointerEvents=none]:[():users-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():users-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]",
+                      "actions": "setPosition:users-remove-all-popup?position.placement=right;position.positioner=().id"
                     }
                   ]
                 }
@@ -118,12 +121,12 @@
           ]
         },
         {
-          "type": "View?class=flex column;style.width=100%;style.gap=.2rem;style.overflow=auto;style.height=calc(100vh - 33rem)?)(:users.len().greater():0",
           "children": [
             {
               "type": "[View]?data=)(:users;style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:users-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
               "children": [
                 {
+                  "type": "View?class=flexbox;style.width=100%;style.height=100%",
                   "children": [
                     {
                       "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
@@ -138,10 +141,10 @@
                         }
                       ]
                     }
-                  ],
-                  "type": "View?class=flexbox;style.width=100%;style.height=100%"
+                  ]
                 },
                 {
+                  "type": "View?class=flex align-center",
                   "children": [
                     {
                       "controls": [
@@ -152,24 +155,23 @@
                       ],
                       "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[().data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms"
                     }
-                  ],
-                  "type": "View?class=flex align-center"
+                  ]
                 },
                 {
-                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
                   "children": [
                     {
                       "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
                     },
                     {
+                      "type": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0",
                       "controls": [
                         {
                           "event": "click?copyToClipBoard():[data().id]"
                         }
-                      ],
-                      "type": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0"
+                      ]
                     }
                   ],
+                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
                   "controls": [
                     {
                       "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
@@ -195,13 +197,13 @@
                   "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
                   "children": [
                     {
+                      "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=غائب]:#ffdbdb.elif():[data()=في مهمة]:#ffe3b0.elif():[data()=في إجازة]:#fffbb8.elif():[data()=يداوم]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem;droplist.items=)(:data.collection.users-status.status;droplist.align=right",
                       "controls": [
                         {
                           "actions": "async():save:[update:users-manager-list]?save.collection=user;save.doc=Data().path():[derivations().clone().pullLast().push():id];save.data=Data().path():[derivations().clone().pullLast()];async():[)(:users=Data()]",
                           "event": "click?droplist();Data().path():[derivations().clone().pullLast().push():status]=text()"
                         }
                       ],
-                      "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=غائب]:#ffdbdb.elif():[data()=في مهمة]:#ffe3b0.elif():[data()=في إجازة]:#fffbb8.elif():[data()=يداوم]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem;droplist.items=)(:data.collection.users-status.status;droplist.align=right",
                       "children": [
                         {
                           "type": "View?class=flexbox;style.backgroundColor=if():[data()=مغلق]:#db8f00.elif():[data()=مفتوح]:#00c206.else():#444;style.height=1rem;style.width=1rem;style.borderRadius=1rem"
@@ -230,27 +232,28 @@
                   ]
                 },
                 {
+                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
                   "children": [
                     {
+                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
                       "controls": [
                         {
-                          "actions": "setPosition:users-actions?position.placement=right;position.positioner=().id",
-                          "event": "click?if():[)(:users-data=data();():users-actions.style().pointerEvents=auto]:[():users-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:users-data.del()]].else():[():users-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:users-data=data().clone()]];)(:new-users.del();)(:users-copied.del();():users-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+                          "event": "click?if():[)(:users-data=data();():users-actions.style().pointerEvents=auto]:[():users-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:users-data.del()]].else():[():users-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:users-data=data().clone()]];)(:new-users.del();)(:users-copied.del();():users-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
+                          "actions": "setPosition:users-actions?position.placement=right;position.positioner=().id"
                         }
-                      ],
-                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
+                      ]
                     }
-                  ],
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
+                  ]
                 }
               ]
             }
-          ]
+          ],
+          "type": "View?class=flex column;style.width=100%;style.gap=.2rem;style.overflow=auto;style.height=calc(100vh - 33rem)?)(:users.len().greater():0"
         }
-      ],
-      "type": "View?id=users-list-view;style.flex=1;class=flex column;style.gap=.2rem;style.display=if():[)(:users-view-type=list]:flex.else():none?)(:users-view-type=list"
+      ]
     },
     {
+      "type": "View?id=users-grid-view;class=flex column;style.gap=1rem;style.display=if():[)(:users-view-type=grid]:flex.else():none?)(:users-view-type=grid;false",
       "children": [
         {
           "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;class=flex align-center;style.borderRadius=1rem;style.overflow=hidden",
@@ -259,17 +262,17 @@
               "type": "View?class=flexbox;style.height=100%;style.width=6rem",
               "children": [
                 {
+                  "children": [
+                    {
+                      "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[().parent().checked]:1.else():0;style.transition=.3s"
+                    }
+                  ],
                   "controls": [
                     {
                       "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;():users-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():users-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
                     }
                   ],
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
-                  "children": [
-                    {
-                      "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[().parent().checked]:1.else():0;style.transition=.3s"
-                    }
-                  ]
+                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
                 }
               ]
             },
@@ -290,49 +293,49 @@
           ]
         },
         {
-          "type": "View?style.overflow=auto;style.height=calc(100vh - 27.8rem)",
           "children": [
             {
+              "type": "View?style.padding=1rem;style.gap=1rem;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr?)(:users.len().greater():0",
               "children": [
                 {
+                  "type": "[View]?data=)(:users;class=flex;style.borderRadius=1.5rem;style.border=1px solid #e5e5e5;style.padding=1rem;hover.style.border=1px solid #ddd",
                   "children": [
                     {
+                      "type": "View?class=flex align-center column;style.gap=1rem;style.width=fit-content",
                       "children": [
                         {
+                          "controls": [
+                            {
+                              "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():users-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
+                            }
+                          ],
                           "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                           "children": [
                             {
                               "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[().parent().checked]:1.else():0;style.transition=.3s"
                             }
-                          ],
-                          "controls": [
-                            {
-                              "event": "click?().checked=().checked.opp();().1stChild().style().opacity=if():[().checked]:1.else():0;if():[():main-checker.checked]:[():main-checker.map():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():users-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
-                            }
                           ]
                         },
                         {
-                          "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[().data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
                           "controls": [
                             {
-                              "actions": "save?save.collection=users;save.doc=data().id;save.data=data()",
-                              "event": "click?().style().backgroundColor=if():[().data().active]:#ddd.else():#15ff00;().data().active=data().active.opp();().style().transform=scale(1.1);timer():[().style().transform=scale(1)]:50"
+                              "event": "click?().style().backgroundColor=if():[().data().active]:#ddd.else():#15ff00;().data().active=data().active.opp();().style().transform=scale(1.1);timer():[().style().transform=scale(1)]:50",
+                              "actions": "save?save.collection=users;save.doc=data().id;save.data=data()"
                             }
-                          ]
+                          ],
+                          "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[().data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms"
                         }
-                      ],
-                      "type": "View?class=flex align-center column;style.gap=1rem;style.width=fit-content"
+                      ]
                     },
                     {
-                      "type": "View?style.flex=1;class=flex column;style.gap=1rem;style.padding=0 2rem",
                       "children": [
                         {
+                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                           "children": [
                             {
                               "type": "Text?style.fontSize=1.4rem;text=data().name"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                          ]
                         },
                         {
                           "children": [
@@ -359,41 +362,38 @@
                           ]
                         },
                         {
+                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                           "children": [
                             {
                               "type": "Text?style.fontSize=1.4rem;text=data().contacts._map():[if():[_.name;_.phone-number]:[_.name+ +_.phone-number].else():_string].filter().join(): | .ar()"
                             }
-                          ],
-                          "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                          ]
                         }
-                      ]
+                      ],
+                      "type": "View?style.flex=1;class=flex column;style.gap=1rem;style.padding=0 2rem"
                     },
                     {
                       "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem;style.height=fit-content",
                       "children": [
                         {
-                          "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3rem;style.borderRadius=3rem;style.width=3rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
                           "controls": [
                             {
                               "actions": "setPosition:members-actions?position.placement=right;position.positioner=().id",
                               "event": "click?if():[)(:members-data=data();():members-actions.style().pointerEvents=auto]:[():members-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:members-data.del()]].else():[():members-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:members-data=data().clone()]];)(:new-members.del();)(:members-copied.del();():members-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
                             }
-                          ]
+                          ],
+                          "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3rem;style.borderRadius=3rem;style.width=3rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
                         }
                       ]
                     }
-                  ],
-                  "type": "[View]?data=)(:users;class=flex;style.borderRadius=1.5rem;style.border=1px solid #e5e5e5;style.padding=1rem;hover.style.border=1px solid #ddd"
+                  ]
                 }
-              ],
-              "type": "View?style.padding=1rem;style.gap=1rem;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr?)(:users.len().greater():0"
+              ]
             }
-          ]
+          ],
+          "type": "View?style.overflow=auto;style.height=calc(100vh - 27.8rem)"
         }
-      ],
-      "type": "View?id=users-grid-view;class=flex column;style.gap=1rem;style.display=if():[)(:users-view-type=grid]:flex.else():none?)(:users-view-type=grid;false"
+      ]
     }
-  ],
-  "id": "users-views",
-  "type": "View?id=users-views;class=flex column;style.gap=.2rem"
+  ]
 }

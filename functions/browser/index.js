@@ -1367,27 +1367,43 @@ module.exports = {clone}
 },{}],37:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toCode } = require("./toCode")
-const colors = ["#a35521", "#1E90FF", "#B22222", "#FF4500", "#FF1493", "#7FFF00", "#31313D"]
+const colors = ["#a35521", "#1E90FF", "#FF4500", "#02f002", "#5260FF", "#FFC409", "#31313D"]
 
-const colorize = ({ _window, string, start = "[", end = "]", index = 0 }) => {
+const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) => {
     
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
     while (string.includes("coded()")) {
 
-        var string0 = string.split("coded()")[0]
-        var key = global.codes["coded()" + string.split("coded()")[1].slice(0, 5)]
-        key = colorize({ string: start + key + end, index: index + 1 })
-        string = string0 + key + string.split("coded()")[1].slice(5) + (string.split("coded()").length > 2 ? "coded()" + string.split("coded()").slice(2).join("coded()") : "")
+      var string0 = string.split("coded()")[0]
+      var key = global.codes["coded()" + string.split("coded()")[1].slice(0, 5)]
+      key = colorize({ id, string: start + key + end, index: index + 1 })
+      string = string0 + key + string.split("coded()")[1].slice(5) + (string.split("coded()").length > 2 ? "coded()" + string.split("coded()").slice(2).join("coded()") : "")
+    }
+    while (string.includes("codedS()")) {
+
+      var string0 = string.split("codedS()")[0]
+      var key = global.codes["codedS()" + string.split("codedS()")[1].slice(0, 5)]
+      key = colorize({ id, string: `'` + key + `'`, index: index + 1 })
+      string = string0 + key + string.split("codedS()")[1].slice(5) + (string.split("codedS()").length > 2 ? "codedS()" + string.split("codedS()").slice(2).join("codedS()") : "")
     }
 
     // equal
     // string = string.split("=").join(`<span style="color:#444">=</span>`)
   
     // semicolon
-    string = string.split(";").join(`<span style="color:#000">;</span>`)
+    string = string.split(";").join(`<span contenteditable style="color:#000">;</span>`)
+    
+    if (index !== 0) {
+      /*
+      var views = _window ? _window.view : window.views
+      var _id = generate()
+      views[_id] = { id: _id, parent: id, colorize: true, editable: true, type: "Span" }
+      */
+      return `<span contenteditable style="color:${colors[index]}">${string}</span>`
+    }
 
-    return `<span style="color:${colors[index]}">${string}</span>`
+    else return string
 }
 
 module.exports = { colorize }
@@ -1951,11 +1967,6 @@ const createDocument = async ({ req, res }) => {
         <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
         <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
         <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
-        <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
         <link rel="manifest" href="/resources/manifest.webmanifest" />
       </head>
       <body>
@@ -1964,6 +1975,13 @@ const createDocument = async ({ req, res }) => {
         <script id="views" type="application/json">${JSON.stringify(views)}</script>
         <script id="global" type="application/json">${JSON.stringify(global)}</script>
         <script src="/index.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1972,6 +1990,13 @@ const createDocument = async ({ req, res }) => {
   );
 };
 
+/*
+<link rel="stylesheet" href="/resources/google-icons/material-icons/material-icons.css"/>
+<link rel="stylesheet" href="/resources/google-icons/material-icons-outlined/material-icons-outlined.css"/>
+<link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
+<link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
+<link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
+*/
 module.exports = { createDocument };
 
 },{"./clone":36,"./createElement":46,"./generate":63,"./jsonFiles":75,"./toApproval":102,"./toArray":103,"./toCode":107,"./toParam":116,"dotenv":160,"fs":159}],46:[function(require,module,exports){
@@ -2248,14 +2273,30 @@ const componentModifier = ({ _window, id }) => {
 
     view.icon = view.icon || {}
     view.icon.name = view.name || view.icon.name || ""
-    if (view.icon.google || view.google) {
+    if ((view.icon.google || view.google) && (!view.google.symbol && !view.symbol)) {
       
+      view.symbol = {}
+      view.google.symbol = {}
       if (view.google.outlined) view.outlined = true
       else if (view.google.filled) view.filled = true
       else if (view.google.rounded) view.rounded = true
       else if (view.google.sharp) view.sharp = true
       else if (view.google.twoTone) view.twoTone = true
-      else view.google = true
+      else view.google = {}
+
+    } else if ((view.icon.google || view.google) && (view.symbol || view.google.symbol)) {
+      
+      view.symbol = {}
+      if (view.google.symbol) view.symbol.outlined = true
+      else if (view.google.symbol.filled) view.symbol.filled = true
+      else if (view.google.symbol.rounded) view.symbol.rounded = true
+      else if (view.google.symbol.sharp) view.symbol.sharp = true
+      else if (view.google.symbol.twoTone) view.symbol.twoTone = true
+      else view.google = {}
+
+    } else {
+      
+      view.symbol = {}
     }
   }
 
@@ -2505,6 +2546,9 @@ const defaultInputHandler = ({ id }) => {
     if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
   })
 
+  if (view.type === "Input") view.prevValue = view.element.value
+  else if (view.type === "Entry" || view.editable) view.prevValue = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+  
   var myFn = async (e) => {
     
     e.preventDefault()
@@ -2576,22 +2620,56 @@ const defaultInputHandler = ({ id }) => {
     
     console.log(value, global[view.Data], view.derivations)
 
+    view.prevValue = value
+  }
+
+  var myFn1 = (e) => {
+
+    var value
+    if (view.type === "Input") value = view.element.value
+    else if (view.type === "Entry" || view.editable) value = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+    
     // colorize
     if (view.colorize) {
       
-      value = toCode({ string: value })
-      if (view.type === "Input") e.target.value = colorize({ string: value })
-      else e.target.innerHTML = colorize({ string: value })
-
+      // removeChildren({ id })
+      var _value = toCode({ string: value })
+      if (view.type === "Input") e.target.value = colorize({ string: _value })
+      else e.target.innerHTML = colorize({ string: _value })
+      /*
       var sel = window.getSelection()
       var selected_node = sel.anchorNode
-      // selected_node is the text node
-      // that is inside the div
-      //sel.collapse(selected_node, 3)
+      
+      var prevValue = view.prevValue.split("")
+      var position = value.split("").findIndex((char, i) => char !== prevValue[i])
+
+      sel.collapse(selected_node, position + 1)
+      */
     }
   }
 
   view.element.addEventListener("input", myFn)
+  view.element.addEventListener("blur", myFn1)
+}
+
+function getCaretIndex(element) {
+
+  let position = 0;
+  const isSupported = typeof window.getSelection !== "undefined";
+  if (isSupported) {
+    const selection = window.getSelection();
+    if (selection.rangeCount !== 0) {
+      const range = window.getSelection().getRangeAt(0);
+      const preCaretRange = range.cloneRange();
+      console.log(preCaretRange);
+      preCaretRange.selectNodeContents(element);
+      console.log(preCaretRange);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      console.log(preCaretRange);
+      position = preCaretRange.toString().length;
+    }
+  }
+  return position + 1;
 }
 
 module.exports = { defaultInputHandler }
@@ -10852,7 +10930,7 @@ module.exports = {
     } /*else if (view.type === "Entry") {
       tag = `<div ${view.readonly ? "" : "contenteditable"} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${value}</div>`
     } */else if (view.type === "Icon") {
-      tag = `<i ${view.draggable ? "draggable='true'" : ""} class='${view.outlined ? "material-icons-outlined" : view.rounded ? "material-icons-round" : view.sharp ? "material-icons-sharp" : view.filled ? "material-icons" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
+      tag = `<i ${view.draggable ? "draggable='true'" : ""} class='${view.outlined ? "material-icons-outlined" : (view.symbol.outlined) ? "material-symbols-outlined": (view.rounded || view.round) ? "material-icons-round" : (view.symbol.rounded || view.symbol.round) ? "material-symbols-round" : view.sharp ? "material-icons-sharp" : view.symbol.sharp ? "material-symbols-sharp" : (view.filled || view.fill) ? "material-icons" : (view.symbol.filled || view.symbol.fill) ? "material-symbols" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index}'>${view.google ? view.icon.name : ""}</i>`
     } else if (view.type === "Textarea") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index}'>${view.data || view.input.value || ""}</textarea>`
     } else if (view.type === "Input") {
