@@ -1,7 +1,4 @@
 {
-  "id": "taxes-overall",
-  "type": "View?id=taxes-overall;class=flex column;style.gap=.5rem;style.width=100%",
-  "creation-date": 1652957792803,
   "children": [
     {
       "type": "Text?class=flex;text=Taxes & Other Info;style:[width=100%;borderBottom=1px solid #ddd;fontSize=1.4rem;padding=1rem 0]"
@@ -12,7 +9,6 @@
         {
           "children": [
             {
-              "type": "View?class=grid align-center;style:[gridTemplateColumns=4fr 1fr;gap=.5rem;borderBottom=1px solid #ccc;paddingBottom=.5rem]",
               "children": [
                 {
                   "type": "Text?text=Taxes;class=flex;style:[fontSize=1.3rem]"
@@ -20,7 +16,8 @@
                 {
                   "type": "Text?text=Cost ($);class=flex;style:[fontSize=1.3rem]"
                 }
-              ]
+              ],
+              "type": "View?class=grid align-center;style:[gridTemplateColumns=4fr 1fr;gap=.5rem;borderBottom=1px solid #ccc;paddingBottom=.5rem]"
             },
             {
               "children": [
@@ -70,6 +67,7 @@
           "type": "Input?label:[text=Total Av. Seats;location=outside;style.fontSize=1.3rem];data().total-av-seats=data().total-av-seats||0;path=total-av-seats;clicked.style.border=2px solid #0080ff;input.type=number;style:[width=100%;height=3.5rem;borderRadius=.5rem;fontSize=1.3rem];keyup:[if():[data()>Data().total-seats]:[Data().total-seats=data();prev().input().txt()=data()]]"
         },
         {
+          "type": "View?class=vertical;style:[gap=.5rem];data().commission=data().commission||0;data().commission-unit=data().commission-unit||$",
           "children": [
             {
               "type": "Text?class=flex;text=Commission;style:[fontSize=1.3rem]"
@@ -85,8 +83,7 @@
               ],
               "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
             }
-          ],
-          "type": "View?class=vertical;style:[gap=.5rem];data().commission=data().commission||0;data().commission-unit=data().commission-unit||$"
+          ]
         },
         {
           "children": [
@@ -94,7 +91,6 @@
               "type": "Text?class=flex;text=Additional Profit;style:[fontSize=1.3rem]"
             },
             {
-              "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff",
               "children": [
                 {
                   "type": "Input?input.type=number;path=additional-profit;style:[height=100%;flex=1;borderRadius=.5rem;fontSize=1.3rem];if():[flight-edit-readonly:()]:[readonly=true]"
@@ -102,13 +98,13 @@
                 {
                   "type": "Input?class=flexbox;path=additional-profit-unit;readonly;style:[color=#666;width=2.25rem;height=2.9rem;borderRadius=.5rem;fontSize=1.3rem;transition=.3s];hover.style.backgroundColor=#eee;droplist.items=_array:%:$;if():[flight-edit-readonly:()]:[droplist.readonly=true];droplist.item.style.fontSize=1.3rem"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
             }
           ],
           "type": "View?class=vertical;style:[gap=.5rem];data().additional-profit=data().additional-profit||0;data().additional-profit-unit=data().additional-profit-unit||$"
         },
         {
-          "type": "View?class=vertical;style:[gap=.5rem];data().hand-baggage-kg=data().hand-baggage-kg||7",
           "children": [
             {
               "type": "Text?class=flex;text=Hand Baggage;style:[fontSize=1.3rem]"
@@ -124,9 +120,13 @@
               ],
               "type": "View?class=flexbox;style:[border=1px solid #ccc;borderRadius=.5rem;width=100%;height=3.5rem;padding=.2rem];clicked.style.border=2px solid #0080ff"
             }
-          ]
+          ],
+          "type": "View?class=vertical;style:[gap=.5rem];data().hand-baggage-kg=data().hand-baggage-kg||7"
         }
       ]
     }
-  ]
+  ],
+  "type": "View?id=taxes-overall;class=flex column;style.gap=.5rem;style.width=100%",
+  "id": "taxes-overall",
+  "creation-date": 1652957792803
 }

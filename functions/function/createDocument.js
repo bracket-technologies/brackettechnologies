@@ -154,10 +154,10 @@ const createDocument = async ({ req, res }) => {
     */
     console.log("before page / firestore", new Date().getTime() - global.timer);
 
-    if (host.includes("localhost")) {
+    /*if (host.includes("localhost")) {
       if (!fs.existsSync(`database/page-${project.id}`)) fs.mkdirSync(`database/page-${project.id}`)
       if (!fs.existsSync(`database/view-${project.id}`)) fs.mkdirSync(`database/view-${project.id}`)
-    }
+    }*/
     
     promises.push(db
       .collection(`page-${project.id}`)
@@ -165,7 +165,7 @@ const createDocument = async ({ req, res }) => {
       .then(q => {
         q.forEach(doc => {
           global.data.page[doc.id] = doc.data()
-          if (host.includes("localhost")) require("fs").writeFileSync(`database/page-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
+          // if (host.includes("localhost")) require("fs").writeFileSync(`database/page-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
         })
         console.log("after page", new Date().getTime() - global.timer)
 
@@ -190,7 +190,7 @@ const createDocument = async ({ req, res }) => {
     .then(q => {
       q.forEach(doc => {
         global.data.view[doc.id] = doc.data()
-        if (host.includes("localhost")) require("fs").writeFileSync(`database/view-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
+        // if (host.includes("localhost")) require("fs").writeFileSync(`database/view-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
       })
       console.log("after view", new Date().getTime() - global.timer);
     }))

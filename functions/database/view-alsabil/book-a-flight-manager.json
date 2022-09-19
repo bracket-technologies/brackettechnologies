@@ -1,7 +1,7 @@
 {
-  "creation-date": "1662713269383",
   "children": [
     {
+      "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]",
       "children": [
         {
           "type": "View?class=flexbox;style:[gap=1rem];style.height=100%",
@@ -41,8 +41,7 @@
           ],
           "type": "View?class=flexbox;style:[marginLeft=auto;gap=1rem]"
         }
-      ],
-      "type": "View?class=flex align-center;style:[height=4.5rem;minHeight=4.5rem]"
+      ]
     },
     {
       "type": "View?view=search-engine"
@@ -51,12 +50,11 @@
       "type": "View?view=book-a-flight-list;flights:().del()"
     },
     {
-      "type": "View?id=pricing-bar;class=flex align-center;style:[position=absolute;top=calc(100vh - 8rem);left=12.5rem;right=12.5rem;height=3.5rem;backgroundColor=#222;borderRadius=1rem 1rem 0 0;zIndex=10;padding=0 1.5rem;cursor=default]",
       "children": [
         {
+          "type": "View?class=grid align-center;style:[height=100%;width=100%;gridTemplateColumns=1fr 1fr 1fr 1.25fr 1fr 1fr 1fr 1fr 1.5fr;gap=1rem]",
           "children": [
             {
-              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Base Fare;style:[fontSize=1.1rem;color=#fff]"
@@ -64,9 +62,11 @@
                 {
                   "type": "Text:pricing-base-fare?text=[[booking-details:().():total-base-fare-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox;style:[justifyContent=space-between]"
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Taxes;style:[fontSize=1.1rem;color=#fff]"
@@ -74,10 +74,10 @@
                 {
                   "type": "Text?id=pricing-taxes;text=[[booking-details:().():total-taxes-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Fees;style:[fontSize=1.1rem;color=#fff]"
@@ -85,16 +85,15 @@
                 {
                   "type": "Text?id=pricing-fees;text=[[booking-details:().():total-fees-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
-              "type": "View?class=flexbox",
               "children": [
                 {
                   "type": "Text?id=pricing-pax;text=[booking-details:().0.total-adults||pax-details:().adt]+' Adt | '+if():[booking-details:().0.total-children]:[booking-details:().0.total-children+' Chd | '].elif():[!booking-details:().0.total-adults]:[pax-details:().chd+' Chd | ']:''+if():[booking-details:().0.total-infants]:[booking-details:().0.total-infants+' Inf'].elif():[!booking-details:().0.total-adults]:[pax-details:().inf+' Inf']:'';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ]
+              ],
+              "type": "View?class=flexbox"
             },
             {
               "children": [
@@ -119,6 +118,7 @@
               ]
             },
             {
+              "type": "View?class=flexbox;style:[justifyContent=space-between]",
               "children": [
                 {
                   "type": "Text?text=Commission;style:[fontSize=1.1rem;color=#fff]"
@@ -126,8 +126,7 @@
                 {
                   "type": "Text?id=pricing-commission;text=[[booking-details:().():total-commission-usd.sum()||0].round():2]+'$';style:[fontSize=1.1rem;color=#fff]"
                 }
-              ],
-              "type": "View?class=flexbox;style:[justifyContent=space-between]"
+              ]
             },
             {
               "children": [
@@ -169,16 +168,17 @@
                 }
               ]
             }
-          ],
-          "type": "View?class=grid align-center;style:[height=100%;width=100%;gridTemplateColumns=1fr 1fr 1fr 1.25fr 1fr 1fr 1fr 1fr 1.5fr;gap=1rem]"
+          ]
         }
-      ]
+      ],
+      "type": "View?id=pricing-bar;class=flex align-center;style:[position=absolute;top=calc(100vh - 8rem);left=12.5rem;right=12.5rem;height=3.5rem;backgroundColor=#222;borderRadius=1rem 1rem 0 0;zIndex=10;padding=0 1.5rem;cursor=default]"
     }
   ],
-  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;booking-details:()=_list;flights-booked:()=_array;search-engine-req:()=book-a-flight;if():[!unreset-book-a-seat:()]:[old-booking:().del()];unreset-book-a-seat:().del()",
   "id": "book-a-flight-manager",
+  "type": "View?id=book-a-flight-manager;class=flex column;style():[width=100%;height=100%;padding=2rem;backgroundColor=#fff;position=relative];flights:()=_list;booking-details:()=_list;flights-booked:()=_array;search-engine-req:()=book-a-flight;if():[!unreset-book-a-seat:()]:[old-booking:().del()];unreset-book-a-seat:().del()",
+  "creation-date": "1662713269383",
   "functions": {
-    "setPassengerDetails": "().my-passengers=old-booking:().booking-details.0.seats.():[passengers-details].flat().clone();booking-data:().booking-details.():[seats.():[passengers-details._():[_.infants=().my-passengers.[_.counter-1].infants;_.type=().my-passengers.[_.counter-1].type.uppercase();_.title=().my-passengers.[_.counter-1].title.uppercase();_.gender=().my-passengers.[_.counter-1].gender.uppercase();_.first-name=().my-passengers.[_.counter-1].first-name.uppercase();_.last-name=().my-passengers.[_.counter-1].last-name.uppercase();_.dob=().my-passengers.[_.counter-1].dob;_.nationality=().my-passengers.[_.counter-1].nationality.uppercase();_.passport-number=().my-passengers.[_.counter-1].passport-number.uppercase();_.passport-issuer=().my-passengers.[_.counter-1].passport-issuer.uppercase();_.passport-expiry-date=().my-passengers.[_.counter-1].passport-expiry-date;_.contact-number=().my-passengers.[_.counter-1].contact-number;_.email=().my-passengers.[_.counter-1].email.uppercase();_.id-number=().my-passengers.[_.counter-1].id-number.uppercase()]]]",
-    "openBookingWindow": "booking-data:()=_map:id:[gen():20]:active:true:creation-date:[today().timestamp()]:day:todayStart():month:monthStart():year:yearStart():user:[user:().id]:user-name:[user:().username]:type:[search-type:()]:note:[if():[old-booking:()]:[old-booking:().note]:_string]:status:Loading:description:_string:total-passengers:[booking-details:().0.total-passengers]:total-seats:[booking-details:().0.total-seats]:trip:[search-by:()]:agent:[if():[old-booking:()]:[old-booking:().agent]:[agent:().id]]:agent-name:[if():[old-booking:()]:[old-booking:().agent-name]:[agent:().company-name]]:travel-dates:[booking-details:().():departure-day]:flights:[booking-details:().():flight-id]:booking-date:[today().timestamp()]:reservations:_list:tickets:_list:canceled-reservations:_list:canceled-tickets:_list:counter:[booking-details:().0.total-seats]:total-seats:[booking-details:().0.total-seats]:total-passengers:[booking-details:().0.total-passengers]:total-base-fare-usd:[booking-details:().():[total-base-fare-usd].sum()]:total-taxes-usd:[booking-details:().():[total-taxes-usd].sum()]:total-fees-usd:[booking-details:().():[total-fees-usd].sum()]:total-commission-usd:[booking-details:().():[total-commission-usd].sum()]:total-additional-profit-usd:[booking-details:().():[total-additional-profit-usd].sum()]:total-usd:[booking-details:().():[total-usd].sum()]:total-payable-usd:[booking-details:().():[total-payable-usd].sum()]:booking-details:[booking-details:().clone()];new-booking:()=false;booking-copied:().del();booking-edit-readonly:()=false;booking-edit:()=false;if():[old-booking:()]:[setPassengerDetails();booking-data:().():[accept-terms-and-conditions=true;pnr=old-booking:().pnr;old-booking=old-booking:().id];booking-edit-readonly:()=true];style():bookings-mini-window:[opacity=1;pointerEvents=auto;zIndex=10];update():bookings-mini-window;search():[collection=flight-invoice;field.flight-id.in=my-flights:().():id]:[my-flight-invoices:()=().search.data.values();loader.hide]"
+    "openBookingWindow": "booking-data:()=_map:id:[gen():20]:active:true:creation-date:[today().timestamp()]:day:todayStart():month:monthStart():year:yearStart():user:[user:().id]:user-name:[user:().username]:type:[search-type:()]:note:[if():[old-booking:()]:[old-booking:().note]:_string]:status:Loading:description:_string:total-passengers:[booking-details:().0.total-passengers]:total-seats:[booking-details:().0.total-seats]:trip:[search-by:()]:agent:[if():[old-booking:()]:[old-booking:().agent]:[agent:().id]]:agent-name:[if():[old-booking:()]:[old-booking:().agent-name]:[agent:().company-name]]:travel-dates:[booking-details:().():departure-day]:flights:[booking-details:().():flight-id]:booking-date:[today().timestamp()]:reservations:_list:tickets:_list:canceled-reservations:_list:canceled-tickets:_list:counter:[booking-details:().0.total-seats]:total-seats:[booking-details:().0.total-seats]:total-passengers:[booking-details:().0.total-passengers]:total-base-fare-usd:[booking-details:().():[total-base-fare-usd].sum()]:total-taxes-usd:[booking-details:().():[total-taxes-usd].sum()]:total-fees-usd:[booking-details:().():[total-fees-usd].sum()]:total-commission-usd:[booking-details:().():[total-commission-usd].sum()]:total-additional-profit-usd:[booking-details:().():[total-additional-profit-usd].sum()]:total-usd:[booking-details:().():[total-usd].sum()]:total-payable-usd:[booking-details:().():[total-payable-usd].sum()]:booking-details:[booking-details:().clone()];new-booking:()=false;booking-copied:().del();booking-edit-readonly:()=false;booking-edit:()=false;if():[old-booking:()]:[setPassengerDetails();booking-data:().():[accept-terms-and-conditions=true;pnr=old-booking:().pnr;old-booking=old-booking:().id];booking-edit-readonly:()=true];style():bookings-mini-window:[opacity=1;pointerEvents=auto;zIndex=10];update():bookings-mini-window;search():[collection=flight-invoice;field.flight-id.in=my-flights:().():id]:[my-flight-invoices:()=().search.data.values();loader.hide]",
+    "setPassengerDetails": "().my-passengers=old-booking:().booking-details.0.seats.():[passengers-details].flat().clone();booking-data:().booking-details.():[seats.():[passengers-details._():[_.infants=().my-passengers.[_.counter-1].infants;_.type=().my-passengers.[_.counter-1].type.uppercase();_.title=().my-passengers.[_.counter-1].title.uppercase();_.gender=().my-passengers.[_.counter-1].gender.uppercase();_.first-name=().my-passengers.[_.counter-1].first-name.uppercase();_.last-name=().my-passengers.[_.counter-1].last-name.uppercase();_.dob=().my-passengers.[_.counter-1].dob;_.nationality=().my-passengers.[_.counter-1].nationality.uppercase();_.passport-number=().my-passengers.[_.counter-1].passport-number.uppercase();_.passport-issuer=().my-passengers.[_.counter-1].passport-issuer.uppercase();_.passport-expiry-date=().my-passengers.[_.counter-1].passport-expiry-date;_.contact-number=().my-passengers.[_.counter-1].contact-number;_.email=().my-passengers.[_.counter-1].email.uppercase();_.id-number=().my-passengers.[_.counter-1].id-number.uppercase()]]]"
   }
 }

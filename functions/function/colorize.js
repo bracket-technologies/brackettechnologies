@@ -1,6 +1,6 @@
 const { generate } = require("./generate")
 const { toCode } = require("./toCode")
-const colors = ["#a35521", "#1E90FF", "#FF4500", "#02f002", "#5260FF", "#FFC409", "#31313D"]
+const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#FFC409", "#31313D"]
 
 const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) => {
     
@@ -34,7 +34,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
     } else {
       
       // semicolon
-      string = string.split(";").join(`<span contenteditable style="color:#000">;</span>`)
+      //string = string.split(";").join(`<span contenteditable style="color:#000">;</span>`)
 
       // actions
       /*var _actions = string.split("()"), _string = ""
