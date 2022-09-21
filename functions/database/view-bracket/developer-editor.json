@@ -321,6 +321,35 @@
       ]
     },
     {
+      "type": "View?class=flexbox;style:[position=fixed;right=3rem;bottom=3rem;height=1rem;transition=.2s;pointerEvents=none];hover.style.opacity=0",
+      "children": [
+        {
+          "type": "View?style:[height=100%;width=2rem;backgroundColor=#a35521]"
+        },
+        {
+          "type": "View?style:[height=100%;width=2rem;backgroundColor=#1E90FF]"
+        },
+        {
+          "type": "View?style:[height=100%;width=2rem;backgroundColor=#FF4500]"
+        },
+        {
+          "type": "View?style:[height=100%;width=2rem;backgroundColor=#02ad18]"
+        },
+        {
+          "type": "View?style:[height=100%;width=2rem;backgroundColor=#5260FF]"
+        },
+        {
+          "type": "View?style:[height=100%;width=2rem;backgroundColor=#bf9204]"
+        },
+        {
+          "type": "View?style:[height=100%;width=2rem;backgroundColor=#585859]"
+        },
+        {
+          "type": "View?style:[height=100%;width=2rem;backgroundColor=#e649c6]"
+        }
+      ]
+    },
+    {
       "type": "View?view=image-window"
     }
   ]

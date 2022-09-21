@@ -13,7 +13,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, mount, asyncer, createElement, executer }) => {
+const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount, asyncer, createElement, executer }) => {
 
   const { toParam } = require("./toParam")
 
@@ -55,13 +55,13 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   }
 
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, _i, object, mount, params, createElement })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, ___, _i, object, mount, params, createElement })
 
   // or
   if (value.includes("||")) {
     var answer
     value.split("||").map(value => {
-      if (!answer) answer = toValue({ _window, value, params, _, __, _i, id, e, req, res, object, mount })
+      if (!answer) answer = toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount })
     })
     return answer
   }
@@ -73,11 +73,11 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
       
       value = value.slice(0, -2)
       value = `${value}=${value}+1`
-      toParam({ req, res, _window, id, e, string: value, _, __, _i, object, mount, params, createElement })
+      toParam({ req, res, _window, id, e, string: value, _, __, ___, _i, object, mount, params, createElement })
 
     } else {
 
-      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, _i, id, e, req, res, object, mount }))
+      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
       var newVal = values[0]
       values.slice(1).map(val => newVal += val)
       return value = newVal
@@ -86,13 +86,13 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   
   if (value.includes("-")) { // subtraction
 
-    var _value = calcSubs({ _window, value, params, _, __, _i, id, e, req, res, object })
+    var _value = calcSubs({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
     if (_value !== value) return _value
   }
   
   if (value.includes("*")) { // multiplication
 
-    var values = value.split("*").map(value => toValue({ _window, value, params, _, __, _i, id, e, req, res, object, mount }))
+    var values = value.split("*").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
     var newVal = values[0]
     values.slice(1).map(val => {
       if (!isNaN(newVal) && !isNaN(val)) newVal *= val
@@ -148,28 +148,28 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
       if (isParam({ _window, string: args[1] })) {
 
         var _await = ""
-        var _data = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+        var _data = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
         var _func = { function: isFn, data: _data }
         if (args[2]) _await = global.codes[args[2]]
         
-        return require("./func").func({ _window, id, e, _, __, _i, req, res, func: _func, asyncer: true, await: _await })
+        return require("./func").func({ _window, id, e, _, __, ___, _i, req, res, func: _func, asyncer: true, await: _await })
       }
       
-      var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+      var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
       var _func = { function: isFn, data: _data }
       if (args[2]) _await = global.codes[args[2]]
 
-      return require("./func").func({ _window, req, res, id, e, func: _func, _, __, asyncer: true, await: _await })
+      return require("./func").func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
     }
 
     if (_params) {
       if (isParam({ _window, string: _params }))
-        _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
-      else _params = toValue({ req, res, _window, id, e, _, __, _i, value: _params })
+        _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: _params })
+      else _params = toValue({ req, res, _window, id, e, _, __, ___, _i, value: _params })
     }
-    return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), _i, asyncer, createElement, params, executer })
+    return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i, asyncer, createElement, params, executer })
   }
-  // if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, _i, object, mount, params, createElement })
+  // if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, ___, _i, object, mount, params, createElement })
 
   /* value */
   if (!isNaN(value) && value !== " " && (value.length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
@@ -187,22 +187,22 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
   else if (object) {
     //value = value + ".clone()"
-    value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
-  } else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
+    value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
+  } else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
   else if (path[0].includes("()") && path.length === 1) {
 
     var val0 = value.split("coded()")[0]
     if (value.includes('coded()') && !val0.includes("()") && !val0.includes("_map") && !val0.includes("_array") && !val0.includes("_list")) {
 
       value.split("coded()").slice(1).map(val => {
-        val0 += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, __, _i, id, e, req, res, object, mount })
+        val0 += toValue({ _window, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, __, ___, _i, id, e, req, res, object, mount })
         val0 += val.slice(5)
       })
       value = val0
 
-    } else value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
-  } else if (path[1] || path[0].includes(")(") || path[0].includes("()")) value = reducer({ _window, id, object, path, value, params, _, __, _i, e, req, res, mount })
-  else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, id, e, path, params, object, _, __, _i, req, res, mount })
+    } else value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
+  } else if (path[1] || path[0].includes(")(") || path[0].includes("()")) value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
+  else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, id, e, path, params, object, _, __, ___, _i, req, res, mount })
   else if (value === "()") value = view
   else if (typeof value === "boolean") { }
   else if (value === undefined || value === "generate") value = generate()
@@ -216,7 +216,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
     var args = value.split(":")
     var key = args[0]
 
-    value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _, __, _i, mount }))
+    value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _, __, ___, _i, mount }))
   }
 
   // _string
@@ -224,7 +224,7 @@ const toValue = ({ _window, value, params, _, __, _i, id, e, req, res, object, m
   return value
 }
 
-const calcSubs = ({ _window, value, params, _, __, _i, id, e, req, res, object }) => {
+const calcSubs = ({ _window, value, params, _, __, ___, _i, id, e, req, res, object }) => {
   
   if (value.split("-").length > 1) {
 
@@ -234,7 +234,7 @@ const calcSubs = ({ _window, value, params, _, __, _i, id, e, req, res, object }
 
       if (allAreNumbers) {
         
-        var num = toValue({ _window, value, params, _, __, _i, id, e, req, res, object })
+        var num = toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
         if (typeof num !== "number" || num === "") allAreNumbers = false
         return num
       }
@@ -258,7 +258,7 @@ const calcSubs = ({ _window, value, params, _, __, _i, id, e, req, res, object }
         if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true)) return allAreNumbers = false
 
         if (allAreNumbers) {
-          var num = toValue({ _window, value, params, _, __, _i, id, e, req, res, object })
+          var num = toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
           if (typeof num !== "number" || num === "") allAreNumbers = false
           return num
         }
@@ -281,7 +281,7 @@ const calcSubs = ({ _window, value, params, _, __, _i, id, e, req, res, object }
           if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true) ) return allAreNumbers = false
   
           if (allAreNumbers) {
-            var num = toValue({ _window, value, params, _, __, _i, id, e, req, res, object })
+            var num = toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
             if (typeof num !== "number" || num === "") allAreNumbers = false
             return num
           }
@@ -298,6 +298,7 @@ const calcSubs = ({ _window, value, params, _, __, _i, id, e, req, res, object }
       }
     }
   }
+  
   return value
 }
 

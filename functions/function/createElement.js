@@ -52,7 +52,7 @@ const createElement = ({ _window, id, req, res }) => {
   }*/
 
   // view is empty
-  if (!view.type) return
+  if (!view.type) return ""
   if (!view["my-views"]) view["my-views"] = [...views[parent]["my-views"]]
 
   // code []

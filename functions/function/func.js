@@ -3,7 +3,7 @@ const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { getCookie } = require("./cookie")
 
-const func = async ({ _window, id = "", req, _, __, res, e, ...params }) => {
+const func = async ({ _window, id = "", req, _, __, ___, res, e, ...params }) => {
   
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -45,7 +45,7 @@ const func = async ({ _window, id = "", req, _, __, res, e, ...params }) => {
 
   if (data.params) {
     data.params = toCode({ _window, string: data.params, e })
-    params = { ...toParam({ _window, id, e, string: data.params, asyncer: true, _, __, req, res }), params }
+    params = { ...toParam({ _window, id, e, string: data.params, asyncer: true, _, __, ___, req, res }), params }
   }
   
   // await params

@@ -4,7 +4,7 @@ const { clone } = require("./clone")
 const { toCode } = require("./toCode")
 const actions = require("./actions.json")
 
-const toApproval = ({ _window, e, string, id = "", _, __, req, res, object, _i }) => {
+const toApproval = ({ _window, e, string, id = "", _, __, ___, req, res, object, _i }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
@@ -45,7 +45,7 @@ const toApproval = ({ _window, e, string, id = "", _, __, req, res, object, _i }
       var conditions = condition.split("||"), _i = 0
       approval = false
       while (!approval && conditions[_i] !== undefined) {
-        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, req, res, object })
+        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, ___, req, res, object })
         _i += 1
       }
       return approval
@@ -70,7 +70,7 @@ const toApproval = ({ _window, e, string, id = "", _, __, req, res, object, _i }
 
     // /////////////////// value /////////////////////
 
-    if (value) value = toValue({ _window, id: mainId, value, e, _, __, req, res })
+    if (value) value = toValue({ _window, id: mainId, value, e, _, __, ___, req, res })
 
     // /////////////////// key /////////////////////
 
@@ -120,26 +120,26 @@ const toApproval = ({ _window, e, string, id = "", _, __, req, res, object, _i }
         if (isParam({ _window, string: args[1] })) {
   
           var _await = ""
-          var _data = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+          var _data = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
           var _func = { function: isFn, data: _data }
           if (args[2]) _await = global.codes[args[2]]
           
-          return require("./func").func({ _window, id, e, _, __, _i, req, res, func: _func, asyncer: true, await: _await })
+          return require("./func").func({ _window, id, e, _, __, ___, _i, req, res, func: _func, asyncer: true, await: _await })
         }
         
-        var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+        var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
         var _func = { function: isFn, data: _data }
         if (args[2]) _await = global.codes[args[2]]
   
-        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, asyncer: true, await: _await })
+        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
       }
 
       if (_params) {
         if (isParam({ _window, string: _params }))
-          _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
-        else _params = toValue({ req, res, _window, id, e, _, __, _i, value: _params })
+          _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: _params })
+        else _params = toValue({ req, res, _window, id, e, _, __, ___, _i, value: _params })
       }
-      return approval = toApproval({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), _i })
+      return approval = toApproval({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i })
     }
 
     if (!key && object !== undefined) view[keygen] = object
@@ -150,8 +150,8 @@ const toApproval = ({ _window, e, string, id = "", _, __, req, res, object, _i }
     else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
     else if (key === "_") view[keygen] = _
     else if (key === "__") view[keygen] = __
-    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, __, req, res, object, condition: true })
-    else view[keygen] = reducer({ _window, id, path, e, _, __, req, res, object: object ? object : view, condition: true })
+    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, __, ___, req, res, object, condition: true })
+    else view[keygen] = reducer({ _window, id, path, e, _, __, ___, req, res, object: object ? object : view, condition: true })
     // else view[keygen] = key
     
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !view[keygen] : (view[keygen] === 0 ? true : view[keygen])

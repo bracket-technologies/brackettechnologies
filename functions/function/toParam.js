@@ -16,7 +16,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, _i, asyncer, createElement, params = {}, executer }) => {
+const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, ___, _i, asyncer, createElement, params = {}, executer }) => {
   
   const { toApproval } = require("./toApproval")
   var _functions = require("./function")
@@ -32,7 +32,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
   // condition not param
   if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
-  return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, __, _i, object })
+  return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, __, ___, _i, object })
 
   string.split(";").map(param => {
     
@@ -66,7 +66,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       var awaiter = param.split(":").slice(1)
       if (asyncer) {
         if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
-        var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount })
+        var _params = toParam({ _window, string: awaiter[0], e, id, req, res, mount, _, __, ___, })
         params = { ...params, ..._params }
         awaiter = awaiter.slice(1)
       }
@@ -270,7 +270,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
 
     if (value === undefined) value = generate()
-    else value = toValue({ _window, req, res, id, e, value, params, _, __ })
+    else value = toValue({ _window, req, res, id, e, value, params, _, __, ___ })
 
     id = viewId
 
@@ -300,27 +300,27 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
         if (isParam({ _window, string: args[1] })) {
 
           var _await = ""
-          var _data = toParam({ req, res, _window, id, e, _, __, _i, string: args[1] })
+          var _data = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
           var _func = { function: isFn, data: _data }
           if (args[2]) _await = global.codes[args[2]]
           
-          return require("./func").func({ _window, id, e, _, __, _i, req, res, func: _func, asyncer: true, await: _await })
+          return require("./func").func({ _window, id, e, _, __, ___, _i, req, res, func: _func, asyncer: true, await: _await })
         }
         
-        var _data = toValue({ req, res, _window, id, e, _, __, _i, value: args[1], params })
+        var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
         var _func = { function: isFn, data: _data }
         if (args[2]) _await = global.codes[args[2]]
         
-        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, asyncer: true, await: _await })
+        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
       }
 
       if (_params) {
         if (isParam({ _window, string: _params }))
-          _params = toParam({ req, res, _window, id, e, _, __, _i, string: _params })
-        else _params = toValue({ req, res, _window, id, e, _, __, _i, value: _params })
+          _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: _params })
+        else _params = toValue({ req, res, _window, id, e, _, __, ___, _i, value: _params })
       }
       
-      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), _i, asyncer, createElement, params, executer })
+      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i, asyncer, createElement, params, executer })
     }
 
     // object structure
@@ -334,7 +334,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       // mount state & value
       if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || path[0].includes(")(") || path[0].includes("_") || object) {
 
-        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, object, mount, createElement })
+        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, __, ___, _i, object, mount, createElement })
         if (timer) {
           
           timer = parseInt(timer)
@@ -345,8 +345,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
       } else {
         
-        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, _i, mount, object, createElement })
-        reducer({ _window, id, path, value, key, params, e, req, res, _, __, _i, mount, object: params })
+        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, ___, _i, mount, object, createElement })
+        reducer({ _window, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: params })
       }
       
       if (!params.path && _path !== undefined) params.path = _path
@@ -404,6 +404,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     //////////////////////////////////////////////////////// End /////////////////////////////////////////////////////////
   })
 
+  if (params["return()"]) return params["return()"]
   return params
 }
 
