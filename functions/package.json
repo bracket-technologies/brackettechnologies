@@ -1,5 +1,6 @@
 {
-  "name": "functions",
+  "name": "bracketjs",
+  "version": "1.0.0",
   "description": "Cloud Functions for Firebase",
   "scripts": {
     "lint": "eslint .",
@@ -42,5 +43,10 @@
     "browserify": "*",
     "npm-run-all": "*"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MohamadObeid/BracketJs.git"
+  },
+  "author": "Mohamad Baqer Obeid",
   "private": true
 }
