@@ -146,6 +146,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
       }
 
       if (_params) {
+
         if (isParam({ _window, string: _params }))
           _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: _params })
         else _params = toValue({ req, res, _window, id, e, _, __, ___, _i, value: _params })
@@ -329,6 +330,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             path0 = "()"
         }*/
     }
+
+    /*if (!path0.includes("()") && path[0].split(":").length === 2 && path[0].slice(-2) === "()") {
+        var _params = args[1]
+        path[0] = `${path0}.`
+    }*/
     
     _object = path0 === "()" ? view
     : path0 === "index()" ? index
@@ -340,7 +346,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     : (path0 === "window()" || path0 === "win()") ? _window || window
     : path0 === "history()" ? history
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
-    : _object !== undefined ? _object : object
+    : _object !== undefined ? _object
+    : object
 
     if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" 
     || path0 === "window()" || path0 === "win()" || path0 === "history()"/* || path0 === "return()"*/) path = path.slice(1)

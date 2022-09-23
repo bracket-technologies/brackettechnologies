@@ -1743,6 +1743,7 @@ const createDocument = async ({ req, res }) => {
     .then((doc) => {
       if (doc.docs[0] && doc.docs[0].exists)
         global.data.project = project = doc.docs[0].data();
+        project = clone(project)
         global.functions = Object.keys(project.functions || {})
         // global.projectFunctions = project.functions || {}
         console.log("after project", new Date().getTime() - global.timer);
@@ -1961,7 +1962,7 @@ const createDocument = async ({ req, res }) => {
 
   delete global.headers
   delete global.data.project;
-
+  
   res.send(
     `<!DOCTYPE html>
     <html lang="${language}" dir="${direction}" class="html">
@@ -1978,7 +1979,7 @@ const createDocument = async ({ req, res }) => {
         <meta name="apple-mobile-web-app-title" content="${global.data.page[currentPage].title}">
         <title>${global.data.page[currentPage].title}</title>
         <link rel="stylesheet" href="/resources/index.css"/>
-        <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
+        ${project.favicon ? `<link rel="icon" type="image/x-icon" href="${project.favicon}"/>` : ""}
         <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
         <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
         <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
@@ -4718,6 +4719,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
       }
 
       if (_params) {
+
         if (isParam({ _window, string: _params }))
           _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: _params })
         else _params = toValue({ req, res, _window, id, e, _, __, ___, _i, value: _params })
@@ -4901,6 +4903,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             path0 = "()"
         }*/
     }
+
+    /*if (!path0.includes("()") && path[0].split(":").length === 2 && path[0].slice(-2) === "()") {
+        var _params = args[1]
+        path[0] = `${path0}.`
+    }*/
     
     _object = path0 === "()" ? view
     : path0 === "index()" ? index
@@ -4912,7 +4919,8 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
     : (path0 === "window()" || path0 === "win()") ? _window || window
     : path0 === "history()" ? history
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
-    : _object !== undefined ? _object : object
+    : _object !== undefined ? _object
+    : object
 
     if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" 
     || path0 === "window()" || path0 === "win()" || path0 === "history()"/* || path0 === "return()"*/) path = path.slice(1)
@@ -11347,11 +11355,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     else value = toValue({ _window, req, res, id, e, value, params, _, __, ___ })
 
     id = viewId
+//path[0][i]
+    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, backendFn = false, i = path[0].split(":").length - 1, path0 = path[0].split(":")[0], pathi = path[0].split(":")[i]
 
-    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, backendFn = false, path0 = path[0].split(":")[0]
+    ////////////////////////////////// function /////////////////////////////////////////
 
-    // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
+    if (path.length === 1 && path0.slice(-2) === "()" /*&& !path0.includes(":")*/ && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
 
       clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
@@ -11364,9 +11373,11 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
         isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
         if (isFn) backendFn = true
       }
-    }
+
+    } // else if (!path0.includes("()") && path[0].split(":").length === 2 && path0.slice(-2) === "()" )
 
     if (isFn) {
+
       var _params = path[0].split(":")[1], args = path[0].split(":")
 
       if (backendFn) {
@@ -11389,13 +11400,43 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       if (_params) {
-        if (isParam({ _window, string: _params }))
-          _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: _params })
+
+        var _key = generate()
+        global.codes[`coded()${_key}`] = _params
+        if (isParam({ _window, string: _params })) _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: `coded()${_key}` })
         else _params = toValue({ req, res, _window, id, e, _, __, ___, _i, value: _params })
       }
       
       return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i, asyncer, createElement, params, executer })
     }
+    
+    // field:action()
+    if (path[0] && pathi.slice(-2) === "()" && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
+
+      clone(view["my-views"] || []).reverse().map(view => {
+        if (!isFn) {
+          isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === pathi.slice(0, -2))
+          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+        }
+      })
+      
+      if (!isFn) {
+        isFn = (global.functions || []).find(fn => fn === pathi.slice(0, -2))
+        if (isFn) backendFn = true
+      }
+    }
+
+    if (isFn) {
+
+      var _field = path[0].split(":")[0]
+      var _key = generate()
+      global.codes[`coded()${_key}`] = isFn
+
+      // if (backendFn) return require("./func").func({ _window, req, res, id, e, func: `${_field}:coded()${_key}`, _, __, ___, asyncer: true })
+      return toParam({ _window, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, createElement, params, executer })
+    }
+
+    ////////////////////////////////// end of function /////////////////////////////////////////
 
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {

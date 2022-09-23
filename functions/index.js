@@ -168,7 +168,7 @@ app.get("*", async (req, res) => {
   if (path[1] === "database") return getdb({ req, res })
 
   // favicon
-  if (req.url === "/favicon.ico") return res.sendStatus(204)
+  // if (req.url === "/favicon.ico") return res.sendStatus(204)
 
   // respond
   return createDocument({ req, res })

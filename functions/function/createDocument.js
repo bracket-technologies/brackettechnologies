@@ -87,6 +87,7 @@ const createDocument = async ({ req, res }) => {
     .then((doc) => {
       if (doc.docs[0] && doc.docs[0].exists)
         global.data.project = project = doc.docs[0].data();
+        project = clone(project)
         global.functions = Object.keys(project.functions || {})
         // global.projectFunctions = project.functions || {}
         console.log("after project", new Date().getTime() - global.timer);
@@ -305,7 +306,7 @@ const createDocument = async ({ req, res }) => {
 
   delete global.headers
   delete global.data.project;
-
+  
   res.send(
     `<!DOCTYPE html>
     <html lang="${language}" dir="${direction}" class="html">
@@ -322,7 +323,7 @@ const createDocument = async ({ req, res }) => {
         <meta name="apple-mobile-web-app-title" content="${global.data.page[currentPage].title}">
         <title>${global.data.page[currentPage].title}</title>
         <link rel="stylesheet" href="/resources/index.css"/>
-        <link rel="icon" type="image/x-icon" href="${project.favicon || ""}"/>
+        ${project.favicon ? `<link rel="icon" type="image/x-icon" href="${project.favicon}"/>` : ""}
         <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
         <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
         <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
