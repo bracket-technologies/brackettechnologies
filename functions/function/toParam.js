@@ -329,7 +329,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
     
     // field:action()
-    if (path[0] && pathi.slice(-2) === "()" && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
+    if (path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
 
       clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
