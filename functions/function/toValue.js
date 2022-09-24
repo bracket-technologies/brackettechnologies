@@ -184,7 +184,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(15, 22) === "coded()" && value.slice(0, 15) === "linear-gradient") value = "linear-gradient(" + global.codes[value.slice(15, 27)] + ")"
-  else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
   else if (object) {
     //value = value + ".clone()"
     value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
@@ -214,10 +213,10 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
 
     var args = value.split(":")
-    var key = args[0]
+    var key = toValue({ _window, value: args[0], params, _, __, ___, _i, id, e, req, res, object, mount })
 
     value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _, __, ___, _i, mount }))
-  }
+  } 
 
   // _string
   else if (value === "_string") return ""

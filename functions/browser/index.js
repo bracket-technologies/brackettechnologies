@@ -4961,8 +4961,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
               var _name = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1] })
               _object = getCookie({ name: _name, req, res, _window })
               if (!_object) return
-                
-            } else if (path0 === "eraseCookie()") {
+            } 
+            
+            else if (path0 === "eraseCookie()") {
 
               if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
 
@@ -4974,16 +4975,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 var _name = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1] })
                 _object = eraseCookie({ name: _name, req, res, _window })
                 if (!_object) return
-                
-            } else if (path0 === "setCookie()") {
+            } 
+            
+            else if (path0 === "setCookie()") {
 
               if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
     
                 // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
                 var _params = toParam({ req, res, _window, id, e, _, __, ___, _i,params, string: args[1] })
                 return setCookie({ ..._params, req, res, _window })
-    
-            } else if (path0 === "cookie()") {
+            } 
+            
+            else if (path0 === "cookie()") {
 
                 var _params = toParam({ req, res, _window, id, e, _, __, ___, _i,params, string: args[1] })
 
@@ -5009,21 +5012,29 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     el = toValue({ req, res, _window, id, _, __, ___, _i,e, value: el, params })
                     _object.push(el)
                 })
-                
-            } else if (path0 === "_map") {
+            } 
+            
+            else if (path0 === "_map") {
 
                 _object = {}
-                var args = path[0].split(":").slice(1)
-                args.map((arg, i) => {
+                if (isParam({ _window, string: args[1] })) {
 
-                    if (i % 2) return
-                    var f = toValue({ req, res, _window, id, _, __, ___, _i,e, value: arg, params })
-                    var v = toValue({ req, res, _window, id, _, __, ___, _i,e, value: args[i + 1], params })
-                    if (v !== undefined) _object[f] = v
+                  return args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: _object, e, req, res, _, __, ___, _i, mount }))
+                } else {
 
-                })
-                
-            } else if (mount) {
+                  var args = path[0].split(":").slice(1)
+                  args.map((arg, i) => {
+
+                      if (i % 2) return
+                      var f = toValue({ req, res, _window, id, _, __, ___, _i,e, value: arg, params })
+                      var v = toValue({ req, res, _window, id, _, __, ___, _i,e, value: args[i + 1], params })
+                      if (v !== undefined) _object[f] = v
+
+                  })
+                }
+            } 
+            
+            else if (mount) {
                 _object = view
                 path.unshift("()")
             }
@@ -5603,7 +5614,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         var _id = previousSibling.id
         answer = views[_id]
 
-    } else if (k0 === "1stChild()" || k0 === "child()") {// o could be a string or element or view
+      } else if (k0 === "1stChild()" || k0 === "child()") {// o could be a string or element or view
             
             var _o, _params = {}
             if (args[1]) {
@@ -5667,7 +5678,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         answer = _views
         
-    } else if (k0 === "2ndChild()") {// o could be a string or element or view
+      } else if (k0 === "2ndChild()") {// o could be a string or element or view
             
             var _o, _params = {}
             if (args[1]) {
@@ -6532,16 +6543,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 answer.push(el)
             })
 
-        } else if (k0 === "_object" || k0 === "_map" || k0 === "{}") {
+        } else if (k0 === "_map") {
             
             answer = {}
-            k.split(":").slice(1).map((el, i) => {
+            if (isParam({ _window, string: args[1] })) {
 
-                if (i % 2) return
-                var f = toValue({ req, res, _window, id, _, __, ___, _i,e, value: el, params })
-                var v = toValue({ req, res, _window, id, _, __, ___, _i,e, value: args[i + 1], params })
-                if (v !== undefined) answer[f] = v
-            })
+              return args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: answer, e, req, res, _, __, ___, _i, mount }))
+            } else {
+
+              k.split(":").slice(1).map((el, i) => {
+
+                  if (i % 2) return
+                  var f = toValue({ req, res, _window, id, _, __, ___, _i,e, value: el, params })
+                  var v = toValue({ req, res, _window, id, _, __, ___, _i,e, value: args[i + 1], params })
+                  if (v !== undefined) answer[f] = v
+              })
+            }
 
         } else if (k0 === "_semi" || k0 === ";") {
   
@@ -11355,7 +11372,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     else value = toValue({ _window, req, res, id, e, value, params, _, __, ___ })
 
     id = viewId
-//path[0][i]
+    
     var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, backendFn = false, i = path[0].split(":").length - 1, path0 = path[0].split(":")[0], pathi = path[0].split(":")[i]
 
     ////////////////////////////////// function /////////////////////////////////////////
@@ -11411,7 +11428,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
     
     // field:action()
-    if (path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
+    if (view && path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
 
       clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
@@ -11496,23 +11513,74 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
     
       // mount path directly when found
-      if (mount && !mountPathUsed && params.path && createElement) {
+      if (mount && !mountPathUsed && (params.path || params.schema) && createElement) {
 
+        var schema = clone(params.path || params.schema)
         mountPathUsed = true
-        
-        // path & derivations
-        var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : params.path || []
-            
-        if (path.length > 0) {
-          
-          if (!view.Data) {
 
-            view.Data = generate()
-            global[view.Data] = view.data || {}
-          }
+        if (!view.Data) {
 
-          view.derivations.push(...path)
+          view.Data = generate()
+          global[view.Data] = view.data || {}
         }
+
+        if (!global[`${view.Data}-schema`]) global[`${view.Data}-schema`] = []
+        if (schema.value || schema.data) view.data = schema.value = schema.value || schema.data
+
+        var myFnn = ({ path, derivations, mainSchema = [], schema = {}, value }) => {
+
+          if (value !== undefined) schema.value = value
+
+          // path
+          var myPath = (typeof path === "string" || typeof path === "number") ? path.toString().split(".") : path || []
+          derivations.push(...myPath)
+          var lastIndex = derivations.length - 1
+          
+          derivations.reduce((o, k, i) => {
+
+            var _type = i === 0 ? o : (o.type || [])
+            if (i !== 0  && !o.type) o.type = _type
+            if (typeof k === "number") {
+              o.isArray = true
+              return o
+            }
+
+            if (_type.find(o => o.path === k)) {
+
+              var _schema = _type.find(o => o.path === k)
+              if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
+              if (_schema.type === "array") _schema.isArray = true
+              _schema.type = (i !== lastIndex) ? [] : (_schema.type || "any")
+
+              return _schema
+              
+            } else {
+
+              var _schema = { path: k }
+              if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
+              if (_schema.type === "array") _schema.isArray = true
+              _schema.type = (i !== lastIndex) ? [] : (_schema.type || "any")
+
+              // if (params.data && i === lastIndex) _schema.value = params.data
+              _type.push(_schema)
+              return _schema
+            }
+
+          }, mainSchema)
+        }
+
+        if (typeof schema === "object" ? Array.isArray(schema) : true) myFnn({ path: schema, derivations: view.derivations, mainSchema: global[`${view.Data}-schema`]})
+        else if (schema.path) myFnn({ path: clone(schema.path), derivations: view.derivations, mainSchema: global[`${view.Data}-schema`], schema })
+
+        // reducer({ _window, id, path: view.derivations, value: view.path, key: true, params, e, req, res, _, __, ___, _i, mount, object: global[`${view.Data}-schema`] })
+
+        if (typeof view.data === "object" && !Array.isArray(view.data)) {
+
+          Object.entries(view.data).map(([k, v]) => {
+            myFnn({ path: k, derivations: view.derivations || [], mainSchema: view.schema })
+          })
+        }
+        console.log("data schema", view.Data, global[`${view.Data}-schema`])
       }
     }
   
@@ -11906,7 +11974,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(15, 22) === "coded()" && value.slice(0, 15) === "linear-gradient") value = "linear-gradient(" + global.codes[value.slice(15, 27)] + ")"
-  else if (value === ")(" || value === ":()") value = _window ? _window.global : window.global
   else if (object) {
     //value = value + ".clone()"
     value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
@@ -11936,10 +12003,10 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
 
     var args = value.split(":")
-    var key = args[0]
+    var key = toValue({ _window, value: args[0], params, _, __, ___, _i, id, e, req, res, object, mount })
 
     value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _, __, ___, _i, mount }))
-  }
+  } 
 
   // _string
   else if (value === "_string") return ""

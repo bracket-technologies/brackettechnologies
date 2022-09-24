@@ -273,7 +273,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     else value = toValue({ _window, req, res, id, e, value, params, _, __, ___ })
 
     id = viewId
-//path[0][i]
+    
     var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, backendFn = false, i = path[0].split(":").length - 1, path0 = path[0].split(":")[0], pathi = path[0].split(":")[i]
 
     ////////////////////////////////// function /////////////////////////////////////////
@@ -329,7 +329,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     }
     
     // field:action()
-    if (path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
+    if (view && path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
 
       clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
@@ -414,23 +414,74 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
     
       // mount path directly when found
-      if (mount && !mountPathUsed && params.path && createElement) {
+      if (mount && !mountPathUsed && (params.path || params.schema) && createElement) {
 
+        var schema = clone(params.path || params.schema)
         mountPathUsed = true
-        
-        // path & derivations
-        var path = (typeof view.path === "string" || typeof view.path === "number") ? view.path.toString().split(".") : params.path || []
-            
-        if (path.length > 0) {
-          
-          if (!view.Data) {
 
-            view.Data = generate()
-            global[view.Data] = view.data || {}
-          }
+        if (!view.Data) {
 
-          view.derivations.push(...path)
+          view.Data = generate()
+          global[view.Data] = view.data || {}
         }
+
+        if (!global[`${view.Data}-schema`]) global[`${view.Data}-schema`] = []
+        if (schema.value || schema.data) view.data = schema.value = schema.value || schema.data
+
+        var myFnn = ({ path, derivations, mainSchema = [], schema = {}, value }) => {
+
+          if (value !== undefined) schema.value = value
+
+          // path
+          var myPath = (typeof path === "string" || typeof path === "number") ? path.toString().split(".") : path || []
+          derivations.push(...myPath)
+          var lastIndex = derivations.length - 1
+          
+          derivations.reduce((o, k, i) => {
+
+            var _type = i === 0 ? o : (o.type || [])
+            if (i !== 0  && !o.type) o.type = _type
+            if (typeof k === "number") {
+              o.isArray = true
+              return o
+            }
+
+            if (_type.find(o => o.path === k)) {
+
+              var _schema = _type.find(o => o.path === k)
+              if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
+              if (_schema.type === "array") _schema.isArray = true
+              _schema.type = (i !== lastIndex) ? [] : (_schema.type || "any")
+
+              return _schema
+              
+            } else {
+
+              var _schema = { path: k }
+              if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
+              if (_schema.type === "array") _schema.isArray = true
+              _schema.type = (i !== lastIndex) ? [] : (_schema.type || "any")
+
+              // if (params.data && i === lastIndex) _schema.value = params.data
+              _type.push(_schema)
+              return _schema
+            }
+
+          }, mainSchema)
+        }
+
+        if (typeof schema === "object" ? Array.isArray(schema) : true) myFnn({ path: schema, derivations: view.derivations, mainSchema: global[`${view.Data}-schema`]})
+        else if (schema.path) myFnn({ path: clone(schema.path), derivations: view.derivations, mainSchema: global[`${view.Data}-schema`], schema })
+
+        // reducer({ _window, id, path: view.derivations, value: view.path, key: true, params, e, req, res, _, __, ___, _i, mount, object: global[`${view.Data}-schema`] })
+
+        if (typeof view.data === "object" && !Array.isArray(view.data)) {
+
+          Object.entries(view.data).map(([k, v]) => {
+            myFnn({ path: k, derivations: view.derivations || [], mainSchema: view.schema })
+          })
+        }
+        console.log("data schema", view.Data, global[`${view.Data}-schema`])
       }
     }
   

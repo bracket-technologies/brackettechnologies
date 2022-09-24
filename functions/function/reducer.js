@@ -388,8 +388,9 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
               var _name = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1] })
               _object = getCookie({ name: _name, req, res, _window })
               if (!_object) return
-                
-            } else if (path0 === "eraseCookie()") {
+            } 
+            
+            else if (path0 === "eraseCookie()") {
 
               if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
 
@@ -401,16 +402,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 var _name = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1] })
                 _object = eraseCookie({ name: _name, req, res, _window })
                 if (!_object) return
-                
-            } else if (path0 === "setCookie()") {
+            } 
+            
+            else if (path0 === "setCookie()") {
 
               if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
     
                 // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
                 var _params = toParam({ req, res, _window, id, e, _, __, ___, _i,params, string: args[1] })
                 return setCookie({ ..._params, req, res, _window })
-    
-            } else if (path0 === "cookie()") {
+            } 
+            
+            else if (path0 === "cookie()") {
 
                 var _params = toParam({ req, res, _window, id, e, _, __, ___, _i,params, string: args[1] })
 
@@ -436,21 +439,29 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     el = toValue({ req, res, _window, id, _, __, ___, _i,e, value: el, params })
                     _object.push(el)
                 })
-                
-            } else if (path0 === "_map") {
+            } 
+            
+            else if (path0 === "_map") {
 
                 _object = {}
-                var args = path[0].split(":").slice(1)
-                args.map((arg, i) => {
+                if (isParam({ _window, string: args[1] })) {
 
-                    if (i % 2) return
-                    var f = toValue({ req, res, _window, id, _, __, ___, _i,e, value: arg, params })
-                    var v = toValue({ req, res, _window, id, _, __, ___, _i,e, value: args[i + 1], params })
-                    if (v !== undefined) _object[f] = v
+                  return args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: _object, e, req, res, _, __, ___, _i, mount }))
+                } else {
 
-                })
-                
-            } else if (mount) {
+                  var args = path[0].split(":").slice(1)
+                  args.map((arg, i) => {
+
+                      if (i % 2) return
+                      var f = toValue({ req, res, _window, id, _, __, ___, _i,e, value: arg, params })
+                      var v = toValue({ req, res, _window, id, _, __, ___, _i,e, value: args[i + 1], params })
+                      if (v !== undefined) _object[f] = v
+
+                  })
+                }
+            } 
+            
+            else if (mount) {
                 _object = view
                 path.unshift("()")
             }
@@ -1030,7 +1041,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         var _id = previousSibling.id
         answer = views[_id]
 
-    } else if (k0 === "1stChild()" || k0 === "child()") {// o could be a string or element or view
+      } else if (k0 === "1stChild()" || k0 === "child()") {// o could be a string or element or view
             
             var _o, _params = {}
             if (args[1]) {
@@ -1094,7 +1105,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         answer = _views
         
-    } else if (k0 === "2ndChild()") {// o could be a string or element or view
+      } else if (k0 === "2ndChild()") {// o could be a string or element or view
             
             var _o, _params = {}
             if (args[1]) {
@@ -1959,16 +1970,22 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                 answer.push(el)
             })
 
-        } else if (k0 === "_object" || k0 === "_map" || k0 === "{}") {
+        } else if (k0 === "_map") {
             
             answer = {}
-            k.split(":").slice(1).map((el, i) => {
+            if (isParam({ _window, string: args[1] })) {
 
-                if (i % 2) return
-                var f = toValue({ req, res, _window, id, _, __, ___, _i,e, value: el, params })
-                var v = toValue({ req, res, _window, id, _, __, ___, _i,e, value: args[i + 1], params })
-                if (v !== undefined) answer[f] = v
-            })
+              return args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: answer, e, req, res, _, __, ___, _i, mount }))
+            } else {
+
+              k.split(":").slice(1).map((el, i) => {
+
+                  if (i % 2) return
+                  var f = toValue({ req, res, _window, id, _, __, ___, _i,e, value: el, params })
+                  var v = toValue({ req, res, _window, id, _, __, ___, _i,e, value: args[i + 1], params })
+                  if (v !== undefined) answer[f] = v
+              })
+            }
 
         } else if (k0 === "_semi" || k0 === ";") {
   
