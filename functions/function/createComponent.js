@@ -39,7 +39,7 @@ module.exports = {
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, string: params, id, req, res, mount: true })
+    params = toParam({ _window, string: params, id, req, res, mount: true/*, createElement: true*/ })
 
       if (params.id) {
         

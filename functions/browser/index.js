@@ -1208,7 +1208,7 @@ module.exports=[
  , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "html2pdf()", "dblclick()"
  , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()"
  , "replaceItem()", "grandParent()", "grandChild()", "grandChildren()", "open()", "2ndNext()", "isNaN()"
- , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()"
+ , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()"
 ]
 },{}],32:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
@@ -1642,7 +1642,7 @@ module.exports = {
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, string: params, id, req, res, mount: true })
+    params = toParam({ _window, string: params, id, req, res, mount: true/*, createElement: true*/ })
 
       if (params.id) {
         
@@ -7228,6 +7228,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _index = toValue({ req, res, _window, e, id, value: args[1], _, __, ___, _i,params })
             answer = o.charAt(0)
 
+        } else if (k0 === "scrollTo()") {
+
+          var _x = toValue({ req, res, _window, e, id, value: args[1], _, __, ___, _i, params })
+          var _y = toValue({ req, res, _window, e, id, value: args[2], _, __, ___, _i, params })
+          window.scrollTo(_x, _y)
+console.log(_x, _y);
         } else if (k0 === "droplist()") {
             
             var _params = toParam({ req, res, _window, e, id, string: args[1], _, __, ___, _i,params })
@@ -8373,6 +8379,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = isNaN(o)
             console.log(answer, o);
+
         } else if (k0 === "round()") {
 
             var nth = toValue({ req, res, _window, id, e, _, __, ___, _i,params, value: args[1] }) || 2
@@ -8919,30 +8926,31 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         } else if (key && o[k] === undefined && i !== lastIndex) {
 
-            if (!isNaN(path[i + 1])) answer = o[k] = []
-            else {
-            
-                if (Array.isArray(o)) {
-                    if (isNaN(k)) {
-                        if (o.length === 0) o.push({})
-                        o = o[0]
-                    }
+          if (!isNaN(path[i + 1])) answer = o[k] = []
+          else {
+          
+            if (Array.isArray(o)) {
+                if (isNaN(k)) {
+                    if (o.length === 0) o.push({})
+                    o = o[0]
                 }
-                answer = o[k] = {}
             }
+            answer = o[k] = {}
+          }
 
         } else {
             
             if (Array.isArray(o)) {
-                if (isNaN(k)) {
+              if (isNaN(k) && o.length === 0) {
 
-                    if (o.length === 0) o.push({})
-                    o = o[0]
+                  if (o.length === 0) o.push({})
+                  o = o[0]
 
-                } else k = parseFloat(k)
+              } else k = parseFloat(k)
             }
             
             answer = o[k]
+            //console.log(k, o, lastIndex, path, i, o[k]);
         }
         
         return answer
@@ -9489,6 +9497,26 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
   if (save.doc || save.id || (typeof _data === "object" && !Array.isArray(_data) && _data.id)) save.doc = save.doc || save.id || _data.id
   if (!save.doc && (Array.isArray(_data) ? _data.find(data => !data.id) : false)) return
     
+
+  // schema
+  //if (save.schema) {
+    const schematize = ({ data, schema }) => {
+      var _data = {}
+      schema.map(schema => {
+        if (data[schema.path] !== undefined) {
+          
+          if (schema.type === "any" || typeof data[schema.path] === schema.type) _data[schema.path] = data[schema.path]
+          else if (Array.isArray(schema.type) || typeof data[schema.path] === "object") {
+            if (schema.isArray && Array.isArray(data[schema.path])) _data[schema.path] = data[schema.path].map(data => schematize({ data, schema: schema.type }))
+            else if (!Array.isArray(data[schema.path])) _data[schema.path] = schematize({ data, schema: schema.type })
+          }
+        }
+      })
+      return _data
+    }
+    console.log(_data, schematize({ data: _data, schema: [{path: "id", type: "any"}, { path: "contacts", type: [{ path: "name", type: "any" }], isArray: true }] }));
+ // }
+
   if (_window) {
     
     var collection = save.collection, success, message, project = headers.project || req.headers.project
@@ -11517,7 +11545,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
         var schema = clone(params.path || params.schema)
         mountPathUsed = true
-
+        
         if (!view.Data) {
 
           view.Data = generate()
@@ -11525,7 +11553,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
         }
 
         if (!global[`${view.Data}-schema`]) global[`${view.Data}-schema`] = []
-        if (schema.value || schema.data) view.data = schema.value = schema.value || schema.data
+        if (typeof schema === "object" && schema.value || schema.data) view.data = schema.value = schema.value || schema.data
 
         var myFnn = ({ path, derivations, mainSchema = [], schema = {}, value }) => {
 
@@ -11535,12 +11563,13 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
           var myPath = (typeof path === "string" || typeof path === "number") ? path.toString().split(".") : path || []
           derivations.push(...myPath)
           var lastIndex = derivations.length - 1
-          
+          // console.log(schema, path,derivations, lastIndex);
           derivations.reduce((o, k, i) => {
 
             var _type = i === 0 ? o : (o.type || [])
             if (i !== 0  && !o.type) o.type = _type
-            if (typeof k === "number") {
+            if (!isNaN(k) && k !== " " && (k.length > 1 ? k.toString().charAt(0) !== "0" : true)) {
+              
               o.isArray = true
               return o
             }
@@ -11550,8 +11579,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
               var _schema = _type.find(o => o.path === k)
               if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
               if (_schema.type === "array") _schema.isArray = true
-              _schema.type = (i !== lastIndex) ? [] : (_schema.type || "any")
-
+              _schema.type = (i !== lastIndex && !Array.isArray(_schema.type)) ? [] : (_schema.type || "any")
               return _schema
               
             } else {
@@ -11559,13 +11587,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
               var _schema = { path: k }
               if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
               if (_schema.type === "array") _schema.isArray = true
-              _schema.type = (i !== lastIndex) ? [] : (_schema.type || "any")
+              _schema.type = (i !== lastIndex && !Array.isArray(_schema.type)) ? [] : (_schema.type || "any")
 
               // if (params.data && i === lastIndex) _schema.value = params.data
               _type.push(_schema)
               return _schema
             }
-
           }, mainSchema)
         }
 
@@ -11580,7 +11607,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
             myFnn({ path: k, derivations: view.derivations || [], mainSchema: view.schema })
           })
         }
-        console.log("data schema", view.Data, global[`${view.Data}-schema`])
+
+        // console.log("data schema", view.Data, global[`${view.Data}-schema`])
       }
     }
   

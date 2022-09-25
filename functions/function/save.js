@@ -1,5 +1,7 @@
 var { clone } = require("./clone")
+const { toParam } = require("./toParam")
 const { generate } = require("./generate")
+const { schematize } = require("./schematize")
 
 const save = async ({ _window, req, res, id, e, ...params }) => {
 
@@ -20,10 +22,37 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
   if (save.doc || save.id || (typeof _data === "object" && !Array.isArray(_data) && _data.id)) save.doc = save.doc || save.id || _data.id
   if (!save.doc && (Array.isArray(_data) ? _data.find(data => !data.id) : false)) return
     
+  // schema
+  if (save.schematize && (save.doc || save.schema)) {
+
+    var schema = save.doc ? global[`${save.doc}-schema`] : save.schema
+    if (!save.schema) return toParam({ _window, string: "note():[text=Schema does not exist!;type=danger]" })
+    if (Array.isArray(_data)) _data = _data.map(data => schematize({ data, schema }))
+    else _data = schematize({ data: _data, schema })
+  }
+
   if (_window) {
     
-    var collection = save.collection, success, message, project = headers.project || req.headers.project
+    var collection = save.collection, success, message, project = headers.project || req.headers.project, schema
     if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
+
+    // get schema
+    if (save.schematize) {
+      await req.db.collection(`schema-${project}`).doc(save.collection).get().then(doc => {
+
+        success = true
+        schema = doc.data()
+
+      }).catch(error => {
+
+        success = false
+        message = error
+      })
+
+      if (!schema) return
+      if (Array.isArray(save.data)) save.data = save.data.map(data => schematize({ data, schema }))
+      save.data = schematize({ data: save.data, schema })
+    }
 
     var ref = req.db.collection(collection)
     if (Array.isArray(save.data)) {

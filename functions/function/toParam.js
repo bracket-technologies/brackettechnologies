@@ -418,7 +418,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
 
         var schema = clone(params.path || params.schema)
         mountPathUsed = true
-
+        
         if (!view.Data) {
 
           view.Data = generate()
@@ -426,7 +426,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
         }
 
         if (!global[`${view.Data}-schema`]) global[`${view.Data}-schema`] = []
-        if (schema.value || schema.data) view.data = schema.value = schema.value || schema.data
+        if (typeof schema === "object" && schema.value || schema.data) view.data = schema.value = schema.value || schema.data
 
         var myFnn = ({ path, derivations, mainSchema = [], schema = {}, value }) => {
 
@@ -436,12 +436,13 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
           var myPath = (typeof path === "string" || typeof path === "number") ? path.toString().split(".") : path || []
           derivations.push(...myPath)
           var lastIndex = derivations.length - 1
-          
+          // console.log(schema, path,derivations, lastIndex);
           derivations.reduce((o, k, i) => {
 
             var _type = i === 0 ? o : (o.type || [])
             if (i !== 0  && !o.type) o.type = _type
-            if (typeof k === "number") {
+            if (!isNaN(k) && k !== " " && (k.length > 1 ? k.toString().charAt(0) !== "0" : true)) {
+              
               o.isArray = true
               return o
             }
@@ -451,8 +452,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
               var _schema = _type.find(o => o.path === k)
               if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
               if (_schema.type === "array") _schema.isArray = true
-              _schema.type = (i !== lastIndex) ? [] : (_schema.type || "any")
-
+              _schema.type = (i !== lastIndex && !Array.isArray(_schema.type)) ? [] : (_schema.type || "any")
               return _schema
               
             } else {
@@ -460,13 +460,12 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
               var _schema = { path: k }
               if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
               if (_schema.type === "array") _schema.isArray = true
-              _schema.type = (i !== lastIndex) ? [] : (_schema.type || "any")
+              _schema.type = (i !== lastIndex && !Array.isArray(_schema.type)) ? [] : (_schema.type || "any")
 
               // if (params.data && i === lastIndex) _schema.value = params.data
               _type.push(_schema)
               return _schema
             }
-
           }, mainSchema)
         }
 
@@ -481,7 +480,8 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
             myFnn({ path: k, derivations: view.derivations || [], mainSchema: view.schema })
           })
         }
-        console.log("data schema", view.Data, global[`${view.Data}-schema`])
+
+        // console.log("data schema", view.Data, global[`${view.Data}-schema`])
       }
     }
   

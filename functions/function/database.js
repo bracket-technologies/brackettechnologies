@@ -241,7 +241,8 @@ var postdb = async ({ req, res }) => {
   var data = req.body.data
   var save = req.body.save || {}
 
-  var collection = save.collection
+  // collection
+  var collection = save.collection, schema
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   var ref = db.collection(collection)
@@ -260,6 +261,25 @@ var postdb = async ({ req, res }) => {
     return res.send({ success, message })
   }
 */
+
+  // get schema
+  if (save.schematize) {
+
+    await db.collection(`schema-${project}`).doc(save.collection).get().then(doc => {
+
+      success = true
+      schema = doc.data()
+
+    }).catch(error => {
+
+      success = false
+      message = error
+    })
+
+    if (!schema) return
+    if (Array.isArray(data)) data = data.map(data => schematize({ data, schema }))
+    data = schematize({ data: data, schema })
+  }
 
   if (Array.isArray(data)) {
 

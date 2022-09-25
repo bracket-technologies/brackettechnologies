@@ -2655,6 +2655,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _index = toValue({ req, res, _window, e, id, value: args[1], _, __, ___, _i,params })
             answer = o.charAt(0)
 
+        } else if (k0 === "scrollTo()") {
+
+          var _x = toValue({ req, res, _window, e, id, value: args[1], _, __, ___, _i, params })
+          var _y = toValue({ req, res, _window, e, id, value: args[2], _, __, ___, _i, params })
+          window.scrollTo(_x, _y)
+console.log(_x, _y);
         } else if (k0 === "droplist()") {
             
             var _params = toParam({ req, res, _window, e, id, string: args[1], _, __, ___, _i,params })
@@ -3800,6 +3806,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
             answer = isNaN(o)
             console.log(answer, o);
+
         } else if (k0 === "round()") {
 
             var nth = toValue({ req, res, _window, id, e, _, __, ___, _i,params, value: args[1] }) || 2
@@ -4346,30 +4353,31 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         
         } else if (key && o[k] === undefined && i !== lastIndex) {
 
-            if (!isNaN(path[i + 1])) answer = o[k] = []
-            else {
-            
-                if (Array.isArray(o)) {
-                    if (isNaN(k)) {
-                        if (o.length === 0) o.push({})
-                        o = o[0]
-                    }
+          if (!isNaN(path[i + 1])) answer = o[k] = []
+          else {
+          
+            if (Array.isArray(o)) {
+                if (isNaN(k)) {
+                    if (o.length === 0) o.push({})
+                    o = o[0]
                 }
-                answer = o[k] = {}
             }
+            answer = o[k] = {}
+          }
 
         } else {
             
             if (Array.isArray(o)) {
-                if (isNaN(k)) {
+              if (isNaN(k) && o.length === 0) {
 
-                    if (o.length === 0) o.push({})
-                    o = o[0]
+                  if (o.length === 0) o.push({})
+                  o = o[0]
 
-                } else k = parseFloat(k)
+              } else k = parseFloat(k)
             }
             
             answer = o[k]
+            //console.log(k, o, lastIndex, path, i, o[k]);
         }
         
         return answer
