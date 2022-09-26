@@ -219,12 +219,24 @@ module.exports = {
       headers.search = encodeURI(toString({ search }))
       headers.timestamp = (new Date()).getTime()
 
-      var { data: _data } = await axios.get(`/${store}`, {
-        headers: {
-          "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-          ...headers
-        }
-      })
+      if (search.url && !search.secure) {
+
+        var { data: _data } = await axios.get(search.url, {
+          headers: {
+            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+            ...headers
+          }
+        })
+
+      } else {
+
+        var { data: _data } = await axios.get(`/${store}`, {
+          headers: {
+            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+            ...headers
+          }
+        })
+      }
     }
     
     if (!_window) console.log(_data)

@@ -2660,7 +2660,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           var _x = toValue({ req, res, _window, e, id, value: args[1], _, __, ___, _i, params })
           var _y = toValue({ req, res, _window, e, id, value: args[2], _, __, ___, _i, params })
           window.scrollTo(_x, _y)
-console.log(_x, _y);
+          
         } else if (k0 === "droplist()") {
             
             var _params = toParam({ req, res, _window, e, id, string: args[1], _, __, ___, _i,params })

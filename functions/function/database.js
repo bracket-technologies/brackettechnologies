@@ -277,8 +277,9 @@ var postdb = async ({ req, res }) => {
     })
 
     if (!schema) return
+    else schema = schema.schema
     if (Array.isArray(data)) data = data.map(data => schematize({ data, schema }))
-    data = schematize({ data: data, schema })
+    data = schematize({ data, schema })
   }
 
   if (Array.isArray(data)) {

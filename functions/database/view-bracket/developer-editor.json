@@ -237,13 +237,13 @@
                           "type": "View?style:[minWidth=100%;height=6px;backgroundColor=#34aeeb;cursor=ns-resize;position=absolute;left=0;top=0;zIndex=100;opacity=0;transition=.2s];hover.style.opacity=1",
                           "controls": [
                             {
-                            "event": "mousedown?mousedown=true;document().style().cursor=ns-resize;parent().style().transition=null;height=parent().style().height.split():rem.0.num();screenY=screenY:();scrollTo():0:[win().pageYOffset]"
+                            "event": "mousedown?mousedown=true;document().style().cursor=ns-resize;parent().style().transition=null;height=parent().style().height.split():rem.0.num();screenY=screenY:();className():data-viewer.find():[style().display!=none].style().overflowY=hidden"
                             },
                             {
-                            "event": "mousemove:body?diff=[[screenY:()]-[().screenY]].divide():10;parent().style().height=[().height-().diff]+rem;():data-viewer.style().height='calc(100% - '+[().height-().diff]+'rem)';scrollTo():0:[win().pageYOffset]?mousedown"
+                            "event": "mousemove:body?diff=[[screenY:()]-[().screenY]].divide():10;parent().style().height=[().height-().diff]+rem;():data-viewer.style().height='calc(100% - '+[().height-().diff]+'rem)'?mousedown"
                             },
                             {
-                            "event": "mouseup:body?mousedown=false;document().style().cursor=default;parent().style().transition=.2s;scrollTo():0:[win().pageYOffset]"
+                            "event": "mouseup:body?mousedown=false;document().style().cursor=default;parent().style().transition=.2s;className():data-viewer.find():[style().display!=none].style().overflowY=auto"
                             }
                           ]
                         },

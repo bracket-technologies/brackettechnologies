@@ -31,7 +31,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
     else _data = schematize({ data: _data, schema })
   }
 
-  if (_window) {
+  if (_window) { 
     
     var collection = save.collection, success, message, project = headers.project || req.headers.project, schema
     if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
