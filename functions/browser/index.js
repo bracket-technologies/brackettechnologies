@@ -761,7 +761,7 @@ module.exports = (component) => {
             children: [{
                 type: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem",
                 controls: [{
-                    event: "click?next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():rotate(0deg)]:rotate(90deg):rotate(0deg);2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;3rdLastChild().style().display=if():[3rdLastChild().style().display=flex||data().len()=0]:none:flex;next().next().style().display=if():[next().next().style().display=flex]:none:flex?data().type()=array||data().type()=map;clicked:().id!=2ndChild().id;clicked:().id!=3rdChild().id;clicked:().id!=lastChild().1stChild().id;!clicked:().classlist().inc():[line-counter]"
+                    event: "click?next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():rotate(0deg)]:rotate(90deg):rotate(0deg);2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;3rdLastChild().style().display=if():[3rdLastChild().style().display=flex||data().len()=0]:none:flex;next().next().style().display=if():[next().next().style().display=flex]:none:flex?data().type()=array||data().type()=map;clicked:().id!=2ndChild().id;clicked:().id!=3rdChild().id;clicked:().id!=lastChild().1stChild().id;!clicked:().classlist().inc():[mini-controls]"
                 }, {
                     event: "mouseenter?lastChild().style().opacity=1"
                 }, {
@@ -795,7 +795,27 @@ module.exports = (component) => {
                 }, {
                     type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
                 }, {
-                    type: "Text?line-counter:()++;text=line-counter:();class=flexbox line-counter pointer;color=0;style:[fontSize=1.2rem;height=fit-content;width=2rem;position=absolute;left=path().len()*(-2.1)+rem];click:[().color++;if():[color=16]:[().color=1];parent().style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];parent().hover.disable=true]"
+                    type: "View?class=flexbox mini-controls;style:[height=2rem;overflowY=hidden;borderRadius=.25rem;padding=.5rem;gap=.75rem;position=absolute;left=path().len()*(-2.1)+rem];mouseleave:[2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
+                    children: [
+                        {
+                            type: "Text?line-counter:()++;text=line-counter:();class=flexbox line-counter pointer mini-controls;style:[fontSize=1.2rem];mouseenter:[next().style():[opacity=1;pointerEvents=auto];2ndNext().style():[opacity=1;pointerEvents=auto]]"
+                        }, {
+                            type: "View?class=flexbox column pointer mini-controls;style:[padding=.5rem;gap=.75rem;opacity=0;pointerEvents=none];mouseleave:[parent().style():[height=2rem]]",
+                            children: [
+                                {
+                                    type: "View?class=flexbox pointer;color=0;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#ffcea370;border=1px solid #ccc];click:[().color++;if():[color=16]:[().color=1];style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];3rdParent().style().backgroundColor=style().backgroundColor;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer;color=0;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#fff;border=1px solid #ccc];click:[().color++;if():[color=16]:[().color=1];style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];3rdParent().style().backgroundColor=style().backgroundColor;3rdParent().hover.disable=true];mouseenter:[2ndParent().style().height=fit-content]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer;color=0;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#c0f5a270;border=1px solid #ccc];click:[().color++;if():[color=16]:[().color=1];style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];3rdParent().style().backgroundColor=style().backgroundColor;3rdParent().hover.disable=true]"
+                                }
+                            ]
+                        }, {
+                            type: "Icon?class=flexbox pointer mini-controls;name=bi-eye;style:[fontSize=1.4rem;opacity=0;pointerEvents=none;backgroundColor=#fff]"
+                        }
+                    ]
                 }, {
                     type: "View?style.overflow=auto;style.whiteSpace=nowrap?data().type()=string",
                     children: [{
@@ -1397,7 +1417,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
       var _id = generate()
       views[_id] = { id: _id, parent: id, colorize: true, editable: true, type: "Span" }
       */
-      return `<span contenteditable style="color:${colors[index]}">${string}</span>`
+      return `<span contenteditable style="color:${colors[index]}; background-color=#00000000">${string}</span>`
     } else {
       
       // semicolon

@@ -30,7 +30,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
       var _id = generate()
       views[_id] = { id: _id, parent: id, colorize: true, editable: true, type: "Span" }
       */
-      return `<span contenteditable style="color:${colors[index]}">${string}</span>`
+      return `<span contenteditable style="color:${colors[index]}; background-color=#00000000">${string}</span>`
     } else {
       
       // semicolon
