@@ -52,7 +52,7 @@ module.exports = {
     }
     
     if (view.type === "View" || view.type === "Box") {
-      tag = `<div ${view.draggable ? "draggable='true'" : ""} spellcheck="false" ${view.editable ? "contenteditable" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML}</div>`
+      tag = `<div ${view.draggable ? "draggable='true'" : ""} spellcheck="false" ${view.editable && !view.readonly ? "contenteditable" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index}'>${innerHTML || view.text || ""}</div>`
     } else if (view.type === "Image") {
       tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index}' src='${view.src}'>${innerHTML}</img>`
     } else if (view.type === "Table") {
