@@ -66,12 +66,12 @@ const createDocument = async ({ req, res }) => {
     }
   }
 
-  var bracketDomains = ["bracketjs.com", "localhost", "bracket.localhost"];
+  var bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
 
   // is brakcet domain
   var isBracket = bracketDomains.includes(host);
   if (!isBracket) {
-    isBracket = host.includes(".loca.lt");
+    isBracket = host.includes(".loca.lt") || host.includes("amazonaws");
     if (isBracket) host = "bracketjs.com";
   }
 
@@ -86,10 +86,10 @@ const createDocument = async ({ req, res }) => {
     .get()
     .then((doc) => {
       if (doc.docs[0] && doc.docs[0].exists)
-        global.data.project = project = doc.docs[0].data();
-        project = clone(project)
+        global.data.project = project = doc.docs[0].data()
         global.functions = Object.keys(project.functions || {})
         // global.projectFunctions = project.functions || {}
+        
         console.log("after project", new Date().getTime() - global.timer);
     })
 
@@ -231,6 +231,7 @@ const createDocument = async ({ req, res }) => {
 
   await Promise.all(promises)
   
+  if (!global.data.page[currentPage]) return
   // realtimedb.ref("view-alsabil-tourism").set(global.data.view)
   // realtimedb.ref("page-alsabil-tourism").set(global.data.page)
 
@@ -318,16 +319,19 @@ const createDocument = async ({ req, res }) => {
         <meta name="description" content="${global.data.page[currentPage].meta.description || ""}">
         <meta name="title" content="${global.data.page[currentPage].meta.title || ""}">
         <meta name="mobile-web-app-capable" content="yes">
+        <meta name="theme-color" content="#317EFB"/>
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="yes">
         <meta name="apple-mobile-web-app-title" content="${global.data.page[currentPage].title}">
         <title>${global.data.page[currentPage].title}</title>
-        <link rel="stylesheet" href="/resources/index.css"/>
         ${project.favicon ? `<link rel="icon" type="image/x-icon" href="${project.favicon}"/>` : ""}
-        <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
-        <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
+        <link rel="stylesheet" href="/resources/index.css"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-        <link rel="manifest" href="/resources/manifest.json" />
+        <link rel="manifest" href="/resources/manifest.json" mimeType="application/json; charset=UTF-8"/>
       </head>
       <body>
         ${innerHTML}
@@ -356,5 +360,7 @@ const createDocument = async ({ req, res }) => {
 <link rel="stylesheet" href="/resources/google-icons/material-icons-round/material-icons-round.css"/>
 <link rel="stylesheet" href="/resources/google-icons/material-icons-sharp/material-icons-sharp.css"/>
 <link rel="stylesheet" href="/resources/google-icons/material-icons-two-tones/material-icons-two-tones.css"/>
+<link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
+<link rel="stylesheet" href="/resources/Tajawal/index.css"/>
 */
 module.exports = { createDocument };

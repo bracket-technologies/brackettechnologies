@@ -1,9 +1,10 @@
-var functions = require("firebase-functions")
-var express = require("express")
-var device = require('express-device')
-var cookieParser = require('cookie-parser')
-var firebase = require("firebase-admin")
-var Global = {
+// var functions = require("firebase-functions")
+const express = require("express")
+const device = require('express-device')
+const cookieParser = require('cookie-parser')
+const firebase = require("firebase-admin")
+const sls = require("serverless-http")
+const Global = {
   today: (new Date()).getDay(),
   functions: {}
 }
@@ -70,9 +71,10 @@ app.use((req, res, next) => {
   next()
 })
 
-app.listen(80, () => console.log("Server Listening to Port 80"))
+app.listen(8080, () => console.log("Server Listening to Port 8080"))
 
-exports.app = functions.https.onRequest(app)
+// exports.app = functions.https.onRequest(app)
+module.exports.app = sls(app)
 
 // post
 app.post("*", (req, res) => {
@@ -82,29 +84,29 @@ app.post("*", (req, res) => {
   req.storage = storage
   req.realtimedb = realtimedb
   req.cookies = JSON.parse(req.cookies.__session || "{}")
-  var path = req.url.split("/")
+  var path = req.url.split("/"), i = 1
 
   // bracket
   /*if (req.headers.project === "bracket") {
 
     // storage
-    if (path[1] === "storage") return require("./function/storageLocal").postFile({ req, res })
+    if (path[i] === "storage") return require("./function/storageLocal").postFile({ req, res })
 
     // database
-    if (path[1] === "database") return require("./function/databaseLocal").postdb({ req, res })
+    if (path[i] === "database") return require("./function/databaseLocal").postdb({ req, res })
   }*/
-
+  
   // function
-  if (path[1] === "function") return execFunction({ req, res })
+  if (path[i] === "action") return execFunction({ req, res })
 
   // confirmEmail
-  if (path[1] === "confirmEmail") return sendConfirmationEmail({ req, res })
+  if (path[i] === "confirmEmail") return sendConfirmationEmail({ req, res })
 
   // storage
-  if (path[1] === "storage") return postFile({ req, res })
+  if (path[i] === "storage") return postFile({ req, res })
 
   // database
-  if (path[1] === "database") return postdb({ req, res })
+  if (path[i] === "database") return postdb({ req, res })
 })
 
 // delete
@@ -115,34 +117,35 @@ app.delete("*", (req, res) => {
   req.storage = storage
   req.realtimedb = realtimedb
   req.cookies = JSON.parse(req.cookies.__session || "{}")
-  var path = req.url.split("/")
+  var path = req.url.split("/"), i = 1
 
   // bracket
   /*if (req.headers.project === "bracket") {
 
     // storage
-    if (path[1] === "storage") return require("./function/storageLocal").deleteFile({ req, res })
+    if (path[i] === "storage") return require("./function/storageLocal").deleteFile({ req, res })
 
     // database
-    if (path[1] === "database") return require("./function/databaseLocal").deletedb({ req, res })
+    if (path[i] === "database") return require("./function/databaseLocal").deletedb({ req, res })
   }*/
 
   // storage
-  if (path[1] === "storage") return deleteFile({ req, res })
+  if (path[i] === "storage") return deleteFile({ req, res })
 
   // database
-  if (path[1] === "database") return deletedb({ req, res })
+  if (path[i] === "database") return deletedb({ req, res })
 })
 
 // get
 app.get("*", async (req, res) => {
 
+  res.status(200)
   req.db = db
   req.global = Global
   req.storage = storage
   req.realtimedb = realtimedb
   req.cookies = JSON.parse(req.cookies.__session || "{}")
-  var path = req.url.split("/")
+  var path = req.url.split("/"), i = 1
   /*var host = req.headers["x-forwarded-host"] || req.headers["host"]
   
     // bracket
@@ -156,16 +159,16 @@ app.get("*", async (req, res) => {
   }*/
   
   // resources
-  if (path[1] === "resources") return require("./function/storageLocal").getFile({ req, res })
+  if (path[i] === "resources") return require("./function/storageLocal").getFile({ req, res })
 
   // storage
-  // if (path[1] === "image") return require("./function/getImage").getImage({ req, res })
+  // if (path[i] === "image") return require("./function/getImage").getImage({ req, res })
 
   // storage
-  if (path[1] === "storage") return getFile({ req, res })
+  if (path[i] === "storage") return getFile({ req, res })
 
   // database
-  if (path[1] === "database") return getdb({ req, res })
+  if (path[i] === "database") return getdb({ req, res })
 
   // favicon
   if (req.url === "/favicon.ico") return res.sendStatus(204)

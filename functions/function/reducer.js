@@ -2345,6 +2345,41 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = o + ".json"
 
+        } else if (k0 === "notification()" || k0 === "notify()") {
+
+          var notify = () => {
+            if (isParam({ _window, string: args[1] })) {
+
+              var _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
+              new Notification(_params.title || "", _params)
+
+            } else {
+
+              var title = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[1], params })
+              new Notification(title || "")
+            }
+          }
+
+          if (!("Notification" in window)) {
+            // Check if the browser supports notifications
+            alert("This browser does not support notification");
+          } else if (Notification.permission === "granted") {
+            // Check whether notification permissions have already been granted;
+            // if so, create a notification
+            notify()
+            // …
+          } else if (Notification.permission !== "denied") {
+
+            // We need to ask the user for permission
+            Notification.requestPermission().then((permission) => {
+              // If the user accepts, let's create a notification
+              if (permission === "granted") {
+                notify()
+                // …
+              }
+            });
+          }
+          
         } else if (k0 === "exists()") {
             
             answer = o !== undefined ? true : false
@@ -2904,11 +2939,6 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
           navigator.geolocation.getCurrentPosition((position) => { console.log(position); global.geolocation = position })
 
-        } else if (k0 === "uuid()") {
-            
-            answer = require("uuid").v4()
-            console.log(answer);
-            
         } else if (k0 === "counter()") {
             
           var _options = {}

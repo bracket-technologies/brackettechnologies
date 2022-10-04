@@ -26,7 +26,7 @@
                     "type": "View?id=page-view-btn;tooltip.text=bracket;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
-                            "type": "Icon?class=flexbox;name=code;google.symbol.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
+                            "type": "Icon?class=flexbox;name=code;google.symbol.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem]"
                         }
                     ],
                     "controls": [

@@ -29,7 +29,7 @@ const func = async ({ _window, id = "", req, _, __, ___, res, e, ...params }) =>
 
   } else {
     
-    var { data: _data } = await require("axios").post(`/function`, func, {
+    var { data: _data } = await require("axios").post(`/action`, func, {
       headers: {
         "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
         ...headers

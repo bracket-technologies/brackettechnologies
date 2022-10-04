@@ -42,7 +42,7 @@ _ar.style.position = "absolute"
 _ar.style.top = "-1000px"
 views.body.element.appendChild(_ar)
 
-history.pushState(null, global.data.page[global.currentPage].title, global.path)
+//history.pushState(null, global.data.page[global.currentPage].title, global.path)
 document.title = global.data.page[global.currentPage].title
 
 window.onfocus = () => {
@@ -121,8 +121,6 @@ document.body.addEventListener('click', e => {
     global["click-events"] = []
 
 }, false)
-
-var lastVisit = (new Date()).getTime()
 
 // mousemove
 document.body.addEventListener('mousemove', (e) => {

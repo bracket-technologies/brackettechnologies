@@ -1,5 +1,11 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
 node_modules/
+layer/
 .env
 ../.env
 .gitignore
-.wwebjs_auth/
