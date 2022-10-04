@@ -1,4 +1,4 @@
-// var functions = require("firebase-functions")
+const functions = require("firebase-functions")
 const express = require("express")
 const device = require('express-device')
 const cookieParser = require('cookie-parser')
@@ -8,7 +8,7 @@ const Global = {
   today: (new Date()).getDay(),
   functions: {}
 }
-// require("firebase/firestore")
+require("firebase/firestore")
 
 // var bracketDomains = ["bracketjs.com", "localhost", "bracket.localhost"]
 
@@ -73,8 +73,8 @@ app.use((req, res, next) => {
 
 app.listen(8080, () => console.log("Server Listening to Port 8080"))
 
-// exports.app = functions.https.onRequest(app)
-module.exports.app = sls(app)
+exports.app = functions.https.onRequest(app)
+// module.exports.app = sls(app)
 
 // post
 app.post("*", (req, res) => {

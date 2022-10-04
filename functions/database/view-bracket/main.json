@@ -151,7 +151,7 @@
                                             "controls": [
                                                 {
                                                     "actions": "route?route.path=/login",
-                                                    "event": "click"
+                                                    "event": "click?log():[host:()]"
                                                 }
                                             ]
                                         }

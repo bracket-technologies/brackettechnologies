@@ -11,11 +11,11 @@ const { toApproval } = require("./toApproval");
 require("dotenv").config();
 
 const createDocument = async ({ req, res }) => {
-  
-  // Create a cookies object
-  var host = req.headers["x-forwarded-host"] || req.headers["host"], db = req.db
-  if (req.url.split("/")[1] === "undefined") return res.send("")
 
+  // Create a cookies object
+  var host = req.headers.host || req.headers["x-forwarded-host"]/* || req.headers["x-forwarded-host"]*/, db = req.db
+  if (req.url.split("/")[1] === "undefined") return res.send("")
+  
   // current page
   var currentPage = req.url.split("/")[1] || "", promises = []
   currentPage = currentPage || "main"
@@ -24,7 +24,7 @@ const createDocument = async ({ req, res }) => {
   var global = {
     timer: new Date().getTime(),
     data: {
-      account: {},
+      account: {},  
       view: {},
       page: {},
       editor: {},
@@ -71,10 +71,10 @@ const createDocument = async ({ req, res }) => {
   // is brakcet domain
   var isBracket = bracketDomains.includes(host);
   if (!isBracket) {
-    isBracket = host.includes(".loca.lt") || host.includes("amazonaws");
+    isBracket = host.includes(".loca.lt");
     if (isBracket) host = "bracketjs.com";
   }
-
+  
   console.log("Document started loading:");
 
   console.log("before project", new Date().getTime() - global.timer);
