@@ -1,8 +1,9 @@
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
+const { generate } = require("./generate")
 
-const execFunction = async ({ req, res }) => {
+const execFunction = async ({ req, res, id = generate() }) => {
   
     var db = req.db, id = "backend"
     var success = true, message, functions = {}
@@ -43,7 +44,7 @@ const execFunction = async ({ req, res }) => {
     
     var sendExists = functions[func].includes("send()")
     var func = toCode({ _window, id, string: functions[func] })
-    toParam({ _window, id, string: func, req, res, _: data })
+    toParam({ _window, id, string: func, req, res, _: data, mount: true })
     
     if (!sendExists) res.send({ success, message, data })
 }

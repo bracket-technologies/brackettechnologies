@@ -69,25 +69,49 @@ module.exports = (component) => {
                 }, {
                     type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
                 }, {
-                    type: "View?class=flexbox mini-controls;style:[height=2rem;overflowY=hidden;borderRadius=.25rem;padding=.5rem;gap=.75rem;position=absolute;left=path().len()*(-2.1)+rem];mouseleave:[2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
+                    type: "View?class=flexbox mini-controls;style:[height=2rem;overflowY=hidden;borderRadius=.25rem;padding=.5rem;gap=.75rem;zIndex=1;position=absolute;left=path().len()*(-2.1)+rem];mouseleave:[2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
                     children: [
                         {
                             type: "Text?line-counter:()++;text=line-counter:();class=flexbox line-counter pointer mini-controls;style:[fontSize=1.2rem];mouseenter:[next().style():[opacity=1;pointerEvents=auto];2ndNext().style():[opacity=1;pointerEvents=auto]]"
                         }, {
-                            type: "View?class=flexbox column pointer mini-controls;style:[padding=.5rem;gap=.75rem;opacity=0;pointerEvents=none];mouseleave:[parent().style():[height=2rem]]",
+                            type: "View?class=flexbox column pointer mini-controls;style:[padding=.5rem;gap=.75rem;opacity=0;pointerEvents=none];mouseleave:[parent().style():[height=2rem;zIndex=1];children().pull():5.():[style():[opacity=0;pointerEvents=none]]]",
                             children: [
                                 {
-                                    type: "View?class=flexbox pointer;color=0;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#ffcea370;border=1px solid #ccc];click:[().color++;if():[color=16]:[().color=1];style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];3rdParent().style().backgroundColor=style().backgroundColor;3rdParent().hover.disable=true]"
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#ffcea3;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#ffcea370;3rdParent().hover.disable=true]"
                                 },
                                 {
-                                    type: "View?class=flexbox pointer;color=0;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#fff;border=1px solid #ccc];click:[().color++;if():[color=16]:[().color=1];style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];3rdParent().style().backgroundColor=style().backgroundColor;3rdParent().hover.disable=true];mouseenter:[2ndParent().style().height=fit-content]"
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#c0f5a2;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#c0f5a270;3rdParent().hover.disable=true]"
                                 },
                                 {
-                                    type: "View?class=flexbox pointer;color=0;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#c0f5a270;border=1px solid #ccc];click:[().color++;if():[color=16]:[().color=1];style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];3rdParent().style().backgroundColor=style().backgroundColor;3rdParent().hover.disable=true]"
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#fbe692;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#fbe69270;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#fab4d7;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#fab4d770;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#feb1b1;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#feb1b170;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#fff;border=1px solid #bbb];click:[3rdParent().():[style():[backgroundColor=#fff];hover.disable=true]];mouseenter:[2ndParent().style():[zIndex=10;height=fit-content];parent().children().():[style():[opacity=1;pointerEvents=auto]]]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#c4c2ff;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#c4c2ff70;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#9ee1ff;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#9ee1ff70;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#78eba8;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#78eba870;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#ecb4f5;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#ecb4f570;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#8cebdb;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#8cebdb70;3rdParent().hover.disable=true]"
                                 }
                             ]
                         }, {
-                            type: "Icon?class=flexbox pointer mini-controls;name=bi-eye;style:[fontSize=1.4rem;opacity=0;pointerEvents=none;backgroundColor=#fff]"
+                            type: "Icon?class=flexbox pointer mini-controls;name=bi-eye;style:[fontSize=1.4rem;opacity=0;pointerEvents=none;backgroundColor=#fff]?false"
                         }
                     ]
                 }, {

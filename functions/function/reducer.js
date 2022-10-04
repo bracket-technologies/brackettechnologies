@@ -2487,6 +2487,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           answer = o
             
         } else if (k0.includes("push()")) {
+            if (!Array.isArray(o)) return undefined
             
             var _item, _index
             if (k0.charAt(0) === "_") {
@@ -4182,9 +4183,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var placement = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[3], params })
             var align = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[4], params })
             */
-            var position = toParam({ req, res, _window, id, e, _, __, ___, _i,string: args[1], params })
+            var position = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1], params })
+            var _id = id
+            if (o.id) _id = o.id
 
-            return require("./setPosition").setPosition({ position, id, e })
+            return require("./setPosition").setPosition({ position, id: _id, e })
 
         } else if (k0 === "refresh()") {
           

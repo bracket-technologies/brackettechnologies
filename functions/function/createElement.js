@@ -76,6 +76,7 @@ const createElement = ({ _window, id, req, res }) => {
 
   // id
   var priorityId = false
+  
   if (view.type.split(":")[1]) priorityId = true
   id = view.id = view.type.split(":")[1] || id
   view.type = view.type.split(":")[0]

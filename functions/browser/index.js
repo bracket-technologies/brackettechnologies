@@ -795,25 +795,49 @@ module.exports = (component) => {
                 }, {
                     type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
                 }, {
-                    type: "View?class=flexbox mini-controls;style:[height=2rem;overflowY=hidden;borderRadius=.25rem;padding=.5rem;gap=.75rem;position=absolute;left=path().len()*(-2.1)+rem];mouseleave:[2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
+                    type: "View?class=flexbox mini-controls;style:[height=2rem;overflowY=hidden;borderRadius=.25rem;padding=.5rem;gap=.75rem;zIndex=1;position=absolute;left=path().len()*(-2.1)+rem];mouseleave:[2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
                     children: [
                         {
                             type: "Text?line-counter:()++;text=line-counter:();class=flexbox line-counter pointer mini-controls;style:[fontSize=1.2rem];mouseenter:[next().style():[opacity=1;pointerEvents=auto];2ndNext().style():[opacity=1;pointerEvents=auto]]"
                         }, {
-                            type: "View?class=flexbox column pointer mini-controls;style:[padding=.5rem;gap=.75rem;opacity=0;pointerEvents=none];mouseleave:[parent().style():[height=2rem]]",
+                            type: "View?class=flexbox column pointer mini-controls;style:[padding=.5rem;gap=.75rem;opacity=0;pointerEvents=none];mouseleave:[parent().style():[height=2rem;zIndex=1];children().pull():5.():[style():[opacity=0;pointerEvents=none]]]",
                             children: [
                                 {
-                                    type: "View?class=flexbox pointer;color=0;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#ffcea370;border=1px solid #ccc];click:[().color++;if():[color=16]:[().color=1];style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];3rdParent().style().backgroundColor=style().backgroundColor;3rdParent().hover.disable=true]"
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#ffcea3;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#ffcea370;3rdParent().hover.disable=true]"
                                 },
                                 {
-                                    type: "View?class=flexbox pointer;color=0;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#fff;border=1px solid #ccc];click:[().color++;if():[color=16]:[().color=1];style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];3rdParent().style().backgroundColor=style().backgroundColor;3rdParent().hover.disable=true];mouseenter:[2ndParent().style().height=fit-content]"
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#c0f5a2;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#c0f5a270;3rdParent().hover.disable=true]"
                                 },
                                 {
-                                    type: "View?class=flexbox pointer;color=0;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#c0f5a270;border=1px solid #ccc];click:[().color++;if():[color=16]:[().color=1];style().backgroundColor=[_list:#ffffff70:#ffcea370:#c0f5a270:#ffffff70:#fbe69270:#78eba870:#ffffff70:#ecb4f570:#8cebdb70:#ffffff70:#fab4d770:#9ee1ff70:#ffffff70:#feb1b170:#c4c2ff70:#ffffff70].[().color];3rdParent().style().backgroundColor=style().backgroundColor;3rdParent().hover.disable=true]"
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#fbe692;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#fbe69270;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#fab4d7;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#fab4d770;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#feb1b1;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#feb1b170;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#fff;border=1px solid #bbb];click:[3rdParent().():[style():[backgroundColor=#fff];hover.disable=true]];mouseenter:[2ndParent().style():[zIndex=10;height=fit-content];parent().children().():[style():[opacity=1;pointerEvents=auto]]]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#c4c2ff;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#c4c2ff70;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#9ee1ff;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#9ee1ff70;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#78eba8;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#78eba870;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#ecb4f5;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#ecb4f570;3rdParent().hover.disable=true]"
+                                },
+                                {
+                                    type: "View?class=flexbox pointer mini-controls;style:[height=1.5rem;width=1.5rem;borderRadius=.25rem;backgroundColor=#8cebdb;border=1px solid #bbb;opacity=0;pointerEvents=none];click:[3rdParent().style().backgroundColor=#8cebdb70;3rdParent().hover.disable=true]"
                                 }
                             ]
                         }, {
-                            type: "Icon?class=flexbox pointer mini-controls;name=bi-eye;style:[fontSize=1.4rem;opacity=0;pointerEvents=none;backgroundColor=#fff]"
+                            type: "Icon?class=flexbox pointer mini-controls;name=bi-eye;style:[fontSize=1.4rem;opacity=0;pointerEvents=none;backgroundColor=#fff]?false"
                         }
                     ]
                 }, {
@@ -959,8 +983,7 @@ module.exports = ({ controls, id }) => {
   window.views[id].actionlist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?if():[)(:actionlist-caller!=${id}]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=${id}]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]`,
-    actions: `async():[update:actionlist]:[setPosition:actionlist]?().actionlist.undeletable=():actionlist.undeletable||_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;)(:actionlist-caller=${id};)(:actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]?)(:actionlist-caller!=().id`
+    event: `click?if():[)(:actionlist-caller!=${id}]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=${id}]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0];if():[actionlist-caller:()!=().id]:[update():actionlist;().actionlist.undeletable=():actionlist.undeletable||_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;)(:actionlist-caller=${id};)(:actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]]`
   }]
 }
 },{}],10:[function(require,module,exports){
@@ -1031,10 +1054,10 @@ module.exports = ({ controls, id }) => {
     event: "keyup:input()?clearTimer():[droplist-timer:()];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()?e().key=Escape"
   }, {
     event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0]`,
-    actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?droplist-positioner:()!=().id`
+    actions: `droplist:${id}?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?droplist-positioner:()!=().id`
   }, {
     event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
-    actions: `droplist:${id};setPosition:droplist?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "bottom"};position.distance=${controls.distance};position.align=${controls.align};().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
+    actions: `droplist:${id}?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
   }, {
     event: `keyup:input()?if():[droplist-positioner:();keyup-index:()]:[():droplist.children().[keyup-index:()].click();().break=true;():droplist.mouseleave()];keyup-index:()=0;if():[droplist-positioner:()!=2ndChild().id]:[2ndChild().click()];timer():[():droplist.children().0.mouseenter()]:200?!():${id}.droplist.preventDefault;e().key=Enter`
   }, {
@@ -1131,8 +1154,7 @@ module.exports = ({ controls, id }) => {
   var text = controls.text || ""
   
   return [{
-    event: `click?():mininote-text.txt()=${text};)(:mininote-timer.clearTimeout();():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000`,
-    actions: "setPosition:mininote?position.positioner=mouse;position.placement=right"
+    event: `click?():mininote-text.txt()=${text};)(:mininote-timer.clearTimeout();():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000;():mininote.position():[positioner=mouse;placement=right]`
   }]
 }
 },{}],23:[function(require,module,exports){
@@ -1177,8 +1199,7 @@ module.exports = ({ controls, id }) => {
   window.views[id].popup.id = controls.id = id = controls.id || id
 
   return [{
-    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()!=${id}]:[().popup.style.keys()._():[():popup.style()._=().popup.style._]];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style()._=():popup.style._||null];():popup.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];popup-positioner:().del()]:0]`,
-    actions: `setPosition:popup?popup-positioner:()=${id};():popup.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position.positioner=${controls.positioner || id};position.placement=${controls.placement || "left"};position.distance=${controls.distance};position.align=${controls.align};().popup.style.keys()._():[():popup.style()._=().popup.style._];update():popup?popup-positioner:()!=().id`
+    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()!=${id}]:[().popup.style.keys()._():[():popup.style()._=().popup.style._]];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style()._=():popup.style._||null];():popup.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];popup-positioner:().del()]:0];if():[popup-positioner:()!=().id]:[popup-positioner:()=${id};():popup.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position():[positioner=${controls.positioner || id};placement=${controls.placement || "left"};distance=${controls.distance};align=${controls.align}];().popup.style.keys()._():[():popup.style()._=().popup.style._];update():popup]`
   }]
 }
 },{}],29:[function(require,module,exports){
@@ -1199,8 +1220,7 @@ module.exports = ({ controls, id }) => {
   var text = controls.text || ""
   
   return [{
-    event: `mousemove?if():[!tooltip-timer:()]:[tooltip-timer:()=timer():[():tooltip.style().opacity=1]:500];():tooltip-text.txt()=${text};():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar]`,
-    actions: `setPosition:tooltip?position.positioner=mouse;position.placement=${controls.placement || "left"};position.distance=${controls.distance}`
+    event: `mousemove?if():[!tooltip-timer:()]:[tooltip-timer:()=timer():[():tooltip.style().opacity=1]:500];():tooltip-text.txt()=${text};():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar];():tooltip.position():[positioner=mouse;placement=${controls.placement || "left"};distance=${controls.distance}]`
   }, {
     event: "mouseleave?clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0"
   }]
@@ -2114,6 +2134,7 @@ const createElement = ({ _window, id, req, res }) => {
 
   // id
   var priorityId = false
+  
   if (view.type.split(":")[1]) priorityId = true
   id = view.id = view.type.split(":")[1] || id
   view.type = view.type.split(":")[0]
@@ -7080,6 +7101,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           answer = o
             
         } else if (k0.includes("push()")) {
+            if (!Array.isArray(o)) return undefined
             
             var _item, _index
             if (k0.charAt(0) === "_") {
@@ -8775,9 +8797,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var placement = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[3], params })
             var align = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[4], params })
             */
-            var position = toParam({ req, res, _window, id, e, _, __, ___, _i,string: args[1], params })
+            var position = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1], params })
+            var _id = id
+            if (o.id) _id = o.id
 
-            return require("./setPosition").setPosition({ position, id, e })
+            return require("./setPosition").setPosition({ position, id: _id, e })
 
         } else if (k0 === "refresh()") {
           
@@ -10008,8 +10032,8 @@ const setElement = ({ _window, id }) => {
     
 module.exports = { setElement }
 },{"./controls":40,"./defaultInputHandler":52,"./isArabic":70,"./resize":89,"./toApproval":103,"./toArray":104,"./toCode":108,"./toParam":117}],97:[function(require,module,exports){
-const setPosition = ({ position, id, e }) => {
-  
+const setPosition = ({ position = {}, id, e }) => {
+
   var views = window.views
   var leftDeviation = position.left
   var topDeviation = position.top
@@ -11276,7 +11300,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     if (createElement) {
 
       // mouseenter
-      if (param.slice(0, 10) === "mouseenter") {
+      if (param.slice(0, 11) === "mouseenter:") {
 
         param = param.slice(11)
         var conditions = param.split(":")[1]
@@ -11287,7 +11311,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // click
-      if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
+      if (param.slice(0, 6) === "click:") {
 
         param = param.slice(6)
         var conditions = param.split(":")[1]
@@ -11298,7 +11322,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // change
-      if (param.slice(0, 6) === "change") {
+      if (param.slice(0, 7) === "change:") {
 
         param = param.slice(7)
         var conditions = param.split(":")[1]
@@ -11309,7 +11333,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // mouseleave
-      if (param.slice(0, 10) === "mouseleave") {
+      if (param.slice(0, 11) === "mouseleave:") {
 
         param = param.slice(11)
         var conditions = param.split(":")[1]
@@ -11320,7 +11344,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // mouseover
-      if (param.slice(0, 9) === "mouseover") {
+      if (param.slice(0, 10) === "mouseover:") {
 
         param = param.slice(10)
         var conditions = param.split(":")[1]
@@ -11331,7 +11355,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // mousedown
-      if (param.slice(0, 9) === "mousedown") {
+      if (param.slice(0, 10) === "mousedown:") {
 
         param = param.slice(10)
         var conditions = param.split(":")[1]
@@ -11342,7 +11366,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // mouseup
-      if (param.slice(0, 7) === "mouseup") {
+      if (param.slice(0, 8) === "mouseup:") {
 
         param = param.slice(8)
         var conditions = param.split(":")[1]
@@ -11353,7 +11377,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // keypress
-      if (param.slice(0, 8) === "keypress") {
+      if (param.slice(0, 9) === "keypress:") {
 
         param = param.slice(9)
         var conditions = param.split(":")[1]
@@ -11364,7 +11388,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // keyup
-      if (param.slice(0, 5) === "keyup") {
+      if (param.slice(0, 6) === "keyup:") {
 
         param = param.slice(6)
         var conditions = param.split(":")[1]
@@ -11375,7 +11399,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // keydown
-      if (param.slice(0, 7) === "keydown") {
+      if (param.slice(0, 8) === "keydown:") {
 
         param = param.slice(8)
         var conditions = param.split(":")[1]
@@ -11386,7 +11410,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // loaded
-      if (param.slice(0, 6) === "loaded") {
+      if (param.slice(0, 7) === "loaded:") {
 
         param = param.slice(7)
         var conditions = param.split(":")[1]
@@ -11397,7 +11421,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // children
-      if (param.slice(0, 8) === "children") {
+      if (param.slice(0, 9) === "children:") {
 
         var _children = []
         param = param.slice(9)
@@ -11413,7 +11437,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // controls
-      if (param.slice(0, 8) === "controls") {
+      if (param.slice(0, 9) === "controls:") {
 
         var _controls = []
         param = param.slice(9)
@@ -11429,7 +11453,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // children
-      if (param.slice(0, 5) === "child") {
+      if (param.slice(0, 6) === "child:") {
 
         var _children = []
         param = param.slice(6)
