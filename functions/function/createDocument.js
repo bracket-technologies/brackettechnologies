@@ -327,7 +327,7 @@ const createDocument = async ({ req, res }) => {
         <link rel="stylesheet" href="/resources/Tajawal/index.css"/>
         <link rel="stylesheet" href="/resources/Lexend+Deca/index.css"/>
         <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-        <link rel="manifest" href="/resources/manifest.webmanifest" />
+        <link rel="manifest" href="/resources/manifest.json" />
       </head>
       <body>
         ${innerHTML}
