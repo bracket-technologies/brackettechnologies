@@ -88,7 +88,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     if (createElement) {
 
       // mouseenter
-      if (param.slice(0, 10) === "mouseenter") {
+      if (param.slice(0, 11) === "mouseenter:") {
 
         param = param.slice(11)
         var conditions = param.split(":")[1]
@@ -99,7 +99,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // click
-      if (param.slice(0, 6) === "click." || param.slice(0, 6) === "click:") {
+      if (param.slice(0, 6) === "click:") {
 
         param = param.slice(6)
         var conditions = param.split(":")[1]
@@ -110,7 +110,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // change
-      if (param.slice(0, 6) === "change") {
+      if (param.slice(0, 7) === "change:") {
 
         param = param.slice(7)
         var conditions = param.split(":")[1]
@@ -121,7 +121,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // mouseleave
-      if (param.slice(0, 10) === "mouseleave") {
+      if (param.slice(0, 11) === "mouseleave:") {
 
         param = param.slice(11)
         var conditions = param.split(":")[1]
@@ -132,7 +132,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // mouseover
-      if (param.slice(0, 9) === "mouseover") {
+      if (param.slice(0, 10) === "mouseover:") {
 
         param = param.slice(10)
         var conditions = param.split(":")[1]
@@ -143,7 +143,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // mousedown
-      if (param.slice(0, 9) === "mousedown") {
+      if (param.slice(0, 10) === "mousedown:") {
 
         param = param.slice(10)
         var conditions = param.split(":")[1]
@@ -154,7 +154,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // mouseup
-      if (param.slice(0, 7) === "mouseup") {
+      if (param.slice(0, 8) === "mouseup:") {
 
         param = param.slice(8)
         var conditions = param.split(":")[1]
@@ -165,7 +165,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // keypress
-      if (param.slice(0, 8) === "keypress") {
+      if (param.slice(0, 9) === "keypress:") {
 
         param = param.slice(9)
         var conditions = param.split(":")[1]
@@ -176,7 +176,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // keyup
-      if (param.slice(0, 5) === "keyup") {
+      if (param.slice(0, 6) === "keyup:") {
 
         param = param.slice(6)
         var conditions = param.split(":")[1]
@@ -187,7 +187,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // keydown
-      if (param.slice(0, 7) === "keydown") {
+      if (param.slice(0, 8) === "keydown:") {
 
         param = param.slice(8)
         var conditions = param.split(":")[1]
@@ -198,7 +198,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // loaded
-      if (param.slice(0, 6) === "loaded") {
+      if (param.slice(0, 7) === "loaded:") {
 
         param = param.slice(7)
         var conditions = param.split(":")[1]
@@ -209,7 +209,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // children
-      if (param.slice(0, 8) === "children") {
+      if (param.slice(0, 9) === "children:") {
 
         var _children = []
         param = param.slice(9)
@@ -225,7 +225,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // controls
-      if (param.slice(0, 8) === "controls") {
+      if (param.slice(0, 9) === "controls:") {
 
         var _controls = []
         param = param.slice(9)
@@ -241,7 +241,7 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
       }
 
       // children
-      if (param.slice(0, 5) === "child") {
+      if (param.slice(0, 6) === "child:") {
 
         var _children = []
         param = param.slice(6)

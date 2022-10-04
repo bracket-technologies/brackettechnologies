@@ -1,5 +1,5 @@
-const setPosition = ({ position, id, e }) => {
-  
+const setPosition = ({ position = {}, id, e }) => {
+
   var views = window.views
   var leftDeviation = position.left
   var topDeviation = position.top

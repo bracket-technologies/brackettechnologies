@@ -4,7 +4,6 @@
         "type": "Text?id=mininote-text;style.width=fit-content;style.fontSize=1.1rem;style.color=#fff"
     }],
     "controls": [{
-        "event": "mousemove:body",
-        "actions": "setPosition:mininote?position.positioner=mouse;position.placement=right"
+        "event": "mousemove:body?position():[positioner=mouse;placement=right]"
     }]
 }
