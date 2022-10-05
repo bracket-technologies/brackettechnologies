@@ -1369,7 +1369,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "getInputs()" || k0 === "inputs()") {
             
-            var _input, _textarea, _params = {}, _o
+            var _input, _textarea, _editables, _params = {}, _o
             if (args[1]) {
 
                 if (isParam({ _window, string: args[1] })) {
@@ -1383,13 +1383,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             if (_o.nodeType === Node.ELEMENT_NODE) {
+
                 _input = _o.getElementsByTagName("INPUT")
                 _textarea = _o.getElementsByTagName("TEXTAREA")
+
             } else {
+
                 _input = _o.element && _o.element.getElementsByTagName("INPUT")
                 _textarea = _o.element && _o.element.getElementsByTagName("TEXTAREA")
+                _editables = getDeepChildren({ _window, id: _o.id }).filter(view => view.editable)
+                if (_o.editable) _editables.push(_o)
             }
-            answer = [..._input, ..._textarea].map(o => views[o.id])
+            answer = [..._input, ..._textarea, ..._editables].map(o => views[o.id])
 
         } else if (k0 === "getInput()" || k0 === "input()") {
             
@@ -1413,7 +1418,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (__o.type !== "Input") {
                 if (__o.element.getElementsByTagName("INPUT")[0]) answer = views[__o.element.getElementsByTagName("INPUT")[0].id]
                 else if (__o.element.getElementsByTagName("TEXTAREA")[0]) answer = views[__o.element.getElementsByTagName("TEXTAREA")[0].id]
-                else return
+                else {
+                    var deepChildren = getDeepChildren({ _window, id:__o.id })
+                    if (__o.editable || deepChildren.find(view => view.editable)) {
+                        answer = __o.editable ? __o : deepChildren.find(view => view.editable)
+                    } else return
+                }
             } else answer = __o
 
         } else if (k0 === "getEntry()" || k0 === "entry()") {
@@ -2435,6 +2445,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (el) _view = views[el.id]
             
             if (_view && _view.islabel && el && _view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
+            else if (_view.editable) el = _view.element
             
             if (el) {
                 if (window.views[el.id].type === "Input") {
@@ -2444,9 +2455,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     
                 } else {
 
-                    answer = el.innerHTML
+                    if (views[el.id].type === "Entry" || views[el.id].editable) answer = (el.textContent===undefined) ? el.innerText : el.textContent
+                    else answer = el.innerHTML
                     if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
                 }
+                
             } else if (view && view.type === "Input") {
 
                 if (i === lastIndex && key && value !== undefined) _o[view.element.value] = value
@@ -2455,7 +2468,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else if (view && view.type !== "Input") {
 
                 if (i === lastIndex && key && value !== undefined) _o[view.element.innerHTML] = value
-                else return answer = _o[view.element.innerHTML]
+                else {
+                    if (view.type === "Entry" || view.editable) answer = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+                    else answer = view.element.innerHTML
+                }
             }
  
         } else if (k0 === "min()") {

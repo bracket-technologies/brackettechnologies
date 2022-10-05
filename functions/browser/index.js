@@ -741,17 +741,17 @@ module.exports = (component) => {
                 event: "mouseleave?lastChild().style().opacity=0"
             }],
             children: [{
-                type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;#mode.dark.style.color=#888;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s"
+                type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s"
             }, {
-                type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%"
+                type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.height=100%"
             }, {
-                type: "Text?class=pointer;text=...;style.display=none;#mode.dark.style.color=#888;style.fontSize=1.4rem"
+                type: "Text?class=pointer;text=...;style.display=none;style.fontSize=1.4rem"
             }, {
-                type: "Text?style.display=none;text=};style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem"
+                type: "Text?style.display=none;text=};style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem"
             }, {
                 type: "View?class=flex-box;style.gap=.5rem;style.opacity=0;style.flex=1;style.marginRight=.5rem;style.transition=.1s;style.justifyContent=flex-end",
                 children: [{
-                    type: "Icon?mainMap;name=bi-three-dots-vertical;actionlist.undeletable;actionlist.placement=left;#mode.dark.style.color=#888;class=flex-box pointer;style.color=#888;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
+                    type: "Icon?mainMap;name=bi-three-dots-vertical;actionlist.undeletable;actionlist.placement=left;class=flex-box pointer;style.color=#888;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
                 }]
             }]
         }, {
@@ -766,7 +766,7 @@ module.exports = (component) => {
                     event: "mouseleave?lastChild().style().opacity=0"
                 }],
                 children: [{
-                    type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;#mode.dark.style.color=#888;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s?data().type()=map||data().type()=array"
+                    type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s?data().type()=map||data().type()=array"
                 }, {
                     type: "View?style.minWidth=2rem;text=?data().type()!=map;data().type()!=array"
                 }, {
@@ -783,15 +783,15 @@ module.exports = (component) => {
                         event: "keyup?insert-index:()=3rdParent().children().findIndex():[id=2ndParent().id]+1;if():[data().type()=string]:[data()=_list];if():[path().lastEl()=children]:[data().push():[_map:type:_string]];if():[path().lastEl()=controls]:[data().push():[_map:event:_string]];update():2ndParent();update:().view.inputs().lastEl().focus()?e().key=Enter;ctrlKey:();path().lastEl()=controls||path().lastEl()=children"
                     }]
                 }, {
-                    type: "Text?text=path().lastElement();class=flexbox;#mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?2ndParent().parent().data().type()=array"
+                    type: "Text?text=path().lastElement();class=flexbox;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?2ndParent().parent().data().type()=array"
                 }, {
-                    type: "Text?text=:;class=flex-box pointer;#mode.dark.style.color=#888;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_array:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
+                    type: "Text?text=:;class=flex-box pointer;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_array:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
                 }, {
                     type: `Text?text=";#mode.dark.style.color=#c39178;style.color=#a35521;style.marginRight=.3rem;style.fontSize=1.4rem?data().type()=string`
                 }, {
-                    type: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=array"
+                    type: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=array"
                 }, {
-                    type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
+                    type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
                 }, {
                     type: "View?class=flexbox mini-controls;style:[height=2rem;overflowY=hidden;borderRadius=.25rem;padding=.5rem;gap=.75rem;zIndex=1;position=absolute;left=path().len()*(-2.1)+rem];mouseleave:[2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
                     children: [
@@ -879,15 +879,15 @@ module.exports = (component) => {
                 }, {
                     type: `Text?text=";#mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#a35521;style.fontSize=1.4rem?data().type()=string`
                 }, {
-                    type: "Text?class=flexbox pointer;style.display=none;#mode.dark.style.color=#888;text='...';style.fontSize=1.4rem"
+                    type: "Text?class=flexbox pointer;style.display=none;text='...';style.fontSize=1.4rem"
                 }, {
-                    type: "Text?style.display=none;text=];style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?data().type()=array"
+                    type: "Text?style.display=none;text=];style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem?data().type()=array"
                 }, {
-                    type: "Text?style.display=none;text=};style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?data().type()=map"
+                    type: "Text?style.display=none;text=};style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem?data().type()=map"
                 }, {
                     type: "View?class=flex-box;style.gap=.5rem;style.opacity=0;style.flex=1;style.marginRight=.5rem;style.transition=.1s;style.justifyContent=flex-end",
                     children: [{
-                        type: "Icon?actionlist.placement=left;#mode.dark.style.color=#888;class=flex-box pointer;style.color=#888;icon.name=bi-three-dots-vertical;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
+                        type: "Icon?actionlist.placement=left;class=flex-box pointer;style.color=#888;icon.name=bi-three-dots-vertical;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
                     }]
                 }]
             }, {
@@ -896,12 +896,12 @@ module.exports = (component) => {
                     type: "Map?arrange=parent().arrange;isField"
                 }]
             }, {
-                type: "Text?class=flex-box;text=];#mode.dark.style.color=#888;style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=array"
+                type: "Text?class=flex-box;text=];style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=array"
             }, {
-                type: "Text?class=flex-box;text=};#mode.dark.style.color=#888;style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=map"
+                type: "Text?class=flex-box;text=};style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=map"
             }]
         }, {
-            type: "Text?class=flexbox;style.justifyContent=flex-start;text=};style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?!parent().isField",
+            type: "Text?class=flexbox;style.justifyContent=flex-start;text=};style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;style.color=green;style.fontSize=1.4rem?!parent().isField",
         }]
     }
 }
@@ -981,7 +981,7 @@ module.exports = ({ controls, id }) => {
   window.views[id].actionlist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?if():[)(:actionlist-caller!=${id}]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=${id}]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0];if():[actionlist-caller:()!=().id]:[update():actionlist;().actionlist.undeletable=():actionlist.undeletable||_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;)(:actionlist-caller=${id};)(:actionlist-caller-id=${id};path=${controls.path || ""};():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];():actionlist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]]`
+    event: `click?if():[actionlistCaller:()!=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=${id}]:[timer():[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()]:0];if():[actionlistCaller:()!=().id]:[().actionlist.undeletable=():actionlist.undeletable||_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;actionlistCaller:()=${id};actionlistCallerId:()=${id};path=${controls.path || ""};():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];update():actionlist;():actionlist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]]`
   }]
 }
 },{}],10:[function(require,module,exports){
@@ -1051,8 +1051,8 @@ module.exports = ({ controls, id }) => {
   return [{
     event: "keyup:input()?clearTimer():[droplist-timer:()];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()?e().key=Escape"
   }, {
-    event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0]`,
-    actions: `droplist:${id}?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]?droplist-positioner:()!=().id`
+    event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0];if():[droplist-positioner:()!=().id]:[droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];droplist();().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}]]`,
+    actions: `droplist:${id}??`
   }, {
     event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
     actions: `droplist:${id}?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
@@ -1197,7 +1197,7 @@ module.exports = ({ controls, id }) => {
   window.views[id].popup.id = controls.id = id = controls.id || id
 
   return [{
-    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()!=${id}]:[().popup.style.keys()._():[():popup.style()._=().popup.style._]];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style()._=():popup.style._||null];():popup.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];popup-positioner:().del()]:0];if():[popup-positioner:()!=().id]:[popup-positioner:()=${id};():popup.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];position():[positioner=${controls.positioner || id};placement=${controls.placement || "left"};distance=${controls.distance};align=${controls.align}];().popup.style.keys()._():[():popup.style()._=().popup.style._];update():popup]`
+    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()!=${id}]:[().popup.style.keys()._():[():popup.style()._=().popup.style._]];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style()._=():popup.style._||null];():popup.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];popup-positioner:().del()]:0].elif():[popup-positioner:()!=${id}]:[popup-positioner:()=${id};():popup.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];update():popup;():popup.position():[positioner=${controls.positioner || id};placement=${controls.placement || "left"};distance=${controls.distance};align=${controls.align}];().popup.style.keys()._():[():popup.style()._=().popup.style._]]`
   }]
 }
 },{}],29:[function(require,module,exports){
@@ -3013,7 +3013,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   var _idList = toValue({ id, value: events[3] || id })
 
   // droplist
-  var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
+  /*var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
   if (droplist && view.droplist) {
     
     view.droplist.controls = view.droplist.controls || []
@@ -3021,10 +3021,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       event: events.join("?").replace("droplist()", ""),
       actions: controls.actions
     })
-  }
+  }*/
 
   // actionlist
-  var actionlist = (events[1] || "").split(";").find(param => param === "actionlist()")
+  /*var actionlist = (events[1] || "").split(";").find(param => param === "actionlist()")
   if (actionlist && view.actionlist) {
     
     view.actionlist.controls = view.actionlist.controls || []
@@ -3032,7 +3032,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       event: events.join("?").replace("actionlist()", ""),
       actions: controls.actions
     })
-  }
+  }*/
 
   // popup
   var popup = (events[1] || "").split(";").find(param => param === "popup()")
@@ -3173,7 +3173,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (eventid === "popup" && (!global["popup-positioner"] || !global["popup-confirmed"])) return
           if (eventid === "popup" && !views[global["popup-positioner"]].element.contains(views[id].element)) return
           
-          if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
+          if (eventid === "actionlist" && !views[global["actionlistCaller"]].element.contains(views[id].element)) return
 
           if (once) e.target.removeEventListener(event, myFn)
         
@@ -5987,7 +5987,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
 
         } else if (k0 === "getInputs()" || k0 === "inputs()") {
             
-            var _input, _textarea, _params = {}, _o
+            var _input, _textarea, _editables, _params = {}, _o
             if (args[1]) {
 
                 if (isParam({ _window, string: args[1] })) {
@@ -6001,13 +6001,18 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             if (_o.nodeType === Node.ELEMENT_NODE) {
+
                 _input = _o.getElementsByTagName("INPUT")
                 _textarea = _o.getElementsByTagName("TEXTAREA")
+
             } else {
+
                 _input = _o.element && _o.element.getElementsByTagName("INPUT")
                 _textarea = _o.element && _o.element.getElementsByTagName("TEXTAREA")
+                _editables = getDeepChildren({ _window, id: _o.id }).filter(view => view.editable)
+                if (_o.editable) _editables.push(_o)
             }
-            answer = [..._input, ..._textarea].map(o => views[o.id])
+            answer = [..._input, ..._textarea, ..._editables].map(o => views[o.id])
 
         } else if (k0 === "getInput()" || k0 === "input()") {
             
@@ -6031,7 +6036,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (__o.type !== "Input") {
                 if (__o.element.getElementsByTagName("INPUT")[0]) answer = views[__o.element.getElementsByTagName("INPUT")[0].id]
                 else if (__o.element.getElementsByTagName("TEXTAREA")[0]) answer = views[__o.element.getElementsByTagName("TEXTAREA")[0].id]
-                else return
+                else {
+                    var deepChildren = getDeepChildren({ _window, id:__o.id })
+                    if (__o.editable || deepChildren.find(view => view.editable)) {
+                        answer = __o.editable ? __o : deepChildren.find(view => view.editable)
+                    } else return
+                }
             } else answer = __o
 
         } else if (k0 === "getEntry()" || k0 === "entry()") {
@@ -7053,6 +7063,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (el) _view = views[el.id]
             
             if (_view && _view.islabel && el && _view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
+            else if (_view.editable) el = _view.element
             
             if (el) {
                 if (window.views[el.id].type === "Input") {
@@ -7062,9 +7073,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
                     
                 } else {
 
-                    answer = el.innerHTML
+                    if (views[el.id].type === "Entry" || views[el.id].editable) answer = (el.textContent===undefined) ? el.innerText : el.textContent
+                    else answer = el.innerHTML
                     if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
                 }
+                
             } else if (view && view.type === "Input") {
 
                 if (i === lastIndex && key && value !== undefined) _o[view.element.value] = value
@@ -7073,7 +7086,10 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             } else if (view && view.type !== "Input") {
 
                 if (i === lastIndex && key && value !== undefined) _o[view.element.innerHTML] = value
-                else return answer = _o[view.element.innerHTML]
+                else {
+                    if (view.type === "Entry" || view.editable) answer = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+                    else answer = view.element.innerHTML
+                }
             }
  
         } else if (k0 === "min()") {
@@ -9328,8 +9344,8 @@ const remove = ({ _window, remove: _remove, id }) => {
   }
   
   // close actionlist
-  if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+  if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
   }
 
@@ -12326,8 +12342,8 @@ const toggleView = async ({ _window, toggle, id, res }) => {
   }
   
   // close actionlist
-  if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+  if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
   }
         
@@ -12433,8 +12449,8 @@ const update = ({ id, _window, req, res, update = {} }) => {
   }
   
   // close actionlist
-  if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+  if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()" })
     toParam({ _window, req, res, string: closeActionlist, id: "actionlist" })
   }
 
@@ -12558,8 +12574,8 @@ const updateSelf = ({ _window, id, update = {} }) => {
   }
   
   // close actionlist
-  if (global["actionlist-caller"] && view.element.contains(views[global["actionlist-caller"]].element)) {
-    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()" })
+  if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
+    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
   }
 

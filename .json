@@ -7109,39 +7109,39 @@
         "coded()EyaVz": "transform=translateY(-200%);opacity=0",
         "coded()lhZj2": "width=fit-content;transition=opacity .1s, transform .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999",
         "coded()ig19B": ")(:actionlist-timer",
-        "coded()iF8Z6": ")(:actionlist-caller",
-        "coded()EzSLc": ")(:actionlist-caller!=():coded()iF8Z6.id",
-        "coded()ymdGq": ")(:actionlist-caller",
+        "coded()iF8Z6": ")(:actionlistCaller",
+        "coded()EzSLc": ")(:actionlistCaller!=():coded()iF8Z6.id",
+        "coded()ymdGq": ")(:actionlistCaller",
         "coded()Cwvby": "():actionlist.style()._=():actionlist.style._",
         "coded()VxO0L": "():coded()ymdGq.actionlist.style.keys()._():coded()Cwvby",
         "coded()oU27e": ")(:actionlist-timer",
-        "coded()GwDyP": ")(:actionlist-caller",
-        "coded()10ysz": ")(:actionlist-caller=():coded()GwDyP.id",
-        "coded()luCSG": ")(:actionlist-caller",
+        "coded()GwDyP": ")(:actionlistCaller",
+        "coded()10ysz": ")(:actionlistCaller=():coded()GwDyP.id",
+        "coded()luCSG": ")(:actionlistCaller",
         "coded()vrgFx": "():actionlist.style()._=():actionlist.style._",
         "coded()thEYE": "style().pointerEvents=none",
         "coded()yuqz1": "opacity=0;transform=scale(0.5);pointerEvents=none",
         "coded()fK1HN": "children().():coded()thEYE;style():coded()yuqz1",
-        "coded()VCp11": "():coded()luCSG.actionlist.style.keys()._():coded()vrgFx;():actionlist.():coded()fK1HN;)(:actionlist-caller.del()",
+        "coded()VCp11": "():coded()luCSG.actionlist.style.keys()._():coded()vrgFx;():actionlist.():coded()fK1HN;)(:actionlistCaller.del()",
         "coded()LsV2j": "timer():coded()VCp11:0",
         "coded()V5suc": "if():coded()EzSLc:coded()VxO0L;clearTimer():coded()oU27e;if():coded()10ysz:coded()LsV2j",
         "coded()jeri2": "clicked:()",
         "coded()fi1iq": "clicked:()",
         "coded()c19PY": ")(:actionlist-timer",
-        "coded()VHegg": ")(:actionlist-caller",
-        "coded()s5W75": ")(:actionlist-caller!=():coded()VHegg.id",
-        "coded()d2jMN": ")(:actionlist-caller",
+        "coded()VHegg": ")(:actionlistCaller",
+        "coded()s5W75": ")(:actionlistCaller!=():coded()VHegg.id",
+        "coded()d2jMN": ")(:actionlistCaller",
         "coded()wcEWn": "():actionlist.style()._=():actionlist.style._",
         "coded()LkTtT": "():coded()d2jMN.actionlist.style.keys()._():coded()wcEWn",
         "coded()oK7UG": ")(:actionlist-timer",
-        "coded()1Ruyv": ")(:actionlist-caller",
-        "coded()OKklJ": ")(:actionlist-caller=():coded()1Ruyv.id",
-        "coded()PcImf": ")(:actionlist-caller",
+        "coded()1Ruyv": ")(:actionlistCaller",
+        "coded()OKklJ": ")(:actionlistCaller=():coded()1Ruyv.id",
+        "coded()PcImf": ")(:actionlistCaller",
         "coded()9A3dz": "():actionlist.style()._=():actionlist.style._",
         "coded()bTxEV": "style().pointerEvents=none",
         "coded()DjMTw": "opacity=0;transform=scale(0.5);pointerEvents=none",
         "coded()n440K": "children().():coded()bTxEV;style():coded()DjMTw",
-        "coded()AfNRY": "():coded()PcImf.actionlist.style.keys()._():coded()9A3dz;():actionlist.():coded()n440K;)(:actionlist-caller.del()",
+        "coded()AfNRY": "():coded()PcImf.actionlist.style.keys()._():coded()9A3dz;():actionlist.():coded()n440K;)(:actionlistCaller.del()",
         "coded()fdBYe": "timer():coded()AfNRY:0",
         "coded()7YiEf": "if():coded()s5W75:coded()LkTtT;clearTimer():coded()oK7UG;if():coded()OKklJ:coded()fdBYe",
         "coded()1N3He": ")(:actionlist-timer",
@@ -7175,24 +7175,24 @@
         "coded()i9GD4": "().map-items.push():coded()Im4f1;().map-length=().map-length.subs():1",
         "coded()fdHRF": "data().type()!=map;data().type()!=array",
         "coded()2DNQZ": "().droplist.del()",
-        "coded()ppnB4": ")(:actionlist-caller-id",
+        "coded()ppnB4": ")(:actionlistCallerId",
         "coded()yecY0": "():coded()ppnB4.data().type()=map",
-        "coded()enPNn": ")(:actionlist-caller-id",
+        "coded()enPNn": ")(:actionlistCallerId",
         "coded()I94WA": "_string",
         "coded()hQE4q": "():coded()enPNn.data().coded()I94WA=)(:copied-data.clone()",
-        "coded()Gk27V": ")(:actionlist-caller-id",
+        "coded()Gk27V": ")(:actionlistCallerId",
         "coded()Lbo0j": "():coded()Gk27V.data().type()=array",
-        "coded()Gl7qo": ")(:actionlist-caller-id",
+        "coded()Gl7qo": ")(:actionlistCallerId",
         "coded()CXbdu": ")(:copied-data.clone()",
         "coded()4XNIB": "():coded()Gl7qo.data().splice():coded()CXbdu:txt()",
-        "coded()co6IS": ")(:actionlist-caller-id",
-        "coded()X2oeK": ")(:actionlist-caller-id",
+        "coded()co6IS": ")(:actionlistCallerId",
+        "coded()X2oeK": ")(:actionlistCallerId",
         "coded()5YF9G": "():coded()co6IS.data().type()!=map;():coded()X2oeK.data().type()!=array",
-        "coded()meWom": ")(:actionlist-caller-id",
+        "coded()meWom": ")(:actionlistCallerId",
         "coded()m25AE": "():coded()meWom.data()=)(:copied-data.clone();)(:push-to-string=true",
-        "coded()8GzAM": ")(:actionlist-caller-id",
-        "coded()yNbOs": ")(:actionlist-caller-id",
-        "coded()ln8oa": ")(:actionlist-caller-id",
+        "coded()8GzAM": ")(:actionlistCallerId",
+        "coded()yNbOs": ")(:actionlistCallerId",
+        "coded()ln8oa": ")(:actionlistCallerId",
         "coded()QvauZ": "():coded()ln8oa.data().clone().len()+1",
         "coded()1tOP5": "():coded()yNbOs.data().type()=array;txt().less():coded()QvauZ",
         "coded()9UTPE": ")(:last-index",
@@ -7208,9 +7208,9 @@
         "coded()pl58E": "backgroundColor=#f6f6f6",
         "coded()3ymuh": "height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit",
         "coded()O31na": "backgroundColor=#f6f6f6",
-        "coded()7YdRa": ")(:actionlist-caller-id",
+        "coded()7YdRa": ")(:actionlistCallerId",
         "coded()SOTgX": "():coded()7YdRa.parent().parent().parent().parent().data().type()=array",
-        "coded()MlO7g": ")(:actionlist-caller-id",
+        "coded()MlO7g": ")(:actionlistCallerId",
         "coded()SJTco": "_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()-1",
         "coded()8DSjb": "():coded()MlO7g.parent().parent().parent().nextSiblings()._():coded()SJTco",
         "coded()fEBOd": "width=fit-content;transition=opacity .1s, transform .1s, background-color .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999",
@@ -7323,8 +7323,8 @@
                     "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;tooltip.text=add new;name=bi-plus;style.fontSize=1.7rem;map-length=data().len();map-items=_array;while():[().map-length.greater():-1]:[().map-items.push():[().map-length];().map-length=().map-length.subs():1];droplist.items=().map-items;droplist.placement=left;droplist.readonly;droplist.preventDefault?data();data().type()=map||data().type()=array",
                     "controls": [
                         {
-                            "event": "click?droplist();if():[():[)(:actionlist-caller-id].data().type()=map]:[():[)(:actionlist-caller-id].data().field():_string:_string];if():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].data().splice():_string:txt()];():[)(:actionlist-caller-id].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[txt().less():[():[)(:actionlist-caller-id].data().len()+1];():[)(:actionlist-caller-id].data().type()=array]:[_.deepChildren()._():[_.derivations.[)(:last-index]=)(:el-index]]]",
-                            "actions": "async():[insert:[if():[!():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().next().1stChild().id].else():[():[)(:actionlist-caller-id].parent().parent().parent().id]]]?insert.component=if():[():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().parent().children.1].else():[():[)(:actionlist-caller-id].parent().parent().parent().parent().children.1];insert.path=if():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].derivations.clone().push():txt()].else():[():[)(:actionlist-caller-id].derivations.clone().push():_string];insert.index=if():[():[)(:actionlist-caller-id].mainMap]:[txt().num()+1]:txt();async():[().insert.view.getInput().focus()]"
+                            "event": "click:droplist?if():[():[)(:actionlistCallerId].data().type()=map]:[():[)(:actionlistCallerId].data().field():_string:_string];if():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].data().splice():_string:txt()];():[)(:actionlistCallerId].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[txt().less():[():[)(:actionlistCallerId].data().len()+1];():[)(:actionlistCallerId].data().type()=array]:[_.deepChildren()._():[_.derivations.[)(:last-index]=)(:el-index]]]",
+                            "actions": "async():[insert:[if():[!():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().next().1stChild().id].else():[():[)(:actionlistCallerId].parent().parent().parent().id]]]?insert.component=if():[():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().parent().children.1].else():[():[)(:actionlistCallerId].parent().parent().parent().parent().children.1];insert.path=if():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].derivations.clone().push():txt()].else():[():[)(:actionlistCallerId].derivations.clone().push():_string];insert.index=if():[():[)(:actionlistCallerId].mainMap]:[txt().num()+1]:txt();async():[().insert.view.getInput().focus()]"
                         }
                     ]
                 },
@@ -7332,8 +7332,8 @@
                     "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;tooltip.text=add child;name=bi-diagram-3;style.fontSize=1.7rem;map-length=data().len();map-items=_array;while():[().map-length.greater():-1]:[().map-items.push():[().map-length];().map-length=().map-length.subs():1];droplist.items=().map-items;droplist.placement=left;droplist.readonly;droplist.preventDefault?data();if():[data().type()=map]:[!data().children]:[data().type()==array]",
                     "controls": [
                         {
-                            "event": "click?droplist();if():[():[)(:actionlist-caller-id].data().type()=map]:[():[)(:actionlist-caller-id].data().children=_array.push():[_map:type:_string]];if():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].data().splice():[_map:type:_string]:txt()]];():[)(:actionlist-caller-id].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[txt()<():[)(:actionlist-caller-id].data().len()+1;():[)(:actionlist-caller-id].data().type()=array]:[_.deepChildren()._():[_.derivations.[)(:last-index]=)(:el-index]]]?if():[data().type()=map]:[!data().children]:[data().type()==array]",
-                            "actions": "async():[insert:[if():[!():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().next().1stChild().id].else():[():[)(:actionlist-caller-id].parent().parent().parent().id]]]?insert.component=if():[():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().parent().children.1].else():[():[)(:actionlist-caller-id].parent().parent().parent().parent().children.1];insert.path=if():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].derivations.clone().push():txt()].else():[():[)(:actionlist-caller-id].derivations.clone().push():children];insert.index=if():[():[)(:actionlist-caller-id].mainMap]:[txt().num()+1]:txt();async():[().insert.view.getInputs().lastEl().focus()]"
+                            "event": "click:droplist?if():[():[)(:actionlistCallerId].data().type()=map]:[():[)(:actionlistCallerId].data().children=_array.push():[_map:type:_string]];if():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].data().splice():[_map:type:_string]:txt()]];():[)(:actionlistCallerId].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[txt()<():[)(:actionlistCallerId].data().len()+1;():[)(:actionlistCallerId].data().type()=array]:[_.deepChildren()._():[_.derivations.[)(:last-index]=)(:el-index]]]?if():[data().type()=map]:[!data().children]:[data().type()==array]",
+                            "actions": "async():[insert:[if():[!():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().next().1stChild().id].else():[():[)(:actionlistCallerId].parent().parent().parent().id]]]?insert.component=if():[():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().parent().children.1].else():[():[)(:actionlistCallerId].parent().parent().parent().parent().children.1];insert.path=if():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].derivations.clone().push():txt()].else():[():[)(:actionlistCallerId].derivations.clone().push():children];insert.index=if():[():[)(:actionlistCallerId].mainMap]:[txt().num()+1]:txt();async():[().insert.view.getInputs().lastEl().focus()]"
                         }
                     ]
                 },
@@ -7341,8 +7341,8 @@
                     "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;tooltip.text=add controls;name=bi-gear;style.fontSize=1.7rem;map-length=data().len();map-items=_array;while():[().map-length.greater():-1]:[().map-items.push():[().map-length];().map-length=().map-length.subs():1];droplist.items=().map-items;droplist.placement=left;droplist.readonly;droplist.preventDefault?data();if():[data().type()=map]:[!data().controls]:[data().type()==array]",
                     "controls": [
                         {
-                            "event": "click?droplist();if():[():[)(:actionlist-caller-id].data().type()=map]:[():[)(:actionlist-caller-id].data().controls=_array:[_map:event:_string]];if():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].data().splice():[_map:event:_string]:txt()];():[)(:actionlist-caller-id].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[txt().less():[():[)(:actionlist-caller-id].data().len()+1];():[)(:actionlist-caller-id].data().type()=array]:[_.deepChildren()._():[_.derivations.[)(:last-index]=)(:el-index]]]?if():[data().type()=map]:[!data().controls]:[data().type()==array]",
-                            "actions": "async():[insert:[if():[!():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().next().1stChild().id].else():[():[)(:actionlist-caller-id].parent().parent().parent().id]]]?insert.component=if():[():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().parent().children.1].else():[():[)(:actionlist-caller-id].parent().parent().parent().parent().children.1];insert.path=if():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].derivations.clone().push():txt()].else():[():[)(:actionlist-caller-id].derivations.clone().push():controls];insert.index=if():[():[)(:actionlist-caller-id].mainMap]:[txt().num()+1]:txt();async():[().insert.view.getInputs().lastEl().focus()]"
+                            "event": "click:droplist?if():[():[)(:actionlistCallerId].data().type()=map]:[():[)(:actionlistCallerId].data().controls=_array:[_map:event:_string]];if():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].data().splice():[_map:event:_string]:txt()];():[)(:actionlistCallerId].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[txt().less():[():[)(:actionlistCallerId].data().len()+1];():[)(:actionlistCallerId].data().type()=array]:[_.deepChildren()._():[_.derivations.[)(:last-index]=)(:el-index]]]?if():[data().type()=map]:[!data().controls]:[data().type()==array]",
+                            "actions": "async():[insert:[if():[!():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().next().1stChild().id].else():[():[)(:actionlistCallerId].parent().parent().parent().id]]]?insert.component=if():[():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().parent().children.1].else():[():[)(:actionlistCallerId].parent().parent().parent().parent().children.1];insert.path=if():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].derivations.clone().push():txt()].else():[():[)(:actionlistCallerId].derivations.clone().push():controls];insert.index=if():[():[)(:actionlistCallerId].mainMap]:[txt().num()+1]:txt();async():[().insert.view.getInputs().lastEl().focus()]"
                         }
                     ]
                 },
@@ -7358,8 +7358,8 @@
                     "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;tooltip.text=paste;name=bi-clipboard;map-length=data().len();map-items=_array;while():[().map-length.greater():-1]:[().map-items.push():[().map-length];().map-length=().map-length.subs():1];droplist.items=().map-items;droplist.placement=left;droplist.readonly;droplist.preventDefault;if():[data().type()!=map;data().type()!=array]:[().droplist.del()]",
                     "controls": [
                         {
-                            "event": "click?droplist();)(:push-to-string=false;if():[():[)(:actionlist-caller-id].data().type()=map]:[():[)(:actionlist-caller-id].data().[_string]=)(:copied-data.clone()];if():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].data().splice():[)(:copied-data.clone()]:txt()];if():[():[)(:actionlist-caller-id].data().type()!=map;():[)(:actionlist-caller-id].data().type()!=array]:[():[)(:actionlist-caller-id].data()=)(:copied-data.clone();)(:push-to-string=true];():[)(:actionlist-caller-id].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[():[)(:actionlist-caller-id].data().type()=array;txt().less():[():[)(:actionlist-caller-id].data().clone().len()+1]]:[_.deepChildren()._():[_.derivations.[)(:last-index]=)(:el-index]]]?)(:copied-data",
-                            "actions": "async():[insert:[if():[)(:push-to-string]:[():[)(:actionlist-caller-id].parent().parent().parent().parent().id].elif():[!():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().next().1stChild().id].else():[():[)(:actionlist-caller-id].parent().parent().parent().id]]]?insert.component=if():[():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().parent().children.1].else():[():[)(:actionlist-caller-id].parent().parent().parent().parent().children.1];insert.path=if():[)(:push-to-string]:[():[)(:actionlist-caller-id].derivations].elif():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].derivations.clone().push():txt()].elif():[():[)(:actionlist-caller-id].data().type()=map]:[():[)(:actionlist-caller-id].derivations.clone().push():_string];insert.index=if():[)(:push-to-string]:[():[)(:actionlist-caller-id].parent().parent().parent().parent().children().find():[derivations.lastEl()=():[)(:actionlist-caller-id].derivations.lastEl()].mapIndex].elif():[():[)(:actionlist-caller-id].mainMap]:[txt().num()+1]:txt();async():[timer():[():[)(:actionlist-caller-id].parent().parent().parent().parent().children().filter():[derivations.lastEl()=():[)(:actionlist-caller-id].derivations.lastEl()].1.removeChild()]:0]"
+                            "event": "click:droplist?)(:push-to-string=false;if():[():[)(:actionlistCallerId].data().type()=map]:[():[)(:actionlistCallerId].data().[_string]=)(:copied-data.clone()];if():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].data().splice():[)(:copied-data.clone()]:txt()];if():[():[)(:actionlistCallerId].data().type()!=map;():[)(:actionlistCallerId].data().type()!=array]:[():[)(:actionlistCallerId].data()=)(:copied-data.clone();)(:push-to-string=true];():[)(:actionlistCallerId].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[():[)(:actionlistCallerId].data().type()=array;txt().less():[():[)(:actionlistCallerId].data().clone().len()+1]]:[_.deepChildren()._():[_.derivations.[)(:last-index]=)(:el-index]]]?)(:copied-data",
+                            "actions": "async():[insert:[if():[)(:push-to-string]:[():[)(:actionlistCallerId].parent().parent().parent().parent().id].elif():[!():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().next().1stChild().id].else():[():[)(:actionlistCallerId].parent().parent().parent().id]]]?insert.component=if():[():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().parent().children.1].else():[():[)(:actionlistCallerId].parent().parent().parent().parent().children.1];insert.path=if():[)(:push-to-string]:[():[)(:actionlistCallerId].derivations].elif():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].derivations.clone().push():txt()].elif():[():[)(:actionlistCallerId].data().type()=map]:[():[)(:actionlistCallerId].derivations.clone().push():_string];insert.index=if():[)(:push-to-string]:[():[)(:actionlistCallerId].parent().parent().parent().parent().children().find():[derivations.lastEl()=():[)(:actionlistCallerId].derivations.lastEl()].mapIndex].elif():[():[)(:actionlistCallerId].mainMap]:[txt().num()+1]:txt();async():[timer():[():[)(:actionlistCallerId].parent().parent().parent().parent().children().filter():[derivations.lastEl()=():[)(:actionlistCallerId].derivations.lastEl()].1.removeChild()]:0]"
                         }
                     ]
                 },
@@ -7367,8 +7367,8 @@
                     "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;tooltip.text=import & paste;name=bi-download;map-length=data().len();map-items=_array;while():[().map-length.greater():-1]:[().map-items.push():[().map-length];().map-length=().map-length.subs():1];droplist.items=().map-items;droplist.placement=left;droplist.readonly;droplist.preventDefault?data();data().type()=map||data().type()=array",
                     "controls": [
                         {
-                            "event": "click?droplist()",
-                            "actions": "async():importJson:[insert:[if():[!():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().next().1stChild().id]:[():[)(:actionlist-caller-id].parent().parent().parent().id]]]?)(:copied-data=)(:import.data;if():[():[)(:actionlist-caller-id].data().type()=map]:[():[)(:actionlist-caller-id].data().[_string]=)(:copied-data.clone()];if():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].data().splice():[)(:copied-data.clone()]:txt()];():[)(:actionlist-caller-id].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[():[)(:actionlist-caller-id].data().type()=array;txt().less():[():[)(:actionlist-caller-id].data().clone().len()+1]]:[_.deepChildren()._():[_derivations.[)(:last-index]=)(:el-index]]];insert.component=if():[():[)(:actionlist-caller-id].mainMap]:[():[)(:actionlist-caller-id].parent().parent().parent().children.1]:[():[)(:actionlist-caller-id].parent().parent().parent().parent().children.1];insert.path=if():[():[)(:actionlist-caller-id].data().type()=array]:[():[)(:actionlist-caller-id].derivations.clone().push():txt()]:[():[)(:actionlist-caller-id].derivations.clone().push():_string];insert.index=if():[():[)(:actionlist-caller-id].mainMap]:[txt().num()+1]:txt()"
+                            "event": "click:droplist",
+                            "actions": "async():importJson:[insert:[if():[!():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().next().1stChild().id]:[():[)(:actionlistCallerId].parent().parent().parent().id]]]?)(:copied-data=)(:import.data;if():[():[)(:actionlistCallerId].data().type()=map]:[():[)(:actionlistCallerId].data().[_string]=)(:copied-data.clone()];if():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].data().splice():[)(:copied-data.clone()]:txt()];():[)(:actionlistCallerId].parent().parent().next().1stChild().children().slice():txt()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;)(:last-index=_.derivations.len()-1;)(:el-index=_.derivations.lastElement().num()+1;if():[():[)(:actionlistCallerId].data().type()=array;txt().less():[():[)(:actionlistCallerId].data().clone().len()+1]]:[_.deepChildren()._():[_derivations.[)(:last-index]=)(:el-index]]];insert.component=if():[():[)(:actionlistCallerId].mainMap]:[():[)(:actionlistCallerId].parent().parent().parent().children.1]:[():[)(:actionlistCallerId].parent().parent().parent().parent().children.1];insert.path=if():[():[)(:actionlistCallerId].data().type()=array]:[():[)(:actionlistCallerId].derivations.clone().push():txt()]:[():[)(:actionlistCallerId].derivations.clone().push():_string];insert.index=if():[():[)(:actionlistCallerId].mainMap]:[txt().num()+1]:txt()"
                         }
                     ]
                 },
@@ -7376,26 +7376,26 @@
                     "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;mininote.text=exported!;tooltip.text=export;name=bi-upload?().data();data().type()=map||data().type()=array",
                     "controls": [
                         {
-                            "event": "click?():[)(:actionlist-caller-id].data().clone().exportJson()"
+                            "event": "click?():[)(:actionlistCallerId].data().clone().exportJson()"
                         }
                     ]
                 },
                 {
-                    "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;tooltip.text=remove;popup;name=bi-trash;style.fontSize=1.7rem?!)(:actionlist-caller-id.mainMap",
+                    "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;tooltip.text=remove;popup;name=bi-trash;style.fontSize=1.7rem?!)(:actionlistCallerId.mainMap",
                     "controls": [
                         {
-                            "event": "click:popup?if():[():[)(:actionlist-caller-id].parent().parent().parent().parent().data().type()=array]:[():[)(:actionlist-caller-id].parent().parent().parent().nextSiblings()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()-1]]",
-                            "actions": "remove:[():[)(:actionlist-caller-id].parent().parent().parent().id]"
+                            "event": "click:popup?if():[():[)(:actionlistCallerId].parent().parent().parent().parent().data().type()=array]:[():[)(:actionlistCallerId].parent().parent().parent().nextSiblings()._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()-1]]",
+                            "actions": "remove:[():[)(:actionlistCallerId].parent().parent().parent().id]"
                         }
                     ]
                 }
             ],
             "controls": [
                 {
-                    "event": "click:body?clearTimer():[)(:actionlist-timer];)(:actionlist-timer=timer():[if():[)(:actionlist-caller!=():[)(:actionlist-caller].id]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=():[)(:actionlist-caller].id]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]]:400?)(:actionlist-caller;!)(:actionlist-caller.contains():[clicked:()];!actionlist.contains():[clicked:()]"
+                    "event": "click:body?clearTimer():[)(:actionlist-timer];)(:actionlist-timer=timer():[if():[)(:actionlistCaller!=():[)(:actionlistCaller].id]:[():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlistCaller=():[)(:actionlistCaller].id]:[timer():[():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()]:0]]:400?)(:actionlistCaller;!)(:actionlistCaller.contains():[clicked:()];!actionlist.contains():[clicked:()]"
                 },
                 {
-                    "event": "mouseleave?clearTimer():[)(:actionlist-timer];)(:actionlist-timer=timer():[if():[)(:actionlist-caller!=():[)(:actionlist-caller].id]:[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlist-caller=():[)(:actionlist-caller].id]:[timer():[():[)(:actionlist-caller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlist-caller.del()]:0]]:400"
+                    "event": "mouseleave?clearTimer():[)(:actionlist-timer];)(:actionlist-timer=timer():[if():[)(:actionlistCaller!=():[)(:actionlistCaller].id]:[():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[)(:actionlist-timer];if():[)(:actionlistCaller=():[)(:actionlistCaller].id]:[timer():[():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()]:0]]:400"
                 },
                 {
                     "event": "mouseenter?clearTimer():[)(:actionlist-timer]"

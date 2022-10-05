@@ -17,17 +17,17 @@ module.exports = (component) => {
                 event: "mouseleave?lastChild().style().opacity=0"
             }],
             children: [{
-                type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;#mode.dark.style.color=#888;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s"
+                type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s"
             }, {
-                type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%"
+                type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.height=100%"
             }, {
-                type: "Text?class=pointer;text=...;style.display=none;#mode.dark.style.color=#888;style.fontSize=1.4rem"
+                type: "Text?class=pointer;text=...;style.display=none;style.fontSize=1.4rem"
             }, {
-                type: "Text?style.display=none;text=};style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem"
+                type: "Text?style.display=none;text=};style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem"
             }, {
                 type: "View?class=flex-box;style.gap=.5rem;style.opacity=0;style.flex=1;style.marginRight=.5rem;style.transition=.1s;style.justifyContent=flex-end",
                 children: [{
-                    type: "Icon?mainMap;name=bi-three-dots-vertical;actionlist.undeletable;actionlist.placement=left;#mode.dark.style.color=#888;class=flex-box pointer;style.color=#888;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
+                    type: "Icon?mainMap;name=bi-three-dots-vertical;actionlist.undeletable;actionlist.placement=left;class=flex-box pointer;style.color=#888;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
                 }]
             }]
         }, {
@@ -42,7 +42,7 @@ module.exports = (component) => {
                     event: "mouseleave?lastChild().style().opacity=0"
                 }],
                 children: [{
-                    type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;#mode.dark.style.color=#888;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s?data().type()=map||data().type()=array"
+                    type: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;style.transform=rotate(90deg);style.width=2rem;class=flex-box pointer;style.transition=transform .2s?data().type()=map||data().type()=array"
                 }, {
                     type: "View?style.minWidth=2rem;text=?data().type()!=map;data().type()!=array"
                 }, {
@@ -59,15 +59,15 @@ module.exports = (component) => {
                         event: "keyup?insert-index:()=3rdParent().children().findIndex():[id=2ndParent().id]+1;if():[data().type()=string]:[data()=_list];if():[path().lastEl()=children]:[data().push():[_map:type:_string]];if():[path().lastEl()=controls]:[data().push():[_map:event:_string]];update():2ndParent();update:().view.inputs().lastEl().focus()?e().key=Enter;ctrlKey:();path().lastEl()=controls||path().lastEl()=children"
                     }]
                 }, {
-                    type: "Text?text=path().lastElement();class=flexbox;#mode.dark.style.color=#888;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?2ndParent().parent().data().type()=array"
+                    type: "Text?text=path().lastElement();class=flexbox;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?2ndParent().parent().data().type()=array"
                 }, {
-                    type: "Text?text=:;class=flex-box pointer;#mode.dark.style.color=#888;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_array:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
+                    type: "Text?text=:;class=flex-box pointer;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_array:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
                 }, {
                     type: `Text?text=";#mode.dark.style.color=#c39178;style.color=#a35521;style.marginRight=.3rem;style.fontSize=1.4rem?data().type()=string`
                 }, {
-                    type: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=array"
+                    type: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=array"
                 }, {
-                    type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
+                    type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
                 }, {
                     type: "View?class=flexbox mini-controls;style:[height=2rem;overflowY=hidden;borderRadius=.25rem;padding=.5rem;gap=.75rem;zIndex=1;position=absolute;left=path().len()*(-2.1)+rem];mouseleave:[2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
                     children: [
@@ -155,15 +155,15 @@ module.exports = (component) => {
                 }, {
                     type: `Text?text=";#mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#a35521;style.fontSize=1.4rem?data().type()=string`
                 }, {
-                    type: "Text?class=flexbox pointer;style.display=none;#mode.dark.style.color=#888;text='...';style.fontSize=1.4rem"
+                    type: "Text?class=flexbox pointer;style.display=none;text='...';style.fontSize=1.4rem"
                 }, {
-                    type: "Text?style.display=none;text=];style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?data().type()=array"
+                    type: "Text?style.display=none;text=];style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem?data().type()=array"
                 }, {
-                    type: "Text?style.display=none;text=};style.paddingBottom=.25rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?data().type()=map"
+                    type: "Text?style.display=none;text=};style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem?data().type()=map"
                 }, {
                     type: "View?class=flex-box;style.gap=.5rem;style.opacity=0;style.flex=1;style.marginRight=.5rem;style.transition=.1s;style.justifyContent=flex-end",
                     children: [{
-                        type: "Icon?actionlist.placement=left;#mode.dark.style.color=#888;class=flex-box pointer;style.color=#888;icon.name=bi-three-dots-vertical;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
+                        type: "Icon?actionlist.placement=left;class=flex-box pointer;style.color=#888;icon.name=bi-three-dots-vertical;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
                     }]
                 }]
             }, {
@@ -172,12 +172,12 @@ module.exports = (component) => {
                     type: "Map?arrange=parent().arrange;isField"
                 }]
             }, {
-                type: "Text?class=flex-box;text=];#mode.dark.style.color=#888;style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=array"
+                type: "Text?class=flex-box;text=];style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=array"
             }, {
-                type: "Text?class=flex-box;text=};#mode.dark.style.color=#888;style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=map"
+                type: "Text?class=flex-box;text=};style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=map"
             }]
         }, {
-            type: "Text?class=flexbox;style.justifyContent=flex-start;text=};style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;#mode.dark.style.color=#888;style.color=green;style.fontSize=1.4rem?!parent().isField",
+            type: "Text?class=flexbox;style.justifyContent=flex-start;text=};style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;style.color=green;style.fontSize=1.4rem?!parent().isField",
         }]
     }
 }

@@ -45,7 +45,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
   var _idList = toValue({ id, value: events[3] || id })
 
   // droplist
-  var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
+  /*var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
   if (droplist && view.droplist) {
     
     view.droplist.controls = view.droplist.controls || []
@@ -53,10 +53,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       event: events.join("?").replace("droplist()", ""),
       actions: controls.actions
     })
-  }
+  }*/
 
   // actionlist
-  var actionlist = (events[1] || "").split(";").find(param => param === "actionlist()")
+  /*var actionlist = (events[1] || "").split(";").find(param => param === "actionlist()")
   if (actionlist && view.actionlist) {
     
     view.actionlist.controls = view.actionlist.controls || []
@@ -64,7 +64,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       event: events.join("?").replace("actionlist()", ""),
       actions: controls.actions
     })
-  }
+  }*/
 
   // popup
   var popup = (events[1] || "").split(";").find(param => param === "popup()")
@@ -205,7 +205,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           if (eventid === "popup" && (!global["popup-positioner"] || !global["popup-confirmed"])) return
           if (eventid === "popup" && !views[global["popup-positioner"]].element.contains(views[id].element)) return
           
-          if (eventid === "actionlist" && !views[global["actionlist-caller"]].element.contains(views[id].element)) return
+          if (eventid === "actionlist" && !views[global["actionlistCaller"]].element.contains(views[id].element)) return
 
           if (once) e.target.removeEventListener(event, myFn)
         
