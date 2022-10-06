@@ -10675,12 +10675,12 @@ const toApproval = ({ _window, e, string, id = "", _, __, ___, req, res, object,
 
     condition = condition.split("=")
     var equalOp = condition.length > 1
-    var greaterOp = condition[0].split(">")[1] && true
+    var greaterOp = condition[0].split(">")[1] !== undefined
     if (greaterOp) {
       condition[1] = condition[1] || condition[0].split(">")[1]
       condition[0] = condition[0].split(">")[0]
     }
-    var lessOp = condition[0].split("<")[1] && true
+    var lessOp = condition[0].split("<")[1] !== undefined
     if (lessOp) {
       condition[1] = condition[1] || condition[0].split("<")[1]
       condition[0] = condition[0].split("<")[0]
