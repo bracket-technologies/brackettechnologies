@@ -141,6 +141,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
         setTimeout(async () => {
 
+          if (view[event] && typeof view[event] === "object" && view[event].disable) return
           // approval
           if (viewEventConditions) {
             var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
@@ -186,6 +187,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         
         view[`${event}-timer`] = setTimeout(() => {
           
+          if (view[event] && typeof view[event] === "object" && view[event].disable) return
           if (clickEvent) return global["click-events"].push({ id, viewEventConditions, viewEventParams, events: clickEvent, controls })
           if (keyEvent) return global["key-events"].push({ id, viewEventConditions, viewEventParams, events: keyEvent, controls })
 

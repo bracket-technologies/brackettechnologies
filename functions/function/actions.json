@@ -1,6 +1,6 @@
 [
   "data()", "Data()", "doc()", "mail()", "action()", "exec()", "notification()", "notify()"
- , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()"
+ , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()"
  , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()" 
  , "3rdLastChild()", "2ndLastChild()", "parent()", "next()", "text()", "val()", "txt()" 
  , "element()", "el()", "checked()", "check()", "prev()", "format()", "lastSibling()" 

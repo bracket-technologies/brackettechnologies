@@ -1226,7 +1226,7 @@ module.exports = ({ controls, id }) => {
 },{}],31:[function(require,module,exports){
 module.exports=[
   "data()", "Data()", "doc()", "mail()", "action()", "exec()", "notification()", "notify()"
- , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()"
+ , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()"
  , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()" 
  , "3rdLastChild()", "2ndLastChild()", "parent()", "next()", "text()", "val()", "txt()" 
  , "element()", "el()", "checked()", "check()", "prev()", "format()", "lastSibling()" 
@@ -1405,10 +1405,10 @@ module.exports = {clone}
 },{}],37:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toCode } = require("./toCode")
-const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9204", "#585859", "#e649c6"]
+const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#997502", "#7e7e80", "#e649c6"]
 
 const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) => {
-    
+    if (index === 8) index = 1
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
     while (string.includes("coded()")) {
@@ -1760,7 +1760,7 @@ const createDocument = async ({ req, res }) => {
     }
   }
 
-  var bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
+  var bracketDomains = ["bracketjs.com", "localhost:80", "bracket.localhost:80"];
 
   // is brakcet domain
   var isBracket = bracketDomains.includes(host);
@@ -2122,7 +2122,7 @@ const createElement = ({ _window, id, req, res }) => {
   
   // code ''
   if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
-
+  
   // destructure type, params, & conditions from type
   
   var type = view.type.split("?")[0]
@@ -3109,6 +3109,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
         setTimeout(async () => {
 
+          if (view[event] && typeof view[event] === "object" && view[event].disable) return
           // approval
           if (viewEventConditions) {
             var approved = toApproval({ _window, req, res, string: viewEventConditions, e, id: mainID })
@@ -3154,6 +3155,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
         
         view[`${event}-timer`] = setTimeout(() => {
           
+          if (view[event] && typeof view[event] === "object" && view[event].disable) return
           if (clickEvent) return global["click-events"].push({ id, viewEventConditions, viewEventParams, events: clickEvent, controls })
           if (keyEvent) return global["key-events"].push({ id, viewEventConditions, viewEventParams, events: keyEvent, controls })
 
@@ -8621,13 +8623,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "toggleView()") {
           
             var toggle = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, ___, _i })
-            /*
-            var _id = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, ___, _i })
-            var _view = toValue({ req, res, _window, id, e, value: args[2] || "", params, _, __, ___, _i })
-            var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _, __, ___, _i })
-            var _timer = toValue({ req, res, _window, id, e, value: args[4] || "", params, _, __, ___, _i })
-            */
             require("./toggleView").toggleView({ _window, req, res, toggle, id })
+
+        } else if (k0 === "setChild()") {
+
+            var toggle = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, ___, _i })
+            require("./toggleView").toggleView({ _window, req, res, toggle, id: o.id })
 
         } else if (k0 === "preventDefault()") {
             
@@ -11319,7 +11320,33 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     // increment
     if (key && value === undefined && key.slice(-2) === "++") {
       key = key.slice(0, -2)
-      value = `${key}+1`
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||0`
+      value = `coded()${_key}+1`
+    }
+
+    // +=
+    else if (key && value && key.slice(-1) === "+") {
+      key = key.slice(0, -1)
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||0`
+      value = `coded()${_key}+${value}`
+    }
+
+    // -=
+    else if (key && value && key.slice(-1) === "-") {
+      key = key.slice(0, -1)
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||0`
+      value = `coded()${_key}-${value}`
+    }
+
+    // *=
+    else if (key && value && key.slice(-1) === "*") {
+      key = key.slice(0, -1)
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||0`
+      value = `coded()${_key}*${value}`
     }
 
     // await
@@ -11976,7 +12003,7 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
 
   // no value
   if (!value) return value
-
+  
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
   

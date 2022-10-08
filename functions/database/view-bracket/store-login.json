@@ -1,7 +1,7 @@
 {
   "children": [
     {
-      "type": "View?style.backgroundColor=#fff;style.borderRadius=1rem;style.position=absolute;style.top=0;style.left=0;style.height=100%;style.width=50%;class=column;style.display=flex;style.overflow=auto;style.zIndex=1",
+      "type": "View?style.backgroundColor=#fff;style.position=fixed;style.top=0;style.left=0;style.height=100%;style.width=50%;class=column;style.display=flex;style.overflow=auto;style.zIndex=1",
       "children": [
         {
           "type": "View?class=column flexbox;style.padding=8rem 6rem;style.paddingBottom=0",
@@ -166,21 +166,10 @@
     {
       "children": [
         {
-          "type": "View?style.backgroundColor=#008060;style.height=100vh;style.width=100vh;style.position=absolute;style.left=15vw;style.borderRadius=50vh;style.top=-15vh"
-        },
-        {
-          "children": [
-            {
-              "type": "View?style.backgroundColor=#FFCB67;style.height=100vh;style.width=100vh;style.position=absolute;style.left=33.15vw;style.borderRadius=50vh;style.top=-50vh"
-            }
-          ],
-          "type": "View?style.backgroundColor=#FFA781;style.height=100%;style.width=200%;style.position=absolute;style.transform=rotate(-45deg);style.left=0;style.zIndex=1;style.overflow=hidden;style.top=30vh"
-        },
-        {
-          "type": "View?style.backgroundColor=#FFCB67;style.height=50vh;style.width=50vh;style.transform=rotate(-135deg);style.position=absolute;style.right=0;style.zIndex=2;style.top=-25vh"
+          "type": "Image?src='https://firebasestorage.googleapis.com/v0/b/bracketjs.appspot.com/o/gallery-bracketjs%2Fbackground.png?alt=media&token=16d2397a-cbc3-4316-b2af-ac2d45bde3a4';style:[minHeight=100%;minWidth=100%;maxHeight=100%;maxWidth=100%;height=100%;width=100%]"
         }
       ],
-      "type": "View?style.width=50%;style.backgroundColor=#004C3F;style.height=100%;style.left=50%;style.position=absolute;style.overflow=hidden"
+      "type": "View?style:[width=100vw;height=100vh;position=fixed;top=0;left=0;zIndex=0]"
     },
     {
       "children": [
@@ -242,7 +231,7 @@
           "type": "View?class=flex column;style.padding=.75rem"
         }
       ],
-      "type": "View?id=profile-droplist;style.position=absolute;style.opacity=0;style.pointerEvents=none;class=box-shadow;style.backgroundColor=#fff;style.zIndex=2;style.borderRadius=.5rem"
+      "type": "View?id=profile-droplist;style.position=fixed;style.opacity=0;style.pointerEvents=none;class=box-shadow;style.backgroundColor=#fff;style.zIndex=2;style.borderRadius=.5rem"
     }
   ],
   "creation-date": 1639940032627,

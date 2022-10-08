@@ -4003,13 +4003,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "toggleView()") {
           
             var toggle = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, ___, _i })
-            /*
-            var _id = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, ___, _i })
-            var _view = toValue({ req, res, _window, id, e, value: args[2] || "", params, _, __, ___, _i })
-            var _page = toValue({ req, res, _window, id, e, value: args[3] || "", params, _, __, ___, _i })
-            var _timer = toValue({ req, res, _window, id, e, value: args[4] || "", params, _, __, ___, _i })
-            */
             require("./toggleView").toggleView({ _window, req, res, toggle, id })
+
+        } else if (k0 === "setChild()") {
+
+            var toggle = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, ___, _i })
+            require("./toggleView").toggleView({ _window, req, res, toggle, id: o.id })
 
         } else if (k0 === "preventDefault()") {
             

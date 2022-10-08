@@ -10,16 +10,40 @@
               "event": "mouseenter:[2ndChild().children().():id]?lastChild().style().width=e().target.clientWidth+px;lastChild().style().transform=translateX(+e().target.relativePosition():[().element].left+px)"
             }
           ],
-          "type": "View?style.display=flex;style.alignItems=center;style.height=100%;style.width=100%;style.position=relative",
+          "type": "View?style.display=flex;style.alignItems=center;style.height=100%;style.width=100%;style.position=relative;style.gap=1rem",
           "children": [
             {
               "type": "Text?link.path=/;text=Bracket;class=flexbox;style.margin=0 1rem;style.fontSize=2rem;style.width=fit-content;style.color=#ee384e;style.fontWeight=900"
             },
             {
-              "type": "View?class=flex-start;style.height=100%;style.flex=1;style.position=relative"
+              "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #ddd;style.borderLeft=1px solid #ddd;style.transition=.2s;droplist:[items='data:().editor.account.projects';item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault]",
+              "children": [
+                {
+                  "type": "Text?text=project;style.fontSize=1.4rem;style.marginRight=.5rem;style.color=#888"
+                },
+                {
+                  "type": "Text?text=:;style.marginRight=1rem;style.fontSize=1.4rem"
+                },
+                {
+                  "type": "Text?text=project:();style:[fontSize=1.4rem;marginRight=.5rem]"
+                },
+                {
+                  "type": "View?class=flexbox",
+                  "children": [
+                    {
+                      "type": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;paddingTop=.25rem]"
+                    }
+                  ]
+                }
+              ],
+              "controls": [
+                {
+                  "event": "click:droplist?route():[path=/developer-editor/+droplist-txt:()]?project:()!=droplist-txt:()"
+                }
+              ]
             },
             {
-              "type": "View?class=flex-box;style.justifyContent=flex-end;style.height=100%",
+              "type": "View?class=flex-box;style.justifyContent=flex-end;style.flex=1;style.height=100%",
               "children": [
                 {
                   "type": "Switch?icon.off.name=bi-brightness-low;icon.on.name=bi-moon;style.margin=0 2rem;mode.dark.style.backgroundColor=#646464?false",
@@ -31,13 +55,18 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex;style:[gap=2rem;padding=0 3rem]",
+                  "type": "View?class=flex align-center;style:[gap=2rem]",
                   "children": [
                     {
                       "type": "View?class=flex pointer;style:[borderRadius=.25rem;width=3.25rem;height=3.25rem;marginLeft=auto;transition=width .3s;overflow=hidden]",
                       "children": [
                         {
-                          "type": "Icon?class=flexbox;name=bi-search;style:[color=#999;fontSize=1.8rem;minWidth=3.25rem]"
+                          "type": "View?class=flexbox",
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=search;google.symbol.outlined;style:[color=#999;fontSize=2.2rem;minWidth=3.25rem]"
+                            }
+                          ]
                         },
                         {
                           "type": "Input?style:[flex=1;height=100%;transition=background-color .3s;borderRadius=1.5rem;padding=0 2rem];placeholder=Search by ID or text for pages, views, collections, products, flights, hotels, storage, reviews...",
@@ -64,7 +93,15 @@
                       "type": "View?class=flexbox",
                       "children": [
                         {
-                          "type": "Icon?class=flexbox pointer;name=bi-bell;style:[fontSize=1.8rem;color=#999;transition=.2s];hover.style.color=red",
+                          "type": "Icon?class=flexbox pointer;name=support_agent;google.symbol.outlined;style:[fontSize=2.2rem;color=#999;transition=.2s];hover.style.color=blue"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=flexbox",
+                      "children": [
+                        {
+                          "type": "Icon?class=flexbox pointer;name=notifications;google.symbol.outlined;style:[fontSize=2.2rem;color=#999;transition=.2s];hover.style.color=red",
                           "controls": [
                             {
                               "event": "mouseenter?style().transform=rotate(30deg);trans-bell-1:()=timer():[style().transform=rotate(-30deg)]:200;trans-bell-2:()=timer():[style().transform=rotate(30deg)]:400;trans-bell-3:()=timer():[style().transform=rotate(-30deg)]:600;trans-bell-4:()=timer():[style().transform=rotate(0deg)]:800"
@@ -75,28 +112,28 @@
                           ]
                         }
                       ]
-                    }
-                  ]
-                },
-                {
-                  "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #ddd;style.borderLeft=1px solid #ddd;style.transition=.2s;droplist.items='data:().editor.account.projects';droplist.preventDefault",
-                  "children": [
-                    {
-                      "type": "Text?text=project;style.fontSize=1.5rem;style.marginRight=.5rem;style.color=#888"
                     },
                     {
-                      "type": "Text?text=:;style.marginRight=1rem;style.fontSize=1.5rem"
+                      "type": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
                     },
                     {
-                      "type": "Text?text=project:();style.fontSize=1.5rem"
+                      "type": "View?class=flexbox pointer;style:[gap=1.2rem];droplist:[items=_list:Manage Account:Sign out;item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault]",
+                      "children": [
+                        {
+                          "type": "Icon?name=person;google.symbol.outlined;style:[fontSize=2.5rem;color=#999]"
+                        },
+                        {
+                          "type": "Text?text=Hi +data:().editor.account.first-name;style:[fontSize=1.4rem;color=#444]"
+                        }
+                      ],
+                      "controls": [
+                        {
+                          "event": "click:droplist?eraseCookie():__session;route():login?droplist-txt:()=Sign out"
+                        }
+                      ]
                     },
                     {
-                      "type": "Icon?name=arrow_drop_down;google.rounded;style.fontSize=3rem"
-                    }
-                  ],
-                  "controls": [
-                    {
-                      "event": "click:droplist?route():[path=/developer-editor/+clicked:().txt()]?project:()!=clicked:().txt()"
+                      "type": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
                     }
                   ]
                 },
@@ -104,7 +141,7 @@
                   "type": "View?class=flexbox pointer;tooltip.text=undo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
                   "children": [
                     {
-                      "type": "Icon?name=undo;google.outlined;style.fontSize=2.5rem;hover.style.color=#000;hover.id=parent().id;style.width=100%;style.borderRight=1px solid #ddd"
+                      "type": "Icon?name=undo;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=#000;hover.id=parent().id;style.width=100%"
                     }
                   ],
                   "controls": [
@@ -117,7 +154,7 @@
                   "type": "View?class=flexbox pointer;tooltip.text=redo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
                   "children": [
                     {
-                      "type": "Icon?name=redo;google.outlined;style.fontSize=2.5rem;hover.style.color=#000;hover.id=parent().id;style.width=100%;style.borderRight=1px solid #ddd"
+                      "type": "Icon?name=redo;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=#000;hover.id=parent().id;style.width=100%"
                     }
                   ],
                   "controls": [
@@ -130,7 +167,7 @@
                   "type": "View?class=flexbox pointer;tooltip.text=my website;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
                   "children": [
                     {
-                      "type": "Icon?name=public;google.outlined;style.fontSize=2.5rem;hover.style.color=red;hover.id=parent().id;style.width=100%;style.borderRight=1px solid #ddd"
+                      "type": "Icon?name=preview;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=red;hover.id=parent().id;style.width=100%"
                     }
                   ],
                   "controls": [
@@ -143,7 +180,7 @@
                   "type": "View?class=flexbox pointer;tooltip.text=save;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
                   "children": [
                     {
-                      "type": "Icon?name=save;google.outlined;style.fontSize=2.5rem;hover.style.color=blue;hover.id=parent().id"
+                      "type": "Icon?name=save_as;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=blue;hover.id=parent().id"
                     }
                   ],
                   "controls": [
@@ -228,19 +265,32 @@
                       ]
                     },
                     {
-                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=40rem;marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s]",
+                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=40rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[1stChild().style():[opacity=1;pointerEvents=auto];2ndChild().style():[opacity=1;pointerEvents=auto];3rdChild().style():[opacity=1;pointerEvents=auto]];mouseleave:[1stChild().style():[opacity=0;pointerEvents=none];2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
                       "children": [
                         {
-                          "type": "Text?class=flexbox;text=Actions;style:[fontSize=1.3rem;position=absolute;top=-1rem;height=2rem;width=10rem;backgroundColor=#ddd;borderRadius=1.5rem;left=calc(50% - 5rem);cursor=default;zIndex=10;pointerEvents=none;transition=.2s];hover.style.opacity=0"
+                          "type": "View?class=flexbox pointer;tooltip.text=fit height;style:[position=absolute;top=-2.25rem;height=2.25rem;opacity=0;pointerEvents=none;width=2.5rem;backgroundColor=#ddd;borderRadius=1rem 1rem 0 0;right=2rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height=calc(100% - 7.5rem);():data-viewer.style().height=0rem;next().style():[opacity=1;pointerEvents=auto];style():[opacity=0;pointerEvents=none];parent().():[mouseenter=_map:disable:true;mouseleave=_map:disable:true]]",
+                          "children": [
+                            {
+                              "type": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;transform=rotate(180deg);color=#666]"
+                            }
+                          ]
                         },
                         {
-                          "type": "View?style:[minWidth=100%;height=6px;backgroundColor=#34aeeb;cursor=ns-resize;position=absolute;left=0;top=0;zIndex=100;opacity=0;transition=.2s];hover.style.opacity=1",
+                          "type": "View?class=flexbox pointer;tooltip.text=hide;style:[position=absolute;top=0;height=2.25rem;opacity=0;pointerEvents=none;width=2.5rem;backgroundColor=#ddd;borderRadius=0 0 1rem 1rem;right=2rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height=0rem;():data-viewer.style().height=100%;prev().style():[opacity=1;pointerEvents=auto];style():[opacity=0;pointerEvents=none];parent().():[mouseenter=_map:disable:true;mouseleave=_map:disable:true]]",
+                          "children": [
+                            {
+                              "type": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;color=#666]"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "View?style:[minWidth=100%;height=7px;backgroundColor=#34aeeb;cursor=ns-resize;position=absolute;left=0;top=-0.3rem;zIndex=100;opacity=0;transition=.2s]",
                           "controls": [
                             {
-                            "event": "mousedown?mousedown=true;document().style().cursor=ns-resize;parent().style().transition=null;height=parent().style().height.split():rem.0.num();screenY=screenY:();className():data-viewer.find():[style().display!=none].style().overflowY=hidden"
+                            "event": "mousedown?mousedown=true;document().style().cursor=ns-resize;parent().style().transition=null;height=if():[parent().style().height='calc(100% - 7.5rem)']:[parent().element.offsetHeight.divide():10]:[parent().style().height.split():rem.0.num()];screenY=screenY:();className():data-viewer.find():[style().display!=none].style().overflowY=hidden"
                             },
                             {
-                            "event": "mousemove:body?diff=[[screenY:()]-[().screenY]].divide():10;parent().style().height=[().height-().diff]+rem;():data-viewer.style().height='calc(100% - '+[().height-().diff]+'rem)'?mousedown"
+                            "event": "mousemove:body?if():[height>5]:[parent().():[mouseenter=_map:disable:false;mouseleave=_map:disable:false]];diff=[[screenY:()]-[().screenY]].divide():10;parent().style().height=[().height-().diff]+rem;():data-viewer.style().height='calc(100% - '+[().height-().diff]+'rem)'?mousedown"
                             },
                             {
                             "event": "mouseup:body?mousedown=false;document().style().cursor=default;parent().style().transition=.2s;className():data-viewer.find():[style().display!=none].style().overflowY=auto"

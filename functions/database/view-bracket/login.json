@@ -1,7 +1,7 @@
 {
   "children": [
     {
-      "type": "View?style.backgroundColor=#fff;style.borderRadius=1rem;style.width=38%;style.margin=2% 10%;style.padding=8rem 4rem;class=column;style.display=flex;style.paddingBottom=3rem;style.zIndex=1",
+      "type": "View?style.backgroundColor=#fff;style.borderRadius=1rem;style.width=38%;style.left=8%;style.top=8%;style.padding=8rem 4rem;class=column;style.display=flex;style.paddingBottom=3rem;style.zIndex=1;style.position=fixed",
       "children": [
         {
           "type": "Text?text=Bracket;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.marginBottom=6rem"
@@ -199,23 +199,12 @@
     {
       "children": [
         {
-          "type": "View?style.backgroundColor=#008060;style.height=100vh;style.width=100vh;style.position=absolute;style.left=15vw;style.borderRadius=50vh;style.top=-15vh"
-        },
-        {
-          "children": [
-            {
-              "type": "View?style.backgroundColor=#FFCB67;style.height=100vh;style.width=100vh;style.position=absolute;style.left=33.15vw;style.borderRadius=50vh;style.top=-50vh"
-            }
-          ],
-          "type": "View?style.backgroundColor=#FFA781;style.height=100%;style.width=200%;style.position=absolute;style.transform=rotate(-45deg);style.left=0;style.zIndex=1;style.overflow=hidden;style.top=30vh"
-        },
-        {
-          "type": "View?style.backgroundColor=#FFCB67;style.height=50vh;style.width=50vh;style.transform=rotate(-135deg);style.position=absolute;style.right=0;style.zIndex=2;style.top=-25vh"
+          "type": "Image?src='https://firebasestorage.googleapis.com/v0/b/bracketjs.appspot.com/o/gallery-bracketjs%2Fbackground.png?alt=media&token=16d2397a-cbc3-4316-b2af-ac2d45bde3a4';style:[minHeight=100%;minWidth=100%;maxHeight=100%;maxWidth=100%;height=100%;width=100%]"
         }
       ],
-      "type": "View?style.width=50%;style.height=100vh;style.left=50%;style.position=fixed;style.top=0;style.bottom=0"
+      "type": "View?style:[width=100vw;height=100vh;position=fixed;top=0;left=0;zIndex=0]"
     }
   ],
   "creation-date": 1639314993788,
-  "type": "View?id=login;style.backgroundColor=#084C3F;style.position=relative;style.overflow=hidden;style.minHeight=100vh"
+  "type": "View?id=login;style.justifyContent=flex-start;style.position=relative;style.overflow=hidden;style.minHeight=100vh"
 }

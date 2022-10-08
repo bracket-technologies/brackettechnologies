@@ -71,7 +71,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.listen(8080, () => console.log("Server Listening to Port 8080"))
+app.listen(80, () => console.log("Server Listening to Port 80"))
 
 exports.app = functions.https.onRequest(app)
 // module.exports.app = sls(app)

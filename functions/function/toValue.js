@@ -23,7 +23,7 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
 
   // no value
   if (!value) return value
-
+  
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
   

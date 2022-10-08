@@ -66,7 +66,7 @@ const createDocument = async ({ req, res }) => {
     }
   }
 
-  var bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
+  var bracketDomains = ["bracketjs.com", "localhost:80", "bracket.localhost:80"];
 
   // is brakcet domain
   var isBracket = bracketDomains.includes(host);

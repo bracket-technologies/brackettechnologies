@@ -57,7 +57,33 @@ const toParam = ({ _window, string, e, id = "", req, res, mount, object, _, __, 
     // increment
     if (key && value === undefined && key.slice(-2) === "++") {
       key = key.slice(0, -2)
-      value = `${key}+1`
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||0`
+      value = `coded()${_key}+1`
+    }
+
+    // +=
+    else if (key && value && key.slice(-1) === "+") {
+      key = key.slice(0, -1)
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||0`
+      value = `coded()${_key}+${value}`
+    }
+
+    // -=
+    else if (key && value && key.slice(-1) === "-") {
+      key = key.slice(0, -1)
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||0`
+      value = `coded()${_key}-${value}`
+    }
+
+    // *=
+    else if (key && value && key.slice(-1) === "*") {
+      key = key.slice(0, -1)
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||0`
+      value = `coded()${_key}*${value}`
     }
 
     // await

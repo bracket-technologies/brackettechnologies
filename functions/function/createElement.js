@@ -60,7 +60,7 @@ const createElement = ({ _window, id, req, res }) => {
   
   // code ''
   if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
-
+  
   // destructure type, params, & conditions from type
   
   var type = view.type.split("?")[0]
