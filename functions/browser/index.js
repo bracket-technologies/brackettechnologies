@@ -1707,11 +1707,12 @@ require("dotenv").config();
 const createDocument = async ({ req, res }) => {
 
   // Create a cookies object
-  var host = req.headers.host || req.headers["x-forwarded-host"]/* || req.headers["x-forwarded-host"]*/, db = req.db
+  var host = req.headers["x-forwarded-host"]
+  if (!host) host = req.headers.host
   if (req.url.split("/")[1] === "undefined") return res.send("")
   
   // current page
-  var currentPage = req.url.split("/")[1] || "", promises = []
+  var currentPage = req.url.split("/")[1] || "", promises = [], db = req.db
   currentPage = currentPage || "main"
   
   // get assets & views
@@ -1730,12 +1731,12 @@ const createDocument = async ({ req, res }) => {
     currentPage,
     path: req.url,
     device: req.device,
-    unloadedViews: [],
     public: getJsonFiles({ search: { collection: "public" } }),
     os: req.headers["sec-ch-ua-platform"],
     browser: req.headers["sec-ch-ua"],
     country: req.headers["x-country-code"],
     headers: req.headers,
+    cookies: req.cookies,
     promises: [],
     functions: []
   };
@@ -1760,12 +1761,12 @@ const createDocument = async ({ req, res }) => {
     }
   }
 
-  var bracketDomains = ["bracketjs.com", "localhost:80", "bracket.localhost:80"];
+  var bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
 
   // is brakcet domain
   var isBracket = bracketDomains.includes(host);
   if (!isBracket) {
-    isBracket = host.includes(".loca.lt");
+    isBracket = host.includes(".loca.lt") || host.includes("amazonaws");
     if (isBracket) host = "bracketjs.com";
   }
   
@@ -1790,7 +1791,7 @@ const createDocument = async ({ req, res }) => {
   await Promise.resolve(project);
 
   // project not found
-  if (!project) return res.send("Project not found!");
+  if (!project || (project && !project.id)) return res.send(`${host} not found!`);
   global.projectId = project.id
 
   if (global) {
@@ -1999,7 +2000,7 @@ const createDocument = async ({ req, res }) => {
     global = { ..._global }
   }
 
-  delete global.headers
+  // delete global.headers
   delete global.data.project;
   
   res.send(
