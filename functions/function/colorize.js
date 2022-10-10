@@ -1,6 +1,6 @@
 const { generate } = require("./generate")
 const { toCode } = require("./toCode")
-const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#997502", "#7e7e80", "#e649c6"]
+const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
 
 const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) => {
     if (index === 8) index = 1

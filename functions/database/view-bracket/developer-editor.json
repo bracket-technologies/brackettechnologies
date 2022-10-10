@@ -265,7 +265,7 @@
                       ]
                     },
                     {
-                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=40rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[1stChild().style():[opacity=1;pointerEvents=auto];2ndChild().style():[opacity=1;pointerEvents=auto];3rdChild().style():[opacity=1;pointerEvents=auto]];mouseleave:[1stChild().style():[opacity=0;pointerEvents=none];2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
+                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=40rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[3rdChild().style():[opacity=1;pointerEvents=auto]];mouseleave:[1stChild().style():[opacity=0;pointerEvents=none];2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
                       "children": [
                         {
                           "type": "View?class=flexbox pointer;tooltip.text=fit height;style:[position=absolute;top=-2.25rem;height=2.25rem;opacity=0;pointerEvents=none;width=2.5rem;backgroundColor=#ddd;borderRadius=1rem 1rem 0 0;right=2rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height=calc(100% - 7.5rem);():data-viewer.style().height=0rem;next().style():[opacity=1;pointerEvents=auto];style():[opacity=0;pointerEvents=none];parent().():[mouseenter=_map:disable:true;mouseleave=_map:disable:true]]",
@@ -284,7 +284,7 @@
                           ]
                         },
                         {
-                          "type": "View?style:[minWidth=100%;height=7px;backgroundColor=#34aeeb;cursor=ns-resize;position=absolute;left=0;top=-0.3rem;zIndex=100;opacity=0;transition=.2s]",
+                          "type": "View?style:[minWidth=100%;height=7px;backgroundColor=#34aeeb;cursor=ns-resize;position=absolute;left=0;top=-0.3rem;zIndex=100;opacity=0;transition=.2s];mouseenter:[prev().style():[opacity=1;pointerEvents=auto];2ndPrev().style():[opacity=1;pointerEvents=auto]]",
                           "controls": [
                             {
                             "event": "mousedown?mousedown=true;document().style().cursor=ns-resize;parent().style().transition=null;height=if():[parent().style().height='calc(100% - 7.5rem)']:[parent().element.offsetHeight.divide():10]:[parent().style().height.split():rem.0.num()];screenY=screenY:();className():data-viewer.find():[style().display!=none].style().overflowY=hidden"
@@ -298,7 +298,7 @@
                           ]
                         },
                         {
-                          "type": "View:functions?class=flex column;style:[width=100%;overflowY=auto;height=100%]",
+                          "type": "View:functions?class=flex column;style:[width=100%;overflowY=auto;height=100%];mouseenter:[2ndPrev().style():[opacity=0;pointerEvents=none];3rdPrev().style():[opacity=0;pointerEvents=none]]",
                           "children": [
                             {
                               "type": "View?class=flex column functions;style:[height=100%;width=100%]?open-map:()",
