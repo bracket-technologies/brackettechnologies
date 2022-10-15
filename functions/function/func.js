@@ -21,8 +21,7 @@ const func = async ({ _window, id = "", req, _, __, ___, res, e, ...params }) =>
 
     var functions = global.data.project.functions
     if (!functions[func.function]) return
-    if (functions[func.function].includes("send()"))
-      functions[func.function] = functions[func.function].replace("send()", "")
+    if (functions[func.function].includes("send()")) functions[func.function] = functions[func.function].replace("send()", "")
 
     var _func = toCode({ _window, string: functions[func.function] })
     toParam({ _window, string: _func, req, res, _: func.data, __ })

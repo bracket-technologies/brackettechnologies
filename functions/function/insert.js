@@ -4,14 +4,13 @@ const { starter } = require("./starter")
 const { generate } = require("./generate")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
-const { toParam } = require("./toParam")
 
 module.exports = {
-  insert: ({ id, insert }) => {
+  insert: ({ id, ...params }) => {
     
-    var { index, value = {}, el, elementId, component, view, replace, path, data } = insert
+    var insert = params.insert, { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
-    var views = window.views, appendTo = (insert.id || insert.parent)
+    var views = window.views, global = window.global, appendTo = (insert.id || insert.parent)
     if (appendTo && typeof appendTo === "object") appendTo = appendTo.id
     else if (!appendTo) appendTo = id
     var view = views[appendTo], lDiv
@@ -30,7 +29,7 @@ module.exports = {
       
       if (data) _view.data = clone(data)
       if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
-
+      
       var innerHTML = toArray(_view)
       .map((child, i) => {
 
@@ -78,11 +77,15 @@ module.exports = {
     views[el.id].style.opacity = views[el.id].element.style.opacity = (views[el.id].reservedStyles && views[el.id].reservedStyles.opacity) || "1"
     delete views[el.id].reservedStyles
 
-    view.insert = { view: views[el.id], message: "View inserted succefully!", success: true }
+    view.insert = global.insert = { view: views[el.id], message: "View inserted succefully!", success: true }
     
     if (lDiv) {
+
       document.body.removeChild(lDiv)
       lDiv = null
     }
+
+    // await params
+    if (params.asyncer) require("./toAwait").toAwait({ id, params })
   }
 }

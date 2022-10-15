@@ -11,7 +11,6 @@ const {toId} = require("./toId")
 const {toParam} = require("./toParam")
 const {toString} = require("./toString")
 const {update, removeChildren} = require("./update")
-const {createDocument} = require("./createDocument")
 const {toControls} = require("./toControls")
 const {toArray} = require("./toArray")
 const {generate} = require("./generate")
@@ -122,7 +121,6 @@ module.exports = {
   update,
   execute,
   removeChildren,
-  createDocument,
   toArray,
   generate,
   createElement,

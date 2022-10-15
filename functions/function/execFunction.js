@@ -29,7 +29,7 @@ const execFunction = async ({ req, res, id = generate() }) => {
         global.data = { project: _data }
         functions = _data.functions
         _window.global.functions = Object.keys(functions)
-        message = "Function executed successfully!"
+        message = "Action executed successfully!"
       }
 
     }).catch(error => {
@@ -40,7 +40,7 @@ const execFunction = async ({ req, res, id = generate() }) => {
     // }
     
     if (!success) return res.send({ success, message })
-    if (!functions[func]) return res.send({ success, message: "Function does not exist!" })
+    if (!functions[func]) return res.send({ success, message: "Action does not exist!" })
     
     var sendExists = functions[func].includes("send()")
     var func = toCode({ _window, id, string: functions[func] })

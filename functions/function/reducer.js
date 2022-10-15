@@ -858,6 +858,26 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             var _id = nextSibling.id
             answer = views[_id]
             
+        } else if (k0 === "3rdNext()" || k0 === "3rd()" || k0 === "3rdNextSibling()") {
+
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, ___, _i,string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[1], params })
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+            var element = _o.element
+            // if (_o.templated || _o.link) element = views[_o.parent].element
+            
+            if (!element.nextElementSibling || !element.nextElementSibling.nextElementSibling || !element.nextElementSibling.nextElementSibling.nextElementSibling) return
+            var nextSibling = element.nextElementSibling.nextElementSibling.nextElementSibling
+            if (!nextSibling) return
+            var _id = nextSibling.id
+            answer = views[_id]
+            
         } else if (k0 === "nextSiblings()") {
 
             var _o, _params = {}
@@ -1011,7 +1031,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
           else return
           
           if (element.previousElementSibling && element.previousElementSibling.previousElementSibling)
-          previousSibling = element.previousElementSibling.previousElementSibling
+          var previousSibling = element.previousElementSibling.previousElementSibling
           if (!previousSibling) return
           var _id = previousSibling.id
           answer = views[_id]
@@ -1036,7 +1056,7 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         else return
         
         if (element.previousElementSibling && element.previousElementSibling.previousElementSibling && element.previousElementSibling.previousElementSibling.previousElementSibling)
-        previousSibling = element.previousElementSibling.previousElementSibling.previousElementSibling
+        var previousSibling = element.previousElementSibling.previousElementSibling.previousElementSibling
         if (!previousSibling) return
         var _id = previousSibling.id
         answer = views[_id]
@@ -2679,10 +2699,16 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             delete global["tooltip-timer"]
             views.tooltip.element.style.opacity = "0"
             
-            if (args[1]) {
+            if (args[1] && !isParam({ _window, string: args[1] })) {
+
                 var _id = toValue({ req, res, _window, id, value: args[1], params,_ ,e })
                 if (!views[_id]) return console.log("Element doesnot exist!")
                 return remove({ id: _id })
+
+            } else if (args[1] && isParam({ _window, string: args[1] })) {
+
+                var params = toParam({ req, res, _window, e, id, string: args[1], _, __, ___, _i, params })
+                return remove({ id: params.id || o.id, remove: { onlyChild: params.data === false ? false : true } })
             }
 
             var _id = typeof o === "string" ? o : o.id
@@ -3481,7 +3507,12 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             if (isParam({ _window, string: args[1] })) {
 
                 var _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
-                insert({ id: _id, insert: _params })
+                if (args[2]) {
+
+                    var _await = global.codes[args[2]]
+                    insert({ id: _params.id || _id, insert: _params, asyncer: true, await: _await })
+
+                } else insert({ id: _params.id || _id, insert: _params })
             }
 
         } else if (k0 === "removeMapping()") {
