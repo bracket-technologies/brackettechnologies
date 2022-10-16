@@ -1225,7 +1225,7 @@ module.exports = ({ controls, id }) => {
 }
 },{}],31:[function(require,module,exports){
 module.exports=[
-  "data()", "Data()", "doc()", "mail()", "action()", "exec()", "notification()", "notify()"
+  "data()", "Data()", "doc()", "mail()", "action()", "exec()", "notification()", "notify()", "alert()"
  , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()"
  , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()" 
  , "3rdLastChild()", "2ndLastChild()", "parent()", "next()", "text()", "val()", "txt()" 
@@ -6665,6 +6665,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
         } else if (k0 === "exists()") {
             
             answer = o !== undefined ? true : false
+
+        } else if (k0 === "alert()") {
+            
+            var text = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i,e })
+            alert(text)
 
         } else if (k0 === "clone()") {
             

@@ -2414,6 +2414,11 @@ const reducer = ({ _window, id, path, value, key, params, object, index = 0, _, 
             
             answer = o !== undefined ? true : false
 
+        } else if (k0 === "alert()") {
+            
+            var text = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i,e })
+            alert(text)
+
         } else if (k0 === "clone()") {
             
             var _o
