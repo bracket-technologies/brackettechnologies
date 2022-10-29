@@ -156,7 +156,7 @@ const Input = (component) => {
             "controls": [{
                 "event": "click?next().input().click()"
             }]
-          }, 
+          },
             Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
           {
             "type": `View:${id}-required?class=flex gap-1;style:[alignItems=center;opacity=${required && required.style && required.style.opacity || "0"};transition=.2s]?${required ? true : false}`,
@@ -179,7 +179,7 @@ const Input = (component) => {
       var myView = {
             ...component,
             type: duplicatable ? "[View]" : "View",
-            class: `flexbox unselectable ${component.class || ""}`,
+            class: `flex align-items-center unselectable ${component.class || ""}`,
             // remove from comp
             controls: [{
                 event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]?!mobile()`
@@ -264,11 +264,11 @@ const Input = (component) => {
                     event: "keyup?Data():[path=derivations().clone().pullLast().push():[derivations().lastEl().num()+1]]=_string;update():[().parent().parent()]?duplicatable;e().key=Enter",
                 }]
             }, {
-                type: `Icon?class=pointer;id=${id}+-clear;name=bi-x-lg;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:0]:[right=if():[parent().password]:4rem:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.5rem;backgroundColor=inherit;borderRadius=.5rem];click:[if():[parent().clearable;prev().txt();${readonly?false:true}]:[prev().data().del();():${id}-input.txt()=;#():${id}-input.focus()].elif():[parent().clearable;${readonly?false:true}]:[#():${id}-input.focus()].elif():[${readonly?false:true};parent().removable;!():${id}-input.txt();parent().data().len()!=1]:[${readonly?false:true};parent().rem()]]?parent().clearable||parent().removable`,
+                type: `Icon?class=pointer;id=${id}-clear;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:'0.5rem']:[right=if():[parent().password]:4rem:'0.5rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt();${readonly?false:true}]:[prev().data().del();():${id}-input.txt()=;#():${id}-input.focus()].elif():[parent().clearable;${readonly?false:true}]:[#():${id}-input.focus()].elif():[${readonly?false:true};parent().removable;!():${id}-input.txt();parent().data().len()!=1]:[${readonly?false:true};parent().rem()]]?parent().clearable||parent().removable`,
             }, {
-                type: `Text?class=flexbox pointer;id=${id}+-generate;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
+                type: `Text?class=flexbox pointer;id=${id}-generate;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
             }, {
-                type: `Icon?class=pointer;id=${id}+-copy;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();#():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
+                type: `Icon?class=pointer;id=${id}-copy;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();#():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
                 type: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{

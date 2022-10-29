@@ -4,7 +4,7 @@ const { clone } = require("./clone")
 const { toCode } = require("./toCode")
 const actions = require("./actions.json")
 
-const toApproval = ({ _window, e, string, id = "", _, __, ___, req, res, object, _i }) => {
+const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, object, _i }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")

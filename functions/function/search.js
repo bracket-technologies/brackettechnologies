@@ -4,7 +4,7 @@ const { clone } = require('./clone')
 const { toFirebaseOperator } = require('./toFirebaseOperator')
 
 module.exports = {
-  search: async ({ _window, id = "", req, res, e, ...params }) => {
+  search: async ({ _window, id = "root", req, res, e, ...params }) => {
       
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -14,6 +14,7 @@ module.exports = {
     var headers = search.headers || {}
     var store = search.store || "database"
     headers.project = headers.project || global.projectId
+    search.collection = search.collection || "collection"
     
     if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
     delete search.headers
@@ -212,6 +213,9 @@ module.exports = {
         await global.promises[global.promises.length - 1]
         _data = { data, success, message }
       }
+        
+      console.log(_data)
+      view.search = global.search = clone(_data)
 
     } else {
 
@@ -227,21 +231,37 @@ module.exports = {
             ...headers
           }
         })
+        
+        console.log(_data)
+        view.search = global.search = clone(_data)
 
       } else {
+    
+        var myFn = () => {
+          return new Promise (async resolve => {
+    
+            var { data: _data } = await axios.get(`/${store}`, {
+              headers: {
+                "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+                ...headers
+              }
+            })
+    
+            console.log(_data)
+            view.search = global.search = clone(_data)
+    
+            resolve()
+          })
+        }
 
-        var { data: _data } = await axios.get(`/${store}`, {
-          headers: {
-            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-            ...headers
-          }
-        })
+        global.promises = global.promises || []
+        global.promises.push(myFn())
+        
+        await Promise.all(global.promises)
       }
     }
     
-    if (!_window) console.log(_data)
-    if (_data.message === "Force reload!") return location.reload()
-    view.search = global.search = clone(_data)
+    // if (_data.message === "Force reload!") return location.reload()
     
     // await params
     if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res })

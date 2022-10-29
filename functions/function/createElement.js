@@ -7,6 +7,8 @@ const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 const { toValue } = require("./toValue")
 const { toArray } = require("./toArray")
+const { toHtml } = require("./toHtml")
+const { override } = require("./merge")
 
 const myViews = [
   "View",
@@ -26,34 +28,17 @@ const myViews = [
   "Item"
 ]
 
-const createElement = ({ _window, id, req, res }) => {
+const createElement = ({ _window, id, req, res, import: _import, params: inheritedParams }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
   
   var view = views[id]
   var parent = views[view.parent]
-  
-  // html
-  if (view.html) return view.html
-
-  // merge to another view
-  /*if (view.view) {
-
-    if (!global.data.view[view.view]) {
-      
-      global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
-      return ""
-    }
-
-    var viewId = view.view
-    delete view.view
-    view = { ...view, ...clone(global.data.view[viewId]) }
-  }*/
 
   // view is empty
   if (!view.type) return ""
-  if (!view["my-views"]) view["my-views"] = [...views[parent]["my-views"]]
+  if (!view["my-views"] && !_import) view["my-views"] = [...views[parent]["my-views"]]
 
   // code []
   view.type = toCode({ _window, string: view.type })
@@ -71,44 +56,68 @@ const createElement = ({ _window, id, req, res }) => {
   if (!view.duplicatedElement && type.includes("coded()")) view.mapType = true
   type = view.type = toValue({ _window, value: type, id, req, res })
 
-  // style
-  view.style = view.style || {}
-
   // id
-  var priorityId = false
-  
-  if (view.type.split(":")[1]) priorityId = true
-  id = view.id = view.type.split(":")[1] || id
-  view.type = view.type.split(":")[0]
+  var priorityId = false, _id = view.type.split(":")[1]
+
+  if (_id) {
+
+    view.id = _id
+    if (!view["creation-date"] && global.data.view[_id]) {
+      
+      view["my-views"].push(_id)
+      views[_id] = { ...view, ...clone(global.data.view[_id]) }
+      delete views[id]
+      return createElement({ _window, id: _id, req, res })
+    }
+
+    priorityId = true
+    view.type = view.type.split(":")[0]
+  }
+
   view.id = view.id || generate()
   id = view.id
 
-  // class
-  view.class = view.class || ""
-  
-  // Data
-  view.Data = view.Data || view.doc || parent.Data
+  // style
+  if (!_import) {
 
-  // derivations
-  view.derivations = view.derivations || [...(parent.derivations || [])]
+    view.style = view.style || {}
 
-  // controls
-  view.controls = view.controls || []
+    // class
+    view.class = view.class || ""
+    
+    // Data
+    view.Data = view.Data || view.doc || parent.Data
 
-  // status
-  view.status = "Loading"
+    // derivations
+    view.derivations = view.derivations || [...(parent.derivations || [])]
 
-  // first mount of view
-  views[id] = view
+    // controls
+    view.controls = view.controls || []
+
+    // status
+    view.status = "Loading"
+
+    // first mount of view
+    views[id] = view
+
+    // approval
+    var approved = toApproval({ _window, string: conditions, id, req, res })
+    if (!approved) {
+      delete views[id]
+      return ""
+    }
+  /*
+    // view
+    if (!myViews.includes(view.type) && global.data.view[view.type]) {
+
+      view["my-views"].push(view.type)    
+      views[id] = { ...view, ...clone(global.data.view[view.type]) }
+      return createElement({ _window, id, req, res })
+    }
+    */
+  }
 
   /////////////////// approval & params /////////////////////
-
-  // approval
-  var approved = toApproval({ _window, string: conditions, id, req, res })
-  if (!approved) {
-    delete views[id]
-    return ""
-  }
 
   // before loading controls
   toArray(view.controls).map(async (controls = {}) => {
@@ -139,24 +148,29 @@ const createElement = ({ _window, id, req, res }) => {
 
     }// else if (priorityId) view.id = id // we have View:id & an id parameter. the priority is for View:id
 
-    // view
-    if (params.view || (!myViews.includes(view.type) && global.data.view[view.type])) {
-      
-      /* if (!global.data.view[view.view]) {
+    // inherited params
+    if (inheritedParams) override(view, inheritedParams)
 
-        global.unloadedViews.push({ id, parent: view.parent, view: view.view, index: view.index })
-        return ""
-      } */
+    // view
+    if (!_import && (params.view || (!myViews.includes(view.type) && global.data.view[view.type]))) {
 
       var viewId = params.view || view.type
       delete view.view
-      view["my-views"].push(params.view)
-      
+      delete params.view
+      view["my-views"].push(viewId)
       views[id] = { ...view, ...clone(global.data.view[viewId]) }
-      return createElement({ _window, id, req, res })
+      return createElement({ _window, id, req, res, params })
     }
+
+  } else if (!_import && (!myViews.includes(view.type) && global.data.view[view.type])) {
+    
+    view["my-views"].push(view.type)
+    views[id] = { ...view, ...clone(global.data.view[view.type]) }
+    return createElement({ _window, id, req, res })
   }
   
+  if (_import) return toHtml({ _window, id, req, res, import: _import })
+
   // for droplist
   if (parent.unDeriveData || view.unDeriveData) {
 

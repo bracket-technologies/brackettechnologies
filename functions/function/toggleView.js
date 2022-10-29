@@ -72,7 +72,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
   } else view = views[parentId]
 
   children = [global.data.view[viewId]]
-
+  
   if (children.length === 0) return
   if (!view || !view.element) return
 

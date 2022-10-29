@@ -55,6 +55,7 @@ module.exports = {
             var event = toCode({ _window, string: controls.event || "" })
             if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
               toParam({ req, res, _window, string: event.split("?")[1], req, res })
+              views.root.controls = views.root.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
           })
 
           if (id !== "root") global.innerHTML.root = createElement({ _window, id: "root", req, res })
@@ -64,11 +65,13 @@ module.exports = {
         history.pushState(null, title, global.path)
         document.title = title
         
-        document.getElementsByClassName("loader-container")[0].style.display = "flex"
+        if (document.getElementsByClassName("loader-container")[0]) 
+          document.getElementsByClassName("loader-container")[0].style.display = "flex"
 
         update({ _window, req, res, id: "root" })
         document.body.scrollTop = document.documentElement.scrollTop = 0
         
-        document.getElementsByClassName("loader-container")[0].style.display = "none"
+        if (document.getElementsByClassName("loader-container")[0]) 
+          document.getElementsByClassName("loader-container")[0].style.display = "none"
     }
 }

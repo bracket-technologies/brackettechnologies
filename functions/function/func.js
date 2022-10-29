@@ -3,7 +3,7 @@ const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { getCookie } = require("./cookie")
 
-const func = async ({ _window, id = "", req, _, __, ___, res, e, ...params }) => {
+const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }) => {
   
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -21,26 +21,42 @@ const func = async ({ _window, id = "", req, _, __, ___, res, e, ...params }) =>
 
     var functions = global.data.project.functions
     if (!functions[func.function]) return
-    if (functions[func.function].includes("send()")) functions[func.function] = functions[func.function].replace("send()", "")
+    if (functions[func.function].includes("send()")) {
+      functions[func.function] = functions[func.function].replace("send():", "func:().data=")
+    }
 
     var _func = toCode({ _window, string: functions[func.function] })
+    _func = toCode({ _window, string: _func, start: "'", end: "'" })
     toParam({ _window, string: _func, req, res, _: func.data, __ })
+    
+    await Promise.all(global.promises)
 
   } else {
     
-    var { data: _data } = await require("axios").post(`/action`, func, {
-      headers: {
-        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-        ...headers
-      }
-    })
+    var myFn = () => {
+      return new Promise (async resolve => {
 
-    data = _data
+        var { data } = await require("axios").post(`/action`, func, {
+          headers: {
+            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+            ...headers
+          }
+        })
+
+        if (view) view.function = view.func = clone(data)
+        global.function = global.func = clone(data)
+
+        resolve()
+      })
+    }
+
+    global.promises = global.promises || []
+    global.promises.push(myFn())
+        
+    await Promise.all(global.promises)
   }
-
-  if (view) view.function = view.func = clone(data)
-  global.function = global.func = clone(data)
-  console.log(data)
+  
+  console.log(global.func)
 
   if (data.params) {
     data.params = toCode({ _window, string: data.params, e })

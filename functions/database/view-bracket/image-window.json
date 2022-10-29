@@ -17,7 +17,7 @@
                             "event": "click?():image-window.style().pointerEvents=none;():image-window.style().opacity=0;():gallery-view-input.txt()=_string"
                         }
                     ],
-                    "type": "Icon?class=flexbox pointer;name=bi-x-lg;style.height=3rem;style.width=3rem;style.fontSize=2rem;style.borderRadius=.5rem;hover.style.backgroundColor=#f6f6f6;style.position=absolute;style.right=.5rem;style.top=.5rem"
+                    "type": "Icon?class=flexbox pointer;name=bi-x;style.height=3rem;style.width=3rem;style.fontSize=3rem;style.borderRadius=.5rem;hover.style.backgroundColor=#f6f6f6;style.position=absolute;style.right=.5rem;style.top=.5rem"
                 },
                 {
                     "type": "View?class=flex column;Data=new-image-data;style.overflowY=auto;style.width=30%;style.maxWidth=30%;style.maxHeight=100%;style.borderRadius=.5rem;style.gap=2rem;new-image-data:().title=image;if():[!new-image-data:().tags]:[new-image-data:().tags=_array];new-image-data:().type=",
@@ -28,7 +28,7 @@
                                     "type": "Text?style.fontSize=1.4rem;text=Name;style.width=fit-content"
                                 },
                                 {
-                                    "type": "Input?id=new-image-name;path=name;style.width=100%;style.height=5rem;style.borderRadius=.5rem;style.border=1px solid #ddd"
+                                    "type": "Input?id=new-image-name;path=name;style.width=100%;style.height=4.5rem;style.borderRadius=.5rem;style.border=1px solid #ddd"
                                 }
                             ],
                             "type": "View?class=flex column;style.width=100%;style.gap=.5rem"
@@ -43,6 +43,17 @@
                                     "type": "Input?id=new-image-description;textarea;path=description;style.width=100%;style.height=25rem;style.borderRadius=.5rem;style.border=1px solid #ddd"
                                 }
                             ]
+                        },
+                        {
+                            "children": [
+                                {
+                                    "type": "Text?style.fontSize=1.4rem;text=Image Url;style.width=fit-content"
+                                },
+                                {
+                                    "type": "Input:new-image-url?path=url;readonly;style.width=100%;style.height=4.5rem;style.borderRadius=.5rem;style.border=1px solid #ddd;copyable"
+                                }
+                            ],
+                            "type": "View?class=flex column;style.width=100%;style.gap=.5rem"
                         },
                         {
                             "type": "View?class=flex column;style.width=100%;style.gap=.5rem",

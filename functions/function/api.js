@@ -1,8 +1,8 @@
-const { getdb, postdb, deletedb } = require("./function/database")
-const { getFile, postFile, deleteFile } = require("./function/storage")
+const { getdb, postdb, deletedb } = require("./database")
+const { getFile, postFile, deleteFile } = require("./storage")
 const router = require('./router')
-const { sendConfirmationEmail } = require("./function/sendConfirmationEmail")
-const { execFunction } = require("./function/execFunction")
+const { sendConfirmationEmail } = require("./sendConfirmationEmail")
+const { execFunction } = require("./execFunction")
 const Global = { today: (new Date()).getDay(), functions: {} }
 
 module.exports = ({ app, db, storage, rdb }) => {
@@ -75,7 +75,9 @@ module.exports = ({ app, db, storage, rdb }) => {
         req.global = Global
         req.storage = storage
         req.rdb = rdb
+        
         req.cookies = JSON.parse(req.cookies.__session || "{}")
+        
         var path = req.url.split("/"), i = 1
         /*var host = req.headers["x-forwarded-host"] || req.headers["host"]
         
@@ -89,9 +91,10 @@ module.exports = ({ app, db, storage, rdb }) => {
         if (path[1] === "database") return require("./databaseLocal").getdb({ req, res })
         }*/
         
+console.log(path);
         // resources
-        if (path[i] === "resources") return require("./function/storageLocal").getFile({ req, res })
-
+        if (path[i] === "resources") return require("./storageLocal").getFile({ req, res })
+        
         // storage
         // if (path[i] === "image") return require("./getImage").getImage({ req, res })
 
@@ -103,7 +106,7 @@ module.exports = ({ app, db, storage, rdb }) => {
 
         // favicon
         if (req.url === "/favicon.ico") return res.sendStatus(204)
-
+        
         // respond
         return router.app({ req, res })
     })

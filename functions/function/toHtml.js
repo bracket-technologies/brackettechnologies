@@ -5,11 +5,18 @@ const { clone } = require("./clone")
 const { colorize } = require("./colorize")
 const { toCode } = require("./toCode")
 
+const _imports = [
+  "link",
+  "meta",
+  "title",
+  "script"
+]
+
 module.exports = {
-  toHtml: ({ _window, id, req, res }) => {
+  toHtml: ({ _window, id, req, res, import: _import }) => {
 
     var { createElement } = require("./createElement")
-
+    
     // views
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -17,25 +24,25 @@ module.exports = {
     
     // innerHTML
     var text = view.text !== undefined ? view.text.toString() : typeof view.data !== "object" ? view.data : ''
-    var innerHTML = view.type !== "View" && view.type !== "Box" ? text : ""
+    var innerHTML = view.type !== "View" && view.type !== "Box"? text : ""
     var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
     if (view.children) view.children = toArray(view.children)
-    
+
     innerHTML = toArray(view.children).map((child, index) => {
 
-      if (!child) return
+      if (!child) return ""
       var id = child.id || generate()
       views[id] = clone(child)
       views[id].id = id
       views[id].index = index
       views[id].parent = view.id
-      views[id]["my-views"] = [...view["my-views"]]
+      if (!_import) views[id]["my-views"] = [...view["my-views"]]
       
-      return createElement({ _window, id, req, res })
+      return createElement({ _window, id, req, res, import: _import })
       
     }).join("")
     
-    var value = ""
+    var value = "", type = view.type
 
     if (view.type === "Input") value = (view.input && view.input.value) !== undefined ?
     view.input.value : view.data !== undefined ? view.data : ""
@@ -48,26 +55,29 @@ module.exports = {
 
       innerHTML = innerHTML || view.text || (view.editable ? view.data : "")
       innerHTML = toCode({ _window, string: innerHTML })
+      innerHTML = toCode({ _window, string: innerHTML, start: "'", end: "'"  })
       innerHTML = colorize({ _window, string: innerHTML })
     }
-    
-    if (view.type === "View" || view.type === "Box") {
-      tag = `<div ${view.draggable ? "draggable='true'" : ""} spellcheck="false" ${view.editable && !view.readonly ? "contenteditable" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ""}</div>`
-    } else if (view.type === "Image") {
+
+    if (id === "body") return innerHTML
+
+    if (type === "View" || type === "Box") {
+      tag = `<div ${view.draggable ? "draggable='true'" : ""} ${view.editable && !view.readonly ? "contenteditable" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ""}</div>`
+    } else if (type === "Image") {
       tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' src='${view.src}'>${innerHTML}</img>`
-    } else if (view.type === "Table") {
+    } else if (type === "Table") {
       tag = `<table ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</table>`
-    } else if (view.type === "Row") {
+    } else if (type === "Row") {
       tag = `<tr ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</tr>`
-    } else if (view.type === "Header") {
+    } else if (type === "Header") {
       tag = `<th ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</th>`
-    } else if (view.type === "Cell") {
+    } else if (type === "Cell") {
       tag = `<td ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</td>`
-    } else if (view.type === "Label") {
+    } else if (type === "Label") {
       tag = `<label ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
-    } else if (view.type === "Span") {
+    } else if (type === "Span") {
       tag = `<span ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</span>`
-    } else if (view.type === "Text") {
+    } else if (type === "Text") {
       if (view.label) {
         tag = `<label ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
       } else if (view.h1) {
@@ -87,38 +97,50 @@ module.exports = {
       } else {
         tag = `<p ${view.editable || view.contenteditable ? "contenteditable ": ""}class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${text}</p>`
       }
-    } /*else if (view.type === "Entry") {
+    } /*else if (type === "Entry") {
       tag = `<div ${view.readonly ? "" : "contenteditable"} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${value}</div>`
-    } */else if (view.type === "Icon") {
+    } */else if (type === "Icon") {
       tag = `<i ${view.draggable ? "draggable='true'" : ""} class='${view.outlined ? "material-icons-outlined" : (view.symbol.outlined) ? "material-symbols-outlined": (view.rounded || view.round) ? "material-icons-round" : (view.symbol.rounded || view.symbol.round) ? "material-symbols-round" : view.sharp ? "material-icons-sharp" : view.symbol.sharp ? "material-symbols-sharp" : (view.filled || view.fill) ? "material-icons" : (view.symbol.filled || view.symbol.fill) ? "material-symbols" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index || 0}'>${view.google ? view.icon.name : ""}</i>`
-    } else if (view.type === "Textarea") {
+    } else if (type === "Textarea") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${view.data || view.input.value || ""}</textarea>`
-    } else if (view.type === "Input") {
+    } else if (type === "Input") {
       if (view.textarea) {
         tag = `<textarea ${view.draggable ? "draggable='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${value}</textarea>`
       } else {
         tag = `<input ${view.draggable ? "draggable='true'" : ""} ${view.multiple?"multiple":""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index || 0}'/>`
       }
-    } else if (view.type === "Paragraph") {
+    } else if (type === "Paragraph") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index || 0}'>${text}</textarea>`
-    } else if (view.type === "Video") {
+    } else if (type === "Video") {
       tag = `<video style='${style}' controls>
         ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>`: "")}
         ${view.alt || view.message || ""}
       </video>`
-    }
+    } else if (_imports.includes(type)) {
+
+      delete view.text
+      delete view.type
+      delete view.parent
+      delete view["my-views"]
+
+      if (type === "link" || type === "meta") {
+        tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value}"`).join(" ")}>`
+      } else {
+        tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value}"`).join(" ")}>${text}</${type}>`
+      }
+    } else return ""
 
     // linkable
     if (view.link) {
 
-      var id = generate(), style = '', _view
+      var id = generate(), style = '', _view, link = typeof view.link === "string" && view.link.includes("http") ? view.link : (view.link.url || view.link.path || global.host)
 
-      _view = { id, parent: view.id }
+      _view = { id, parent: view.id, controls: [{ "event": `click?route():${view.link.path}?${view.link.path}` }] }
       _view.style = view.link.style
       views[id] = _view
       if (_view.style) style = toStyle({ _window, id })
       
-      tag = `<a ${view.draggable ? "draggable='true'" : ""} id='${id}' href=${view.link.path || global.host} style='${style}' index='${view.index || 0}'>${tag}</a>`
+      tag = `<a ${view.draggable ? "draggable='true'" : ""} id='${id}' href=${link} style='${style}' index='${view.index || 0}'>${tag}</a>`
     }
 
     return tag

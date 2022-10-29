@@ -3,9 +3,11 @@ const { toCode } = require("./toCode")
 const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
 
 const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) => {
+  
     if (index === 8) index = 1
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
+
     while (string.includes("coded()")) {
 
       var string0 = string.split("coded()")[0]
@@ -13,6 +15,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
       key = colorize({ id, string: start + key + end, index: index + 1 })
       string = string0 + key + string.split("coded()")[1].slice(5) + (string.split("coded()").length > 2 ? "coded()" + string.split("coded()").slice(2).join("coded()") : "")
     }
+
     while (string.includes("codedS()")) {
 
       var string0 = string.split("codedS()")[0]

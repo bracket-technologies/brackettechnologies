@@ -1,8 +1,5 @@
 const control = require("../control/control")
 const { toArray } = require("./toArray")
-const { toParam } = require("./toParam")
-const { isArabic } = require("./isArabic")
-const { resize } = require("./resize")
 
 const starter = ({ id }) => {
   

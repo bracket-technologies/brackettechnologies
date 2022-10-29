@@ -9,7 +9,7 @@ const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { toApproval } = require("./toApproval")
 
-const update = ({ id, _window, req, res, update = {} }) => {
+const update = async ({ id, _window, req, res, update = {} }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.views : window.global
@@ -37,21 +37,27 @@ const update = ({ id, _window, req, res, update = {} }) => {
 
   // reset children for root
   if (id === "root") {
+
     views.root.children = children = clone([global.data.view[global.data.page[global.currentPage].view]])
     children.controls = toArray(children.controls)
 
     // page controls
     if (global.data.page[global.currentPage].controls) children.controls.push(global.data.page[global.currentPage].controls)
+    children.controls = children.controls.flat()
   }
 
   // before loading controls
   if (children.controls) {
     
-    toArray(children.controls).map((controls = {}) => {
+    toArray(children.controls).map((controls = {}, i) => {
       var event = toCode({ _window, string: controls.event || "" })
-      if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ _window, req, res, id, string: event.split('?')[2] })) 
+      if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ _window, req, res, id, string: event.split('?')[2] })) {
         toParam({ _window, req, res, id, string: event.split("?")[1] })
+        children.controls.splice(i, 1)
+      }
     })
+    
+    await Promise.all(global.promises || [])
   }
   
   var innerHTML = children

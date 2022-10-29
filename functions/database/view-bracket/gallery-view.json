@@ -40,7 +40,7 @@
                                     "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().0.name;():new-image-name.txt()=gallery-images:().0.name"
+                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().0.name;():new-image-name.txt()=gallery-images:().0.name;new-image-data:().url=gallery-images:().0.url;():new-image-url.update()"
                                 }
                             ]
                         },
@@ -53,7 +53,7 @@
                                     "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().1.name;():new-image-name.txt()=gallery-images:().1.name"
+                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().1.name;():new-image-name.txt()=gallery-images:().1.name;new-image-data:().url=gallery-images:().1.url;():new-image-url.update()"
                                 }
                             ],
                             "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().1",
@@ -92,7 +92,7 @@
                                     "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().2.name;():new-image-name.txt()=gallery-images:().2.name"
+                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().2.name;():new-image-name.txt()=gallery-images:().2.name;new-image-data:().url=gallery-images:().2.url;():new-image-url.update()"
                                 }
                             ],
                             "children": [
@@ -154,7 +154,7 @@
                                     "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().3.name;():new-image-name.txt()=gallery-images:().3.name"
+                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().3.name;():new-image-name.txt()=gallery-images:().3.name;new-image-data:().url=gallery-images:().3.url;():new-image-url.update()"
                                 }
                             ]
                         }
@@ -190,7 +190,7 @@
                             "event": "mouseleave?1stChild().style().opacity=0"
                         },
                         {
-                            "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=data().name;():new-image-name.txt()=data().name"
+                            "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=data().name;():new-image-name.txt()=data().name;new-image-data:().url=data().url;():new-image-url.update()"
                         }
                     ],
                     "type": "[View]?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer",

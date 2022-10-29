@@ -1,22 +1,23 @@
 //
 var params = {};
 const fs = require("fs");
-const { createElement } = require("./function/createElement");
-const { toArray } = require("./function/toArray");
-const { toParam } = require("./function/toParam");
-const { toCode } = require("./function/toCode");
-const { clone } = require("./function/clone");
-const { toApproval } = require("./function/toApproval");
-const { getJsonFiles } = require("./function/jsonFiles");
+const { createElement } = require("./createElement");
+const { toArray } = require("./toArray");
+const { toParam } = require("./toParam");
+const { toCode } = require("./toCode");
+const { clone } = require("./clone");
+const { toApproval } = require("./toApproval");
+const { getJsonFiles } = require("./jsonFiles");
 const bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
 
 require("dotenv").config();
 
-const project = () => {
+const project = ({ req, res }) => {
     
     return new Promise (async resolve => {
 
         var { currentPage, global, db, host } = params, promises = [], project
+        if (!host) return res.send("Project cannot be found!")
         
         // is brakcet domain
         var isBracket = bracketDomains.includes(host);
@@ -25,28 +26,27 @@ const project = () => {
             if (isBracket) host = "bracketjs.com";
         }
         
-        
         global.public = getJsonFiles({ search: { collection: "public" } })
 
         console.log("Document started loading:");
-
         console.log("before project", new Date().getTime() - global.timer);
         
         // get project
         promises.push(db
-            .collection("_project_")
-            .where("domains", "array-contains", host)
-            .get()
-            .then((doc) => {
-                if (doc.docs[0] && doc.docs[0].exists) {
-                    global.data.project = project = doc.docs[0].data()
-                    global.projectId = global.data.project.id
-                }
-                global.functions = Object.keys(project.functions || {})
-                console.log("after project", new Date().getTime() - global.timer);
-            }))
+          .collection("_project_")
+          .where("domains", "array-contains", host)
+          .get()
+          .then((doc) => {
+              if (doc.docs[0] && doc.docs[0].exists) {
+                  global.data.project = project = doc.docs[0].data()
+                  global.projectId = global.data.project.id
+                  global.functions = Object.keys(project.functions || {})
+              }
+              console.log("after project", new Date().getTime() - global.timer);
+          }))
 
         await Promise.all(promises)
+        if (!project) return res.send("Project cannot found!")
         /* 
         if (global) {
 
@@ -193,11 +193,12 @@ const status = () => {
 }
 
 const initialize = ({ req, res }) => {
-    
+  
     // Create a cookies object
-    var host = req.headers["x-forwarded-host"]
-    if (!host) host = req.headers.host
+    var host = req.headers.host || req.headers.referer// || req.headers["x-forwarded-host"]
+    if (!host && req.headers.host && req.headers.host.includes("localhost")) host = req.headers.host
     if (req.url.split("/")[1] === "undefined") return res.send("")
+    if (!host) return res.send("Project cannot be found!")
     
     // current page
     var currentPage = req.url.split("/")[1] || "", db = req.db
@@ -267,13 +268,14 @@ const interpret = () => {
         views.root["my-views"] = [global.data.page[currentPage].view]
         
         var _window = { global, views }
-    
+        
         // controls
         toArray(views.root.controls).map((controls = {}) => {
-    
+          
             var event = toCode({ _window, string: controls.event || "" })
             if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ id: "root", req, res, _window, string: event.split('?')[2] })) {
-                toParam({ id: "root", req, res, _window, string: event.split("?")[1], req, res })
+              toParam({ id: "root", req, res, _window, string: event.split("?")[1], req, res })
+              views.root.controls = views.root.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
             }
         })
     
@@ -281,6 +283,12 @@ const interpret = () => {
         await Promise.all(global.promises)
         await Promise.all(global.promises)
         await Promise.all(global.promises)
+
+        // imports
+        if (global.data.project.import) {
+          var __window = { views: { body: { id: "body", type: "View", children: global.data.project.import } }, global }
+          global.import = createElement({ _window: __window, global: {}, id: "body", req, res, import: true })
+        }
         
         // create html
         var rootInnerHTML = createElement({ _window, id: "root", req, res })
@@ -307,8 +315,11 @@ const interpret = () => {
 const app = async ({ req, res }) => {
 
     var { global, views } = initialize({ req, res })
-    await project()
-    await interpret()
+    if (res.headersSent) return
+    await project({ req, res })
+    if (res.headersSent) return
+    await interpret({ req, res })
+    if (res.headersSent) return
     
     var currentPage = global.currentPage, innerHTML = global.innerHTML
   
@@ -317,6 +328,7 @@ const app = async ({ req, res }) => {
     var language = global.language = global.data.page[currentPage].language || "en"
     var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
     var title = global.data.page[currentPage].title || "My App Title"
+    var imports = global.import || ""
   
     // meta
     global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
@@ -325,6 +337,7 @@ const app = async ({ req, res }) => {
     var metaTitle = global.data.page[currentPage].meta.title || global.data.page[currentPage].title || ""
     var metaViewport = global.data.page[currentPage].meta.viewport || "width=device-width, initial-scale=1.0"
   
+    delete global.import;
     delete global.innerHTML;
     delete global.data.project;
     delete global.promises;
@@ -335,6 +348,7 @@ const app = async ({ req, res }) => {
       `<!DOCTYPE html>
       <html lang="${language}" dir="${direction}" class="html">
         <head>
+          ${imports}
           <title>${title}</title>
           <meta charset="UTF-8">
           <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -348,15 +362,14 @@ const app = async ({ req, res }) => {
           <link rel="stylesheet" href="/resources/index.css"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap">
           <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap">
-          <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
           <link rel="manifest" href="/resources/manifest.json" mimeType="application/json; charset=UTF-8"/>
+          <script id="views" type="application/json">${JSON.stringify(views)}</script>
+          <script id="global" type="application/json">${JSON.stringify(global)}</script>
         </head>
         <body>
           ${innerHTML}
-          <div class="loader-container"><div class="loader"></div></div>
-          <script id="views" type="application/json">${JSON.stringify(views)}</script>
-          <script id="global" type="application/json">${JSON.stringify(global)}</script>
           <script src="/index.js"></script>
+          <div class="loader-container"><div class="loader"></div></div>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp"/>
@@ -364,12 +377,16 @@ const app = async ({ req, res }) => {
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/shim.min.js" integrity="sha512-nPnkC29R0sikt0ieZaAkk28Ib7Y1Dz7IqePgELH30NnSi1DzG4x+envJAOHz8ZSAveLXAHTR3ai2E9DZUsT8pQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         </body>
       </html>`
-    );
-};
+    )
+}
 
 module.exports = { status, project, initialize, interpret, app }
+
+// <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>

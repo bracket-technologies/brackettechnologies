@@ -93,7 +93,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
     }
 
     // id
-    if (viewEventIdList) mainID = toValue({ _window, req, res, id, value: viewEventIdList })
+    if (viewEventIdList) mainID = toValue({ _window, req, res, id, value: viewEventIdList }) || viewEventIdList
     
     var timer = 0, idList, clickEvent, keyEvent
     var once = events[1] && events[1].includes('once')
@@ -255,12 +255,11 @@ const defaultEventHandler = ({ id }) => {
 
   var view = window.views[id]
   var views = window.views
-  var global = window.global
-  view.touchstart = false
-  view.mouseenter = false
-  view.mousedown = false
+  view.touchstarted = false
+  view.mouseentered = false
+  view.mousedowned = false
 
-  if (view.link) view.element.addEventListener("click", (e) => { if (!view.link.link) e.preventDefault() })
+  if (view.link && typeof view.link === "object" && view.link.preventDefault) view.element.addEventListener("click", (e) => { if (!view.link.link) e.preventDefault() })
 
   // input
   if (view.type === "Input") {
@@ -269,7 +268,7 @@ const defaultEventHandler = ({ id }) => {
     var setEventType = (e) => {
 
       if (!window.views[id]) return e.target.removeEventListener("focus", setEventType)
-      view.focus = true
+      view.focused = true
     }
 
     view.element.addEventListener("focus", setEventType)
@@ -278,16 +277,16 @@ const defaultEventHandler = ({ id }) => {
     var setEventType = (e) => {
 
       if (!window.views[id]) return e.target.removeEventListener("blur", setEventType)
-      view.focus = false
+      view.focused = false
     }
 
     view.element.addEventListener("blur", setEventType)
   }
   
-  var setEventType = (e) => { views[e.target.id].mouseenter = true }
+  var setEventType = (e) => { views[e.target.id].mouseentered = true }
   view.element.addEventListener("mouseenter", setEventType)
 
-  var setEventType = (e) => { views[e.target.id].mouseenter = false }
+  var setEventType = (e) => { views[e.target.id].mouseentered = false }
   view.element.addEventListener("mouseleave", setEventType)
 
 /*

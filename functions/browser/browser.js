@@ -1,4 +1,4 @@
-navigator.serviceWorker.register("/resources/dummy-sw.js")
+// navigator.serviceWorker.register("/resources/dummy-sw.js")
 
 //const myWorker = new Worker('worker.js')
 //myWorker.terminate()
@@ -43,7 +43,7 @@ _ar.style.top = "-1000px"
 views.body.element.appendChild(_ar)
 
 //history.pushState(null, global.data.page[global.currentPage].title, global.path)
-document.title = global.data.page[global.currentPage].title
+//document.title = global.data.page[global.currentPage].title
 
 window.onfocus = () => {
     
@@ -190,14 +190,14 @@ document.addEventListener('scroll', () => {
     // close droplist
     if (views.droplist.element.style.pointerEvents === "auto") {
         
-        var closeDroplist = toCode({ string: "if():[!():droplist.mouseenter]:[():droplist.mouseleave()]" })
+        var closeDroplist = toCode({ string: "if():[!():droplist.mouseentered]:[():droplist.mouseleave()]" })
         toParam({ string: closeDroplist, id: "droplist" })
     }
 
     // close actionlist
     if (views.actionlist.element.style.pointerEvents === "auto") {
 
-        var closeActionlist = toCode({ string: "if():[!():actionlist.mouseenter]:[():actionlist.mouseleave()]" })
+        var closeActionlist = toCode({ string: "if():[!():actionlist.mouseentered]:[():actionlist.mouseleave()]" })
         toParam({ string: closeActionlist, id: "actionlist" })
     }
 }, true)

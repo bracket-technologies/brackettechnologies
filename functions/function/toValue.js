@@ -40,7 +40,7 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   if (valueParanthes.includes("(") && valueParanthes.includes(")") && valueParanthes.split("(").slice(1).find(string => string.split(")")[0] && string.split(")")[0].length > 0 && (string.split(")")[0].includes("-") || string.split(")")[0].includes("+") || string.split(")")[0].includes("*")))) { // (...)
     
     value = toCode({ _window, string: value, e, start: "(", end: ")" })
-  } 
+  }
 
   // show loader
   if (value === "loader.show") {
@@ -66,6 +66,35 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     return answer
   }
   
+  if (value.includes("*")) { // multiplication
+
+    var values = value.split("*").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
+    var newVal = values[0]
+    values.slice(1).map(val => {
+      if (!isNaN(newVal) && !isNaN(val)) newVal *= val
+      else if (isNaN(newVal) && !isNaN(val)) {
+        while (val > 1) {
+          newVal += newVal
+          val -= 1
+        }
+      } else if (!isNaN(newVal) && isNaN(val)) {
+        var index = newVal
+        newVal = val
+        while (index > 1) {
+          newVal += newVal
+          index -= 1
+        }
+      }
+    })
+    return value = newVal
+  }
+  
+  if (value.includes("/")) { // division
+
+    var _value = calcDivision({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
+    if (_value !== value) return _value
+  }
+  
   if (value.includes("+")) { // addition
 
     // increment
@@ -89,29 +118,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     var _value = calcSubs({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
     if (_value !== value) return _value
   }
-  
-  if (value.includes("*")) { // multiplication
-
-    var values = value.split("*").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
-    var newVal = values[0]
-    values.slice(1).map(val => {
-      if (!isNaN(newVal) && !isNaN(val)) newVal *= val
-      else if (isNaN(newVal) && !isNaN(val)) {
-        while (val > 1) {
-          newVal += newVal
-          val -= 1
-        }
-      } else if (!isNaN(newVal) && isNaN(val)) {
-        var index = newVal
-        newVal = val
-        while (index > 1) {
-          newVal += newVal
-          index -= 1
-        }
-      }
-    })
-    return value = newVal
-  }
 
   if (value === "()") return view
 
@@ -129,7 +135,10 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     clone(view["my-views"] || []).reverse().map(view => {
       if (!isFn) {
         isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
       }
     })
 
@@ -139,7 +148,7 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
       if (isFn) backendFn = true
     }
   }
-
+  
   if (isFn) {
     var _params = path[0].split(":")[1], args = path[0].split(":")
 
@@ -229,7 +238,7 @@ const calcSubs = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obj
 
     var allAreNumbers = true
     var values = value.split("-").map(value => {
-      if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : true)) return allAreNumbers = false
+      if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object }))))) return allAreNumbers = false
 
       if (allAreNumbers) {
         
@@ -254,7 +263,7 @@ const calcSubs = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obj
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true)) return allAreNumbers = false
+        if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object }))))) return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
@@ -277,7 +286,7 @@ const calcSubs = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obj
         var _values = value.split("-").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : true) ) return allAreNumbers = false
+          if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })))) ) return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
@@ -301,4 +310,127 @@ const calcSubs = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obj
   return value
 }
 
-module.exports = { toValue, calcSubs }
+const calcDivision = ({ _window, value, params, _, __, ___, _i, id, e, req, res, object }) => {
+  
+  if (value.split("/").length > 1) {
+
+    var allAreNumbers = true
+    var values = value.split("/").map(value => {
+      if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object }))))) return allAreNumbers = false
+
+      if (allAreNumbers) {
+        
+        var num = toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
+        if (typeof num !== "number" || num === "") allAreNumbers = false
+        return num
+      }
+    })
+    
+    if (allAreNumbers) {
+
+      value = values[0]
+      values.slice(1).map(val => {
+        if (!isNaN(value) && !isNaN(val)) value /= val
+        else if (isNaN(value) && !isNaN(val)) {
+          while (val > 1) {
+            value -= value
+            val -= 1
+          }
+        } else if (!isNaN(value) && isNaN(val)) {
+          var index = value
+          value = val
+          while (index > 1) {
+            value -= value
+            index -= 1
+          }
+        }
+      })
+      // console.log(value);
+      return value
+
+    } else if (value.split("/").length > 2) {
+
+      var allAreNumbers = true
+      var _value = value.split("/").slice(0, 2).join("/")
+      var _values = value.split("/").slice(2)
+      _values.unshift(_value)
+      
+      var values = _values.map(value => {
+        if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object }))))) return allAreNumbers = false
+
+        if (allAreNumbers) {
+          var num = toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
+          if (typeof num !== "number" || num === "") allAreNumbers = false
+          return num
+        }
+      })
+
+      if (allAreNumbers) {
+
+        value = values[0]
+        values.slice(1).map(val => {
+          if (!isNaN(value) && !isNaN(val)) value /= val
+          else if (isNaN(value) && !isNaN(val)) {
+            while (val > 1) {
+              value -= value
+              val -= 1
+            }
+          } else if (!isNaN(value) && isNaN(val)) {
+            var index = value
+            value = val
+            while (index > 1) {
+              value -= value
+              index -= 1
+            }
+          }
+        })
+        // console.log(value);
+        return value
+  
+      } else if (value.split("/").length > 3) {
+  
+        var allAreNumbers = true
+        var _value = value.split("/").slice(0, 3).join("/")
+        var _values = value.split("/").slice(3)
+        _values.unshift(_value)
+        var values = _values.map(value => {
+          if (value.slice(0, 7) !== "coded()" && value.includes(":") && value.split(":")[0] !== ")(" && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })))) ) return allAreNumbers = false
+  
+          if (allAreNumbers) {
+            var num = toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
+            if (typeof num !== "number" || num === "") allAreNumbers = false
+            return num
+          }
+        })
+
+        if (allAreNumbers) {
+
+          value = values[0]
+          values.slice(1).map(val => {
+            if (!isNaN(value) && !isNaN(val)) value /= val
+            else if (isNaN(value) && !isNaN(val)) {
+              while (val > 1) {
+                value -= value
+                val -= 1
+              }
+            } else if (!isNaN(value) && isNaN(val)) {
+              var index = value
+              value = val
+              while (index > 1) {
+                value -= value
+                index -= 1
+              }
+            }
+          })
+          // console.log(value);
+          return value
+    
+        }
+      }
+    }
+  }
+  
+  return value
+}
+
+module.exports = { toValue, calcSubs, calcDivision }

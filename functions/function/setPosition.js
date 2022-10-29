@@ -43,6 +43,14 @@ const setPosition = ({ position = {}, id, e }) => {
   var placement
   var height = element.offsetHeight
   var width = element.offsetWidth
+
+  if (position.width === "inherit") {
+    width = positioner.offsetWidth
+    element.style.width = width + "px"
+  } else if (position.height === "inherit") {
+    height = positioner.offsetHeight
+    element.style.height = height + "px"
+  } 
   
   placement = element.placement || position.placement || "right"
   distance = parseFloat(element.distance || position.distance || 10)
@@ -88,7 +96,7 @@ const setPosition = ({ position = {}, id, e }) => {
 
   } else if (placement === "bottom") {
 
-    top = topPos + heightPos + 10
+    top = topPos + heightPos + distance
     left = leftPos + widthPos / 2 - width / 2
 
     if (fin) {

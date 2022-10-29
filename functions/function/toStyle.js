@@ -26,6 +26,7 @@ module.exports = {
         else if (k === "marginLeft") k = "margin-left";
         else if (k === "marginRight") k = "margin-right";
         else if (k === "marginTop") k = "margin-top";
+        else if (k === "fontFamily") k = "font-family";
         else if (k === "fontSize") k = "font-size";
         else if (k === "fontStyle") k = "font-style";
         else if (k === "fontWeight") k = "font-weight";

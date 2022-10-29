@@ -3,9 +3,7 @@ const { generate } = require("./generate")
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   if (typeof string !== "string") return string
-  var codeName = start === "'" ? "codedS()" : "coded()"
-
-  var global = {}
+  var codeName = start === "'" ? "codedS()" : "coded()", global = {}
   if (!codes) global = _window ? _window.global : window.global
 
   // split () & )(
@@ -50,6 +48,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
     var after = keys.join(start) ? `${start}${keys.join(start)}` : ""
 
     string = `${before}${value}${subKey.join(end)}${after}`
+
   }
 
   if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0)
@@ -60,7 +59,6 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
   // '...'
   // if (string.split("'").length > 2) string = toCode({ _window, string, codes, e, start: "'", end: "'" })
-  
   return string
 }
 

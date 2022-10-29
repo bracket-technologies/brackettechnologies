@@ -9,6 +9,8 @@ module.exports = {
   pricable: require("./pricable"),
   hover: require("./hover"),
   click: require("./click"),
+  focus: require("./focus"),
+  blur: require("./blur"),
   change: require("./change"),
   clicked: require("./clicked"),
   mouseenter: require("./mouseenter"),

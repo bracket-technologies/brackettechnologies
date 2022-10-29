@@ -1,4 +1,4 @@
-const XLSX = require("xlsx")
+// const XLSX = require("xlsx")
 
 module.exports = {
     toExcel: (file = {}) => {
