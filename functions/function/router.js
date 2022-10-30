@@ -363,7 +363,7 @@ const app = async ({ req, res }) => {
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link rel="stylesheet" href="/resources/index.css"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap">
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap">
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500&display=swap">
           <link rel="manifest" href="/resources/manifest.json" mimeType="application/json; charset=UTF-8"/>
           <script id="views" type="application/json">${JSON.stringify(views)}</script>
           <script id="global" type="application/json">${JSON.stringify(global)}</script>
