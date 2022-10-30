@@ -66,6 +66,30 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     return answer
   }
   
+  if (value.includes("+")) { // addition
+
+    // increment
+    if (value.slice(-2) === "++") {
+      
+      value = value.slice(0, -2)
+      value = `${value}=${value}+1`
+      toParam({ req, res, _window, id, e, string: value, _, __, ___, _i, object, mount, params, createElement })
+
+    } else {
+
+      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
+      var newVal = values[0]
+      values.slice(1).map(val => newVal += val)
+      return value = newVal
+    }
+  }
+  
+  if (value.includes("-")) { // subtraction
+
+    var _value = calcSubs({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
+    if (_value !== value) return _value
+  }
+  
   if (value.includes("*")) { // multiplication
 
     var values = value.split("*").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
@@ -92,30 +116,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   if (value.includes("/")) { // division
 
     var _value = calcDivision({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
-    if (_value !== value) return _value
-  }
-  
-  if (value.includes("+")) { // addition
-
-    // increment
-    if (value.slice(-2) === "++") {
-      
-      value = value.slice(0, -2)
-      value = `${value}=${value}+1`
-      toParam({ req, res, _window, id, e, string: value, _, __, ___, _i, object, mount, params, createElement })
-
-    } else {
-
-      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
-      var newVal = values[0]
-      values.slice(1).map(val => newVal += val)
-      return value = newVal
-    }
-  }
-  
-  if (value.includes("-")) { // subtraction
-
-    var _value = calcSubs({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
     if (_value !== value) return _value
   }
 

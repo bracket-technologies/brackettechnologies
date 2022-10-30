@@ -47,10 +47,10 @@
               "type": "View?class=flex align-center;style.justifyContent=space-between;style.marginBottom=3rem",
               "children": [
                 {
-                  "type": "Text?text=Stores;style.fontSize=2.4rem;style.color=#000"
+                  "type": "Text?text=Projects;style.fontSize=2.4rem;style.color=#000"
                 },
                 {
-                  "type": "Text?text=Create another store;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.color=#fff;style.fontSize=1.3rem;style.padding=1rem 1.75rem;style.borderRadius=.5rem;class=pointer",
+                  "type": "Text?text=Create another projet;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.color=#fff;style.fontSize=1.3rem;style.padding=1rem 1.75rem;style.borderRadius=.5rem;class=pointer",
                   "controls": [
                     {
                       "event": "click?parent().parent().style().display=none;parent().parent().next().style().display=flex;parent().parent().next().getInput().click();parent().parent().next().getInput().focus()"
@@ -217,7 +217,7 @@
               ]
             },
             {
-              "type": "View?class=flex align-center pointer;style.padding=.75rem;style.height=4rem;hover.style.backgroundColor=#f6f6f6;style.borderRadius=.5rem",
+              "type": "View?class=flex align-center pointer;style.padding=.75rem;style.height=4rem;hover.style.backgroundColor=#f6f6f6;style.borderRadius=.5rem;click:[eraseCookie():_id;route():login]",
               "children": [
                 {
                   "type": "Icon?name=bi-arrow-right-circle-fill;style.fontSize=1.6rem;style.marginRight=1.5rem"

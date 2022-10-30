@@ -9270,9 +9270,10 @@ module.exports = {
 
         global.currentPage = currentPage
         global.path = route.path ? path : currentPage === "main" ? "/" : (currentPage.charAt(0) === "/" ? currentPage : `/${currentPage}`)
-
+        
         if (res) {
-          
+          global.updateLocation= true
+
           // controls & views
           views.root.controls = clone(global.data.page[currentPage].controls || [])
           views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
@@ -10888,7 +10889,7 @@ module.exports = {
       innerHTML = colorize({ _window, string: innerHTML })
     }
 
-    if (id === "body") return innerHTML
+    if (id === "body") return ""
 
     if (type === "View" || type === "Box") {
       tag = `<div ${view.draggable ? "draggable='true'" : ""} ${view.editable && !view.readonly ? "contenteditable" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ""}</div>`
@@ -10941,10 +10942,12 @@ module.exports = {
     } else if (type === "Paragraph") {
       tag = `<textarea ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index || 0}'>${text}</textarea>`
     } else if (type === "Video") {
+
       tag = `<video style='${style}' controls>
         ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>`: "")}
         ${view.alt || view.message || ""}
       </video>`
+      
     } else if (_imports.includes(type)) {
 
       delete view.text
@@ -10952,11 +10955,18 @@ module.exports = {
       delete view.parent
       delete view["my-views"]
 
+      if (view.body) view.body = true
+      else view.head = true
+
       if (type === "link" || type === "meta") {
         tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value}"`).join(" ")}>`
       } else {
-        tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value}"`).join(" ")}>${text}</${type}>`
+        tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value}"`).join(" ")}>${text || ""}</${type}>`
       }
+      
+      if (view.body) return global.children.body += tag.replace(` body="true"`, "")
+      else return global.children.head += tag.replace(` head="true"`, "")
+
     } else return ""
 
     // linkable
@@ -11830,6 +11840,30 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     return answer
   }
   
+  if (value.includes("+")) { // addition
+
+    // increment
+    if (value.slice(-2) === "++") {
+      
+      value = value.slice(0, -2)
+      value = `${value}=${value}+1`
+      toParam({ req, res, _window, id, e, string: value, _, __, ___, _i, object, mount, params, createElement })
+
+    } else {
+
+      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
+      var newVal = values[0]
+      values.slice(1).map(val => newVal += val)
+      return value = newVal
+    }
+  }
+  
+  if (value.includes("-")) { // subtraction
+
+    var _value = calcSubs({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
+    if (_value !== value) return _value
+  }
+  
   if (value.includes("*")) { // multiplication
 
     var values = value.split("*").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
@@ -11856,30 +11890,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   if (value.includes("/")) { // division
 
     var _value = calcDivision({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
-    if (_value !== value) return _value
-  }
-  
-  if (value.includes("+")) { // addition
-
-    // increment
-    if (value.slice(-2) === "++") {
-      
-      value = value.slice(0, -2)
-      value = `${value}=${value}+1`
-      toParam({ req, res, _window, id, e, string: value, _, __, ___, _i, object, mount, params, createElement })
-
-    } else {
-
-      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, ___, _i, id, e, req, res, object, mount }))
-      var newVal = values[0]
-      values.slice(1).map(val => newVal += val)
-      return value = newVal
-    }
-  }
-  
-  if (value.includes("-")) { // subtraction
-
-    var _value = calcSubs({ _window, value, params, _, __, ___, _i, id, e, req, res, object })
     if (_value !== value) return _value
   }
 

@@ -214,6 +214,7 @@ const initialize = ({ req, res }) => {
             editor: {},
             project: {},
         },
+        children: { head: "", body: "" },
         innerHTML: {},
         codes: {},
         host,
@@ -258,6 +259,7 @@ const interpret = () => {
 
         var { req, res, global, views } = params
         var currentPage = global.currentPage
+        if (!global.data.page[currentPage]) return res.send("Page does not exist!")
         
         // controls & views
         views.root.controls = clone(global.data.page[currentPage].controls || [])
@@ -284,10 +286,10 @@ const interpret = () => {
         await Promise.all(global.promises)
         await Promise.all(global.promises)
 
-        // imports
-        if (global.data.project.import) {
-          var __window = { views: { body: { id: "body", type: "View", children: global.data.project.import } }, global }
-          global.import = createElement({ _window: __window, global: {}, id: "body", req, res, import: true })
+        // project children
+        if (global.data.project.children) {
+          var __window = { views: { body: { id: "body", type: "View", children: global.data.project.children } }, global }
+          createElement({ _window: __window, global: {}, id: "body", req, res, import: true })
         }
         
         // create html
@@ -322,13 +324,13 @@ const app = async ({ req, res }) => {
     if (res.headersSent) return
     
     var currentPage = global.currentPage, innerHTML = global.innerHTML
-  
+    
     // main head tags
     var favicon = global.data.project.favicon
     var language = global.language = global.data.page[currentPage].language || "en"
     var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
     var title = global.data.page[currentPage].title || "My App Title"
-    var imports = global.import || ""
+    var children = clone(global.children)
   
     // meta
     global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
@@ -337,7 +339,7 @@ const app = async ({ req, res }) => {
     var metaTitle = global.data.page[currentPage].meta.title || global.data.page[currentPage].title || ""
     var metaViewport = global.data.page[currentPage].meta.viewport || "width=device-width, initial-scale=1.0"
   
-    delete global.import;
+    delete global.children;
     delete global.innerHTML;
     delete global.data.project;
     delete global.promises;
@@ -348,7 +350,7 @@ const app = async ({ req, res }) => {
       `<!DOCTYPE html>
       <html lang="${language}" dir="${direction}" class="html">
         <head>
-          ${imports}
+          ${children.head}
           <title>${title}</title>
           <meta charset="UTF-8">
           <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -365,8 +367,10 @@ const app = async ({ req, res }) => {
           <link rel="manifest" href="/resources/manifest.json" mimeType="application/json; charset=UTF-8"/>
           <script id="views" type="application/json">${JSON.stringify(views)}</script>
           <script id="global" type="application/json">${JSON.stringify(global)}</script>
+          ${global.updateLocation ? `<script defer>window.location.href = "/${currentPage}"</script>` : ""}
         </head>
         <body>
+          ${children.body}
           ${innerHTML}
           <script src="/index.js"></script>
           <div class="loader-container"><div class="loader"></div></div>
@@ -378,10 +382,6 @@ const app = async ({ req, res }) => {
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/shim.min.js" integrity="sha512-nPnkC29R0sikt0ieZaAkk28Ib7Y1Dz7IqePgELH30NnSi1DzG4x+envJAOHz8ZSAveLXAHTR3ai2E9DZUsT8pQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         </body>
       </html>`
     )
@@ -390,3 +390,9 @@ const app = async ({ req, res }) => {
 module.exports = { status, project, initialize, interpret, app }
 
 // <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
+/*
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/shim.min.js" integrity="sha512-nPnkC29R0sikt0ieZaAkk28Ib7Y1Dz7IqePgELH30NnSi1DzG4x+envJAOHz8ZSAveLXAHTR3ai2E9DZUsT8pQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+*/

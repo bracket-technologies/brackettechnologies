@@ -40,9 +40,10 @@ module.exports = {
 
         global.currentPage = currentPage
         global.path = route.path ? path : currentPage === "main" ? "/" : (currentPage.charAt(0) === "/" ? currentPage : `/${currentPage}`)
-
+        
         if (res) {
-          
+          global.updateLocation= true
+
           // controls & views
           views.root.controls = clone(global.data.page[currentPage].controls || [])
           views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
