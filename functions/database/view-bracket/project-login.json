@@ -10,10 +10,10 @@
               "type": "View?class=flexbox;style.marginBottom=9rem;style.justifyContent=space-between;style.width=100%;style.height=5rem",
               "children": [
                 {
-                  "type": "Text?text=Bracket;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;link.path=/store-login;class=pointer"
+                  "type": "Text?text=Bracket;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;link.path=/project-login;class=pointer"
                 },
                 {
-                  "type": "View?id=store-login-user-droplist;style.width=8rem",
+                  "type": "View?id=project-login-user-droplist;style.width=8rem",
                   "children": [
                     {
                       "type": "View?position-inplace:()=false;id=profile-btn;class=flexbox pointer;style.padding=.75rem;style.borderRadius=.5rem;style.transition=.1s;hover.style.backgroundColor=#f9f9f9;style.gap=.5rem;clicked.style.border=2px solid #00A0AC",
@@ -50,7 +50,7 @@
                   "type": "Text?text=Projects;style.fontSize=2.4rem;style.color=#000"
                 },
                 {
-                  "type": "Text?text=Create another projet;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.color=#fff;style.fontSize=1.3rem;style.padding=1rem 1.75rem;style.borderRadius=.5rem;class=pointer",
+                  "type": "Text?text=Create another project;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.color=#fff;style.fontSize=1.3rem;style.padding=1rem 1.75rem;style.borderRadius=.5rem;class=pointer",
                   "controls": [
                     {
                       "event": "click?parent().parent().style().display=none;parent().parent().next().style().display=flex;parent().parent().next().getInput().click();parent().parent().next().getInput().focus()"
@@ -63,7 +63,7 @@
               "type": "[Text]?data=data:().editor.account.projects;hover.style.backgroundColor=#eee;style.padding=1rem;style.cursor=pointer;style.borderRadius=.5rem;style.borderBottom=1px solid #f9f9f9;style.height=4.5rem;class=flexbox;style.justifyContent=flex-start;style.fontSize=1.5rem;style.color=#000?data:().editor.account.projects.len()>0",
               "controls": [
                 {
-                  "event": "click?route-to-editor=true:();getProject():txt():[data:().editor.project=func:().data;if():[data:().editor.project]:[route():[path=/developer-editor/+txt()]]:[note():[text=func:().message]]]"
+                  "event": "click?route-to-editor=true:();getProject():[project=txt();user=data:().editor.account.id]:[if():[_.data]:[data:().editor.project=_.data.project;route():[path=/developer-editor/+txt()]]:[note():[text=_.message;type=danger]]]"
                 }
               ]
             },
@@ -74,7 +74,7 @@
                   "type": "Icon?name=bi-exclamation-circle-fill;style.color=#B98900;style.fontSize=1.8rem"
                 },
                 {
-                  "type": "Text?text=If your most recent stores aren't listed,;style.fontSize=1.3rem"
+                  "type": "Text?text=If your most recent projects aren't listed,;style.fontSize=1.3rem"
                 },
                 {
                   "type": "Text?text=reload the page;style.textDecoration=underline;style.fontSize=1.3rem;hover.style.textDecoration=none;class=pointer;style.margin=0 -1rem"
@@ -101,16 +101,16 @@
                   "type": "Icon?name=bi-arrow-left;style.color=#008060;style.fontSize=2rem;class=pointer"
                 },
                 {
-                  "type": "Text?text=Create a store;style.color=#222;style.fontSize=2.6rem"
+                  "type": "Text?text=Create a project;style.color=#222;style.fontSize=2.6rem"
                 }
               ],
               "type": "View?class=flex align-center;style.gap=1.5rem;style.marginBottom=2rem"
             },
             {
-              "type": "Text?text=This store will be connected to +data:().account.email+, and is free for ever.;style.color=#888;style.fontSize=1.3rem;style.marginBottom=4rem"
+              "type": "Text?text='This project will be connected to +data:().account.email'+', and is free for ever.';style.color=#888;style.fontSize=1.3rem;style.marginBottom=4rem"
             },
             {
-              "type": "Text?text=Store name;style.fontSize=1.4rem;style.marginBottom=.3rem"
+              "type": "Text?text=Project name;style.fontSize=1.4rem;style.marginBottom=.3rem"
             },
             {
               "type": "Input?id=project-name;style.width=100%;style.height=5rem;clicked.style.border=2px solid #00A0AC;style.borderRadius=.5rem;style.padding=0 1.5rem;style.border=1px solid #eee;style.marginBottom=3rem",
@@ -124,7 +124,7 @@
               ]
             },
             {
-              "type": "Text?text=Create store;style.width=fit-content;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.color=#fff;style.fontSize=1.3rem;style.padding=1rem 1.75rem;style.borderRadius=.5rem;class=pointer",
+              "type": "Text?text=Create project;style.width=fit-content;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.color=#fff;style.fontSize=1.3rem;style.padding=1rem 1.75rem;style.borderRadius=.5rem;class=pointer",
               "controls": [
                 {
                   "actions": [
@@ -153,7 +153,7 @@
               "type": "Text?text=Learn more about ;style.fontSize=1.4rem"
             },
             {
-              "type": "Text?text=starting a new store;style.fontSize=1.4rem;class=pointer;style.textDecoration=underline;hover.style.textDecoration=none;style.color=#2C6ECB;style.margin=0 -0.5rem;link.path=/help"
+              "type": "Text?text=starting a new project;style.fontSize=1.4rem;class=pointer;style.textDecoration=underline;hover.style.textDecoration=none;style.color=#2C6ECB;style.margin=0 -0.5rem;link.path=/help"
             },
             {
               "type": "Icon?name=bi-box-arrow-up-right;style.color=#2C6ECB;style.fontSize=1.2rem;style.margintBottom=.2rem;class=pointer;link.path=/help"
@@ -235,5 +235,5 @@
     }
   ],
   "creation-date": 1639940032627,
-  "type": "View?id=store-login;style.overflow=hidden;style.width=100%;style.height=100%"
+  "type": "View?id=project-login;style.overflow=hidden;style.width=100%;style.height=100%"
 }

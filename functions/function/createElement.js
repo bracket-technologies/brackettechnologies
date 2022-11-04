@@ -10,22 +10,9 @@ const { toArray } = require("./toArray")
 const { toHtml } = require("./toHtml")
 const { override } = require("./merge")
 
-const myViews = [
-  "View",
-  "Box",
-  "Text",
-  "Icon",
-  "Image",
-  "Input",
-  "Video",
-  "Entry",
-  "Map",
-  "Swiper",
-  "Switch",
-  "Checkbox",
-  "Swiper",
-  "List",
-  "Item"
+const myViews = [ 
+  "View", "Box", "Text", "Icon", "Image", "Input", "Video", "Entry", "Map",
+  "Swiper", "Switch", "Checkbox", "Swiper", "List", "Item"
 ]
 
 const createElement = ({ _window, id, req, res, import: _import, params: inheritedParams }) => {
@@ -34,7 +21,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
   var global = _window ? _window.global : window.global
   
   var view = views[id]
-  var parent = views[view.parent]
+  var parent = views[view.parent] || {}
 
   // view is empty
   if (!view.type) return ""
@@ -46,8 +33,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
   // code ''
   if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
   
-  // destructure type, params, & conditions from type
-  
+  // 
   var type = view.type.split("?")[0]
   var params = view.type.split("?")[1]
   var conditions = view.type.split("?")[2]
@@ -106,25 +92,9 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       delete views[id]
       return ""
     }
-  /*
-    // view
-    if (!myViews.includes(view.type) && global.data.view[view.type]) {
-
-      view["my-views"].push(view.type)    
-      views[id] = { ...view, ...clone(global.data.view[view.type]) }
-      return createElement({ _window, id, req, res })
-    }
-    */
   }
 
   /////////////////// approval & params /////////////////////
-
-  // before loading controls
-  toArray(view.controls).map(async (controls = {}) => {
-    var event = toCode({ _window, string: controls.event || "" })
-    if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2] }))
-      toParam({ req, res, _window, id, string: event.split("?")[1] })
-  })
 
   // push destructured params from type to view
   if (params) {
@@ -151,6 +121,9 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     // inherited params
     if (inheritedParams) override(view, inheritedParams)
 
+    // pass to children
+    if (parent.passToChildren) override(view, parent.passToChildren)
+
     // view
     if (!_import && (params.view || (!myViews.includes(view.type) && global.data.view[view.type]))) {
 
@@ -168,7 +141,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     views[id] = { ...view, ...clone(global.data.view[view.type]) }
     return createElement({ _window, id, req, res })
   }
-  
+
   if (_import) return toHtml({ _window, id, req, res, import: _import })
 
   // for droplist
@@ -179,6 +152,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
   } else view.data = reducer({ _window, id, path: view.derivations, value: view.data, key: true, object: global[view.Data], req, res })
   
+  if (view.parent === "root") views.root.child = view.id
   return createTags({ _window, id, req, res })
 }
 

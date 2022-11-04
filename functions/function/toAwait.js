@@ -1,5 +1,5 @@
 module.exports = {
-  toAwait: ({ _window, id, e, params = {}, req, res }) => {
+  toAwait: ({ _window, id, e, params = {}, req, res, _, __, ___ }) => {
 
     const { execute } = require("./execute")
     const { toParam } = require("./toParam")
@@ -13,11 +13,11 @@ module.exports = {
 
     // get params
     awaits = require("./toCode").toCode({ _window, string: awaits, e })
-    if (awaits && awaits.length > 0) _params = toParam({ _window, id, e, string: awaits, asyncer: true, _: params._, __: params.__, ___: params.___, req, res })
+    if (awaits && awaits.length > 0) _params = toParam({ _window, id, e, string: awaits, asyncer: true, _, __, ___, req, res })
     if (_params && _params.break) return
 
     // override params
     if (_params) params = { ...params, ..._params }
-    if (awaiter) execute({ _window, id, e, actions: awaiter, params, _: params._, __: params.__, ___: params.___, req, res})
+    if (awaiter) execute({ _window, id, e, actions: awaiter, params, _, __, ___, req, res})
   }
 }

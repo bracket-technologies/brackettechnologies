@@ -3,7 +3,7 @@ const { clone } = require("./clone");
 const { toArray } = require("./toArray");
 const { toString } = require("./toString")
 
-const erase = async ({ _window, req, res, id, e, ...params }) => {
+const erase = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 
   var global = window.global
   var erase = params.erase || {}
@@ -33,7 +33,7 @@ const erase = async ({ _window, req, res, id, e, ...params }) => {
   view.erase = global.erase = clone(data)
   if (!_window) console.log(data)
 
-  if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
 }
 
 module.exports = { erase }

@@ -1,19 +1,9 @@
 {
-    "path": "/login",
-    "title": "Login To Bracket",
-    "name": "Login To Bracket",
     "creation-date": 1639313483100,
-    "meta": {
-        "title": "Login To Bracket",
-        "description": "Login To Bracket Builder"
-    },
-    "view": "login",
-    "views": [
-        "login"
-    ],
+    "type": "login?path=/login;name=Login To Bracket;title=Login To Bracket;meta:[title=Login To Bracket;description=Login To Bracket Builder]",
     "controls": [
       {
-        "event": "beforeLoading?search():[collection=_account_;doc=getCookie():_id]:[data:().editor.account=search:().data;if():[search:().data]:[route():store-login]]?getCookie():_id"
+        "event": "beforeLoading?search():[collection=_account_;doc=getCookie():_id]:[data:().editor.account=search:().data;if():[search:().data]:[route():project-login]]?getCookie():_id"
       }
     ]
 }

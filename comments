@@ -75,3 +75,5 @@ Object.entries(require("./collections.json")).map(([key, data]) => {
 */
 
 /****************************************************** End Index Comments ********************************************/
+
+// if():[!_.user||!_.project]:[return():[send():[message='Missing Info!']]];search():[collection=_account_;doc=_.user]:[if():[_.data]:[user:()=_.data;search():[collection=_project_;doc=__.project]:[if():[_.data]:[send():[_map.():[user=user:();project=_.data]]]:[send():[message='Project does not exist!']]]]:[send():[message='User is not authorized!']]]

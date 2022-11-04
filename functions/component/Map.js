@@ -46,9 +46,9 @@ module.exports = (component) => {
                 }, {
                     type: "View?style.minWidth=2rem;text=?data().type()!=map;data().type()!=array"
                 }, {
-                    type: "View?preventDefault;editable;style:[alignItems=center;width=fit-content;minWidth=fit-content;height=3.2rem;border=1px solid #ffffff00;borderRadius=.5rem;color=blue;backgroundColor=#ffffff00;fontSize=1.4rem;padding=.5rem];hover.style.border=1px solid #ddd;text=path().lastElement()?2ndParent().parent().data().type()!=array",
+                    type: "View?preventDefault;editable;style:[alignItems=center;width=fit-content;minWidth=fit-content;height=3rem;border=1px solid #ffffff00;borderRadius=.5rem;backgroundColor=#ffffff00;fontSize=1.4rem;padding=.5rem;color=blue];hover.style.border=1px solid #ddd;text=path().lastElement()?2ndParent().parent().data().type()!=array",
                     controls: [{
-                        event: "input?Data():[path().clone().replaceLast():val()]=data().clone();data().del();2ndParent().deepChildren().():[derivations.[path().lastIndex()]=val()]"
+                        event: "input?Data():[path().clone().replaceLast():val()]=data().clone();data().del();2ndParent().deepChildren().():[derivations.[path().lastIndex()]=val()]?if():[Data():[path().clone().replaceLast():val()]!=undefined]:[note():[text=val()+ field name already exists!;type=danger];false]:true"
                     }, {
                         event: "keyup?if():[)(:droplist-positioner;)(:keyup-index]:[():droplist.children().[)(:keyup-index].click();timer():[)(:keyup-index.del()]:200;().break=true];)(:keyup-index=0;if():[)(:droplist-positioner!=next().id]:[next().click()];timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter;!ctrlKey:()"
                     }, {
@@ -119,7 +119,7 @@ module.exports = (component) => {
                     children: [{
                         type: "View?style.display=inline-flex",
                         children: [{
-                            type: "View?class=flex;colorize;editable;#mode.dark.style.color=#c39178;#mode.dark.border=1px solid #131313;if():[path().lastElement()=id]:[readonly=true];style:[alignItems=center;width=fit-content;minWidth=1rem;minHeight=3rem;maxHeight=3rem;height=3rem;border=1px solid #ffffff00;borderRadius=.5rem;color=#a35521;fontSize=1.4rem;padding=.5rem];hover.style.border=1px solid #ddd;input.style.color=#a35521",
+                            type: "View?class=flex;colorize;editable;#if():[path().lastElement()=id]:[readonly=true];style:[alignItems=center;width=fit-content;minWidth=1rem;minHeight=3rem;maxHeight=3rem;height=3rem;border=1px solid #ffffff00;borderRadius=.5rem;color=#a35521;fontSize=1.4rem;padding=.5rem];hover.style.border=1px solid #ddd;input.style.color=#a35521",
                             controls: [{
                                 event: "keyup?insert-index:()=2ndParent().2ndParent().parent().children().findIndex():[id=2ndParent().2ndParent().id]+1;if():[2ndParent().2ndParent().parent().data().type()=map]:[2ndParent().2ndParent().parent().data().[_string]=_string];if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[2ndParent().2ndParent().parent().data().len()+1];2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
                                 actions: "wait():[insert:[2ndParent().2ndParent().parent().id]]?insert.component=2ndParent().2ndParent().parent().children.1;insert.path=if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().derivations.clone().push():[insert-index:()]].else():[2ndParent().2ndParent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.getInput().focus()]"

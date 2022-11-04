@@ -24,6 +24,10 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   // no value
   if (!value) return value
   
+  // break & return
+  if (view && (view.break || view.return)) return
+  if (view && (view["break()"] || view["return()"])) return
+  
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
   
@@ -128,13 +132,13 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
   var path = typeof value === "string" ? value.split(".") : [], isFn = false, backendFn = false, path0 = path[0].split(":")[0]
-
+  
   // function
-  if (view && path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
+  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
 
-    clone(view["my-views"] || []).reverse().map(view => {
+    view && clone(view["my-views"] || []).reverse().map(view => {
       if (!isFn) {
-        isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+        isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
         if (isFn) {
           isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
           isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })

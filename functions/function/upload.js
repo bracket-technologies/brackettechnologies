@@ -3,7 +3,7 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const upload = async ({ id, _window, req, res, e, ...params }) => {
+const upload = async ({ id, _window, req, res, e, _, __, ___, ...params }) => {
         
   var upload = params.upload, promises = []
   var global = window.global
@@ -71,7 +71,7 @@ const upload = async ({ id, _window, req, res, e, ...params }) => {
       })
     
       // await params
-      if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, params })
+      if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, _: data, __: _, ___: __, params })
     }
   })
 }

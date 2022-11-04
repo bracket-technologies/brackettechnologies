@@ -1,17 +1,9 @@
 {
-    "name": "Bracket developer editor",
-    "title": "Developer Editor | Bracket",
-    "view": "developer-editor",
-    "views": [
-        "developer-editor"
-    ],
     "creation-date": 1637494484000,
-    "accesskey-required": true,
-    "id": "developer-editor",
-    "meta": {},
+    "type": "developer-editor?name=Bracket developer editor;title=Developer Editor | Bracket",
     "controls": [
       {
-        "event": "beforeLoading?if():[getCookie():_id;path:().split():/.2]:[search():[collection=_account_;doc=getCookie():_id]:[if():[search:().data;search:().data.projects.inc():[path:().split():/.2]]:[data:().editor.account=search:().data;search():[collection=_project_;doc=path:().split():/.2]:[if():[search:().data]:[data:().editor.project=search:().data]:[route():login]]]:[route():login]]]:[route():login]"
+        "event": "beforeLoading?if():[getCookie():_id;path:().split():/.2]:[search():[collection=_account_;doc=getCookie():_id]:[if():[_.data;_.data.projects.inc():[path:().split():/.2]]:[data:().editor.account=_.data;search():[collection=_project_;doc=path:().split():/.2]:[if():[_.data]:[data:().editor.project=_.data]:[route():login]]]:[route():login]]]:[route():login]"
       }
     ]
 }

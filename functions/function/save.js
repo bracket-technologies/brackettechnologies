@@ -3,7 +3,7 @@ const { toParam } = require("./toParam")
 const { generate } = require("./generate")
 const { schematize } = require("./schematize")
 
-const save = async ({ _window, req, res, id, e, ...params }) => {
+const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -21,7 +21,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
 
   if (save.doc || save.id || (typeof _data === "object" && !Array.isArray(_data) && _data.id)) save.doc = save.doc || save.id || _data.id
   if (!save.doc && (Array.isArray(_data) ? _data.find(data => !data.id) : false)) return
-    
+
   // schema
   if (save.schematize && (save.doc || save.schema)) {
 
@@ -31,11 +31,11 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
     else _data = schematize({ data: _data, schema })
   }
 
-  if (_window) { 
+  if (_window) {
     
     var collection = save.collection, success, message, project = headers.project || req.headers.project, schema
     if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
-
+    
     // get schema
     if (save.schematize) {
       await req.db.collection(`schema-${project}`).doc(save.collection).get().then(doc => {
@@ -58,7 +58,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
     if (Array.isArray(save.data)) {
 
       save.data.map(data => {
-
+        
         if (!data.id) data.id = generate({ length: 20 })
         if (!data["creation-date"]) {
           data["creation-date"] = (new Date()).getTime()
@@ -85,7 +85,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
         data["creation-date"] = (new Date()).getTime()
         data.timezone = "GMT"
       }
-
+      
       global.promises.push(ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
 
         success = true
@@ -120,7 +120,7 @@ const save = async ({ _window, req, res, id, e, ...params }) => {
   if (!_window) console.log(_data)
 
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, _: _data, __: _, ___: __, params })
 }
 
 module.exports = { save }

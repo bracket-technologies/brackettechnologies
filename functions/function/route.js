@@ -12,65 +12,30 @@ module.exports = {
 
         var views = _window ? _window.views : window.views
         var global = _window ? _window.global : window.global
-        var path = route.path || global.path
         var currentPage = global.currentPage = route.page || path.split("/")[1] || "main"
-        // var notAvailableViews = []
-
-        /*if (!global.data.page[currentPage]) {
-            
-            await search({ id: "root", search: { collection: "page", doc: currentPage } })
-            global.data.page[currentPage] = views.root.search.data
-            if (!global.data.page[currentPage]) return
-        }
-        
-        // check availability of views
-        global.data.page[currentPage].views.map(viewId => {
-            if (!global.data.view[viewId]) notAvailableViews.push(viewId)
-        })
-        
-        if (notAvailableViews.length > 0) {
-
-            await search({ id: "root", search: { collection: "view", docs: notAvailableViews, limit: 100 } })
-            Object.entries(views.root.search.data).map(([doc, data]) => {
-                global.data.view[doc] = data
-            })
-        }*/
-
-        var title = route.title || global.data.page[currentPage].title
 
         global.currentPage = currentPage
         global.path = route.path ? path : currentPage === "main" ? "/" : (currentPage.charAt(0) === "/" ? currentPage : `/${currentPage}`)
         
         if (res) {
-          global.updateLocation= true
-
-          // controls & views
-          views.root.controls = clone(global.data.page[currentPage].controls || [])
-          views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
           
-          // inherit view name
-          views.root["my-views"] = [global.data.page[currentPage].view]
-
-          // controls
-          toArray(views.root.controls).map((controls = {}) => {
-            var event = toCode({ _window, string: controls.event || "" })
-            if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "beforeLoading") && toApproval({ req, res, _window, string: event.split('?')[2] }))
-              toParam({ req, res, _window, string: event.split("?")[1], req, res })
-              views.root.controls = views.root.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
-          })
-
+          global.updateLocation= true
+          views.root.children = clone([global.data.page[currentPage]])
           if (id !== "root") global.innerHTML.root = createElement({ _window, id: "root", req, res })
           return
         }
-
-        history.pushState(null, title, global.path)
-        document.title = title
         
         if (document.getElementsByClassName("loader-container")[0]) 
           document.getElementsByClassName("loader-container")[0].style.display = "flex"
 
         update({ _window, req, res, id: "root" })
         document.body.scrollTop = document.documentElement.scrollTop = 0
+
+        var title = route.title || views[views.root.element.children[0].id].title
+        var path = route.path || views[views.root.element.children[0].id].path
+
+        history.pushState(null, title, path)
+        document.title = title
         
         if (document.getElementsByClassName("loader-container")[0]) 
           document.getElementsByClassName("loader-container")[0].style.display = "none"

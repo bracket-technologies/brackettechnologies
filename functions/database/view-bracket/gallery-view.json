@@ -1,5 +1,5 @@
 {
-    "type": "View?id=gallery-view;class=flex column;style.transition=.2s;style.gap=2rem;style.width=100%;style.position=absolute;style.left=0;style.right=0;style.overflowY=auto;style.padding=2rem;style.display=none",
+    "type": "View?id=gallery-view;class=flex column;style:[maxHeight=100%;transition=.2s;gap=2rem;width=100%;position=absolute;left=0;right=0;overflowY=auto;padding=2rem;display=none]",
     "children": [
         {
             "type": "View?style.display=flex;style.gap=2rem;style.width=100%",

@@ -101,7 +101,7 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
 
       clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
-          isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+          isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
           if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
         }
       })

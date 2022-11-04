@@ -35,6 +35,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
   // condition not param
   if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
   return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, __, ___, _i, object })
+  if (createElement) _ = views[id]._
 
   string.split(";").map(param => {
     
@@ -233,22 +234,6 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         return view.loaded += `${param};`
       }
 
-      // children
-      if (param.slice(0, 9) === "children:") {
-
-        var _children = []
-        param = param.slice(9)
-        param.split(":").map(param => {
-
-          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-          _children.push({ type: param })
-        })
-
-        view.children = toArray(view.children)
-        view.children.unshift(..._children)
-        return view.children
-      }
-
       // controls
       if (param.slice(0, 9) === "controls:") {
 
@@ -262,7 +247,28 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
 
         view.controls = toArray(view.controls)
         view.controls.unshift(..._controls)
-        return view.controls
+        return //view.controls
+      }
+
+      // children
+      if (param.slice(0, 9) === "children:") {
+
+        var _children = []
+        param = param.slice(9)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _children.push({ type: param })
+        })
+
+        view.children = toArray(view.children)
+        view.children.unshift(..._children)
+        if (_) {
+          view._ = _
+          view.passToChildren = view.passToChildren || {}
+          view.passToChildren._ = _
+        }
+        return //view.children
       }
 
       // children
@@ -278,7 +284,13 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
 
         view.children = toArray(view.children)
         view.children.unshift(..._children)
-        return view.children
+        
+        if (_) {
+          view._ = _
+          view.passToChildren = view.passToChildren || {}
+          view.passToChildren._ = _
+        }
+        return //view.children
       }
     }
 
@@ -308,9 +320,9 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
 
     if (path.length === 1 && path0.slice(-2) === "()" && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
 
-      clone(view["my-views"] || []).reverse().map(view => {
+      view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
-          isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+          isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
           if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
         }
       })
@@ -357,11 +369,11 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     }
     
     // field:action()
-    if (view && path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
+    if (path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
 
-      clone(view["my-views"] || []).reverse().map(view => {
+      view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
-          isFn = Object.keys(global.data.view[view].functions || {}).find(fn => fn === pathi.slice(0, -2))
+          isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === pathi.slice(0, -2))
           if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
         }
       })
@@ -414,6 +426,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       
     } else if (key) {
       
+      if (key === "_" && _) return _ = value
       if (id && view && mount) view[key] = value
       params[key] = value
     }
@@ -442,7 +455,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       }
     
       // mount path directly when found
-      if (!mountPathUsed && (params.path || params.schema)) {
+      if (!mountPathUsed && (params.path || params.schema) && view.parent !== "root") {
 
         var schema = clone(params.path || params.schema)
         mountPathUsed = true

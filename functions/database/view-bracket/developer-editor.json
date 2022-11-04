@@ -123,12 +123,12 @@
                           "type": "Icon?name=person;google.symbol.outlined;style:[fontSize=2.5rem;color=#999]"
                         },
                         {
-                          "type": "Text?text=Hi +data:().editor.account.first-name;style:[fontSize=1.4rem;color=#444]"
+                          "type": "Text?text=;style:[fontSize=1.4rem;color=#444];loaded:[txt()=Hi +data:().editor.account.first-name]"
                         }
                       ],
                       "controls": [
                         {
-                          "event": "click:droplist?eraseCookie():__session;route():login?droplist-txt:()=Sign out"
+                          "event": "click:droplist?eraseCookie():_id;route():login?droplist-txt:()=Sign out"
                         }
                       ]
                     },
@@ -226,7 +226,7 @@
                           "type": "Icon?class=pointer;name=bi-x;style.fontSize=2rem;style.position=absolute;style.right=.5rem;hover.style.backgroundColor=#e9e9e9;style.borderRadius=.5rem;style.height=2.5rem;style.width=2.5rem",
                           "controls": [
                             {
-                              "event": "click?if():[parent().open-collection=_account_||parent().open-collection=_project_]:[open-docs:().pullItem():[parent().open-doc]]:[open-docs:().pullItem():[parent().open-collection+/+parent().open-doc]];className():data-viewer.find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem():[data=false];className():functions.find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem():[data=false];if():[open-doc:()=parent().open-doc;parent().next();!parent().prev()]:[parent().next().():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.find():[open-doc=parent().next().open-doc]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;if():[open-collection:()=page||open-collection:()=view||open-collection:()=_project_]:[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']:[():my-functions.style().height=0;():data-viewer.style().height=100%]].elif():[open-doc:()=parent().open-doc;parent().prev()]:[parent().prev().():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.find():[open-doc=parent().prev().open-doc;open-collection=parent().prev().open-collection]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;if():[open-collection:()=page||open-collection:()=view||open-collection:()=_project_]:[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']:[():my-functions.style().height=0;():data-viewer.style().height=100%]];():data-viewer-bar.children().find():[open-doc=parent().open-doc].rem();if():[open-docs:().len()=0]:[():data-viewer-bar.style().display=none;():my-functions.style().display=none]"
+                              "event": "click?if():[parent().open-collection=_account_||parent().open-collection=_project_]:[open-docs:().pullItem():[parent().open-doc]]:[open-docs:().pullItem():[parent().open-collection+'/'+parent().open-doc]];className():data-viewer.find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem():[data=false];className():functions.find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem():[data=false];if():[open-doc:()=parent().open-doc;parent().next();!parent().prev()]:[parent().next().():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.find():[open-doc=parent().next().open-doc]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;if():[open-collection:()=page||open-collection:()=view||open-collection:()=_project_]:[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']:[():my-functions.style().height=0;():data-viewer.style().height=100%]].elif():[open-doc:()=parent().open-doc;parent().prev()]:[parent().prev().():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.find():[open-doc=parent().prev().open-doc;open-collection=parent().prev().open-collection]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;if():[open-collection:()=page||open-collection:()=view||open-collection:()=_project_]:[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']:[():my-functions.style().height=0;():data-viewer.style().height=100%]];():data-viewer-bar.children().find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem();if():[open-docs:().len()=0]:[():data-viewer-bar.style().display=none;():my-functions.style().display=none]"
                             }
                           ]
                         }
@@ -247,7 +247,7 @@
                   "type": "View:main-data-viewer?style:[position=relative;height=calc(100vh - 7.5rem)]",
                   "children": [
                     {
-                      "type": "View:data-viewer?style:[width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+'rem)';height='calc(100% - '+functionsHeight:()+'rem)']",
+                      "type": "View:data-viewer?style:[width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+'rem)';height='calc(100% - '+functionsHeight:()+'rem)';transition=.2s]",
                       "children": [
                         {
                           "type": "View?class=data-viewer;style:[height=100%;width=100%;overflowY=auto]?open-map:()",
@@ -265,18 +265,10 @@
                       ]
                     },
                     {
-                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().4.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().4.style():[opacity=0;pointerEvents=none]]",
+                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().3.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().3.style():[opacity=0;pointerEvents=none]]",
                       "children": [
                         {
-                          "type": "View?class=flexbox pointer;tooltip.text=css styles;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#eee;borderRadius=.5rem;right=1rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]]",
-                          "children": [
-                            {
-                              "type": "Icon?name=css;google.symbol.outlined;style:[fontSize=2rem;color=#666]"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "View?class=flexbox pointer;tooltip.text=fit height;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#eee;borderRadius=.5rem;right=3.75rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=7.5;parent().style().height='calc(100% - '+functionsHeight:()+'rem)';():data-viewer.style().height=0rem]",
+                          "type": "View?class=flexbox pointer;tooltip.text=fit;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=1rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height='calc(100% - 7.5rem)';():data-viewer.style().height=0rem;timer():[functionsHeight:()=parent().element.offsetHeight/10]:200]",
                           "children": [
                             {
                               "type": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;transform=rotate(180deg);color=#666]"
@@ -284,7 +276,7 @@
                           ]
                         },
                         {
-                          "type": "View?class=flexbox pointer;tooltip.text=hide;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#eee;borderRadius=.5rem;right=6.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=20;parent().style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']",
+                          "type": "View?class=flexbox pointer;tooltip.text=mini;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=3.75rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=20;parent().style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']",
                           "children": [
                             {
                               "type": "Icon?name=video_label;google.symbol.outlined;style:[fontSize=1.8rem;color=#666]"
@@ -292,7 +284,7 @@
                           ]
                         },
                         {
-                          "type": "View?class=flexbox pointer;tooltip.text=hide;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#eee;borderRadius=.5rem;right=9.25rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=0;parent().style().height=functionsHeight:();():data-viewer.style().height=100%]",
+                          "type": "View?class=flexbox pointer;tooltip.text=hide;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=6.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=0;parent().style().height=functionsHeight:();():data-viewer.style().height=100%]",
                           "children": [
                             {
                               "type": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;color=#666]"

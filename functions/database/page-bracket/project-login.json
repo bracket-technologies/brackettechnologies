@@ -1,0 +1,8 @@
+{
+  "type": "project-login?title=Projects | Bracket;description=Choose project page",
+  "controls": [
+    {
+      "event": "beforeLoading?if():[getCookie():_id;path:().split():/.2]:[getProject():[project=path:().split():/.2;user=getCookie():_id]:[if():[_.data]:[data:().editor.account=_.data.user;data:().editor.project=_.data.project]:[route():login]]]:[route():login]?!data:().editor.account"
+    }
+  ]
+}

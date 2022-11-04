@@ -4,7 +4,7 @@ const { clone } = require('./clone')
 const { toFirebaseOperator } = require('./toFirebaseOperator')
 
 module.exports = {
-  search: async ({ _window, id = "root", req, res, e, ...params }) => {
+  search: async ({ _window, id = "root", req, res, e, _, __, ___, ...params }) => {
       
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -15,6 +15,7 @@ module.exports = {
     var store = search.store || "database"
     headers.project = headers.project || global.projectId
     search.collection = search.collection || "collection"
+    global.promises = global.promises || []
     
     if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
     delete search.headers
@@ -155,7 +156,7 @@ module.exports = {
       }
 
       else {
-        const myPromise = () => new Promise(async (resolve, rej) => {
+        const myPromise = () => new Promise(async resolve => {
 
           // search field
           var multiIN = false, _ref = ref
@@ -203,9 +204,6 @@ module.exports = {
           }
           
           resolve({ data, success, message })
-          /*setTimeout(() => {
-            res("foo")
-          }, 10000)*/
         })
 
         global.promises.push(myPromise())
@@ -213,31 +211,45 @@ module.exports = {
         await global.promises[global.promises.length - 1]
         _data = { data, success, message }
       }
-        
+      
       console.log(_data)
       view.search = global.search = clone(_data)
+    
+      // await params
+      if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res, _: global.search, __: _, ___: __ })
 
     } else {
 
       // search
+      var myFn
       headers.search = encodeURI(toString({ search }))
       headers.timestamp = (new Date()).getTime()
 
       if (search.url && !search.secure) {
-
-        var { data: _data } = await axios.get(search.url, {
-          headers: {
-            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-            ...headers
-          }
-        })
-        
-        console.log(_data)
-        view.search = global.search = clone(_data)
+    
+        myFn = () => {
+          return new Promise (async resolve => {
+    
+            var { data: _data } = await axios.get(search.url, {
+              headers: {
+                "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+                ...headers
+              }
+            })
+    
+            console.log(_data)
+            view.search = global.search = clone(_data)
+    
+            // await params
+            if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res, _: global.search, __: _, ___: __ })
+    
+            resolve()
+          })
+        }
 
       } else {
     
-        var myFn = () => {
+        myFn = () => {
           return new Promise (async resolve => {
     
             var { data: _data } = await axios.get(`/${store}`, {
@@ -250,20 +262,20 @@ module.exports = {
             console.log(_data)
             view.search = global.search = clone(_data)
     
+            // await params
+            if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res, _: global.search, __: _, ___: __ })
+    
             resolve()
           })
         }
-
-        global.promises = global.promises || []
-        global.promises.push(myFn())
-        
-        await Promise.all(global.promises)
       }
+
+      global.promises = global.promises || []
+      global.promises.push(myFn())
+      
+      await Promise.all(global.promises)
     }
     
     // if (_data.message === "Force reload!") return location.reload()
-    
-    // await params
-    if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res })
   }
 }

@@ -236,9 +236,9 @@ const initialize = ({ req, res }) => {
         },
         root: {
             id: "root",
-            type: "Box",
-            parent: "body",
+            type: "View",
             "my-views": [],
+            derivations: [],
             style: { backgroundColor: "#fff" },
         },
         public: {
@@ -258,43 +258,43 @@ const interpret = () => {
     return new Promise(async (resolve) => {
 
         var { req, res, global, views } = params
+        var _window = { global, views }
+
         var currentPage = global.currentPage
         if (!global.data.page[currentPage]) return res.send("Page does not exist!")
         
         // controls & views
-        views.root.controls = clone(global.data.page[currentPage].controls || [])
-        views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
+        views.root.children = clone([global.data.page[currentPage]])
         views.public.children = Object.values(global.public)
-    
-        // inherit view name
-        views.root["my-views"] = [global.data.page[currentPage].view]
-        
-        var _window = { global, views }
-        
-        // controls
-        toArray(views.root.controls).map((controls = {}) => {
-          
-            var event = toCode({ _window, string: controls.event || "" })
-            if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ id: "root", req, res, _window, string: event.split('?')[2] })) {
-              toParam({ id: "root", req, res, _window, string: event.split("?")[1], req, res })
-              views.root.controls = views.root.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
-            }
-        })
-    
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
 
         // project children
         if (global.data.project.children) {
           var __window = { views: { body: { id: "body", type: "View", children: global.data.project.children } }, global }
           createElement({ _window: __window, global: {}, id: "body", req, res, import: true })
         }
+
+        // before loading controls
+        toArray(global.data.page[currentPage].controls).map(async (controls = {}) => {
+          var event = toCode({ _window, string: controls.event || "" })
+          if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id: "root", string: event.split('?')[2] })) {
+            toParam({ req, res, _window, id: "root", string: event.split("?")[1], createElement: true })
+            global.data.page[currentPage].controls = global.data.page[currentPage].controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
+          }
+        })
+
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
         
         // create html
         var rootInnerHTML = createElement({ _window, id: "root", req, res })
         var publicInnerHTML = createElement({ _window, id: "public", req, res })
+
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
     
         if (global.innerHTML.root) rootInnerHTML = global.innerHTML.root
         if (global.innerHTML.public) publicInnerHTML = global.innerHTML.public
@@ -303,13 +303,6 @@ const interpret = () => {
         global.idList = innerHTML.split("id='").slice(1).map((id) => id.split("'")[0])
         global.innerHTML = innerHTML
 
-        // rdb.ref("view-alsabil-tourism").set(global.data.view)
-        // rdb.ref("page-alsabil-tourism").set(global.data.page)
-        
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
         resolve()
     })
 }
@@ -323,21 +316,21 @@ const app = async ({ req, res }) => {
     await interpret({ req, res })
     if (res.headersSent) return
     
-    var currentPage = global.currentPage, innerHTML = global.innerHTML
+    var currentPage = global.currentPage, innerHTML = global.innerHTML, view = views[views.root.child]
     
     // main head tags
     var favicon = global.data.project.favicon
-    var language = global.language = global.data.page[currentPage].language || "en"
+    var language = global.language = view.language || "en"
     var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
-    var title = global.data.page[currentPage].title || "My App Title"
+    var title = view.title || "My App Title"
     var children = clone(global.children)
   
     // meta
-    global.data.page[currentPage].meta = global.data.page[currentPage].meta || {}
-    var metaKeywords = global.data.page[currentPage].meta.keywords || ""
-    var metaDescription = global.data.page[currentPage].meta.keywords || ""
-    var metaTitle = global.data.page[currentPage].meta.title || global.data.page[currentPage].title || ""
-    var metaViewport = global.data.page[currentPage].meta.viewport || "width=device-width, initial-scale=1.0"
+    view.meta = view.meta || {}
+    var metaKeywords = view.meta.keywords || ""
+    var metaDescription = view.meta.keywords || ""
+    var metaTitle = view.meta.title || view.title || ""
+    var metaViewport = view.meta.viewport || "width=device-width, initial-scale=1.0"
   
     delete global.children;
     delete global.innerHTML;

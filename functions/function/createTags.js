@@ -26,6 +26,14 @@ const createTags = ({ _window, id, req, res }) => {
     if (type.includes(";Data;")) type = type.split(";Data;")[0] + ";" + type.split(";Data;").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?Data;")) type = type.split("?Data;")[0] + ";" + type.split("?Data;").slice(1).join("").split(";").slice(1).join(";")
     if (type.includes(";Data")) type = type.split(";Data")[0]
+    /*if (type.includes("?doc=")) type = type.split("?doc=")[0] + "?" + type.split("?doc=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";doc=")) type = type.split(";doc=")[0] + ";" + type.split(";doc=").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes(";doc;")) type = type.split(";doc;")[0] + ";" + type.split(";doc;").slice(1).join("").split(";").slice(1).join(";") 
+    if (type.includes("?doc;")) type = type.split("?doc;")[0] + ";" + type.split("?doc;").slice(1).join("").split(";").slice(1).join(";")
+    if (type.includes(";doc")) type = type.split(";doc")[0]
+    if (type.includes("child:")) type = type.split("child:")[0] + "" + type.split("child:").slice(1).join("").split(";").slice(1).join(";")
+    if (type.includes("children:")) type = type.split("children:")[0] + "" + type.split("children:").slice(1).join("").split(";").slice(1).join(";") 
+    */
     if (type.includes("?id=")) type = type.split("?id=")[0] + "?" + type.split("?id=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes(";id=")) type = type.split(";id=")[0] + ";" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
     if (type.includes("?path=")) type = type.split("?path=")[0] + "?" + type.split("?path=").slice(1).join("").split(";").slice(1).join(";") 
@@ -49,8 +57,8 @@ const createTags = ({ _window, id, req, res }) => {
         var derivations = clone(view.derivations)
         var data = clone(isObject ? view.data[_data] : _data)
         derivations.push(lastEl)
-
-        var _view = clone({ ...view, id, type, data, mapIndex, derivations })
+        
+        var _view = clone({ ...view, id, type, data, mapIndex, derivations, children: clone(views[view.parent].children[view.index].children || []) })
         
         views[id] = _view
         return createElement({ _window, id, req, res })
@@ -66,7 +74,7 @@ const createTags = ({ _window, id, req, res }) => {
       var data = clone(view.data ? view.data[lastEl] : view.data)
       derivations.push(lastEl)
 
-      var _view = clone({ ...view, id, type, data, mapIndex, derivations })
+      var _view = clone({ ...view, id, type, data, mapIndex, derivations, children: clone(views[view.parent].children[view.index].children || []) })
       
       views[id] = _view
       return createElement({ _window, id, req, res })

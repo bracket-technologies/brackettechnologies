@@ -4,10 +4,8 @@ const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 const { createElement } = require("./createElement")
 const { clone } = require("./clone")
-const { controls } = require("./controls")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
-const { toApproval } = require("./toApproval")
 
 const update = async ({ id, _window, req, res, update = {} }) => {
 
@@ -36,29 +34,7 @@ const update = async ({ id, _window, req, res, update = {} }) => {
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") {
-
-    views.root.children = children = clone([global.data.view[global.data.page[global.currentPage].view]])
-    children.controls = toArray(children.controls)
-
-    // page controls
-    if (global.data.page[global.currentPage].controls) children.controls.push(global.data.page[global.currentPage].controls)
-    children.controls = children.controls.flat()
-  }
-
-  // before loading controls
-  if (children.controls) {
-    
-    toArray(children.controls).map((controls = {}, i) => {
-      var event = toCode({ _window, string: controls.event || "" })
-      if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ _window, req, res, id, string: event.split('?')[2] })) {
-        toParam({ _window, req, res, id, string: event.split("?")[1] })
-        children.controls.splice(i, 1)
-      }
-    })
-    
-    await Promise.all(global.promises || [])
-  }
+  if (id === "root") views.root.children = children = clone([global.data.page[global.currentPage]])
   
   var innerHTML = children
   .map((child, index) => {
@@ -83,18 +59,6 @@ const update = async ({ id, _window, req, res, update = {} }) => {
   idList.map(id => setElement({ _window, req, res, id }))
   idList.map(id => starter({ _window, req, res, id }))
   
-  /*var children = [...view.element.children]
-  if (timer) setTimeout(() => {
-      children.map(el => {
-        
-        views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
-      })
-    }, 0)
-  else children.map(el => {
-    
-    views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
-  })*/
-  
   view.update = global.update = { view: views[id], message: "View updated successfully!", success: true }
 }
 
@@ -103,8 +67,6 @@ const removeChildren = ({ id }) => {
   var views = window.views
   var global = window.global
   var view = views[id]
-
-  //if (!view.element && id !== "root") return delete views[id]
   var children = [...view.element.children]
   
   children.map((child) => {

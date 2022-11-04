@@ -34,44 +34,20 @@ const toggleView = async ({ _window, toggle, id, res }) => {
   document.getElementsByClassName("loader-container")[0].style.display = "flex"
 
   // children
-  var children = []
+  var children = clone([global.data.view[viewId]])
   if (togglePage) {
 
-    /*var notAvailableViews = []
-
-    if (!global.data.page[global.currentPage]) {
-
-      await search({ id: "root", search: { collection: "page", doc: currentPage } })
-      global.data.page[currentPage] = views.root.search.data
-    }
-
-
-    // check availability of views
-    global.data.page[currentPage].views.map(viewId => {
-      if (!global.data.view[viewId]) notAvailableViews.push(viewId)
-    })
-    
-    if (notAvailableViews.length > 0) {
-
-      await search({ id: "root", search: { collection: "view", docs: notAvailableViews, limit: 100 } })
-      Object.entries(views.root.search.data).map(([doc, data]) => {
-        global.data.view[doc] = data
-      })
-    }*/
-
     var currentPage = global.currentPage = togglePage.split("/")[0]
-    var title = global.data.page[currentPage].title
     
-    viewId = global.data.page[currentPage].view
-    global.path = togglePage = togglePage === "main" ? "/" : togglePage
+    viewId = currentPage
+    /*global.path = togglePage = togglePage === "main" ? "/" : togglePage
 
     history.pushState({}, title, togglePage)
     document.title = title
-    view = views.root
+    view = views.root*/
 
   } else view = views[parentId]
 
-  children = [global.data.view[viewId]]
   
   if (children.length === 0) return
   if (!view || !view.element) return
@@ -90,8 +66,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
         
   if (res) {
     
-    views.root.controls = clone(global.data.page[currentPage].controls || [])
-    views.root.children = clone([global.data.view[global.data.page[currentPage].view]])
+    views.root.children = clone([global.data.page[currentPage]])
     return
   }
 
@@ -125,9 +100,6 @@ const toggleView = async ({ _window, toggle, id, res }) => {
       return createElement({ id })
 
     }).join("")
-    
-  // unloaded views
-  // require("../function/loadViews").loadViews()  
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
@@ -149,13 +121,6 @@ const toggleView = async ({ _window, toggle, id, res }) => {
       views[id].style.transform = el.style.transform = toggle.fadein.after.transform || null
       views[id].style.opacity = el.style.opacity = toggle.fadein.after.opacity || "1"
     })
-  
-    /*setTimeout(() => {
-      idList.filter(id => views[id] && views[id].type === "Icon").map(id => views[id]).map(map => {
-        map.element.style.opacity = map.style.opacity !== undefined ? map.style.opacity : "1"
-        map.element.style.transition = map.style.transition !== undefined ? map.style.transition : "none"
-      })
-    }, 0)*/
     
     document.getElementsByClassName("loader-container")[0].style.display = "none"
     

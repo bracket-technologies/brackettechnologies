@@ -1,14 +1,4 @@
 {
-    "title": "Bracket Builder",
-    "meta": {
-        "title": "Bracket Builder",
-        "description": "Bracket Website Builder"
-    },
     "creation-date": 1643565851564,
-    "path": "/",
-    "name": "Bracket Builder",
-    "view": "main",
-    "views": [
-        "main"
-    ]
+    "type": "main?path=/;name=Bracket Builder;title=Bracket Builder;meta:[title=Bracket Builder;description=Bracket Website Builder]"
 }
