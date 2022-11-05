@@ -1744,7 +1744,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     var parent = views[view.parent] || {}
 
     // view is empty
-    if (!view.type) return ""
+    if (!view.type) return resolve("")
     if (!view["my-views"] && !_import) view["my-views"] = [...views[parent]["my-views"]]
 
     // code []
@@ -1846,8 +1846,8 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
 
       // break
-      if (params["break()"]) delete params["break()"]
-      if (params["return()"]) return delete params["return()"]
+      /*if (params["break()"]) delete params["break()"]
+      if (params["return()"]) return delete params["return()"]*/
 
       if (params.id && params.id !== id/* && !priorityId*/) {
 
@@ -1976,7 +1976,7 @@ module.exports = {
       if (type === "View" || type === "Box") {
         tag = `<div ${view.draggable ? "draggable='true'" : ""} spellcheck="false" ${view.editable && !view.readonly ? "contenteditable" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ""}</div>`
       } else if (type === "Image") {
-        tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' src='${view.src}'>${innerHTML}</img>`
+        tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' src='${view.src || ""}'>${innerHTML}</img>`
       } else if (type === "Table") {
         tag = `<table ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</table>`
       } else if (type === "Row") {
@@ -3443,10 +3443,12 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     
     var _func = toCode({ _window, string: functions[func.function] })
     _func = toCode({ _window, string: _func, start: "'", end: "'" })
-    toParam({ _window, id, string: _func, req, res, _: func.data, __ })
+    toParam({ _window, id, string: _func, req, res, _: func.data, __, ___ })
     
     await Promise.all(global.promises)
-  
+    await Promise.all(global.promises)
+    await Promise.all(global.promises)
+    console.log("zzzzzzz", global.func);
     // await params
     if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
 
@@ -3835,7 +3837,7 @@ module.exports = {
       
       if (data) _view.data = clone(data)
       if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
-      console.log(index, view.element, view.element.children);
+      
       var innerHTML = await Promise.all(toArray(_view).map(async (child, i) => {
 
         var id = child.id || generate()
@@ -8697,22 +8699,24 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
   
         } else if (k0 === "send()") {
             
-            breakRequest = true
-            if (!res || res.headersSent) return
-            if (isParam({ _window, string: args[1] })) {
-              
-              var _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] }), _params_ = {}
-              _params_.data = _params.data
-              _params_.success = _params.success !== undefined ? _params.success : true
-              _params_.message = _params.message || _params.msg || "Action executed successfully!"
-              
-              res.send(_params_)
+          breakRequest = true
+          if (!res || res.headersSent) return
+          if (isParam({ _window, string: args[1] })) {
+            
+            var _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] }), _params_ = {}
+            _params_.data = _params.data
+            _params_.success = _params.success !== undefined ? _params.success : true
+            _params_.message = _params.message || _params.msg || "Action executed successfully!"
+            
+            if (!_window.function) return global.func = _params_
+            else res.send(_params_)
 
-            } else {
-              
-              var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
-              res.send({ success: true, message: "Action executed successfully!", data: _data })
-            }
+          } else {
+            
+            var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
+            if (!_window.function) return global.func = { success: true, message: "Action executed successfully!", data: _data }
+            else res.send({ success: true, message: "Action executed successfully!", data: _data })
+          }
 
         } else if (k0 === "setPosition()" || k0 === "position()") {
           

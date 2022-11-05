@@ -3,7 +3,7 @@
     "type": "developer-editor?name=Bracket developer editor;title=Developer Editor | Bracket",
     "controls": [
       {
-        "event": "beforeLoading?if():[getCookie():_id;path:().split():/.2]:[search():[collection=_account_;doc=getCookie():_id]:[if():[_.data;_.data.projects.inc():[path:().split():/.2]]:[data:().editor.account=_.data;search():[collection=_project_;doc=path:().split():/.2]:[if():[_.data]:[data:().editor.project=_.data]:[route():login]]]:[route():login]]]:[route():login]"
+        "event": "beforeLoading?if():[getCookie():_id;path:().split():/.2]:[getProject():[user=getCookie():_id;project=path:().split():/.2]:[data:().editor.():[account=_.data.user;project=_.data.project]]]:[route():login]"
       }
     ]
 }

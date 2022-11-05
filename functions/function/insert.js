@@ -38,7 +38,7 @@ module.exports = {
       
       if (data) _view.data = clone(data)
       if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
-      console.log(index, view.element, view.element.children);
+      
       var innerHTML = await Promise.all(toArray(_view).map(async (child, i) => {
 
         var id = child.id || generate()

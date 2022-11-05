@@ -26,10 +26,12 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     
     var _func = toCode({ _window, string: functions[func.function] })
     _func = toCode({ _window, string: _func, start: "'", end: "'" })
-    toParam({ _window, id, string: _func, req, res, _: func.data, __ })
+    toParam({ _window, id, string: _func, req, res, _: func.data, __, ___ })
     
     await Promise.all(global.promises)
-  
+    await Promise.all(global.promises)
+    await Promise.all(global.promises)
+    
     // await params
     if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
 

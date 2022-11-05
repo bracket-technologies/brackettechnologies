@@ -4204,22 +4204,24 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
   
         } else if (k0 === "send()") {
             
-            breakRequest = true
-            if (!res || res.headersSent) return
-            if (isParam({ _window, string: args[1] })) {
-              
-              var _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] }), _params_ = {}
-              _params_.data = _params.data
-              _params_.success = _params.success !== undefined ? _params.success : true
-              _params_.message = _params.message || _params.msg || "Action executed successfully!"
-              
-              res.send(_params_)
+          breakRequest = true
+          if (!res || res.headersSent) return
+          if (isParam({ _window, string: args[1] })) {
+            
+            var _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] }), _params_ = {}
+            _params_.data = _params.data
+            _params_.success = _params.success !== undefined ? _params.success : true
+            _params_.message = _params.message || _params.msg || "Action executed successfully!"
+            
+            if (!_window.function) return global.func = _params_
+            else res.send(_params_)
 
-            } else {
-              
-              var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
-              res.send({ success: true, message: "Action executed successfully!", data: _data })
-            }
+          } else {
+            
+            var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
+            if (!_window.function) return global.func = { success: true, message: "Action executed successfully!", data: _data }
+            else res.send({ success: true, message: "Action executed successfully!", data: _data })
+          }
 
         } else if (k0 === "setPosition()" || k0 === "position()") {
           

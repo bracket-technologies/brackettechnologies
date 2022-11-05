@@ -25,7 +25,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     var parent = views[view.parent] || {}
 
     // view is empty
-    if (!view.type) return ""
+    if (!view.type) return resolve("")
     if (!view["my-views"] && !_import) view["my-views"] = [...views[parent]["my-views"]]
 
     // code []
@@ -127,8 +127,8 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
 
       // break
-      if (params["break()"]) delete params["break()"]
-      if (params["return()"]) return delete params["return()"]
+      /*if (params["break()"]) delete params["break()"]
+      if (params["return()"]) return delete params["return()"]*/
 
       if (params.id && params.id !== id/* && !priorityId*/) {
 
