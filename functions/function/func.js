@@ -18,10 +18,10 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
   if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
 
   if (_window) {
-
+    
     var functions = global.data.project.functions
     if (!functions[func.function]) return
-    //if (functions[func.function].includes("send()"))
+    //  if (functions[func.function].includes("send()"))
     //  functions[func.function] = functions[func.function].replace("send():", "func:()=")
     
     var _func = toCode({ _window, string: functions[func.function] })

@@ -83,23 +83,24 @@ const toggleView = async ({ _window, toggle, id, res }) => {
     delete views[toggleId]
   }
   
-  var innerHTML = children
-    .map((child, index) => {
+  var innerHTML = await Promise.all(children.map(async (child, index) => {
 
-      var id = child.id || generate()
-      views[id] = clone(child)
-      views[id].id = id
-      views[id].index = index
-      views[id].parent = view.id
-      views[id].style = {}
-      views[id]["my-views"] = [...view["my-views"], viewId]
-      views[id].style.transition = toggle.fadein.before.transition || null
-      views[id].style.opacity = toggle.fadein.before.opacity || "0"
-      views[id].style.transform = toggle.fadein.before.transform || null
+    var id = child.id || generate()
+    views[id] = clone(child)
+    views[id].id = id
+    views[id].index = index
+    views[id].parent = view.id
+    views[id].style = {}
+    views[id]["my-views"] = [...view["my-views"], viewId]
+    views[id].style.transition = toggle.fadein.before.transition || null
+    views[id].style.opacity = toggle.fadein.before.opacity || "0"
+    views[id].style.transform = toggle.fadein.before.transform || null
 
-      return createElement({ id })
+    return await createElement({ id })
 
-    }).join("")
+  }))
+  
+  innerHTML = innerHTML.join("")
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0

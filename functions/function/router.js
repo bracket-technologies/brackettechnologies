@@ -1,12 +1,7 @@
 //
 var params = {};
-const fs = require("fs");
 const { createElement } = require("./createElement");
-const { toArray } = require("./toArray");
-const { toParam } = require("./toParam");
-const { toCode } = require("./toCode");
 const { clone } = require("./clone");
-const { toApproval } = require("./toApproval");
 const { getJsonFiles } = require("./jsonFiles");
 const bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
 
@@ -255,7 +250,7 @@ const initialize = ({ req, res }) => {
 
 const interpret = () => {
 
-    return new Promise(async (resolve) => {
+    return new Promise(async resolve => {
 
         var { req, res, global, views } = params
         var _window = { global, views }
@@ -269,33 +264,21 @@ const interpret = () => {
 
         // project children
         if (global.data.project.children) {
+
           var __window = { views: { body: { id: "body", type: "View", children: global.data.project.children } }, global }
-          createElement({ _window: __window, global: {}, id: "body", req, res, import: true })
+          console.log("Create headers started!");
+          await createElement({ _window: __window, global: {}, id: "body", req, res, import: true })
+          console.log("Create headers ended!");
         }
 
-        // before loading controls
-        toArray(global.data.page[currentPage].controls).map(async (controls = {}) => {
-          var event = toCode({ _window, string: controls.event || "" })
-          if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id: "root", string: event.split('?')[2] })) {
-            toParam({ req, res, _window, id: "root", string: event.split("?")[1], createElement: true })
-            global.data.page[currentPage].controls = global.data.page[currentPage].controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
-          }
-        })
+        // create views
+        console.log("Create views started!")
 
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
+        var publicInnerHTML = await createElement({ _window, id: "public", req, res })
+        var rootInnerHTML = await createElement({ _window, id: "root", req, res })
+
+        console.log("Create views ended!")
         
-        // create html
-        var rootInnerHTML = createElement({ _window, id: "root", req, res })
-        var publicInnerHTML = createElement({ _window, id: "public", req, res })
-
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-    
         if (global.innerHTML.root) rootInnerHTML = global.innerHTML.root
         if (global.innerHTML.public) publicInnerHTML = global.innerHTML.public
     
@@ -381,11 +364,3 @@ const app = async ({ req, res }) => {
 }
 
 module.exports = { status, project, initialize, interpret, app }
-
-// <link rel="stylesheet" href="/resources/bootstrap-icons/font/bootstrap-icons.css"/>
-/*
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/shim.min.js" integrity="sha512-nPnkC29R0sikt0ieZaAkk28Ib7Y1Dz7IqePgELH30NnSi1DzG4x+envJAOHz8ZSAveLXAHTR3ai2E9DZUsT8pQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-*/

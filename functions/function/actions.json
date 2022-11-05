@@ -7,7 +7,7 @@
  , "1stSibling()", "derivations()", "path()", "mouseleave()", "mouseenter()", "mouseup()", "blur()"
  , "mousedown()", "copyToClipBoard()", "mininote()", "note()", "date()", "tooltip()", "update()" 
  , "refresh()", "save()", "search()", "override()", "click()", "is()", "setPosition()" 
- , "gen()", "generate()", "route()", "getInput()", "input()", "getEntry()", "entry()" 
+ , "gen()", "generate()", "route()", "getInput()", "input()", "getEntry()", "entry()", "capitalize()" 
  , "getEntries()", "entries()", "toggleView()", "clearTimer()", "timer()", "range()", "focus()" 
  , "siblings()", "todayStart()", "time()", "remove()", "rem()", "removeChild()", "remChild()" 
  , "getBoundingClientRect()", "contains()", "contain()", "def()", "price()", "clone()", "uuid()" 

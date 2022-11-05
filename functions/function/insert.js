@@ -6,7 +6,7 @@ const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 
 module.exports = {
-  insert: ({ id, ...params }) => {
+  insert: async ({ id, ...params }) => {
     
     var insert = params.insert, { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
@@ -15,7 +15,16 @@ module.exports = {
     else if (!appendTo) appendTo = id
     var view = views[appendTo], lDiv
     
-    if (index === undefined) index = view.element.children.length
+    if (index === undefined) {
+      if (!view.length) {
+        view.length = view.element.children.length || 0
+        index = view.length
+        view.length = view.length + 1
+      } else {
+        index = view.length
+        view.length = view.length + 1
+      }
+    }
     
     if (component || replace) {
 
@@ -29,9 +38,8 @@ module.exports = {
       
       if (data) _view.data = clone(data)
       if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
-      
-      var innerHTML = toArray(_view)
-      .map((child, i) => {
+      console.log(index, view.element, view.element.children);
+      var innerHTML = await Promise.all(toArray(_view).map(async (child, i) => {
 
         var id = child.id || generate()
         views[id] = child
@@ -45,9 +53,10 @@ module.exports = {
         views[id].style.opacity = "0"
         views[id]["my-views"] = [...views[appendTo]["my-views"]]
         
-        return createElement({ id })
-
-      }).join("")
+        return await createElement({ id })
+      }))
+      
+      innerHTML = innerHTML.join("")
       
       lDiv = document.createElement("div")
       document.body.appendChild(lDiv)

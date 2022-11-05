@@ -7,7 +7,7 @@ const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 const { toCode } = require("./toCode")
 
-const updateSelf = ({ _window, id, update = {} }) => {
+const updateSelf = async ({ _window, id, update = {}, route }) => {
 
   var views = window.views
   var view = views[id]
@@ -44,8 +44,7 @@ const updateSelf = ({ _window, id, update = {} }) => {
   delete views[id]
   ///////
 
-  var innerHTML = children
-  .map(child => {
+  var innerHTML = await Promise.all(children.map(async child => {
 
     var id = child.id || generate()
     views[id] = child
@@ -57,9 +56,11 @@ const updateSelf = ({ _window, id, update = {} }) => {
     //views[id].style.opacity = "0"
     //if (timer) views[id].style.transition = `opacity ${timer}ms`
     
-    return createElement({ id })
+    return await createElement({ id })
 
-  }).join("")
+  }))
+  
+  innerHTML = innerHTML.join("")
   
   var childrenNodes = [...parent.element.children]
   childrenNodes.map((childNode, i) => {
@@ -94,12 +95,21 @@ const updateSelf = ({ _window, id, update = {} }) => {
     lDiv = null
   }
   
-  /*var _children = [...node.children]
-  
-  if (timer) setTimeout(() => _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1"), timer || 0)
-  else _children.map(el => views[el.id].element.style.opacity = views[el.id].style.opacity = "1")*/
-  
   view.update = { view: views[node.id], message: "View updated succefully!", success: true }
+
+  // routing
+  if (id === "root") {
+
+    document.body.scrollTop = document.documentElement.scrollTop = 0
+
+    var title = route.title || views[views.root.element.children[0].id].title
+    var path = route.path || views[views.root.element.children[0].id].path
+
+    history.pushState(null, title, path)
+    document.title = title
+
+    if (document.getElementsByClassName("loader-container")[0]) document.getElementsByClassName("loader-container")[0].style.display = "none"
+  }
 }
 
 module.exports = {updateSelf}

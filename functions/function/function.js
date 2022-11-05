@@ -41,7 +41,7 @@ const {toStyle} = require("./toStyle")
 const {preventDefault} = require("./preventDefault")
 const {createComponent} = require("./createComponent")
 const {getJsonFiles} = require("./jsonFiles")
-const {toHtml} = require("./toHtml")
+const {createHtml} = require("./createHtml")
 const {setData} = require("./setData")
 const {defaultInputHandler} = require("./defaultInputHandler")
 const {createActions} = require("./createActions")
@@ -159,7 +159,7 @@ module.exports = {
   reducer,
   preventDefault,
   toStyle,
-  toHtml,
+  createHtml,
   capitalize,
   note,
   isPath,

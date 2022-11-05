@@ -6,7 +6,7 @@ const { createElement } = require("./createElement")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 
-const refresh = ({ id, update = {} }) => {
+const refresh = async ({ id, update = {} }) => {
 
   var views = window.views
   var view = views[id]
@@ -30,8 +30,7 @@ const refresh = ({ id, update = {} }) => {
   delete views[id]
   ///////
 
-  var innerHTML = children
-  .map(child => {
+  var innerHTML = await Promise.all(children.map(async child => {
 
     var id = child.id || generate()
     views[id] = child
@@ -43,9 +42,11 @@ const refresh = ({ id, update = {} }) => {
     views[id].style.opacity = "0"
     if (timer) views[id].style.transition = `opacity ${timer}ms`
     
-    return createElement({ id })
+    return await createElement({ id })
 
-  }).join("")
+  }))
+  
+  innerHTML = innerHTML.join("")
   
   var childrenNodes = [...parent.element.children]
   childrenNodes.map((childNode, i) => {

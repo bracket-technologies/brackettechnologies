@@ -48,7 +48,7 @@ const loadViews = async (first) => {
       views[id].parent = parent
 
       // create html
-      var innerHTML = createElement({ id })
+      var innerHTML = await createElement({ id })
       
       lDiv = document.createElement("div")
       document.body.appendChild(lDiv)

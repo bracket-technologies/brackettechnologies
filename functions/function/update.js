@@ -7,7 +7,7 @@ const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 
-const update = async ({ id, _window, req, res, update = {} }) => {
+const update = async ({ id, _window, req, res, update = {}, route }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.views : window.global
@@ -36,8 +36,7 @@ const update = async ({ id, _window, req, res, update = {} }) => {
   // reset children for root
   if (id === "root") views.root.children = children = clone([global.data.page[global.currentPage]])
   
-  var innerHTML = children
-  .map((child, index) => {
+  var innerHTML = await Promise.all(children.map(async (child, index) => {
 
     var id = child.id || generate()
     views[id] = child
@@ -47,19 +46,34 @@ const update = async ({ id, _window, req, res, update = {} }) => {
     views[id].style = views[id].style || {}
     views[id]["my-views"] = [...view["my-views"]]
     
-    return createElement({ _window, req, res, id })
-
-  }).join("")
+    return await createElement({ _window, req, res, id })
+  }))
+  
+  innerHTML = innerHTML.join("")
   
   view.element.innerHTML = ""
   view.element.innerHTML = innerHTML
-
+  
   var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   
   idList.map(id => setElement({ _window, req, res, id }))
   idList.map(id => starter({ _window, req, res, id }))
   
   view.update = global.update = { view: views[id], message: "View updated successfully!", success: true }
+
+  // routing
+  if (id === "root") {
+
+    document.body.scrollTop = document.documentElement.scrollTop = 0
+
+    var title = route.title || views[views.root.element.children[0].id].title
+    var path = route.path || views[views.root.element.children[0].id].path
+
+    history.pushState(null, title, path)
+    document.title = title
+
+    if (document.getElementsByClassName("loader-container")[0]) document.getElementsByClassName("loader-container")[0].style.display = "none"
+  }
 }
 
 const removeChildren = ({ id }) => {

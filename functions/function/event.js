@@ -283,10 +283,10 @@ const defaultEventHandler = ({ id }) => {
     view.element.addEventListener("blur", setEventType)
   }
   
-  var setEventType = (e) => { views[e.target.id].mouseentered = true }
+  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mouseentered = true }
   view.element.addEventListener("mouseenter", setEventType)
 
-  var setEventType = (e) => { views[e.target.id].mouseentered = false }
+  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mouseentered = false }
   view.element.addEventListener("mouseleave", setEventType)
 
 /*
