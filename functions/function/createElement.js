@@ -27,12 +27,10 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     // view is empty
     if (!view.type) return resolve("")
     if (!view["my-views"] && !_import) view["my-views"] = [...views[parent]["my-views"]]
-
-    // code []
-    view.type = toCode({ _window, string: view.type })
     
     // code ''
-    if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
+    view.type = toCode({ _window, string: view.type })
+    view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
     
     // 
     var type = view.type.split("?")[0]
@@ -102,8 +100,13 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       
       toArray(view.controls).map(async (controls = {}) => {
 
-        var event = toCode({ _window, string: controls.event || "" })
+        //
+        if (!controls.event) return
+        var event = toCode({ _window, string: controls.event })
+        event = toCode({ _window, string: event, start: "'", end: "'" })
+
         if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id: "root", string: event.split('?')[2] })) {
+
           toParam({ req, res, _window, id: "root", string: event.split("?")[1], createElement: true })
           view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
         }

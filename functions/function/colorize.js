@@ -1,5 +1,3 @@
-const { generate } = require("./generate")
-const { toCode } = require("./toCode")
 const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
 
 const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) => {
@@ -7,6 +5,8 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
     if (index === 8) index = 1
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
+
+
 
     while (string.includes("coded()")) {
 
@@ -23,6 +23,15 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
       key = colorize({ id, string: `'` + key + `'`, index: index + 1 })
       string = string0 + key + string.split("codedS()")[1].slice(5) + (string.split("codedS()").length > 2 ? "codedS()" + string.split("codedS()").slice(2).join("codedS()") : "")
     }
+
+    // #comments
+    /*while (string.includes("?#") || string.includes(";#")) {
+
+      var string0 = ""
+      if (string.split("?#")[1]) string0 = string.split("?#")[0]
+      else if (string.split(";#")[1]) string0 = string.split(";#")[0]
+      key = string.split(string0)[1].split
+    }*/
 
     // equal
     // string = string.split("=").join(`<span style="color:#444">=</span>`)

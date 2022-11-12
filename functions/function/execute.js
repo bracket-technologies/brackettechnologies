@@ -18,10 +18,9 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
   // execute actions
   toArray(actions).map(_action => {
-    _action = toCode({ _window, string: _action, e })
 
-    // 'string'
-    if (_action.split("'").length > 2) _action = toCode({ _window, string: _action, start: "'", end: "'" })
+    _action = toCode({ _window, string: _action, e })
+    _action = toCode({ _window, string: _action, e, start: "'", end: "'" })
 
     var awaiter = ""
     var approved = true

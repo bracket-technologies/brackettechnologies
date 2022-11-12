@@ -114,7 +114,7 @@ const project = ({ req, res }) => {
                     console.log("after page", new Date().getTime() - global.timer)
                     
                     // page doesnot exist
-                    if (!global.data.page[currentPage]) return res.send("Page not found!");
+                    if (!global.data.page[currentPage]) return res.send("Page not found!")
                 }))
 
             /*
@@ -137,38 +137,6 @@ const project = ({ req, res }) => {
                     })
                     console.log("after view", new Date().getTime() - global.timer);
                 }))
-
-            /*if (global.data.page[currentPage].views.length > 0) {
-        
-            var docs = global.data.page[currentPage].views,
-                _docs = [],
-                index = 1,
-                length = Math.floor(docs.length / 10) + (docs.length % 10 > 0 ? 1 : 0);
-        
-            while (index <= length) {
-                _docs.push(docs.slice((index - 1) * 10, index * 10));
-                index += 1;
-            }
-            
-            await Promise.all(
-                _docs.map(async (docList) => {
-                await db
-                    .collection(`view-${project.id}`)
-                    .where("id", "in", docList)
-                    .get()
-                    .then((docs) => {
-                    success = true
-                    docs.forEach((doc) => global.data.view[doc.id] = doc.data())
-                    message = `Documents mounted successfuly!`
-                    })
-                    .catch((error) => {
-                    success = false
-                    message = `An error Occured!`
-                    })
-                })
-            )
-            console.log("after view", new Date().getTime() - global.timer);
-            }*/
         }
         
         await Promise.all(promises)
@@ -254,6 +222,7 @@ const interpret = () => {
 
         var { req, res, global, views } = params
         var _window = { global, views }
+        if (res.headersSent) return
 
         var currentPage = global.currentPage
         if (!global.data.page[currentPage]) return res.send("Page does not exist!")
@@ -261,6 +230,8 @@ const interpret = () => {
         // controls & views
         views.root.children = clone([global.data.page[currentPage]])
         views.public.children = Object.values(global.public)
+
+        if (!global.data.project) return res.send("Project does not exist or something went wrong! Refresh")
 
         // project children
         if (global.data.project.children) {

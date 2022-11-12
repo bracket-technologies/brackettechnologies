@@ -140,8 +140,8 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
       if (!isFn) {
         isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
         if (isFn) {
-          isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+          isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn], start: "'", end: "'" })
+          isFn = toCode({ _window, id, string: isFn })
         }
       }
     })

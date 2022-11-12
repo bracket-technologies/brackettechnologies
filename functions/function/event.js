@@ -39,6 +39,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
   events = _events
   events = toCode({ _window, id, string: events })
+  events = toCode({ _window, id, string: events, start: "'", end: "'" })
   // if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   
   events = events.split("?")

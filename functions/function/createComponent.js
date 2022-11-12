@@ -18,11 +18,9 @@ module.exports = {
     // my views
     if (!view["my-views"]) view["my-views"] = [...views[view.parent]["my-views"]]
 
-    // destructure type, params, & conditions from type
-    view.type = toCode({ _window, id, string: view.type })
-
-    // 'string'
-    if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
+    // 
+    view.type = toCode({ _window, string: view.type })
+    view.type = toCode({ _window, id, string: view.type, start: "'", end: "'" })
     
     var type = view.type.split("?")[0]
     var params = view.type.split("?")[1]

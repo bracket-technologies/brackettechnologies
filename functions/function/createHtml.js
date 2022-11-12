@@ -51,8 +51,8 @@ module.exports = {
       if (view.colorize) {
 
         innerHTML = innerHTML || view.text || (view.editable ? view.data : "")
-        innerHTML = toCode({ _window, string: innerHTML })
-        innerHTML = toCode({ _window, string: innerHTML, start: "'", end: "'"  })
+        innerHTML = toCode({ _window, string: innerHTML  })
+        innerHTML = toCode({ _window, string: innerHTML, start: "'", end: "'" })
         innerHTML = colorize({ _window, string: innerHTML })
       }
 

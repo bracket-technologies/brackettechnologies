@@ -111,7 +111,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+          if (isFn) {
+            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+          }
         }
       })
       
@@ -402,8 +405,12 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
     
                 // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
-                var _params = toParam({ req, res, _window, id, e, _, __, ___, _i,params, string: args[1] })
-                return setCookie({ ..._params, req, res, _window })
+                
+                args.slice(1).map(arg => {
+
+                    var _params = toParam({ req, res, _window, id, e, _, __, ___, _i, params, string: arg })
+                    setCookie({ ..._params, req, res, _window })
+                })
             } 
             
             else if (path0 === "cookie()") {
@@ -554,6 +561,15 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 o.splice(el, 1)
             } else delete o[el]
             
+            return o
+            
+        } else if (k0 === "del()") {
+            
+            if (args[1]) {
+                var myparam = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e })
+                delete o[myparam]
+            }
+
             return o
             
         } else if (k0 === "while()") {
@@ -2666,6 +2682,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
             var _id = typeof o === "string" ? o : o.id
             if (!views[_id]) return console.log("Element doesnot exist!")
+
+            var _parent = views[views[o.id].parent]
+            _parent.length = (_parent.element.children.length - 1) || 0
+            
             remove({ id: o.id })
 
         } else if (k0 === "removeChild()" || k0 === "remChild()" || k0 === "removeView()" || k0 === "remView()") { // remove only view without removing data
@@ -3463,9 +3483,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 if (args[2]) {
 
                     var _await = global.codes[args[2]]
-                    insert({ id: _params.id || _id, insert: _params, asyncer: true, await: _await })
+                    insert({ id: _params.id || _id, insert: _params, asyncer: true, await: _await, _, __, ___ })
 
-                } else insert({ id: _params.id || _id, insert: _params })
+                } else insert({ id: _params.id || _id, insert: _params, _, __, ___ })
             }
 
         } else if (k0 === "removeMapping()") {

@@ -2,6 +2,7 @@ const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { getCookie } = require("./cookie")
+const { toAwait } = require("./toAwait")
 
 const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }) => {
   
@@ -33,7 +34,7 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     await Promise.all(global.promises)
     
     // await params
-    if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
+    if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
 
   } else {
     

@@ -323,7 +323,10 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+          if (isFn) {
+            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+          }
         }
       })
       
@@ -374,7 +377,10 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === pathi.slice(0, -2))
-          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+          if (isFn) {
+            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn], start: "'", end: "'" })
+            isFn = toCode({ _window, id, string: isFn })
+          }
         }
       })
       

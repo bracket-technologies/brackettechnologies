@@ -6,7 +6,7 @@ const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 
 module.exports = {
-  insert: async ({ id, ...params }) => {
+  insert: async ({ id, _, __, ___, ...params }) => {
     
     var insert = params.insert, { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
@@ -17,10 +17,13 @@ module.exports = {
     
     if (index === undefined) {
       if (!view.length) {
+
         view.length = view.element.children.length || 0
         index = view.length
         view.length = view.length + 1
+
       } else {
+        
         index = view.length
         view.length = view.length + 1
       }
@@ -95,6 +98,6 @@ module.exports = {
     }
 
     // await params
-    if (params.asyncer) require("./toAwait").toAwait({ id, params })
+    if (params.asyncer) require("./toAwait").toAwait({ id, _: view.insert, __: _, ___: __, params })
   }
 }

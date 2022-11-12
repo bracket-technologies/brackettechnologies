@@ -1063,7 +1063,7 @@ module.exports = ({ controls, id }) => {
   return [{
     event: "keyup:input()?clearTimer():[droplist-timer:()];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()?e().key=Escape"
   }, {
-    event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0];if():[droplist-positioner:()!=().id]:[droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];droplist();().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}]]`,
+    event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0];if():[droplist-positioner:()!=().id]:[droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];droplist();timer():[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}]]:0]`,
     actions: `droplist:${id}??`
   }, {
     event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
@@ -1425,8 +1425,6 @@ const clone = (obj) => {
 module.exports = {clone}
 
 },{}],39:[function(require,module,exports){
-const { generate } = require("./generate")
-const { toCode } = require("./toCode")
 const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
 
 const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) => {
@@ -1434,6 +1432,8 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
     if (index === 8) index = 1
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
+
+
 
     while (string.includes("coded()")) {
 
@@ -1450,6 +1450,15 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
       key = colorize({ id, string: `'` + key + `'`, index: index + 1 })
       string = string0 + key + string.split("codedS()")[1].slice(5) + (string.split("codedS()").length > 2 ? "codedS()" + string.split("codedS()").slice(2).join("codedS()") : "")
     }
+
+    // #comments
+    /*while (string.includes("?#") || string.includes(";#")) {
+
+      var string0 = ""
+      if (string.split("?#")[1]) string0 = string.split("?#")[0]
+      else if (string.split(";#")[1]) string0 = string.split(";#")[0]
+      key = string.split(string0)[1].split
+    }*/
 
     // equal
     // string = string.split("=").join(`<span style="color:#444">=</span>`)
@@ -1486,7 +1495,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
 module.exports = { colorize }
 
-},{"./generate":65,"./toCode":110}],40:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = {
     compare: (value1, operator, value2) => {
         if (operator === "==") return value1 === value2
@@ -1684,11 +1693,9 @@ module.exports = {
     // my views
     if (!view["my-views"]) view["my-views"] = [...views[view.parent]["my-views"]]
 
-    // destructure type, params, & conditions from type
-    view.type = toCode({ _window, id, string: view.type })
-
-    // 'string'
-    if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
+    // 
+    view.type = toCode({ _window, string: view.type })
+    view.type = toCode({ _window, id, string: view.type, start: "'", end: "'" })
     
     var type = view.type.split("?")[0]
     var params = view.type.split("?")[1]
@@ -1746,12 +1753,10 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     // view is empty
     if (!view.type) return resolve("")
     if (!view["my-views"] && !_import) view["my-views"] = [...views[parent]["my-views"]]
-
-    // code []
-    view.type = toCode({ _window, string: view.type })
     
     // code ''
-    if (view.type.split("'").length > 2) view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
+    view.type = toCode({ _window, string: view.type })
+    view.type = toCode({ _window, string: view.type, start: "'", end: "'" })
     
     // 
     var type = view.type.split("?")[0]
@@ -1821,8 +1826,13 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       
       toArray(view.controls).map(async (controls = {}) => {
 
-        var event = toCode({ _window, string: controls.event || "" })
+        //
+        if (!controls.event) return
+        var event = toCode({ _window, string: controls.event })
+        event = toCode({ _window, string: event, start: "'", end: "'" })
+
         if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id: "root", string: event.split('?')[2] })) {
+
           toParam({ req, res, _window, id: "root", string: event.split("?")[1], createElement: true })
           view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
         }
@@ -1966,8 +1976,8 @@ module.exports = {
       if (view.colorize) {
 
         innerHTML = innerHTML || view.text || (view.editable ? view.data : "")
-        innerHTML = toCode({ _window, string: innerHTML })
-        innerHTML = toCode({ _window, string: innerHTML, start: "'", end: "'"  })
+        innerHTML = toCode({ _window, string: innerHTML  })
+        innerHTML = toCode({ _window, string: innerHTML, start: "'", end: "'" })
         innerHTML = colorize({ _window, string: innerHTML })
       }
 
@@ -2765,7 +2775,6 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 
     global["keyup-index"] = global["keyup-index"] || 0
     views.droplist.element.children[global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
-    // if (input_id) views[input_id].element.focus()
   }
 
   if (!view.droplist.preventDefault) global.droplistTimer = setTimeout(myFn, 100)
@@ -2854,6 +2863,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
 
   events = _events
   events = toCode({ _window, id, string: events })
+  events = toCode({ _window, id, string: events, start: "'", end: "'" })
   // if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   
   events = events.split("?")
@@ -3154,10 +3164,9 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
   // execute actions
   toArray(actions).map(_action => {
-    _action = toCode({ _window, string: _action, e })
 
-    // 'string'
-    if (_action.split("'").length > 2) _action = toCode({ _window, string: _action, start: "'", end: "'" })
+    _action = toCode({ _window, string: _action, e })
+    _action = toCode({ _window, string: _action, e, start: "'", end: "'" })
 
     var awaiter = ""
     var approved = true
@@ -3419,6 +3428,7 @@ const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { getCookie } = require("./cookie")
+const { toAwait } = require("./toAwait")
 
 const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }) => {
   
@@ -3448,9 +3458,9 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     await Promise.all(global.promises)
     await Promise.all(global.promises)
     await Promise.all(global.promises)
-    console.log("zzzzzzz", global.func);
+    
     // await params
-    if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
+    if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
 
   } else {
     
@@ -3805,7 +3815,7 @@ const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 
 module.exports = {
-  insert: async ({ id, ...params }) => {
+  insert: async ({ id, _, __, ___, ...params }) => {
     
     var insert = params.insert, { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
@@ -3816,10 +3826,13 @@ module.exports = {
     
     if (index === undefined) {
       if (!view.length) {
+
         view.length = view.element.children.length || 0
         index = view.length
         view.length = view.length + 1
+
       } else {
+        
         index = view.length
         view.length = view.length + 1
       }
@@ -3894,7 +3907,7 @@ module.exports = {
     }
 
     // await params
-    if (params.asyncer) require("./toAwait").toAwait({ id, params })
+    if (params.asyncer) require("./toAwait").toAwait({ id, _: view.insert, __: _, ___: __, params })
   }
 }
 },{"./clone":38,"./createElement":47,"./generate":65,"./setElement":98,"./starter":101,"./toArray":106,"./toAwait":107}],72:[function(require,module,exports){
@@ -4606,7 +4619,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+          if (isFn) {
+            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+          }
         }
       })
       
@@ -4897,8 +4913,12 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               if (_window) return views.root.controls.push({ event: `loading?${path.join(".")}` })
     
                 // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
-                var _params = toParam({ req, res, _window, id, e, _, __, ___, _i,params, string: args[1] })
-                return setCookie({ ..._params, req, res, _window })
+                
+                args.slice(1).map(arg => {
+
+                    var _params = toParam({ req, res, _window, id, e, _, __, ___, _i, params, string: arg })
+                    setCookie({ ..._params, req, res, _window })
+                })
             } 
             
             else if (path0 === "cookie()") {
@@ -5049,6 +5069,15 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 o.splice(el, 1)
             } else delete o[el]
             
+            return o
+            
+        } else if (k0 === "del()") {
+            
+            if (args[1]) {
+                var myparam = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e })
+                delete o[myparam]
+            }
+
             return o
             
         } else if (k0 === "while()") {
@@ -7161,6 +7190,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
             var _id = typeof o === "string" ? o : o.id
             if (!views[_id]) return console.log("Element doesnot exist!")
+
+            var _parent = views[views[o.id].parent]
+            _parent.length = (_parent.element.children.length - 1) || 0
+            
             remove({ id: o.id })
 
         } else if (k0 === "removeChild()" || k0 === "remChild()" || k0 === "removeView()" || k0 === "remView()") { // remove only view without removing data
@@ -7958,9 +7991,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 if (args[2]) {
 
                     var _await = global.codes[args[2]]
-                    insert({ id: _params.id || _id, insert: _params, asyncer: true, await: _await })
+                    insert({ id: _params.id || _id, insert: _params, asyncer: true, await: _await, _, __, ___ })
 
-                } else insert({ id: _params.id || _id, insert: _params })
+                } else insert({ id: _params.id || _id, insert: _params, _, __, ___ })
             }
 
         } else if (k0 === "removeMapping()") {
@@ -10147,7 +10180,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
   var view = window.views[id]
   if (!view) return
-
+  
   // data
   var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
@@ -10601,7 +10634,10 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
       clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+          if (isFn) {
+            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+          }
         }
       })
 
@@ -10676,29 +10712,32 @@ const toArray = (data) => {
 module.exports = {toArray}
 
 },{}],107:[function(require,module,exports){
-module.exports = {
-  toAwait: ({ _window, id, e, params = {}, req, res, _, __, ___ }) => {
+const { toCode } = require("./toCode")
 
-    const { execute } = require("./execute")
-    const { toParam } = require("./toParam")
-    
-    if (!params.asyncer) return
-    var awaiter = params.awaiter, awaits = params.await, _params
+const toAwait = ({ _window, id, e, params = {}, req, res, _, __, ___ }) => {
 
-    delete params.asyncer
-    delete params.awaiter
-    delete params.await
+  const { execute } = require("./execute")
+  const { toParam } = require("./toParam")
+  
+  if (!params.asyncer) return
+  var awaiter = params.awaiter, awaits = params.await, _params
 
-    // get params
-    awaits = require("./toCode").toCode({ _window, string: awaits, e })
-    if (awaits && awaits.length > 0) _params = toParam({ _window, id, e, string: awaits, asyncer: true, _, __, ___, req, res })
-    if (_params && _params.break) return
+  delete params.asyncer
+  delete params.awaiter
+  delete params.await
 
-    // override params
-    if (_params) params = { ...params, ..._params }
-    if (awaiter) execute({ _window, id, e, actions: awaiter, params, _, __, ___, req, res})
-  }
+  // get params
+  awaits = toCode({ _window, string: awaits, e })
+  awaits = toCode({ _window, string: awaits, e, start: "'", end: "'" })
+  if (awaits && awaits.length > 0) _params = toParam({ _window, id, e, string: awaits, asyncer: true, _, __, ___, req, res })
+  if (_params && _params.break) return
+
+  // override params
+  if (_params) params = { ...params, ..._params }
+  if (awaiter) execute({ _window, id, e, actions: awaiter, params, _, __, ___, req, res})
 }
+
+module.exports = {toAwait}
 },{"./execute":58,"./toCode":110,"./toParam":118}],108:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
@@ -10846,17 +10885,13 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
     var after = keys.join(start) ? `${start}${keys.join(start)}` : ""
 
     string = `${before}${value}${subKey.join(end)}${after}`
-
   }
 
-  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0)
-  string = toCode({ _window, string, e, start, end })
+  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, string, e, start, end })
 
   // 
   if (start === "(") string = string.split("___action___").join("()").split("___global___").join(")(")
 
-  // '...'
-  // if (string.split("'").length > 2) string = toCode({ _window, string, codes, e, start: "'", end: "'" })
   return string
 }
 
@@ -11333,7 +11368,10 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+          if (isFn) {
+            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+          }
         }
       })
       
@@ -11384,7 +11422,10 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === pathi.slice(0, -2))
-          if (isFn) isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+          if (isFn) {
+            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn], start: "'", end: "'" })
+            isFn = toCode({ _window, id, string: isFn })
+          }
         }
       })
       
@@ -11883,8 +11924,8 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
       if (!isFn) {
         isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
         if (isFn) {
-          isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+          isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn], start: "'", end: "'" })
+          isFn = toCode({ _window, id, string: isFn })
         }
       }
     })
@@ -12680,9 +12721,7 @@ const watch = ({ _window, controls, id }) => {
     if (!view) return
 
     var watch = toCode({ _window, id, string: controls.watch })
-
-    // 'string'
-    if (watch.split("'").length > 2) watch = toCode({ _window, string: watch, start: "'", end: "'" })
+    watch = toCode({ _window, string: watch, start: "'", end: "'" })
 
     var approved = toApproval({ id, string: watch.split('?')[2] })
     if (!approved || !watch) return

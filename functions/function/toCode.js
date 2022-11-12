@@ -48,17 +48,13 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
     var after = keys.join(start) ? `${start}${keys.join(start)}` : ""
 
     string = `${before}${value}${subKey.join(end)}${after}`
-
   }
 
-  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0)
-  string = toCode({ _window, string, e, start, end })
+  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, string, e, start, end })
 
   // 
   if (start === "(") string = string.split("___action___").join("()").split("___global___").join(")(")
 
-  // '...'
-  // if (string.split("'").length > 2) string = toCode({ _window, string, codes, e, start: "'", end: "'" })
   return string
 }
 

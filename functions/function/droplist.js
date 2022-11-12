@@ -140,7 +140,6 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 
     global["keyup-index"] = global["keyup-index"] || 0
     views.droplist.element.children[global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
-    // if (input_id) views[input_id].element.focus()
   }
 
   if (!view.droplist.preventDefault) global.droplistTimer = setTimeout(myFn, 100)

@@ -8,7 +8,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
   var view = window.views[id]
   if (!view) return
-
+  
   // data
   var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
