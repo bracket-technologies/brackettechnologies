@@ -108,6 +108,15 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
           }
         }
       })
+      
+      // global functions
+      if (!isFn) {
+        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
+      }
 
       // backend function
       if (!isFn) {
@@ -153,6 +162,7 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
     else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
     else if (key === "_") view[keygen] = _
     else if (key === "__") view[keygen] = __
+    else if (key === "___") view[keygen] = ___
     else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, __, ___, req, res, object, condition: true })
     else view[keygen] = reducer({ _window, id, path, e, _, __, ___, req, res, object: object ? object : view, condition: true })
     // else view[keygen] = key

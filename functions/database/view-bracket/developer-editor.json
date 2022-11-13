@@ -265,8 +265,24 @@
                       ]
                     },
                     {
-                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().3.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().3.style():[opacity=0;pointerEvents=none]]",
+                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().5.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().5.style():[opacity=0;pointerEvents=none]]",
                       "children": [
+                        {
+                          "type": "View?class=flexbox pointer;tooltip.text=switch to browser side;style:[position=absolute;top=-3rem;height=2.5rem;opacity=1;pointerEvents=auto;width=2.5rem;backgroundColor=#bbb;borderRadius=.5rem;left=.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[next().display();hide();mininote():switched to browser side]",
+                          "children": [
+                            {
+                              "type": "Icon?name=lock;google.symbol.outlined;style:[fontSize=2rem;color=#666]"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "View?class=flexbox pointer;tooltip.text=switch to server side;style:[display=none;position=absolute;top=-3rem;height=2.5rem;opacity=1;pointerEvents=auto;width=2.5rem;backgroundColor=#bbb;borderRadius=.5rem;left=.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[prev().display();hide();mininote():switched to browser side]",
+                          "children": [
+                            {
+                              "type": "Icon?name=lock_open;google.symbol.outlined;style:[fontSize=2rem;color=#666]"
+                            }
+                          ]
+                        },
                         {
                           "type": "View?class=flexbox pointer;tooltip.text=fit;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=1rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height='calc(100% - 7.5rem)';():data-viewer.style().height=0rem;timer():[functionsHeight:()=parent().element.offsetHeight/10]:200]",
                           "children": [

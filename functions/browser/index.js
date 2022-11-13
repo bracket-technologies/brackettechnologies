@@ -1986,7 +1986,7 @@ module.exports = {
       if (type === "View" || type === "Box") {
         tag = `<div ${view.draggable ? "draggable='true'" : ""} spellcheck="false" ${view.editable && !view.readonly ? "contenteditable" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ""}</div>`
       } else if (type === "Image") {
-        tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' src='${view.src || ""}'>${innerHTML}</img>`
+        tag = `<img ${view.draggable ? "draggable='true'" : ""} class='${view.class}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' ${view.src ? `src='${view.src}'` : ""}>${innerHTML}</img>`
       } else if (type === "Table") {
         tag = `<table ${view.draggable ? "draggable='true'" : ""} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</table>`
       } else if (type === "Row") {
@@ -3965,7 +3965,7 @@ const isEqual = function(value, other) {
 
   // string || boolean || number
   if (typeof value !== "object" && typeof other !== "object") {
-    return value == other;
+    return value === other;
   }
 
   // Get the value type
@@ -4627,6 +4627,14 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
       })
       
       if (!isFn) {
+        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
+      }
+      
+      if (!isFn) {
         isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
         if (isFn) backendFn = true
       }
@@ -4797,7 +4805,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     // while
     if (path0 === "while()") {
             
-      while (!global.return && toApproval({ _window, e, string: args[1], id, _, __, ___, _i, req, res, object })) {
+      while (toApproval({ _window, e, string: args[1], id, _, __, ___, _i, req, res, object })) {
         toValue({ req, res, _window, id, value: args[2], params, _, __, ___, _i, e, object, mount, createElement })
       }
       // path = path.slice(1)
@@ -6633,7 +6641,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } else if (k0 === "isEqual()" || k0 === "is()") {
             
             var args = k.split(":")
-            var b = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i,e })
+            var b = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e })
+            console.log(`'${o}'`, `'${b}'`);
             answer = isEqual(o, b)
             
         } else if (k0 === "greater()" || k0 === "isgreater()" || k0 === "isgreaterthan()" || k0 === "isGreaterThan()") {
@@ -10640,6 +10649,15 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
           }
         }
       })
+      
+      // global functions
+      if (!isFn) {
+        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
+      }
 
       // backend function
       if (!isFn) {
@@ -10685,6 +10703,7 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
     else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
     else if (key === "_") view[keygen] = _
     else if (key === "__") view[keygen] = __
+    else if (key === "___") view[keygen] = ___
     else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, __, ___, req, res, object, condition: true })
     else view[keygen] = reducer({ _window, id, path, e, _, __, ___, req, res, object: object ? object : view, condition: true })
     // else view[keygen] = key
@@ -11080,7 +11099,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
   // condition not param
   if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
   return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, __, ___, _i, object })
-  if (createElement) _ = views[id]._
+  // if (createElement) _ = views[id]._
 
   string.split(";").map(param => {
     
@@ -11375,6 +11394,15 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         }
       })
       
+      // global functions
+      if (!isFn) {
+        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
+      }
+      
       if (!isFn) {
         isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
         if (isFn) backendFn = true
@@ -11429,6 +11457,16 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         }
       })
       
+      // global functions
+      if (!isFn) {
+        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
+      }
+      
+      // backend functions
       if (!isFn) {
         isFn = (global.functions || []).find(fn => fn === pathi.slice(0, -2))
         if (isFn) backendFn = true
@@ -11806,7 +11844,7 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   var _functions = require("./function")
 
   // no value
-  if (!value) return value
+  if (!value || value === " ") return value
   
   // break & return
   if (view && (view.break || view.return)) return
@@ -11929,6 +11967,15 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
         }
       }
     })
+      
+    // global functions
+    if (!isFn) {
+      isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+      if (isFn) {
+        isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+        isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+      }
+    }
 
     // backend function
     if (!isFn) {

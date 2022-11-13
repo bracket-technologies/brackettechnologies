@@ -91,7 +91,7 @@ module.exports = ({ app, db, storage, rdb }) => {
         if (path[1] === "database") return require("./databaseLocal").getdb({ req, res })
         }*/
         
-console.log(path);
+console.log(path); 
         // resources
         if (path[i] === "resources") return require("./storageLocal").getFile({ req, res })
         

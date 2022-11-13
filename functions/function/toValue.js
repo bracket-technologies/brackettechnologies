@@ -22,7 +22,7 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   var _functions = require("./function")
 
   // no value
-  if (!value) return value
+  if (!value || value === " ") return value
   
   // break & return
   if (view && (view.break || view.return)) return
@@ -145,6 +145,15 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
         }
       }
     })
+      
+    // global functions
+    if (!isFn) {
+      isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+      if (isFn) {
+        isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+        isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+      }
+    }
 
     // backend function
     if (!isFn) {

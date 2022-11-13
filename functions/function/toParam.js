@@ -35,7 +35,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
   // condition not param
   if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
   return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, __, ___, _i, object })
-  if (createElement) _ = views[id]._
+  // if (createElement) _ = views[id]._
 
   string.split(";").map(param => {
     
@@ -330,6 +330,15 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         }
       })
       
+      // global functions
+      if (!isFn) {
+        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
+      }
+      
       if (!isFn) {
         isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
         if (isFn) backendFn = true
@@ -384,6 +393,16 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         }
       })
       
+      // global functions
+      if (!isFn) {
+        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
+      }
+      
+      // backend functions
       if (!isFn) {
         isFn = (global.functions || []).find(fn => fn === pathi.slice(0, -2))
         if (isFn) backendFn = true

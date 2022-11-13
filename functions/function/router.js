@@ -274,7 +274,7 @@ const app = async ({ req, res }) => {
     
     // main head tags
     var favicon = global.data.project.favicon
-    var language = global.language = view.language || "en"
+    var language = global.language = /*view.language || */"en"
     var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
     var title = view.title || "My App Title"
     var children = clone(global.children)

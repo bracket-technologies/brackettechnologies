@@ -5,7 +5,7 @@ const isEqual = function(value, other) {
 
   // string || boolean || number
   if (typeof value !== "object" && typeof other !== "object") {
-    return value == other;
+    return value === other;
   }
 
   // Get the value type

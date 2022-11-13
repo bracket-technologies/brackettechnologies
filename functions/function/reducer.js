@@ -119,6 +119,14 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
       })
       
       if (!isFn) {
+        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
+      }
+      
+      if (!isFn) {
         isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
         if (isFn) backendFn = true
       }
@@ -289,7 +297,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     // while
     if (path0 === "while()") {
             
-      while (!global.return && toApproval({ _window, e, string: args[1], id, _, __, ___, _i, req, res, object })) {
+      while (toApproval({ _window, e, string: args[1], id, _, __, ___, _i, req, res, object })) {
         toValue({ req, res, _window, id, value: args[2], params, _, __, ___, _i, e, object, mount, createElement })
       }
       // path = path.slice(1)
@@ -2125,7 +2133,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } else if (k0 === "isEqual()" || k0 === "is()") {
             
             var args = k.split(":")
-            var b = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i,e })
+            var b = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e })
+            console.log(`'${o}'`, `'${b}'`);
             answer = isEqual(o, b)
             
         } else if (k0 === "greater()" || k0 === "isgreater()" || k0 === "isgreaterthan()" || k0 === "isGreaterThan()") {
