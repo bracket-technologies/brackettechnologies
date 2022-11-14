@@ -5,20 +5,12 @@ const starter = ({ id }) => {
   
   const { defaultEventHandler } = require("./event")
   const { controls } = require("./controls")
-  const { defaultInputHandler } = require("./defaultInputHandler")
 
   var view = window.views[id]
   if (!view) return
   
   // status
   view.status = "Mounting Functions"
-
-  /* Defaults must start before controls */
-  
-  // on loaded image
-  // if (view.type === 'Image') view.element.src = view.src
-
-  /* End of default handlers */
 
   // lunch auto controls
   Object.entries(control).map(([type, control]) => {

@@ -13,7 +13,7 @@
           "type": "View?style.display=flex;style.alignItems=center;style.height=100%;style.width=100%;style.position=relative;style.gap=1rem",
           "children": [
             {
-              "type": "Text?link.path=/;text=Bracket;class=flexbox;style.margin=0 1rem;style.fontSize=2rem;style.width=fit-content;style.color=#ee384e;style.fontWeight=900"
+              "type": "Text?link:[path=/;preventDefault];text=Bracket;class=flexbox;style.margin=0 1rem;style.fontSize=2rem;style.width=fit-content;style.color=#ee384e;style.fontWeight=900"
             },
             {
               "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #ddd;style.borderLeft=1px solid #ddd;style.transition=.2s;droplist:[items='data:().editor.account.projects';item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault]",

@@ -68,6 +68,8 @@ module.exports = {
         else if (k === "gridAutoRows") k = "grid-auto-columns";
         style += `${k}:${v}; `
       })
+
+      style = style.slice(0, -2)
     }
 
     return style

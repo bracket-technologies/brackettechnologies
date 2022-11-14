@@ -260,7 +260,7 @@ const defaultEventHandler = ({ id }) => {
   view.mouseentered = false
   view.mousedowned = false
 
-  if (view.link && typeof view.link === "object" && view.link.preventDefault) view.element.addEventListener("click", (e) => { if (!view.link.link) e.preventDefault() })
+  if (view.link && typeof view.link === "object" && view.link.preventDefault) view.element.addEventListener("click", (e) => { /*if (!view.link.link)*/ e.preventDefault() })
 
   // input
   if (view.type === "Input") {

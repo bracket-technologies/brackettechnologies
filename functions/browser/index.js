@@ -582,7 +582,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":38,"../function/generate":65,"../function/merge":80,"../function/toComponent":111,"../function/toString":122}],4:[function(require,module,exports){
+},{"../function/clone":38,"../function/generate":65,"../function/merge":80,"../function/toComponent":111,"../function/toString":121}],4:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -964,7 +964,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":111,"../function/toString":122}],8:[function(require,module,exports){
+},{"../function/toComponent":111,"../function/toString":121}],8:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Item : require("./Item"),
@@ -1314,7 +1314,7 @@ const axios = async ({ id, ...params }) => {
 }
 
 module.exports = { axios }
-},{"./toAwait":107,"axios":131}],35:[function(require,module,exports){
+},{"./toAwait":107,"axios":130}],35:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -1584,7 +1584,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":57,"./toArray":106,"./watch":130}],43:[function(require,module,exports){
+},{"./event":57,"./toArray":106,"./watch":129}],43:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
@@ -1922,7 +1922,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
 module.exports = { createElement }
 
-},{"./clone":38,"./createHtml":48,"./createTags":49,"./generate":65,"./merge":80,"./reducer":87,"./toApproval":105,"./toArray":106,"./toCode":110,"./toParam":118,"./toValue":124}],48:[function(require,module,exports){
+},{"./clone":38,"./createHtml":48,"./createTags":49,"./generate":65,"./merge":80,"./reducer":87,"./toApproval":105,"./toArray":106,"./toCode":110,"./toParam":118,"./toValue":123}],48:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
@@ -2086,7 +2086,7 @@ module.exports = {
     })
   }
 }
-},{"./clone":38,"./colorize":39,"./createElement":47,"./generate":65,"./toArray":106,"./toCode":110,"./toStyle":123}],49:[function(require,module,exports){
+},{"./clone":38,"./colorize":39,"./createElement":47,"./generate":65,"./toArray":106,"./toCode":110,"./toStyle":122}],49:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2300,7 +2300,7 @@ const createView = ({ view, id = generate() }) => {
 }
 
 module.exports = {createView}
-},{"./clone":38,"./generate":65,"./toArray":106,"./update":126}],51:[function(require,module,exports){
+},{"./clone":38,"./generate":65,"./toArray":106,"./update":125}],51:[function(require,module,exports){
 const { toParam } = require("./toParam");
 
 module.exports = {
@@ -2781,7 +2781,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":38,"./reducer":87,"./toString":122,"./toValue":124,"./update":126}],56:[function(require,module,exports){
+},{"./clone":38,"./reducer":87,"./toString":121,"./toValue":123,"./update":125}],56:[function(require,module,exports){
 const axios = require("axios");
 const { clone } = require("./clone");
 const { toArray } = require("./toArray");
@@ -2821,7 +2821,7 @@ const erase = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 }
 
 module.exports = { erase }
-},{"./clone":38,"./toArray":106,"./toAwait":107,"./toString":122,"axios":131}],57:[function(require,module,exports){
+},{"./clone":38,"./toArray":106,"./toAwait":107,"./toString":121,"axios":130}],57:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -3084,7 +3084,7 @@ const defaultEventHandler = ({ id }) => {
   view.mouseentered = false
   view.mousedowned = false
 
-  if (view.link && typeof view.link === "object" && view.link.preventDefault) view.element.addEventListener("click", (e) => { if (!view.link.link) e.preventDefault() })
+  if (view.link && typeof view.link === "object" && view.link.preventDefault) view.element.addEventListener("click", (e) => { /*if (!view.link.link)*/ e.preventDefault() })
 
   // input
   if (view.type === "Input") {
@@ -3143,7 +3143,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":38,"./execute":58,"./generate":65,"./toApproval":105,"./toArray":106,"./toCode":110,"./toParam":118,"./toValue":124}],58:[function(require,module,exports){
+},{"./clone":38,"./execute":58,"./generate":65,"./toApproval":105,"./toArray":106,"./toCode":110,"./toParam":118,"./toValue":123}],58:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -3297,7 +3297,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
 module.exports = { execute }
 
-},{"./function":64,"./isParam":75,"./toApproval":105,"./toArray":106,"./toAwait":107,"./toCode":110,"./toParam":118,"./toValue":124}],59:[function(require,module,exports){
+},{"./function":64,"./isParam":75,"./toApproval":105,"./toArray":106,"./toAwait":107,"./toCode":110,"./toParam":118,"./toValue":123}],59:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -3499,7 +3499,7 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
 }
 
 module.exports = { func }
-},{"./clone":38,"./cookie":43,"./toAwait":107,"./toCode":110,"./toParam":118,"axios":131}],64:[function(require,module,exports){
+},{"./clone":38,"./cookie":43,"./toAwait":107,"./toCode":110,"./toParam":118,"axios":130}],64:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -3675,7 +3675,7 @@ module.exports = {
   insert,
   axios
 }
-},{"./axios":34,"./blur":35,"./capitalize":36,"./clearValues":37,"./clone":38,"./compare":40,"./contentful":41,"./controls":42,"./cookie":43,"./createActions":45,"./createComponent":46,"./createElement":47,"./createHtml":48,"./createView":50,"./data":52,"./decode":53,"./defaultInputHandler":54,"./droplist":55,"./erase":56,"./event":57,"./execute":58,"./exportJson":59,"./fileReader":60,"./filter":61,"./focus":62,"./generate":65,"./getDateTime":66,"./getDaysInMonth":67,"./getParam":68,"./importJson":70,"./insert":71,"./isArabic":72,"./isEqual":74,"./isPath":76,"./jsonFiles":77,"./keys":78,"./log":79,"./merge":80,"./note":81,"./overflow":82,"./popup":83,"./position":84,"./preventDefault":85,"./reducer":87,"./refresh":88,"./reload":89,"./remove":90,"./resize":91,"./route":92,"./save":93,"./search":95,"./setContent":96,"./setData":97,"./setElement":98,"./setPosition":99,"./sort":100,"./starter":101,"./state":102,"./style":103,"./switchMode":104,"./toApproval":105,"./toArray":106,"./toAwait":107,"./toCSV":108,"./toCode":110,"./toComponent":111,"./toControls":112,"./toId":115,"./toNumber":116,"./toOperator":117,"./toParam":118,"./toString":122,"./toStyle":123,"./toValue":124,"./toggleView":125,"./update":126,"./upload":128,"./wait":129}],65:[function(require,module,exports){
+},{"./axios":34,"./blur":35,"./capitalize":36,"./clearValues":37,"./clone":38,"./compare":40,"./contentful":41,"./controls":42,"./cookie":43,"./createActions":45,"./createComponent":46,"./createElement":47,"./createHtml":48,"./createView":50,"./data":52,"./decode":53,"./defaultInputHandler":54,"./droplist":55,"./erase":56,"./event":57,"./execute":58,"./exportJson":59,"./fileReader":60,"./filter":61,"./focus":62,"./generate":65,"./getDateTime":66,"./getDaysInMonth":67,"./getParam":68,"./importJson":70,"./insert":71,"./isArabic":72,"./isEqual":74,"./isPath":76,"./jsonFiles":77,"./keys":78,"./log":79,"./merge":80,"./note":81,"./overflow":82,"./popup":83,"./position":84,"./preventDefault":85,"./reducer":87,"./refresh":88,"./reload":89,"./remove":90,"./resize":91,"./route":92,"./save":93,"./search":95,"./setContent":96,"./setData":97,"./setElement":98,"./setPosition":99,"./sort":100,"./starter":101,"./state":102,"./style":103,"./switchMode":104,"./toApproval":105,"./toArray":106,"./toAwait":107,"./toCSV":108,"./toCode":110,"./toComponent":111,"./toControls":112,"./toId":115,"./toNumber":116,"./toOperator":117,"./toParam":118,"./toString":121,"./toStyle":122,"./toValue":123,"./toggleView":124,"./update":125,"./upload":127,"./wait":128}],65:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -3751,7 +3751,6 @@ module.exports = {
   getType: (value) => {
     if (typeof value === "boolean" || value === "true" || value === "false") return "boolean"
     if (typeof value === "object" && Array.isArray(value)) return "array"
-    if (typeof value === "string") return "string"
     if (typeof value === "object") return "map"
     if (typeof value === "function") return "function"
     if (typeof value === "number" || (!isNaN(value) && value !== "")) {
@@ -3761,8 +3760,9 @@ module.exports = {
       
       if ((value + "").length >= 10 && (value + "").length <= 13 && (value + "").slice(0, 2) !== "0") return "timestamp"
       if ((value + "").length === 8 && (value + "").slice(0, 2) !== "00") return "time"
-      return "number"
+      if (typeof value === "number") return "number"
     }
+    if (typeof value === "string") return "string"
   }
 }
 },{}],70:[function(require,module,exports){
@@ -4253,7 +4253,7 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":106,"./toOperator":117,"fs":160}],78:[function(require,module,exports){
+},{"./toArray":106,"./toOperator":117,"fs":159}],78:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
@@ -4512,7 +4512,6 @@ const { isEqual } = require("./isEqual")
 const { capitalize, capitalizeFirst } = require("./capitalize")
 const { clone } = require("./clone")
 const { toNumber } = require("./toNumber")
-const { toPrice } = require("./toPrice")
 const { getDateTime } = require("./getDateTime")
 const { getDaysInMonth } = require("./getDaysInMonth")
 const { getType } = require("./getType")
@@ -9142,7 +9141,7 @@ var formatter = new Intl.NumberFormat('en-US', {
 });
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./actions.json":33,"./axios":34,"./capitalize":36,"./clone":38,"./cookie":43,"./counter":44,"./csvToJson":51,"./decode":53,"./droplist":55,"./erase":56,"./execute":58,"./exportJson":59,"./focus":62,"./func":63,"./function":64,"./generate":65,"./getDateTime":66,"./getDaysInMonth":67,"./getType":69,"./importJson":70,"./insert":71,"./isCondition":73,"./isEqual":74,"./isParam":75,"./note":81,"./print":86,"./refresh":88,"./remove":90,"./route":92,"./save":93,"./search":95,"./setPosition":99,"./sort":100,"./toApproval":105,"./toArray":106,"./toAwait":107,"./toCSV":108,"./toClock":109,"./toCode":110,"./toExcel":113,"./toId":115,"./toNumber":116,"./toParam":118,"./toPdf":119,"./toPrice":120,"./toSimplifiedDate":121,"./toValue":124,"./toggleView":125,"./update":126,"./updateSelf":127,"./upload":128}],88:[function(require,module,exports){
+},{"./actions.json":33,"./axios":34,"./capitalize":36,"./clone":38,"./cookie":43,"./counter":44,"./csvToJson":51,"./decode":53,"./droplist":55,"./erase":56,"./execute":58,"./exportJson":59,"./focus":62,"./func":63,"./function":64,"./generate":65,"./getDateTime":66,"./getDaysInMonth":67,"./getType":69,"./importJson":70,"./insert":71,"./isCondition":73,"./isEqual":74,"./isParam":75,"./note":81,"./print":86,"./refresh":88,"./remove":90,"./route":92,"./save":93,"./search":95,"./setPosition":99,"./sort":100,"./toApproval":105,"./toArray":106,"./toAwait":107,"./toCSV":108,"./toClock":109,"./toCode":110,"./toExcel":113,"./toId":115,"./toNumber":116,"./toParam":118,"./toPdf":119,"./toSimplifiedDate":120,"./toValue":123,"./toggleView":124,"./update":125,"./updateSelf":126,"./upload":127}],88:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -9231,7 +9230,7 @@ const refresh = async ({ id, update = {} }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":38,"./createElement":47,"./generate":65,"./setElement":98,"./starter":101,"./toArray":106,"./update":126}],89:[function(require,module,exports){
+},{"./clone":38,"./createElement":47,"./generate":65,"./setElement":98,"./starter":101,"./toArray":106,"./update":125}],89:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
@@ -9323,7 +9322,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":38,"./reducer":87,"./toCode":110,"./toParam":118,"./update":126}],91:[function(require,module,exports){
+},{"./clone":38,"./reducer":87,"./toCode":110,"./toParam":118,"./update":125}],91:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -9450,7 +9449,7 @@ module.exports = {
       }
     }
 }
-},{"./clone":38,"./createElement":47,"./update":126}],93:[function(require,module,exports){
+},{"./clone":38,"./createElement":47,"./update":125}],93:[function(require,module,exports){
 var { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { generate } = require("./generate")
@@ -9577,7 +9576,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 }
 
 module.exports = { save }
-},{"./clone":38,"./generate":65,"./schematize":94,"./toAwait":107,"./toParam":118,"axios":131}],94:[function(require,module,exports){
+},{"./clone":38,"./generate":65,"./schematize":94,"./toAwait":107,"./toParam":118,"axios":130}],94:[function(require,module,exports){
 const schematize = ({ data, schema }) => {
   var _data = {}
   schema.map(schema => {
@@ -9879,7 +9878,7 @@ module.exports = {
     // if (_data.message === "Force reload!") return location.reload()
   }
 }
-},{"./clone":38,"./toAwait":107,"./toFirebaseOperator":114,"./toString":122,"axios":131}],96:[function(require,module,exports){
+},{"./clone":38,"./toAwait":107,"./toFirebaseOperator":114,"./toString":121,"axios":130}],96:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -10312,20 +10311,12 @@ const starter = ({ id }) => {
   
   const { defaultEventHandler } = require("./event")
   const { controls } = require("./controls")
-  const { defaultInputHandler } = require("./defaultInputHandler")
 
   var view = window.views[id]
   if (!view) return
   
   // status
   view.status = "Mounting Functions"
-
-  /* Defaults must start before controls */
-  
-  // on loaded image
-  // if (view.type === 'Image') view.element.src = view.src
-
-  /* End of default handlers */
 
   // lunch auto controls
   Object.entries(control).map(([type, control]) => {
@@ -10349,7 +10340,7 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":14,"./controls":42,"./defaultInputHandler":54,"./event":57,"./toArray":106}],102:[function(require,module,exports){
+},{"../control/control":14,"./controls":42,"./event":57,"./toArray":106}],102:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
@@ -10723,7 +10714,7 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
 
 module.exports = { toApproval }
 
-},{"./actions.json":33,"./clone":38,"./func":63,"./function":64,"./generate":65,"./isEqual":74,"./reducer":87,"./toCode":110,"./toValue":124}],106:[function(require,module,exports){
+},{"./actions.json":33,"./clone":38,"./func":63,"./function":64,"./generate":65,"./isEqual":74,"./reducer":87,"./toCode":110,"./toValue":123}],106:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
@@ -11624,7 +11615,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
 
 module.exports = { toParam }
 
-},{"./actions.json":33,"./clone":38,"./decode":53,"./func":63,"./function":64,"./generate":65,"./isParam":75,"./reducer":87,"./toApproval":105,"./toArray":106,"./toCode":110,"./toValue":124}],119:[function(require,module,exports){
+},{"./actions.json":33,"./clone":38,"./decode":53,"./func":63,"./function":64,"./generate":65,"./isParam":75,"./reducer":87,"./toApproval":105,"./toArray":106,"./toCode":110,"./toValue":123}],119:[function(require,module,exports){
 module.exports = {
     toPdf: async ({ id, options }) => {
 
@@ -11654,13 +11645,6 @@ module.exports = {
     }
 }
 },{}],120:[function(require,module,exports){
-module.exports = {
-  toPrice: (string) => {
-    return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  },
-};
-
-},{}],121:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -11708,7 +11692,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],122:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -11742,7 +11726,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],123:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -11813,13 +11797,15 @@ module.exports = {
         else if (k === "gridAutoRows") k = "grid-auto-columns";
         style += `${k}:${v}; `
       })
+
+      style = style.slice(0, -2)
     }
 
     return style
   }
 }
 
-},{}],124:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 const { clone } = require("./clone");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
@@ -12270,7 +12256,7 @@ const calcDivision = ({ _window, value, params, _, __, ___, _i, id, e, req, res,
 
 module.exports = { toValue, calcSubs, calcDivision }
 
-},{"./actions.json":33,"./clone":38,"./func":63,"./function":64,"./generate":65,"./isParam":75,"./reducer":87,"./toCode":110,"./toParam":118}],125:[function(require,module,exports){
+},{"./actions.json":33,"./clone":38,"./func":63,"./function":64,"./generate":65,"./isParam":75,"./reducer":87,"./toCode":110,"./toParam":118}],124:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -12402,7 +12388,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":38,"./createElement":47,"./generate":65,"./search":95,"./setElement":98,"./starter":101,"./toCode":110,"./toParam":118,"./update":126}],126:[function(require,module,exports){
+},{"./clone":38,"./createElement":47,"./generate":65,"./search":95,"./setElement":98,"./starter":101,"./toCode":110,"./toParam":118,"./update":125}],125:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -12508,7 +12494,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":38,"./createElement":47,"./generate":65,"./setElement":98,"./starter":101,"./toArray":106,"./toCode":110,"./toParam":118}],127:[function(require,module,exports){
+},{"./clone":38,"./createElement":47,"./generate":65,"./setElement":98,"./starter":101,"./toArray":106,"./toCode":110,"./toParam":118}],126:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -12624,7 +12610,7 @@ const updateSelf = async ({ _window, id, update = {}, route }) => {
 }
 
 module.exports = {updateSelf}
-},{"./clone":38,"./createElement":47,"./generate":65,"./setElement":98,"./starter":101,"./toArray":106,"./toCode":110,"./update":126}],128:[function(require,module,exports){
+},{"./clone":38,"./createElement":47,"./generate":65,"./setElement":98,"./starter":101,"./toArray":106,"./toCode":110,"./update":125}],127:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
@@ -12744,7 +12730,7 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./clone":38,"./generate":65,"./toArray":106,"./toAwait":107,"axios":131}],129:[function(require,module,exports){
+},{"./clone":38,"./generate":65,"./toArray":106,"./toAwait":107,"axios":130}],128:[function(require,module,exports){
 const wait = async ({ id, e, ...params }) => {
 
   // await params
@@ -12752,7 +12738,7 @@ const wait = async ({ id, e, ...params }) => {
 }
 
 module.exports = { wait }
-},{"./toAwait":107}],130:[function(require,module,exports){
+},{"./toAwait":107}],129:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -12819,9 +12805,9 @@ const watch = ({ _window, controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":38,"./execute":58,"./isEqual":74,"./toApproval":105,"./toCode":110,"./toParam":118,"./toValue":124}],131:[function(require,module,exports){
+},{"./clone":38,"./execute":58,"./isEqual":74,"./toApproval":105,"./toCode":110,"./toParam":118,"./toValue":123}],130:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":133}],132:[function(require,module,exports){
+},{"./lib/axios":132}],131:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13012,7 +12998,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":139,"../core/createError":140,"./../core/settle":144,"./../helpers/buildURL":148,"./../helpers/cookies":150,"./../helpers/isURLSameOrigin":153,"./../helpers/parseHeaders":155,"./../utils":158}],133:[function(require,module,exports){
+},{"../core/buildFullPath":138,"../core/createError":139,"./../core/settle":143,"./../helpers/buildURL":147,"./../helpers/cookies":149,"./../helpers/isURLSameOrigin":152,"./../helpers/parseHeaders":154,"./../utils":157}],132:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -13070,7 +13056,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":134,"./cancel/CancelToken":135,"./cancel/isCancel":136,"./core/Axios":137,"./core/mergeConfig":143,"./defaults":146,"./helpers/bind":147,"./helpers/isAxiosError":152,"./helpers/spread":156,"./utils":158}],134:[function(require,module,exports){
+},{"./cancel/Cancel":133,"./cancel/CancelToken":134,"./cancel/isCancel":135,"./core/Axios":136,"./core/mergeConfig":142,"./defaults":145,"./helpers/bind":146,"./helpers/isAxiosError":151,"./helpers/spread":155,"./utils":157}],133:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13091,7 +13077,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],135:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -13150,14 +13136,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":134}],136:[function(require,module,exports){
+},{"./Cancel":133}],135:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],137:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13307,7 +13293,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":148,"../helpers/validator":157,"./../utils":158,"./InterceptorManager":138,"./dispatchRequest":141,"./mergeConfig":143}],138:[function(require,module,exports){
+},{"../helpers/buildURL":147,"../helpers/validator":156,"./../utils":157,"./InterceptorManager":137,"./dispatchRequest":140,"./mergeConfig":142}],137:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13363,7 +13349,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":158}],139:[function(require,module,exports){
+},{"./../utils":157}],138:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -13385,7 +13371,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":149,"../helpers/isAbsoluteURL":151}],140:[function(require,module,exports){
+},{"../helpers/combineURLs":148,"../helpers/isAbsoluteURL":150}],139:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -13405,7 +13391,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":142}],141:[function(require,module,exports){
+},{"./enhanceError":141}],140:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13489,7 +13475,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":136,"../defaults":146,"./../utils":158,"./transformData":145}],142:[function(require,module,exports){
+},{"../cancel/isCancel":135,"../defaults":145,"./../utils":157,"./transformData":144}],141:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13533,7 +13519,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],143:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -13622,7 +13608,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":158}],144:[function(require,module,exports){
+},{"../utils":157}],143:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -13649,7 +13635,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":140}],145:[function(require,module,exports){
+},{"./createError":139}],144:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13673,7 +13659,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":146,"./../utils":158}],146:[function(require,module,exports){
+},{"./../defaults":145,"./../utils":157}],145:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -13811,7 +13797,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":132,"./adapters/xhr":132,"./core/enhanceError":142,"./helpers/normalizeHeaderName":154,"./utils":158,"_process":161}],147:[function(require,module,exports){
+},{"./adapters/http":131,"./adapters/xhr":131,"./core/enhanceError":141,"./helpers/normalizeHeaderName":153,"./utils":157,"_process":160}],146:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -13824,7 +13810,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],148:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13896,7 +13882,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":158}],149:[function(require,module,exports){
+},{"./../utils":157}],148:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13912,7 +13898,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],150:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13967,7 +13953,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":158}],151:[function(require,module,exports){
+},{"./../utils":157}],150:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13983,7 +13969,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],152:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13996,7 +13982,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],153:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14066,7 +14052,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":158}],154:[function(require,module,exports){
+},{"./../utils":157}],153:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -14080,7 +14066,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":158}],155:[function(require,module,exports){
+},{"../utils":157}],154:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14135,7 +14121,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":158}],156:[function(require,module,exports){
+},{"./../utils":157}],155:[function(require,module,exports){
 'use strict';
 
 /**
@@ -14164,7 +14150,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],157:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -14271,7 +14257,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":159}],158:[function(require,module,exports){
+},{"./../../package.json":158}],157:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -14622,7 +14608,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":147}],159:[function(require,module,exports){
+},{"./helpers/bind":146}],158:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -14708,9 +14694,9 @@ module.exports={
   ]
 }
 
-},{}],160:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 
-},{}],161:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
