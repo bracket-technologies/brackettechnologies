@@ -794,7 +794,7 @@ module.exports = (component) => {
                     type: "Text?class=flexbox;text={;style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.height=100%?data().type()=map"
                 }, {
                     type: "View?class=flexbox mini-controls;style:[height=2rem;overflowY=hidden;borderRadius=.25rem;padding=.5rem;gap=.75rem;zIndex=1;position=absolute;left=[path().len()*(-2.1)]+rem];mouseleave:[2ndChild().style():[opacity=0;pointerEvents=none];3rdChild().style():[opacity=0;pointerEvents=none]]",
-                    children: [
+                    /*children: [
                         {
                             type: "Text?line-counter:()++;text=line-counter:();class=flexbox line-counter pointer mini-controls;style:[fontSize=1.2rem];mouseenter:[next().style():[opacity=1;pointerEvents=auto];2ndNext().style():[opacity=1;pointerEvents=auto]]"
                         }, {
@@ -837,7 +837,7 @@ module.exports = (component) => {
                         }, {
                             type: "Icon?class=flexbox pointer mini-controls;name=bi-eye;style:[fontSize=1.4rem;opacity=0;pointerEvents=none;backgroundColor=#fff]?false"
                         }
-                    ]
+                    ]*/
                 }, {
                     type: "View?style.overflow=auto;style.whiteSpace=nowrap?data().type()=string",
                     children: [{
@@ -1426,14 +1426,14 @@ module.exports = {clone}
 
 },{}],39:[function(require,module,exports){
 const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
+const arabic = /[\u0600-\u06FF\u0750-\u077F]/
+const english = /[a-zA-Z]/
 
 const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) => {
   
     if (index === 8) index = 1
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
-
-
 
     while (string.includes("coded()")) {
 
@@ -1462,6 +1462,25 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
     // equal
     // string = string.split("=").join(`<span style="color:#444">=</span>`)
+
+    // change font for arabic chars
+    if (arabic.test(string)) {
+      var i = 0, lastIndex = string.length - 1, start = false, newString = ""
+      while (i <= lastIndex) {
+        if (arabic.test(string[i]) && !english.test(string[i]) || start === false && arabic.test(string[i+1]) && !english.test(string[i+1]) || (start !== false && string[i] === " ")) {
+          if (start === false) {
+            start = i
+            newString += `<span contenteditable class="arabic" style="color:inherit; background-color=#00000000; white-space:pre">`
+          }
+        } else if (start !== false) {
+          start = false
+          newString += `</span>`
+        } else start = false
+        newString += string[i]
+        i++
+      }
+      string = newString
+    }
     
     if (index !== 0) {
       /*
@@ -1476,18 +1495,21 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
       //string = string.split(";").join(`<span contenteditable style="color:#000">;</span>`)
 
       // actions
-      /*var _actions = string.split("()")
-      string = _actions.map((str, index) => {
-        var lastIndex = str.length - 1
-        if (str[lastIndex] !== ":" && index !== _actions.length - 1) {
-          var i = lastIndex--
-          while (str[i] && str[i] !== ";" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") {
-            i--
-          }
-          str = str.slice(0, i + 1) + `<span contenteditable style="color:#e68a00">${str.slice(i + 1)}()</span>`
-          return str
-        } else return (index !== _actions.length - 1) ? str + "()" : str
-      }).join("")*/
+      string = string.split(";").map(string => {
+        var _actions = string.split("()")
+        string = _actions.map((str, index) => {
+          var lastIndex = str.length - 1
+          if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
+            var i = lastIndex - 1
+            while (str[i] && str[i] !== ";" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
+              i--
+            }
+            /*if (!actions.includes(str.slice(i+1) + "()")) */return str.slice(0, i+1) + `<span contenteditable style="text-decoration:underline;color:inherit">${str.slice(i+1)}()</span>`
+            //else return (index !== _actions.length - 1) ? str + "()" : str
+          } else return (index !== _actions.length - 1) ? str + "()" : str
+        }).join("")
+        return string
+      }).join(";")
 
       return string
     }
@@ -4939,14 +4961,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             }
             
             else if (path0 === "today()") _object = new Date()
-            else if (path0 === "" || path0 === "_dots") _object = "..."
             else if (path0 === "" || path0 === "_string") _object = ""
-            else if (path0 === "'" || path0 === "_quotation") _object = "'"
-            else if (path0 === `"` || path0 === "_quotations") _object = `"`
-            else if (path0 === ` ` || path0 === "_space") _object = " "
-            else if (path0 === "_number") _object = 0
-            else if (path0 === "_index") _object = index
-            else if (path0 === "_boolearn") _object = true
             else if (path0 === "_array" || path0 === "_list") {
 
                 _object = []
@@ -12278,6 +12293,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
   if (togglePage) parentId = "root"
   if (!toggleId) {
     if (!parentId) parentId = id
+    console.log(parentId);
     toggleId = views[parentId].element.children[0] && views[parentId].element.children[0].id
   } else if (!parentId) parentId = views[toggleId].element.parentNode.id && views[toggleId].element.parentNode.id
   

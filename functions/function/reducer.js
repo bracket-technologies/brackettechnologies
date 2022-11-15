@@ -431,14 +431,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             }
             
             else if (path0 === "today()") _object = new Date()
-            else if (path0 === "" || path0 === "_dots") _object = "..."
             else if (path0 === "" || path0 === "_string") _object = ""
-            else if (path0 === "'" || path0 === "_quotation") _object = "'"
-            else if (path0 === `"` || path0 === "_quotations") _object = `"`
-            else if (path0 === ` ` || path0 === "_space") _object = " "
-            else if (path0 === "_number") _object = 0
-            else if (path0 === "_index") _object = index
-            else if (path0 === "_boolearn") _object = true
             else if (path0 === "_array" || path0 === "_list") {
 
                 _object = []
