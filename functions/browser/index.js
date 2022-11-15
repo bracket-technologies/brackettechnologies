@@ -1499,9 +1499,9 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
         var _actions = string.split("()")
         string = _actions.map((str, index) => {
           var lastIndex = str.length - 1
-          if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
+          if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "_" && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
             var i = lastIndex - 1
-            while (str[i] && str[i] !== ";" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
+            while (str[i] && str[i] !== ";" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
             /*if (!actions.includes(str.slice(i+1) + "()")) */return str.slice(0, i+1) + `<span contenteditable style="text-decoration:underline;color:inherit">${str.slice(i+1)}()</span>`
@@ -1966,7 +1966,7 @@ module.exports = {
       var view = views[id]
       
       // innerHTML
-      var text = view.text !== undefined ? view.text.toString() : typeof view.data !== "object" ? view.data : ''
+      var text = view.text !== undefined && view.text !== null ? view.text.toString() : typeof view.data !== "object" ? view.data : ''
       var innerHTML = view.type !== "View" && view.type !== "Box"? text : ""
       var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
       if (view.children) view.children = toArray(view.children)
@@ -3475,14 +3475,14 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     
     var _func = toCode({ _window, string: functions[func.function] })
     _func = toCode({ _window, string: _func, start: "'", end: "'" })
-    toParam({ _window, id, string: _func, req, res, _: func.data, __, ___ })
+    toParam({ _window, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
     
     await Promise.all(global.promises)
     await Promise.all(global.promises)
     await Promise.all(global.promises)
     
     // await params
-    if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
+    if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
 
   } else {
     
@@ -6658,6 +6658,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             var b = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e })
             console.log(`'${o}'`, `'${b}'`);
             answer = isEqual(o, b)
+            console.log(answer, o[3] === b[3], o == b);
             
         } else if (k0 === "greater()" || k0 === "isgreater()" || k0 === "isgreaterthan()" || k0 === "isGreaterThan()") {
             
@@ -10551,7 +10552,7 @@ const { clone } = require("./clone")
 const { toCode } = require("./toCode")
 const actions = require("./actions.json")
 
-const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, object, _i }) => {
+const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, object, _i, elser }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
@@ -10585,14 +10586,17 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
     id = mainId
     var view = views[id] || {}
 
-    if (condition.charAt(0) === "#") return
+    if (condition.charAt(0) === "#") {
+      if (elser) return approval = false
+      else return
+    }
 
     // or
     if (condition.includes("||")) {
       var conditions = condition.split("||"), _i = 0
       approval = false
       while (!approval && conditions[_i] !== undefined) {
-        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, ___, req, res, object })
+        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, ___, req, res, object, elser: true })
         _i += 1
       }
       return approval
@@ -11846,6 +11850,14 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
 
   // no value
   if (!value || value === " ") return value
+  else if (value === "()") return view
+  else if (value === undefined) return generate()
+  else if (value === "undefined") return undefined
+  else if (value === "false") return false
+  else if (value === "true") return true
+  else if (value === "null") return null
+  else if (value === "_") return _
+  else if (value === "_string") return ""
   
   // break & return
   if (view && (view.break || view.return)) return
@@ -12047,14 +12059,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     } else value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
   } else if (path[1] || path[0].includes(")(") || path[0].includes("()")) value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
   else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, id, e, path, params, object, _, __, ___, _i, req, res, mount })
-  else if (value === "()") value = view
-  else if (typeof value === "boolean") { }
-  else if (value === undefined || value === "generate") value = generate()
-  else if (value === "undefined") value = undefined
-  else if (value === "false") value = false
-  else if (value === "true") value = true
-  else if (value === "null") value = null
-  else if (value === "_") value = _
   else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
 
     var args = value.split(":")
@@ -12063,8 +12067,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _, __, ___, _i, mount }))
   } 
 
-  // _string
-  else if (value === "_string") return ""
   return value
 }
 
@@ -12293,7 +12295,6 @@ const toggleView = async ({ _window, toggle, id, res }) => {
   if (togglePage) parentId = "root"
   if (!toggleId) {
     if (!parentId) parentId = id
-    console.log(parentId);
     toggleId = views[parentId].element.children[0] && views[parentId].element.children[0].id
   } else if (!parentId) parentId = views[toggleId].element.parentNode.id && views[toggleId].element.parentNode.id
   

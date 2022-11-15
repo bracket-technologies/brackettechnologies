@@ -23,6 +23,14 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
 
   // no value
   if (!value || value === " ") return value
+  else if (value === "()") return view
+  else if (value === undefined) return generate()
+  else if (value === "undefined") return undefined
+  else if (value === "false") return false
+  else if (value === "true") return true
+  else if (value === "null") return null
+  else if (value === "_") return _
+  else if (value === "_string") return ""
   
   // break & return
   if (view && (view.break || view.return)) return
@@ -224,14 +232,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     } else value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
   } else if (path[1] || path[0].includes(")(") || path[0].includes("()")) value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
   else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, id, e, path, params, object, _, __, ___, _i, req, res, mount })
-  else if (value === "()") value = view
-  else if (typeof value === "boolean") { }
-  else if (value === undefined || value === "generate") value = generate()
-  else if (value === "undefined") value = undefined
-  else if (value === "false") value = false
-  else if (value === "true") value = true
-  else if (value === "null") value = null
-  else if (value === "_") value = _
   else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
 
     var args = value.split(":")
@@ -240,8 +240,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     value = args.slice(1).map(arg => reducer({ _window, id, params, path: arg, object: key, e, req, res, _, __, ___, _i, mount }))
   } 
 
-  // _string
-  else if (value === "_string") return ""
   return value
 }
 

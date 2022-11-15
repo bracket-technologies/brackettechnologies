@@ -4,7 +4,7 @@ const { clone } = require("./clone")
 const { toCode } = require("./toCode")
 const actions = require("./actions.json")
 
-const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, object, _i }) => {
+const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, object, _i, elser }) => {
 
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
@@ -38,14 +38,17 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
     id = mainId
     var view = views[id] || {}
 
-    if (condition.charAt(0) === "#") return
+    if (condition.charAt(0) === "#") {
+      if (elser) return approval = false
+      else return
+    }
 
     // or
     if (condition.includes("||")) {
       var conditions = condition.split("||"), _i = 0
       approval = false
       while (!approval && conditions[_i] !== undefined) {
-        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, ___, req, res, object })
+        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, ___, req, res, object, elser: true })
         _i += 1
       }
       return approval

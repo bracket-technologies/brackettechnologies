@@ -46,3 +46,13 @@ app.listen(8080, () => console.log("Server Listening to Port 8080"))
 exports.app = sls(app)
 
 api({ app, db, storage, rdb })
+
+/*db.collection("flight-booking-alsabil-tourism").where("issuing-day", ">=", 1668038400000).limit(500).get().then((query) => {
+  console.log(query.docs.length)
+  query.docs.forEach(doc => {
+    var data = doc.data()
+    data["issuing-day"] = data["issue-day"]
+    delete data["issue-day"]
+    db.collection("flight-booking-alsabil-tourism").doc(data.id.toString()).set(data).then(() => console.log("Success"))
+  })
+})*/

@@ -72,20 +72,20 @@
                           "type": "Input?style:[flex=1;height=100%;transition=background-color .3s;borderRadius=1.5rem;padding=0 2rem];placeholder=Search by ID or text for pages, views, collections, products, flights, hotels, storage, reviews...",
                           "controls": [
                             {
-                              "event": "focus?parent().():[style().width=70rem];style().backgroundColor=#e6e6e6"
+                              "event": "focus?parent().():[style().width=70rem];style().backgroundColor=#e6e6e6;focus=true"
                             },
                             {
-                              "event": "blur?parent().style().width=3.5rem;style().backgroundColor=#fff"
+                              "event": "blur?parent().style().width=3.5rem;style().backgroundColor=#fff;focus=false"
                             }
                           ]
                         }
                       ],
                       "controls": [
                         {
-                          "event": "mouseenter?style():[width=70rem];style():2ndChild().backgroundColor=#e6e6e6"
+                          "event": "mouseenter?style():[width=70rem];2ndChild().style().backgroundColor=#e6e6e6"
                         },
                         {
-                          "event": "mouseleave?if():[!2ndChild().focus]:[style().width=3.25rem;style():2ndChild().backgroundColor=#fff]"
+                          "event": "mouseleave?if():[!2ndChild().focus]:[style().width=3.25rem;2ndChild().style().backgroundColor=#fff]"
                         }
                       ]
                     },

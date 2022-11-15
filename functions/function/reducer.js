@@ -2128,6 +2128,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             var b = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e })
             console.log(`'${o}'`, `'${b}'`);
             answer = isEqual(o, b)
+            console.log(answer, o[3] === b[3], o == b);
             
         } else if (k0 === "greater()" || k0 === "isgreater()" || k0 === "isgreaterthan()" || k0 === "isGreaterThan()") {
             

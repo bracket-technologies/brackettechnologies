@@ -27,14 +27,14 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     
     var _func = toCode({ _window, string: functions[func.function] })
     _func = toCode({ _window, string: _func, start: "'", end: "'" })
-    toParam({ _window, id, string: _func, req, res, _: func.data, __, ___ })
+    toParam({ _window, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
     
     await Promise.all(global.promises)
     await Promise.all(global.promises)
     await Promise.all(global.promises)
     
     // await params
-    if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
+    if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
 
   } else {
     
