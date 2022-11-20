@@ -128,10 +128,10 @@
               "controls": [
                 {
                   "actions": [
-                    "wait():save?save.collection=_project_;save.doc=new-project:();data:().editor.project=_map:creation-date:[today().timestamp()]:name:[new-project-name:()]:id:[new-project:()]:views:[_list:main]:pages:[_list:main]:domains:[_list:[new-project:()+'.bracketjs.com']:[new-project:()+'.localhost']];save.data=data:().editor.project",
+                    "wait():save?save.collection=_project_;save.doc=new-project:();data:().editor.project=_map:creation-date:[today().timestamp()]:name:[new-project-name:()]:id:[new-project:()]:domains:[_list:[new-project:()+'.bracketjs.com']:[new-project:()+'.localhost']];save.data=data:().editor.project",
                     "wait():save?data:().editor.account.projects.push():[new-project:()];save.collection=_account_;save.doc=data:().editor.account.id;save.data=data:().editor.account",
-                    "wait():save?save.collection=page;save.headers.project=new-project:();save.doc=main;data:().editor.page.main=_map:title:[new-project-name:()]:creation-date:[today().timestamp()]:name:main:path:/:view:main:id:main;save.data=data:().editor.page.main",
-                    "wait():save?save.collection=view;save.headers.project=new-project:();save.doc=main;data:().editor.view.main=_map:creation-date:[today().timestamp()]:type:'View:main':id:main;save.data=data:().editor.view.main",
+                    "wait():save?save.collection=page;save.headers.project=new-project:();save.doc=main;data:().editor.page.main=_map:creation-date:[today().timestamp()]:type:['Main?title='+new-project-name:()+';path=/'];save.data=data:().editor.page.main",
+                    "wait():save?save.collection=view;save.headers.project=new-project:();save.doc=Main;data:().editor.view.Main=_map:creation-date:[today().timestamp()]:type:'View:Main?class=flexbox;text=Welcome to Bracket Platform!;style:[color=red;fontSize=4rem;height=100vh;width=100vw]';save.data=data:().editor.view.Main",
                     "route?route.path=/account_setup"
                   ],
                   "event": "click?)(:route-to-account-setup=true?new-project-name:();new-project:()"
@@ -235,5 +235,5 @@
     }
   ],
   "creation-date": 1639940032627,
-  "type": "View?id=project-login;style.overflow=hidden;style.width=100%;style.height=100%"
+  "type": "View:project-login?style.overflow=hidden;style.width=100%;style.height=100%"
 }

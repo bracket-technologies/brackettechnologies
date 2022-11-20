@@ -3,6 +3,7 @@ const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { getCookie } = require("./cookie")
 const { toAwait } = require("./toAwait")
+const { toArray } = require("./toArray")
 
 const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }) => {
   
@@ -20,6 +21,7 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
 
   if (_window) {
     
+    global.promises[id] = toArray(global.promises[id])
     var functions = global.data.project.functions
     if (!functions[func.function]) return
     //  if (functions[func.function].includes("send()"))
@@ -29,39 +31,27 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     _func = toCode({ _window, string: _func, start: "'", end: "'" })
     toParam({ _window, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
     
-    await Promise.all(global.promises)
-    await Promise.all(global.promises)
-    await Promise.all(global.promises)
+    await Promise.all((global.promises[id] || []))
+    await Promise.all((global.promises[id] || []))
+    await Promise.all((global.promises[id] || []))
     
     // await params
     if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
 
   } else {
     
-    var myFn = () => {
-      return new Promise (async resolve => {
+    var { data } = await require("axios").post(`/action`, func, {
+      headers: {
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+        ...headers
+      }
+    })
 
-        var { data } = await require("axios").post(`/action`, func, {
-          headers: {
-            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-            ...headers
-          }
-        })
+    if (view) view.function = view.func = clone(data)
+    global.function = global.func = clone(data)
 
-        if (view) view.function = view.func = clone(data)
-        global.function = global.func = clone(data)
-  
-        // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
-
-        resolve()
-      })
-    }
-
-    global.promises = global.promises || []
-    global.promises.push(myFn())
-        
-    await Promise.all(global.promises)
+    // await params
+    if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ })
   }
   
   console.log(params.func, global.func)

@@ -3876,7 +3876,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } else if (k0 === "isNaN()") {
 
             answer = isNaN(o)
-            console.log(answer, o);
+            // console.log(answer, o);
 
         } else if (k0 === "round()") {
 

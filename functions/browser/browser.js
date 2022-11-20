@@ -30,8 +30,8 @@ global["after-print-events"] = {}
 global["click-events"] = []
 global["key-events"] = []
 
-views.document = document
-views.document.element = document
+//views.document = document
+document.element = document
 views.body.element = document.body
 
 // lunch arabic text
@@ -124,6 +124,7 @@ document.body.addEventListener('click', e => {
 
 // mousemove
 document.body.addEventListener('mousemove', (e) => {
+
     global.screenX = e.screenX
     global.screenY = e.screenY
     Object.values(window.global["body-mousemove-events"]).flat().map(o => bodyEventListener(o, e))

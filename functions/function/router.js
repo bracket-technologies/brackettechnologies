@@ -189,7 +189,8 @@ const initialize = ({ req, res }) => {
         country: req.headers["x-country-code"],
         headers: req.headers,
         cookies: req.cookies,
-        promises: [],
+        promises: {},
+        breakCreateElement: {},
         functions: []
     };
 
@@ -228,7 +229,7 @@ const interpret = () => {
         if (!global.data.page[currentPage]) return res.send("Page does not exist!")
         
         // controls & views
-        views.root.children = clone([global.data.page[currentPage]])
+        views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
         views.public.children = Object.values(global.public)
 
         if (!global.data.project) return res.send("Project does not exist or something went wrong! Refresh")
@@ -270,17 +271,18 @@ const app = async ({ req, res }) => {
     await interpret({ req, res })
     if (res.headersSent) return
     
-    var currentPage = global.currentPage, innerHTML = global.innerHTML, view = views[views.root.child]
-    
+    var currentPage = global.currentPage, innerHTML = global.innerHTML, view = views[global.currentPage]
+
     // main head tags
     var favicon = global.data.project.favicon
-    var language = global.language = /*view.language || */"en"
+    var language = global.language = view.language || "en"
     var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
     var title = view.title || "My App Title"
     var children = clone(global.children)
   
     // meta
     view.meta = view.meta || {}
+    global.promises = {}
     var metaKeywords = view.meta.keywords || ""
     var metaDescription = view.meta.keywords || ""
     var metaTitle = view.meta.title || view.title || ""
@@ -289,7 +291,7 @@ const app = async ({ req, res }) => {
     delete global.children;
     delete global.innerHTML;
     delete global.data.project;
-    delete global.promises;
+    delete global.breakCreateElement;
     
     console.log("Document is ready!");
     
@@ -314,7 +316,7 @@ const app = async ({ req, res }) => {
           <link rel="manifest" href="/resources/manifest.json" mimeType="application/json; charset=UTF-8"/>
           <script id="views" type="application/json">${JSON.stringify(views)}</script>
           <script id="global" type="application/json">${JSON.stringify(global)}</script>
-          ${global.updateLocation ? `<script defer>window.location.href = "/${currentPage}"</script>` : ""}
+          ${global.updateLocation ? `<script defer>window.history.replaceState({}, "${title}", "/${currentPage === "main" ? "" : currentPage}")</script>` : ""}
         </head>
         <body>
           ${children.body}

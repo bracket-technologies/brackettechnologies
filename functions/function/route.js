@@ -1,6 +1,7 @@
 const { clone } = require("./clone")
 const { update } = require("./update")
 const { createElement } = require("./createElement")
+const { toArray } = require("./toArray")
 
 module.exports = {
     route: async ({ id, _window, route = {}, req, res }) => {
@@ -16,8 +17,24 @@ module.exports = {
       if (res) {
         
         global.updateLocation= true
-        views.root.children = clone([global.data.page[currentPage]])
-        if (id !== "root") global.innerHTML.root = await createElement({ _window, id: "root", req, res })
+        views.root.children = [{ ...clone(global.data.page[currentPage]), id: currentPage }]
+        
+        if (id !== "root") {
+
+          global.promises[id] = toArray(global.promises[id])
+
+          var myFn = () => {
+            return new Promise (async resolve => {
+              
+              var innerHTML = await createElement({ _window, id: "root", req, res })
+              if (!global.innerHTML.root) global.innerHTML.root = innerHTML
+              global.breakCreateElement[id] = true
+              resolve()
+            })
+          }
+
+          global.promises[id].push(myFn())
+        }
 
       } else {
       

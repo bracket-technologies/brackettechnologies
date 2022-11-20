@@ -45,7 +45,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     var priorityId = false, _id = view.type.split(":")[1]
 
     if (_id) {
-
+      
       view.id = _id
       if (!view["creation-date"] && global.data.view[_id]) {
         
@@ -105,22 +105,30 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
         var event = toCode({ _window, string: controls.event })
         event = toCode({ _window, string: event, start: "'", end: "'" })
 
-        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id: "root", string: event.split('?')[2] })) {
+        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2] })) {
 
-          toParam({ req, res, _window, id: "root", string: event.split("?")[1], createElement: true })
+          toParam({ req, res, _window, id, string: event.split("?")[1], createElement: true })
           view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
         }
       })
 
-      if (global.promises && global.promises.length > 0) {
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
+      if (global.promises[id] && global.promises[id].length > 0) {
+        
+        await Promise.all((global.promises[id] || []))
+        await Promise.all((global.promises[id] || []))
+        await Promise.all((global.promises[id] || []))
+        await Promise.all((global.promises[id] || []))
+        delete global.promises[id]
       }
 
       resolve()
     })
+    
+    if (global.breakCreateElement[id]) {
+
+      global.breakCreateElement[id] = false
+      return resolve("")
+    }
 
     /////////////////// approval & params /////////////////////
 
@@ -159,19 +167,63 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
         delete view.view
         delete params.view
         view["my-views"].push(viewId)
-        views[id] = { ...view, ...clone(global.data.view[viewId]) }
+        
+        var newView = clone(global.data.view[viewId])
+        if (!newView) return resolve("")
+
+        views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
+        
+        // console.log(views[id]);
         tags = await createElement({ _window, id, req, res, params })
         return resolve(tags)
       }
 
     } else if (!_import && (!myViews.includes(view.type) && global.data.view[view.type])) {
       
-      view["my-views"].push(view.type)
-      views[id] = { ...view, ...clone(global.data.view[view.type]) }
+      var viewId = view.type
+      view["my-views"].push(viewId)
+      var newView = clone(global.data.view[viewId])
+      if (!newView) return resolve("")
+      views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
+
       tags = await createElement({ _window, id, req, res })
       return resolve(tags)
     }
+    /*
+    // before loading controls
+    await new Promise (async resolve => {
+      
+      toArray(view.controls).map(async (controls = {}) => {
 
+        //
+        if (!controls.event) return
+        var event = toCode({ _window, string: controls.event })
+        event = toCode({ _window, string: event, start: "'", end: "'" })
+
+        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id: "root", string: event.split('?')[2] })) {
+
+          toParam({ req, res, _window, id: "root", string: event.split("?")[1], createElement: true })
+          view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
+        }
+      })
+
+      if (global.promises && global.promises.length > 0) {
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        global.promises = []
+      }
+
+      resolve()
+    })
+
+    if (global.breakCreateElement[id]) {
+      
+      global.breakCreateElement[id] = false
+      return resolve()
+    }
+*/
     if (_import) {
 
       tags = await createHtml({ _window, id, req, res, import: _import })

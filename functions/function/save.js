@@ -2,6 +2,7 @@ var { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { generate } = require("./generate")
 const { schematize } = require("./schematize")
+const { toArray } = require("./toArray")
 
 const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 
@@ -54,7 +55,9 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
       save.data = schematize({ data: save.data, schema })
     }
 
+    global.promises[id] = toArray(global.promises[id])
     var ref = req.db.collection(collection)
+
     if (Array.isArray(save.data)) {
 
       save.data.map(data => {
@@ -65,7 +68,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
           data.timezone = "GMT"
         }
 
-        global.promises.push(ref.doc(data.id.toString()).set(data).then(() => {
+        global.promises[id].push(ref.doc(data.id.toString()).set(data).then(() => {
 
           success = true
           message = `Document saved successfuly!`
@@ -86,7 +89,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
         data.timezone = "GMT"
       }
       
-      global.promises.push(ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
+      global.promises[id].push(ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
 
         success = true
         message = `Document saved successfuly!`
@@ -98,7 +101,9 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
       }))
     }
     
-    await global.promises[global.promises.length - 1]
+    await Promise.all((global.promises[id] || []))
+    delete global.promises[id]
+
     _data = { data: save.data, success, message }
 
   } else {

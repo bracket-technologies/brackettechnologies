@@ -234,6 +234,15 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         return view.loaded += `${param};`
       }
 
+      // beforeLoading
+      if (param.slice(0, 14) === "beforeLoading:") {
+
+        param = param.slice(14)
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.controls = toArray(view.controls)
+        return view.controls.push({ event: `beforeLoading?${param}` })
+      }
+
       // controls
       if (param.slice(0, 9) === "controls:") {
 

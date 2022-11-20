@@ -23,7 +23,7 @@ module.exports = {
       var innerHTML = view.type !== "View" && view.type !== "Box"? text : ""
       var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
       if (view.children) view.children = toArray(view.children)
-
+      
       innerHTML = await Promise.all(toArray(view.children).map(async (child, index) => {
 
         if (!child) return ""

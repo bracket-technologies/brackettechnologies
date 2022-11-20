@@ -31,8 +31,8 @@ global["after-print-events"] = {}
 global["click-events"] = []
 global["key-events"] = []
 
-views.document = document
-views.document.element = document
+//views.document = document
+document.element = document
 views.body.element = document.body
 
 // lunch arabic text
@@ -125,6 +125,7 @@ document.body.addEventListener('click', e => {
 
 // mousemove
 document.body.addEventListener('mousemove', (e) => {
+
     global.screenX = e.screenX
     global.screenY = e.screenY
     Object.values(window.global["body-mousemove-events"]).flat().map(o => bodyEventListener(o, e))
@@ -1793,7 +1794,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     var priorityId = false, _id = view.type.split(":")[1]
 
     if (_id) {
-
+      
       view.id = _id
       if (!view["creation-date"] && global.data.view[_id]) {
         
@@ -1853,22 +1854,30 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
         var event = toCode({ _window, string: controls.event })
         event = toCode({ _window, string: event, start: "'", end: "'" })
 
-        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id: "root", string: event.split('?')[2] })) {
+        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2] })) {
 
-          toParam({ req, res, _window, id: "root", string: event.split("?")[1], createElement: true })
+          toParam({ req, res, _window, id, string: event.split("?")[1], createElement: true })
           view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
         }
       })
 
-      if (global.promises && global.promises.length > 0) {
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
+      if (global.promises[id] && global.promises[id].length > 0) {
+        
+        await Promise.all((global.promises[id] || []))
+        await Promise.all((global.promises[id] || []))
+        await Promise.all((global.promises[id] || []))
+        await Promise.all((global.promises[id] || []))
+        delete global.promises[id]
       }
 
       resolve()
     })
+    
+    if (global.breakCreateElement[id]) {
+
+      global.breakCreateElement[id] = false
+      return resolve("")
+    }
 
     /////////////////// approval & params /////////////////////
 
@@ -1907,19 +1916,63 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
         delete view.view
         delete params.view
         view["my-views"].push(viewId)
-        views[id] = { ...view, ...clone(global.data.view[viewId]) }
+        
+        var newView = clone(global.data.view[viewId])
+        if (!newView) return resolve("")
+
+        views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
+        
+        // console.log(views[id]);
         tags = await createElement({ _window, id, req, res, params })
         return resolve(tags)
       }
 
     } else if (!_import && (!myViews.includes(view.type) && global.data.view[view.type])) {
       
-      view["my-views"].push(view.type)
-      views[id] = { ...view, ...clone(global.data.view[view.type]) }
+      var viewId = view.type
+      view["my-views"].push(viewId)
+      var newView = clone(global.data.view[viewId])
+      if (!newView) return resolve("")
+      views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
+
       tags = await createElement({ _window, id, req, res })
       return resolve(tags)
     }
+    /*
+    // before loading controls
+    await new Promise (async resolve => {
+      
+      toArray(view.controls).map(async (controls = {}) => {
 
+        //
+        if (!controls.event) return
+        var event = toCode({ _window, string: controls.event })
+        event = toCode({ _window, string: event, start: "'", end: "'" })
+
+        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id: "root", string: event.split('?')[2] })) {
+
+          toParam({ req, res, _window, id: "root", string: event.split("?")[1], createElement: true })
+          view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
+        }
+      })
+
+      if (global.promises && global.promises.length > 0) {
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        await Promise.all(global.promises)
+        global.promises = []
+      }
+
+      resolve()
+    })
+
+    if (global.breakCreateElement[id]) {
+      
+      global.breakCreateElement[id] = false
+      return resolve()
+    }
+*/
     if (_import) {
 
       tags = await createHtml({ _window, id, req, res, import: _import })
@@ -1970,7 +2023,7 @@ module.exports = {
       var innerHTML = view.type !== "View" && view.type !== "Box"? text : ""
       var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
       if (view.children) view.children = toArray(view.children)
-
+      
       innerHTML = await Promise.all(toArray(view.children).map(async (child, index) => {
 
         if (!child) return ""
@@ -3451,6 +3504,7 @@ const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { getCookie } = require("./cookie")
 const { toAwait } = require("./toAwait")
+const { toArray } = require("./toArray")
 
 const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }) => {
   
@@ -3468,6 +3522,7 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
 
   if (_window) {
     
+    global.promises[id] = toArray(global.promises[id])
     var functions = global.data.project.functions
     if (!functions[func.function]) return
     //  if (functions[func.function].includes("send()"))
@@ -3477,39 +3532,27 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     _func = toCode({ _window, string: _func, start: "'", end: "'" })
     toParam({ _window, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
     
-    await Promise.all(global.promises)
-    await Promise.all(global.promises)
-    await Promise.all(global.promises)
+    await Promise.all((global.promises[id] || []))
+    await Promise.all((global.promises[id] || []))
+    await Promise.all((global.promises[id] || []))
     
     // await params
     if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
 
   } else {
     
-    var myFn = () => {
-      return new Promise (async resolve => {
+    var { data } = await require("axios").post(`/action`, func, {
+      headers: {
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+        ...headers
+      }
+    })
 
-        var { data } = await require("axios").post(`/action`, func, {
-          headers: {
-            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-            ...headers
-          }
-        })
+    if (view) view.function = view.func = clone(data)
+    global.function = global.func = clone(data)
 
-        if (view) view.function = view.func = clone(data)
-        global.function = global.func = clone(data)
-  
-        // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ }) 
-
-        resolve()
-      })
-    }
-
-    global.promises = global.promises || []
-    global.promises.push(myFn())
-        
-    await Promise.all(global.promises)
+    // await params
+    if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ })
   }
   
   console.log(params.func, global.func)
@@ -3521,7 +3564,7 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
 }
 
 module.exports = { func }
-},{"./clone":38,"./cookie":43,"./toAwait":107,"./toCode":110,"./toParam":118,"axios":130}],64:[function(require,module,exports){
+},{"./clone":38,"./cookie":43,"./toArray":106,"./toAwait":107,"./toCode":110,"./toParam":118,"axios":130}],64:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -8406,7 +8449,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } else if (k0 === "isNaN()") {
 
             answer = isNaN(o)
-            console.log(answer, o);
+            // console.log(answer, o);
 
         } else if (k0 === "round()") {
 
@@ -9440,6 +9483,7 @@ module.exports = {resize, dimensions, converter}
 const { clone } = require("./clone")
 const { update } = require("./update")
 const { createElement } = require("./createElement")
+const { toArray } = require("./toArray")
 
 module.exports = {
     route: async ({ id, _window, route = {}, req, res }) => {
@@ -9455,8 +9499,24 @@ module.exports = {
       if (res) {
         
         global.updateLocation= true
-        views.root.children = clone([global.data.page[currentPage]])
-        if (id !== "root") global.innerHTML.root = await createElement({ _window, id: "root", req, res })
+        views.root.children = [{ ...clone(global.data.page[currentPage]), id: currentPage }]
+        
+        if (id !== "root") {
+
+          global.promises[id] = toArray(global.promises[id])
+
+          var myFn = () => {
+            return new Promise (async resolve => {
+              
+              var innerHTML = await createElement({ _window, id: "root", req, res })
+              if (!global.innerHTML.root) global.innerHTML.root = innerHTML
+              global.breakCreateElement[id] = true
+              resolve()
+            })
+          }
+
+          global.promises[id].push(myFn())
+        }
 
       } else {
       
@@ -9465,11 +9525,12 @@ module.exports = {
       }
     }
 }
-},{"./clone":38,"./createElement":47,"./update":125}],93:[function(require,module,exports){
+},{"./clone":38,"./createElement":47,"./toArray":106,"./update":125}],93:[function(require,module,exports){
 var { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { generate } = require("./generate")
 const { schematize } = require("./schematize")
+const { toArray } = require("./toArray")
 
 const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 
@@ -9522,7 +9583,9 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
       save.data = schematize({ data: save.data, schema })
     }
 
+    global.promises[id] = toArray(global.promises[id])
     var ref = req.db.collection(collection)
+
     if (Array.isArray(save.data)) {
 
       save.data.map(data => {
@@ -9533,7 +9596,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
           data.timezone = "GMT"
         }
 
-        global.promises.push(ref.doc(data.id.toString()).set(data).then(() => {
+        global.promises[id].push(ref.doc(data.id.toString()).set(data).then(() => {
 
           success = true
           message = `Document saved successfuly!`
@@ -9554,7 +9617,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
         data.timezone = "GMT"
       }
       
-      global.promises.push(ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
+      global.promises[id].push(ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
 
         success = true
         message = `Document saved successfuly!`
@@ -9566,7 +9629,9 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
       }))
     }
     
-    await global.promises[global.promises.length - 1]
+    await Promise.all((global.promises[id] || []))
+    delete global.promises[id]
+
     _data = { data: save.data, success, message }
 
   } else {
@@ -9592,7 +9657,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 }
 
 module.exports = { save }
-},{"./clone":38,"./generate":65,"./schematize":94,"./toAwait":107,"./toParam":118,"axios":130}],94:[function(require,module,exports){
+},{"./clone":38,"./generate":65,"./schematize":94,"./toArray":106,"./toAwait":107,"./toParam":118,"axios":130}],94:[function(require,module,exports){
 const schematize = ({ data, schema }) => {
   var _data = {}
   schema.map(schema => {
@@ -9617,6 +9682,7 @@ const axios = require('axios')
 const { toString } = require('./toString')
 const { clone } = require('./clone')
 const { toFirebaseOperator } = require('./toFirebaseOperator')
+const { toArray } = require('./toArray')
 
 module.exports = {
   search: async ({ _window, id = "root", req, res, e, _, __, ___, ...params }) => {
@@ -9630,13 +9696,13 @@ module.exports = {
     var store = search.store || "database"
     headers.project = headers.project || global.projectId
     search.collection = search.collection || "collection"
-    global.promises = global.promises || []
     
     if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
     delete search.headers
     
     if (_window) {
       
+      global.promises[id] = toArray(global.promises[id])
       var collection = search.collection, project = headers.project || req.headers.project
       if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${project}`
 
@@ -9701,8 +9767,9 @@ module.exports = {
           }))
         })
 
-        global.promises.push(...promises)
-        await Promise.all(promises)
+        global.promises[id].push(...promises)
+        await Promise.all((global.promises[id] || []))
+        delete global.promises[id]
         /*
         if (project["accesskey"] !== req.headers["accesskey"]) {
 
@@ -9717,7 +9784,7 @@ module.exports = {
 
       else if (doc) {
         
-        global.promises.push(ref.doc(doc.toString()).get().then(doc => {
+        global.promises[id].push(ref.doc(doc.toString()).get().then(doc => {
           
           success = true
           data = doc.data()
@@ -9737,7 +9804,9 @@ module.exports = {
           _data = { success, message }
         }
         
-        await global.promises[global.promises.length - 1]
+        // await global.promises[global.promises.length - 1]
+        await Promise.all((global.promises[id] || []))
+        delete global.promises[id]
         _data = { data, success, message }
       }
 
@@ -9745,7 +9814,7 @@ module.exports = {
 
         if (limit) ref = ref.limit(limit)
         
-        global.promises.push(ref.get().then(q => {
+        global.promises[id].push(ref.get().then(q => {
           
           q.forEach(doc => data[doc.id] = doc.data())
 
@@ -9766,7 +9835,9 @@ module.exports = {
           return res.send({ success, message })
         }
 
-        await global.promises[global.promises.length - 1]
+        // await global.promises[global.promises.length - 1]
+        await Promise.all((global.promises[id] || []))
+        delete global.promises[id]
         _data = { data, success, message }
       }
 
@@ -9821,9 +9892,11 @@ module.exports = {
           resolve({ data, success, message })
         })
 
-        global.promises.push(myPromise())
+        global.promises[id].push(myPromise())
         
-        await global.promises[global.promises.length - 1]
+        // await global.promises[global.promises.length - 1]
+        await Promise.all((global.promises[id] || []))
+        delete global.promises[id]
         _data = { data, success, message }
       }
       
@@ -9864,37 +9937,25 @@ module.exports = {
 
       } else {
     
-        myFn = () => {
-          return new Promise (async resolve => {
-    
-            var { data: _data } = await axios.get(`/${store}`, {
-              headers: {
-                "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-                ...headers
-              }
-            })
-    
-            console.log(_data)
-            view.search = global.search = clone(_data)
-    
-            // await params
-            if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res, _: global.search, __: _, ___: __ })
-    
-            resolve()
-          })
-        }
-      }
+        var { data: _data } = await axios.get(`/${store}`, {
+          headers: {
+            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+            ...headers
+          }
+        })
 
-      global.promises = global.promises || []
-      global.promises.push(myFn())
-      
-      await Promise.all(global.promises)
+        console.log(_data)
+        view.search = global.search = clone(_data)
+
+        // await params
+        if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res, _: global.search, __: _, ___: __ })
+      }
     }
     
     // if (_data.message === "Force reload!") return location.reload()
   }
 }
-},{"./clone":38,"./toAwait":107,"./toFirebaseOperator":114,"./toString":121,"axios":130}],96:[function(require,module,exports){
+},{"./clone":38,"./toArray":106,"./toAwait":107,"./toFirebaseOperator":114,"./toString":121,"axios":130}],96:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -11306,6 +11367,15 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
         view.loaded = view.loaded || ""
         return view.loaded += `${param};`
+      }
+
+      // beforeLoading
+      if (param.slice(0, 14) === "beforeLoading:") {
+
+        param = param.slice(14)
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        view.controls = toArray(view.controls)
+        return view.controls.push({ event: `beforeLoading?${param}` })
       }
 
       // controls
