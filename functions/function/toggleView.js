@@ -46,7 +46,18 @@ const toggleView = async ({ _window, toggle, id, res }) => {
     document.title = title
     view = views.root*/
 
-  } else view = views[parentId]
+  } else {
+    view = views[parentId]
+
+    if (id === "root" && global.data.page[viewId]) {
+
+      var page = global.data.page[viewId]
+      var _params = toParam({ string: page.type.split("?")[1] || "" })
+      global.path = _params.path
+      history.pushState({}, _params.title, _params.path)
+      document.title = _params.title
+    }
+  }
 
   
   if (children.length === 0) return

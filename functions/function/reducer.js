@@ -319,7 +319,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
 
-          } else if (path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
+          } else if (view && path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
               
               if (view.islabel || view.templated || view.link || view.labeled) path.unshift("input()")
           }
@@ -1485,23 +1485,22 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } else if (k0 === "getChildrenByClassName()" || k0 === "className()") {
             
             var className, _params = {}, _o
-            if (args[1]) {
+            if (isParam({ _window, string: args[1] })) {
 
-                if (isParam({ _window, string: args[1] })) {
+                _params = toParam({ req, res, _window, id, e, _, __, ___, _i,string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || o
+                className = _params.className || _params.class
 
-                    _params = toParam({ req, res, _window, id, e, _, __, ___, _i,string: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-                    className = _params.className || _params.class
-
-                } else className = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[1], params })
-
-            } else _o = o
+            } else {
+              className = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[1], params })
+              _o = o
+            }
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             
             if (className) {
-                if (typeof o === "object" && o.element) answer = [...o.element.getElementsByClassName(className)]
-                else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByClassName(className)]
+                if (typeof _o === "object" && _o.element) answer = [..._o.element.getElementsByClassName(className)]
+                else if (_o.nodeType === Node.ELEMENT_NODE) answer = [..._o.element.getElementsByClassName(className)]
             } else answer = []
 
             answer = answer.map(o => window.views[o.id])
@@ -1843,8 +1842,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
             if (args[2]) { // timer():params:timer
 
-                var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, __, ___, _i,e, object }))
-                var myFn = () => { toParam({ req, res, _window, id, string: args[1], params, _, __, ___, _i,e, object }) }
+                var _timer = parseInt(toValue({ req, res, _window, id, value: args[2], params, _, __, ___, _i, e, object }))
+                var myFn = () => { toParam({ req, res, _window, id, string: args[1], params, _, __, ___, _i, e, object }) }
                 answer = setTimeout(myFn, _timer)
 
             } else if (isParam({ _window, string: args[1] }) && !args[2]) { // timer():[params;timer]
@@ -1935,7 +1934,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             var title = toValue({ req, res, _window, id, e, value: args[2], params, _, __, ___, _i }) || global.data.page[global.currentPage].title
             answer = o.replaceState(null, title, _url)
 
-        } else if (k0 === "pushState()") {
+        } /*else if (k0 === "pushState()") {
 
             // pushState():url:title
             var args = k.split(":")
@@ -1943,7 +1942,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             var title = toValue({ req, res, _window, id, e, value: args[2], params, _, __, ___, _i }) || global.data.page[global.currentPage].title
             answer = o.pushState(null, title, _url)
 
-        } else if (k0 === "_index") {
+        } */else if (k0 === "_index") {
             
             answer = index
 
@@ -2126,9 +2125,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
             var args = k.split(":")
             var b = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e })
-            console.log(`'${o}'`, `'${b}'`);
+            // console.log(`'${o}'`, `'${b}'`);
             answer = isEqual(o, b)
-            console.log(answer, o[3] === b[3], o == b);
+            // console.log(answer, o[3] === b[3], o == b);
             
         } else if (k0 === "greater()" || k0 === "isgreater()" || k0 === "isgreaterthan()" || k0 === "isGreaterThan()") {
             
@@ -2424,7 +2423,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } else if (k0 === "text()" || k0 === "val()" || k0 === "txt()") {
 
             var _o
-            if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i,e })
+            if (args[1]) _o = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e })
             else _o = o
 
             var el
@@ -2446,8 +2445,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                     
                 } else {
 
-                    if (views[el.id].type === "Entry" || views[el.id].editable) answer = (el.textContent===undefined) ? el.innerText : el.textContent
-                    else answer = el.innerHTML
+                    answer = (el.textContent===undefined) ? el.innerText : el.textContent
                     if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
                 }
                 
@@ -2459,10 +2457,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             } else if (view && view.type !== "Input") {
 
                 if (i === lastIndex && key && value !== undefined) _o[view.element.innerHTML] = value
-                else {
-                    if (view.type === "Entry" || view.editable) answer = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
-                    else answer = view.element.innerHTML
-                }
+                answer = (view.element.textContent === undefined) ? view.element.innerText : view.element.textContent
             }
  
         } else if (k0 === "min()") {
@@ -2882,40 +2877,45 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 } else if (_options.excel && typeof o === "number") {
 
                     function ExcelDateToJSDate(serial) {
-                        var utc_days  = Math.floor(serial - 25569);
-                        var utc_value = utc_days * 86400;                                        
-                        var date_info = new Date(utc_value * 1000);
-                     
-                        var fractional_day = serial - Math.floor(serial) + 0.0000001;
-                     
-                        var total_seconds = Math.floor(86400 * fractional_day);
-                     
-                        var seconds = total_seconds % 60;
-                     
-                        total_seconds -= seconds;
-                     
-                        var hours = Math.floor(total_seconds / (60 * 60));
-                        var minutes = Math.floor(total_seconds / 60) % 60;
-                     
-                        return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
+
+                      var utc_days  = Math.floor(serial - 25569)
+                      var utc_value = utc_days * 86400                                        
+                      var date_info = new Date(utc_value * 1000)
+                    
+                      var fractional_day = serial - Math.floor(serial) + 0.0000001
+                    
+                      var total_seconds = Math.floor(86400 * fractional_day)
+                    
+                      var seconds = total_seconds % 60
+                    
+                      total_seconds -= seconds
+                    
+                      var hours = Math.floor(total_seconds / (60 * 60))
+                      var minutes = Math.floor(total_seconds / 60) % 60
+                    
+                      return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds)
                     }
+
                     return ExcelDateToJSDate(o)
                 }
 
             } else {
 
-                if (!isNaN(o) && typeof o === "string") o = parseInt(o)
-                var _date = new Date(o)
-                var _year = _date.getFullYear()
-                var _month = _date.getMonth() + 1
-                var _day = _date.getDate()
-                var _dayofWeek = _date.getDay()
-                var _hour = _date.getHours()
-                var _mins = _date.getMinutes()
+              var format = toValue({ req, res, _window, id, e, value: args[1], params, _, __, ___, _i }) || "format 1"
 
-                var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+              if (!isNaN(o) && typeof o === "string") o = parseInt(o)
+              var _date = new Date(o)
+              var _year = _date.getFullYear()
+              var _month = _date.getMonth() + 1
+              var _day = _date.getDate()
+              var _dayofWeek = _date.getDay()
+              var _hour = _date.getHours()
+              var _mins = _date.getMinutes()
+              var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+              var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
 
-                return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
+              if (format === "format 1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
+              else if (format === "format 3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
             }
 
         } else if (k0 === "toDateInputFormat()") { // returns date for input in format yyyy-mm-dd
@@ -3513,8 +3513,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
             } else {
 
-                rec0 = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[1], params })
-                rec1 = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[2], params })
+                rec0 = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[1] || "", params })
+                rec1 = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[2] || "", params })
             }
 
             if (typeof o === "string") {
@@ -3880,12 +3880,15 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         } else if (k0 === "round()") {
 
+          if (!isNaN(o)) {
             var nth = toValue({ req, res, _window, id, e, _, __, ___, _i,params, value: args[1] }) || 2
             answer = parseFloat(o || 0).toFixed(nth)
+          }
             
         } else if (k0 === "toString()" || k0 === "string()" || k0 === "str()") {
             
-            answer = o + ""
+            if (typeof o !== "object") answer = o + ""
+            else answer = toString(o)
             
         } else if (k0 === "1stElement()" || k0 === "1stEl()") {
             
@@ -4027,7 +4030,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } else if (k0 === "toggleView()") {
           
             var toggle = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, ___, _i })
-            require("./toggleView").toggleView({ _window, req, res, toggle, id })
+            require("./toggleView").toggleView({ _window, req, res, toggle, id: o.id })
 
         } else if (k0 === "setChild()") {
 
@@ -4150,6 +4153,27 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
           if (_self) return require("./updateSelf").updateSelf({ _window, req, res, id: _id })
           else return require("./update").update({ _window, req, res, id: _id })
 
+        } else if (k0 === "updateSelf()") {
+          
+          var __id, _id, _params, _self
+          if (_window) return view.controls.push({
+            event: `loaded?${path.join(".")}`
+          })
+          
+          if (isParam({ _window, string: args[1] })) {
+
+            _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
+            __id = _params.id || id
+
+          } else if (args[1]) __id = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[1], params }) || id
+
+          if (typeof __id === "object" && __id.id) _id = __id.id
+          else _id = __id
+
+          if (!_id && o.id) _id = o.id
+          
+          return require("./updateSelf").updateSelf({ _window, req, res, id: _id })
+
         } else if (k0 === "upload()") {
           
           if (isParam({ _window, string: args[1] })) {
@@ -4255,10 +4279,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             var align = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[4], params })
             */
             var position = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1], params })
-            var _id = id
-            if (o.id) _id = o.id
 
-            return require("./setPosition").setPosition({ position, id: _id, e })
+            return require("./setPosition").setPosition({ position, id: o.id || id, e })
 
         } else if (k0 === "refresh()") {
           
@@ -4275,8 +4297,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         } else if (k0 === "csvToJson()") {
           
-            var _options = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[1], params })
-            require("./csvToJson").csvToJson({ id, e, options: _options })
+          var file = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
+          require("./csvToJson").csvToJson({ id, e, file, onload: args[1] || "", _, __, ___ })
 
         } else if (k0 === "copyToClipBoard()") {
           
@@ -4370,7 +4392,26 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
           answer = [...o.files]
           
-        } else if (k.includes("def()")) {
+        } else if (k0.includes("()") && typeof o[k0.slice(0, -2)] === "function") {
+          
+          if (isParam({ _window, string: args[1] })) {
+
+            _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
+
+            if (Object.keys(_params).length === 1) o[k0.slice(0, -2)](_params["1"])
+            else if (Object.keys(_params).length === 2) o[k0.slice(0, -2)](_params["1"], _params["2"])
+            else if (Object.keys(_params).length === 3) o[k0.slice(0, -2)](_params["1"], _params["2"], _params["3"])
+            else if (Object.keys(_params).length === 4) o[k0.slice(0, -2)](_params["1"], _params["2"], _params["3"], _params["4"])
+            else if (Object.keys(_params).length === 5) o[k0.slice(0, -2)](_params["1"], _params["2"], _params["3"], _params["4"], _params["5"])
+
+          } else {
+            
+            var _param = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1] || "", params })
+            if (args[1] === undefined && Object.keys(_param).length === 0) o[k0.slice(0, -2)]()
+            else o[k0.slice(0, -2)](_param)
+          }
+
+        }/*else if (k.includes("def()")) {
 
             var _name = toValue({ req, res, _window, id, e, _, __, ___, _i,value: args[1], params })
             var _params = global.codes[args[2]] ? global.codes[args[2]] : args[2]
@@ -4383,7 +4424,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 req, res, 
             }
             
-        } else if (k.includes(":coded()")) {
+        } */else if (k.includes(":coded()")) {
             
             breakRequest = true
             o[k0] = o[k0] || {}

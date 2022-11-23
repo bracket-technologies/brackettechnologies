@@ -97,6 +97,11 @@ const defaultInputHandler = ({ id }) => {
             value = value.replace('&amp;','&')
             e.target.value = value
           }
+
+          if (value.includes("&nbsp;")) {
+            value = value.replace('&nbsp;',' ')
+            e.target.value = value
+          }
         }
 
         if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {

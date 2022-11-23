@@ -199,7 +199,6 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
     }
     return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i, asyncer, createElement, params, executer })
   }
-  // if (isFn) return toParam({ req, res, _window, id, e, string: isFn, _, __, ___, _i, object, mount, params, createElement })
 
   /* value */
   if (!isNaN(value) && value !== " " && (value.length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
@@ -214,10 +213,8 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(15, 22) === "coded()" && value.slice(0, 15) === "linear-gradient") value = "linear-gradient(" + global.codes[value.slice(15, 27)] + ")"
-  else if (object) {
-    //value = value + ".clone()"
-    value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
-  } else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
+  else if (object) value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
+  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, id, object, path, value, params, _, __, ___, _i, e, req, res, mount })
   else if (path[0].includes("()") && path.length === 1) {
 
     var val0 = value.split("coded()")[0]

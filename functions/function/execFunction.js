@@ -10,7 +10,7 @@ const execFunction = async ({ req, res, id = generate() }) => {
   var func = req.body.function
   var ref = db.collection("_project_")
   var project = req.headers["project"]
-  var _window = { function: true, global: { codes: {}, promises: {}, innerHTML: {} }, views: { backend: {}, "my-views": [], [id]: {} } }
+  var _window = { function: true, global: { codes: {}, promises: {}, innerHTML: {}, breakCreateElement: {} }, views: { backend: {}, "my-views": [], [id]: {} } }
   var global = _window.global
   
   if (Object.keys(req.cookies).length === 0 && req.body.cookies) req.cookies = req.body.cookies || {}

@@ -66,8 +66,8 @@ const update = async ({ id, _window, req, res, update = {}, route }) => {
 
     document.body.scrollTop = document.documentElement.scrollTop = 0
 
-    var title = route.title || views[views.root.element.children[0].id].title
-    var path = route.path || views[views.root.element.children[0].id].path
+    var title = route.title || views[global.currentPage].title
+    var path = route.path || views[global.currentPage].path
 
     history.pushState(null, title, path)
     document.title = title

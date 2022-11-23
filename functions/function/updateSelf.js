@@ -32,6 +32,7 @@ const updateSelf = async ({ _window, id, update = {}, route }) => {
 
   // children
   var children = clone(toArray(parent.children[index]))
+  if (id === "popup") children = clone([global.data.public[popup]])
   
   // remove children
   removeChildren({ id })

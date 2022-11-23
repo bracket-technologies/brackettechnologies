@@ -21,7 +21,7 @@ const project = ({ req, res }) => {
             if (isBracket) host = "bracketjs.com";
         }
         
-        global.public = getJsonFiles({ search: { collection: "public" } })
+        global.data.public = getJsonFiles({ search: { collection: "public" } })
 
         console.log("Document started loading:");
         console.log("before project", new Date().getTime() - global.timer);
@@ -230,7 +230,7 @@ const interpret = () => {
         
         // controls & views
         views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
-        views.public.children = Object.values(global.public)
+        views.public.children = Object.values(global.data.public)
 
         if (!global.data.project) return res.send("Project does not exist or something went wrong! Refresh")
 
@@ -283,6 +283,7 @@ const app = async ({ req, res }) => {
     // meta
     view.meta = view.meta || {}
     global.promises = {}
+    global.breakCreateElement = {}
     var metaKeywords = view.meta.keywords || ""
     var metaDescription = view.meta.keywords || ""
     var metaTitle = view.meta.title || view.title || ""
@@ -291,7 +292,6 @@ const app = async ({ req, res }) => {
     delete global.children;
     delete global.innerHTML;
     delete global.data.project;
-    delete global.breakCreateElement;
     
     console.log("Document is ready!");
     

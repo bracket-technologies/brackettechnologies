@@ -1,29 +1,70 @@
 {
-  "type": "View?class=box-shadow;id=popup;style:[border=1px solid #f0f0f0;transform=scale(0.5);opacity=0;pointerEvents=none;zIndex=10;position=fixed;borderRadius=.5rem;backgroundColor=#fff;transition=opacity .1s]",
+  "type": "View:popup?class=box-shadow;style:[zIndex=10;pointerEvents=none;opacity=0;transition=opacity .1s;position=fixed]",
   "children": [
     {
-      "type": "Icon?class=pointer;id=popup-confirm;name=bi-check2;tooltip.text=Confirm;hover.style.backgroundColor=#0000ff22;style.fontSize=1.8rem;style.height=4rem;style.width=3rem",
-      "controls": [
+      "type": "View?style:[border=1px solid #f0f0f0;transform='scale(0.5)';borderRadius=.5rem;backgroundColor=#fff;transition=.2s]?():[popup-positioner:()].popup.model=model1",
+      "children": [
         {
-          "event": "click?popup-confirmed:()=true;parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+          "type": "Icon?class=pointer;id=popup-confirm;name=bi-check2;tooltip.text=Confirm;hover.style.backgroundColor=#0000ff22;style:[fontSize=1.8rem;height=4rem;width=3rem]",
+          "controls": [
+            {
+              "event": "click?popup-confirmed:()=true;():popup.():[style():[opacity=0;pointerEvents=none];1stChild().style().transform=scale(0.5)]"
+            }
+          ]
+        },
+        {
+          "type": "Icon?class=pointer;id=popup-cancel;name=bi-x;tooltip.text=Cancel;hover.style.backgroundColor=#ff000022;style:[fontSize=2rem;height=4rem;width=3rem]",
+          "controls": [
+            {
+              "event": "click?popup-positioner:().del();popup-confirmed:()=false;():popup.():[style():[opacity=0;pointerEvents=none];1stChild().style().transform=scale(0.5)]"
+            }
+          ]
         }
       ]
-    },
-    {
-      "type": "Icon?class=pointer;id=popup-cancel;name=bi-x;tooltip.text=Cancel;hover.style.backgroundColor=#ff000022;style.fontSize=2rem;style.height=4rem;style.width=3rem",
-      "controls": [
+    }, {
+      "type": "View?class=flexbox;style:[position=fixed;top=0;right=0;left=0;bottom=0;backgroundColor=#00000040;zIndex=10;transition=.2s]?():[popup-positioner:()].popup.model=model2",
+      "children": [
         {
-          "event": "click?popup-positioner:().del();popup-confirmed:()=false;parent().style():[opacity=0;pointerEvents=none;transform=scale(0.5)]"
+          "type": "View?class=flex column;style:[position=relative;borderRadius=.5em;backgroundColor=#fff;padding=2rem;gap=2rem]",
+          "children": [
+            {
+              "type": "Icon?class=flexbox pointer;name=bi-x;style:[position=absolute;top=1rem;right=1rem;height=2.5rem;width=2.5rem;fontSize=2.5rem;color=#666;transition=.2s;borderRadius=.5rem];hover:[style.backgroundColor=#eee];click:[2ndNext().2ndChild().click()]"
+            },
+            {
+              "type": "Text?style:[width=fit-content;fontSize=1.4rem];fontWeight=bold;text=[():[popup-positioner:()].popup.title.text||'Do you confirm!']"
+            },
+            {
+              "type": "View?class=flex align-center;style:[gap=2rem;justifyContent=flex-end]",
+              "children": [
+                {
+                  "type": "Text:popup-confirm?class=flexbox pointer;hover.style.opacity=1;style:[fontSize=1.3rem;transition=.2s;color=#fff;borderRadius=.5rem;backgroundColor=blue;height=3rem;width=12rem];text=[():[popup-positioner:()].popup.confirm.text||'Confirm']",
+                  "controls": [
+                    {
+                      "event": "click?popup-confirmed:()=true;():popup.style():[opacity=0;pointerEvents=none]"
+                    }
+                  ]
+                },
+                {
+                  "type": "Text:popup-cancel?class=flexbox pointer;hover.style.opacity=1;style:[fontSize=1.3rem;transition=.2s;borderRadius=.5rem;backgroundColor=#bbb;height=3rem;width=12rem];text=[():[popup-positioner:()].popup.cancel.text||'Cancel']",
+                  "controls": [
+                    {
+                      "event": "click?popup-positioner:().del();popup-confirmed:()=false;():popup.():[style():[opacity=0;pointerEvents=none]]"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ]
     }
   ],
   "controls": [
     {
-      "event": "click:body?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];clearTimer():[popup-timer:()];timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];():popup.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];popup-positioner:().del()]:0]:400?popup-positioner:();!popup-positioner:().contains():[clicked:()];!popup.contains():[clicked:()]"
+      "event": "click:body?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];clearTimer():[popup-timer:()];timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];popup-positioner:().del()]:0]:400?popup-positioner:();!popup-positioner:().contains():[clicked:()];!popup.contains():[clicked:()]"
     },
     {
-      "event": "mouseleave?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];clearTimer():[popup-timer:()];timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];():popup.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];popup-positioner:().del()]:0]:400"
+      "event": "mouseleave?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];clearTimer():[popup-timer:()];timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];popup-positioner:().del()]:0]:400"
     },
     {
       "event": "mouseenter?clearTimer():[popup-timer:()]"

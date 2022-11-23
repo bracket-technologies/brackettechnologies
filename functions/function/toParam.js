@@ -66,6 +66,14 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       value = `coded()${_key}+1`
     }
 
+    // --
+    else if (key && value === undefined && key.slice(-2) === "--") {
+      key = key.slice(0, -2)
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||0`
+      value = `coded()${_key}-1`
+    }
+
     // +=
     else if (key && value && key.slice(-1) === "+") {
       key = key.slice(0, -1)

@@ -1,9 +1,14 @@
 module.exports = ({ controls, id }) => {
   
-  if (typeof window.views[id].popup !== "object") window.views[id].popup = {}
-  window.views[id].popup.id = controls.id = id = controls.id || id
-
+  var view = window.views[id]
+  
+  if (typeof view.popup !== "object") view.popup = {}
+  view.popup.id = controls.id = id = controls.id || id
+  if (view.popup.model2) view.popup.model = "model2"
+  else if (view.popup.model3) view.popup.model = "model3"
+  if (!view.popup.model) view.popup.model = "model1"
+  
   return [{
-    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()!=${id}]:[().popup.style.keys()._():[():popup.style()._=().popup.style._]];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style()._=():popup.style._||null];():popup.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];popup-positioner:().del()]:0].elif():[popup-positioner:()!=${id}]:[popup-positioner:()=${id};():popup.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];update():popup;():popup.position():[positioner=${controls.positioner || id};placement=${controls.placement || "left"};distance=${controls.distance};align=${controls.align}];().popup.style.keys()._():[():popup.style()._=().popup.style._]]`
+    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()!=${id}]:[().popup.style.keys()._():[():popup.style()._=().popup.style._]];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style()._=():popup.style._||null];():popup.():[if():[():${id}.popup.model=model1]:[1stChild().style():[transform='scale(0.5)']];style():[opacity=0;pointerEvents=none]];popup-positioner:().del()]:0].elif():[popup-positioner:()!=${id}]:[popup-positioner:()=${id};update():popup;timer():[if():[():${id}.popup.model=model1]:[():popup.position():[positioner=${controls.positioner || id};placement=${controls.placement || "left"};distance=${controls.distance};align=${controls.align}]];():popup.():[if():[():${id}.popup.model=model1]:[1stChild().style():[transform='scale(1)']];style():[opacity=1;pointerEvents=auto]];().popup.style.keys()._():[():popup.style()._=().popup.style._]]:50]`
   }]
 }

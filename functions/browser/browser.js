@@ -92,33 +92,36 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
 // clicked element
 document.body.addEventListener('click', e => {
   
-    var global = window.global
-    global["key-events"] = []
+  var global = window.global
+  global["key-events"] = []
 
-    var global = window.global
-    global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[((e || window.event).target||e.currentTarget).id]
-    global.clickedElement = (e || window.event).target
+  var global = window.global
+  global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[((e || window.event).target||e.currentTarget).id]
+  global.clickedElement = (e || window.event).target
+  
+  global["html"] = global.clickedElement.innerHTML.replace("&amp;", "&")
+  global["txt"] = (global.clickedElement.textContent === undefined ? global.clickedElement.innerText : global.clickedElement.textContent).replace("&amp;", "&")
 
-    // droplist
-    if (global.clickedElement.id === "droplist") delete global["droplist-item-clicked"]
-    else if (views.droplist.element.contains(global.clickedElement)) {
-        global["droplist-item-clicked"] = global["droplist-item"] = global.clickedElement
-        global["droplist-item-txt"] = global["droplist-txt"] = global.clickedElement.innerHTML.replace("&amp;", "&")
-    }
+  // droplist
+  if (global.clickedElement.id === "droplist") delete global["droplist-item-clicked"]
+  else if (views.droplist.element.contains(global.clickedElement)) {
+      global["droplist-item-clicked"] = global["droplist-item"] = global.clickedElement
+      global["droplist-item-txt"] = global["droplist-txt"] = global.clickedElement.innerHTML.replace("&amp;", "&")
+  }
 
-    // actionlist
-    else if (global.clickedElement.id === "actionlist") delete global["actionlist-item-clicked"]
-    else if (views.droplist.element.contains(global.clickedElement)) {
-        global["actionlist-item-clicked"] = global["actionlist-item"] = global.clickedElement
-        global["actionlist-item-txt"] = global["actionlist-txt"] = global.clickedElement.innerHTML
-    }
-    
-    // body event listeners
-    Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o, e))
+  // actionlist
+  else if (global.clickedElement.id === "actionlist") delete global["actionlist-item-clicked"]
+  else if (views.droplist.element.contains(global.clickedElement)) {
+      global["actionlist-item-clicked"] = global["actionlist-item"] = global.clickedElement
+      global["actionlist-item-txt"] = global["actionlist-txt"] = global.clickedElement.innerHTML
+  }
+  
+  // body event listeners
+  Object.values(global["body-click-events"]).flat().map(o => bodyEventListener(o, e))
 
-    // click events
-    global["click-events"].map(o => bodyEventListener(o, e))
-    global["click-events"] = []
+  // click events
+  global["click-events"].map(o => bodyEventListener(o, e))
+  global["click-events"] = []
 
 }, false)
 
