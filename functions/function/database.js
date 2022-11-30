@@ -290,7 +290,7 @@ var postdb = async ({ req, res }) => {
       if (!data["creation-date"]) {
         if (req.headers.timestamp) {
 
-          data["creation-date"] = req.headers.timestamp
+          data["creation-date"] = parseInt(req.headers.timestamp)
 
         } else {
 

@@ -34,7 +34,9 @@ const update = async ({ id, _window, req, res, update = {}, route }) => {
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") views.root.children = children = clone([global.data.page[global.currentPage]])
+  if (id === "root") {
+    views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage }]
+  }
   
   var innerHTML = await Promise.all(children.map(async (child, index) => {
 
@@ -65,10 +67,9 @@ const update = async ({ id, _window, req, res, update = {}, route }) => {
   if (id === "root") {
 
     document.body.scrollTop = document.documentElement.scrollTop = 0
-
     var title = route.title || views[global.currentPage].title
     var path = route.path || views[global.currentPage].path
-
+    
     history.pushState(null, title, path)
     document.title = title
 

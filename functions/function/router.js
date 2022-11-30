@@ -3,6 +3,7 @@ var params = {};
 const { createElement } = require("./createElement");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
+const { toArray } = require("./toArray");
 const bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
 
 require("dotenv").config();
@@ -11,20 +12,25 @@ const project = ({ req, res }) => {
     
     return new Promise (async resolve => {
 
-        var { currentPage, global, db, host } = params, promises = [], project
+        var { global, db } = params, promises = [], project, host = global.host
         if (!host) return res.send("Project cannot be found!")
-        
+
         // is brakcet domain
-        var isBracket = bracketDomains.includes(host);
+        var isBracket = bracketDomains.includes(host)
         if (!isBracket) {
-            isBracket = host.includes(".loca.lt") || host.includes("amazonaws");
-            if (isBracket) host = "bracketjs.com";
+            isBracket = host.includes(".loca.lt") || host.includes("amazonaws")
+            if (isBracket) host = "bracketjs.com"
         }
         
+        // public views
         global.data.public = getJsonFiles({ search: { collection: "public" } })
+        /*Object.entries(global.data.public).map(([id, view]) => {
+          view[id] = id
+          view["view-id"] = id
+        })*/
 
-        console.log("Document started loading:");
-        console.log("before project", new Date().getTime() - global.timer);
+        console.log("Document started loading:")
+        console.log("before project", new Date().getTime() - global.timer)
         
         // get project
         promises.push(db
@@ -33,11 +39,11 @@ const project = ({ req, res }) => {
           .get()
           .then((doc) => {
               if (doc.docs[0] && doc.docs[0].exists) {
-                  global.data.project = project = doc.docs[0].data()
+                  global.data.project = project = { ...doc.docs[0].data(), id: doc.docs[0].id }
                   global.projectId = global.data.project.id
                   global.functions = Object.keys(project.functions || {})
               }
-              console.log("after project", new Date().getTime() - global.timer);
+              console.log("after project", new Date().getTime() - global.timer)
           }))
 
         await Promise.all(promises)
@@ -114,7 +120,7 @@ const project = ({ req, res }) => {
                     console.log("after page", new Date().getTime() - global.timer)
                     
                     // page doesnot exist
-                    if (!global.data.page[currentPage]) return res.send("Page not found!")
+                    if (!global.data.page[global.currentPage]) return res.send("Page not found!")
                 }))
 
             /*
@@ -125,7 +131,7 @@ const project = ({ req, res }) => {
             */
 
             // load views
-            console.log("before view / firestore", new Date().getTime() - global.timer);
+            console.log("before view / firestore", new Date().getTime() - global.timer)
 
             promises.push(db
                 .collection(`view-${project.id}`)
@@ -135,7 +141,21 @@ const project = ({ req, res }) => {
                         global.data.view[doc.id] = doc.data()
                         // if (host.includes("localhost")) require("fs").writeFileSync(`database/view-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
                     })
-                    console.log("after view", new Date().getTime() - global.timer);
+                    console.log("after view", new Date().getTime() - global.timer)
+                }))
+
+            // load public views
+            console.log("before public / firestore", new Date().getTime() - global.timer)
+
+            promises.push(db
+                .collection(`public-${project.id}`)
+                .get()
+                .then(q => {
+                    q.forEach(doc => {
+                      global.data.public[doc.id] = global.data.view[doc.id] = { ...doc.data(), "my-views": [doc.id] }
+                      // if (host.includes("localhost")) require("fs").writeFileSync(`database/view-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
+                    })
+                    console.log("after public", new Date().getTime() - global.timer)
                 }))
         }
         
@@ -146,12 +166,13 @@ const project = ({ req, res }) => {
 
 const status = () => {
 
-    var { global, currentPage } = params
+    var { global } = params
 
     if (!global.data.project || !global.data.project.id) return "Project not found!"
     if (!global.data.page) return "No pages found!"
-    if (!global.data.page[currentPage]) return "Page not found!"
+    if (!global.data.page[global.currentPage]) return "Page not found!"
     if (!global.data.view) return "No views found!"
+    if (!global.data.public) return "No public views found!"
     return "Document is ready!"
 }
 
@@ -160,7 +181,7 @@ const initialize = ({ req, res }) => {
     // Create a cookies object
     var host = req.headers.host || req.headers.referer// || req.headers["x-forwarded-host"]
     if (!host && req.headers.host && req.headers.host.includes("localhost")) host = req.headers.host
-    if (req.url.split("/")[1] === "undefined") return res.send("")
+    // if (req.url.split("/")[1] === "undefined") return res.send("")
     if (!host) return res.send("Project cannot be found!")
     
     // current page
@@ -174,6 +195,7 @@ const initialize = ({ req, res }) => {
             account: {},  
             view: {},
             page: {},
+            public: {},
             editor: {},
             project: {},
         },
@@ -213,7 +235,7 @@ const initialize = ({ req, res }) => {
         }
     }
 
-    params = { req, res, currentPage, global, views, db, host }
+    params = { req, res, global, views, db }
     return { global, views }
 }
 
@@ -231,6 +253,8 @@ const interpret = () => {
         // controls & views
         views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
         views.public.children = Object.values(global.data.public)
+        // views.public.children.push(...(Object.values(global.data._public_) || []))
+        // views.root.children[0].children = toArray(views.root.children[0].children)
 
         if (!global.data.project) return res.send("Project does not exist or something went wrong! Refresh")
 
@@ -238,9 +262,9 @@ const interpret = () => {
         if (global.data.project.children) {
 
           var __window = { views: { body: { id: "body", type: "View", children: global.data.project.children } }, global }
-          console.log("Create headers started!");
+          console.log("Create headers started!")
           await createElement({ _window: __window, global: {}, id: "body", req, res, import: true })
-          console.log("Create headers ended!");
+          console.log("Create headers ended!")
         }
 
         // create views
@@ -271,8 +295,10 @@ const app = async ({ req, res }) => {
     await interpret({ req, res })
     if (res.headersSent) return
     
-    var currentPage = global.currentPage, innerHTML = global.innerHTML, view = views[global.currentPage]
-
+    var currentPage = global.currentPage
+    var innerHTML = global.innerHTML
+    var view = views[global.currentPage] || {}
+    
     // main head tags
     var favicon = global.data.project.favicon
     var language = global.language = view.language || "en"

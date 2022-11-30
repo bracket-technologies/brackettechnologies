@@ -19,6 +19,6 @@
  , "prevYearEnd()", "counter()", "exportCSV()", "exportPdf()", "readonly()", "html()", "csvToJson()"
  , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "return()", "html2pdf()", "dblclick()"
  , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()"
- , "replaceItem()", "findAndReplaceItem()", "grandParent()", "grandChild()", "grandChildren()", "open()", "2ndNext()", "isNaN()"
+ , "replaceItem()", "replaceItems()", "findAndReplaceItem()", "grandParent()", "grandChild()", "grandChildren()", "open()", "2ndNext()", "isNaN()"
  , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()"
 ]

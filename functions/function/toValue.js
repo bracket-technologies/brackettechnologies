@@ -30,6 +30,8 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   else if (value === "true") return true
   else if (value === "null") return null
   else if (value === "_") return _
+  else if (value === "__") return __
+  else if (value === "___") return ___
   else if (value === "_string") return ""
   
   // break & return

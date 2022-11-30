@@ -77,7 +77,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
         
   if (res) {
     
-    views.root.children = clone([global.data.page[currentPage]])
+    views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
     return
   }
 

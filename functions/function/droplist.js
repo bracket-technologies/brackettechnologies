@@ -43,8 +43,8 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   // filterable
   if (!view.droplist.preventDefault) {
 
-    if (view.droplist.searchable.filter && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
-
+    if ((view.droplist.searchable || {}).filter && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
+      
       items = items.filter(item => view.droplist.searchable.any 
         ? item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase())
         : item.toString().toLowerCase().slice(0, global["droplist-search-txt"].toString().length) === global["droplist-search-txt"].toString().toLowerCase()
@@ -73,7 +73,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
       delete title.container
 
       dropList.children.push({
-        type: `View?style:[minHeight=3rem;height=100%;gap=1rem;cursor=default];${toString({ style: view.droplist.item.style || {} })};${toString(view.droplist.item.container || {})};${toString(Title.container || {})};class=flex align-items pointer ${(Title.container || {}).class || ""}`,
+        type: `View?style:[minHeight=3rem;height=100%;gap=1rem;cursor=default];${toString({ style: view.droplist.item && view.droplist.item.style || {} })};${toString(view.droplist.item && view.droplist.item.container || {})};${toString(Title.container || {})};class=flex align-items pointer ${(Title.container || {}).class || ""}`,
         children: [{
           type: `View?style:[height=100%;width=fit-content];${toString(Title.icon.container || {})};class=flexbox ${(Title.icon.container || {}).class || ""}`,
           children: [{
@@ -105,7 +105,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
         delete _item.container
         
         return ({
-          type: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString({ style: view.droplist.item.style || {} })};${toString(view.droplist.item.container || {})};${toString(item.container || {})};class=flex align-items pointer ${(item.container || {}).class || ""}`,
+          type: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString({ style: view.droplist.item && view.droplist.item.style || {} })};${toString(view.droplist.item && view.droplist.item.container || {})};${toString(item.container || {})};class=flex align-items pointer ${(item.container || {}).class || ""}`,
           children: [{
             type: `View?style:[height=inherit;width=fit-content];${toString(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
             children: [{
@@ -127,7 +127,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
       } else {
         
         return ({
-          type: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(view.droplist.item || {})};${toString(item)};class=flex align-center pointer ${(item || {}).class || ""};caller=${id}`,
+          type: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(view.droplist.item || {})};${toString(item)};class=flex align-center pointer ${(item || {}).class || ""};caller=${id}`,
           controls: [...(view.droplist.controls || []), {
             event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault`,
             actions: [ // :[focus:${input_id}]
@@ -145,7 +145,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   dropList.positioner = dropList.caller = id
   dropList.unDeriveData = true
   update({ id: "droplist" })
-
+  
   // searchable
   var myFn = () => {
 
@@ -204,7 +204,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
         }
       }
     }
-
+    
     global["keyup-index"] = global["keyup-index"] || 0
     views.droplist.element.children[view.droplist.title ? global["keyup-index"] + 1 : global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
   }

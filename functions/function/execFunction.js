@@ -23,7 +23,7 @@ const execFunction = async ({ req, res, id = generate() }) => {
     
     if (_data.functions) {
 
-      global.data = { project: _data }
+      global.data = { project: { ..._data, id: project } }
       functions = _data.functions
       _window.global.functions = Object.keys(functions)
       message = `Action ${func} executed successfully!`

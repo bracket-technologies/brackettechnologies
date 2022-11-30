@@ -36,7 +36,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
   if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
   return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, __, ___, _i, object })
   // if (createElement) _ = views[id]._
-
+  
   string.split(";").map(param => {
     
     var key, value, id = viewId
@@ -74,28 +74,44 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       value = `coded()${_key}-1`
     }
 
+    // ||=
+    else if (key && value && key.slice(-2) === "||") {
+      key = key.slice(0, -2)
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||${value}`
+      value = `coded()${_key}`
+      /*global.codes[`coded()${_key0}`] = `${value}||0`
+      value = `coded()${_key}+coded()${_key0}`*/
+    }
+
     // +=
     else if (key && value && key.slice(-1) === "+") {
       key = key.slice(0, -1)
-      var _key = generate()
+      var _key = generate(), _key0 = generate()
       global.codes[`coded()${_key}`] = `${key}||0`
       value = `coded()${_key}+${value}`
+      /*global.codes[`coded()${_key0}`] = `${value}||0`
+      value = `coded()${_key}+coded()${_key0}`*/
     }
 
     // -=
     else if (key && value && key.slice(-1) === "-") {
       key = key.slice(0, -1)
-      var _key = generate()
+      var _key = generate(), _key0 = generate()
       global.codes[`coded()${_key}`] = `${key}||0`
       value = `coded()${_key}-${value}`
+      /*global.codes[`coded()${_key0}`] = `${value}||0`
+      value = `coded()${_key}-coded()${_key0}`*/
     }
 
     // *=
     else if (key && value && key.slice(-1) === "*") {
       key = key.slice(0, -1)
-      var _key = generate()
+      var _key = generate(), _key0 = generate()
       global.codes[`coded()${_key}`] = `${key}||0`
       value = `coded()${_key}*${value}`
+      /*global.codes[`coded()${_key0}`] = `${value}||0`
+      value = `coded()${_key}*coded()${_key0}`*/
     }
 
     // await
@@ -336,7 +352,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     //////////////////////////////////// function /////////////////////////////////////////
 
     if (path.length === 1 && path0.slice(-2) === "()" && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
-
+      
       view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))

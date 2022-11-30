@@ -60,6 +60,9 @@ body {
   z-index: -1;
   min-height: 100vh;
   float: none;
+  display: flex;
+  position: relative;
+  flex-direction: column;
 }
 
 code {

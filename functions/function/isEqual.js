@@ -8,32 +8,9 @@ const isEqual = function(value, other) {
     return value === other;
   }
 
-  // Get the value type
-  const type = Object.prototype.toString.call(value);
-
+  var type = Object.prototype.toString.call(value)
   // If the two objects are not the same type, return false
-  if (type !== Object.prototype.toString.call(other)) return false;
-
-  // html elements
-  if (value && other) {
-    if (
-      value.nodeType === Node.ELEMENT_NODE &&
-      other.nodeType === Node.ELEMENT_NODE
-    ) {
-      return (
-        value.isSameNode(other) ||
-        value.contains(other) ||
-        other.contains(value)
-      );
-    } else if (
-      (value.nodeType !== Node.ELEMENT_NODE &&
-        other.nodeType === Node.ELEMENT_NODE) ||
-      (value.nodeType === Node.ELEMENT_NODE &&
-        other.nodeType !== Node.ELEMENT_NODE)
-    ) {
-      return false;
-    }
-  }
+  if (type !== Object.prototype.toString.call(other)) return false
 
   // If items are not an object or array, return false
   if (["[object Array]", "[object Object]"].indexOf(type) < 0) return false;
@@ -80,6 +57,48 @@ const isEqual = function(value, other) {
       if (value.hasOwnProperty(key)) {
         if (compare(value[key], other[key]) === false) return false;
       }
+    }
+  }
+
+  if (Array.isArray(value) && Array.isArray(other)) {
+    var equal = true
+    if (value.length === other.length) {
+      value.map((value, i) => {
+        if (!isEqual(value, other[i])) equal = false
+      })
+    } else equal = false
+    return equal
+  }
+
+  if (typeof value === "object" && typeof other === "object" && !Array.isArray(value) && !Array.isArray(other)) {
+    var equal = true, valueKeys = Object.keys(value), otherKeys = Object.keys(other)
+    if (valueKeys.length === otherKeys.length) {
+      valueKeys.map((key, i) => {
+        if (!isEqual(valueKeys[key], otherKeys[key])) equal = false
+      })
+    } else equal = false
+    return equal
+  }
+
+  // html elements
+  if (value && other) {
+    
+    if (
+      value.nodeType === Node.ELEMENT_NODE &&
+      other.nodeType === Node.ELEMENT_NODE
+    ) {
+      return (
+        value.isSameNode(other) ||
+        value.contains(other) ||
+        other.contains(value)
+      );
+    } else if (
+      (value.nodeType !== Node.ELEMENT_NODE &&
+        other.nodeType === Node.ELEMENT_NODE) ||
+      (value.nodeType === Node.ELEMENT_NODE &&
+        other.nodeType !== Node.ELEMENT_NODE)
+    ) {
+      return false;
     }
   }
 

@@ -27,12 +27,14 @@ module.exports = {
       innerHTML = await Promise.all(toArray(view.children).map(async (child, index) => {
 
         if (!child) return ""
-        var id = child.id || generate()
+        var id = child.id
+        if (id && views[id]) id += generate()
+        else id = generate()
         views[id] = clone(child)
         views[id].id = id
         views[id].index = index
         views[id].parent = view.id
-        if (!_import) views[id]["my-views"] = [...view["my-views"]]
+        // if (!_import) views[id]["my-views"] = [...view["my-views"]]
         
         return await createElement({ _window, id, req, res, import: _import })
       }))

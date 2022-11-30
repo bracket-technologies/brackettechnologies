@@ -28,7 +28,7 @@
           "type": "View?class=flex column;style:[position=relative;borderRadius=.5em;backgroundColor=#fff;padding=2rem;gap=2rem]",
           "children": [
             {
-              "type": "Icon?class=flexbox pointer;name=bi-x;style:[position=absolute;top=1rem;right=1rem;height=2.5rem;width=2.5rem;fontSize=2.5rem;color=#666;transition=.2s;borderRadius=.5rem];hover:[style.backgroundColor=#eee];click:[2ndNext().2ndChild().click()]"
+              "type": "Icon?class=flexbox pointer;name=bi-x;style:[position=absolute;top=1rem;right=1rem;height=2.5rem;width=2.5rem;fontSize=2.5rem;color=#666;transition=.2s;borderRadius=.5rem];hover:[style.backgroundColor=#eee];click:[():popup-cancel.click()]"
             },
             {
               "type": "Text?style:[width=fit-content;fontSize=1.4rem];fontWeight=bold;text=[():[popup-positioner:()].popup.title.text||'Do you confirm!']"

@@ -26,7 +26,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
     // view is empty
     if (!view.type) return resolve("")
-    if (!view["my-views"] && !_import) view["my-views"] = [...views[parent]["my-views"]]
+    if (!view["my-views"] && !_import) view["my-views"] = [...parent["my-views"]]
     
     // code ''
     view.type = toCode({ _window, string: view.type })
@@ -46,7 +46,9 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
     if (_id) {
       
-      view.id = _id
+      if (views[_id] && view.id !== _id) view.id = _id + generate()
+      else view.id = _id
+
       if (!view["creation-date"] && global.data.view[_id]) {
         
         view["my-views"].push(_id)
@@ -145,8 +147,8 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
         if (views[params.id] && typeof views[params.id] === "object") {
           
-          views[params.id]["id-repetition-counter"] = (views[params.id]["id-repetition-counter"] || 0) + 1
-          params.id = params.id + `-${views[params.id]["id-repetition-counter"]}`
+          // views[params.id]["id-repetition-counter"] = (views[params.id]["id-repetition-counter"] || 0) + 1
+          params.id += generate()
         }
         
         delete Object.assign(views, { [params.id]: views[id] })[id]

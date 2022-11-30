@@ -526,7 +526,7 @@ const Input = (component) => {
                     event: "keyup?Data():[path=derivations().clone().pullLast().push():[derivations().lastEl().num()+1]]=_string;update():[().parent().parent()]?duplicatable;e().key=Enter",
                 }]
             }, {
-                type: `Icon?class=pointer;id=${id}-clear;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:'0.5rem']:[right=if():[parent().password]:4rem:'0.5rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt();${readonly?false:true}]:[prev().data().del();():${id}-input.txt()=;#():${id}-input.focus()].elif():[parent().clearable;${readonly?false:true}]:[#():${id}-input.focus()].elif():[${readonly?false:true};parent().removable;!():${id}-input.txt();parent().data().len()!=1]:[${readonly?false:true};parent().rem()]]?parent().clearable||parent().removable`,
+                type: `Icon?class=pointer;id=${id}-clear;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:'0.5rem']:[right=if():[parent().password]:4rem:'0.5rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt();${readonly?false:true}]:[prev().data().del();prev().txt()=;#prev().focus()].elif():[parent().clearable;${readonly?false:true}]:[#prev().focus()].elif():[${readonly?false:true};parent().removable;!prev().txt();parent().data().len()!=1]:[${readonly?false:true};parent().rem()]]?parent().clearable||parent().removable`,
             }, {
                 type: `Text?class=flexbox pointer;id=${id}-generate;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
             }, {
@@ -1067,7 +1067,7 @@ module.exports = ({ controls, id }) => {
   return [{
     event: "keyup:input()?clearTimer():[droplist-timer:()];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()?e().key=Escape"
   }, {
-    event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0];if():[droplist-positioner:()!=().id]:[droplist-positioner:()=${id};():${id}.droplist();timer():[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]]]:50]`,
+    event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[droplist-timer:()=timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0];if():[droplist-positioner:()!=().id]:[droplist-positioner:()=${id};():${id}.droplist();timer():[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]]]:50]`,
   }, {
     event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
     actions: `droplist:${id}?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
@@ -1275,7 +1275,7 @@ module.exports=[
  , "prevYearEnd()", "counter()", "exportCSV()", "exportPdf()", "readonly()", "html()", "csvToJson()"
  , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "return()", "html2pdf()", "dblclick()"
  , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()"
- , "replaceItem()", "findAndReplaceItem()", "grandParent()", "grandChild()", "grandChildren()", "open()", "2ndNext()", "isNaN()"
+ , "replaceItem()", "replaceItems()", "findAndReplaceItem()", "grandParent()", "grandChild()", "grandChildren()", "open()", "2ndNext()", "isNaN()"
  , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()"
 ]
 },{}],34:[function(require,module,exports){
@@ -1443,6 +1443,9 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
 
+    string = string.replaceAll("<", "&#60;")
+    string = string.replaceAll(">", "&#62;")
+
     while (string.includes("coded()")) {
 
       var string0 = string.split("coded()")[0]
@@ -1478,7 +1481,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
         if (arabic.test(string[i]) && !english.test(string[i]) || start === false && arabic.test(string[i+1]) && !english.test(string[i+1]) || (start !== false && string[i] === " ")) {
           if (start === false) {
             start = i
-            newString += `<span contenteditable class="arabic" style="color:inherit; background-color=#00000000; white-space:pre">`
+            newString += `<span contenteditable class="arabic" style='color:inherit; background-color=#00000000; white-space:pre'>`
           }
         } else if (start !== false) {
           start = false
@@ -1496,7 +1499,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
       var _id = generate()
       views[_id] = { id: _id, parent: id, colorize: true, editable: true, type: "Span" }
       */
-      return `<span contenteditable style="color:${colors[index]}; background-color=#00000000">${string}</span>`
+      return `<span contenteditable style='color:${colors[index]}; background-color=#00000000'>${string}</span>`
     } else {
       
       // semicolon
@@ -1512,7 +1515,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
             while (str[i] && str[i] !== ";" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
-            /*if (!actions.includes(str.slice(i+1) + "()")) */return str.slice(0, i+1) + `<span contenteditable style="text-decoration:underline;color:inherit">${str.slice(i+1)}()</span>`
+            /*if (!actions.includes(str.slice(i+1) + "()")) */return str.slice(0, i+1) + `<span contenteditable style='text-decoration:underline; color:inherit'>${str.slice(i+1)}()</span>`
             //else return (index !== _actions.length - 1) ? str + "()" : str
           } else return (index !== _actions.length - 1) ? str + "()" : str
         }).join("")
@@ -1782,7 +1785,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
     // view is empty
     if (!view.type) return resolve("")
-    if (!view["my-views"] && !_import) view["my-views"] = [...views[parent]["my-views"]]
+    if (!view["my-views"] && !_import) view["my-views"] = [...parent["my-views"]]
     
     // code ''
     view.type = toCode({ _window, string: view.type })
@@ -1802,7 +1805,9 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
     if (_id) {
       
-      view.id = _id
+      if (views[_id] && view.id !== _id) view.id = _id + generate()
+      else view.id = _id
+
       if (!view["creation-date"] && global.data.view[_id]) {
         
         view["my-views"].push(_id)
@@ -1901,8 +1906,8 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
         if (views[params.id] && typeof views[params.id] === "object") {
           
-          views[params.id]["id-repetition-counter"] = (views[params.id]["id-repetition-counter"] || 0) + 1
-          params.id = params.id + `-${views[params.id]["id-repetition-counter"]}`
+          // views[params.id]["id-repetition-counter"] = (views[params.id]["id-repetition-counter"] || 0) + 1
+          params.id += generate()
         }
         
         delete Object.assign(views, { [params.id]: views[id] })[id]
@@ -2034,12 +2039,14 @@ module.exports = {
       innerHTML = await Promise.all(toArray(view.children).map(async (child, index) => {
 
         if (!child) return ""
-        var id = child.id || generate()
+        var id = child.id
+        if (id && views[id]) id += generate()
+        else id = generate()
         views[id] = clone(child)
         views[id].id = id
         views[id].index = index
         views[id].parent = view.id
-        if (!_import) views[id]["my-views"] = [...view["my-views"]]
+        // if (!_import) views[id]["my-views"] = [...view["my-views"]]
         
         return await createElement({ _window, id, req, res, import: _import })
       }))
@@ -2765,8 +2772,8 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   // filterable
   if (!view.droplist.preventDefault) {
 
-    if (view.droplist.searchable.filter && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
-
+    if ((view.droplist.searchable || {}).filter && global["droplist-search-txt"] !== undefined && global["droplist-search-txt"] !== "") {
+      
       items = items.filter(item => view.droplist.searchable.any 
         ? item.toString().toLowerCase().includes(global["droplist-search-txt"].toString().toLowerCase())
         : item.toString().toLowerCase().slice(0, global["droplist-search-txt"].toString().length) === global["droplist-search-txt"].toString().toLowerCase()
@@ -2795,7 +2802,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
       delete title.container
 
       dropList.children.push({
-        type: `View?style:[minHeight=3rem;height=100%;gap=1rem;cursor=default];${toString({ style: view.droplist.item.style || {} })};${toString(view.droplist.item.container || {})};${toString(Title.container || {})};class=flex align-items pointer ${(Title.container || {}).class || ""}`,
+        type: `View?style:[minHeight=3rem;height=100%;gap=1rem;cursor=default];${toString({ style: view.droplist.item && view.droplist.item.style || {} })};${toString(view.droplist.item && view.droplist.item.container || {})};${toString(Title.container || {})};class=flex align-items pointer ${(Title.container || {}).class || ""}`,
         children: [{
           type: `View?style:[height=100%;width=fit-content];${toString(Title.icon.container || {})};class=flexbox ${(Title.icon.container || {}).class || ""}`,
           children: [{
@@ -2827,7 +2834,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
         delete _item.container
         
         return ({
-          type: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString({ style: view.droplist.item.style || {} })};${toString(view.droplist.item.container || {})};${toString(item.container || {})};class=flex align-items pointer ${(item.container || {}).class || ""}`,
+          type: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString({ style: view.droplist.item && view.droplist.item.style || {} })};${toString(view.droplist.item && view.droplist.item.container || {})};${toString(item.container || {})};class=flex align-items pointer ${(item.container || {}).class || ""}`,
           children: [{
             type: `View?style:[height=inherit;width=fit-content];${toString(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
             children: [{
@@ -2849,7 +2856,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
       } else {
         
         return ({
-          type: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(view.droplist.item || {})};${toString(item)};class=flex align-center pointer ${(item || {}).class || ""};caller=${id}`,
+          type: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(view.droplist.item || {})};${toString(item)};class=flex align-center pointer ${(item || {}).class || ""};caller=${id}`,
           controls: [...(view.droplist.controls || []), {
             event: `click?if():[():${id}.clicked]:[():${id}.clicked.style.keys()._():[():${id}.style()._=():${id}.clicked.style._]]?!():${id}.droplist.preventDefault`,
             actions: [ // :[focus:${input_id}]
@@ -2867,7 +2874,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   dropList.positioner = dropList.caller = id
   dropList.unDeriveData = true
   update({ id: "droplist" })
-
+  
   // searchable
   var myFn = () => {
 
@@ -2926,7 +2933,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
         }
       }
     }
-
+    
     global["keyup-index"] = global["keyup-index"] || 0
     views.droplist.element.children[view.droplist.title ? global["keyup-index"] + 1 : global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
   }
@@ -4112,32 +4119,9 @@ const isEqual = function(value, other) {
     return value === other;
   }
 
-  // Get the value type
-  const type = Object.prototype.toString.call(value);
-
+  var type = Object.prototype.toString.call(value)
   // If the two objects are not the same type, return false
-  if (type !== Object.prototype.toString.call(other)) return false;
-
-  // html elements
-  if (value && other) {
-    if (
-      value.nodeType === Node.ELEMENT_NODE &&
-      other.nodeType === Node.ELEMENT_NODE
-    ) {
-      return (
-        value.isSameNode(other) ||
-        value.contains(other) ||
-        other.contains(value)
-      );
-    } else if (
-      (value.nodeType !== Node.ELEMENT_NODE &&
-        other.nodeType === Node.ELEMENT_NODE) ||
-      (value.nodeType === Node.ELEMENT_NODE &&
-        other.nodeType !== Node.ELEMENT_NODE)
-    ) {
-      return false;
-    }
-  }
+  if (type !== Object.prototype.toString.call(other)) return false
 
   // If items are not an object or array, return false
   if (["[object Array]", "[object Object]"].indexOf(type) < 0) return false;
@@ -4184,6 +4168,48 @@ const isEqual = function(value, other) {
       if (value.hasOwnProperty(key)) {
         if (compare(value[key], other[key]) === false) return false;
       }
+    }
+  }
+
+  if (Array.isArray(value) && Array.isArray(other)) {
+    var equal = true
+    if (value.length === other.length) {
+      value.map((value, i) => {
+        if (!isEqual(value, other[i])) equal = false
+      })
+    } else equal = false
+    return equal
+  }
+
+  if (typeof value === "object" && typeof other === "object" && !Array.isArray(value) && !Array.isArray(other)) {
+    var equal = true, valueKeys = Object.keys(value), otherKeys = Object.keys(other)
+    if (valueKeys.length === otherKeys.length) {
+      valueKeys.map((key, i) => {
+        if (!isEqual(valueKeys[key], otherKeys[key])) equal = false
+      })
+    } else equal = false
+    return equal
+  }
+
+  // html elements
+  if (value && other) {
+    
+    if (
+      value.nodeType === Node.ELEMENT_NODE &&
+      other.nodeType === Node.ELEMENT_NODE
+    ) {
+      return (
+        value.isSameNode(other) ||
+        value.contains(other) ||
+        other.contains(value)
+      );
+    } else if (
+      (value.nodeType !== Node.ELEMENT_NODE &&
+        other.nodeType === Node.ELEMENT_NODE) ||
+      (value.nodeType === Node.ELEMENT_NODE &&
+        other.nodeType !== Node.ELEMENT_NODE)
+    ) {
+      return false;
     }
   }
 
@@ -4694,7 +4720,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     if (typeof path === "number") path = [path]
 
     // ||
-    if (path.join(".").includes("||")) {
+    if (path.join(".").includes("||") && !path.join(".").includes("||=")) {
         var args = path.join(".").split("||")
         var answer
         args.map(value => {
@@ -5005,7 +5031,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     : _object !== undefined ? _object
     : object
 
-    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "document()" 
+    if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "___" || path0 === "document()" 
     || path0 === "window()" || path0 === "win()" || path0 === "history()"/* || path0 === "return()"*/) path = path.slice(1)
         
     if (!_object && _object !== 0 && _object !== false) {
@@ -6732,13 +6758,14 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } else if (k0 === "in()" || k0 === "inside()") {
             
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, ___, _i,e })
-            if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = _next.includes(o)
-            else if (typeof o === "object") answer = _next[o] !== undefined
-            else if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) return answer = _next.contains(o)
+            if (_next) {
+              if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = _next.includes(o)
+              else if (typeof o === "object") answer = _next[o] !== undefined
+              else if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) return answer = _next.contains(o)
+            } else return false
 
         } else if (k0 === "out()" || k0 === "outside()" || k0 === "isout()" || k0 === "isoutside()") {
 
-            var args = k.split(":")
             var _next = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, ___, _i,e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
             answer = !_next.contains(o) && _next !== o
@@ -7094,21 +7121,37 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
                     answer = el.value
                     if (i === lastIndex && key && value !== undefined && o.element) answer = el.value = value
+                    else if (path[i + 1] === "del()") {
+                      breakRequest = i + 1
+                      answer = el.value = ""
+                    }
                     
                 } else {
 
                     answer = (el.textContent===undefined) ? el.innerText : el.textContent
                     if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
+                    else if (path[i + 1] === "del()") {
+                      breakRequest = i + 1
+                      answer = el.innerHTML = ""
+                    }
                 }
                 
             } else if (view && view.type === "Input") {
 
-                if (i === lastIndex && key && value !== undefined) _o[view.element.value] = value
+                if (i === lastIndex && key && value !== undefined) answer = _o[view.element.value] = value
+                else if (path[i + 1] === "del()") {
+                  breakRequest = i + 1
+                  answer = _o[view.element.value] = ""
+                }
                 else return answer = _o[view.element.value]
 
             } else if (view && view.type !== "Input") {
 
-                if (i === lastIndex && key && value !== undefined) _o[view.element.innerHTML] = value
+                if (i === lastIndex && key && value !== undefined) answer = _o[view.element.innerHTML] = value
+                else if (path[i + 1] === "del()") {
+                  breakRequest = i + 1
+                  answer = _o[view.element.innerHTML] = ""
+                }
                 answer = (view.element.textContent === undefined) ? view.element.innerText : view.element.textContent
             }
  
@@ -8200,7 +8243,33 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 else o.push(_data)
             }
             
-        } else if (k0 === "findAndReplaceItem()") {
+        } else if (k0 === "replaceItems()") {
+
+          if (isParam({ _window, string: args[1] })) {
+
+              var _params = toParam({ req, res, _window, id, e, _, __, ___, _i,string: args[1] })
+              var _path = _params.path, _data = _params.data
+              toArray(_data).map(_data => {
+
+                var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, id, path: _path || [], value, params, __: _, _: o, e, _i: index, object: item }), reducer({ req, res, _window, id, path: _path || [], value, params, __: _, _: o, e, object: _data })))
+                if (_index >= 0) o[_index] = _data
+                else o.push(_data)
+              })
+
+          } else if (args[1]) {
+
+              var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
+              toArray(_data).map(_data => {
+                
+                var _index = o.findIndex(item => item.id === _data.id)
+                if (_index >= 0) o[_index] = _data
+                else o.push(_data)
+              })
+
+              console.log(_data, o);
+          }
+          
+      } else if (k0 === "findAndReplaceItem()") {
 
             if (isParam({ _window, string: args[1] })) {
 
@@ -8300,13 +8369,13 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (i === lastIndex && key && value !== undefined) {
 
                 var _index
-                if (k[0] === "_") _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
+                if (k[0] === "_") _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, _i: index, req, res }) )
                 else _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, ___, _i: index, req, res, object: o }) )
                 if (_index !== undefined && _index !== -1) o[_index] = answer = value
                 
             } else {
 
-                if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
+                if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, _i: index, req, res }) )
                 else answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, _, __, ___, _i: index, req, res, object: o }) )
             }
             
@@ -8326,6 +8395,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             }
             
             answer = require("./sort").sort({ sort: _params, id, e })
+            if (Array.isArray(o)) o = answer
             
             return answer
 
@@ -8336,14 +8406,14 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (k[0] === "_") answer = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
             else answer = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, ___, _i: index, req, res, object: o }) )
             
-        } else if (k0.includes("map()") || k0 === "_()" || k0 === "()") {
+        } else if (k0 === "_()" || k0 === "()") { // map()
             
             var notArray = false
             if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
             if (typeof o === "object" && !Array.isArray(o)) notArray = true
             if (k[0] === "_") {
-
-                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: _, _: o, e, _i: index, object }) )
+              
+                toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, _: o, __: _, ___: __, e, _i: index, object }) )
                 answer = o
                 
             } else {
@@ -8950,7 +9020,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } else if (k0 === "csvToJson()") {
           
           var file = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
-          require("./csvToJson").csvToJson({ id, e, file, onload: args[1] || "", _, __, ___ })
+          require("./csvToJson").csvToJson({ id, e, file, onload: args[2] || "", _, __, ___ })
 
         } else if (k0 === "copyToClipBoard()") {
           
@@ -10375,11 +10445,9 @@ module.exports = {setPosition}
 
 },{}],100:[function(require,module,exports){
 (function (global){(function (){
-const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
-const { toNumber } = require("./toNumber")
 
 const sort = ({ _window, sort = {}, id, e }) => {
 
@@ -10390,7 +10458,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
   var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
-  var sortBy = options.sortBy || view.sortBy || sort.sortBy || sort.by || "ascending"
+  var sortBy = options.sortBy || view.sortBy || sort.sortBy || sort.by || "descending"
 
   if (sort.ascending) sortBy = "ascending"
   else if (sort.descending) sortBy = "descending"
@@ -10500,7 +10568,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":38,"./reducer":87,"./toArray":106,"./toCode":110,"./toNumber":116}],101:[function(require,module,exports){
+},{"./reducer":87,"./toArray":106,"./toCode":110}],101:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 
@@ -11291,7 +11359,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
   if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
   return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, __, ___, _i, object })
   // if (createElement) _ = views[id]._
-
+  
   string.split(";").map(param => {
     
     var key, value, id = viewId
@@ -11329,28 +11397,44 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       value = `coded()${_key}-1`
     }
 
+    // ||=
+    else if (key && value && key.slice(-2) === "||") {
+      key = key.slice(0, -2)
+      var _key = generate()
+      global.codes[`coded()${_key}`] = `${key}||${value}`
+      value = `coded()${_key}`
+      /*global.codes[`coded()${_key0}`] = `${value}||0`
+      value = `coded()${_key}+coded()${_key0}`*/
+    }
+
     // +=
     else if (key && value && key.slice(-1) === "+") {
       key = key.slice(0, -1)
-      var _key = generate()
+      var _key = generate(), _key0 = generate()
       global.codes[`coded()${_key}`] = `${key}||0`
       value = `coded()${_key}+${value}`
+      /*global.codes[`coded()${_key0}`] = `${value}||0`
+      value = `coded()${_key}+coded()${_key0}`*/
     }
 
     // -=
     else if (key && value && key.slice(-1) === "-") {
       key = key.slice(0, -1)
-      var _key = generate()
+      var _key = generate(), _key0 = generate()
       global.codes[`coded()${_key}`] = `${key}||0`
       value = `coded()${_key}-${value}`
+      /*global.codes[`coded()${_key0}`] = `${value}||0`
+      value = `coded()${_key}-coded()${_key0}`*/
     }
 
     // *=
     else if (key && value && key.slice(-1) === "*") {
       key = key.slice(0, -1)
-      var _key = generate()
+      var _key = generate(), _key0 = generate()
       global.codes[`coded()${_key}`] = `${key}||0`
       value = `coded()${_key}*${value}`
+      /*global.codes[`coded()${_key0}`] = `${value}||0`
+      value = `coded()${_key}*coded()${_key0}`*/
     }
 
     // await
@@ -11591,7 +11675,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     //////////////////////////////////// function /////////////////////////////////////////
 
     if (path.length === 1 && path0.slice(-2) === "()" && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
-
+      
       view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
           isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
@@ -12055,6 +12139,8 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   else if (value === "true") return true
   else if (value === "null") return null
   else if (value === "_") return _
+  else if (value === "__") return __
+  else if (value === "___") return ___
   else if (value === "_string") return ""
   
   // break & return
@@ -12548,7 +12634,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
         
   if (res) {
     
-    views.root.children = clone([global.data.page[currentPage]])
+    views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
     return
   }
 
@@ -12648,7 +12734,9 @@ const update = async ({ id, _window, req, res, update = {}, route }) => {
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") views.root.children = children = clone([global.data.page[global.currentPage]])
+  if (id === "root") {
+    views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage }]
+  }
   
   var innerHTML = await Promise.all(children.map(async (child, index) => {
 
@@ -12679,10 +12767,9 @@ const update = async ({ id, _window, req, res, update = {}, route }) => {
   if (id === "root") {
 
     document.body.scrollTop = document.documentElement.scrollTop = 0
-
     var title = route.title || views[global.currentPage].title
     var path = route.path || views[global.currentPage].path
-
+    
     history.pushState(null, title, path)
     document.title = title
 

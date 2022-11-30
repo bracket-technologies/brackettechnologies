@@ -1,8 +1,6 @@
-const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
-const { toNumber } = require("./toNumber")
 
 const sort = ({ _window, sort = {}, id, e }) => {
 
@@ -13,7 +11,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
   var Data = sort.Data || view.Data
   var options = global[`${Data}-options`] = global[`${Data}-options`] || {}
   var data = sort.data || global[Data]
-  var sortBy = options.sortBy || view.sortBy || sort.sortBy || sort.by || "ascending"
+  var sortBy = options.sortBy || view.sortBy || sort.sortBy || sort.by || "descending"
 
   if (sort.ascending) sortBy = "ascending"
   else if (sort.descending) sortBy = "descending"
