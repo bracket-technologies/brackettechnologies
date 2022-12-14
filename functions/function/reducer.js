@@ -22,6 +22,8 @@ const { isParam } = require("./isParam")
 const { isCondition } = require("./isCondition")
 const { toAwait } = require("./toAwait")
 const actions = require("./actions.json")
+const events = require("./events.json")
+const { toEvent } = require("./toEvent")
 
 const reducer = ({ _window, id = "root", path, value, key, params, object, index = 0, _, __, ___, _i, e, req, res, mount, condition, createElement }) => {
     
@@ -328,16 +330,16 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
           path0 = "()"
       }
 
-    } else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
+    }/* else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
         
-        /*if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "Data()" && path[1] !== "data()" && path[1] !== "derivations()" && path[1] !== "readonly()") {
+        if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "Data()" && path[1] !== "data()" && path[1] !== "derivations()" && path[1] !== "readonly()") {
             
             if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
             else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
 
             path0 = "()"
-        }*/
-    }
+        }
+    }*/
 
     _object = path0 === "()" ? view
     : path0 === "index()" ? index
@@ -497,8 +499,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         k = k.toString()
         k0 = k.split(":")[0]
-        var args = k.split(":")
-        
+        var args = k.split(":");
+        if (_ === "hover") console.log("1212", path, k);
         // fake lastIndex
         if (lastIndex !== path.length - 1) {
             if (key === true) key = false
@@ -2581,7 +2583,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 if (k[0] === "_") _items = o.filter((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, _i: index, req, res }) )
                 else _items = o.filter((o, index) => toApproval({ _window, e, string: args[1], id, object: o, _i: index, req, res, _, __, ___ }))
                 
-                _items.map(_item => {
+                _items.filter(data => data !== undefined && data !== null).map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
                 })
@@ -2590,7 +2592,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 
             } else {
 
-                var _items = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e, object })
+                var _items = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, _i, e, object }).filter(data => data !== undefined && data !== null)
                 
                 toArray(_items).map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
@@ -2932,6 +2934,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
 
               if (format === "format 1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
+              else if (format === "format 2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
               else if (format === "format 3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
             }
 
@@ -3560,9 +3563,18 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             } else if (args[1]) {
 
                 var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
-                var _index = o.findIndex(item => item.id === _data.id)
-                if (_index >= 0) o[_index] = _data
-                else o.push(_data)
+                if (typeof o[0] === "object") {
+
+                  var _index = o.findIndex(item => item.id === _data.id)
+                  if (_index >= 0) o[_index] = _data
+                  else o.push(_data)
+
+                } else if (typeof o[0] === "number" || typeof o[0] === "string") {
+
+                  var _index = o.findIndex(item => item === _data)
+                  if (_index >= 0) o[_index] = _data
+                  else o.push(_data)
+                }
             }
             
         } else if (k0 === "replaceItems()") {
@@ -3570,7 +3582,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
           if (isParam({ _window, string: args[1] })) {
 
               var _params = toParam({ req, res, _window, id, e, _, __, ___, _i,string: args[1] })
-              var _path = _params.path, _data = _params.data
+              var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
               toArray(_data).map(_data => {
 
                 var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, id, path: _path || [], value, params, __: _, _: o, e, _i: index, object: item }), reducer({ req, res, _window, id, path: _path || [], value, params, __: _, _: o, e, object: _data })))
@@ -3580,15 +3592,25 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
           } else if (args[1]) {
 
-              var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
-              toArray(_data).map(_data => {
-                
-                var _index = o.findIndex(item => item.id === _data.id)
-                if (_index >= 0) o[_index] = _data
-                else o.push(_data)
-              })
+              var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params }).filter(data => data !== undefined && data !== null)
+              if (typeof o[0] === "object") {
 
-              console.log(_data, o);
+                toArray(_data).map(_data => {
+                  
+                  var _index = o.findIndex(item => item.id === _data.id)
+                  if (_index >= 0) o[_index] = _data
+                  else o.push(_data)
+                })
+
+              } else if (typeof o[0] === "number" || typeof o[0] === "string") {
+
+                toArray(_data).map(_data => {
+                  
+                  var _index = o.findIndex(item => item === _data)
+                  if (_index >= 0) o[_index] = _data
+                  else o.push(_data)
+                })
+              }
           }
           
       } else if (k0 === "findAndReplaceItem()") {
@@ -4472,7 +4494,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
             breakRequest = true
             o[k0] = o[k0] || {}
-            answer = reducer({ req, res, _window, id, e, value, key, path: [...args.slice(1), ...path.slice(i + 1)], object: o[k0], params, _, __, ___, _i })
+            if (createElement && events.includes(k.split(":coded()")[0])) return toEvent({ _window, id: o.id && views[o.id] ? o.id: id, _, string: k })
+            args[1] = global.codes["coded()" + args[1].slice(-5)]
+            answer = reducer({ req, res, _window, id, e, key, path: [...args.slice(1), ...path.slice(i + 1)], object: o[k0], params, _: k0 === "hover" && "hover", __, ___, _i })
 
         } else if (key && value !== undefined && i === lastIndex) {
 
@@ -4509,7 +4533,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 else answer = o[k] = {}
     
             } else answer = o[k]
-        
+
         } else if (key && o[k] === undefined && i !== lastIndex) {
 
           if (!isNaN(path[i + 1])) answer = o[k] = []

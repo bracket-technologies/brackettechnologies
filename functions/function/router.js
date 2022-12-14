@@ -4,6 +4,7 @@ const { createElement } = require("./createElement");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
 const { toArray } = require("./toArray");
+const fs = require("fs")
 const bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
 
 require("dotenv").config();
@@ -24,6 +25,10 @@ const project = ({ req, res }) => {
         
         // public views
         global.data.public = getJsonFiles({ search: { collection: "public" } })
+
+        // collections
+        global.data.collection = getJsonFiles({ search: { collection: "collection" } })
+        
         /*Object.entries(global.data.public).map(([id, view]) => {
           view[id] = id
           view["view-id"] = id
@@ -42,6 +47,8 @@ const project = ({ req, res }) => {
                   global.data.project = project = { ...doc.docs[0].data(), id: doc.docs[0].id }
                   global.projectId = global.data.project.id
                   global.functions = Object.keys(project.functions || {})
+
+                  require("fs").writeFileSync(`database/_project_/${doc.docs[0].id}.json`, JSON.stringify(doc.docs[0].data(), null, 2))
               }
               console.log("after project", new Date().getTime() - global.timer)
           }))
@@ -95,6 +102,12 @@ const project = ({ req, res }) => {
 
         } else {
 
+            if (host.includes("localhost") && project.id === "malik") {
+              if (!fs.existsSync(`database/page-${project.id}`)) fs.mkdirSync(`database/page-${project.id}`)
+              if (!fs.existsSync(`database/view-${project.id}`)) fs.mkdirSync(`database/view-${project.id}`)
+              if (!fs.existsSync(`database/collection-${project.id}`)) fs.mkdirSync(`database/collection-${project.id}`)
+            }
+
             // get page
             /*
             page = rdb.ref(`page-${project.id}`).once("value").then(snapshot => {
@@ -103,19 +116,15 @@ const project = ({ req, res }) => {
             })
             */
             console.log("before page / firestore", new Date().getTime() - global.timer);
-
-            /*if (host.includes("localhost")) {
-            if (!fs.existsSync(`database/page-${project.id}`)) fs.mkdirSync(`database/page-${project.id}`)
-            if (!fs.existsSync(`database/view-${project.id}`)) fs.mkdirSync(`database/view-${project.id}`)
-            }*/
-
+            
             promises.push(db
                 .collection(`page-${project.id}`)
                 .get()
                 .then(q => {
                     q.forEach(doc => {
-                        global.data.page[doc.id] = doc.data()
-                        // if (host.includes("localhost")) require("fs").writeFileSync(`database/page-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
+                        global.data.page[doc.id] = { ...doc.data(), id: doc.id }
+                        if (host.includes("localhost") && project.id === "malik") 
+                          require("fs").writeFileSync(`database/page-${project.id}/${doc.id}.json`, JSON.stringify(doc.data(), null, 2))
                     })
                     console.log("after page", new Date().getTime() - global.timer)
                     
@@ -130,6 +139,17 @@ const project = ({ req, res }) => {
             })
             */
 
+            /*promises.push(db
+              .collection(`collection-${project.id}`)
+              .get()
+              .then(q => {
+                  q.forEach(doc => {
+                  global.data.view[doc.id] = { ...doc.data() }
+                      if (host.includes("localhost") && project.id === "malik") 
+                      require("fs").writeFileSync(`database/collection-${project.id}/${doc.id}.json`, JSON.stringify(doc.data(), null, 2))
+                  })
+              }))*/
+
             // load views
             console.log("before view / firestore", new Date().getTime() - global.timer)
 
@@ -138,8 +158,9 @@ const project = ({ req, res }) => {
                 .get()
                 .then(q => {
                     q.forEach(doc => {
-                        global.data.view[doc.id] = doc.data()
-                        // if (host.includes("localhost")) require("fs").writeFileSync(`database/view-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
+                    global.data.view[doc.id] = { ...doc.data() }
+                        if (host.includes("localhost") && project.id === "malik") 
+                        require("fs").writeFileSync(`database/view-${project.id}/${doc.id}.json`, JSON.stringify(doc.data(), null, 2))
                     })
                     console.log("after view", new Date().getTime() - global.timer)
                 }))
@@ -152,8 +173,9 @@ const project = ({ req, res }) => {
                 .get()
                 .then(q => {
                     q.forEach(doc => {
-                      global.data.public[doc.id] = global.data.view[doc.id] = { ...doc.data(), "my-views": [doc.id] }
-                      // if (host.includes("localhost")) require("fs").writeFileSync(`database/view-${project.id}/${doc.data().id}.json`, JSON.stringify(doc.data(), null, 2))
+                      global.data.public[doc.id] = global.data.view[doc.id] = { ...doc.data(), "my-views": [doc.id], id: doc.id }
+                      if (host.includes("localhost") && project.id === "malik") 
+                      require("fs").writeFileSync(`database/view-${project.id}/${doc.id}.json`, JSON.stringify(doc.data(), null, 2))
                     })
                     console.log("after public", new Date().getTime() - global.timer)
                 }))
@@ -249,7 +271,7 @@ const interpret = () => {
 
         var currentPage = global.currentPage
         if (!global.data.page[currentPage]) return res.send("Page does not exist!")
-        
+
         // controls & views
         views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
         views.public.children = Object.values(global.data.public)
@@ -348,7 +370,6 @@ const app = async ({ req, res }) => {
           ${children.body}
           ${innerHTML}
           <script src="/index.js"></script>
-          <div class="loader-container"><div class="loader"></div></div>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp"/>

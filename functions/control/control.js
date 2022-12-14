@@ -20,6 +20,7 @@ module.exports = {
   mouseup: require("./mouseup"),
   keypress: require("./keypress"),
   keyup: require("./keyup"),
+  scroll: require("./scroll"),
   keydown: require("./keydown"),
   loaded: require("./loaded"),
   contentful: require("../function/contentful").contentful

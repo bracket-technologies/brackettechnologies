@@ -24,6 +24,9 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     var view = views[id], tags = ""
     var parent = views[view.parent] || {}
 
+    // use view instead of type
+    if (view.view) view.type = view.view
+
     // view is empty
     if (!view.type) return resolve("")
     if (!view["my-views"] && !_import) view["my-views"] = [...parent["my-views"]]
@@ -47,9 +50,9 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     if (_id) {
       
       if (views[_id] && view.id !== _id) view.id = _id + generate()
-      else view.id = _id
-
-      if (!view["creation-date"] && global.data.view[_id]) {
+      else view.id = id = _id
+      
+      if (!view["creation-date"] && global.data.view[_id] && id !== _id) {
         
         view["my-views"].push(_id)
         views[_id] = { ...view, ...clone(global.data.view[_id]) }
@@ -60,7 +63,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       }
 
       priorityId = true
-      view.type = view.type.split(":")[0]
+      type = view.type = view.type.split(":")[0]
     }
 
     view.id = view.id || generate()
@@ -143,18 +146,15 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       /*if (params["break()"]) delete params["break()"]
       if (params["return()"]) return delete params["return()"]*/
 
-      if (params.id && params.id !== id/* && !priorityId*/) {
+      if (params.id && params.id !== id) {
 
-        if (views[params.id] && typeof views[params.id] === "object") {
-          
-          // views[params.id]["id-repetition-counter"] = (views[params.id]["id-repetition-counter"] || 0) + 1
-          params.id += generate()
-        }
-        
+        if (views[params.id] && typeof views[params.id] === "object") params.id += generate()
         delete Object.assign(views, { [params.id]: views[id] })[id]
         id = params.id
-
-      }// else if (priorityId) view.id = id // we have View:id & an id parameter. the priority is for View:id
+      }
+      
+      // name is inherited from mapper as a list
+      //if (view.type === "Icon" && view.mapIndex !== undefined && view.data && Array.isArray(view.name)) view.name = view.data
 
       // inherited params
       if (inheritedParams) override(view, inheritedParams)
@@ -172,6 +172,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
         
         var newView = clone(global.data.view[viewId])
         if (!newView) return resolve("")
+        if (newView.id && views[newView.id]) newView.id += generate()
 
         views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
         
@@ -186,6 +187,8 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       view["my-views"].push(viewId)
       var newView = clone(global.data.view[viewId])
       if (!newView) return resolve("")
+      if (newView.id && views[newView.id]) newView.id += generate()
+      
       views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
 
       tags = await createElement({ _window, id, req, res })
@@ -232,6 +235,25 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       return resolve(tags)
     }
 
+    if (type === "Icon" && Array.isArray(view.name)) {
+
+      view.Data = generate();
+      global[view.Data] = clone(view.name)
+      delete view.name;
+      
+    } else if (type === "Image" && Array.isArray(view.src)) {
+
+      view.Data = generate();
+      global[view.Data] = clone(view.src)
+      delete view.src;
+
+    } else if (type === "Text" && Array.isArray(view.text)) {
+
+      view.Data = generate();
+      global[view.Data] = clone(view.text)
+      delete view.text;
+    }
+
     // for droplist
     if (parent.unDeriveData || view.unDeriveData) {
 
@@ -241,7 +263,6 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     } else view.data = reducer({ _window, id, path: view.derivations, value: view.data, key: true, object: global[view.Data], req, res })
     
     if (view.parent === "root") views.root.child = view.id
-    // return 
 
     tags = await createTags({ _window, id, req, res })
     resolve(tags)

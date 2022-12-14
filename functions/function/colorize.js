@@ -37,7 +37,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
     }*/
 
     // equal
-    // string = string.split("=").join(`<span style="color:#444">=</span>`)
+    // string = string.split("=").join(`<div style="color:#444">=</div>`)
 
     // change font for arabic chars
     if (arabic.test(string)) {
@@ -46,11 +46,11 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
         if (arabic.test(string[i]) && !english.test(string[i]) || start === false && arabic.test(string[i+1]) && !english.test(string[i+1]) || (start !== false && string[i] === " ")) {
           if (start === false) {
             start = i
-            newString += `<span contenteditable class="arabic" style='color:inherit; background-color=#00000000; white-space:pre'>`
+            newString += `<div contenteditable class="arabic" style='color:inherit; background-color=#00000000; white-space:pre'>`
           }
         } else if (start !== false) {
           start = false
-          newString += `</span>`
+          newString += `</div>`
         } else start = false
         newString += string[i]
         i++
@@ -62,25 +62,25 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
       /*
       var views = _window ? _window.view : window.views
       var _id = generate()
-      views[_id] = { id: _id, parent: id, colorize: true, editable: true, type: "Span" }
+      views[_id] = { id: _id, parent: id, colorize: true, editable: true, type: "div" }
       */
-      return `<span contenteditable style='color:${colors[index]}; background-color=#00000000'>${string}</span>`
+      return `<div contenteditable style='color:${colors[index]}; background-color=#00000000'>${string}</div>`
     } else {
       
       // semicolon
-      //string = string.split(";").join(`<span contenteditable style="color:#000">;</span>`)
+      //string = string.split(";").join(`<div contenteditable style="color:#000">;</div>`)
 
       // actions
       string = string.split(";").map(string => {
         var _actions = string.split("()")
         string = _actions.map((str, index) => {
           var lastIndex = str.length - 1
-          if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "_" && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
+          if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "_" && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
             var i = lastIndex - 1
-            while (str[i] && str[i] !== ";" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
+            while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
-            /*if (!actions.includes(str.slice(i+1) + "()")) */return str.slice(0, i+1) + `<span contenteditable style='text-decoration:underline; color:inherit'>${str.slice(i+1)}()</span>`
+            /*if (!actions.includes(str.slice(i+1) + "()")) */return str.slice(0, i+1) + `<div contenteditable style='text-decoration:underline; color:inherit'>${str.slice(i+1)}()</div>`
             //else return (index !== _actions.length - 1) ? str + "()" : str
           } else return (index !== _actions.length - 1) ? str + "()" : str
         }).join("")

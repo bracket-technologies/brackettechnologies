@@ -1,0 +1,8 @@
+{
+  "type": "View:loader-container?class=loader-container",
+  "children": [
+    {
+      "type": "View:loader?class=loader"
+    }
+  ]
+}

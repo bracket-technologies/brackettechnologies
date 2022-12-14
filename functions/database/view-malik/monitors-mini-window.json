@@ -1,0 +1,225 @@
+{
+  "type": "View?id=monitors-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
+  "id": "monitors-mini-window",
+  "children": [
+    {
+      "type": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto?monitors-data:()",
+      "children": [
+        {
+          "type": "View?class=flex align-center;style.width=100%",
+          "children": [
+            {
+              "type": "Text?text=إستمارة شاشة مراقبة+if():[)(:monitors-copied]:(منسوخ).elif():[)(:monitors-edit-readonly]:(عرض).elif():[)(:monitors-edit]:(تعديل).else():(جديد);style.fontSize=1.8rem;style.fontWeight=bolder"
+            },
+            {
+              "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto",
+              "children": [
+                {
+                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-monitors;!)(:monitors-edit-readonly",
+                  "controls": [
+                    {
+                      "event": "click?monitors:().[monitors-data:().id].del()?false",
+                      "actions": "wait():erase:[update:monitors-manager-list]?erase.collection=resources-monitors;erase.doc=monitors-data:().id;wait():[():monitors-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];new-monitors:().del()]"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
+                    }
+                  ]
+                },
+                {
+                  "controls": [
+                    {
+                      "event": "click?saveMontior()"
+                    }
+                  ],
+                  "type": "View:save-monitor?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:monitors-edit-readonly",
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
+                    }
+                  ]
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.8rem"
+                    }
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s",
+                  "controls": [
+                    {
+                      "event": "click?():monitors-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:monitors-data.del();)(:new-monitors.del()"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "View?style.width=100%;style.height=1px;style.backgroundColor=#ddd"
+        },
+        {
+          "type": "View?class=flex column;style.width=100%;data=)(:monitors-data;style.gap=2rem",
+          "children": [
+            {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات التسجيل;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=الرمز;label.location=outside;readonly;path=id;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
+                    },
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=تاريخ التسجيل;label.location=outside;readonly;input.value=data().creation-date.toSimplifiedDateTimeAr();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
+                    },
+                    {
+                      "controls": [
+                        {
+                          "watch": "data()?data()=if():[txt()=فعّال]:true:false"
+                        }
+                      ],
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;path=active;input.value=if():[data().active]:فعّال.else():غير فعّال;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[)(:monitors-edit-readonly]:[droplist.readonly=true]"
+                    }
+                  ],
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                }
+              ]
+            },
+            {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem",
+                  "children": [
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=إسم الشاشة;label.location=outside;path=name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:monitors-edit-readonly]:[readonly=true]"
+                    },
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=الرقم التسلسلي;label.location=outside;input.type=number;path=serial-number;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:monitors-edit-readonly]:[readonly=true]"
+                    },
+                    {
+                      "controls": [
+                        {
+                          "event": "click:droplist?data()=networks:().find():[name=data()].id"
+                        }
+                      ],
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=الشبكة;label.location=outside;path=network;if():data():[input.value=networks:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;readonly;droplist.items='networks:().():name';droplist.align=right;if():[monitors-edit-readonly:()]:[droplist.readonly=true]"
+                    },
+                    {
+                      "type": "Input?style.width=100%;input.type=date;style.height=4rem;label.text=تاريخ التركيب;label.location=outside;path=installation-date;if():data():[input.value=data().toDateInputFormat()];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[monitors-edit-readonly:()]:[readonly=true]",
+                      "controls": [
+                        {
+                          "event": "input?data()=data().timestamp()"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=الحالة;label.location=outside;readonly;path=status;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=)(:data.collection.devices-sources-status.status;droplist.align=right;if():[monitors-edit-readonly:()]:[droplist.readonly=true]"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;tooltip.text=رمز الجهاز;style.fontSize=1.5rem;text=الأجهزة القابلة للمشاهدة;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "type": "View?class=flex column;old-devices:()=data().devices.clone();path=devices",
+                  "children": [
+                    {
+                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
+                      "children": [
+                        {
+                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
+                          "children": [
+                            {
+                              "type": "Input?style.width=100%;style.height=4rem;if():data():[input.value=devices:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;droplist:[items='devices:().():name';align=right;if():[monitors-edit-readonly:()]:[readonly=true];searchable]"
+                            },
+                            {
+                              "controls": [
+                                {
+                                  "event": "click?Data().devices=_array;parent().input().text()=_string?Data().devices.len()=1;!monitors-edit-readonly:()"
+                                },
+                                {
+                                  "event": "click??Data().devices.len()>1;!monitors-edit-readonly:()",
+                                  "actions": "remove:[parent().id]"
+                                }
+                              ],
+                              "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "View?class=flex;style.gap=1rem",
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                              "controls": [
+                                {
+                                  "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:devices:[Data().devices.len()-1];insert.index=parent().parent().children().len()-1",
+                                  "event": "click?Data().devices.push():_string?Data().devices.len()>0;!monitors-edit-readonly:()"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+            },
+            {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=ملاحظات;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "children": [
+                    {
+                      "type": "Input?textarea;style.width=100%;style.height=8rem;path=note;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[monitors-sources-edit-readonly:()]:[readonly=true];style.border=1px solid #ccc"
+                    }
+                  ],
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "children": [
+            {
+              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s;click:[saveMonitor()]?!)(:monitors-edit-readonly"
+            },
+            {
+              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s",
+              "controls": [
+                {
+                  "event": "click?():monitors-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=zIndex-counter-1:();zIndex=1];monitors-data:().del();)(:new-monitors.del()"
+                }
+              ]
+            }
+          ],
+          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "updateDevicesOnMonitors": "if():[monitors-data:().devices.len()>0;devices:().find():[id.in():[monitors-data:().devices]]]:[my-devices=devices:().filter():[id.in():[monitors-data:().devices]].():[monitor=monitors-data:().id];save():[collection=resources-devices;data=().my-devices]]",
+    "saveMontior": "monitors:().replaceItem():[monitors-data:()];new-monitors:().del();save():[collection=resources-monitors;data=monitors-data:()]:[updateDevicesOnMonitors();if():[monitors-data:().network;networks:().find():[id=monitors-data:().network]]:[networks:().find():[id=monitors-data:().network]._():[_.monitor=monitors-data:().id;save():[collection=resources-networks;data=_]]];note():[text=تم حفظ الشاشة بنجاح];():monitors-mini-window.style():[opacity=0;pointerEvents=none];update():[monitors-manager-list]]"
+  }
+}

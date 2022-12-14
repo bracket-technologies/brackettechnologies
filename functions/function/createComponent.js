@@ -18,6 +18,9 @@ module.exports = {
     // my views
     if (!view["my-views"]) view["my-views"] = [...views[view.parent]["my-views"]]
 
+    // use view instead of type
+    if (view.view) view.type = view.view
+    
     // 
     view.type = toCode({ _window, string: view.type })
     view.type = toCode({ _window, id, string: view.type, start: "'", end: "'" })

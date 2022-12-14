@@ -147,7 +147,7 @@
                                     ],
                                     "children": [
                                         {
-                                            "type": "Text?text=Login;link:[path=/login;preventDefault];style.fontSize=1.6rem;style.color=#444;style.marginRight=.75rem;route():login"
+                                            "type": "Text?text=Login;link:[path=/login;preventDefault];style.fontSize=1.6rem;style.color=#444;style.marginRight=.75rem;click:[route():login]"
                                         }
                                     ],
                                     "type": "View?style.height=100%;class=flex-box pointer"
@@ -1119,6 +1119,6 @@
             ]
         }
     ],
-    "type": "View?id=main",
+    "type": "View:main",
     "creation-date": 1637494484000
 }

@@ -122,7 +122,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
   view.save = global.save = _data
   if (store === "confirmEmail") view.confirmEmail = _data
 
-  if (!_window) console.log(_data)
+  /*if (!_window) */console.log("save", _data)
 
   // await params
   if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, _: _data, __: _, ___: __, params })

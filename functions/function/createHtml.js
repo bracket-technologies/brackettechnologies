@@ -29,7 +29,7 @@ module.exports = {
         if (!child) return ""
         var id = child.id
         if (id && views[id]) id += generate()
-        else id = generate()
+        else if (!id) id = generate()
         views[id] = clone(child)
         views[id].id = id
         views[id].index = index
@@ -121,6 +121,7 @@ module.exports = {
 
         delete view.text
         delete view.type
+        delete view.view
         delete view.parent
         delete view["my-views"]
 

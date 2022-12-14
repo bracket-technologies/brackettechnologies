@@ -31,7 +31,7 @@ const erase = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
   })
 
   view.erase = global.erase = clone(data)
-  if (!_window) console.log(data)
+  /*if (!_window) */console.log("erase", data)
 
   if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
 }

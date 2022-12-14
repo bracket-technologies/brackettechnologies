@@ -1,0 +1,20 @@
+{
+  "domains": [
+    "localhost",
+    "bracket.localhost",
+    "www.bracketjs.com",
+    "bracketjs.com",
+    "localhost:8080"
+  ],
+  "access-key": "oD8jelc3GS83jKT921Kl",
+  "id": "bracket",
+  "functions": {
+    "checkEmail": "search():[collection=_account_;field.email.equal=_.email]:[account:()=search:().data.value();send():[account:()]]",
+    "checkUser": "search():[collection=_account_;doc=_.user]:[if():[_.data]:[data:().editor.account=_.data]:[eraseCookie():_id;route():login]]",
+    "getProject": "if():[!_.user||!_.project]:[return():[send():[success=false;message='Missing Info!']]];search():[collection=_account_;doc=_.user]:[if():[_.data]:[user:()=_.data;search():[collection=_project_;doc=__.project]:[if():[_.data]:[if():[___.project.in():[user:().projects]]:[send():[_map.():[user=user:();project=_.data]]]:[send():[success=false;message='Project is not related to this user!']]]:[send():[message='Project does not exist!']]]]:[send():[message='User is not authorized!']]]",
+    "autoLogin": "search():[collection=_account_;doc=_.id]:[account:()=search:().data.value();send():[account:()]]",
+    "checkPassword": "search():[collection=_password_;field.user.equal=_.user;field.password.equal=_.password]:[if():[search:().data.value()]:[send():true]:[send():false]]"
+  },
+  "name": "Bracket",
+  "creation-date": 1647359813700
+}

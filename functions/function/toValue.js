@@ -40,9 +40,15 @@ const toValue = ({ _window, value, params, _, __, ___, _i, id, e, req, res, obje
   
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
+  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
   
   // string
   if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
+  if (value.includes('codedS()') && value.length === 13) {
+    
+    if (!object) return global.codes[value]
+    else value = global.codes[value]
+  }
   if (value.includes('codedS()') && value.length === 13) {
     
     if (!object) return global.codes[value]

@@ -220,7 +220,7 @@ module.exports = {
         _data = { data, success, message }
       }
       
-      console.log(_data)
+      console.log("search", _data)
       view.search = global.search = clone(_data)
     
       // await params
@@ -245,7 +245,7 @@ module.exports = {
               }
             })
     
-            console.log(_data)
+            console.log("search", _data)
             view.search = global.search = clone(_data)
     
             // await params
@@ -264,7 +264,7 @@ module.exports = {
           }
         })
 
-        console.log(_data)
+        console.log("search", _data)
         view.search = global.search = clone(_data)
 
         // await params

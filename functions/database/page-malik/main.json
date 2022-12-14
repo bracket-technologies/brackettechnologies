@@ -1,0 +1,5 @@
+{
+  "type": "main?title=نظام مالك | إدارة أعمال الأفراد;path=/;language=ar;beforeLoading:[if():[!getCookie():_id]:[route():login]:[if():[!user:()]:[getUser():[getCookie():_id]:[if():[_.success]:[user:()=_.data]:[route():login]]]]]",
+  "functions": {},
+  "creation-date": 1647263580324
+}

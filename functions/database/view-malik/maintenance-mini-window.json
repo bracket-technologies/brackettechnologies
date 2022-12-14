@@ -1,0 +1,717 @@
+{
+  "creation-date": "1662729405850",
+  "id": "maintenance-mini-window",
+  "children": [
+    {
+      "type": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto?maintenance-data:()",
+      "children": [
+        {
+          "children": [
+            {
+              "type": "Text?text=إستمارة عمل صيانة +if():[maintenance-copied:()]:(منسوخ).elif():[maintenance-edit-readonly:()]:(عرض).elif():[maintenance-edit:()]:(تعديل):(جديد);style.fontSize=1.8rem;style.fontWeight=bolder"
+            },
+            {
+              "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
+                    }
+                  ],
+                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-maintenance;!)(:maintenance-edit-readonly",
+                  "controls": [
+                    {
+                      "actions": "wait():erase:[update:maintenance-manager-list]?erase.collection=maintenance;erase.doc=maintenance-data:().id;wait():[():maintenance-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];new-maintenance:().del()]",
+                      "event": "click?maintenance:().[maintenance-data:().id].del()?false"
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flexbox pointer;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s;click:[():save-maintenance.click()]?!)(:maintenance-edit-readonly",
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
+                    }
+                  ]
+                },
+                {
+                  "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s",
+                  "children": [
+                    {
+                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.8rem"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?():maintenance-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:maintenance-data.del();)(:new-maintenance.del()"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "type": "View?class=flex align-center;style.width=100%"
+        },
+        {
+          "type": "View?style.width=100%;style.height=1px;style.backgroundColor=#ddd"
+        },
+        {
+          "type": "View?class=flex column;style.width=100%;data=)(:maintenance-data;style.gap=2rem",
+          "children": [
+            {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات التسجيل;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
+                  "children": [
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=الرمز;label.location=outside;readonly;path=id;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
+                    },
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=تاريخ التسجيل;label.location=outside;readonly;input.value=data().creation-date.toSimplifiedDateTimeAr();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
+                    },
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;input.value=if():[data().active]:فعّال:غير فعّال;path=active;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[issues-edit-readonly:()]:[droplist.readonly=true]",
+                      "controls": [
+                        {
+                          "event": "click:droplist?data()=if():[droplist-txt:()=فعّال]:true:false"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem",
+                  "children": [
+                    {
+                      "type": "Input?style.width=100%;style.height=4rem;label.text=حالة عمل الصيانة;label.location=outside;path=maintenance-status;data()=data:().collection.maintenance-status.status.0;clicked.style.border=2px solid #0080ff;readonly;style.borderRadius=.5rem;droplist.items='data:().collection.maintenance-status.status';droplist.align=right;if():[maintenance-edit-readonly:()]:[droplist.readonly=true]"
+                    },
+                    {
+                      "type": "Input?input.type=datetime-local;clearable;style.width=100%;style.height=4rem;label.text=تاريخ البدء;label.location=outside;data().start-date=data().start-date||today().timestamp();path=start-date;data()=data().toDateInputFormat();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[maintenance-edit-readonly:()]:[readonly=true];change:[data()=data().timestamp()]"
+                    },
+                    {
+                      "type": "Input?input.type=datetime-local;clearable;style.width=100%;style.height=4rem;label.text=تاريخ الإنتهاء;label.location=outside;data().end-date=data().end-date||today().timestamp();path=end-date;input.value=data().toDateInputFormat();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[maintenance-edit-readonly:()]:[readonly=true];change:[data()=data().timestamp()]"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الأفراد القائمين بأعمال الصيانة;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "type": "View?old-members:()=data().members.clone();class=flex column;path=members",
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "controls": [
+                                {
+                                  "event": "click:droplist?if():data():[data()=members:().find():[name=data()].id]"
+                                }
+                              ],
+                              "type": "Input?style.width=100%;style.height=4rem;if():data():[input.value=members:().find():[id=data()].name];readonly;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;droplist:[items='members:().():name.clone()';if():[maintenance-edit-readonly:()]:[readonly=true];searchable]"
+                            },
+                            {
+                              "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
+                              "controls": [
+                                {
+                                  "event": "click?Data().members=_array;parent().input().text()=_string?Data().members.len()=1;!)(:maintenance-edit-readonly"
+                                },
+                                {
+                                  "actions": "remove:[parent().id]",
+                                  "event": "click??Data().members.len()>1;!)(:maintenance-edit-readonly"
+                                }
+                              ]
+                            }
+                          ],
+                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
+                        },
+                        {
+                          "type": "View?class=flex;style.gap=1rem",
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                              "controls": [
+                                {
+                                  "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:members:[Data().members.len()-1];insert.index=parent().parent().children().len()-1",
+                                  "event": "click?Data().members.push():_string?Data().members.len()>0;!maintenance-edit-readonly:()"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الجهات التي تم التواصل معها;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "type": "View?class=flex column;path=who-have-been-contacted",
+                  "children": [
+                    {
+                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem;style.paddingBottom=0",
+                      "children": [
+                        {
+                          "type": "Text?text=المركز;style.fontSize=1.5rem"
+                        },
+                        {
+                          "type": "Text?text=الفرد;style.fontSize=1.5rem"
+                        }
+                      ]
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "type": "Input?style.width=100%;style.height=4rem;path=center;if():data():[input.value=centers:().find():[id=data()].name];readonly;clearable;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;droplist:[items='centers:().():name.clone()';if():[maintenance-edit-readonly:()]:[readonly=true];searchable]",
+                              "controls": [
+                                {
+                                  "event": "click:droplist?data()=centers:().find():[name=data()].id"
+                                }
+                              ]
+                            },
+                            {
+                              "controls": [
+                                {
+                                  "event": "click:droplist?data()=members:().find():[name=data()].id"
+                                }
+                              ],
+                              "type": "Input?style.width=100%;style.height=4rem;path=member;clearable;if():data():[input.value=members:().find():[id=data()].name];readonly;clicked.style.border=2px solid #0080ff;style.border=1px solid #ccc;style.borderRadius=.5rem;droplist:[items='members:().clone().filter():[center=prev().data()].():name';if():[maintenance-edit-readonly:()]:[readonly=true];searchable]"
+                            },
+                            {
+                              "type": "View?class=flex;style.gap=1rem",
+                              "children": [
+                                {
+                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                                  "controls": [
+                                    {
+                                      "actions": "insert:[3rdParent().id]?insert.component=3rdParent().children.0;insert.path=_array:branches:[Data().who-have-been-contacted.len().subs():1]",
+                                      "event": "click?Data().who-have-been-contacted.push():_map?!)(:maintenance-edit-readonly"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                                  "controls": [
+                                    {
+                                      "event": "click??Data().who-have-been-contacted.len()>1;!)(:maintenance-edit-readonly",
+                                      "actions": "remove:[parent().parent().id]"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                        }
+                      ],
+                      "type": "[View]?style.gapRow=2rem;style.gapColumn=1rem;style.width=100%;style.display=grid"
+                    }
+                  ]
+                }
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+            },
+            {
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%;style.marginBottom=1rem",
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات أخرى;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                            }
+                          ],
+                          "controls": [
+                            {
+                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().issue-source.del()]?!)(:maintenance-edit-readonly"
+                            }
+                          ],
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().issue-source-determined.exists().else():false"
+                        },
+                        {
+                          "type": "Text?text=تم تحديد العطل الرئيسي;style.fontSize=1.6rem"
+                        }
+                      ],
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem"
+                    },
+                    {
+                      "type": "View?old-monitor:()=data().monitor;style.gap=2rem;style.width=100%;style.display=if():[data().monitor]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr",
+                      "children": [
+                        {
+                          "type": "Input?style.width=100%;style.height=4rem;label.text=نوع مكان العطل الرئيسي;readonly;label.location=outside;path=issue-place-type;data()=data()||مركز;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_list:مركز:محطة;droplist.align=right;if():[maintenance-edit-readonly:()]:[droplist.readonly=true]",
+                          "controls": [
+                            {
+                              "event": "click:droplist?issue-place-type:()=if():[droplist-txt:()=محطة]:station:center"
+                            }
+                          ]
+                        },
+                        {
+                          "controls": [
+                            {
+                              "event": "click:droplist?doc().issue-place=if():[Data().issue-place-type=مركز]:[centers:().find():[name=data()].id]:[stations:().find():[name=data()].id]"
+                            }
+                          ],
+                          "type": "Input?style.width=100%;style.height=4rem;label.text=مكان العطل الرئيسي;readonly;label.location=outside;path=issue-place;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist:[items='if():[Data().issue-place-type=مركز]:[centers:().():name.clone()]:[stations:().():name.clone()]';if():[maintenance-edit-readonly:()]:[readonly=true];searchable]"
+                        },
+                        {
+                          "type": "Input?style.width=100%;clearable;style.height=4rem;label.text=الجهاز الرئيسي المعطل;readonly;label.location=outside;path=issue-device;if():data():[input.value=devices:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist:[items='devices:().():name.clone()';if():[maintenance-edit-readonly:()]:[readonly=true];searchable]",
+                          "controls": [
+                            {
+                              "event": "click:droplist?data()=devices:().find():[name=data()].id"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Input?textarea;label:[text=وصف العطل الرئيسي];style.width=100%;style.height=8rem;path=issue-description;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[maintenance-edit-readonly:()]:[readonly=true];style.border=1px solid #ccc"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem?false",
+                      "children": [
+                        {
+                          "controls": [
+                            {
+                              "event": "click?checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().new-devices.del()]?!)(:maintenance-edit-readonly"
+                            }
+                          ],
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().new-devices-installed.exists().else():false",
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Text?text=تم نصب أجهزة جديدة;style.fontSize=1.6rem"
+                        }
+                      ]
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Text?text=الأجهزة الجديدة التي تم نصبها;style:[fontSize=1.6rem]"
+                        },
+                        {
+                          "children": [
+                            {
+                              "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
+                              "children": [
+                                {
+                                  "type": "Input?style.width=100%;style.height=4rem;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[maintenance-edit-readonly:()]:[readonly=true]",
+                                  "controls": [
+                                    {
+                                      "event": "input?data().del()?!data()"
+                                    },
+                                    {
+                                      "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]",
+                                      "event": "click?devices-data:()=devices:().values().find():[id=data()];devices-edit-readonly:()=true;new-devices:().del();)(:devices-copied.del()?)(:devices.values().find():[id=data()];)(:maintenance-edit-readonly;data();data().len()=20"
+                                    },
+                                    {
+                                      "event": "click??!)(:devices.values().find():[id=data()];)(:maintenance-edit-readonly;data();data().len()=20",
+                                      "actions": "async():search?search.collection=resources-devices;search.doc=data();async():[)(:devices.[().search.data.id]=().search.data;click()]"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
+                                  "controls": [
+                                    {
+                                      "event": "click?Data().new-devices=_array;parent().input().text()=_string?Data().new-devices.len()=1;!)(:maintenance-edit-readonly"
+                                    },
+                                    {
+                                      "actions": "remove:[parent().id]",
+                                      "event": "click??Data().new-devices.len()>1;!)(:maintenance-edit-readonly"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=flex;style.gap=1rem",
+                              "children": [
+                                {
+                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                                  "controls": [
+                                    {
+                                      "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:new-devices:[Data().new-devices.len()-1];insert.index=parent().parent().children().len()-1",
+                                      "event": "click?Data().new-devices.push():_string?Data().new-devices.len()>0;!maintenance-edit-readonly:()"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "type": "View?path=new-devices;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr"
+                        }
+                      ],
+                      "type": "View?class=vertical;style:[gap=1rem;display=if():[data().new-devices]:grid:none;width=100%]?false"
+                    },
+                    {
+                      "children": [
+                        {
+                          "controls": [
+                            {
+                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().old-devices.del()]?!issues-edit-readonly:()"
+                            }
+                          ],
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().old-devices-replaced||false",
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Text?text=تم استبدال أجهزة معطّلة;style.fontSize=1.6rem"
+                        }
+                      ],
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem?false"
+                    },
+                    {
+                      "type": "View?class=vertical;style:[gap=1rem;display=if():[data().old-devices]:grid:none;width=100%]?false",
+                      "children": [
+                        {
+                          "type": "Text?text=الأجهزة القديمة التي تم استبدالها;style:[fontSize=1.6rem]"
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "type": "Input?style.width=100%;style.height=4rem;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[maintenance-edit-readonly:()]:[readonly=true]",
+                                  "controls": [
+                                    {
+                                      "event": "input?data().del()?!data()"
+                                    },
+                                    {
+                                      "event": "click?devices-data:()=devices:().values().find():[id=data()];devices-edit-readonly:()=true;new-devices:().del();)(:devices-copied.del()?)(:devices.values().find():[id=data()];)(:maintenance-edit-readonly;data();data().len()=20",
+                                      "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+                                    },
+                                    {
+                                      "event": "click??!)(:devices.values().find():[id=data()];)(:maintenance-edit-readonly;data();data().len()=20",
+                                      "actions": "async():search?search.collection=resources-devices;search.doc=data();async():[)(:devices.[().search.data.id]=().search.data;click()]"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
+                                  "controls": [
+                                    {
+                                      "event": "click?Data().old-devices=_array;parent().input().text()=_string?Data().old-devices.len()=1;!)(:maintenance-edit-readonly"
+                                    },
+                                    {
+                                      "event": "click??Data().old-devices.len()>1;!)(:maintenance-edit-readonly",
+                                      "actions": "remove:[parent().id]"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
+                            },
+                            {
+                              "children": [
+                                {
+                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                                  "controls": [
+                                    {
+                                      "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:old-devices:[Data().old-devices.len()-1];insert.index=parent().parent().children().len()-1",
+                                      "event": "click?Data().old-devices.push():_string?Data().old-devices.len()>0;!maintenance-edit-readonly:()"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "type": "View?class=flex;style.gap=1rem"
+                            }
+                          ],
+                          "type": "View?path=old-devices;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem?false",
+                      "children": [
+                        {
+                          "controls": [
+                            {
+                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().devices-fixed.del()]?!issues-edit-readonly:()"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                            }
+                          ],
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().a-devices-fixed||false"
+                        },
+                        {
+                          "type": "Text?text=تم صيانة أجهزة معطلة;style.fontSize=1.6rem"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=vertical;style:[gap=1rem;display=if():[data().devices-fixed]:grid:none;width=100%]?false",
+                      "children": [
+                        {
+                          "type": "Text?text=الأجهزة التي تم إصلاحها;style:[fontSize=1.6rem]"
+                        },
+                        {
+                          "type": "View?path=devices-fixed;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr",
+                          "children": [
+                            {
+                              "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
+                              "children": [
+                                {
+                                  "controls": [
+                                    {
+                                      "event": "input?data().del()?!data()"
+                                    },
+                                    {
+                                      "event": "click?devices-data:()=devices:().values().find():[id=data()];devices-edit-readonly:()=true;new-devices:().del();)(:devices-copied.del()?devices:().values().find():[id=data()];maintenance-edit-readonly:();data();data().len()=20",
+                                      "actions": "update:devices-mini-window?():devices-mini-window.style():[opacity=1;pointerEvents=auto;)(:zIndex-counter=)(:zIndex-counter+1;zIndex=)(:zIndex-counter]"
+                                    },
+                                    {
+                                      "event": "click??!devices:().values().find():[id=data()];)(:maintenance-edit-readonly;data();data().len()=20",
+                                      "actions": "async():search?search.collection=resources-devices;search.doc=data();async():[)(:devices.[().search.data.id]=().search.data;click()]"
+                                    }
+                                  ],
+                                  "type": "Input?style.width=100%;style.height=4rem;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[maintenance-edit-readonly:()]:[readonly=true]"
+                                },
+                                {
+                                  "controls": [
+                                    {
+                                      "event": "click?Data().devices-fixed=_array;parent().input().text()=_string?Data().devices-fixed.len()=1;!maintenance-edit-readonly:()"
+                                    },
+                                    {
+                                      "actions": "remove:[parent().id]",
+                                      "event": "click??Data().devices-fixed.len()>1;!maintenance-edit-readonly:()"
+                                    }
+                                  ],
+                                  "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=flex;style.gap=1rem",
+                              "children": [
+                                {
+                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                                  "controls": [
+                                    {
+                                      "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:devices-fixed:[Data().devices-fixed.len()-1];insert.index=parent().parent().children().len()-1",
+                                      "event": "click?Data().devices-fixed.push():_string?Data().devices-fixed.len()>0;!maintenance-edit-readonly:()"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=flex;style.width=100%;style.gap=2rem",
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                            }
+                          ],
+                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#fff;style.height=2rem;style.width=2rem;checked=data().get-out-in-mission||false",
+                          "controls": [
+                            {
+                              "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1:0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().missions.del()]?!issues-edit-readonly:()"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Text?text=تم الخروج في مهمة;style.fontSize=1.6rem"
+                        }
+                      ]
+                    },
+                    {
+                      "children": [
+                        {
+                          "type": "Text?text=المهمات;style:[fontSize=1.6rem]"
+                        },
+                        {
+                          "children": [
+                            {
+                              "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
+                              "children": [
+                                {
+                                  "controls": [
+                                    {
+                                      "event": "click:droplist?data()=missions:().find():[name=data()].id"
+                                    }
+                                  ],
+                                  "type": "Input?style.width=100%;style.height=4rem;style.border=1px solid #ddd;readonly;if():data():[input.value=missions:().find():[id=data()].name];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist:[items='missions:().():name.clone()';if():[maintenance-edit-readonly:()]:[readonly=true];searchable]"
+                                },
+                                {
+                                  "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
+                                  "controls": [
+                                    {
+                                      "event": "click?Data().missions=_array;parent().input().text()=_string?Data().missions.len()=1;!maintenance-edit-readonly:()"
+                                    },
+                                    {
+                                      "actions": "remove:[parent().id]",
+                                      "event": "click??Data().missions.len()>1;!maintenance-edit-readonly:()"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "View?class=flex;style.gap=1rem",
+                              "children": [
+                                {
+                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                                  "controls": [
+                                    {
+                                      "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:missions:[Data().missions.len()-1];insert.index=parent().parent().children().len()-1",
+                                      "event": "click?Data().missions.push():_string?Data().missions.len()>0;!maintenance-edit-readonly:()"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "type": "View?path=missions;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr"
+                        }
+                      ],
+                      "type": "View?class=vertical;style:[gap=1rem;display=if():[data().missions]:grid:none;width=100%]"
+                    }
+                  ],
+                  "type": "View?style.gap=1rem;style.width=100%;class=flex column;style.padding=0 1rem"
+                }
+              ]
+            },
+            {
+              "type": "View?class=vertical;style:[gap=1rem;display=if():[data().new-devices]:grid:none;width=100%]",
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=وصف عملية إصلاح العطل (مع ذكر أسباب النجاح / فشل العمل);style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "type": "View?path=maintenance-steps-description;style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
+                  "children": [
+                    {
+                      "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
+                      "children": [
+                        {
+                          "type": "Input?textarea;style.width=100%;style.height=8rem;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[maintenance-edit-readonly:()]:[readonly=true];style.border=1px solid #ccc"
+                        },
+                        {
+                          "controls": [
+                            {
+                              "event": "click?Data().maintenance-steps-description=_array;parent().input().text()=_string?Data().maintenance-steps-description.len()=1;!maintenance-edit-readonly:()"
+                            },
+                            {
+                              "event": "click??Data().maintenance-steps-description.len()>1;!maintenance-edit-readonly:()",
+                              "actions": "remove:[parent().id]"
+                            }
+                          ],
+                          "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "View?class=flex;style.gap=1rem",
+                      "children": [
+                        {
+                          "controls": [
+                            {
+                              "event": "click?Data().maintenance-steps-description.push():_string?Data().maintenance-steps-description.len()>0;!maintenance-edit-readonly:()",
+                              "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:maintenance-steps-description:[Data().maintenance-steps-description.len()-1];insert.index=parent().parent().children().len()-1"
+                            }
+                          ],
+                          "type": "Icon?class=flexbox pointer;style.marginTop=auto;style.marginBottom=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=ملاحظات;style.padding=1rem 0;style.fontWeight=bold"
+                },
+                {
+                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
+                  "children": [
+                    {
+                      "type": "Input?textarea;style.width=100%;style.height=8rem;path=note;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[maintenance-edit-readonly:()]:[readonly=true];style.border=1px solid #ccc"
+                    }
+                  ]
+                }
+              ],
+              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+            }
+          ]
+        },
+        {
+          "children": [
+            {
+              "type": "Text:save-maintenance?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s?!maintenance-edit-readonly:()",
+              "controls": [
+                {
+                  "event": "click?save():[collection=maintenances;data=maintenance-data:()]:[updateIssues();updateMissions();():[maintenance-mini-window].style():[opacity=0;pointerEvents=none];note():[text=تم تسجيل عمل الصيانة بنجاح];maintenances:()=[maintenances:()||_list];maintenances:().replaceItem():[maintenance-data:().clone()];if():[open-manager:()!=fixes]:[unreset-maintenances:()=true;():fixes.click()];new-maintenances:().del();update():[maintenances-manager-list]]"
+                }
+              ]
+            },
+            {
+              "controls": [
+                {
+                  "event": "click?():maintenance-mini-window.style():[opacity=0;pointerEvents=none;zIndex-counter:()=zIndex-counter-1:();zIndex=1];maintenance-data:().del();new-maintenance:().del()"
+                }
+              ],
+              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s"
+            }
+          ],
+          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "updateMissions": "missions:().filter():[id.in():[maintenance-data:().missions||_list]].():[maintenances.replace():[maintenance-data:().id]];save():[collection=missions;data=missions:().filter():[id.in():[maintenance-data:().issues||_list]]]",
+    "updateIssues": "issues:().find():[id=maintenance-data:().issue].():[maintenances.replace():[maintenance-data:().id]];save():[collection=issues;data=issues:().find():[id=maintenance-data:().issue]]"
+  },
+  "type": "View?id=maintenance-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0"
+}

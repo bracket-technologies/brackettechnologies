@@ -52,16 +52,15 @@ const upload = async ({ id, _window, req, res, e, _, __, ___, ...params }) => {
 
     if (promises.length === files.length) {
 
+      view.uploads = []
+      global.uploads = []
+
       promises.map(({ data }, i) => {
 
         if (!view) return
-        if (i === 0) {
-          view.uploads = []
-          global.uploads = []
-        }
         
-        view.uploads.push(clone(data))
         view.upload = clone(data)
+        view.uploads.push(clone(data))
         
         global.upload = clone(data)
         global.uploads.push(clone(data))
@@ -71,7 +70,7 @@ const upload = async ({ id, _window, req, res, e, _, __, ___, ...params }) => {
       })
     
       // await params
-      if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, _: data, __: _, ___: __, params })
+      if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, _: global.uploads.length > 0 ? global.uploads : global.upload, __: _, ___: __, params })
     }
   })
 }

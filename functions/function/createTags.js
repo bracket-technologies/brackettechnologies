@@ -34,6 +34,22 @@ const createTags = ({ _window, id: _id, req, res }) => {
       if (type.includes(";path=")) type = type.split(";path=")[0] + ";" + type.split(";path=").slice(1).join("").split(";").slice(1).join(";")
       if (type.includes(";arrange=")) type = type.split(";arrange=")[0] + ";" + type.split(";arrange=").slice(1).join("").split(";").slice(1).join(";")
       if (type.split("?")[2]) type = type.split("?").slice(0, 2).join("?")
+      if (view.type === "Icon") {
+        
+        if (type.includes("?name=")) type = type.split("?name=")[0] + "?" + type.split("?name=").slice(1).join("").split(";").slice(1).join(";") 
+        if (type.includes(";name=")) type = type.split(";name=")[0] + ";" + type.split(";name=").slice(1).join("").split(";").slice(1).join(";")
+      
+      } else if (view.type === "Image") {
+        
+        if (type.includes("?src=")) type = type.split("?src=")[0] + "?" + type.split("?src=").slice(1).join("").split(";").slice(1).join(";") 
+        if (type.includes(";src=")) type = type.split(";src=")[0] + ";" + type.split(";src=").slice(1).join("").split(";").slice(1).join(";")
+
+      } else if (view.type === "Text") {
+        
+        if (type.includes("?text=")) type = type.split("?text=")[0] + "?" + type.split("?text=").slice(1).join("").split(";").slice(1).join(";") 
+        if (type.includes(";text=")) type = type.split(";text=")[0] + ";" + type.split(";text=").slice(1).join("").split(";").slice(1).join(";")
+      }
+      
       view.length = data.length || 1
 
       // arrange
@@ -46,7 +62,7 @@ const createTags = ({ _window, id: _id, req, res }) => {
 
         tags = await Promise.all(data.map(async (_data, index) => {
           
-          var id = generate()
+          var id = view.id + generate()
           var mapIndex = index
           var lastEl = isObject ? _data : index
           var derivations = clone(view.derivations)
@@ -100,7 +116,7 @@ const componentModifier = ({ _window, id }) => {
   if (view.type === "Icon") {
 
     view.icon = view.icon || {}
-    view.icon.name = view.name || view.icon.name || ""
+    view.icon.name = view.name || view.icon.name || (typeof view.data === "string" && view.data) || ""
     if ((view.icon.google || view.google) && (!view.google.symbol && !view.symbol)) {
       
       view.symbol = {}
@@ -160,6 +176,14 @@ const componentModifier = ({ _window, id }) => {
       parent.state = view.state
       
     } else view.state = parent.state
+
+  } else if (view.type === "Image") {
+    
+    view.src = view.src || (typeof view.data === "string" && view.data) || ""
+
+  } else if (view.type === "Text") {
+    
+    view.text = view.text || (typeof view.data === "string" && view.data) || ""
   }
 }
 
