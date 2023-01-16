@@ -4,7 +4,7 @@ const { createElement } = require("./createElement");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
 const { toArray } = require("./toArray");
-const fs = require("fs")
+const fs = require("fs");
 const bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
 
 require("dotenv").config();
@@ -48,7 +48,7 @@ const project = ({ req, res }) => {
                   global.projectId = global.data.project.id
                   global.functions = Object.keys(project.functions || {})
 
-                  require("fs").writeFileSync(`database/_project_/${doc.docs[0].id}.json`, JSON.stringify(doc.docs[0].data(), null, 2))
+                  // require("fs").writeFileSync(`database/_project_/${doc.docs[0].id}.json`, JSON.stringify(doc.docs[0].data(), null, 2))
               }
               console.log("after project", new Date().getTime() - global.timer)
           }))
@@ -100,13 +100,20 @@ const project = ({ req, res }) => {
             });
             console.log("after view", new Date().getTime() - global.timer);
 
+            // get collection
+            console.log("before collection", new Date().getTime() - global.timer);
+            global.data.collection = getJsonFiles({
+                search: { collection: `collection-${project.id}` },
+            });
+            console.log("after collection", new Date().getTime() - global.timer);
+
         } else {
 
-            if (host.includes("localhost") && project.id === "malik") {
+            /*if (host.includes("localhost") && project.id === "malik") {
               if (!fs.existsSync(`database/page-${project.id}`)) fs.mkdirSync(`database/page-${project.id}`)
               if (!fs.existsSync(`database/view-${project.id}`)) fs.mkdirSync(`database/view-${project.id}`)
               if (!fs.existsSync(`database/collection-${project.id}`)) fs.mkdirSync(`database/collection-${project.id}`)
-            }
+            }*/
 
             // get page
             /*
@@ -123,8 +130,6 @@ const project = ({ req, res }) => {
                 .then(q => {
                     q.forEach(doc => {
                         global.data.page[doc.id] = { ...doc.data(), id: doc.id }
-                        if (host.includes("localhost") && project.id === "malik") 
-                          require("fs").writeFileSync(`database/page-${project.id}/${doc.id}.json`, JSON.stringify(doc.data(), null, 2))
                     })
                     console.log("after page", new Date().getTime() - global.timer)
                     
@@ -159,8 +164,6 @@ const project = ({ req, res }) => {
                 .then(q => {
                     q.forEach(doc => {
                     global.data.view[doc.id] = { ...doc.data() }
-                        if (host.includes("localhost") && project.id === "malik") 
-                        require("fs").writeFileSync(`database/view-${project.id}/${doc.id}.json`, JSON.stringify(doc.data(), null, 2))
                     })
                     console.log("after view", new Date().getTime() - global.timer)
                 }))
@@ -174,10 +177,21 @@ const project = ({ req, res }) => {
                 .then(q => {
                     q.forEach(doc => {
                       global.data.public[doc.id] = global.data.view[doc.id] = { ...doc.data(), "my-views": [doc.id], id: doc.id }
-                      if (host.includes("localhost") && project.id === "malik") 
-                      require("fs").writeFileSync(`database/view-${project.id}/${doc.id}.json`, JSON.stringify(doc.data(), null, 2))
                     })
                     console.log("after public", new Date().getTime() - global.timer)
+                }))
+
+            // load collections
+            console.log("before collection / firestore", new Date().getTime() - global.timer)
+
+            promises.push(db
+                .collection(`collection-${project.id}`)
+                .get()
+                .then(q => {
+                    q.forEach(doc => {
+                    global.data.collection[doc.id] = { ...doc.data() }
+                    })
+                    console.log("after collection", new Date().getTime() - global.timer)
                 }))
         }
         
@@ -220,12 +234,15 @@ const initialize = ({ req, res }) => {
             public: {},
             editor: {},
             project: {},
+            collection: {}
         },
         children: { head: "", body: "" },
         innerHTML: {},
         codes: {},
         host,
+        prevPage: ["main"],
         currentPage,
+        prevPath: ["/"],
         path: req.url,
         device: req.device,
         os: req.headers["sec-ch-ua-platform"],
@@ -309,7 +326,7 @@ const interpret = () => {
 }
 
 const app = async ({ req, res }) => {
-
+  
     var { global, views } = initialize({ req, res })
     if (res.headersSent) return
     await project({ req, res })
@@ -347,6 +364,9 @@ const app = async ({ req, res }) => {
       `<!DOCTYPE html>
       <html lang="${language}" dir="${direction}" class="html">
         <head>
+          <link rel="stylesheet" href="/resources/index.css"/>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap">
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400&display=swap">
           ${children.head}
           <title>${title}</title>
           <meta charset="UTF-8">
@@ -358,9 +378,6 @@ const app = async ({ req, res }) => {
           ${favicon ? `<link rel="icon" type="image/x-icon" href="${favicon}"/>` : ""}
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <link rel="stylesheet" href="/resources/index.css"/>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap">
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500&display=swap">
           <link rel="manifest" href="/resources/manifest.json" mimeType="application/json; charset=UTF-8"/>
           <script id="views" type="application/json">${JSON.stringify(views)}</script>
           <script id="global" type="application/json">${JSON.stringify(global)}</script>

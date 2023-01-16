@@ -9,7 +9,7 @@
           "type": "View?id=user-file;tooltip.text=account;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
           "children": [
             {
-              "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+              "type": "Icon?name=person;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
             },
             {
               "type": "Text?class=dots;text=getCookie():_id;style.fontSize=1.3rem"
@@ -32,7 +32,7 @@
         {
           "children": [
             {
-              "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+              "type": "Icon?name=store;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
             },
             {
               "type": "Text?class=dots;text=project:();style.fontSize=1.3rem"
@@ -68,7 +68,7 @@
           "controls": [
             {
               "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=page",
-              "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+              "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
             }
           ]
         }
@@ -94,7 +94,7 @@
           "type": "[View]?data=data:().editor.page.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.page.keys().len()>0||[!open-doc:();open-collection:()=page]",
           "children": [
             {
-              "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+              "type": "Icon?name=document_scanner;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
             },
             {
               "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
@@ -116,7 +116,7 @@
                     "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
                     "wait():save:note:[update:page-list]?save.collection=page;save.doc=txt();save.data=data:().editor.page.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
                   ],
-                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.page.txt()=data:().editor.page.[open-doc:()||duplicate-doc:()].clone();data:().editor.page.[txt()].id=txt()]:[data:().editor.page.txt()=_map:creation-date:[today().timestamp()]:type:[txt()+'?title='+[txt().split():-.join(): .capitalize()]+';path=/'+if():[txt()!=main]:txt()]:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.page.keys().inc():txt();!txt().inc(): "
+                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.page.txt()=data:().editor.page.[open-doc:()||duplicate-doc:()].clone();data:().editor.page.[txt()].id=txt()]:[data:().editor.page.txt()=_map:creation-date:[today().timestamp()]:view:[txt()+'?title='+[txt().split():-.join(): .capitalize()]+';path=/'+if():[txt()!=main]:txt()]:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.page.keys().inc():txt();!txt().inc(): "
                 }
               ],
               "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -124,7 +124,7 @@
             {
               "controls": [
                 {
-                  "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=page;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                  "event": "click?if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=page;():'file-action-popup'.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                 }
               ],
               "type": "Icon?open-doc=data();open-collection=page;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
@@ -138,7 +138,7 @@
               "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
             },
             {
-              "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.page.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+              "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.page.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
             },
             {
               "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[page/+().data]"
@@ -167,7 +167,7 @@
           "type": "Icon?style.display=none;tooltip.text=create new view;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
           "controls": [
             {
-              "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=view;parent().next().insert():[view=parent().next().children.2]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+              "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=view;parent().next().insert():[view=parent().next().children.2]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
             }
           ]
         }
@@ -181,8 +181,7 @@
           "event": "mouseleave?lastChild().style().display=none"
         },
         {
-          "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
-          "actions": "wait():search:[update:view-list]?search.collection=view;search.limit=100;search.headers.project=project:();wait():[data:().editor.view=().search.data]?next().style().display=flex"
+          "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)];if():[next().style().display=flex]:[search():[collection=view;limit=100;headers.project=project:()]:[data:().editor.view=().search.data;update():view-list]]?!3rdChild().contains():[clicked:()]"
         }
       ]
     },
@@ -201,7 +200,7 @@
               "type": "Icon?style.display=none;tooltip.text=create new public view;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
               "controls": [
                 {
-                  "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=view;parent().next().insert():[component=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                  "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=public;parent().next().insert():[component=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
                 }
               ]
             }
@@ -215,18 +214,21 @@
               "event": "mouseleave?lastChild().style().display=none"
             },
             {
-              "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)];if():[next().style().display=flex]:[search():[collection=public;limit=100;headers.project=project:()]:[data:().editor.public=_.data;update():next()]]?!3rdChild().contains():[clicked:()]"
+              "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[publicOpen:()=true;next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg);search():[collection=public;limit=100;headers.project=project:()]:[data:().editor.public=_.data;update():next()]]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]"
+            },
+            {
+              "event": "loaded?next().style().display=flex;1stChild().style().transform=rotate(90deg)?publicOpen:()"
             }
           ]
         },
         {
-          "type": "View?class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+          "type": "View:public-list?class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
           "children": [
             {
               "type": "[View]?data=data:().editor.public.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.public.keys().len()>0||[!open-doc:();open-collection:()=public]",
               "children": [
                 {
-                  "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                  "type": "Icon?name=layers;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
                 },
                 {
                   "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
@@ -244,7 +246,11 @@
                       "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.public.keys().inc():txt()||!txt()||txt().inc(): "
                     },
                     {
-                      "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.public.txt()=data:().editor.public.[open-doc:()||duplicate-doc:()].clone();#data:().editor.public.[txt()].id=txt();#data:().editor.public.[txt()].type=data:().editor.public.[txt()].type.replace():[1='id='+[open-doc:()||duplicate-doc:()];2='id='+txt()]]:[data:().editor.public.txt()=_map:creation-date:[today().timestamp()]:type:['View:'+txt()]:functions:_map];save():[collection=public;doc=txt();data=data:().editor.public.txt();headers.project=project:()]:[note():[text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!'];if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del();():'public-view-list'.next().update()];if():[open-doc:()]:[erase():[collection=open-collection:();doc=open-doc:();headers.project=project:()];data:().editor.[open-collection:()].[open-doc:()].del()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.public.keys().inc():txt();!txt().inc(): "
+                      "actions": [
+                        "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                        "wait():save:note:[update:public-list]?save.collection=public;save.doc=txt();save.data=data:().editor.public.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
+                      ],
+                      "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.public.txt()=data:().editor.public.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.public.txt()=_map:creation-date:[today().timestamp()]:view:['View:'+txt()+'?class=column']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.public.keys().inc():txt();!txt().inc(): "
                     }
                   ],
                   "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -252,7 +258,7 @@
                 {
                   "controls": [
                     {
-                      "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=public;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                      "event": "click?if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=public;():'file-action-popup'.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                     }
                   ],
                   "type": "Icon?open-doc=data();open-collection=public;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
@@ -266,10 +272,10 @@
                   "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
                 },
                 {
-                  "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.public.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                  "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.public.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
                 },
                 {
-                  "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[public/+().data]"
+                  "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-publicer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[public/+().data]"
                 },
                 {
                   "event": "click?loader.show;timer():[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[public/+open-doc:()];open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];#insert data bar;():'data-viewer-bar'.insert():[component=():data-viewer-bar.children.0;data=public/+open-doc:()]:[():'data-viewer-bar'.style().display=flex;_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];#insert functions;():functions.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];#insert data map;():data-viewer.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():data-viewer.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:50?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[public/+().data]"
@@ -282,7 +288,7 @@
           "type": "[View]?data=data:().editor.view.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.view.keys().len()>0||[!open-doc:();open-collection:()=view]",
           "children": [
             {
-              "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+              "type": "Icon?name=layers;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
             },
             {
               "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
@@ -304,7 +310,7 @@
                     "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
                     "wait():save:note:[update:view-list]?save.collection=view;save.doc=txt();save.data=data:().editor.view.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
                   ],
-                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.view.txt()=data:().editor.view.[open-doc:()||duplicate-doc:()].clone();#data:().editor.view.[txt()].id=txt();#data:().editor.view.[txt()].type=data:().editor.view.[txt()].type.replace():[1='id='+[open-doc:()||duplicate-doc:()];2='id='+txt()]]:[data:().editor.view.txt()=_map:creation-date:[today().timestamp()]:type:['View:'+txt()]:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.view.keys().inc():txt();!txt().inc(): "
+                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.view.txt()=data:().editor.view.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.view.txt()=_map:creation-date:[today().timestamp()]:view:['View:'+txt()+'?class=column;style:[minHeight=100vh]']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.view.keys().inc():txt();!txt().inc(): "
                 }
               ],
               "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -312,7 +318,7 @@
             {
               "controls": [
                 {
-                  "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=view;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                  "event": "click?if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=view;():'file-action-popup'.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                 }
               ],
               "type": "Icon?open-doc=data();open-collection=view;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
@@ -326,7 +332,7 @@
               "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
             },
             {
-              "event": "loaded?if():[)(:new-file-created;mapIndex=data:().editor.view.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+              "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.view.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
             },
             {
               "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[view/+().data]"

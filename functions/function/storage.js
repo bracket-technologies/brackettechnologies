@@ -33,8 +33,6 @@ const postFile = async ({ req, res }) => {
   collection += `-${req.headers["project"]}`
   var data = upload.data
   
-  // file Type
-  data.type = data.type.split("-").join("/")
   // convert base64 to buffer
   var buffer = Buffer.from(file, "base64")
   

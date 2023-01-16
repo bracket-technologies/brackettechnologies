@@ -39,7 +39,14 @@ module.exports = {
         _view.type = _type + _view.type.split("]").slice(1).join("]")
       }
       
-      if (data) _view.data = clone(data)
+      // data
+      if (data) {
+        _view.data = clone(data)
+        _view.Data = views[appendTo].Data || insert.Data || insert.doc || generate()
+        global[_view.Data] = _view.data
+      }
+
+      // path
       if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       
       var innerHTML = await Promise.all(toArray(_view).map(async (child, i) => {

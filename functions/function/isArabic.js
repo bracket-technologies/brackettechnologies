@@ -14,17 +14,16 @@ const isArabic = ({ id, value, text }) => {
   if (isarabic && !isenglish) {
 
     view.element.classList.add("arabic")
-    view.element.style.textAlign = "right"
+    view.element.style.textAlign = view.element.style.textAlign || "right"
     if (view.type !== "Input") view.element.innerHTML = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
     else view.element.value = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
     if (view["placeholder-ar"]) view.element.placeholder = view["placeholder-ar"]
 
   } else {
 
-    if (view.element.className.includes("arabic")) view.element.style.textAlign = "left"
+    if (view.element.className.includes("arabic")) view.element.style.textAlign = view.element.style.textAlign || "right"
     view.element.classList.remove("arabic")
     if (view["placeholder"]) view.element.placeholder = view["placeholder"]
-
   }
 
   return isarabic && !isenglish

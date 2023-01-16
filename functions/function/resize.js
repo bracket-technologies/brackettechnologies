@@ -44,7 +44,7 @@ const dimensions = ({ id, text }) => {
   while (pText.includes("  ")) { pText = pText.replace("  ", "--") }
   
   if (arabic.test(pText) && !english.test(pText)) {
-    lDiv.style.fontFamily = "Tajawal, sans-serif"
+    lDiv.style.fontFamily = "Noto Sans Arabic, sans-serif"
     lDiv.style.textAlign = "right"
     lDiv.classList.add("arabic")
   }
@@ -86,11 +86,16 @@ const dimensions = ({ id, text }) => {
   return lResult
 }
 
-var converter = (dimension) => {
+var lengthConverter = (length) => {
   
-  if (!dimension) return 0
-  if (dimension.includes("rem")) return parseFloat(dimension) * 10
-  if (dimension.includes("px")) return parseFloat(dimension)
+  if (!length) return 0
+  if (typeof length === "number") return length
+  if (!isNaN(length) && parseFloat(length).toString().length === length.toString().length) return parseFloat(length)
+  if (length.includes("rem")) return parseFloat(length) * 10
+  if (length.includes("px")) return parseFloat(length)
+  if (length.includes("100vw")) return window.innerWidth
+  if (length.includes("100vh")) return window.innerHeight
+  else return length
 }
 
-module.exports = {resize, dimensions, converter}
+module.exports = {resize, dimensions, lengthConverter}

@@ -33,7 +33,7 @@ const setElement = ({ _window, id }) => {
     defaultInputHandler({ id })
   
     // arabic text
-    isArabic({ id })
+    // isArabic({ id })
     
     //var timer = (new Date()).getTime()
     // resize

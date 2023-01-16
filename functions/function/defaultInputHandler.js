@@ -120,7 +120,7 @@ const defaultInputHandler = ({ id }) => {
     resize({ id })
 
     // arabic values
-    isArabic({ id, value })
+    // isArabic({ id, value })
     
     console.log(value, global[view.Data], view.derivations)
 

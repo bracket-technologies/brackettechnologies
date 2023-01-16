@@ -1,3 +1,6 @@
 [
-  "mouseenter", "mouseleave",  "mouseover", "mousedown", "mouseup", "click", "change", "focus", "blur", "keypress", "keyup", "keydown", "scroll", "beforeLoading", "loaded", "controls", "children", "child"
+  "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
+  "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
+  "keydown", "scroll", "beforeLoading", "loaded", "controls", "children", "child", "change", "entry", 
+  "enter", "longclick"
 ]

@@ -23,5 +23,9 @@ module.exports = {
   scroll: require("./scroll"),
   keydown: require("./keydown"),
   loaded: require("./loaded"),
+  touchstart: require("./touchstart"),
+  touchend: require("./touchend"),
+  touchmove: require("./touchmove"),
+  touchcancel: require("./touchcancel"),
   contentful: require("../function/contentful").contentful
 }

@@ -14,7 +14,7 @@ module.exports = {
     
     if (!component[view.type]) return
     views[id] = view = component[view.type](view)
-
+    
     // my views
     if (!view["my-views"]) view["my-views"] = [...views[view.parent]["my-views"]]
 
@@ -40,7 +40,7 @@ module.exports = {
     // push destructured params from type to view
     if (params) {
       
-    params = toParam({ _window, string: params, id, req, res, mount: true/*, createElement: true*/ })
+      params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
 
       if (params.id) {
         

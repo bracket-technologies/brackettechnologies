@@ -73,11 +73,12 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
 
     // /////////////////// value /////////////////////
 
-    if (value) value = toValue({ _window, id: mainId, value, e, _, __, ___, req, res })
+    if (value) value = toValue({ _window, id: mainId, value, e, _, __, ___, req, res, condition: true })
 
     // /////////////////// key /////////////////////
 
     if (key && key.includes('coded()') && key.length === 12) key = global.codes[key]
+    if (key && key.includes('codedS()') && key.length === 13) return approval = global.codes[key] ? true : false
 
     // operator has !
     if (key.includes("!")) {
@@ -94,13 +95,17 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
         notEqual = true
       }
     }
-    
+
+    var myKey
+    /*if (!key && object !== undefined) myKey = object
+    else myKey = toValue({ _window, id: mainId, value: key, e, _, __, ___, req, res, object: object || view, condition: true })
+    console.log(condition, key, myKey, object);*/
+
     // to path
-    var keygen = generate(), isFn
     var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0], backendFn = false, isFn = false
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
+    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] /*&& !actions.includes(path0)*/ && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
 
       clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
@@ -157,27 +162,25 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
       return approval = toApproval({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i })
     }
 
-    if (!key && object !== undefined) view[keygen] = object
-    else if (key === "false" || key === "undefined") view[keygen] = false
-    else if (key === "true") view[keygen] = true
-    else if (key === "mobile()" || key === "phone()") view[keygen] = global.device.type === "phone"
-    else if (key === "desktop()") view[keygen] = global.device.type === "desktop"
-    else if (key === "tablet()") view[keygen] = global.device.type === "tablet"
-    else if (key === "_") view[keygen] = _
-    else if (key === "__") view[keygen] = __
-    else if (key === "___") view[keygen] = ___
-    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) view[keygen] = reducer({ _window, id, path, e, _, __, ___, req, res, object, condition: true })
-    else view[keygen] = reducer({ _window, id, path, e, _, __, ___, req, res, object: object ? object : view, condition: true })
-    // else view[keygen] = key
-    
-    if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !view[keygen] : (view[keygen] === 0 ? true : view[keygen])
-    else {
-      if (equalOp) approval = notEqual ? !isEqual(view[keygen], value) : isEqual(view[keygen], value)
-      if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(view[keygen]) > parseFloat(value)) : (parseFloat(view[keygen]) > parseFloat(value))
-      if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(view[keygen]) < parseFloat(value)) : (parseFloat(view[keygen]) < parseFloat(value))
-    }
+    if (!key && object !== undefined) myKey = object
+    else if (key === "false" || key === "undefined") myKey = false
+    else if (key === "true") myKey = true
+    else if (key === "mobile()" || key === "phone()") myKey = global.device.type === "phone"
+    else if (key === "desktop()") myKey = global.device.type === "desktop"
+    else if (key === "tablet()") myKey = global.device.type === "tablet"
+    else if (key === "_") myKey = _
+    else if (key === "__") myKey = __
+    else if (key === "___") myKey = ___
+    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) myKey = reducer({ _window, id, path, e, _, __, ___, req, res, object, condition: true })
+    else myKey = reducer({ _window, id, path, e, _, __, ___, req, res, object: object ? object : view, condition: true })
+    // else myKey = key
 
-    delete view[keygen]
+    if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !myKey : (myKey === 0 ? true : myKey)
+    else {
+      if (equalOp) approval = notEqual ? !isEqual(myKey, value) : isEqual(myKey, value)
+      if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(myKey) > parseFloat(value)) : (parseFloat(myKey) > parseFloat(value))
+      if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(myKey) < parseFloat(value)) : (parseFloat(myKey) < parseFloat(value))
+    }
   })
 
   return approval

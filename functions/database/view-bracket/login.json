@@ -71,7 +71,7 @@
           "type": "View?style.display=if():[data:().editor.account;data:().editor.password]:flex:none;class=column"
         },
         {
-          "type": "View?class=flex column;style.display=if():[data:().editor.account]:none:flex",
+          "type": "View:login-text?class=flex column;style.display=if():[data:().editor.account]:none:flex",
           "children": [
             {
               "type": "Text?text=Log in;style.fontSize=2.3rem;style.color=#000;style.marginBottom=.5rem"
@@ -85,7 +85,7 @@
           ]
         },
         {
-          "type": "View?style.display=if():[data:().editor.account;!data:().editor.password]:flex:none;class=column",
+          "type": "View:welcome?style.display=if():[data:().editor.account;!data:().editor.password]:flex:none;class=column",
           "children": [
             {
               "type": "Text?text=Welcome, +data:().editor.account.first-name;style.fontSize=2.3rem;style.color=#000;style.marginBottom=.5rem"
@@ -112,10 +112,10 @@
                 {
                   "controls": [
                     {
-                      "event": "click?data:().editor.account.del();parent().parent().prev().style().display=flex;():Next.style().display=flex;parent().parent().style().display=none;parent().parent().getInput().val()=_string;parent().parent().prev().getInput().val()=_string"
+                      "event": "click?eraseCookie():_id;data:().editor.account.del();():get-started.style().display=flex;():Next.style().display=flex;():back.style().display=none;():welcome.style().display=none;():login-text.style().display=flex;parent().parent().input().txt()=_string;parent().parent().prev().input().txt()=_string"
                     }
                   ],
-                  "type": "Text?text=Change email;style.color=#008060;link.path=login;hover.style.textDecoration=underline;style.fontSize=1.3rem"
+                  "type": "Text?text=Change email;style.color=#008060;link:[path=login;preventDefault];hover.style.textDecoration=underline;style.fontSize=1.3rem"
                 }
               ],
               "type": "View?class=flexbox flex-start;style.gap=1.5rem;style.width=100%;style.marginBottom=2rem"
@@ -128,7 +128,7 @@
         {
           "controls": [
             {
-              "event": "click;keyup:[2ndPrev().input()]?checkEmail():[email=2ndPrev().input().txt()]:[if():[!func:().data.email]:[note():[text=Email does not exist!;type=danger]]:[data:().editor.account=func:().data;update():[():login.1stChild()]]]?if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display=none;prev().prev().getInput().val()"
+              "event": "click;keyup:[2ndPrev().input()]?checkEmail():[email=2ndPrev().input().txt()]:[if():[!func:().data.email]:[note():[text=Email does not exist!;type=danger]]:[data:().editor.account=func:().data;update():[():login.1stChild()]]]?if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display=none;prev().prev().input().val()"
             },
             {
               "event": "click;keyup:[prev().input()]?checkPassword():[password=prev().input().txt();user=data:().editor.account.id]:[if():[!func:().data]:[note():[text=Password is incorrect!;type=danger]]:[setCookie():[name=_id;value=data:().editor.account.id];route():[path=/project-login/+data:().editor.account.id]]]?if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display!=none;prev().input().txt()"
@@ -154,7 +154,7 @@
           ]
         },
         {
-          "type": "View?class=flex;style.width=100%;style.marginTop=8rem;style.alignSelf=flex-end;style.justifyContent=space-between",
+          "type": "View:back?class=flex;style.width=100%;style.marginTop=8rem;style.alignSelf=flex-end;style.justifyContent=space-between",
           "children": [
             {
               "children": [

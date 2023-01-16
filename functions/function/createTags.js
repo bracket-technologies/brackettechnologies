@@ -10,50 +10,89 @@ const createTags = ({ _window, id: _id, req, res }) => {
   return new Promise (async resolve => {
 
     var views = _window ? _window.views : window.views, id = _id, view = views[id], tags = ""
+    var global = _window ? _window.global : window.global
     if (!view) return
 
     // null data
     if (view.data === null) view.data = 0
 
-    if (view.mapType) {
+    // mapper
+    if (view.type === "Chevron" && Array.isArray(view.direction)) view["mapType"] = ["direction"]
+    else if (view.type === "Icon" && Array.isArray(view.name)) view["mapType"] = ["name"]
+    else if (view.type === "Image" && Array.isArray(view.src))view["mapType"] = ["src"]
+    else if (view.type === "Text" && Array.isArray(view.text)) view["mapType"] = ["text"]
+    else if (view.type === "Checkbox" && Array.isArray(view.label.text)) view["mapType"] = ["label", "text"]
+
+    var mapType = clone(view.mapType)
+
+    if (mapType) {
+
+      var viewData = mapType.reduce((o, k) => o[k], view)
+      var data = Array.isArray(viewData) ? viewData : (typeof viewData === "object" ? Object.keys(viewData) : [])
+      var isObject = (typeof viewData === "object" && !Array.isArray(viewData)) ? true : false
+      var myView = views[view.parent].children[view.index]
+      if (myView.view) myView.type = myView.view
+
+      var type = myView.type.replace("[", "").replace("]", "")
       
-      // data mapType
-      var data = Array.isArray(view.data) ? view.data : (typeof view.data === "object" ? Object.keys(view.data) : [])
-      var isObject = (typeof view.data === "object" && !Array.isArray(view.data)) ? true : false
-      var type = views[view.parent].children[view.index].type.replace("[", "").replace("]", "")
+      // data
       if (type.includes("?data=")) type = type.split("?data=")[0] + "?" + type.split("?data=").slice(1).join("").split(";").slice(1).join(";") 
       if (type.includes(";data=")) type = type.split(";data=")[0] + ";" + type.split(";data=").slice(1).join("").split(";").slice(1).join(";")
+      // Data
       if (type.includes("?Data=")) type = type.split("?Data=")[0] + "?" + type.split("?Data=").slice(1).join("").split(";").slice(1).join(";") 
+      if (type.includes("?Data;")) type = type.split("?Data;")[0] + "?" + type.split("?Data;").slice(1).join("")
       if (type.includes(";Data=")) type = type.split(";Data=")[0] + ";" + type.split(";Data=").slice(1).join("").split(";").slice(1).join(";") 
-      if (type.includes(";Data;")) type = type.split(";Data;")[0] + ";" + type.split(";Data;").slice(1).join("").split(";").slice(1).join(";") 
-      if (type.includes("?Data;")) type = type.split("?Data;")[0] + ";" + type.split("?Data;").slice(1).join("").split(";").slice(1).join(";")
+      if (type.includes(";Data;")) type = type.split(";Data;")[0] + ";" + type.split(";Data;").slice(1).join("")
       if (type.includes(";Data")) type = type.split(";Data")[0]
+      // doc
+      if (type.includes("?doc=")) type = type.split("?doc=")[0] + "?" + type.split("?doc=").slice(1).join("").split(";").slice(1).join(";") 
+      if (type.includes("?doc;")) type = type.split("?doc;")[0] + "?" + type.split("?doc;").slice(1).join("")
+      if (type.includes(";doc=")) type = type.split(";doc=")[0] + ";" + type.split(";doc=").slice(1).join("").split(";").slice(1).join(";") 
+      if (type.includes(";doc;")) type = type.split(";doc;")[0] + ";" + type.split(";doc;").slice(1).join("")
+      if (type.includes(";doc")) type = type.split(";doc")[0]
+      // id
       if (type.includes("?id=")) type = type.split("?id=")[0] + "?" + type.split("?id=").slice(1).join("").split(";").slice(1).join(";") 
-      if (type.includes(";id=")) type = type.split(";id=")[0] + ";" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";") 
+      if (type.includes(";id=")) type = type.split(";id=")[0] + ";" + type.split(";id=").slice(1).join("").split(";").slice(1).join(";")
+      // path
       if (type.includes("?path=")) type = type.split("?path=")[0] + "?" + type.split("?path=").slice(1).join("").split(";").slice(1).join(";") 
       if (type.includes(";path=")) type = type.split(";path=")[0] + ";" + type.split(";path=").slice(1).join("").split(";").slice(1).join(";")
+      // arrange
       if (type.includes(";arrange=")) type = type.split(";arrange=")[0] + ";" + type.split(";arrange=").slice(1).join("").split(";").slice(1).join(";")
+      // conditions
       if (type.split("?")[2]) type = type.split("?").slice(0, 2).join("?")
-      if (view.type === "Icon") {
-        
-        if (type.includes("?name=")) type = type.split("?name=")[0] + "?" + type.split("?name=").slice(1).join("").split(";").slice(1).join(";") 
-        if (type.includes(";name=")) type = type.split(";name=")[0] + ";" + type.split(";name=").slice(1).join("").split(";").slice(1).join(";")
-      
-      } else if (view.type === "Image") {
-        
-        if (type.includes("?src=")) type = type.split("?src=")[0] + "?" + type.split("?src=").slice(1).join("").split(";").slice(1).join(";") 
-        if (type.includes(";src=")) type = type.split(";src=")[0] + ";" + type.split(";src=").slice(1).join("").split(";").slice(1).join(";")
 
-      } else if (view.type === "Text") {
-        
-        if (type.includes("?text=")) type = type.split("?text=")[0] + "?" + type.split("?text=").slice(1).join("").split(";").slice(1).join(";") 
-        if (type.includes(";text=")) type = type.split(";text=")[0] + ";" + type.split(";text=").slice(1).join("").split(";").slice(1).join(";")
-      }
+      // components
+      if (view.type === "Chevron" && Array.isArray(view.direction)) {
+
+        if (type.includes("?direction=")) type = type.split("?direction=")[0] + "?" + type.split("?direction=").slice(1).join("").split(";").slice(1).join(";") 
+        else if (type.includes(";direction=")) type = type.split(";direction=")[0] + ";" + type.split(";direction=").slice(1).join("").split(";").slice(1).join(";")
       
+      } else if (view.type === "Icon" && Array.isArray(view.name)) {
+
+        if (type.includes("?name=")) type = type.split("?name=")[0] + "?" + type.split("?name=").slice(1).join("").split(";").slice(1).join(";") 
+        else if (type.includes(";name=")) type = type.split(";name=")[0] + ";" + type.split(";name=").slice(1).join("").split(";").slice(1).join(";")
+      
+      } else if (view.type === "Image" && Array.isArray(view.src)) {
+
+        if (type.includes("?src=")) type = type.split("?src=")[0] + "?" + type.split("?src=").slice(1).join("").split(";").slice(1).join(";") 
+        else if (type.includes(";src=")) type = type.split(";src=")[0] + ";" + type.split(";src=").slice(1).join("").split(";").slice(1).join(";")
+
+      } else if (view.type === "Text" && Array.isArray(view.text)) {
+
+        if (type.includes("?text=")) type = type.split("?text=")[0] + "?" + type.split("?text=").slice(1).join("").split(";").slice(1).join(";") 
+        else if (type.includes(";text=")) type = type.split(";text=")[0] + ";" + type.split(";text=").slice(1).join("").split(";").slice(1).join(";")
+
+      } else if (view.type === "Checkbox" && typeof view.label === "object" && Array.isArray(view.label.text)) {
+
+        if (type.includes("label.text=")) type = type.split("label.text=")[0] + "" + type.split("label.text=").slice(1).join("").split(";").slice(1).join(";") 
+        else if (type.includes("[text=")) type = type.split("[text=")[0] + "[" + type.split("[text=").slice(1).join("").split(";").slice(1).join(";") 
+        else if (type.includes(";text=")) type = type.split(";text=")[0] + ";" + type.split(";text=").slice(1).join("").split(";").slice(1).join(";")
+      }
+
       view.length = data.length || 1
 
       // arrange
-      if (view.arrange || view.sort) data = arrange({ data, arrange: view.arrange, id, _window })
+      if ((view.arrange || view.sort) && !Array.isArray(viewData)) data = arrange({ data, arrange: view.arrange, id, _window })
 
       delete views[id]
       delete view.mapType
@@ -66,11 +105,24 @@ const createTags = ({ _window, id: _id, req, res }) => {
           var mapIndex = index
           var lastEl = isObject ? _data : index
           var derivations = clone(view.derivations)
-          var data = clone(isObject ? view.data[_data] : _data)
-          derivations.push(lastEl)
+          var data = clone(isObject ? viewData[_data] : _data)
           
-          var _view = clone({ ...view, id, type, data, mapIndex, derivations, children: clone(views[view.parent].children[view.index].children || []) })
+          var _view = clone({ ...view, id, view: type, mapIndex, derivations, children: clone(myView.children || []) })
+          mapType.reduce((o, k, i) => {
+            if (i !== mapType.length - 1) return o[k]
+            else o[k] = data
+          }, _view)
+
+          if (mapType[0] === "data") _view.derivations.push(lastEl)
           
+          /*
+            if (view.type === "Chevron" && typeof data === "string" && Array.isArray(view.direction)) _view.direction = data
+            else if (view.type === "Icon" && typeof data === "string" && Array.isArray(view.name)) _view.name = data
+            else if (view.type === "Image" && typeof data === "string" && Array.isArray(view.src)) _view.src = data
+            else if (view.type === "Text" && typeof data === "string" && Array.isArray(view.text)) _view.text = data
+            else if (view.type === "Checkbox" && typeof data === "string" && Array.isArray(view.label.text)) _view.label.text = data
+          */
+         
           views[id] = _view
           return await createElement({ _window, id, req, res })
         }))
@@ -83,10 +135,15 @@ const createTags = ({ _window, id: _id, req, res }) => {
         var mapIndex = 0
         var lastEl = isObject ? "" : 0
         var derivations = clone(view.derivations)
-        var data = clone(view.data ? view.data[lastEl] : view.data)
-        derivations.push(lastEl)
+        var data = clone(viewData ? viewData[lastEl] : viewData)
+          
+        var _view = clone({ ...view, id, view: type, mapIndex, derivations, children: clone(myView.children || []) })
+        mapType.reduce((o, k, i) => {
+          if (i !== mapType.length - 1) return o[k]
+          else o[k] = data
+        }, _view)
 
-        var _view = clone({ ...view, id, type, data, mapIndex, derivations, children: clone(views[view.parent].children[view.index].children || []) })
+        if (mapType[0] === "data") _view.derivations.push(lastEl)
         
         views[id] = _view
         tags = await createElement({ _window, id, req, res })
@@ -103,6 +160,7 @@ const createTag = async ({ _window, id, req, res }) => {
   // components
   componentModifier({ _window, id })
   createComponent({ _window, id, req, res })
+  componentModifier({ _window, id })
   
   return await createHtml({ _window, id, req, res })
 }
@@ -112,8 +170,15 @@ const componentModifier = ({ _window, id }) => {
   var view = _window ? _window.views[id] : window.views[id]
 
   if (!view) return console.log(id)
+
+  // chevron
+  if (view.type === "Chevron") {
+    if (view.right) view.direction = "right"
+    else if (view.left) view.direction = "left"
+  }
+
   // icon
-  if (view.type === "Icon") {
+  else if (view.type === "Icon") {
 
     view.icon = view.icon || {}
     view.icon.name = view.name || view.icon.name || (typeof view.data === "string" && view.data) || ""
@@ -183,7 +248,7 @@ const componentModifier = ({ _window, id }) => {
 
   } else if (view.type === "Text") {
     
-    view.text = view.text || (typeof view.data === "string" && view.data) || ""
+    view.text = view.text !== undefined ? view.text : ((typeof view.data === "string" && view.data) || "")
   }
 }
 

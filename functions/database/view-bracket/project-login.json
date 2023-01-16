@@ -63,7 +63,7 @@
               "type": "[Text]?data=data:().editor.account.projects;hover.style.backgroundColor=#eee;style.padding=1rem;style.cursor=pointer;style.borderRadius=.5rem;style.borderBottom=1px solid #f9f9f9;style.height=4.5rem;class=flexbox;style.justifyContent=flex-start;style.fontSize=1.5rem;style.color=#000?data:().editor.account.projects.len()>0",
               "controls": [
                 {
-                  "event": "click?route-to-editor=true:();getProject():[project=txt();user=data:().editor.account.id]:[if():[_.data]:[data:().editor.project=_.data.project;route():[path=/developer-editor/+txt()]]:[note():[text=_.message;type=danger]]]"
+                  "event": "click?route-to-editor=true:();getProject():[project=txt();user=data:().editor.account.id]:[if():[_.data]:[data:().editor.project=_.data.project;route():[path='/developer-editor/'+txt()]]:[note():[text=_.message;type=danger]]]"
                 }
               ]
             },

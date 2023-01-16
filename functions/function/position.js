@@ -1,28 +1,28 @@
-const { converter } = require("./resize")
+const { lengthConverter } = require("./resize")
 
 const getPadding = (el) => {
     
     var padding = el.style.padding.split(" ")
     if (padding.length === 1) {
         return padding = {
-            top: converter(padding[0]),
-            right: converter(padding[0]),
-            bottom: converter(padding[0]),
-            left: converter(padding[0])
+            top: lengthConverter(padding[0]),
+            right: lengthConverter(padding[0]),
+            bottom: lengthConverter(padding[0]),
+            left: lengthConverter(padding[0])
         }
     } else if (padding.length === 2) {
         return padding = {
-            top: converter(padding[0]),
-            right: converter(padding[1]),
-            bottom: converter(padding[0]),
-            left: converter(padding[1])
+            top: lengthConverter(padding[0]),
+            right: lengthConverter(padding[1]),
+            bottom: lengthConverter(padding[0]),
+            left: lengthConverter(padding[1])
         }
     } else if (padding.length === 4) {
         return padding = {
-            top: converter(padding[0]),
-            right: converter(padding[1]),
-            bottom: converter(padding[2]),
-            left: converter(padding[3])
+            top: lengthConverter(padding[0]),
+            right: lengthConverter(padding[1]),
+            bottom: lengthConverter(padding[2]),
+            left: lengthConverter(padding[3])
         }
     }
 }

@@ -1,19 +1,32 @@
+const { generate } = require("../function/generate");
+
 module.exports = ({ controls, id }) => {
+  var view = window.views[id];
+  var _id = controls.id || id;
+  if (typeof _id === "object" && _id.id) _id = _id.id;
 
-    var local = window.views[id]
-    var _id = controls.id || id
-    
-    local.clicked.default = local.clicked.default || { style: {} }
-    local.clicked.style &&
-    Object.keys(local.clicked.style).map(key => 
-        local.clicked.default.style[key] = local.clicked.default.style[key] !== undefined ? local.clicked.default.style[key] : local.style[key] !== undefined ? local.style[key] : null 
-    )
+  view.clicked.state = view.clicked.state || generate();
+  view.clicked.default = view.clicked.default || { style: {} };
+  view.clicked.style &&
+    Object.keys(view.clicked.style).map(
+      (key) =>
+        (view.clicked.default.style[key] =
+          view.clicked.default.style[key] !== undefined
+            ? view.clicked.default.style[key]
+            : view.style[key] !== undefined
+            ? view.style[key]
+            : null)
+    );
 
-    return [{
-        "event": `loaded:${_id}?clicked.disable=true;if():[mode:()=default-mode:()]:[clicked.style.keys()._():[style()._=().clicked.style._]]?clicked.mount||clicked.disable`
-    }, {
-        "event": `click:${_id}?if():[mode:()=default-mode:()]:[clicked.style.keys()._():[style()._=().clicked.style._]]?!required.mount;!parent().required.mount;!clicked.disable`
-    }, {
-        "event": "click:body?if():[mode:()=default-mode:()]:[clicked.style.keys()._():[style()._=().style._||null]]?!required.mount;!parent().required.mount;!clicked.disable;!contains():[clicked:()];!droplist.contains():[clicked:()]"
-    }]
+  return [
+    {
+      event: `loaded:${_id}?click()?clicked.mount`,
+    },
+    {
+      event: `click:${_id}?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style()._=[__.style._||null]]]];clicked.mount;clicked.style.keys()._():[():${_id}.style()._=().clicked.style._];state:().[().clicked.state]=${_id}?!required.mount;!clicked.disable`,
+    },
+    {
+      event: `click:body?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style()._=[__.style._||null]]]];state:().[().clicked.state].del()?!required.mount;!clicked.disable;!clicked.sticky`,
+    }
+  ]
 }

@@ -1,26 +1,6 @@
-const { toComponent } = require('../function/toComponent')
-
-module.exports = (component) => {
-
-    component = toComponent(component)
-
-    component.style = component.style || {}
-    component.hover = component.hover || {}
-    component.hover.style = component.hover.style || {}
-
-    // innerbox
-    component.innerbox = component.innerbox || {}
-    component.innerbox.style = component.innerbox.style || {}
-    component.innerbox.hover = component.innerbox.hover || {}
-    component.innerbox.hover.style = component.innerbox.hover.style || {}
-    
-    return {
-        ...component,
-        type: "Box?class=swiper",
-        children: [{
-            type: "Box?style.display=inline-flex;style.alignItems=center;style.height=100%",
-            ...component.innerbox,
-            children: component.children
-        }]
-    }
+module.exports = (view) => {
+  return {
+    ...view,
+    view: `View?style:[display=flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;if():[vertical]:[flexDirection=column]];scrollLeft=0;scroll=0;loaded:[scrollable=el().scrollWidth-parent().el().clientWidth;if():[autorun]:[mytimer=interval():[().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]]];if():[autorun]:[mouseenter:[clearTimer():[().mytimer]];mouseleave:[if():[!mousedn]:[style().transition=[().style.transition||.2s];mytimer=interval():[().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]]]];touchstart:[clearTimer():[().mytimer];touchst=true;style().transition=null;mouseposition=e().changedTouches.0.screenX;scrollLeft=().scroll];mousedown:[mousedn=true;style().transition=null;mouseposition=e().screenX;scrollLeft=().scroll];touchmove:[if():[touchst]:[scroll=().scrollLeft+e().changedTouches.0.screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']];():body.mousemove:[if():[mousedn]:[scroll=().scrollLeft+e().screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']];touchend:[if():[touchst]:[touchst=false;if():[autorun]:[mytimer=interval():[().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]];():body.mouseup:[if():[mousedn]:[mousedn=false;if():[autorun;!mouseentered]:[mytimer=interval():[().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`,
+  }
 }

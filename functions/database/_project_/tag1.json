@@ -1,0 +1,18 @@
+{
+  "id": "tag1",
+  "children": [
+    {
+      "type": "link?href='https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400&display=swap';rel=stylesheet"
+    }
+  ],
+  "name": "Dr. Talal Abo Ghazaleh",
+  "title": "Dr. Talal Abo Ghazaleh",
+  "creation-date": "1666778965609",
+  "functions": {
+    "getCollections": "search():[doc=YKJBV3eeCYX5oKbjCMuj]:[send():[_.data]]"
+  },
+  "domains": [
+    "tag1.bracketjs.com",
+    "tag1.localhost:8080"
+  ]
+}

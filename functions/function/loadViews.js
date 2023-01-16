@@ -11,12 +11,12 @@ const loadViews = async (first) => {
     var unloadedViews = clone(global["unloadedViews"])
 
     // display loader
-    document.getElementsByClassName("loader-container")[0].style.display = "flex"
+    document.getElementById("loader-container").style.display = "flex"
     
     // get all views
     if (first) {
 
-      document.getElementsByClassName("loader-container")[0].style.display = "flex"
+      document.getElementById("loader-container").style.display = "flex"
       var docs = (global["lazy-load-views"] || []).filter(doc => !(global["fast-load-views"] || []).includes(doc))
       
       promises.push(search({ id: "root", search: { collection: "page", limit: 100 } }))
@@ -87,7 +87,7 @@ const loadViews = async (first) => {
     })
 
     // hide loader
-    document.getElementsByClassName("loader-container")[0].style.display = "none"
+    document.getElementById("loader-container").style.display = "none"
 }
 
 module.exports = { loadViews }

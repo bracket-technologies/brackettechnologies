@@ -1,16 +1,22 @@
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
-const merge = (objects) => {
+const merge = (array) => {
 
-  objects = clone(objects)
-  if (typeof objects !== "object") return objects
+  array = clone(array)
+  if (typeof array !== "object") return array
 
-  var merged = toArray(objects[0]).flat()
+  var type = typeof array[0]
+  array.map(obj => {
+    if (typeof obj !== type) type = false
+  })
 
-  objects.shift()
+  if (type === false) return array[0]
+  var merged = toArray(array[0]).flat()
 
-  objects.map((obj) => {
+  array.shift()
+
+  array.map((obj) => {
     merged.push(...toArray(obj).flat())
 
     if (!Array.isArray(obj) && typeof obj === "object") {

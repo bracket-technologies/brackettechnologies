@@ -5,10 +5,14 @@ const { toArray } = require("./toArray")
 
 module.exports = {
     route: async ({ id, _window, route = {}, req, res }) => {
-
+      
       var views = _window ? _window.views : window.views
       var global = _window ? _window.global : window.global
+      global.prevPath.push(global.path)
+      if (global.prevPath.length > 5) global.prevPath.shift()
       var path = route.path || global.path
+      global.prevPage.push(global.currentPage)
+      if (global.prevPage.length > 5) global.prevPage.shift()
       var currentPage = global.currentPage = route.page || path.split("/")[1] || "main"
 
       global.currentPage = currentPage
@@ -38,7 +42,7 @@ module.exports = {
 
       } else {
       
-        if (document.getElementsByClassName("loader-container")[0]) document.getElementsByClassName("loader-container")[0].style.display = "flex"
+        if (document.getElementById("loader-container")) document.getElementById("loader-container").style.display = "flex"
         update({ _window, req, res, id: "root", route })
       }
     }

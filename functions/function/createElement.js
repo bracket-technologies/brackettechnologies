@@ -10,10 +10,7 @@ const { toArray } = require("./toArray")
 const { createHtml } = require("./createHtml")
 const { override } = require("./merge")
 
-const myViews = [ 
-  "View", "Box", "Text", "Icon", "Image", "Input", "Video", "Entry", "Map",
-  "Swiper", "Switch", "Checkbox", "Swiper", "List", "Item"
-]
+const myViews = require("./views.json")
 
 const createElement = ({ _window, id, req, res, import: _import, params: inheritedParams }) => {
 
@@ -41,11 +38,21 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     var conditions = view.type.split("?")[2]
 
     // [type]
-    if (!view.duplicatedElement && type.includes("coded()")) view.mapType = true
+    if (!view.duplicatedElement && type.includes("coded()")) view.mapType = ["data"]
+    
+    //
     type = view.type = toValue({ _window, value: type, id, req, res })
 
+    // events
+    if (view.event) {
+      view.controls = toArray(view.controls)
+      toArray(view.event).map(event => view.controls.push({ event }))
+      delete view.event
+    }
+
     // id
-    var priorityId = false, _id = view.type.split(":")[1]
+    var _id = view.type.split(":")[1]
+    var priorityId = false
 
     if (_id) {
       
@@ -153,9 +160,6 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
         id = params.id
       }
       
-      // name is inherited from mapper as a list
-      //if (view.type === "Icon" && view.mapIndex !== undefined && view.data && Array.isArray(view.name)) view.name = view.data
-
       // inherited params
       if (inheritedParams) override(view, inheritedParams)
 
@@ -176,7 +180,6 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
         views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
         
-        // console.log(views[id]);
         tags = await createElement({ _window, id, req, res, params })
         return resolve(tags)
       }
@@ -194,64 +197,11 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       tags = await createElement({ _window, id, req, res })
       return resolve(tags)
     }
-    /*
-    // before loading controls
-    await new Promise (async resolve => {
-      
-      toArray(view.controls).map(async (controls = {}) => {
 
-        //
-        if (!controls.event) return
-        var event = toCode({ _window, string: controls.event })
-        event = toCode({ _window, string: event, start: "'", end: "'" })
-
-        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id: "root", string: event.split('?')[2] })) {
-
-          toParam({ req, res, _window, id: "root", string: event.split("?")[1], createElement: true })
-          view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
-        }
-      })
-
-      if (global.promises && global.promises.length > 0) {
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        await Promise.all(global.promises)
-        global.promises = []
-      }
-
-      resolve()
-    })
-
-    if (global.breakCreateElement[id]) {
-      
-      global.breakCreateElement[id] = false
-      return resolve()
-    }
-*/
     if (_import) {
 
       tags = await createHtml({ _window, id, req, res, import: _import })
       return resolve(tags)
-    }
-
-    if (type === "Icon" && Array.isArray(view.name)) {
-
-      view.Data = generate();
-      global[view.Data] = clone(view.name)
-      delete view.name;
-      
-    } else if (type === "Image" && Array.isArray(view.src)) {
-
-      view.Data = generate();
-      global[view.Data] = clone(view.src)
-      delete view.src;
-
-    } else if (type === "Text" && Array.isArray(view.text)) {
-
-      view.Data = generate();
-      global[view.Data] = clone(view.text)
-      delete view.text;
     }
 
     // for droplist
@@ -260,8 +210,12 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       view.data = view.data || ""
       view.unDeriveData = true
 
-    } else view.data = reducer({ _window, id, path: view.derivations, value: view.data, key: true, object: global[view.Data], req, res })
+    } else view.data = reducer({ _window, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res })
     
+    // doc
+    if (!global[view.Data] && view.data) global[view.Data] = view.data
+
+    // root
     if (view.parent === "root") views.root.child = view.id
 
     tags = await createTags({ _window, id, req, res })

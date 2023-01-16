@@ -20,7 +20,7 @@ const updateSelf = async ({ _window, id, update = {}, route }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
@@ -109,7 +109,7 @@ const updateSelf = async ({ _window, id, update = {}, route }) => {
     history.pushState(null, title, path)
     document.title = title
 
-    if (document.getElementsByClassName("loader-container")[0]) document.getElementsByClassName("loader-container")[0].style.display = "none"
+    if (document.getElementById("loader-container")) document.getElementById("loader-container").style.display = "none"
   }
 }
 

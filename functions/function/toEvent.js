@@ -164,7 +164,7 @@ module.exports = {
         param.split(":").map(param => {
 
           if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-          _children.push({ type: param })
+          _children.push({ view: param })
         })
 
         view.children = toArray(view.children)
@@ -185,7 +185,7 @@ module.exports = {
         param.split(":").map(param => {
 
           if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-          _children.push({ type: param })
+          _children.push({ view: param })
         })
 
         view.children = toArray(view.children)

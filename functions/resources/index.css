@@ -83,112 +83,10 @@ code {
   display: grid;
 }
 
-.gridTemplateColumns-1fr1fr {
-  grid-template-columns: 1fr 1fr;
-}
-
-.gridTemplateColumns-1fr1fr1fr {
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.gridTemplateColumns-1fr1fr1fr1fr {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-.gridTemplateColumns-1fr1fr1fr1fr1fr {
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-}
-
 /*************************/
 
 .display-none {
   display: none;
-}
-
-/*************************/
-
-.marginTop-1rem {
-  margin-top: 1rem;
-}
-
-.marginTop-2rem {
-  margin-top: 2rem;
-}
-
-.marginTop-3rem {
-  margin-top: 3rem;
-}
-
-.marginTop-4rem {
-  margin-top: 4rem;
-}
-
-/*************************/
-
-.marginBottom-4rem {
-  margin-bottom: 4rem;
-}
-
-.marginBottom-1rem {
-  margin-bottom: 1rem;
-}
-
-.marginBottom-2rem {
-  margin-bottom: 2rem;
-}
-
-.marginBottom-3rem {
-  margin-bottom: 3rem;
-}
-
-/*************************/
-
-.marginRight-1rem {
-  margin-right: 1rem;
-}
-
-.marginRight-2rem {
-  margin-right: 2rem;
-}
-
-.marginRight-3rem {
-  margin-right: 3rem;
-}
-
-.marginRight-4rem {
-  margin-right: 4rem;
-}
-
-/*************************/
-
-.marginLeft-1rem {
-  margin-left: 1rem;
-}
-
-.marginLeft-2rem {
-  margin-left: 2rem;
-}
-
-.marginLeft-3rem {
-  margin-left: 3rem;
-}
-
-.marginLeft-4rem {
-  margin-left: 4rem;
-}
-
-/*************************/
-
-.gap-1rem {
-  gap: 1rem;
-}
-
-.gap-2rem {
-  gap: 2rem;
-}
-
-.gap-3rem {
-  gap: 3rem;
 }
 
 .flex-box, .flexbox {
@@ -264,7 +162,7 @@ a {
 .arabic,
 .ar {
   text-align: right;
-  font-family: "Tajawal", sans-serif;
+  font-family: "Noto Sans Arabic", sans-serif;
 }
 
 .en {
@@ -490,17 +388,17 @@ i {
 .ar::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: #aaa;
   opacity: 1; /* Firefox */
-  font-family: "Tajawal", sans-serif;
+  font-family: "Noto Sans Arabic", sans-serif;
 }
 
 .ar:-ms-input-placeholder { /* Internet Explorer 10-11 */
   color: #aaa;
-  font-family: "Tajawal", sans-serif;
+  font-family: "Noto Sans Arabic", sans-serif;
 }
 
 .ar::-ms-input-placeholder { /* Microsoft Edge */
   color: #aaa;
-  font-family: "Tajawal", sans-serif;
+  font-family: "Noto Sans Arabic", sans-serif;
 }
 
 .vertical {
@@ -530,7 +428,9 @@ i {
   border-radius: 50%;
   border-top: .75rem solid #3498db;
   width: 4rem;
+  min-width: 4rem;
   height: 4rem;
+  min-height: 4rem;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
@@ -548,4 +448,12 @@ i {
 
 [contenteditable] {
   outline: 0px solid transparent;
+}
+
+.undraggable {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
 }

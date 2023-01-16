@@ -93,12 +93,10 @@ var bodyEventListener = async ({ id, viewEventConditions, viewEventParams, event
 document.body.addEventListener('click', e => {
   
   var global = window.global
-  global["key-events"] = []
-
-  var global = window.global
-  global["clickedElement()"] = global["clicked"] = global["clicked()"] = views[((e || window.event).target||e.currentTarget).id]
-  global.clickedElement = (e || window.event).target
   
+  global["key-events"] = []
+  global["clicked"] = views[((e || window.event).target||e.currentTarget).id]
+  global["clickedElement"] = (e || window.event).target||e.currentTarget
   global["html"] = global.clickedElement.innerHTML.replace("&amp;", "&")
   global["txt"] = (global.clickedElement.textContent === undefined ? global.clickedElement.innerText : global.clickedElement.textContent).replace("&amp;", "&")
 
@@ -123,27 +121,34 @@ document.body.addEventListener('click', e => {
   global["click-events"].map(o => bodyEventListener(o, e))
   global["click-events"] = []
 
-}, false)
+})
 
 // mousemove
 document.body.addEventListener('mousemove', (e) => {
 
-    global.screenX = e.screenX
-    global.screenY = e.screenY
-    Object.values(window.global["body-mousemove-events"]).flat().map(o => bodyEventListener(o, e))
-    currentTime = (new Date()).getTime()
-    // if (currentTime - lastVisit > 3600000 && global.data.page[global.currentPage]["recaptcha-required"]) 
-    lastVisit = currentTime
-}, false)
-
-document.addEventListener("mousedown", (e) => {
-    window.global.mousedown = true
-    Object.values(window.global["body-mousedown-events"]).flat().map(o => bodyEventListener(o, e))
+  global.mousePosX = e.screenX
+  global.mousePosY = e.screenY
+  Object.values(window.global["body-mousemove-events"]).flat().map(o => bodyEventListener(o, e))
+  /*currentTime = (new Date()).getTime()
+  // if (currentTime - lastVisit > 3600000 && global.data.page[global.currentPage]["recaptcha-required"]) 
+  lastVisit = currentTime*/
 })
 
-document.addEventListener("mouseup", (e) => {
-    window.global.mousedown = false
-    Object.values(window.global["body-mouseup-events"]).flat().map(o => bodyEventListener(o, e))
+document.body.addEventListener("mousedown", (e) => {
+
+  var global = window.global, views = window.views
+  global.mousedown = true
+  global["clicked"] = views[((e || window.event).target||e.currentTarget).id]
+  global["clickedElement"] = (e || window.event).target||e.currentTarget
+  
+  Object.values(global["body-mousedown-events"]).flat().map(o => bodyEventListener(o, e))
+})
+
+document.body.addEventListener("mouseup", (e) => {
+
+  var global = window.global
+  global.mousedown = false
+  Object.values(global["body-mouseup-events"]).flat().map(o => bodyEventListener(o, e))
 })
 
 document.addEventListener('keydown', e => {

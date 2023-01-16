@@ -3,7 +3,7 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const upload = async ({ id, _window, req, res, e, _, __, ___, ...params }) => {
+module.exports = async ({ id, _window, req, res, e, _, __, ___, ...params }) => {
         
   var upload = params.upload, promises = []
   var global = window.global
@@ -12,25 +12,25 @@ const upload = async ({ id, _window, req, res, e, _, __, ___, ...params }) => {
   var headers = clone(upload.headers) || {}
   var files = toArray(upload.file || upload.files)
   var docs = toArray(upload.doc || upload.docs || [])
+  var collection = upload.collection || "storage"
+  
+  if (!headers.project) headers.project = global.projectId;
+  
+  ([...files]).map(async (f, i) => {
 
-  upload.collection = upload.collection || "storage"
-  headers.project = headers.project || global.projectId
-
-  delete upload.headers
-
-  files.map(async (f, i) => {
-
-    if (upload.file) delete upload.file
-    if (upload.files) delete upload.files
-
+    /*if (upload.file) delete upload.file
+    if (upload.files) delete upload.files*/
+    if (typeof f === "string") f = { file: f }
+    
+    var upload = {collection}
     var data = alldata[i] || {}
     var file = await readFile(f)
-    upload.doc = docs[i] || generate({ length: 20 })
-    data.name = data.name || generate({ length: 20 })
+
+    upload.doc = f.id || f.doc || docs[i] || generate({ length: 20 })
+    data.name = f.name || data.name || generate({ length: 20 })
 
     // get file type
-    var type = files[i].type
-    data.type = type.split("/").join("-")
+    var type = data.type = f.type
     
     // get regex exp
     var regex = new RegExp(`^data:${type};base64,`, "gi")
@@ -76,18 +76,19 @@ const upload = async ({ id, _window, req, res, e, _, __, ___, ...params }) => {
 }
 
 const readFile = (file) => {
+  
   return new Promise(res => {
 
-    if (typeof file === "string" && file.slice(0, 5) === "data:") res(file)
-    else { 
+    var myFile = file.file || file.url
+    if (typeof myFile === "string" && myFile.slice(0, 5) === "data:") res(myFile)
+    else if (typeof file === "object" && file["readAsDataURL"]) res()
+    else {
       let myReader = new FileReader()
       myReader.onloadend = () => res(myReader.result)
       myReader.readAsDataURL(file)
     }
   })
 }
-
-module.exports = { upload }
 
 /* const { capitalize } = require("./capitalize")
 const { save } = require("./save")

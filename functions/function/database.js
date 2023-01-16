@@ -1,6 +1,7 @@
 const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
+const { toArray } = require("./toArray")
 
 var getdb = async ({ req, res }) => {
 
@@ -281,35 +282,56 @@ var postdb = async ({ req, res }) => {
     if (Array.isArray(data)) data = data.map(data => schematize({ data, schema }))
     data = schematize({ data, schema })
   }
-
+  
   if (Array.isArray(data)) {
 
-    data.map(data => {
+    var idList = toArray(save.idList)
+    if (save.idList) {
 
-      if (!data.id) data.id = generate({ length: 20 })
-      if (!data["creation-date"]) {
-        if (req.headers.timestamp) {
+      var batch = db.batch()
+      data.map((data, i) => {
 
-          data["creation-date"] = parseInt(req.headers.timestamp)
+        if (idList[i]) {
 
-        } else {
+          //if (!data.id) data.id = generate({ length: 20 })
+          if (!data["creation-date"]) {
+            if (req.headers.timestamp) {
 
-          data["creation-date"] = (new Date()).getTime()
-          data.timezone = "GMT"
+              data["creation-date"] = parseInt(req.headers.timestamp)
+
+            } else {
+
+              data["creation-date"] = (new Date()).getTime()
+              data.timezone = "GMT"
+            }
+          }
+
+          batch.set(db.collection(collection).document(idList[i].toString()), data)
+          /*ref.doc(data.id.toString()).set(data).then(() => {
+
+            success = true
+            message = `Document saved successfuly!`
+      
+          }).catch(error => {
+      
+            success = false
+            message = error
+          })*/
+
+          // Commit the batch
+          batch.commit().then(() => {
+
+            success = true
+            message = `Document saved successfuly!`
+
+          }).catch(error => {
+      
+            success = false
+            message = error
+          })
         }
-      }
-
-      ref.doc(data.id.toString()).set(data).then(() => {
-
-        success = true
-        message = `Document saved successfuly!`
-  
-      }).catch(error => {
-  
-        success = false
-        message = error
       })
-    })
+    }
 
   } else if (save.doc) {
 

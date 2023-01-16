@@ -7,7 +7,6 @@ const { clone } = require("./clone")
 const { isParam } = require("./isParam")
 const { toArray } = require("./toArray")
 const actions = require("./actions.json")
-const toEvent = require("./toEvent")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -17,7 +16,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, createElement, params = {}, executer }) => {
+const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, createElement, params = {}, executer, condition }) => {
   
   const { toApproval } = require("./toApproval")
   var _functions = require("./function")
@@ -30,11 +29,10 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
   params = object || params
 
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
-
   if (string.includes('codedS()') && string.length === 13) return global.codes[string]
 
   // condition not param
-  if (string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
+  if (!createElement && string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
   return toApproval({ id, e, string: string.replace("==", "="), req, res, _window, _, __, ___, _i, object })
   // if (createElement) _ = views[id]._
   
@@ -43,7 +41,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     var key, value, id = viewId
     var view = views[id]
     if (param === "") return
-    
+
     // break
     if (view && (view.break || view.return)) return
     if (view && (view["break()"] || view["return()"])) return
@@ -57,7 +55,15 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       key = keys[0]
       value = param.substring(key.length + 1)
 
-    } else key = param
+    } else {
+      key = param
+    
+      // execute function: coded()xxxxx() => [params that inherited function attributes in underscore]()
+      if (key.length === 14 && key.slice(-2) === "()" && key.slice(0, 7) === 'coded()') key = global.codes[key.slice(0, 12)]
+    
+      // promise: coded()xxxxx:coded()xxxxx => promise():[]:[]
+      else if (key.length === 25 && key.split("coded()") === 2 && key.slice(0, 7) === 'coded()') key = "promise():" + key
+    }
 
     // increment
     if (key && value === undefined && key.slice(-2) === "++") {
@@ -89,7 +95,8 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     else if (key && value && key.slice(-1) === "+") {
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
-      global.codes[`coded()${_key}`] = `${key}||0`
+      var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
+      global.codes[`coded()${_key}`] = `${myVal}||0`
       value = `coded()${_key}+${value}`
       /*global.codes[`coded()${_key0}`] = `${value}||0`
       value = `coded()${_key}+coded()${_key0}`*/
@@ -99,7 +106,8 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     else if (key && value && key.slice(-1) === "-") {
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
-      global.codes[`coded()${_key}`] = `${key}||0`
+      var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
+      global.codes[`coded()${_key}`] = `${myVal}||0`
       global.codes[`coded()${_key0}`] = `${value}||0`
       value = `coded()${_key}-coded()${_key0}`
       /*global.codes[`coded()${_key0}`] = `${value}||0`
@@ -110,7 +118,8 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     else if (key && value && key.slice(-1) === "*") {
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
-      global.codes[`coded()${_key}`] = `${key}||0`
+      var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
+      global.codes[`coded()${_key}`] = `${myVal}||0`
       value = `coded()${_key}*${value}`
       /*global.codes[`coded()${_key0}`] = `${value}||0`
       value = `coded()${_key}*coded()${_key0}`*/
@@ -140,9 +149,6 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       return params.await += `${awaiter};`
     }
 
-    // events attached to type
-    // if (createElement && events.includes(param.split(":coded()")[0])) toEvent({ _window, id, _, string: param })
-
     // !attribute ---> attribute = false
     if (param.slice(0, 1) === "!" && value === undefined) {
       value = false
@@ -151,29 +157,98 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
 
     // show loader
     if (!_window && param === "loader.show") {
-      document.getElementsByClassName("loader-container")[0].style.display = "flex"
+      document.getElementById("loader-container").style.display = "flex"
       return sleep(10)
     }
     
     // hide loader
     if (!_window && param === "loader.hide") {
-      document.getElementsByClassName("loader-container")[0].style.display = "none"
+      document.getElementById("loader-container").style.display = "none"
       return sleep(10)
     }
 
+    // beforeLoading
+    if (param.slice(0, 14) === "beforeLoading:") {
+
+      param = param.slice(14)
+      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+      view.controls = toArray(view.controls)
+      view.controls.push({ event: `beforeLoading?${param}` })
+      return
+    }
+
+    // controls
+    if (param.slice(0, 9) === "controls:") {
+
+      var _controls = []
+      param = param.slice(9)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        _controls.push({ event: param })
+      })
+
+      view.controls = toArray(view.controls)
+      view.controls.unshift(..._controls)
+      return //view.controls
+    }
+
+    // children
+    if (param.slice(0, 9) === "children:") {
+
+      var _children = []
+      param = param.slice(9)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        _children.push({ view: param })
+      })
+
+      view.children = toArray(view.children)
+      view.children.unshift(..._children)
+      if (_) {
+        view._ = _
+        view.passToChildren = view.passToChildren || {}
+        view.passToChildren._ = _
+      }
+      return //view.children
+    }
+
+    // children
+    if (param.slice(0, 6) === "child:") {
+
+      var _children = []
+      param = param.slice(6)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        _children.push({ view: param })
+      })
+
+      view.children = toArray(view.children)
+      view.children.unshift(..._children)
+      
+      if (_) {
+        view._ = _
+        view.passToChildren = view.passToChildren || {}
+        view.passToChildren._ = _
+      }
+      return //view.children
+    }
+    
     if (value === undefined) value = generate()
-    else value = toValue({ _window, req, res, id, e, value, params, _, __, ___ })
+    else value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
 
     id = viewId
     
-    var path = typeof key === "string" ? key.split(".") : [], timer, isFn = false, backendFn = false, i = path[0].split(":").length - 1, path0 = path[0].split(":")[0], pathi = path[0].split(":")[i]
+    var path = typeof key === "string" ? key.split(".") : [], isFn = false, backendFn = false, i = path[0].split(":").length - 1, path0 = path[0].split(":")[0], pathi = path[0].split(":")[i]
 
     // :coded()1asd1
     if (path0 === "") return
 
     //////////////////////////////////// function /////////////////////////////////////////
 
-    if (path.length === 1 && path0.slice(-2) === "()" && !_functions[path0.slice(-2)] && !actions.includes(path0) && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
+    if (path.length === 1 && path0.slice(-2) === "()" && !_functions[path0.slice(-2)] /*&& !actions.includes(path0)*/ && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
       
       view && clone(view["my-views"] || []).reverse().map(view => {
         if (!isFn) {
@@ -275,7 +350,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     }
 
     ////////////////////////////////// end of function /////////////////////////////////////////
-
+    
     // object structure
     if (path.length > 1 || path[0].includes("()") || path[0].includes(")(") || object) {
       
@@ -287,19 +362,12 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       // mount state & value
       if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || path[0].includes(")(") || path[0].includes("_") || object) {
         
-        var myFn = () => reducer({ _window, id, path, value, key, params, e, req, res, _, __, ___, _i, object, mount, createElement })
-        if (timer) {
-          
-          timer = parseInt(timer)
-          clearTimeout(view[path.join(".")])
-          view[path.join(".")] = setTimeout(myFn, timer)
-
-        } else myFn()
+        reducer({ _window, id, path, value, key, params, e, req, res, _, __, ___, _i, object, mount, createElement, condition })
 
       } else {
         
-        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, ___, _i, mount, object, createElement })
-        reducer({ _window, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: params, createElement })
+        if (id && view && mount) reducer({ _window, id, path: ["()", ...path], value, key, params, e, req, res, _, __, ___, _i, mount, object, createElement, condition })
+        reducer({ _window, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: params, createElement, condition })
       }
       
       if (!params.path && _path !== undefined) params.path = _path
@@ -324,7 +392,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         if (params.Data || (params.data !== undefined && !view.Data)) view.derivations = []
         mountDataUsed = true
         params.Data = view.Data = params.Data || view.Data || generate()
-        params.data = global[view.Data] = view.data = view.data !== undefined ? view.data : (global[view.Data] !== undefined ? global[view.Data] : {})
+        params.data = global[view.Data] = params.data !== undefined ? params.data : (global[view.Data] !== undefined ? global[view.Data] : {})
 
         // duplicated element
         if (view.duplicatedElement) {
@@ -357,7 +425,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
           var myPath = (typeof path === "string" || typeof path === "number") ? path.toString().split(".") : path || []
           derivations.push(...myPath)
           var lastIndex = derivations.length - 1
-          // console.log(schema, path,derivations, lastIndex);
+          
           derivations.reduce((o, k, i) => {
 
             var _type = i === 0 ? o : (o.type || [])

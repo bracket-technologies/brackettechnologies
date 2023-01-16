@@ -171,7 +171,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
       }
       
       // onload event
-      if (event === "loaded"/* || event === "loading" || event === "beforeLoading"*/) return myFn({ target: _view.element })
+      if (event === "loaded"/* || event === "loading" || event === "beforeLoading"*/) return setTimeout(() => myFn({ target: _view.element }), 0)
       else if (id === "window") return window.addEventListener(event, myFn)
 
       // body event
@@ -245,8 +245,10 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
           
         }, timer)
       }
-      
-      // elements
+
+      if (!_view.element) return console.log(_view);
+      // handler
+      if (event.includes("touch") && !('ontouchstart' in window) && !(navigator.maxTouchPoints > 0) && !(navigator.msMaxTouchPoints > 0)) return;
       _view.element.addEventListener(event, myFn)
     })
   })
@@ -289,6 +291,12 @@ const defaultEventHandler = ({ id }) => {
 
   var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mouseentered = false }
   view.element.addEventListener("mouseleave", setEventType)
+  
+  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mousedowned = true }
+  view.element.addEventListener("mousedown", setEventType)
+
+  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mousedowned = false }
+  view.element.addEventListener("mouseup", setEventType)
 
 /*
   events.map((event) => {

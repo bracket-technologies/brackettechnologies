@@ -31,12 +31,14 @@ const toggleView = async ({ _window, toggle, id, res }) => {
   toggle.fadein.after = toggle.fadein.after || {}
   toggle.fadeout.after = toggle.fadeout.after || {}
 
-  document.getElementsByClassName("loader-container")[0].style.display = "flex"
+  document.getElementById("loader-container").style.display = "flex"
 
   // children
   var children = clone([global.data.view[viewId]])
   if (togglePage) {
 
+    global.prevPage.push(global.currentPage)
+    if (global.prevPage.length > 5) global.prevPage.shift()
     var currentPage = global.currentPage = togglePage.split("/")[0]
     
     viewId = currentPage
@@ -53,6 +55,8 @@ const toggleView = async ({ _window, toggle, id, res }) => {
 
       var page = global.data.page[viewId]
       var _params = toParam({ string: page.type.split("?")[1] || "" })
+      global.prevPath.push(global.path)
+      if (global.prevPath.length > 5) global.prevPath.shift()
       global.path = _params.path
       history.pushState({}, _params.title, _params.path)
       document.title = _params.title
@@ -65,7 +69,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
 
   // close droplist
   if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[)(:droplist-positioner].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:droplist-positioner.del()" })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
@@ -134,7 +138,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
       views[id].style.opacity = el.style.opacity = toggle.fadein.after.opacity || "1"
     })
     
-    document.getElementsByClassName("loader-container")[0].style.display = "none"
+    document.getElementById("loader-container").style.display = "none"
     
   }, timer)
 }

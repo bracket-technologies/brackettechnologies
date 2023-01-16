@@ -57,7 +57,7 @@ const {toOperator} = require("./toOperator")
 const {popup} = require("./popup")
 const {keys} = require("./keys")
 const {toggleView} = require("./toggleView")
-const {upload} = require("./upload")
+const upload = require("./upload")
 const {compare} = require("./compare")
 const {toCSV} = require("./toCSV")
 const {decode} = require("./decode")
@@ -80,7 +80,7 @@ const {
   toggleStyles,
   mountAfterStyles,
 } = require("./style")
-const {resize, dimensions, converter} = require("./resize")
+const {resize, dimensions, lengthConverter} = require("./resize")
 const {createData, clearData} = require("./data")
 
 module.exports = {
@@ -89,7 +89,7 @@ module.exports = {
   nothing,
   getDaysInMonth,
   importJson,
-  converter,
+  lengthConverter,
   getCookie,
   setCookie,
   position,
