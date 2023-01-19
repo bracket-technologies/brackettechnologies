@@ -4,7 +4,7 @@ const { createComponent } = require("./createComponent")
 const { createHtml } = require("./createHtml")
 const { toArray } = require("./toArray")
 
-const createTags = ({ _window, id: _id, req, res }) => {
+const createTags = ({ _window, id: _id, req, res, _, __, ___ }) => {
 
   const { createElement } = require("./createElement")
   return new Promise (async resolve => {
@@ -114,17 +114,9 @@ const createTags = ({ _window, id: _id, req, res }) => {
           }, _view)
 
           if (mapType[0] === "data") _view.derivations.push(lastEl)
-          
-          /*
-            if (view.type === "Chevron" && typeof data === "string" && Array.isArray(view.direction)) _view.direction = data
-            else if (view.type === "Icon" && typeof data === "string" && Array.isArray(view.name)) _view.name = data
-            else if (view.type === "Image" && typeof data === "string" && Array.isArray(view.src)) _view.src = data
-            else if (view.type === "Text" && typeof data === "string" && Array.isArray(view.text)) _view.text = data
-            else if (view.type === "Checkbox" && typeof data === "string" && Array.isArray(view.label.text)) _view.label.text = data
-          */
          
           views[id] = _view
-          return await createElement({ _window, id, req, res })
+          return await createElement({ _window, id, req, res, _, __, ___ })
         }))
 
         tags = tags.join("")
@@ -146,23 +138,23 @@ const createTags = ({ _window, id: _id, req, res }) => {
         if (mapType[0] === "data") _view.derivations.push(lastEl)
         
         views[id] = _view
-        tags = await createElement({ _window, id, req, res })
+        tags = await createElement({ _window, id, req, res, _, __, ___ })
       }
 
-    } else tags = await createTag({ _window, id, req, res })
+    } else tags = await createTag({ _window, id, req, res, _, __, ___ })
     
     resolve(tags)
   })
 }
 
-const createTag = async ({ _window, id, req, res }) => {
+const createTag = async ({ _window, id, req, res, _, __, ___ }) => {
   
   // components
   componentModifier({ _window, id })
-  createComponent({ _window, id, req, res })
+  createComponent({ _window, id, req, res, _, __, ___ })
   componentModifier({ _window, id })
   
-  return await createHtml({ _window, id, req, res })
+  return await createHtml({ _window, id, req, res, _, __, ___ })
 }
 
 const componentModifier = ({ _window, id }) => {

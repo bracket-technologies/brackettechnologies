@@ -245,14 +245,27 @@ window.addEventListener('appinstalled', () => {
   requireHTTPS.classList.remove('hidden');
 }*/
 },{"../function/execute":67,"../function/setElement":108,"../function/starter":111,"../function/toApproval":116,"../function/toCode":121,"../function/toParam":130}],2:[function(require,module,exports){
+const { toString } = require('../function/toString')
+
 module.exports = (view) => {
-  var {style} = view
+  var {style, icon, text, chevron} = view
+  if (typeof text === "string") text = {text}
+  if (typeof icon === "string") icon = {name: icon}
+  if (typeof chevron === "string") chevron = {}
+  
   return {
     ...view,
-    view: `View?class=flexbox;style:[position=relative;flex=1;height=4rem;backgroundColor=#fff;borderRadius=.5rem;border=1px solid #ddd];${toString({style})}`
+    view: `View?style:[position=relative;height=4rem;backgroundColor=#fff;borderRadius=.5rem;padding=0 1rem;gap=1rem;border=1px solid #ddd];${Object.keys(style).length > 0 ? toString({style}) : ""};class=flex align-center pointer ${view.class ? view.class : ""}`,
+    children: [{
+      view: `Icon?style:[fontSize=2rem];${toString(icon)}?parent().icon`
+    }, {
+      view: `Text?style:[fontSize=1.5rem];${toString(text)}?parent().text`
+    }, {
+      view: `Icon?name=if():[parent().direction=ltr]:'bi-chevron-right':'bi-chevron-left';style:[fontSize=1.8rem;transition=.2s;position=absolute;if():[parent().direction=ltr]:[right=1rem]:[left=1rem]];${toString(chevron)};parent().():[mouseenter:[style().transform=if():[parent().direction=ltr]:'translateX(.5rem)':'translateX(-.5rem)'];mouseleave:[style().transform='translateX(0)']]?parent().chevron`
+    }]
   }
 }
-},{}],3:[function(require,module,exports){
+},{"../function/toString":133}],3:[function(require,module,exports){
 const { clone } = require('../function/clone')
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
@@ -482,7 +495,7 @@ const Input = (component) => {
             {
               "view": `Text?id=${id}-label;text='${text || "Label"}';${required ? "required=true": ""};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
               "controls": [{
-                "event": "click?parent().input().focus();log():txt()"
+                "event": "click?parent().input().focus()"
               }]
             },
               Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
@@ -1370,7 +1383,7 @@ module.exports = ({ controls }) => {
 module.exports=[
   "data()", "Data()", "doc()", "mail()", "function()", "exec()", "notification()", "notify()", "alert()", "tag()", "view()"
  , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()", "same()", "checker()"
- , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()", "name()", "promise()"
+ , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()", "promise()"
  , "3rdLastChild()", "2ndLastChild()", "parent()", "next()", "text()", "val()", "txt()", "loader()", "resolve()"
  , "element()", "el()", "checked()", "check()", "prev()", "format()", "lastSibling()", "interval()"
  , "1stSibling()", "derivations()", "path()", "mouseleave()", "mouseenter()", "mouseup()", "blur()"
@@ -1591,10 +1604,10 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
     if (arabic.test(string)) {
       var i = 0, lastIndex = string.length - 1, start = false, newString = ""
       while (i <= lastIndex) {
-        if (arabic.test(string[i]) && !english.test(string[i]) || start === false && arabic.test(string[i+1]) && !english.test(string[i+1]) || (start !== false && string[i] === " ")) {
+        if ((arabic.test(string[i]) && !english.test(string[i])) || /*(start === false && arabic.test(string[i+1]) && !english.test(string[i+1])) ||*/ (start !== false && string[i] === " ")) {
           if (start === false) {
             start = i
-            newString += `<span contenteditable class='arabic' style="color:inherit; background-color:#00000000; white-space:nowrap">`
+            newString += `<span contenteditable class="arabic" style="color:inherit; background-color:#00000000; white-space:nowrap">`
           }
         } else if (start !== false) {
           start = false
@@ -1628,13 +1641,13 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
             while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
-            /*if (!actions.includes(str.slice(i+1) + "()")) */return str.slice(0, i+1) + `<span contenteditable style='text-decoration:underline; color:inherit; white-space:nowrap'>${str.slice(i+1)}()</span>`
+            return str.slice(0, i+1) + `<span contenteditable style="text-decoration:underline; color:inherit; white-space:nowrap">${str.slice(i+1)}()</span>`
             //else return (index !== _actions.length - 1) ? str + "()" : str
           } else return (index !== _actions.length - 1) ? str + "()" : str
         }).join("")
         return string
       }).join(";")
-
+      
       return string
     }
 }
@@ -1828,7 +1841,7 @@ const component = require("../component/component")
 const { toCode } = require("./toCode")
 
 module.exports = {
-  createComponent: ({ _window, id, req, res }) => {
+  createComponent: ({ _window, id, req, res, _, __, ___ }) => {
     
     var views = _window ? _window.views : window.views
     var view = views[id], parent = view.parent
@@ -1855,13 +1868,13 @@ module.exports = {
     view.parent = parent
 
     // approval
-    var approved = toApproval({ _window, string: conditions, id, req, res })
+    var approved = toApproval({ _window, string: conditions, id, req, res, _, __, ___ })
     if (!approved) return
 
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
+      params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true, _, __, ___ })
 
       if (params.id) {
         
@@ -1884,10 +1897,11 @@ const { toValue } = require("./toValue")
 const { toArray } = require("./toArray")
 const { createHtml } = require("./createHtml")
 const { override } = require("./merge")
+const { isParam } = require("./isParam")
 
 const myViews = require("./views.json")
 
-const createElement = ({ _window, id, req, res, import: _import, params: inheritedParams }) => {
+const createElement = ({ _window, id, req, res, import: _import, params: inheritedParams = {}, _, __, ___ }) => {
 
   return new Promise (async resolve => {
 
@@ -1911,45 +1925,114 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     var type = view.type.split("?")[0]
     var params = view.type.split("?")[1]
     var conditions = view.type.split("?")[2]
-
-    // [type]
-    if (!view.duplicatedElement && type.includes("coded()")) view.mapType = ["data"]
+    var subParams = type.split(":")[1]
+    type = type.split(":")[0]
     
-    //
-    type = view.type = toValue({ _window, value: type, id, req, res })
+    // [type]
+    if (!view.duplicatedElement && type.includes("coded()")) {
+
+      type = toValue({ _window, value: type, id, req, res, _, __, ___ })
+      
+      // sub params
+      if (subParams) {
+
+        var _params = {}
+
+        if (isParam({ _window, string: subParams })) {
+
+          _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
+
+        } else _params.data = toValue({ _window, req, res, id, value: subParams, _, __, ___ })
+
+        /*if (_params.preventDefault) {
+          if (_params.derive === undefined) _params.derive = false
+          if (_params.mount === undefined) _params.mount = false
+        } else {
+          if (_params.derive === undefined) _params.derive = true
+          if (_params.mount === undefined) _params.mount = true
+        }*/
+
+        var derivations = clone(view.derivations || parent.derivations || [])
+        var Data = view.Data || parent.Data || generate()
+
+        if (_params.path) {
+
+          _params.path = Array.isArray(_params.path) ? _params.path : _params.path.split(".")
+          derivations.push(..._params.path)
+          if (_params.data === undefined && global[Data]) _params.data = reducer({ _window, id, path: derivations, object: global[Data], req, res, _, __, ___ })
+        } 
+        
+        if (_params.mount) {
+
+          view.Data = Data
+          global[Data] = global[Data] || _params.data || {}
+          _params.data = reducer({ _window, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
+        }
+        
+        var tags = await Promise.all(toArray(_params.data).map(async (_data, index) => {
+
+          var id = view.id + generate()
+          var _type = type + "?" + view.type.split("?").slice(1).join("?")
+          var _view = clone({ ...view, id, view: _type, i: index, derivations, _: _data, __: index })
+
+          if (!_params.preventDefault) {
+
+            if (type === "Chevron") _view.direction = _data
+            else if (type === "Icon") _view.name = _data
+            else if (type === "Image") _view.src = _data
+            else if (type === "Text") _view.text = _data
+            else if (type === "Checkbox") _view.label = { text: _data }
+          }
+
+          if (_params.mount || _params.path) _view.derivations = [...derivations, index]
+          
+          views[id] = _view
+          return await createElement({ _window, id, req, res, _: _data, __: index, ___: _ })
+        }))
+        
+        delete views[view.id]
+        return resolve(tags.join(""))
+      }
+
+      view.mapType = ["data"]
+    }
+
+    view.type = type
 
     // events
     if (view.event) {
+
       view.controls = toArray(view.controls)
       toArray(view.event).map(event => view.controls.push({ event }))
       delete view.event
     }
-
+    
     // id
-    var _id = view.type.split(":")[1]
-    var priorityId = false
+    if (subParams) {
 
-    if (_id) {
-      
-      if (views[_id] && view.id !== _id) view.id = _id + generate()
-      else view.id = id = _id
-      
-      if (!view["creation-date"] && global.data.view[_id] && id !== _id) {
+      if (isParam({ _window, string: subParams })) {
+
+        inheritedParams = {...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, _, __, ___ })}
+      } else {
         
-        view["my-views"].push(_id)
-        views[_id] = { ...view, ...clone(global.data.view[_id]) }
-        delete views[id]
+        var _id = subParams
         
-        tags = await createElement({ _window, id: _id, req, res })
-        return resolve(tags)
+        if (views[_id] && view.id !== _id) view.id = _id + generate()
+        else view.id = id = _id
+        
+        if (!view["creation-date"] && global.data.view[_id] && id !== _id) {
+          
+          view["my-views"].push(_id)
+          views[_id] = { ...view, ...clone(global.data.view[_id]) }
+          delete views[id]
+          
+          tags = await createElement({ _window, id: _id, req, res, _, __, ___ })
+          return resolve(tags)
+        }
       }
-
-      priorityId = true
-      type = view.type = view.type.split(":")[0]
     }
 
-    view.id = view.id || generate()
-    id = view.id
+    view.id = id = view.id || generate()
 
     // style
     if (!_import) {
@@ -1975,7 +2058,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       views[id] = view
 
       // approval
-      var approved = toApproval({ _window, string: conditions, id, req, res })
+      var approved = toApproval({ _window, string: conditions, id, req, res, _, __, ___ })
       if (!approved) {
         delete views[id]
         return resolve("")
@@ -1992,7 +2075,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
         var event = toCode({ _window, string: controls.event })
         event = toCode({ _window, string: event, start: "'", end: "'" })
 
-        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2] })) {
+        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2], _, __, ___ })) {
 
           toParam({ req, res, _window, id, string: event.split("?")[1], createElement: true })
           view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
@@ -2022,7 +2105,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
+      params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true, _, __, ___ })
 
       // break
       /*if (params["break()"]) delete params["break()"]
@@ -2036,7 +2119,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       }
       
       // inherited params
-      if (inheritedParams) override(view, inheritedParams)
+      if (Object.keys(inheritedParams).length > 0) override(view, inheritedParams)
 
       // pass to children
       if (parent.passToChildren) override(view, parent.passToChildren)
@@ -2055,7 +2138,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
         views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
         
-        tags = await createElement({ _window, id, req, res, params })
+        tags = await createElement({ _window, id, req, res, params, _, __, ___ })
         return resolve(tags)
       }
 
@@ -2069,7 +2152,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       
       views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
 
-      tags = await createElement({ _window, id, req, res })
+      tags = await createElement({ _window, id, req, res, _, __, ___ })
       return resolve(tags)
     }
 
@@ -2085,21 +2168,21 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       view.data = view.data || ""
       view.unDeriveData = true
 
-    } else view.data = reducer({ _window, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res })
+    } else view.data = reducer({ _window, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res, _, __, ___ })
     
     // doc
     if (!global[view.Data] && view.data) global[view.Data] = view.data
 
     // root
     if (view.parent === "root") views.root.child = view.id
-
-    tags = await createTags({ _window, id, req, res })
+    
+    tags = await createTags({ _window, id, req, res, _, __, ___ })
     resolve(tags)
   })
 }
 
 module.exports = { createElement }
-},{"./clone":46,"./createHtml":56,"./createTags":57,"./generate":74,"./merge":90,"./reducer":97,"./toApproval":116,"./toArray":117,"./toCode":121,"./toParam":130,"./toValue":135,"./views.json":140}],56:[function(require,module,exports){
+},{"./clone":46,"./createHtml":56,"./createTags":57,"./generate":74,"./isParam":85,"./merge":90,"./reducer":97,"./toApproval":116,"./toArray":117,"./toCode":121,"./toParam":130,"./toValue":135,"./views.json":140}],56:[function(require,module,exports){
 const { clone } = require("./clone")
 const { colorize } = require("./colorize")
 const { generate } = require("./generate")
@@ -2110,7 +2193,7 @@ const { toStyle } = require("./toStyle")
 const _imports = [ "link", "meta", "title", "script", "style"]
 
 module.exports = {
-    createHtml: ({ _window, id: _id, req, res, import: _import }) => {
+    createHtml: ({ _window, id: _id, req, res, import: _import, _, __, ___ }) => {
     
     return new Promise (async resolve => {
 
@@ -2134,7 +2217,7 @@ module.exports = {
         views[id].index = index
         views[id].parent = view.id
         
-        return await createElement({ _window, id, req, res, import: _import })
+        return await createElement({ _window, id, req, res, import: _import, _, __, ___ })
       }))
       
       innerHTML = innerHTML.join("")
@@ -2149,7 +2232,7 @@ module.exports = {
       }
 
       if (_id === "body") return resolve("")
-
+      
       var tag = require("./toHTML")({ _window, id: _id, innerHTML }) || ""
       
       if (!tag && _imports.includes(type.toLowerCase())) {
@@ -2161,11 +2244,12 @@ module.exports = {
         delete view.parent
         delete view["my-views"]
     
-        if (view.body) view.body = true
-        else view.head = true
+        /*if (view.body) view.body = true
+        else view.head = true*/
     
         if (type === "link" || type === "meta") {
-          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value}"`).join(" ")}>`
+          
+          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value.toString().replace(/\\/g, '')}"`).join(" ")}>`
         } else if (type === "style") {
           tag = `
           <style>
@@ -2173,13 +2257,13 @@ module.exports = {
             ${Object.entries(view).map(([key, value]) => 
               typeof value === "object" && !Array.isArray(value)
                 ? `${key} {
-                ${Object.entries(value).map(([key, value]) => `${require("./styleName")(key)}: ${value}; `)}
+                ${Object.entries(value).map(([key, value]) => `${require("./styleName")(key)}: ${value.toString().replace(/\\/g, '')}; `)}
                 }` : "").filter(style => style).join(`
               `)}
             
           </style>`
         } else {
-          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value}"`).join(" ")}>${view.text || ""}</${type}>`
+          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value.toString().replace(/\\/g, '')}"`).join(" ")}>${(view.text || "").replace(/\\/g, '')}</${type}>`
         }
         
         if (view.body) {
@@ -2207,7 +2291,7 @@ module.exports = {
         
         tag = `<a ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} id='${id}' href=${link} style='${style}' index='${view.index || 0}'>${tag}</a>`
       }
-    
+      
       resolve(tag)
     })
   }
@@ -2219,7 +2303,7 @@ const { createComponent } = require("./createComponent")
 const { createHtml } = require("./createHtml")
 const { toArray } = require("./toArray")
 
-const createTags = ({ _window, id: _id, req, res }) => {
+const createTags = ({ _window, id: _id, req, res, _, __, ___ }) => {
 
   const { createElement } = require("./createElement")
   return new Promise (async resolve => {
@@ -2329,17 +2413,9 @@ const createTags = ({ _window, id: _id, req, res }) => {
           }, _view)
 
           if (mapType[0] === "data") _view.derivations.push(lastEl)
-          
-          /*
-            if (view.type === "Chevron" && typeof data === "string" && Array.isArray(view.direction)) _view.direction = data
-            else if (view.type === "Icon" && typeof data === "string" && Array.isArray(view.name)) _view.name = data
-            else if (view.type === "Image" && typeof data === "string" && Array.isArray(view.src)) _view.src = data
-            else if (view.type === "Text" && typeof data === "string" && Array.isArray(view.text)) _view.text = data
-            else if (view.type === "Checkbox" && typeof data === "string" && Array.isArray(view.label.text)) _view.label.text = data
-          */
          
           views[id] = _view
-          return await createElement({ _window, id, req, res })
+          return await createElement({ _window, id, req, res, _, __, ___ })
         }))
 
         tags = tags.join("")
@@ -2361,23 +2437,23 @@ const createTags = ({ _window, id: _id, req, res }) => {
         if (mapType[0] === "data") _view.derivations.push(lastEl)
         
         views[id] = _view
-        tags = await createElement({ _window, id, req, res })
+        tags = await createElement({ _window, id, req, res, _, __, ___ })
       }
 
-    } else tags = await createTag({ _window, id, req, res })
+    } else tags = await createTag({ _window, id, req, res, _, __, ___ })
     
     resolve(tags)
   })
 }
 
-const createTag = async ({ _window, id, req, res }) => {
+const createTag = async ({ _window, id, req, res, _, __, ___ }) => {
   
   // components
   componentModifier({ _window, id })
-  createComponent({ _window, id, req, res })
+  createComponent({ _window, id, req, res, _, __, ___ })
   componentModifier({ _window, id })
   
-  return await createHtml({ _window, id, req, res })
+  return await createHtml({ _window, id, req, res, _, __, ___ })
 }
 
 const componentModifier = ({ _window, id }) => {
@@ -4921,7 +4997,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0]) args = path[0].toString().split(":")
     
-    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, id, e, string: pathJoined, _, __, ___,  object, mount })
+    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, id, e, string: pathJoined, _, __, ___,  object, mount, createElement })
     
     // function
     /*if (path0.slice(-2) === "()" && path0.slice(0, 2) !== ")(" && args[1] !== "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
@@ -6471,10 +6547,6 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByClassName(className)]
             } else answer = []
 
-        } else if (k0 === "name()") {
-          
-          if (o.type === "Icon") return o.name
-
         } else if (k0 === "toInteger()") {
 
             var integer
@@ -7395,6 +7467,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                     }
                 }
                 
+                if (views[el.id].required) answer = answer.slice(0, -1)
+                
             } else if (view && view.type === "Input") {
 
                 if (i === lastIndex && key && value !== undefined) answer = _o[view.element.value] = value
@@ -7443,10 +7517,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             })
             answer = o
             
-        } else if (k0 === "object()" || k0 === "{}") {
+        } /*else if (k0 === "object()" || k0 === "{}") {
             
             answer = {}
-            var args = k.split(":")
             if (args[1]) {
 
                 var fv = args.slice(1)
@@ -7461,7 +7534,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 })
             }
             
-        } else if (k0 === "unshift()" || k0 === "pushFirst()" || k0 === "pushStart()") { // push to the begining, push first, push start
+        } */else if (k0 === "unshift()" || k0 === "pushFirst()" || k0 === "pushStart()") { // push to the begining, push first, push start
 
           var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, e, object })
           var _index = 0
@@ -8710,8 +8783,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
             if (typeof o !== "object") return
             
-            if (k[0] === "_") answer = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res }) )
-            else answer = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
+            if (k[0] === "_") answer = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res }) )
+            else answer = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
             
         } else if (k0 === "_()" || k0 === "__()" || k0 === "()") { // map()
             
@@ -8720,16 +8793,16 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (typeof o === "object" && !Array.isArray(o)) notArray = true
             if (k0 === "_()") {
               
-                toArray(o).map(o => reducer({ req, res, _window, id, path: args[1] || [], value, params, _: o, __: _, ___: __, e, object }) )
-                answer = o
+              toArray(o).map(o => reducer({ req, res, _window, id, path: args[1] || [], value, params, _: o, __: _, ___: __, e, object, createElement }) )
+              answer = o
                 
             } else if (k0 === "__()") {
               
-              toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, _: index, __: o, ___: _, e, object }) )
+              toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: index, _: o, ___: _, e, object, createElement }) )
               answer = o
               
             } else {
-                answer = toArray(o).map(o  => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, params, _, __, ___, e }) )
+              answer = toArray(o).map(o  => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, params, _, __, ___, e, createElement }) )
             }
 
             if (notArray) return o
@@ -8846,21 +8919,21 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         } else if (k0 === "loader()") {
 
-          var myparams = {}
+          var _params = {}
           if (isParam({ _window, string: args[1] })) {
           
-            myparams = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
-            if (myparams.hide) myparams.show = false
+            _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
+            if (_params.hide) _params.show = false
 
           } else {
 
-            if (args[1] === "show") myparams.show = true
-            else if (args[1] === "hide") myparams.show = false
+            if (args[1] === "show") _params.show = true
+            else if (args[1] === "hide") _params.show = false
           }
           
           var _o
-          if (myparams.id) _o = views[myparams.id]
-          else if (myparams.window) _o = views["root"]
+          if (_params.id) _o = views[_params.id]
+          else if (_params.window) _o = views["root"]
           else _o = o
           
           if (typeof _o !== "object") return
@@ -8871,7 +8944,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             })
           }
 
-          if (myparams.show) {
+          if (_params.show) {
             
             var lDiv = document.createElement("div")
             document.body.appendChild(lDiv)
@@ -8894,9 +8967,21 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             loader.classList.add("loader")
             lDiv.style.display = "flex"
 
+            if (_params.style) {
+              Object.entries(_params.style).map(([key, value]) => {
+                loader.style[key] = value
+              })
+            }
+
+            if (_params.background && _params.background.style) {
+              Object.entries(_params.background.style).map(([key, value]) => {
+                lDiv.style[key] = value
+              })
+            }
+
             return sleep(10)
 
-          } else if (myparams.show === false) {
+          } else if (_params.show === false) {
             
             var lDiv = document.getElementById(_o.id + "-loader")
             if (lDiv) lDiv.parentNode.removeChild(lDiv)
@@ -9194,14 +9279,6 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
           var _view = require("./toHTML")({ _window, id: _params.id })
           return _view
 
-        } else if (k0 === "tag()") {
-
-          if (isParam({ _window, string: args[1] })) {
-
-            var _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
-            return ``
-          }
-
         } else if (k0 === "note()") { // note
             
             if (isParam({ _window, string: args[1] })) {
@@ -9265,7 +9342,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         } else if (k0 === "update()") {
           
-          var __idd, _params, _self
+          var __id, _id, _params, _self
           if (_window) return view.controls.push({
             event: `loaded?${pathJoined}`
           })
@@ -9288,7 +9365,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         } else if (k0 === "updateSelf()") {
           
-          var __idd, _params, _self
+          var __id, _id, _params, _self
           if (_window) return view.controls.push({
             event: `loaded?${pathJoined}`
           })
@@ -9465,9 +9542,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                     var theApp = new ActiveXObject("Outlook.Application");
                     var objNS = theApp.GetNameSpace('MAPI');
                     var theMailItem = theApp.CreateItem(0); // value 0 = MailItem
-                    theMailItem.to = ('test@gmail.com');
-                    theMailItem.Subject = ('test');
-                    theMailItem.Body = ('test');
+                    theMailItem.to = (_options.to);
+                    theMailItem.Subject = (_options.subject);
+                    theMailItem.Body = (_options.body);
                     // theMailItem.Attachments.Add("C:\\file.txt");
                     theMailItem.display();
                 }
@@ -9550,7 +9627,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } */else if (k.includes(":coded()")) {
           
             breakRequest = true
-
+            
             // k0 is encoded
             if (k0.includes("coded()") && k0.length === 12) k0 = global.codes["coded()" + k0.slice(-5)]
             else if (k0.includes("codedS()") && k0.length === 13) k0 = global.codes["codedS()" + k0.slice(-5)]
@@ -11846,10 +11923,11 @@ module.exports = ({ _window, id, innerHTML }) => {
     view.style.display = "block"
     innerHTML += `<span style='color:red; font-size:${view.style.fontSize||"1.6rem"}; padding:${view.style.padding||"0 .4rem"}'>*</span>`
   }
-
+  
   // set style
   var tag, style = toStyle({ _window, id })
   if (typeof value === 'object') value = ''
+  if (innerHTML) innerHTML = innerHTML.toString().replace(/\\/g, '');
 
   if (type === "View" || type === "Box") {
     tag = `<div ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ''} spellcheck='false' ${view.editable && !view.readonly ? 'contenteditable' : ''} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ''}</div>`

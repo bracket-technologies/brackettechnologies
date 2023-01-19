@@ -170,7 +170,7 @@
                         {
                             "controls": [
                                 {
-                                    "event": "change?new-image:()=true;():image-window.style():[pointerEvents=auto;opacity=1];():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();fileReader():[e().target.files.0]:[():image-window-img.src()=[e().target.result]];upload-file:()=e().target.files.0;new-image-data:().name=e().target.files.0.name;txt():new-image-name=e().target.files.0.name"
+                                    "event": "change?new-image:()=true;():image-window.style():[pointerEvents=auto;opacity=1];():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();fileReader():[():image-window-img.src()=[e().target.result]];upload-file:()=e().target.files.0;new-image-data:().name=e().target.files.0.name;txt():new-image-name=e().target.files.0.name"
                                 }
                             ],
                             "type": "Input?id=gallery-view-input;input.type=file;style.cursor=pointer;style.position=absolute;style.top=-100px;style.left=-100px;style.height=200%;style.width=200%;style.opacity=0"

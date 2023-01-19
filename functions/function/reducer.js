@@ -58,7 +58,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0]) args = path[0].toString().split(":")
     
-    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, id, e, string: pathJoined, _, __, ___,  object, mount })
+    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, id, e, string: pathJoined, _, __, ___,  object, mount, createElement })
     
     // function
     /*if (path0.slice(-2) === "()" && path0.slice(0, 2) !== ")(" && args[1] !== "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
@@ -1608,10 +1608,6 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 else if (o.nodeType === Node.ELEMENT_NODE) answer = [...o.element.getElementsByClassName(className)]
             } else answer = []
 
-        } else if (k0 === "name()") {
-          
-          if (o.type === "Icon") return o.name
-
         } else if (k0 === "toInteger()") {
 
             var integer
@@ -2532,6 +2528,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                     }
                 }
                 
+                if (views[el.id].required) answer = answer.slice(0, -1)
+                
             } else if (view && view.type === "Input") {
 
                 if (i === lastIndex && key && value !== undefined) answer = _o[view.element.value] = value
@@ -2580,10 +2578,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             })
             answer = o
             
-        } else if (k0 === "object()" || k0 === "{}") {
+        } /*else if (k0 === "object()" || k0 === "{}") {
             
             answer = {}
-            var args = k.split(":")
             if (args[1]) {
 
                 var fv = args.slice(1)
@@ -2598,7 +2595,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 })
             }
             
-        } else if (k0 === "unshift()" || k0 === "pushFirst()" || k0 === "pushStart()") { // push to the begining, push first, push start
+        } */else if (k0 === "unshift()" || k0 === "pushFirst()" || k0 === "pushStart()") { // push to the begining, push first, push start
 
           var _item = toValue({ req, res, _window, id, value: args[1], params, _, __, ___, e, object })
           var _index = 0
@@ -3847,8 +3844,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
             if (typeof o !== "object") return
             
-            if (k[0] === "_") answer = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res }) )
-            else answer = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
+            if (k[0] === "_") answer = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, __: _, _: o, req, res }) )
+            else answer = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
             
         } else if (k0 === "_()" || k0 === "__()" || k0 === "()") { // map()
             
@@ -3857,16 +3854,16 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (typeof o === "object" && !Array.isArray(o)) notArray = true
             if (k0 === "_()") {
               
-                toArray(o).map(o => reducer({ req, res, _window, id, path: args[1] || [], value, params, _: o, __: _, ___: __, e, object }) )
-                answer = o
+              toArray(o).map(o => reducer({ req, res, _window, id, path: args[1] || [], value, params, _: o, __: _, ___: __, e, object, createElement }) )
+              answer = o
                 
             } else if (k0 === "__()") {
               
-              toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, _: index, __: o, ___: _, e, object }) )
+              toArray(o).map((o, index) => reducer({ req, res, _window, id, path: args[1] || [], value, params, __: index, _: o, ___: _, e, object, createElement }) )
               answer = o
               
             } else {
-                answer = toArray(o).map(o  => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, params, _, __, ___, e }) )
+              answer = toArray(o).map(o  => reducer({ req, res, _window, id, path: args[1] || [], object: o, value, params, _, __, ___, e, createElement }) )
             }
 
             if (notArray) return o
@@ -3983,21 +3980,21 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         } else if (k0 === "loader()") {
 
-          var myparams = {}
+          var _params = {}
           if (isParam({ _window, string: args[1] })) {
           
-            myparams = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
-            if (myparams.hide) myparams.show = false
+            _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
+            if (_params.hide) _params.show = false
 
           } else {
 
-            if (args[1] === "show") myparams.show = true
-            else if (args[1] === "hide") myparams.show = false
+            if (args[1] === "show") _params.show = true
+            else if (args[1] === "hide") _params.show = false
           }
           
           var _o
-          if (myparams.id) _o = views[myparams.id]
-          else if (myparams.window) _o = views["root"]
+          if (_params.id) _o = views[_params.id]
+          else if (_params.window) _o = views["root"]
           else _o = o
           
           if (typeof _o !== "object") return
@@ -4008,7 +4005,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             })
           }
 
-          if (myparams.show) {
+          if (_params.show) {
             
             var lDiv = document.createElement("div")
             document.body.appendChild(lDiv)
@@ -4031,9 +4028,21 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             loader.classList.add("loader")
             lDiv.style.display = "flex"
 
+            if (_params.style) {
+              Object.entries(_params.style).map(([key, value]) => {
+                loader.style[key] = value
+              })
+            }
+
+            if (_params.background && _params.background.style) {
+              Object.entries(_params.background.style).map(([key, value]) => {
+                lDiv.style[key] = value
+              })
+            }
+
             return sleep(10)
 
-          } else if (myparams.show === false) {
+          } else if (_params.show === false) {
             
             var lDiv = document.getElementById(_o.id + "-loader")
             if (lDiv) lDiv.parentNode.removeChild(lDiv)
@@ -4331,14 +4340,6 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
           var _view = require("./toHTML")({ _window, id: _params.id })
           return _view
 
-        } else if (k0 === "tag()") {
-
-          if (isParam({ _window, string: args[1] })) {
-
-            var _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
-            return ``
-          }
-
         } else if (k0 === "note()") { // note
             
             if (isParam({ _window, string: args[1] })) {
@@ -4402,7 +4403,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         } else if (k0 === "update()") {
           
-          var __idd, _params, _self
+          var __id, _id, _params, _self
           if (_window) return view.controls.push({
             event: `loaded?${pathJoined}`
           })
@@ -4425,7 +4426,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         } else if (k0 === "updateSelf()") {
           
-          var __idd, _params, _self
+          var __id, _id, _params, _self
           if (_window) return view.controls.push({
             event: `loaded?${pathJoined}`
           })
@@ -4602,9 +4603,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                     var theApp = new ActiveXObject("Outlook.Application");
                     var objNS = theApp.GetNameSpace('MAPI');
                     var theMailItem = theApp.CreateItem(0); // value 0 = MailItem
-                    theMailItem.to = ('test@gmail.com');
-                    theMailItem.Subject = ('test');
-                    theMailItem.Body = ('test');
+                    theMailItem.to = (_options.to);
+                    theMailItem.Subject = (_options.subject);
+                    theMailItem.Body = (_options.body);
                     // theMailItem.Attachments.Add("C:\\file.txt");
                     theMailItem.display();
                 }
@@ -4687,7 +4688,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         } */else if (k.includes(":coded()")) {
           
             breakRequest = true
-
+            
             // k0 is encoded
             if (k0.includes("coded()") && k0.length === 12) k0 = global.codes["coded()" + k0.slice(-5)]
             else if (k0.includes("codedS()") && k0.length === 13) k0 = global.codes["codedS()" + k0.slice(-5)]

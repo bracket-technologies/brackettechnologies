@@ -8,7 +8,7 @@ const { toStyle } = require("./toStyle")
 const _imports = [ "link", "meta", "title", "script", "style"]
 
 module.exports = {
-    createHtml: ({ _window, id: _id, req, res, import: _import }) => {
+    createHtml: ({ _window, id: _id, req, res, import: _import, _, __, ___ }) => {
     
     return new Promise (async resolve => {
 
@@ -32,7 +32,7 @@ module.exports = {
         views[id].index = index
         views[id].parent = view.id
         
-        return await createElement({ _window, id, req, res, import: _import })
+        return await createElement({ _window, id, req, res, import: _import, _, __, ___ })
       }))
       
       innerHTML = innerHTML.join("")
@@ -47,7 +47,7 @@ module.exports = {
       }
 
       if (_id === "body") return resolve("")
-
+      
       var tag = require("./toHTML")({ _window, id: _id, innerHTML }) || ""
       
       if (!tag && _imports.includes(type.toLowerCase())) {
@@ -59,11 +59,12 @@ module.exports = {
         delete view.parent
         delete view["my-views"]
     
-        if (view.body) view.body = true
-        else view.head = true
+        /*if (view.body) view.body = true
+        else view.head = true*/
     
         if (type === "link" || type === "meta") {
-          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value}"`).join(" ")}>`
+          
+          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value.toString().replace(/\\/g, '')}"`).join(" ")}>`
         } else if (type === "style") {
           tag = `
           <style>
@@ -71,13 +72,13 @@ module.exports = {
             ${Object.entries(view).map(([key, value]) => 
               typeof value === "object" && !Array.isArray(value)
                 ? `${key} {
-                ${Object.entries(value).map(([key, value]) => `${require("./styleName")(key)}: ${value}; `)}
+                ${Object.entries(value).map(([key, value]) => `${require("./styleName")(key)}: ${value.toString().replace(/\\/g, '')}; `)}
                 }` : "").filter(style => style).join(`
               `)}
             
           </style>`
         } else {
-          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value}"`).join(" ")}>${view.text || ""}</${type}>`
+          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value.toString().replace(/\\/g, '')}"`).join(" ")}>${(view.text || "").replace(/\\/g, '')}</${type}>`
         }
         
         if (view.body) {
@@ -105,7 +106,7 @@ module.exports = {
         
         tag = `<a ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} id='${id}' href=${link} style='${style}' index='${view.index || 0}'>${tag}</a>`
       }
-    
+      
       resolve(tag)
     })
   }

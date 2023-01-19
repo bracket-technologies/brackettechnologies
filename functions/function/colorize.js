@@ -43,10 +43,10 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
     if (arabic.test(string)) {
       var i = 0, lastIndex = string.length - 1, start = false, newString = ""
       while (i <= lastIndex) {
-        if (arabic.test(string[i]) && !english.test(string[i]) || start === false && arabic.test(string[i+1]) && !english.test(string[i+1]) || (start !== false && string[i] === " ")) {
+        if ((arabic.test(string[i]) && !english.test(string[i])) || /*(start === false && arabic.test(string[i+1]) && !english.test(string[i+1])) ||*/ (start !== false && string[i] === " ")) {
           if (start === false) {
             start = i
-            newString += `<span contenteditable class='arabic' style="color:inherit; background-color:#00000000; white-space:nowrap">`
+            newString += `<span contenteditable class="arabic" style="color:inherit; background-color:#00000000; white-space:nowrap">`
           }
         } else if (start !== false) {
           start = false
@@ -80,13 +80,13 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
             while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
-            /*if (!actions.includes(str.slice(i+1) + "()")) */return str.slice(0, i+1) + `<span contenteditable style='text-decoration:underline; color:inherit; white-space:nowrap'>${str.slice(i+1)}()</span>`
+            return str.slice(0, i+1) + `<span contenteditable style="text-decoration:underline; color:inherit; white-space:nowrap">${str.slice(i+1)}()</span>`
             //else return (index !== _actions.length - 1) ? str + "()" : str
           } else return (index !== _actions.length - 1) ? str + "()" : str
         }).join("")
         return string
       }).join(";")
-
+      
       return string
     }
 }

@@ -19,10 +19,11 @@ module.exports = ({ _window, id, innerHTML }) => {
     view.style.display = "block"
     innerHTML += `<span style='color:red; font-size:${view.style.fontSize||"1.6rem"}; padding:${view.style.padding||"0 .4rem"}'>*</span>`
   }
-
+  
   // set style
   var tag, style = toStyle({ _window, id })
   if (typeof value === 'object') value = ''
+  if (innerHTML) innerHTML = innerHTML.toString().replace(/\\/g, '');
 
   if (type === "View" || type === "Box") {
     tag = `<div ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ''} spellcheck='false' ${view.editable && !view.readonly ? 'contenteditable' : ''} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ''}</div>`

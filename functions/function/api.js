@@ -68,7 +68,7 @@ module.exports = ({ app, db, storage, rdb }) => {
     })
 
     // get
-    app.get("*", async (req, res) => {
+    app.get("*", (req, res) => {
 
         res.status(200)
         req.db = db

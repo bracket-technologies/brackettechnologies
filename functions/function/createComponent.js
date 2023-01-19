@@ -7,7 +7,7 @@ const component = require("../component/component")
 const { toCode } = require("./toCode")
 
 module.exports = {
-  createComponent: ({ _window, id, req, res }) => {
+  createComponent: ({ _window, id, req, res, _, __, ___ }) => {
     
     var views = _window ? _window.views : window.views
     var view = views[id], parent = view.parent
@@ -34,13 +34,13 @@ module.exports = {
     view.parent = parent
 
     // approval
-    var approved = toApproval({ _window, string: conditions, id, req, res })
+    var approved = toApproval({ _window, string: conditions, id, req, res, _, __, ___ })
     if (!approved) return
 
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true })
+      params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true, _, __, ___ })
 
       if (params.id) {
         
