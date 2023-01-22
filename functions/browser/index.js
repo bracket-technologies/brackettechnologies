@@ -1641,7 +1641,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
             while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
-            return str.slice(0, i+1) + `<span contenteditable style="text-decoration:underline; color:inherit; white-space:nowrap">${str.slice(i+1)}()</span>`
+            return str.slice(0, i+1) + `<span contenteditable class="colorizeActions" >${str.slice(i+1)}()</span>`
             //else return (index !== _actions.length - 1) ? str + "()" : str
           } else return (index !== _actions.length - 1) ? str + "()" : str
         }).join("")
@@ -1973,7 +1973,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
           var id = view.id + generate()
           var _type = type + "?" + view.type.split("?").slice(1).join("?")
-          var _view = clone({ ...view, id, view: _type, i: index, derivations, _: _data, __: index })
+          var _view = clone({ ...view, id, view: _type, i: index, mapIndex: index, derivations, _: _data, __: index })
 
           if (!_params.preventDefault) {
 
@@ -3841,10 +3841,11 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     await Promise.all(global.promises[id] || [])
     
     // await params
+  
+    console.log(params.func, global.func)
     if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
 
   } else {
-
     global.promises[id].push(
       new Promise(async (resolve) => {
         var { data } = await require("axios").post(`/action`, func, {
@@ -3856,6 +3857,8 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
 
         if (view) view.function = view.func = clone(data)
         global.function = global.func = clone(data)
+  
+        console.log(params.func, global.func)
     
         // await params
         if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ })
@@ -3863,8 +3866,6 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
       })
     )
   }
-  
-  console.log(params.func, global.func)
 
   /*if (data.params) {
     data.params = toCode({ _window, string: data.params, e })
@@ -4988,7 +4989,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         var args = pathJoined.split("||")
         var answer
         args.map(value => {
-            if (!answer) answer = toValue({ _window, value, params, _, __, ___, id, e, req, res })
+            if (!answer) answer = toValue({ _window, value, params, _, __, ___, id, e, req, res, object })
         })
         return answer
     }
@@ -6224,11 +6225,15 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             var _o, _params = {}
             if (args[1]) {
                   
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1], object })
+              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
               else _params = toValue({ req, res, _window, id, e, _, __, ___,  value: args[1], params })
 
               if (!_params) return
-              _o = _params.view || _params.id || _params.el || _params.element || o
+              _o = _params.view || _params.id || _params.el || _params.element// || o
+              if (!_o) {
+                if (!o.element) _o = views[id]
+                else _o = o
+              }
 
             } else {
 
@@ -6247,6 +6252,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             }
 
             var { view: _view, id: _id, el: _el, element: _element, ...__params} = _params
+
             if (Object.keys(__params).length > 0) {
 
               Object.entries(__params).map(([key, value]) => {
@@ -6254,7 +6260,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               })
             }
             
-          } else if (k0 === "getTagElements()") {
+        } else if (k0 === "getTagElements()") {
 
             var _o, _params = {}, _tag_name
             if (args[1]) {
@@ -7969,6 +7975,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               if (format === "format 1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
               else if (format === "format 2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
               else if (format === "format 3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
+              else if (format === "format 4")return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
             }
 
         } else if (k0 === "toDateInputFormat()") { // returns date for input in format yyyy-mm-dd
@@ -10494,7 +10501,7 @@ module.exports = {
         if (url.slice(-1) === "/") url = url.slice(0, -1)
         
         try {
-          data = await axios.get(url, { timeout: 1000 * 10 })
+          data = await axios.get(url, { timeout: 1000 * 40 })
           .then(res => res.doesNotExist.throwAnError)
           .catch(err => err)
 

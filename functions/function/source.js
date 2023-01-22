@@ -8,7 +8,7 @@ var getSrc = async ({ req, res, db }) => {
 
     try {
         data = await require("axios").get(url, {
-          timeout: 1000 * 10
+          timeout: 1000 * 40
         })
         .then(res => res.doesNotExist.throwAnError)
         .catch(err => err);

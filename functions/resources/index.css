@@ -19,6 +19,12 @@ body {
   display: none !important;
 }
 
+.colorizeActions {
+  text-decoration: underline;
+  color: inherit;
+  white-space: nowrap;
+}
+
 .page-break {
   page-break-after: always;
   page-break-inside: avoid;

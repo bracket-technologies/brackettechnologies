@@ -85,7 +85,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 
           var id = view.id + generate()
           var _type = type + "?" + view.type.split("?").slice(1).join("?")
-          var _view = clone({ ...view, id, view: _type, i: index, derivations, _: _data, __: index })
+          var _view = clone({ ...view, id, view: _type, i: index, mapIndex: index, derivations, _: _data, __: index })
 
           if (!_params.preventDefault) {
 

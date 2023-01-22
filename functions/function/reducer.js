@@ -49,7 +49,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         var args = pathJoined.split("||")
         var answer
         args.map(value => {
-            if (!answer) answer = toValue({ _window, value, params, _, __, ___, id, e, req, res })
+            if (!answer) answer = toValue({ _window, value, params, _, __, ___, id, e, req, res, object })
         })
         return answer
     }
@@ -1285,11 +1285,15 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             var _o, _params = {}
             if (args[1]) {
                   
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1], object })
+              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
               else _params = toValue({ req, res, _window, id, e, _, __, ___,  value: args[1], params })
 
               if (!_params) return
-              _o = _params.view || _params.id || _params.el || _params.element || o
+              _o = _params.view || _params.id || _params.el || _params.element// || o
+              if (!_o) {
+                if (!o.element) _o = views[id]
+                else _o = o
+              }
 
             } else {
 
@@ -1308,6 +1312,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             }
 
             var { view: _view, id: _id, el: _el, element: _element, ...__params} = _params
+
             if (Object.keys(__params).length > 0) {
 
               Object.entries(__params).map(([key, value]) => {
@@ -1315,7 +1320,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               })
             }
             
-          } else if (k0 === "getTagElements()") {
+        } else if (k0 === "getTagElements()") {
 
             var _o, _params = {}, _tag_name
             if (args[1]) {
@@ -3030,6 +3035,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               if (format === "format 1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
               else if (format === "format 2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
               else if (format === "format 3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
+              else if (format === "format 4")return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
             }
 
         } else if (k0 === "toDateInputFormat()") { // returns date for input in format yyyy-mm-dd

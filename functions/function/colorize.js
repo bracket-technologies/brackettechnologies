@@ -80,7 +80,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
             while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
-            return str.slice(0, i+1) + `<span contenteditable style="text-decoration:underline; color:inherit; white-space:nowrap">${str.slice(i+1)}()</span>`
+            return str.slice(0, i+1) + `<span contenteditable class="colorizeActions" >${str.slice(i+1)}()</span>`
             //else return (index !== _actions.length - 1) ? str + "()" : str
           } else return (index !== _actions.length - 1) ? str + "()" : str
         }).join("")

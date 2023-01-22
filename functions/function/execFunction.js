@@ -42,7 +42,7 @@ const execFunction = async ({ req, res, id = generate() }) => {
   _func = toCode({ _window, id, string: _func, start: "'", end: "'" })
   toParam({ _window, id, string: _func, req, res, _: data, mount: true })
   
-  setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action ${func} request timeout` }) }, req.body.timeout || 20000)
+  setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action ${func} request timeout` }) }, req.body.timeout || 40000)
 }
 
 module.exports = { execFunction }

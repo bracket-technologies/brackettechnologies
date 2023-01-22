@@ -38,7 +38,7 @@ var getdb = async ({ req, res }) => {
     url +=`/${toString(search)}`
     if (url.slice(-1) === "/") url = url.slice(0, -1)
     data = await axios.get(url, {
-      timeout: 1000 * 10
+      timeout: 1000 * 40
     })
     data = data.data
     if (typeof data === "string") {

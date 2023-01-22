@@ -46,7 +46,7 @@ module.exports = {
         if (url.slice(-1) === "/") url = url.slice(0, -1)
         
         try {
-          data = await axios.get(url, { timeout: 1000 * 10 })
+          data = await axios.get(url, { timeout: 1000 * 40 })
           .then(res => res.doesNotExist.throwAnError)
           .catch(err => err)
 

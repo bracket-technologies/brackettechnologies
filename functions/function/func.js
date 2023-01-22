@@ -36,10 +36,11 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     await Promise.all(global.promises[id] || [])
     
     // await params
+  
+    console.log(params.func, global.func)
     if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
 
   } else {
-
     global.promises[id].push(
       new Promise(async (resolve) => {
         var { data } = await require("axios").post(`/action`, func, {
@@ -51,6 +52,8 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
 
         if (view) view.function = view.func = clone(data)
         global.function = global.func = clone(data)
+  
+        console.log(params.func, global.func)
     
         // await params
         if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ })
@@ -58,8 +61,6 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
       })
     )
   }
-  
-  console.log(params.func, global.func)
 
   /*if (data.params) {
     data.params = toCode({ _window, string: data.params, e })
