@@ -49,13 +49,15 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       if (subParams) {
 
         var _params = {}
+        var derivations = view.derivations = clone(view.derivations || parent.derivations || [])
+        var Data = view.Data = view.Data || parent.Data || generate()
 
         if (isParam({ _window, string: subParams })) {
-
+          
           _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
 
         } else _params.data = toValue({ _window, req, res, id, value: subParams, _, __, ___ })
-
+        
         /*if (_params.preventDefault) {
           if (_params.derive === undefined) _params.derive = false
           if (_params.mount === undefined) _params.mount = false
@@ -63,9 +65,6 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
           if (_params.derive === undefined) _params.derive = true
           if (_params.mount === undefined) _params.mount = true
         }*/
-
-        var derivations = clone(view.derivations || parent.derivations || [])
-        var Data = view.Data || parent.Data || generate()
 
         if (_params.path) {
 

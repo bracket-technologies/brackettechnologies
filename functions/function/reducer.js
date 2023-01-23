@@ -103,7 +103,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     }
 
     // modulo
-    if (pathJoined.includes("%") && pathJoined.split("/")[1] !== "" && !key) {
+    if (pathJoined.includes("%") && pathJoined.split("%")[1] !== "" && !key) {
 
       var _value = calcModulo({ _window, value: pathJoined, params, _, __, ___,  id, e, req, res, object, condition })
       if (_value !== value && _value !== undefined) return _value
@@ -514,7 +514,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                 _object = path[0]
                 path = path.slice(1)
 
-            } else return decode({ _window, string: pathJoined })
+            } else return pathJoined//return decode({ _window, string: pathJoined })
         }
     }
     
@@ -3019,7 +3019,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
             } else {
 
-              var format = toValue({ req, res, _window, id, e, value: args[1], params, _, __, ___ }) || "format 1"
+              var format = toValue({ req, res, _window, id, e, value: args[1], params, _, __, ___ }) || "format1"
 
               if (!isNaN(o) && typeof o === "string") o = parseInt(o)
               var _date = new Date(o)
@@ -3032,10 +3032,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
               var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
 
-              if (format === "format 1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
-              else if (format === "format 2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
-              else if (format === "format 3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
-              else if (format === "format 4")return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
+              if (format.replace(" ", "") === "format1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
+              else if (format.replace(" ", "") === "format2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
+              else if (format.replace(" ", "") === "format3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
+              else if (format.replace(" ", "") === "format4")return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
             }
 
         } else if (k0 === "toDateInputFormat()") { // returns date for input in format yyyy-mm-dd
@@ -4057,7 +4057,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
         } else if (k0 === "typeof()" || k0 === "type()") {
 
-            answer = getType(o)
+            if (args[1]) answer = getType(toValue({ req, res, _window, id, e, _, __, ___, params, value: args[1] }))
+            else answer = getType(o)
 
         } else if (k0 === "coords()") {
 

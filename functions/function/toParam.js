@@ -96,7 +96,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
-      global.codes[`coded()${_key}`] = `${myVal}||0`
+      global.codes[`coded()${_key}`] = `${myVal}||_string`
       value = `coded()${_key}+${value}`
       /*global.codes[`coded()${_key0}`] = `${value}||0`
       value = `coded()${_key}+coded()${_key0}`*/
@@ -238,6 +238,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     
     if (value === undefined) value = generate()
     else value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
+    if (typeof value === "string" && value.includes("&nbsp;")) value = value.replace("&nbsp;", " ")
 
     id = viewId
     
