@@ -3,7 +3,6 @@ const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
-const actions = require("./actions.json")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -15,11 +14,11 @@ function sleep(milliseconds) {
 
 const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, mount, asyncer, createElement, executer, condition }) => {
 
+  const { toFunction } = require("./toFunction")
   const { toParam } = require("./toParam")
 
   var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
-  var _functions = require("./function")
 
   // no value
   if (!value || value === " ") return value
@@ -82,7 +81,7 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   if (value.includes("||")) {
     var answer
     value.split("||").map(value => {
-      if (!answer) answer = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition })
+      if (answer === undefined) answer = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition })
     })
     return answer
   }
@@ -95,12 +94,27 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
       value = value.slice(0, -2)
       value = `${value}=${value}+1`
       toParam({ req, res, _window, id, e, string: value, _, __, ___, object, mount, params, createElement, condition })
+      return (toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition }) - 1)
 
     } else {
 
-      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition }))
-      var newVal = values[0]
-      values.slice(1).map(val => newVal += val)
+      var allAreNumbers = true
+      var values = value.split("+").map(value => {
+        var _value = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition })
+        if (allAreNumbers) {
+          if (!isNaN(_value) && !emptySpaces(_value)) allAreNumbers = true
+          else allAreNumbers = false
+        }
+        return _value
+      })
+      
+      if (allAreNumbers) {
+        var newVal = parseFloat(values[0]) || 0
+        values.slice(1).map(val => newVal += (parseFloat(val) || 0))
+      } else {
+        var newVal = values[0]
+        values.slice(1).map(val => newVal += val)
+      }
       return value = newVal
     }
   }
@@ -140,7 +154,7 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
     if (_value !== value && _value !== undefined) return _value
   }
   
-  if (value.includes("%") && value.split("/")[1] !== "") { // modulo
+  if (value.includes("%") && value.split("%")[1] !== "") { // modulo
 
     var _value = calcModulo({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
     if (_value !== value && _value !== undefined) return _value
@@ -154,69 +168,14 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   // string
   // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
-  var path = typeof value === "string" ? value.split(".") : [], isFn = false, backendFn = false, path0 = path[0].split(":")[0]
+  var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
   
   // function
-  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] /*&& !actions.includes(path0)*/ && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
-
-    view && clone(view["my-views"] || []).reverse().map(view => {
-      if (!isFn) {
-        isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) {
-          isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn], start: "'", end: "'" })
-          isFn = toCode({ _window, id, string: isFn })
-        }
-      }
-    })
-      
-    // global functions
-    if (!isFn) {
-      isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
-      if (isFn) {
-        isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
-        isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-      }
-    }
-
-    // backend function
-    if (!isFn) {
-      isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
-      if (isFn) backendFn = true
-    }
-  }
-  
-  if (isFn) {
-    var _params = path[0].split(":")[1], args = path[0].split(":")
-
-    if (backendFn) {
-      
-      if (isParam({ _window, string: args[1] })) {
-
-        var _await = ""
-        var _data = toParam({ req, res, _window, id, e, _, __, ___, string: args[1], condition })
-        var _func = { function: isFn, data: _data }
-        if (args[2]) _await = global.codes[args[2]]
-        
-        return require("./func").func({ _window, id, e, _, __, ___, req, res, func: _func, asyncer: true, await: _await })
-      }
-      
-      var _data = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params, condition })
-      var _func = { function: isFn, data: _data }
-      if (args[2]) _await = global.codes[args[2]]
-
-      return require("./func").func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
-    }
-
-    if (_params) {
-      if (isParam({ _window, string: _params }))
-        _params = toParam({ req, res, _window, id, e, _, __, ___, string: _params, condition })
-      else _params = toValue({ req, res, _window, id, e, _, __, ___, value: _params, condition })
-    }
-    return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, createElement, params, executer, condition })
-  }
+  var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object })
+  if (isFn !== "__CONTINUE__") return isFn
 
   /* value */
-  if (!isNaN(value) && value !== " " && (value.length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
+  if (!isNaN(value) && !emptySpaces(value) && (value.toString().length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
   else if (value === " ") return value
   else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "min") value = "min(" + global.codes[value.slice(3, 15)] + ")"
   else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "max") value = "max(" + global.codes[value.slice(3, 15)] + ")"
@@ -255,6 +214,20 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   return value
 }
 
+const emptySpaces = (string) => {
+  if (typeof string === "string") {
+    var empty = true
+    while (string.length > 0) {
+
+      if (string.charAt(0) === " ") empty = true
+      else empty = false
+      string = string.slice(1)
+    }
+    return empty
+  }
+  return false
+}
+
 const calcSubs = ({ _window, value, params, _, __, ___, id, e, req, res, object, condition }) => {
   
   if (value.split("-").length > 1) {
@@ -266,15 +239,15 @@ const calcSubs = ({ _window, value, params, _, __, ___, id, e, req, res, object,
       if (allAreNumbers) {
         
         var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-        if (typeof num !== "number" || num === "") allAreNumbers = false
-        return num
+        if (!isNaN(num) && num !== " " && num !== "") return num
+        else allAreNumbers = false
       }
     })
     
     if (allAreNumbers) {
 
-      value = values[0]
-      values.slice(1).map(val => value -= val)
+      value = parseFloat(values[0])
+      values.slice(1).map(val => value -= parseFloat(val))
       // console.log(value);
       return value
 
@@ -290,15 +263,15 @@ const calcSubs = ({ _window, value, params, _, __, ___, id, e, req, res, object,
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-          if (typeof num !== "number" || num === "") allAreNumbers = false
-          return num
+          if (!isNaN(num) && num !== " " && num !== "") return num
+          else allAreNumbers = false
         }
       })
 
       if (allAreNumbers) {
 
-        value = values[0]
-        values.slice(1).map(val => value -= val)
+        value = parseFloat(values[0])
+        values.slice(1).map(val => value -= parseFloat(val))
         // console.log(value);
         return value
   
@@ -313,15 +286,15 @@ const calcSubs = ({ _window, value, params, _, __, ___, id, e, req, res, object,
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-            if (typeof num !== "number" || num === "") allAreNumbers = false
-            return num
+            if (!isNaN(num) && num !== " " && num !== "") return num
+            else allAreNumbers = false
           }
         })
 
         if (allAreNumbers) {
 
-          value = values[0]
-          values.slice(1).map(val => value -= val)
+          value = parseFloat(values[0])
+          values.slice(1).map(val => value -= parseFloat(val))
           // console.log(value);
           return value
     
@@ -344,14 +317,14 @@ const calcDivision = ({ _window, value, params, _, __, ___, id, e, req, res, obj
       if (allAreNumbers) {
         
         var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-        if (typeof num !== "number" || num === "") allAreNumbers = false
-        return num
+        if (!isNaN(num) && num !== " " && num !== "") return num
+        else allAreNumbers = false
       }
     })
     
     if (allAreNumbers) {
 
-      value = values[0]
+      value = parseFloat(values[0])
       values.slice(1).map(val => {
         if (!isNaN(value) && !isNaN(val)) value /= val
         else if (isNaN(value) && !isNaN(val)) {
@@ -383,14 +356,14 @@ const calcDivision = ({ _window, value, params, _, __, ___, id, e, req, res, obj
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-          if (typeof num !== "number" || num === "") allAreNumbers = false
-          return num
+          if (!isNaN(num) && num !== " " && num !== "") return num
+          else allAreNumbers = false
         }
       })
 
       if (allAreNumbers) {
 
-        value = values[0]
+        value = parseFloat(values[0])
         values.slice(1).map(val => {
           if (!isNaN(value) && !isNaN(val)) value /= val
           else if (isNaN(value) && !isNaN(val)) {
@@ -421,14 +394,14 @@ const calcDivision = ({ _window, value, params, _, __, ___, id, e, req, res, obj
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-            if (typeof num !== "number" || num === "") allAreNumbers = false
-            return num
+            if (!isNaN(num) && num !== " " && num !== "") return num
+            else allAreNumbers = false
           }
         })
 
         if (allAreNumbers) {
 
-          value = values[0]
+          value = parseFloat(values[0])
           values.slice(1).map(val => {
             if (!isNaN(value) && !isNaN(val)) value /= val
             else if (isNaN(value) && !isNaN(val)) {
@@ -468,14 +441,14 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
       if (allAreNumbers) {
         
         var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-        if (typeof num !== "number" || num === "") allAreNumbers = false
-        return num
+        if (!isNaN(num) && num !== " " && num !== "") return num
+        else allAreNumbers = false
       }
     })
     
     if (allAreNumbers) {
 
-      value = values[0]
+      value = parseFloat(values[0])
       values.slice(1).map(val => {
         if (!isNaN(value) && !isNaN(val)) value %= val
         else if (isNaN(value) && !isNaN(val)) {
@@ -507,14 +480,14 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-          if (typeof num !== "number" || num === "") allAreNumbers = false
-          return num
+          if (!isNaN(num) && num !== " " && num !== "") return num
+          else allAreNumbers = false
         }
       })
 
       if (allAreNumbers) {
 
-        value = values[0]
+        value = parseFloat(values[0])
         values.slice(1).map(val => {
           if (!isNaN(value) && !isNaN(val)) value %= val
           else if (isNaN(value) && !isNaN(val)) {
@@ -545,14 +518,14 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-            if (typeof num !== "number" || num === "") allAreNumbers = false
-            return num
+            if (!isNaN(num) && num !== " " && num !== "") return num
+            else allAreNumbers = false
           }
         })
 
         if (allAreNumbers) {
 
-          value = values[0]
+          value = parseFloat(values[0])
           values.slice(1).map(val => {
             if (!isNaN(value) && !isNaN(val)) value %= val
             else if (isNaN(value) && !isNaN(val)) {

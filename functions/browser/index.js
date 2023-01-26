@@ -244,7 +244,7 @@ window.addEventListener('appinstalled', () => {
   link.href = window.location.href.replace('http://', 'https://');
   requireHTTPS.classList.remove('hidden');
 }*/
-},{"../function/execute":67,"../function/setElement":108,"../function/starter":111,"../function/toApproval":116,"../function/toCode":121,"../function/toParam":130}],2:[function(require,module,exports){
+},{"../function/execute":68,"../function/setElement":109,"../function/starter":112,"../function/toApproval":117,"../function/toCode":122,"../function/toParam":132}],2:[function(require,module,exports){
 const { toString } = require('../function/toString')
 
 module.exports = (view) => {
@@ -265,7 +265,7 @@ module.exports = (view) => {
     }]
   }
 }
-},{"../function/toString":133}],3:[function(require,module,exports){
+},{"../function/toString":135}],3:[function(require,module,exports){
 const { clone } = require('../function/clone')
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
@@ -327,7 +327,7 @@ module.exports = (view) => {
     ]
   }
 }
-},{"../function/clone":46,"../function/toComponent":122,"../function/toString":133}],4:[function(require,module,exports){
+},{"../function/clone":46,"../function/toComponent":123,"../function/toString":135}],4:[function(require,module,exports){
 module.exports = (view) => {
   return {
     ...view,
@@ -672,7 +672,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":46,"../function/generate":74,"../function/merge":90,"../function/toComponent":122,"../function/toString":133}],6:[function(require,module,exports){
+},{"../function/clone":46,"../function/generate":75,"../function/merge":91,"../function/toComponent":123,"../function/toString":135}],6:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -811,7 +811,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":122}],7:[function(require,module,exports){
+},{"../function/toComponent":123}],7:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -995,7 +995,7 @@ module.exports = (component) => {
         }]
     }
 }
-},{"../function/toComponent":122}],8:[function(require,module,exports){
+},{"../function/toComponent":123}],8:[function(require,module,exports){
 module.exports = (view) => {
   return {
     ...view,
@@ -1041,7 +1041,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":122,"../function/toString":133}],11:[function(require,module,exports){
+},{"../function/toComponent":123,"../function/toString":135}],11:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Item : require("./Item"),
@@ -1061,7 +1061,7 @@ module.exports = ({ controls, id }) => {
   window.views[id].actionlist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?if():[actionlistCaller:()!=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=${id}]:[timer():[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()]:0];if():[actionlistCaller:()!=().id]:[().actionlist.undeletable=():actionlist.undeletable||_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;actionlistCaller:()=${id};actionlistCallerId:()=${id};path=${controls.path || ""};update():actionlist;timer():[():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];():actionlist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]]:50]`
+    event: `click?if():[actionlistCaller:()!=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=().id]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()].elif():[actionlistCaller:()!=().id]:[().actionlist.undeletable||=_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;actionlistCaller:()=().id;actionlistCallerId:()=().id;path=${controls.path || ""};update():actionlist;():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._];():actionlist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}]]`
   }]
 }
 },{}],13:[function(require,module,exports){
@@ -1121,7 +1121,7 @@ module.exports = ({ controls, id }) => {
     }
   ]
 }
-},{"../function/generate":74}],17:[function(require,module,exports){
+},{"../function/generate":75}],17:[function(require,module,exports){
 module.exports = {
   item: require("./item"),
   list: require("./list"),
@@ -1383,7 +1383,7 @@ module.exports = ({ controls }) => {
 module.exports=[
   "data()", "Data()", "doc()", "mail()", "function()", "exec()", "notification()", "notify()", "alert()", "tag()", "view()"
  , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()", "same()", "checker()"
- , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()", "promise()"
+ , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()", "promise()", "type()"
  , "3rdLastChild()", "2ndLastChild()", "parent()", "next()", "text()", "val()", "txt()", "loader()", "resolve()"
  , "element()", "el()", "checked()", "check()", "prev()", "format()", "lastSibling()", "interval()"
  , "1stSibling()", "derivations()", "path()", "mouseleave()", "mouseenter()", "mouseup()", "blur()"
@@ -1448,7 +1448,7 @@ const axios = async ({ id, ...params }) => {
 }
 
 module.exports = { axios }
-},{"./toAwait":118,"axios":143}],43:[function(require,module,exports){
+},{"./toAwait":119,"axios":145}],43:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -1743,7 +1743,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":65,"./toArray":117,"./watch":142}],51:[function(require,module,exports){
+},{"./event":66,"./toArray":118,"./watch":144}],51:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
@@ -1831,7 +1831,7 @@ const createActions = ({ params, id }) => {
 
 module.exports = {createActions}
 
-},{"../control/control":17,"./execute":67}],54:[function(require,module,exports){
+},{"../control/control":17,"./execute":68}],54:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
@@ -1885,7 +1885,7 @@ module.exports = {
   }
 }
 
-},{"../component/component":11,"./clone":46,"./generate":74,"./toApproval":116,"./toCode":121,"./toParam":130}],55:[function(require,module,exports){
+},{"../component/component":11,"./clone":46,"./generate":75,"./toApproval":117,"./toCode":122,"./toParam":132}],55:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -2181,7 +2181,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 }
 
 module.exports = { createElement }
-},{"./clone":46,"./createHtml":56,"./createTags":57,"./generate":74,"./isParam":85,"./merge":90,"./reducer":97,"./toApproval":116,"./toArray":117,"./toCode":121,"./toParam":130,"./toValue":135,"./views.json":140}],56:[function(require,module,exports){
+},{"./clone":46,"./createHtml":56,"./createTags":57,"./generate":75,"./isParam":86,"./merge":91,"./reducer":98,"./toApproval":117,"./toArray":118,"./toCode":122,"./toParam":132,"./toValue":137,"./views.json":142}],56:[function(require,module,exports){
 const { clone } = require("./clone")
 const { colorize } = require("./colorize")
 const { generate } = require("./generate")
@@ -2256,7 +2256,8 @@ module.exports = {
             ${Object.entries(view).map(([key, value]) => 
               typeof value === "object" && !Array.isArray(value)
                 ? `${key} {
-                ${Object.entries(value).map(([key, value]) => `${require("./styleName")(key)}: ${value.toString().replace(/\\/g, '')}; `)}
+                ${Object.entries(value).map(([key, value]) => `${require("./styleName")(key)}: ${value.toString().replace(/\\/g, '')}`).join(`;
+                `)};
                 }` : "").filter(style => style).join(`
               `)}
             
@@ -2295,7 +2296,7 @@ module.exports = {
     })
   }
 }
-},{"./clone":46,"./colorize":47,"./createElement":55,"./generate":74,"./styleName":114,"./toArray":117,"./toCode":121,"./toHTML":126,"./toStyle":134}],57:[function(require,module,exports){
+},{"./clone":46,"./colorize":47,"./createElement":55,"./generate":75,"./styleName":115,"./toArray":118,"./toCode":122,"./toHTML":128,"./toStyle":136}],57:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2572,7 +2573,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":46,"./createComponent":54,"./createElement":55,"./createHtml":56,"./generate":74,"./toArray":117}],58:[function(require,module,exports){
+},{"./clone":46,"./createComponent":54,"./createElement":55,"./createHtml":56,"./generate":75,"./toArray":118}],58:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -2590,7 +2591,7 @@ const createView = ({ view, id = generate() }) => {
 }
 
 module.exports = {createView}
-},{"./clone":46,"./generate":74,"./toArray":117,"./update":137}],59:[function(require,module,exports){
+},{"./clone":46,"./generate":75,"./toArray":118,"./update":139}],59:[function(require,module,exports){
 const { toParam } = require("./toParam");
 
 module.exports = {
@@ -2641,7 +2642,7 @@ module.exports = {
         reader.readAsBinaryString(file || e.target.files[0]);
     }
 }
-},{"./toParam":130}],60:[function(require,module,exports){
+},{"./toParam":132}],60:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -2679,7 +2680,430 @@ const clearData = ({ id, e, clear = {} }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":46,"./reducer":97,"./setContent":106,"./setData":107}],61:[function(require,module,exports){
+},{"./clone":46,"./reducer":98,"./setContent":107,"./setData":108}],61:[function(require,module,exports){
+const { toParam } = require("./toParam")
+const { toFirebaseOperator } = require("./toFirebaseOperator")
+const { toCode } = require("./toCode")
+const { toArray } = require("./toArray")
+
+var getdb = async ({ req, res }) => {
+
+  var _window = { global: { codes: {} }, views: {} }
+  var string = decodeURI(req.headers.search), params = {}
+  string = toCode({ _window, string })
+  
+  if (string) params = toParam({ _window, string, id: "" })
+  var search = params.search || {}
+  var { data, success, message } = await getData({ req, res, search })
+
+  return res.send({ data, success, message })
+}
+
+var postdb = async ({ req, res }) => {
+  
+  var save = req.body.save || {}
+  var { data, success, message } = await postData({ req, res, save })
+
+  return res.send({ data, success, message })
+}
+
+var deletedb = async ({ req, res }) => {
+  
+  var _window = { global: { codes: {} }, views: {} }
+  var string = decodeURI(req.headers.erase), params = {}
+  string = toCode({ _window, string })
+  
+  if (string) params = toParam({ _window, string, id: "" })
+  var erase = params.erase || {}
+
+  var { data, success, message } = await deleteData({ req, res, erase })
+  
+  return res.send({ success, message })
+}
+
+const getData = async ({ req, res, search }) => {
+
+  var db = req.db
+  var collection = search.collection
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
+
+  var doc = search.document || search.doc,
+    docs = search.documents || search.docs,
+    field = search.field || search.fields,
+    limit = search.limit || 25,
+    data = {}, success, message,
+    ref = collection && db.collection(collection),
+    promises = [], project
+  
+  /////////////////// verify access key ///////////////////// access key is stopped
+  project = { ["accesskey"]: req.headers["accesskey"] }
+  
+  if (search.url) {
+
+    var url = search.url
+    delete search.url
+
+    if (url.slice(-1) === "/") url = url.slice(0, -1)
+    
+    try {
+      data = await require("axios").get(url, { timeout: 1000 * 40 })
+      .then(res => res.doesNotExist.throwAnError)
+      .catch(err => err)
+
+      data = data.data
+      if (typeof data === "string") {
+        data = `{ ${data.split("{").slice(1).join("{")}`
+        data = JSON.parse(data)
+      }
+      success = true
+      message = `Document/s mounted successfuly!`
+
+    } catch (err) {
+      data = {}
+      success = false
+      message = `Error!`
+    }
+
+    return ({ data, success, message })
+  }
+
+  if (docs) {
+
+    var _docs = [], index = 1, length = Math.floor(search.docs.length / 10) + (search.docs.length % 10 > 0 ? 1 : 0), promises = []
+    while (index <= length) {
+      _docs.push(search.docs.slice((index - 1) * 10, index * 10))
+      index += 1
+    }
+    
+    _docs.map(docList => {
+      promises.push(ref.where("id", "in", docList).get().then(docs => {
+
+        success = true
+        docs.forEach(doc => data[doc.id] = doc.data())
+        message = `Documents mounted successfuly!`
+
+      }).catch(error => {
+
+        success = false
+        message = `An error Occured!`
+
+      }))
+    })
+    
+    await Promise.all(promises)
+   
+    return ({ data, success, message })
+  }
+
+  if (doc) {
+
+    await ref.doc(doc.toString()).get().then(doc => {
+
+      success = true
+      data = doc.data()
+      message = `Document mounted successfuly!`
+
+    }).catch(error => {
+
+      success = false
+      message = `An error Occured!`
+    })
+
+    await Promise.all(promises)
+    if (project["accesskey"] !== req.headers["accesskey"]) {
+
+      success = false
+      message = `Your are not verified!`
+      return ({ success, message })
+    }
+
+    return ({ data, success, message })
+  }
+
+  if (!doc && !field) {
+
+    if (limit) ref = ref.limit(limit)
+    
+    await ref.get().then(q => {
+      
+      q.forEach(doc => data[doc.id] = doc.data())
+
+      success = true
+      message = `Documents mounted successfuly!`
+
+    }).catch(error => {
+      
+      success = false
+      message = `An error Occured!`
+    })
+    
+    await Promise.all(promises)
+    if (project["accesskey"] !== req.headers["accesskey"]) {
+
+      success = false
+      message = `Your are not verified!`
+      return ({ success, message })
+    }
+
+    return ({ data, success, message })
+  }
+
+  const myPromise = () => new Promise(async (resolve) => {
+
+    // search field
+    var multiIN = false, _ref = ref
+    if (field) Object.entries(field).map(([key, value]) => {
+
+      var _value = value[Object.keys(value)[0]]
+      var operator = toFirebaseOperator(Object.keys(value)[0])
+      if (operator === "in" && _value.length > 10) {
+
+        field[key][Object.keys(value)[0]] = [..._value.slice(10)]
+        _value = [..._value.slice(0, 10)]
+        multiIN = true
+      }
+      _ref = _ref.where(key, operator, _value)
+    })
+    
+    if (search.orderBy) _ref = _ref.orderBy(search.orderBy)
+    if (search.limit || 100) _ref = _ref.limit(search.limit || 100)
+    if (search.offset) _ref = _ref.endAt(search.offset)
+    if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
+
+    if (search.startAt) _ref = _ref.startAt(search.startAt)
+    if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
+
+    if (search.endAt) _ref = _ref.endAt(search.endAt)
+    if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
+
+    // retrieve data
+    await _ref.get().then(query => {
+
+      success = true
+      query.docs.forEach(doc => data[doc.id] = doc.data())
+      message = `Documents mounted successfuly!`
+
+    }).catch(error => {
+      
+      success = false
+      message = error
+    })
+
+    if (multiIN) {
+
+      var { data: _data } = await myPromise()
+      data = { ...data, ..._data }
+    }
+    
+    resolve({ data, success, message })
+  })
+
+  var { data, success, message } = await myPromise()
+  return ({ data, success, message })
+}
+
+const postData = async ({ req, res, save }) => {
+
+  // collection
+  var db = req.db
+  var data = req.body.data
+  var collection = save.collection, schema
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+
+  var ref = db.collection(collection)
+  var success, message
+
+  // get schema
+  if (save.schematize) {
+
+    await db.collection(`schema-${project}`).doc(save.collection).get().then(doc => {
+
+      success = true
+      schema = doc.data()
+
+    }).catch(error => {
+
+      success = false
+      message = error
+    })
+
+    if (!schema) return
+    else schema = schema.schema
+    if (Array.isArray(data)) data = data.map(data => schematize({ data, schema }))
+    data = schematize({ data, schema })
+  }
+  
+  if (Array.isArray(data)) {
+
+    var idList = toArray(save.idList)
+    if (save.idList) {
+
+      var batch = db.batch()
+      data.map((data, i) => {
+
+        if (idList[i]) {
+
+          if (!data["creation-date"]) {
+            if (req.headers.timestamp) {
+
+              data["creation-date"] = parseInt(req.headers.timestamp)
+
+            } else {
+
+              data["creation-date"] = (new Date()).getTime()
+              data.timezone = "GMT"
+            }
+          }
+
+          batch.set(db.collection(collection).document(idList[i].toString()), data)
+
+          // Commit the batch
+          batch.commit().then(() => {
+
+            success = true
+            message = `Document saved successfuly!`
+
+          }).catch(error => {
+      
+            success = false
+            message = error
+          })
+        }
+      })
+    }
+
+  } else if (save.doc) {
+
+    if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
+    if (!data["creation-date"]) {
+      if (req.headers.timestamp) {
+
+        data["creation-date"] = req.headers.timestamp
+
+      } else {
+
+        data["creation-date"] = (new Date()).getTime()
+        data.timezone = "GMT"
+      }
+    }
+
+    await ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
+
+      success = true
+      message = `Document saved successfuly!`
+
+    }).catch(error => {
+
+      success = false
+      message = error
+    })
+  }
+
+  return ({ data, success, message })
+}
+
+const deleteData = async ({ req, res, erase }) => {
+
+  var db = req.db, docs
+  var storage = req.storage
+  var collection = erase.collection
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
+  
+  var ref = db.collection(collection)
+  var success, message
+
+  /////////////////// verify access key ///////////////////// access key is stopped
+
+  if (erase.collection === "storage" && erase.field) {
+
+    var field = erase.field
+    const myPromise = () => new Promise(async (resolve, rej) => {
+
+      // search field
+      var multiIN = false, _ref = ref
+      if (field) Object.entries(field).map(([key, value]) => {
+  
+        var _value = value[Object.keys(value)[0]]
+        var operator = toFirebaseOperator(Object.keys(value)[0])
+        if (operator === "in" && _value.length > 10) {
+  
+          field[key][Object.keys(value)[0]] = [..._value.slice(10)]
+          _value = [..._value.slice(0, 10)]
+          multiIN = true
+        }
+        _ref = _ref.where(key, operator, _value)
+      })
+      
+      if (search.orderBy) _ref = _ref.orderBy(search.orderBy)
+      if (search.limit || 100) _ref = _ref.limit(search.limit || 100)
+      if (search.offset) _ref = _ref.endAt(search.offset)
+      if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
+  
+      if (search.startAt) _ref = _ref.startAt(search.startAt)
+      if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
+  
+      if (search.endAt) _ref = _ref.endAt(search.endAt)
+      if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
+  
+      // retrieve data
+      await _ref.get().then(query => {
+  
+        success = true
+        query.docs.forEach(doc => data[doc.id] = doc.data())
+        message = `Documents mounted successfuly!`
+  
+      }).catch(error => {
+        
+        success = false
+        message = error
+      })
+  
+      if (multiIN) {
+  
+        var { data: _data } = await myPromise()
+        data = { ...data, ..._data }
+      }
+      
+      resolve({ data, success, message })
+    })
+  
+    var { data, success, message } = await myPromise()
+    docs = Object.keys(data)
+  }
+
+  docs = erase.docs
+  await docs.map(async doc => {
+    
+    await ref.doc(doc.toString()).delete().then(() => {
+
+      success = true,
+      message = `Document erased successfuly!`
+
+    }).catch(error => {
+
+      success = false
+      message = error
+    })
+
+    if (erase.collection === "storage") {
+
+      var exists = await storage.bucket().file(`${collection}/${doc}`).exists()
+      if (exists) await storage.bucket().file(`${collection}/${doc}`).delete()
+    }
+  })
+  
+  return ({ data, success, message })
+}
+
+module.exports = {
+  getdb,
+  getData,
+  postdb,
+  postData,
+  deletedb,
+  deleteData
+}
+},{"./toArray":118,"./toCode":122,"./toFirebaseOperator":126,"./toParam":132,"axios":145}],62:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -2705,7 +3129,7 @@ const decode = ({ _window, string }) => {
 
 module.exports = {decode}
 
-},{}],62:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -2927,7 +3351,7 @@ module.exports = { defaultInputHandler }
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
 }*/
-},{"./colorize":47,"./data":60,"./isArabic":82,"./resize":101,"./toCode":121}],63:[function(require,module,exports){
+},{"./colorize":47,"./data":60,"./isArabic":83,"./resize":102,"./toCode":122}],64:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -3144,47 +3568,58 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":46,"./reducer":97,"./toString":133,"./toValue":135,"./update":137}],64:[function(require,module,exports){
+},{"./clone":46,"./reducer":98,"./toString":135,"./toValue":137,"./update":139}],65:[function(require,module,exports){
 const axios = require("axios");
 const { clone } = require("./clone");
+const { deleteData } = require("./database");
 const { toArray } = require("./toArray");
 const { toString } = require("./toString")
 
 const erase = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 
-  var global = window.global
+  var global = _window ? _window.global : window.global
+  var view = _window ? _window.views[id] : window.views[id]
   var erase = params.erase || {}
-  var view = window.views[id]
   var headers = erase.headers || {}
   headers.project = headers.project || global.projectId
   var store = erase.store || "database"
   
   erase.docs = toArray(erase.doc || erase.docs || erase.id || (erase.data && clone(toArray(erase.data.map(data => data.id)))))
-  // if (erase.docs.length === 0) return
-  // delete erase.data
 
-  // erase
-  headers.erase = encodeURI(toString({ erase }))
-  headers.timestamp = (new Date()).getTime()
+  if (_window) {
+    
+    var data = await deleteData({ req, res, erase })
 
-  // access key
-  if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
+    view.erase = global.erase = clone(data)
+    console.log("erase", data)
+  
+    if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
 
-  var { data } = await axios.delete(`/${store}`, {
-    headers: {
-      "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...headers
-    }
-  })
+  } else {
 
-  view.erase = global.erase = clone(data)
-  /*if (!_window) */console.log("erase", data)
+    // erase
+    headers.erase = encodeURI(toString({ erase }))
+    headers.timestamp = (new Date()).getTime()
 
-  if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
+    // access key
+    if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
+
+    var { data } = await axios.delete(`/${store}`, {
+      headers: {
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+        ...headers
+      }
+    })
+
+    view.erase = global.erase = clone(data)
+    console.log("erase", data)
+  
+    if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
+  }
 }
 
 module.exports = { erase }
-},{"./clone":46,"./toArray":117,"./toAwait":118,"./toString":133,"axios":143}],65:[function(require,module,exports){
+},{"./clone":46,"./database":61,"./toArray":118,"./toAwait":119,"./toString":135,"axios":145}],66:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -3514,14 +3949,14 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":46,"./execute":67,"./generate":74,"./toApproval":116,"./toArray":117,"./toCode":121,"./toParam":130,"./toValue":135}],66:[function(require,module,exports){
+},{"./clone":46,"./execute":68,"./generate":75,"./toApproval":117,"./toArray":118,"./toCode":122,"./toParam":132,"./toValue":137}],67:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
   "keydown", "scroll", "beforeLoading", "loaded", "controls", "children", "child", "change", "entry", 
   "enter", "longclick"
 ]
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -3675,7 +4110,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
 module.exports = { execute }
 
-},{"./function":73,"./isParam":85,"./toApproval":116,"./toArray":117,"./toAwait":118,"./toCode":121,"./toParam":130,"./toValue":135}],68:[function(require,module,exports){
+},{"./function":74,"./isParam":86,"./toApproval":117,"./toArray":118,"./toAwait":119,"./toCode":122,"./toParam":132,"./toValue":137}],69:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -3691,7 +4126,7 @@ module.exports = {
         // linkElement.delete()
     }
 }
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 const { toValue } = require("./function")
 
 module.exports = {
@@ -3702,7 +4137,7 @@ module.exports = {
         reader.readAsDataURL(file)
     }
 }
-},{"./function":73}],70:[function(require,module,exports){
+},{"./function":74}],71:[function(require,module,exports){
 (function (global){(function (){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
@@ -3765,7 +4200,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":46,"./compare":48,"./isEqual":84,"./toArray":117,"./toOperator":129}],71:[function(require,module,exports){
+},{"./clone":46,"./compare":48,"./isEqual":85,"./toArray":118,"./toOperator":131}],72:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -3801,7 +4236,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
@@ -3873,7 +4308,7 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
 }
 
 module.exports = { func }
-},{"./clone":46,"./cookie":51,"./toArray":117,"./toAwait":118,"./toCode":121,"./toParam":130,"axios":143}],73:[function(require,module,exports){
+},{"./clone":46,"./cookie":51,"./toArray":118,"./toAwait":119,"./toCode":122,"./toParam":132,"axios":145}],74:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -4049,7 +4484,7 @@ module.exports = {
   insert,
   axios
 }
-},{"./axios":42,"./blur":43,"./capitalize":44,"./clearValues":45,"./clone":46,"./compare":48,"./contentful":49,"./controls":50,"./cookie":51,"./createActions":53,"./createComponent":54,"./createElement":55,"./createHtml":56,"./createView":58,"./data":60,"./decode":61,"./defaultInputHandler":62,"./droplist":63,"./erase":64,"./event":65,"./execute":67,"./exportJson":68,"./fileReader":69,"./filter":70,"./focus":71,"./generate":74,"./getDateTime":76,"./getDaysInMonth":77,"./getParam":78,"./importJson":80,"./insert":81,"./isArabic":82,"./isEqual":84,"./isPath":86,"./jsonFiles":87,"./keys":88,"./log":89,"./merge":90,"./note":91,"./overflow":92,"./popup":93,"./position":94,"./preventDefault":95,"./reducer":97,"./refresh":98,"./reload":99,"./remove":100,"./resize":101,"./route":102,"./save":103,"./search":105,"./setContent":106,"./setData":107,"./setElement":108,"./setPosition":109,"./sort":110,"./starter":111,"./state":112,"./style":113,"./switchMode":115,"./toApproval":116,"./toArray":117,"./toAwait":118,"./toCSV":119,"./toCode":121,"./toComponent":122,"./toControls":123,"./toId":127,"./toNumber":128,"./toOperator":129,"./toParam":130,"./toString":133,"./toStyle":134,"./toValue":135,"./toggleView":136,"./update":137,"./upload":139,"./wait":141}],74:[function(require,module,exports){
+},{"./axios":42,"./blur":43,"./capitalize":44,"./clearValues":45,"./clone":46,"./compare":48,"./contentful":49,"./controls":50,"./cookie":51,"./createActions":53,"./createComponent":54,"./createElement":55,"./createHtml":56,"./createView":58,"./data":60,"./decode":62,"./defaultInputHandler":63,"./droplist":64,"./erase":65,"./event":66,"./execute":68,"./exportJson":69,"./fileReader":70,"./filter":71,"./focus":72,"./generate":75,"./getDateTime":77,"./getDaysInMonth":78,"./getParam":79,"./importJson":81,"./insert":82,"./isArabic":83,"./isEqual":85,"./isPath":87,"./jsonFiles":88,"./keys":89,"./log":90,"./merge":91,"./note":92,"./overflow":93,"./popup":94,"./position":95,"./preventDefault":96,"./reducer":98,"./refresh":99,"./reload":100,"./remove":101,"./resize":102,"./route":103,"./save":104,"./search":106,"./setContent":107,"./setData":108,"./setElement":109,"./setPosition":110,"./sort":111,"./starter":112,"./state":113,"./style":114,"./switchMode":116,"./toApproval":117,"./toArray":118,"./toAwait":119,"./toCSV":120,"./toCode":122,"./toComponent":123,"./toControls":124,"./toId":129,"./toNumber":130,"./toOperator":131,"./toParam":132,"./toString":135,"./toStyle":136,"./toValue":137,"./toggleView":138,"./update":139,"./upload":141,"./wait":143}],75:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -4069,7 +4504,7 @@ const generate = (params = {}) => {
 
 module.exports = {generate}
 
-},{}],75:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports = ({ el, id }) => {
   var view = window.views[id]
   el = el || view.element
@@ -4095,7 +4530,7 @@ module.exports = ({ el, id }) => {
 
   return { top: Math.round(top), left: Math.round(left), right: Math.round(right), bottom: Math.round(bottom), height: Math.round(height), width: Math.round(width) };
 }
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports = {
     getDateTime: (time) => {
         
@@ -4116,13 +4551,13 @@ module.exports = {
         return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 const getParam = ({ string, param, defValue }) => {
@@ -4146,26 +4581,27 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":130}],79:[function(require,module,exports){
+},{"./toParam":132}],80:[function(require,module,exports){
 module.exports = {
   getType: (value) => {
     if (typeof value === "boolean" || value === "true" || value === "false") return "boolean"
     if (typeof value === "object" && Array.isArray(value)) return "array"
     if (typeof value === "object") return "map"
     if (typeof value === "function") return "function"
-    if (typeof value === "number" || (!isNaN(value) && value !== "")) {
+    if (typeof value === "number" || !isNaN(value)) {
         
       if (value.length >= 10 && value.length <=13 && !isNaN(value) && value.slice(0, 2) !== "0") return "timestamp"
       if (value.length === 8 && value.slice(0, 2) !== "00" && !isNaN(value)) return "time"
       
       if ((value + "").length >= 10 && (value + "").length <= 13 && (value + "").slice(0, 2) !== "0") return "timestamp"
       if ((value + "").length === 8 && (value + "").slice(0, 2) !== "00") return "time"
-      if (typeof value === "number") return "number"
+      //if (typeof value === "number") return "number"
+      return "number"
     }
     if (typeof value === "string") return "string"
   }
 }
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 (function (global){(function (){
 const { toAwait } = require("./toAwait")
 
@@ -4206,7 +4642,7 @@ const importJson = ({ id, e, ...params }) => {
 
 module.exports = {importJson, getJson}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":118}],81:[function(require,module,exports){
+},{"./toAwait":119}],82:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
 const { starter } = require("./starter")
@@ -4317,7 +4753,7 @@ module.exports = {
     if (params.asyncer) require("./toAwait").toAwait({ id, _: view.insert, __: _, ___: __, params })
   }
 }
-},{"./clone":46,"./createElement":55,"./generate":74,"./setElement":108,"./starter":111,"./toArray":117,"./toAwait":118}],82:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":109,"./starter":112,"./toArray":118,"./toAwait":119}],83:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -4351,7 +4787,7 @@ const isArabic = ({ id, value, text }) => {
 
 module.exports = { isArabic }
 
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports = {
     isCondition: ({ _window, string }) => {
         
@@ -4363,7 +4799,7 @@ module.exports = {
         return false
     }
 }
-},{}],84:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -4474,7 +4910,7 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual}
 
-},{}],85:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = {
   isParam: ({ _window, string }) => {
       
@@ -4487,7 +4923,7 @@ module.exports = {
     return false
   }
 }
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
@@ -4504,7 +4940,7 @@ module.exports = {
   },
 };
 
-},{}],87:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -4678,20 +5114,20 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":117,"./toOperator":129,"fs":172}],88:[function(require,module,exports){
+},{"./toArray":118,"./toOperator":131,"fs":174}],89:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -4762,7 +5198,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":46,"./toArray":117}],91:[function(require,module,exports){
+},{"./clone":46,"./toArray":118}],92:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -4798,7 +5234,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":82}],92:[function(require,module,exports){
+},{"./isArabic":83}],93:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var view = window.views[id]
@@ -4855,14 +5291,14 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],93:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 const popup = ({ id }) => {
   
 }
 
 module.exports = {popup}
 
-},{}],94:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 const { lengthConverter } = require("./resize")
 
 const getPadding = (el) => {
@@ -4909,14 +5345,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":101}],95:[function(require,module,exports){
+},{"./resize":102}],96:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 module.exports = {
@@ -4936,7 +5372,7 @@ module.exports = {
         window.print()
     }
 }
-},{"./toParam":130}],97:[function(require,module,exports){
+},{"./toParam":132}],98:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -4946,7 +5382,6 @@ const { toNumber } = require("./toNumber")
 const { getDateTime } = require("./getDateTime")
 const { getDaysInMonth } = require("./getDaysInMonth")
 const { getType } = require("./getType")
-const { decode } = require("./decode")
 const { exportJson } = require("./exportJson")
 const { importJson } = require("./importJson")
 const { toId } = require("./toId")
@@ -4970,7 +5405,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     const { toValue, calcSubs, calcDivision, calcModulo } = require("./toValue")
     const { toParam } = require("./toParam")
     const { insert } = require("./insert")
-    var _functions = require("./function")
+    const { toFunction } = require("./toFunction")
 
     var views = _window ? _window.views : window.views
     var view = views[id], breakRequest, coded, mainId = id
@@ -4982,7 +5417,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     if (typeof path === "number") path = [path]
 
     var pathJoined = path.join(".")
-    
+
     // ||
     if (pathJoined.includes("||") && !pathJoined.includes("||=")) {
         var args = pathJoined.split("||")
@@ -5072,66 +5507,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         return newVal
     }
     
-    var isFn = false, backendFn = false
-
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] /*&& !actions.includes(path0)*/ && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
-
-        view && clone(view["my-views"] || []).reverse().map(view => {
-        if (!isFn) {
-          isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-          if (isFn) {
-            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-          }
-        }
-      })
-      
-      if (!isFn) {
-        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) {
-          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
-          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-        }
-      }
-      
-      if (!isFn) {
-        isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
-        if (isFn) backendFn = true
-      }
-    }
-
-    if (isFn) {
-      var _params = path[0].split(":")[1], args = path[0].split(":")
-
-      if (backendFn) {
-        
-        if (isParam({ _window, string: args[1] })) {
-
-          var _await = ""
-          var _data = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
-          var _func = { function: isFn, data: _data }
-          if (args[2]) _await = global.codes[args[2]]
-          
-          return require("./func").func({ _window, id, e, _, __, ___,  req, res, func: _func, asyncer: true, await: _await })
-        }
-        
-        var _data = toValue({ req, res, _window, id, e, _, __, ___,  value: args[1], params })
-        var _func = { function: isFn, data: _data }
-        if (args[2]) _await = global.codes[args[2]]
-        
-        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
-      }
-
-      if (_params) {
-
-        if (isParam({ _window, string: _params }))
-          _params = toParam({ req, res, _window, id, e, _, __, ___,  string: _params })
-        else _params = toValue({ req, res, _window, id, e, _, __, ___,  value: _params })
-      }
-      
-      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___),  createElement, params })
-    }
+    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, createElement, object })
+    if (isFn !== "__CONTINUE__") return isFn
 
     // addition
     if (pathJoined.includes("+") && !key) {
@@ -8995,7 +9373,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
           }
 
         } else if (k0 === "typeof()" || k0 === "type()") {
-
+            
             if (args[1]) answer = getType(toValue({ req, res, _window, id, e, _, __, ___, params, value: args[1] }))
             else answer = getType(o)
 
@@ -9912,7 +10290,7 @@ var formatter = new Intl.NumberFormat('en-US', {
 });
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./actions.json":41,"./axios":42,"./capitalize":44,"./clone":46,"./cookie":51,"./counter":52,"./csvToJson":59,"./decode":61,"./droplist":63,"./erase":64,"./events.json":66,"./exportJson":68,"./focus":71,"./func":72,"./function":73,"./generate":74,"./getCoords":75,"./getDateTime":76,"./getDaysInMonth":77,"./getType":79,"./importJson":80,"./insert":81,"./isCondition":83,"./isEqual":84,"./isParam":85,"./note":91,"./print":96,"./refresh":98,"./remove":100,"./resize":101,"./route":102,"./save":103,"./search":105,"./setPosition":109,"./sort":110,"./toApproval":116,"./toArray":117,"./toAwait":118,"./toCSV":119,"./toClock":120,"./toCode":121,"./toExcel":124,"./toHTML":126,"./toId":127,"./toNumber":128,"./toParam":130,"./toPdf":131,"./toSimplifiedDate":132,"./toValue":135,"./toggleView":136,"./update":137,"./updateSelf":138,"./upload":139}],98:[function(require,module,exports){
+},{"./actions.json":41,"./axios":42,"./capitalize":44,"./clone":46,"./cookie":51,"./counter":52,"./csvToJson":59,"./droplist":64,"./erase":65,"./events.json":67,"./exportJson":69,"./focus":72,"./generate":75,"./getCoords":76,"./getDateTime":77,"./getDaysInMonth":78,"./getType":80,"./importJson":81,"./insert":82,"./isCondition":84,"./isEqual":85,"./isParam":86,"./note":92,"./print":97,"./refresh":99,"./remove":101,"./resize":102,"./route":103,"./save":104,"./search":106,"./setPosition":110,"./sort":111,"./toApproval":117,"./toArray":118,"./toAwait":119,"./toCSV":120,"./toClock":121,"./toCode":122,"./toExcel":125,"./toFunction":127,"./toHTML":128,"./toId":129,"./toNumber":130,"./toParam":132,"./toPdf":133,"./toSimplifiedDate":134,"./toValue":137,"./toggleView":138,"./update":139,"./updateSelf":140,"./upload":141}],99:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -10001,13 +10379,13 @@ const refresh = async ({ id, update = {} }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":46,"./createElement":55,"./generate":74,"./setElement":108,"./starter":111,"./toArray":117,"./update":137}],99:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":109,"./starter":112,"./toArray":118,"./update":139}],100:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],100:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -10093,7 +10471,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":46,"./reducer":97,"./toCode":121,"./toParam":130,"./update":137}],101:[function(require,module,exports){
+},{"./clone":46,"./reducer":98,"./toCode":122,"./toParam":132,"./update":139}],102:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -10196,7 +10574,7 @@ var lengthConverter = (length) => {
 
 module.exports = {resize, dimensions, lengthConverter}
 
-},{}],102:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 const { clone } = require("./clone")
 const { update } = require("./update")
 const { createElement } = require("./createElement")
@@ -10246,7 +10624,7 @@ module.exports = {
       }
     }
 }
-},{"./clone":46,"./createElement":55,"./toArray":117,"./update":137}],103:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./toArray":118,"./update":139}],104:[function(require,module,exports){
 var { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { generate } = require("./generate")
@@ -10432,7 +10810,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 }
 
 module.exports = { save }
-},{"./clone":46,"./generate":74,"./schematize":104,"./toArray":117,"./toAwait":118,"./toParam":130,"axios":143}],104:[function(require,module,exports){
+},{"./clone":46,"./generate":75,"./schematize":105,"./toArray":118,"./toAwait":119,"./toParam":132,"axios":145}],105:[function(require,module,exports){
 const schematize = ({ data, schema }) => {
   var _data = {}
   schema.map(schema => {
@@ -10452,7 +10830,7 @@ const schematize = ({ data, schema }) => {
 }
 
 module.exports = { schematize }
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { clone } = require('./clone')
@@ -10730,7 +11108,7 @@ module.exports = {
     // if (_data.message === "Force reload!") return location.reload()
   }
 }
-},{"./clone":46,"./toArray":117,"./toAwait":118,"./toFirebaseOperator":125,"./toString":133,"axios":143}],106:[function(require,module,exports){
+},{"./clone":46,"./toArray":118,"./toAwait":119,"./toFirebaseOperator":126,"./toString":135,"axios":145}],107:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -10753,7 +11131,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":82}],107:[function(require,module,exports){
+},{"./isArabic":83}],108:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
@@ -10797,7 +11175,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":46,"./reducer":97}],108:[function(require,module,exports){
+},{"./clone":46,"./reducer":98}],109:[function(require,module,exports){
 const { controls } = require("./controls")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -10846,7 +11224,7 @@ const setElement = ({ _window, id }) => {
 }
     
 module.exports = { setElement }
-},{"./controls":50,"./defaultInputHandler":62,"./isArabic":82,"./resize":101,"./toApproval":116,"./toArray":117,"./toCode":121,"./toParam":130}],109:[function(require,module,exports){
+},{"./controls":50,"./defaultInputHandler":63,"./isArabic":83,"./resize":102,"./toApproval":117,"./toArray":118,"./toCode":122,"./toParam":132}],110:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
   var views = window.views
@@ -11028,7 +11406,7 @@ const setPosition = ({ position = {}, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
@@ -11153,7 +11531,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":97,"./toArray":117,"./toCode":121}],111:[function(require,module,exports){
+},{"./reducer":98,"./toArray":118,"./toCode":122}],112:[function(require,module,exports){
 const control = require("../control/control")
 const { toArray } = require("./toArray")
 
@@ -11190,12 +11568,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":17,"./controls":50,"./event":65,"./toArray":117}],112:[function(require,module,exports){
+},{"../control/control":17,"./controls":50,"./event":66,"./toArray":118}],113:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -11315,7 +11693,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":101,"./toArray":117}],114:[function(require,module,exports){
+},{"./resize":102,"./toArray":118}],115:[function(require,module,exports){
 module.exports = (k) => {
   
   if (k === "userSelect") k = "user-select";
@@ -11381,7 +11759,7 @@ module.exports = (k) => {
   else if (k === "writingMode") k = "writing-mode";
   return k
 }
-},{}],115:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -11445,19 +11823,14 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":44,"./clone":46,"./style":113}],116:[function(require,module,exports){
+},{"./capitalize":44,"./clone":46,"./style":114}],117:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
-const { generate } = require("./generate")
-const { clone } = require("./clone")
-const { toCode } = require("./toCode")
-const actions = require("./actions.json")
 
-const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, object, _i, elser }) => {
+const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, object, elser }) => {
 
+  const { toFunction } = require("./toFunction")
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
-  const { toParam } = require("./function")
-  var _functions = require("./function")
 
   // no string but object exists
   if (!string)
@@ -11544,71 +11917,12 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
       }
     }
 
-    var myKey
-    /*if (!key && object !== undefined) myKey = object
-    else myKey = toValue({ _window, id: mainId, value: key, e, _, __, ___, req, res, object: object || view, condition: true })
-    console.log(condition, key, myKey, object);*/
-
-    // to path
-    var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0], backendFn = false, isFn = false
+    //
+    var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0], myKey
 
     // function
-    if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] /*&& !actions.includes(path0)*/ && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
-
-      clone(view["my-views"] || []).reverse().map(view => {
-        if (!isFn) {
-          isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-          if (isFn) {
-            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-          }
-        }
-      })
-      
-      // global functions
-      if (!isFn) {
-        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) {
-          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
-          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-        }
-      }
-
-      // backend function
-      if (!isFn) {
-        isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
-        if (isFn) backendFn = true
-      }
-    }
-
-    if (isFn) {
-      var _params = path[0].split(":")[1], args = path[0].split(":")
-      if (backendFn) {
-        
-        if (isParam({ _window, string: args[1] })) {
-  
-          var _await = ""
-          var _data = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
-          var _func = { function: isFn, data: _data }
-          if (args[2]) _await = global.codes[args[2]]
-          
-          return require("./func").func({ _window, id, e, _, __, ___, _i, req, res, func: _func, asyncer: true, await: _await })
-        }
-        
-        var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
-        var _func = { function: isFn, data: _data }
-        if (args[2]) _await = global.codes[args[2]]
-  
-        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
-      }
-
-      if (_params) {
-        if (isParam({ _window, string: _params }))
-          _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: _params })
-        else _params = toValue({ req, res, _window, id, e, _, __, ___, _i, value: _params })
-      }
-      return approval = toApproval({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i })
-    }
+    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition: true });
+    if (isFn !== "__CONTINUE__") return approval = isFn
 
     if (!key && object !== undefined) myKey = object
     else if (key === "false" || key === "undefined") myKey = false
@@ -11636,14 +11950,14 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
 
 module.exports = { toApproval }
 
-},{"./actions.json":41,"./clone":46,"./func":72,"./function":73,"./generate":74,"./isEqual":84,"./reducer":97,"./toCode":121,"./toValue":135}],117:[function(require,module,exports){
+},{"./isEqual":85,"./reducer":98,"./toFunction":127,"./toValue":137}],118:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],118:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 const { toCode } = require("./toCode")
 
 const toAwait = ({ _window, id, e, params = {}, req, res, _, __, ___ }) => {
@@ -11670,7 +11984,7 @@ const toAwait = ({ _window, id, e, params = {}, req, res, _, __, ___ }) => {
 }
 
 module.exports = {toAwait}
-},{"./execute":67,"./toCode":121,"./toParam":130}],119:[function(require,module,exports){
+},{"./execute":68,"./toCode":122,"./toParam":132}],120:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -11745,7 +12059,7 @@ module.exports = {
         }
     }
 }
-},{}],120:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -11766,7 +12080,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],121:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
@@ -11829,7 +12143,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
 module.exports = { toCode }
 
-},{"./generate":74}],122:[function(require,module,exports){
+},{"./generate":75}],123:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -11862,12 +12176,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":74,"./toArray":117}],123:[function(require,module,exports){
+},{"./generate":75,"./toArray":118}],124:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],124:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 // const XLSX = require("xlsx")
 
 module.exports = {
@@ -11892,7 +12206,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{}],125:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 module.exports = {
     toFirebaseOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -11908,7 +12222,87 @@ module.exports = {
         else return string
     }
 }
-},{}],126:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
+const { func } = require("./func")
+const { clone } = require("./clone")
+const { toCode } = require("./toCode")
+const { isParam } = require("./isParam")
+const { toValue } = require("./toValue")
+const { toParam } = require("./toParam")
+const _functions = require("./function")
+
+const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object }) => {
+
+    var global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var view = views[id], backendFn = false, isFn = false
+
+    if (path.length === 1 && path0.slice(-2) === "()" && !_functions[path0.slice(-2)] && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
+    
+      view && clone(view["my-views"] || []).reverse().map(view => {
+        if (!isFn) {
+          isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
+          if (isFn) {
+            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
+            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+          }
+        }
+      })
+      
+      // global functions
+      if (!isFn) {
+
+        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
+        if (isFn) {
+          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
+          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        }
+      }
+      
+      if (!isFn) {
+
+        isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
+        if (isFn) backendFn = true
+      }
+    }
+  
+    if (isFn) {
+        
+        var _params = path[0].split(":")[1], args = path[0].split(":")
+
+        if (backendFn) {
+        
+            if (isParam({ _window, string: args[1] })) {
+
+                var _await = ""
+                var _data = toParam({ req, res, _, __, ___, e, _window, id, string: args[1], condition })
+                var _func = { function: isFn, data: _data }
+                if (args[2]) _await = global.codes[args[2]]
+                
+                return func({ _window, id, e, _, __, ___, req, res, func: _func, asyncer: true, await: _await })
+            }
+            
+            var _data = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params, condition })
+            var _func = { function: isFn, data: _data }
+            if (args[2]) _await = global.codes[args[2]]
+
+            return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
+        }
+
+        if (_params) {
+
+            if (isParam({ _window, string: _params })) _params = toParam({ req, res, _window, id, e, _, __, ___, string: _params, condition })
+            else _params = toValue({ req, res, _window, id, e, _, __, ___, value: _params, condition })
+        }
+
+        if (!condition) return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, createElement, params, executer, condition })
+        else return toApproval({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i })
+    
+    } else return "__CONTINUE__"
+  }
+
+  module.exports = { toFunction }
+},{"./clone":46,"./func":73,"./function":74,"./isParam":86,"./toCode":122,"./toParam":132,"./toValue":137}],128:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 
@@ -11996,7 +12390,7 @@ module.exports = ({ _window, id, innerHTML }) => {
 
   return tag
 }
-},{"./toArray":117,"./toStyle":134}],127:[function(require,module,exports){
+},{"./toArray":118,"./toStyle":136}],129:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -12025,7 +12419,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":74}],128:[function(require,module,exports){
+},{"./generate":75}],130:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -12046,7 +12440,7 @@ module.exports = {
   },
 };
 
-},{}],129:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -12062,7 +12456,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],130:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -12072,6 +12466,7 @@ const { clone } = require("./clone")
 const { isParam } = require("./isParam")
 const { toArray } = require("./toArray")
 const actions = require("./actions.json")
+const { getType } = require("./getType")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -12083,6 +12478,7 @@ function sleep(milliseconds) {
 
 const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, createElement, params = {}, executer, condition }) => {
   
+  const { toFunction } = require("./toFunction")
   const { toApproval } = require("./toApproval")
   var _functions = require("./function")
 
@@ -12161,7 +12557,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
-      global.codes[`coded()${_key}`] = `${myVal}||_string`
+      global.codes[`coded()${_key}`] = toCode({ _window, id, string: `${myVal}||[if():[type():[${value}]=number]:0:_string]` })
       value = `coded()${_key}+${value}`
       /*global.codes[`coded()${_key0}`] = `${value}||0`
       value = `coded()${_key}+coded()${_key0}`*/
@@ -12301,7 +12697,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       return //view.children
     }
     
-    if (value === undefined) value = generate()
+    if (value === undefined) value = generate();
     else value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
     if (typeof value === "string" && value.includes("&nbsp;")) value = value.replace("&nbsp;", " ")
 
@@ -12312,69 +12708,10 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     // :coded()1asd1
     if (path0 === "") return
 
-    //////////////////////////////////// function /////////////////////////////////////////
-
-    if (path.length === 1 && path0.slice(-2) === "()" && !_functions[path0.slice(-2)] /*&& !actions.includes(path0)*/ && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
-      
-      view && clone(view["my-views"] || []).reverse().map(view => {
-        if (!isFn) {
-          isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-          if (isFn) {
-            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-          }
-        }
-      })
-      
-      // global functions
-      if (!isFn) {
-        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) {
-          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
-          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-        }
-      }
-      
-      if (!isFn) {
-        isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
-        if (isFn) backendFn = true
-      }
-
-    }
-
-    if (isFn) {
-
-      var _params = path[0].split(":")[1], args = path[0].split(":")
-      
-      if (backendFn) {
-        
-        if (isParam({ _window, string: args[1] })) {
-
-          var _await = ""
-          var _data = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
-          var _func = { function: isFn, data: _data }
-          if (args[2]) _await = global.codes[args[2]]
-          
-          return require("./func").func({ _window, id, e, _, __, ___, _i, req, res, func: _func, asyncer: true, await: _await })
-        }
-        
-        var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
-        var _func = { function: isFn, data: _data }
-        if (args[2]) _await = global.codes[args[2]]
-        
-        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
-      }
-
-      if (_params) {
-
-        var _key = generate()
-        global.codes[`coded()${_key}`] = _params
-        if (isParam({ _window, string: _params })) _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: `coded()${_key}` })
-        else _params = toValue({ req, res, _window, id, e, _, __, ___, _i, value: _params })
-      }
-      
-      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i, asyncer, createElement, params, executer })
-    }
+    // function
+    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object })
+    if (isFn !== "__CONTINUE__") return isFn
+    else isFn = false
     
     // field:action()
     if (path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
@@ -12549,7 +12886,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
 
 module.exports = { toParam }
 
-},{"./actions.json":41,"./clone":46,"./decode":61,"./func":72,"./function":73,"./generate":74,"./isParam":85,"./reducer":97,"./toApproval":116,"./toArray":117,"./toCode":121,"./toValue":135}],131:[function(require,module,exports){
+},{"./actions.json":41,"./clone":46,"./decode":62,"./function":74,"./generate":75,"./getType":80,"./isParam":86,"./reducer":98,"./toApproval":117,"./toArray":118,"./toCode":122,"./toFunction":127,"./toValue":137}],133:[function(require,module,exports){
 module.exports = {
     toPdf: async ({ id, options }) => {
 
@@ -12578,7 +12915,7 @@ module.exports = {
         }
     }
 }
-},{}],132:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -12626,7 +12963,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],133:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -12660,7 +12997,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],134:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -12681,13 +13018,12 @@ module.exports = {
   }
 }
 
-},{"./styleName":114}],135:[function(require,module,exports){
+},{"./styleName":115}],137:[function(require,module,exports){
 const { clone } = require("./clone");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
-const actions = require("./actions.json")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -12699,11 +13035,11 @@ function sleep(milliseconds) {
 
 const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, mount, asyncer, createElement, executer, condition }) => {
 
+  const { toFunction } = require("./toFunction")
   const { toParam } = require("./toParam")
 
   var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
-  var _functions = require("./function")
 
   // no value
   if (!value || value === " ") return value
@@ -12766,7 +13102,7 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   if (value.includes("||")) {
     var answer
     value.split("||").map(value => {
-      if (!answer) answer = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition })
+      if (answer === undefined) answer = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition })
     })
     return answer
   }
@@ -12779,12 +13115,27 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
       value = value.slice(0, -2)
       value = `${value}=${value}+1`
       toParam({ req, res, _window, id, e, string: value, _, __, ___, object, mount, params, createElement, condition })
+      return (toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition }) - 1)
 
     } else {
 
-      var values = value.split("+").map(value => toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition }))
-      var newVal = values[0]
-      values.slice(1).map(val => newVal += val)
+      var allAreNumbers = true
+      var values = value.split("+").map(value => {
+        var _value = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, mount, condition })
+        if (allAreNumbers) {
+          if (!isNaN(_value) && !emptySpaces(_value)) allAreNumbers = true
+          else allAreNumbers = false
+        }
+        return _value
+      })
+      
+      if (allAreNumbers) {
+        var newVal = parseFloat(values[0]) || 0
+        values.slice(1).map(val => newVal += (parseFloat(val) || 0))
+      } else {
+        var newVal = values[0]
+        values.slice(1).map(val => newVal += val)
+      }
       return value = newVal
     }
   }
@@ -12824,7 +13175,7 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
     if (_value !== value && _value !== undefined) return _value
   }
   
-  if (value.includes("%") && value.split("/")[1] !== "") { // modulo
+  if (value.includes("%") && value.split("%")[1] !== "") { // modulo
 
     var _value = calcModulo({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
     if (_value !== value && _value !== undefined) return _value
@@ -12838,69 +13189,14 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   // string
   // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
-  var path = typeof value === "string" ? value.split(".") : [], isFn = false, backendFn = false, path0 = path[0].split(":")[0]
+  var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
   
   // function
-  if (path.length === 1 && path0.slice(-2) === "()" && !path0.includes(":") && !_functions[path0.slice(-2)] /*&& !actions.includes(path0)*/ && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
-
-    view && clone(view["my-views"] || []).reverse().map(view => {
-      if (!isFn) {
-        isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) {
-          isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn], start: "'", end: "'" })
-          isFn = toCode({ _window, id, string: isFn })
-        }
-      }
-    })
-      
-    // global functions
-    if (!isFn) {
-      isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
-      if (isFn) {
-        isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
-        isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-      }
-    }
-
-    // backend function
-    if (!isFn) {
-      isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
-      if (isFn) backendFn = true
-    }
-  }
-  
-  if (isFn) {
-    var _params = path[0].split(":")[1], args = path[0].split(":")
-
-    if (backendFn) {
-      
-      if (isParam({ _window, string: args[1] })) {
-
-        var _await = ""
-        var _data = toParam({ req, res, _window, id, e, _, __, ___, string: args[1], condition })
-        var _func = { function: isFn, data: _data }
-        if (args[2]) _await = global.codes[args[2]]
-        
-        return require("./func").func({ _window, id, e, _, __, ___, req, res, func: _func, asyncer: true, await: _await })
-      }
-      
-      var _data = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params, condition })
-      var _func = { function: isFn, data: _data }
-      if (args[2]) _await = global.codes[args[2]]
-
-      return require("./func").func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
-    }
-
-    if (_params) {
-      if (isParam({ _window, string: _params }))
-        _params = toParam({ req, res, _window, id, e, _, __, ___, string: _params, condition })
-      else _params = toValue({ req, res, _window, id, e, _, __, ___, value: _params, condition })
-    }
-    return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, createElement, params, executer, condition })
-  }
+  var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object })
+  if (isFn !== "__CONTINUE__") return isFn
 
   /* value */
-  if (!isNaN(value) && value !== " " && (value.length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
+  if (!isNaN(value) && !emptySpaces(value) && (value.toString().length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
   else if (value === " ") return value
   else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "min") value = "min(" + global.codes[value.slice(3, 15)] + ")"
   else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "max") value = "max(" + global.codes[value.slice(3, 15)] + ")"
@@ -12939,6 +13235,20 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   return value
 }
 
+const emptySpaces = (string) => {
+  if (typeof string === "string") {
+    var empty = true
+    while (string.length > 0) {
+
+      if (string.charAt(0) === " ") empty = true
+      else empty = false
+      string = string.slice(1)
+    }
+    return empty
+  }
+  return false
+}
+
 const calcSubs = ({ _window, value, params, _, __, ___, id, e, req, res, object, condition }) => {
   
   if (value.split("-").length > 1) {
@@ -12950,15 +13260,15 @@ const calcSubs = ({ _window, value, params, _, __, ___, id, e, req, res, object,
       if (allAreNumbers) {
         
         var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-        if (typeof num !== "number" || num === "") allAreNumbers = false
-        return num
+        if (!isNaN(num) && num !== " " && num !== "") return num
+        else allAreNumbers = false
       }
     })
     
     if (allAreNumbers) {
 
-      value = values[0]
-      values.slice(1).map(val => value -= val)
+      value = parseFloat(values[0])
+      values.slice(1).map(val => value -= parseFloat(val))
       // console.log(value);
       return value
 
@@ -12974,15 +13284,15 @@ const calcSubs = ({ _window, value, params, _, __, ___, id, e, req, res, object,
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-          if (typeof num !== "number" || num === "") allAreNumbers = false
-          return num
+          if (!isNaN(num) && num !== " " && num !== "") return num
+          else allAreNumbers = false
         }
       })
 
       if (allAreNumbers) {
 
-        value = values[0]
-        values.slice(1).map(val => value -= val)
+        value = parseFloat(values[0])
+        values.slice(1).map(val => value -= parseFloat(val))
         // console.log(value);
         return value
   
@@ -12997,15 +13307,15 @@ const calcSubs = ({ _window, value, params, _, __, ___, id, e, req, res, object,
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-            if (typeof num !== "number" || num === "") allAreNumbers = false
-            return num
+            if (!isNaN(num) && num !== " " && num !== "") return num
+            else allAreNumbers = false
           }
         })
 
         if (allAreNumbers) {
 
-          value = values[0]
-          values.slice(1).map(val => value -= val)
+          value = parseFloat(values[0])
+          values.slice(1).map(val => value -= parseFloat(val))
           // console.log(value);
           return value
     
@@ -13028,14 +13338,14 @@ const calcDivision = ({ _window, value, params, _, __, ___, id, e, req, res, obj
       if (allAreNumbers) {
         
         var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-        if (typeof num !== "number" || num === "") allAreNumbers = false
-        return num
+        if (!isNaN(num) && num !== " " && num !== "") return num
+        else allAreNumbers = false
       }
     })
     
     if (allAreNumbers) {
 
-      value = values[0]
+      value = parseFloat(values[0])
       values.slice(1).map(val => {
         if (!isNaN(value) && !isNaN(val)) value /= val
         else if (isNaN(value) && !isNaN(val)) {
@@ -13067,14 +13377,14 @@ const calcDivision = ({ _window, value, params, _, __, ___, id, e, req, res, obj
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-          if (typeof num !== "number" || num === "") allAreNumbers = false
-          return num
+          if (!isNaN(num) && num !== " " && num !== "") return num
+          else allAreNumbers = false
         }
       })
 
       if (allAreNumbers) {
 
-        value = values[0]
+        value = parseFloat(values[0])
         values.slice(1).map(val => {
           if (!isNaN(value) && !isNaN(val)) value /= val
           else if (isNaN(value) && !isNaN(val)) {
@@ -13105,14 +13415,14 @@ const calcDivision = ({ _window, value, params, _, __, ___, id, e, req, res, obj
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-            if (typeof num !== "number" || num === "") allAreNumbers = false
-            return num
+            if (!isNaN(num) && num !== " " && num !== "") return num
+            else allAreNumbers = false
           }
         })
 
         if (allAreNumbers) {
 
-          value = values[0]
+          value = parseFloat(values[0])
           values.slice(1).map(val => {
             if (!isNaN(value) && !isNaN(val)) value /= val
             else if (isNaN(value) && !isNaN(val)) {
@@ -13152,14 +13462,14 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
       if (allAreNumbers) {
         
         var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-        if (typeof num !== "number" || num === "") allAreNumbers = false
-        return num
+        if (!isNaN(num) && num !== " " && num !== "") return num
+        else allAreNumbers = false
       }
     })
     
     if (allAreNumbers) {
 
-      value = values[0]
+      value = parseFloat(values[0])
       values.slice(1).map(val => {
         if (!isNaN(value) && !isNaN(val)) value %= val
         else if (isNaN(value) && !isNaN(val)) {
@@ -13191,14 +13501,14 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
 
         if (allAreNumbers) {
           var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-          if (typeof num !== "number" || num === "") allAreNumbers = false
-          return num
+          if (!isNaN(num) && num !== " " && num !== "") return num
+          else allAreNumbers = false
         }
       })
 
       if (allAreNumbers) {
 
-        value = values[0]
+        value = parseFloat(values[0])
         values.slice(1).map(val => {
           if (!isNaN(value) && !isNaN(val)) value %= val
           else if (isNaN(value) && !isNaN(val)) {
@@ -13229,14 +13539,14 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
   
           if (allAreNumbers) {
             var num = toValue({ _window, value, params, _, __, ___, id, e, req, res, object, condition })
-            if (typeof num !== "number" || num === "") allAreNumbers = false
-            return num
+            if (!isNaN(num) && num !== " " && num !== "") return num
+            else allAreNumbers = false
           }
         })
 
         if (allAreNumbers) {
 
-          value = values[0]
+          value = parseFloat(values[0])
           values.slice(1).map(val => {
             if (!isNaN(value) && !isNaN(val)) value %= val
             else if (isNaN(value) && !isNaN(val)) {
@@ -13266,7 +13576,7 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
 
 module.exports = { toValue, calcSubs, calcDivision, calcModulo }
 
-},{"./actions.json":41,"./clone":46,"./func":72,"./function":73,"./generate":74,"./isParam":85,"./reducer":97,"./toCode":121,"./toParam":130}],136:[function(require,module,exports){
+},{"./clone":46,"./generate":75,"./isParam":86,"./reducer":98,"./toCode":122,"./toFunction":127,"./toParam":132}],138:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -13413,7 +13723,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":46,"./createElement":55,"./generate":74,"./search":105,"./setElement":108,"./starter":111,"./toCode":121,"./toParam":130,"./update":137}],137:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./search":106,"./setElement":109,"./starter":112,"./toCode":122,"./toParam":132,"./update":139}],139:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -13520,7 +13830,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":46,"./createElement":55,"./generate":74,"./setElement":108,"./starter":111,"./toArray":117,"./toCode":121,"./toParam":130}],138:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":109,"./starter":112,"./toArray":118,"./toCode":122,"./toParam":132}],140:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -13637,7 +13947,7 @@ const updateSelf = async ({ _window, id, update = {}, route }) => {
 }
 
 module.exports = {updateSelf}
-},{"./clone":46,"./createElement":55,"./generate":74,"./setElement":108,"./starter":111,"./toArray":117,"./toCode":121,"./update":137}],139:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":109,"./starter":112,"./toArray":118,"./toCode":122,"./update":139}],141:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
@@ -13757,12 +14067,12 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./clone":46,"./generate":74,"./toArray":117,"./toAwait":118,"axios":143}],140:[function(require,module,exports){
+},{"./clone":46,"./generate":75,"./toArray":118,"./toAwait":119,"axios":145}],142:[function(require,module,exports){
 module.exports=[ 
   "View", "Box", "Text", "Icon", "Image", "Input", "Video", "Entry", "Map",
   "Swiper", "Switch", "Checkbox", "Swiper", "List", "Item", "Chevron"
 ]
-},{}],141:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 const wait = async ({ id, e, ...params }) => {
 
   // await params
@@ -13770,7 +14080,7 @@ const wait = async ({ id, e, ...params }) => {
 }
 
 module.exports = { wait }
-},{"./toAwait":118}],142:[function(require,module,exports){
+},{"./toAwait":119}],144:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -13837,9 +14147,9 @@ const watch = ({ _window, controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":46,"./execute":67,"./isEqual":84,"./toApproval":116,"./toCode":121,"./toParam":130,"./toValue":135}],143:[function(require,module,exports){
+},{"./clone":46,"./execute":68,"./isEqual":85,"./toApproval":117,"./toCode":122,"./toParam":132,"./toValue":137}],145:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":145}],144:[function(require,module,exports){
+},{"./lib/axios":147}],146:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14030,7 +14340,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":151,"../core/createError":152,"./../core/settle":156,"./../helpers/buildURL":160,"./../helpers/cookies":162,"./../helpers/isURLSameOrigin":165,"./../helpers/parseHeaders":167,"./../utils":170}],145:[function(require,module,exports){
+},{"../core/buildFullPath":153,"../core/createError":154,"./../core/settle":158,"./../helpers/buildURL":162,"./../helpers/cookies":164,"./../helpers/isURLSameOrigin":167,"./../helpers/parseHeaders":169,"./../utils":172}],147:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -14088,7 +14398,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":146,"./cancel/CancelToken":147,"./cancel/isCancel":148,"./core/Axios":149,"./core/mergeConfig":155,"./defaults":158,"./helpers/bind":159,"./helpers/isAxiosError":164,"./helpers/spread":168,"./utils":170}],146:[function(require,module,exports){
+},{"./cancel/Cancel":148,"./cancel/CancelToken":149,"./cancel/isCancel":150,"./core/Axios":151,"./core/mergeConfig":157,"./defaults":160,"./helpers/bind":161,"./helpers/isAxiosError":166,"./helpers/spread":170,"./utils":172}],148:[function(require,module,exports){
 'use strict';
 
 /**
@@ -14109,7 +14419,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],147:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -14168,14 +14478,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":146}],148:[function(require,module,exports){
+},{"./Cancel":148}],150:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],149:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14325,7 +14635,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":160,"../helpers/validator":169,"./../utils":170,"./InterceptorManager":150,"./dispatchRequest":153,"./mergeConfig":155}],150:[function(require,module,exports){
+},{"../helpers/buildURL":162,"../helpers/validator":171,"./../utils":172,"./InterceptorManager":152,"./dispatchRequest":155,"./mergeConfig":157}],152:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14381,7 +14691,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":170}],151:[function(require,module,exports){
+},{"./../utils":172}],153:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -14403,7 +14713,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":161,"../helpers/isAbsoluteURL":163}],152:[function(require,module,exports){
+},{"../helpers/combineURLs":163,"../helpers/isAbsoluteURL":165}],154:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -14423,7 +14733,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":154}],153:[function(require,module,exports){
+},{"./enhanceError":156}],155:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14507,7 +14817,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":148,"../defaults":158,"./../utils":170,"./transformData":157}],154:[function(require,module,exports){
+},{"../cancel/isCancel":150,"../defaults":160,"./../utils":172,"./transformData":159}],156:[function(require,module,exports){
 'use strict';
 
 /**
@@ -14551,7 +14861,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],155:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -14640,7 +14950,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":170}],156:[function(require,module,exports){
+},{"../utils":172}],158:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -14667,7 +14977,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":152}],157:[function(require,module,exports){
+},{"./createError":154}],159:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14691,7 +15001,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":158,"./../utils":170}],158:[function(require,module,exports){
+},{"./../defaults":160,"./../utils":172}],160:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -14829,7 +15139,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":144,"./adapters/xhr":144,"./core/enhanceError":154,"./helpers/normalizeHeaderName":166,"./utils":170,"_process":173}],159:[function(require,module,exports){
+},{"./adapters/http":146,"./adapters/xhr":146,"./core/enhanceError":156,"./helpers/normalizeHeaderName":168,"./utils":172,"_process":175}],161:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -14842,7 +15152,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],160:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14914,7 +15224,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":170}],161:[function(require,module,exports){
+},{"./../utils":172}],163:[function(require,module,exports){
 'use strict';
 
 /**
@@ -14930,7 +15240,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],162:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14985,7 +15295,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":170}],163:[function(require,module,exports){
+},{"./../utils":172}],165:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15001,7 +15311,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],164:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15014,7 +15324,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],165:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15084,7 +15394,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":170}],166:[function(require,module,exports){
+},{"./../utils":172}],168:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -15098,7 +15408,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":170}],167:[function(require,module,exports){
+},{"../utils":172}],169:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15153,7 +15463,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":170}],168:[function(require,module,exports){
+},{"./../utils":172}],170:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15182,7 +15492,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],169:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -15289,7 +15599,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":171}],170:[function(require,module,exports){
+},{"./../../package.json":173}],172:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -15640,7 +15950,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":159}],171:[function(require,module,exports){
+},{"./helpers/bind":161}],173:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -15726,9 +16036,9 @@ module.exports={
   ]
 }
 
-},{}],172:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 
-},{}],173:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

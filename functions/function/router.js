@@ -264,7 +264,7 @@ const initialize = ({ req, res }) => {
             type: "View",
             "my-views": [],
             derivations: [],
-            style: { backgroundColor: "#fff" },
+            style: { backgroundColor: "#fff", position: "relative" },
         },
         public: {
             id: "public",
@@ -291,7 +291,7 @@ const interpret = () => {
 
         // controls & views
         views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
-        views.public.children = Object.values(global.data.public)
+        views.root.children.push(...Object.values(global.data.public))
         // views.public.children.push(...(Object.values(global.data._public_) || []))
         // views.root.children[0].children = toArray(views.root.children[0].children)
 
@@ -309,7 +309,7 @@ const interpret = () => {
         // create views
         console.log("Create views started!")
 
-        var publicInnerHTML = await createElement({ _window, id: "public", req, res })
+        var publicInnerHTML = ""//await createElement({ _window, id: "public", req, res })
         var rootInnerHTML = await createElement({ _window, id: "root", req, res })
 
         console.log("Create views ended!")

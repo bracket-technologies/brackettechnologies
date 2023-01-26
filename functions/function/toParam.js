@@ -7,6 +7,7 @@ const { clone } = require("./clone")
 const { isParam } = require("./isParam")
 const { toArray } = require("./toArray")
 const actions = require("./actions.json")
+const { getType } = require("./getType")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -18,6 +19,7 @@ function sleep(milliseconds) {
 
 const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, createElement, params = {}, executer, condition }) => {
   
+  const { toFunction } = require("./toFunction")
   const { toApproval } = require("./toApproval")
   var _functions = require("./function")
 
@@ -96,7 +98,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
-      global.codes[`coded()${_key}`] = `${myVal}||_string`
+      global.codes[`coded()${_key}`] = toCode({ _window, id, string: `${myVal}||[if():[type():[${value}]=number]:0:_string]` })
       value = `coded()${_key}+${value}`
       /*global.codes[`coded()${_key0}`] = `${value}||0`
       value = `coded()${_key}+coded()${_key0}`*/
@@ -236,7 +238,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       return //view.children
     }
     
-    if (value === undefined) value = generate()
+    if (value === undefined) value = generate();
     else value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
     if (typeof value === "string" && value.includes("&nbsp;")) value = value.replace("&nbsp;", " ")
 
@@ -247,69 +249,10 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     // :coded()1asd1
     if (path0 === "") return
 
-    //////////////////////////////////// function /////////////////////////////////////////
-
-    if (path.length === 1 && path0.slice(-2) === "()" && !_functions[path0.slice(-2)] /*&& !actions.includes(path0)*/ && path0 !== "if()" && path0 !== "log()" && path0 !== "while()") {
-      
-      view && clone(view["my-views"] || []).reverse().map(view => {
-        if (!isFn) {
-          isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === path0.slice(0, -2))
-          if (isFn) {
-            isFn = toCode({ _window, id, string: (global.data.view[view].functions || {})[isFn] })
-            isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-          }
-        }
-      })
-      
-      // global functions
-      if (!isFn) {
-        isFn = Object.keys(global.openFunctions || {}).find(fn => fn === path0.slice(0, -2))
-        if (isFn) {
-          isFn = toCode({ _window, id, string: (global.openFunctions)[isFn] })
-          isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
-        }
-      }
-      
-      if (!isFn) {
-        isFn = (global.functions || []).find(fn => fn === path0.slice(0, -2))
-        if (isFn) backendFn = true
-      }
-
-    }
-
-    if (isFn) {
-
-      var _params = path[0].split(":")[1], args = path[0].split(":")
-      
-      if (backendFn) {
-        
-        if (isParam({ _window, string: args[1] })) {
-
-          var _await = ""
-          var _data = toParam({ req, res, _window, id, e, _, __, ___, _i, string: args[1] })
-          var _func = { function: isFn, data: _data }
-          if (args[2]) _await = global.codes[args[2]]
-          
-          return require("./func").func({ _window, id, e, _, __, ___, _i, req, res, func: _func, asyncer: true, await: _await })
-        }
-        
-        var _data = toValue({ req, res, _window, id, e, _, __, ___, _i, value: args[1], params })
-        var _func = { function: isFn, data: _data }
-        if (args[2]) _await = global.codes[args[2]]
-        
-        return require("./func").func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
-      }
-
-      if (_params) {
-
-        var _key = generate()
-        global.codes[`coded()${_key}`] = _params
-        if (isParam({ _window, string: _params })) _params = toParam({ req, res, _window, id, e, _, __, ___, _i, string: `coded()${_key}` })
-        else _params = toValue({ req, res, _window, id, e, _, __, ___, _i, value: _params })
-      }
-      
-      return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i, asyncer, createElement, params, executer })
-    }
+    // function
+    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object })
+    if (isFn !== "__CONTINUE__") return isFn
+    else isFn = false
     
     // field:action()
     if (path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {

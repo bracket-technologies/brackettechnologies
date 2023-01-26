@@ -72,7 +72,8 @@ module.exports = {
             ${Object.entries(view).map(([key, value]) => 
               typeof value === "object" && !Array.isArray(value)
                 ? `${key} {
-                ${Object.entries(value).map(([key, value]) => `${require("./styleName")(key)}: ${value.toString().replace(/\\/g, '')}; `)}
+                ${Object.entries(value).map(([key, value]) => `${require("./styleName")(key)}: ${value.toString().replace(/\\/g, '')}`).join(`;
+                `)};
                 }` : "").filter(style => style).join(`
               `)}
             

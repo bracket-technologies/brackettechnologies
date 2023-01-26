@@ -1,39 +1,50 @@
 const axios = require("axios");
 const { clone } = require("./clone");
+const { deleteData } = require("./database");
 const { toArray } = require("./toArray");
 const { toString } = require("./toString")
 
 const erase = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 
-  var global = window.global
+  var global = _window ? _window.global : window.global
+  var view = _window ? _window.views[id] : window.views[id]
   var erase = params.erase || {}
-  var view = window.views[id]
   var headers = erase.headers || {}
   headers.project = headers.project || global.projectId
   var store = erase.store || "database"
   
   erase.docs = toArray(erase.doc || erase.docs || erase.id || (erase.data && clone(toArray(erase.data.map(data => data.id)))))
-  // if (erase.docs.length === 0) return
-  // delete erase.data
 
-  // erase
-  headers.erase = encodeURI(toString({ erase }))
-  headers.timestamp = (new Date()).getTime()
+  if (_window) {
+    
+    var data = await deleteData({ req, res, erase })
 
-  // access key
-  if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
+    view.erase = global.erase = clone(data)
+    console.log("erase", data)
+  
+    if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
 
-  var { data } = await axios.delete(`/${store}`, {
-    headers: {
-      "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-      ...headers
-    }
-  })
+  } else {
 
-  view.erase = global.erase = clone(data)
-  /*if (!_window) */console.log("erase", data)
+    // erase
+    headers.erase = encodeURI(toString({ erase }))
+    headers.timestamp = (new Date()).getTime()
 
-  if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
+    // access key
+    if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
+
+    var { data } = await axios.delete(`/${store}`, {
+      headers: {
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+        ...headers
+      }
+    })
+
+    view.erase = global.erase = clone(data)
+    console.log("erase", data)
+  
+    if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
+  }
 }
 
 module.exports = { erase }

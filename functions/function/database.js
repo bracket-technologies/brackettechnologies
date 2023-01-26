@@ -5,31 +5,44 @@ const { toArray } = require("./toArray")
 
 var getdb = async ({ req, res }) => {
 
-  var db = req.db
   var _window = { global: { codes: {} }, views: {} }
   var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
   
   if (string) params = toParam({ _window, string, id: "" })
   var search = params.search || {}
+  var { data, success, message } = await getData({ req, res, search })
 
+  return res.send({ data, success, message })
+}
+
+var postdb = async ({ req, res }) => {
+  
+  var save = req.body.save || {}
+  var { data, success, message } = await postData({ req, res, save })
+
+  return res.send({ data, success, message })
+}
+
+var deletedb = async ({ req, res }) => {
+  
+  var _window = { global: { codes: {} }, views: {} }
+  var string = decodeURI(req.headers.erase), params = {}
+  string = toCode({ _window, string })
+  
+  if (string) params = toParam({ _window, string, id: "" })
+  var erase = params.erase || {}
+
+  var { data, success, message } = await deleteData({ req, res, erase })
+  
+  return res.send({ success, message })
+}
+
+const getData = async ({ req, res, search }) => {
+
+  var db = req.db
   var collection = search.collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
-
-  if (false) {
-
-    // developer data => force reload
-    var forceReload, developerData
-    await db.collection("_developer_").doc(req.headers["project"]).get().then(doc => {
-      developerData = doc.data() || {}
-      forceReload = developerData.forceReload
-    })
-    if (forceReload) {
-      developerData.forceReload = false
-      db.collection("_developer_").doc(req.headers["project"]).set(developerData)
-      return res.send({ message: "Force reload!" })
-    }
-  }
 
   var doc = search.document || search.doc,
     docs = search.documents || search.docs,
@@ -40,7 +53,6 @@ var getdb = async ({ req, res }) => {
     promises = [], project
   
   /////////////////// verify access key ///////////////////// access key is stopped
-  // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
   project = { ["accesskey"]: req.headers["accesskey"] }
   
   if (search.url) {
@@ -68,16 +80,8 @@ var getdb = async ({ req, res }) => {
       success = false
       message = `Error!`
     }
-    /*
-    await Promise.all(promises)
-    if (project["accesskey"] !== req.headers["accesskey"]) {
 
-      success = false
-      message = `Your are not verified!`
-      return res.send({ success, message })
-    }*/
-
-    return res.send({ data, success, message })
+    return ({ data, success, message })
   }
 
   if (docs) {
@@ -104,16 +108,8 @@ var getdb = async ({ req, res }) => {
     })
     
     await Promise.all(promises)
-    /*
-    if (project["accesskey"] !== req.headers["accesskey"]) {
-
-      success = false
-      message = `Your are not verified!`
-      return res.send({ success, message })
-    }
-    */
    
-    return res.send({ data, success, message })
+    return ({ data, success, message })
   }
 
   if (doc) {
@@ -135,10 +131,10 @@ var getdb = async ({ req, res }) => {
 
       success = false
       message = `Your are not verified!`
-      return res.send({ success, message })
+      return ({ success, message })
     }
 
-    return res.send({ data, success, message })
+    return ({ data, success, message })
   }
 
   if (!doc && !field) {
@@ -163,13 +159,13 @@ var getdb = async ({ req, res }) => {
 
       success = false
       message = `Your are not verified!`
-      return res.send({ success, message })
+      return ({ success, message })
     }
 
-    return res.send({ data, success, message })
+    return ({ data, success, message })
   }
 
-  const myPromise = () => new Promise(async (resolve, rej) => {
+  const myPromise = () => new Promise(async (resolve) => {
 
     // search field
     var multiIN = false, _ref = ref
@@ -217,51 +213,22 @@ var getdb = async ({ req, res }) => {
     }
     
     resolve({ data, success, message })
-    /*setTimeout(() => {
-      res("foo")
-    }, 10000)*/
   })
 
   var { data, success, message } = await myPromise()
-    
-  /*
-  await Promise.all(promises)
-  if (project["accesskey"] !== req.headers["accesskey"]) {
-
-    success = false
-    message = `Your are not verified!`
-    return res.send({ success, message })
-  }
-  */
-  return res.send({ data, success, message })
+  return ({ data, success, message })
 }
 
-var postdb = async ({ req, res }) => {
-  
-  var db = req.db
-  var data = req.body.data
-  var save = req.body.save || {}
+const postData = async ({ req, res, save }) => {
 
   // collection
+  var db = req.db
+  var data = req.body.data
   var collection = save.collection, schema
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   var ref = db.collection(collection)
   var success, message
-
-  /////////////////// verify access key ///////////////////// access key is stopped
-  // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
-  /*
-  project = { ["accesskey"]: req.headers["accesskey"] }
-
-  await Promise.all(promises)
-  if (project["accesskey"] !== req.headers["accesskey"]) {
-
-    success = false
-    message = `Your are not verified!`
-    return res.send({ success, message })
-  }
-*/
 
   // get schema
   if (save.schematize) {
@@ -293,7 +260,6 @@ var postdb = async ({ req, res }) => {
 
         if (idList[i]) {
 
-          //if (!data.id) data.id = generate({ length: 20 })
           if (!data["creation-date"]) {
             if (req.headers.timestamp) {
 
@@ -307,16 +273,6 @@ var postdb = async ({ req, res }) => {
           }
 
           batch.set(db.collection(collection).document(idList[i].toString()), data)
-          /*ref.doc(data.id.toString()).set(data).then(() => {
-
-            success = true
-            message = `Document saved successfuly!`
-      
-          }).catch(error => {
-      
-            success = false
-            message = error
-          })*/
 
           // Commit the batch
           batch.commit().then(() => {
@@ -360,37 +316,20 @@ var postdb = async ({ req, res }) => {
     })
   }
 
-  return res.send({ data, success, message })
+  return ({ data, success, message })
 }
 
-var deletedb = async ({ req, res }) => {
-  
+const deleteData = async ({ req, res, erase }) => {
+
   var db = req.db, docs
   var storage = req.storage
-  var _window = { global: { codes: {} }, views: {} }
-  var string = decodeURI(req.headers.erase), params = {}
-  string = toCode({ _window, string })
-  
-  if (string) params = toParam({ _window, string, id: "" })
-  var erase = params.erase || {}
-
   var collection = erase.collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   
   var ref = db.collection(collection)
-  var success, message, promises = [], project
+  var success, message
 
   /////////////////// verify access key ///////////////////// access key is stopped
-  // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
-  /*project = { ["accesskey"]: req.headers["accesskey"] }
-  
-  await Promise.all(promises)
-  if (project["accesskey"] !== req.headers["accesskey"]) {
-
-    success = false
-    message = `Your are not verified!`
-    return res.send({ success, message })
-  }*/
 
   if (erase.collection === "storage" && erase.field) {
 
@@ -443,9 +382,6 @@ var deletedb = async ({ req, res }) => {
       }
       
       resolve({ data, success, message })
-      /*setTimeout(() => {
-        res("foo")
-      }, 10000)*/
     })
   
     var { data, success, message } = await myPromise()
@@ -453,7 +389,7 @@ var deletedb = async ({ req, res }) => {
   }
 
   docs = erase.docs
-  docs.map(async doc => {
+  await docs.map(async doc => {
     
     await ref.doc(doc.toString()).delete().then(() => {
 
@@ -472,20 +408,15 @@ var deletedb = async ({ req, res }) => {
       if (exists) await storage.bucket().file(`${collection}/${doc}`).delete()
     }
   })
-
-  /*await Promise.all(promises)
-  if (project["accesskey"] !== req.headers["accesskey"]) {
-
-    success = false
-    message = `Your are not verified!`
-    return res.send({ success, message })
-  }*/
   
-  return res.send({ success, message })
+  return ({ data, success, message })
 }
 
 module.exports = {
   getdb,
+  getData,
   postdb,
-  deletedb
+  postData,
+  deletedb,
+  deleteData
 }
