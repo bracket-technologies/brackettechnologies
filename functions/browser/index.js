@@ -1061,7 +1061,7 @@ module.exports = ({ controls, id }) => {
   window.views[id].actionlist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?if():[actionlistCaller:()!=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=().id]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()].elif():[actionlistCaller:()!=().id]:[().actionlist.undeletable||=_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;actionlistCaller:()=().id;actionlistCallerId:()=().id;path=${controls.path || ""};update():actionlist;():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._];():actionlist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}]]`
+    event: `click?if():[actionlistCaller:()!=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()].elif():[actionlistCaller:()!=${id}]:[().actionlist.undeletable||=_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;actionlistCaller:()=${id};actionlistCallerId:()=${id};path=${controls.path || ""};update():actionlist;():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._];timer():[():actionlist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}]]:100]`
   }]
 }
 },{}],13:[function(require,module,exports){
@@ -4582,26 +4582,27 @@ const getParam = ({ string, param, defValue }) => {
 module.exports = {getParam}
 
 },{"./toParam":132}],80:[function(require,module,exports){
-module.exports = {
-  getType: (value) => {
-    if (typeof value === "boolean" || value === "true" || value === "false") return "boolean"
-    if (typeof value === "object" && Array.isArray(value)) return "array"
-    if (typeof value === "object") return "map"
-    if (typeof value === "function") return "function"
-    if (typeof value === "number" || !isNaN(value)) {
-        
-      if (value.length >= 10 && value.length <=13 && !isNaN(value) && value.slice(0, 2) !== "0") return "timestamp"
-      if (value.length === 8 && value.slice(0, 2) !== "00" && !isNaN(value)) return "time"
-      
-      if ((value + "").length >= 10 && (value + "").length <= 13 && (value + "").slice(0, 2) !== "0") return "timestamp"
-      if ((value + "").length === 8 && (value + "").slice(0, 2) !== "00") return "time"
-      //if (typeof value === "number") return "number"
-      return "number"
-    }
-    if (typeof value === "string") return "string"
+const getType = (value) => {
+  const { emptySpaces } = require("./toValue")
+
+  if (typeof value === "boolean" || value === "true" || value === "false") return "boolean"
+  if (typeof value === "object" && Array.isArray(value)) return "array"
+  if (typeof value === "object") return "map"
+  if (typeof value === "function") return "function"
+  if (typeof value === "number" || (typeof value === "string" && !isNaN(value) && !emptySpaces(value))) {
+
+    if (value.length >= 10 && value.length <= 13 && !isNaN(value) && value.slice(0, 2) !== "0") return "timestamp"
+    if (value.length === 8 && value.slice(0, 2) !== "00" && !isNaN(value)) return "time"
+
+    if ((value + "").length >= 10 && (value + "").length <= 13 && (value + "").slice(0, 2) !== "0") return "timestamp"
+    if ((value + "").length === 8 && (value + "").slice(0, 2) !== "00") return "time"
+    if (typeof value === "number") return "number"
+    return "string"
   }
+  if (typeof value === "string") return "string"
 }
-},{}],81:[function(require,module,exports){
+module.exports = { getType }
+},{"./toValue":137}],81:[function(require,module,exports){
 (function (global){(function (){
 const { toAwait } = require("./toAwait")
 
@@ -5369,6 +5370,7 @@ module.exports = {
                 if (options["after-print"]) toParam({ string: options["after-print"], id, mount: true })
             }
         })
+        
         window.print()
     }
 }
@@ -12529,17 +12531,13 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     // increment
     if (key && value === undefined && key.slice(-2) === "++") {
       key = key.slice(0, -2)
-      var _key = generate()
-      global.codes[`coded()${_key}`] = `${key}||0`
-      value = `coded()${_key}+1`
+      value = parseFloat(toValue({ _window, req, res, id, e, value: key, params, _, __, ___, condition, object }) || 0) + 1
     }
 
-    // --
+    // decrement
     else if (key && value === undefined && key.slice(-2) === "--") {
       key = key.slice(0, -2)
-      var _key = generate()
-      global.codes[`coded()${_key}`] = `${key}||0`
-      value = `coded()${_key}-1`
+      value = parseFloat(toValue({ _window, req, res, id, e, value: key, params, _, __, ___, condition, object }) || 0) - 1
     }
 
     // ||=
@@ -12697,8 +12695,9 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       return //view.children
     }
     
-    if (value === undefined) value = generate();
-    else value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
+    if (typeof value === 'string') value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
+    else if (value === undefined) value = generate()
+    
     if (typeof value === "string" && value.includes("&nbsp;")) value = value.replace("&nbsp;", " ")
 
     id = viewId
@@ -13574,7 +13573,7 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
   return value
 }
 
-module.exports = { toValue, calcSubs, calcDivision, calcModulo }
+module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces }
 
 },{"./clone":46,"./generate":75,"./isParam":86,"./reducer":98,"./toCode":122,"./toFunction":127,"./toParam":132}],138:[function(require,module,exports){
 const { generate } = require("./generate")

@@ -14,6 +14,7 @@ module.exports = {
                 if (options["after-print"]) toParam({ string: options["after-print"], id, mount: true })
             }
         })
+        
         window.print()
     }
 }

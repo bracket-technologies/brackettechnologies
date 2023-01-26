@@ -70,17 +70,13 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     // increment
     if (key && value === undefined && key.slice(-2) === "++") {
       key = key.slice(0, -2)
-      var _key = generate()
-      global.codes[`coded()${_key}`] = `${key}||0`
-      value = `coded()${_key}+1`
+      value = parseFloat(toValue({ _window, req, res, id, e, value: key, params, _, __, ___, condition, object }) || 0) + 1
     }
 
-    // --
+    // decrement
     else if (key && value === undefined && key.slice(-2) === "--") {
       key = key.slice(0, -2)
-      var _key = generate()
-      global.codes[`coded()${_key}`] = `${key}||0`
-      value = `coded()${_key}-1`
+      value = parseFloat(toValue({ _window, req, res, id, e, value: key, params, _, __, ___, condition, object }) || 0) - 1
     }
 
     // ||=
@@ -238,8 +234,9 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       return //view.children
     }
     
-    if (value === undefined) value = generate();
-    else value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
+    if (typeof value === 'string') value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
+    else if (value === undefined) value = generate()
+    
     if (typeof value === "string" && value.includes("&nbsp;")) value = value.replace("&nbsp;", " ")
 
     id = viewId

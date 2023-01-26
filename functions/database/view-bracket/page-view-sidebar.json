@@ -116,7 +116,7 @@
                     "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
                     "wait():save:note:[update:page-list]?save.collection=page;save.doc=txt();save.data=data:().editor.page.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
                   ],
-                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.page.txt()=data:().editor.page.[open-doc:()||duplicate-doc:()].clone();data:().editor.page.[txt()].id=txt()]:[data:().editor.page.txt()=_map:creation-date:[today().timestamp()]:view:[txt()+'?title='+[txt().split():-.join(): .capitalize()]+';path=/'+if():[txt()!=main]:txt()]:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.page.keys().inc():txt();!txt().inc(): "
+                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.page.txt()=data:().editor.page.[open-doc:()||duplicate-doc:()].clone();data:().editor.page.[txt()].id=txt()]:[data:().editor.page.txt()=_map:view:[txt()+'?title='+[txt().split():-.join(): .capitalize()]+';path=/'+if():[txt()!=main]:txt()]:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.page.keys().inc():txt();!txt().inc(): "
                 }
               ],
               "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -250,7 +250,7 @@
                         "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
                         "wait():save:note:[update:public-list]?save.collection=public;save.doc=txt();save.data=data:().editor.public.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
                       ],
-                      "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.public.txt()=data:().editor.public.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.public.txt()=_map:creation-date:[today().timestamp()]:view:['View:'+txt()+'?class=column']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.public.keys().inc():txt();!txt().inc(): "
+                      "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.public.txt()=data:().editor.public.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.public.txt()=_map:view:['View:'+txt()+'?class=column']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.public.keys().inc():txt();!txt().inc(): "
                     }
                   ],
                   "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -310,7 +310,7 @@
                     "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
                     "wait():save:note:[update:view-list]?save.collection=view;save.doc=txt();save.data=data:().editor.view.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
                   ],
-                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.view.txt()=data:().editor.view.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.view.txt()=_map:creation-date:[today().timestamp()]:view:['View:'+txt()+'?class=column;style:[minHeight=100vh]']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.view.keys().inc():txt();!txt().inc(): "
+                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.view.txt()=data:().editor.view.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.view.txt()=_map:view:['View:'+txt()+'?class=column;style:[minHeight=100vh]']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.view.keys().inc():txt();!txt().inc(): "
                 }
               ],
               "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"

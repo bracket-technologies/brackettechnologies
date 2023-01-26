@@ -553,4 +553,4 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
   return value
 }
 
-module.exports = { toValue, calcSubs, calcDivision, calcModulo }
+module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces }
