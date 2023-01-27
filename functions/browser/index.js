@@ -3859,7 +3859,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
             // approval
             if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
             
-            if (controls.actions || controls.action) await execute({ controls, e, id: mainID })
+            if (controls.actions || controls.action) execute({ controls, e, id: mainID })
           }
 
           if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") setTimeout(_myFn, 100)
@@ -9160,7 +9160,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               _params.path = toValue({ req, res, _window, id, e, _, __, ___, params, value: args[1] })
             }
             
-            answer = require("./sort").sort({ sort: _params, id, e })
+            answer = require("./sort").sort({ _window, sort: _params, id, e })
             if (Array.isArray(o)) o = answer
             
             return answer
@@ -11414,9 +11414,9 @@ const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 
-const sort = ({ _window, sort = {}, id, e }) => {
+const sort = ({ _window = {}, sort = {}, id, e }) => {
 
-  var view = window.views[id]
+  var view = _window ? _window.views[id] : window.views[id]
   if (!view) return
   
   // data
@@ -11440,7 +11440,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
   data.sort((a, b) => {
     
-    a = reducer({ id, path, object: a, e }) || "!"
+    a = reducer({ _window, id, path, object: a, e }) || "!"
     
     if (a !== undefined) {
       a = a.toString()
@@ -11455,7 +11455,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
       }
     }
 
-    b = reducer({ id, path, object: b, e }) || "!"
+    b = reducer({ _window, id, path, object: b, e }) || "!"
 
     if (b !== undefined) {
       b = b.toString()
@@ -11534,7 +11534,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./reducer":98,"./toArray":118,"./toCode":122}],112:[function(require,module,exports){
-const control = require("../control/control")
+const _controls_ = require("../control/control")
 const { toArray } = require("./toArray")
 
 const starter = ({ id }) => {
@@ -11549,7 +11549,7 @@ const starter = ({ id }) => {
   view.status = "Mounting Functions"
 
   // lunch auto controls
-  Object.entries(control).map(([type, control]) => {
+  Object.entries(_controls_).map(([type, control]) => {
 
     if (view[type]) {
       
@@ -12322,9 +12322,10 @@ module.exports = ({ _window, id, innerHTML }) => {
   // innerhtml
   innerHTML = innerHTML || (view.type !== "View" && view.type !== "Box" ? text : "")
   if (view.required && view.type === "Text") {
+    if (typeof view.required === "string") view.required = {}
     type = "View"
     view.style.display = "block"
-    innerHTML += `<span style='color:red; font-size:${view.style.fontSize||"1.6rem"}; padding:${view.style.padding||"0 .4rem"}'>*</span>`
+    innerHTML += `<span style='color:red; font-size:${(view.required.style && view.required.style.fontSize)||"1.6rem"}; padding:${(view.required.style && view.required.style.padding)||"0 0.4rem"}'>*</span>`
   }
   
   // set style

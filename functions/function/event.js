@@ -237,7 +237,7 @@ const addEventListener = ({ _window, controls, id, req, res }) => {
             // approval
             if (viewEventParams) await toParam({ _window, req, res, string: viewEventParams, e, id: mainID, mount: true })
             
-            if (controls.actions || controls.action) await execute({ controls, e, id: mainID })
+            if (controls.actions || controls.action) execute({ controls, e, id: mainID })
           }
 
           if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") setTimeout(_myFn, 100)

@@ -3783,7 +3783,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               _params.path = toValue({ req, res, _window, id, e, _, __, ___, params, value: args[1] })
             }
             
-            answer = require("./sort").sort({ sort: _params, id, e })
+            answer = require("./sort").sort({ _window, sort: _params, id, e })
             if (Array.isArray(o)) o = answer
             
             return answer

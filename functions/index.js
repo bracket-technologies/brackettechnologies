@@ -25,6 +25,7 @@ firebase.initializeApp({
 const db = firebase.firestore()
 const rdb = firebase.database()
 const storage = firebase.storage()
+db.settings({ ignoreUndefinedProperties: true })
 
 const app = express()
 

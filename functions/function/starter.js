@@ -1,4 +1,4 @@
-const control = require("../control/control")
+const _controls_ = require("../control/control")
 const { toArray } = require("./toArray")
 
 const starter = ({ id }) => {
@@ -13,7 +13,7 @@ const starter = ({ id }) => {
   view.status = "Mounting Functions"
 
   // lunch auto controls
-  Object.entries(control).map(([type, control]) => {
+  Object.entries(_controls_).map(([type, control]) => {
 
     if (view[type]) {
       

@@ -1,5 +1,4 @@
 //
-var params = {};
 const { createElement } = require("./createElement");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
@@ -9,11 +8,11 @@ const bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:80
 
 require("dotenv").config();
 
-const project = ({ req, res }) => {
+const project = ({ window }) => {
     
     return new Promise (async resolve => {
 
-        var { global, db } = params, promises = [], project, host = global.host
+        var { req, res, global } = window, db = req.db, promises = [], project, host = global.host
         if (!host) return res.send("Project cannot be found!")
 
         // is brakcet domain
@@ -200,9 +199,9 @@ const project = ({ req, res }) => {
     })
 }
 
-const status = () => {
+const status = (window = {}) => {
 
-    var { global } = params
+    var { global } = window
 
     if (!global.data.project || !global.data.project.id) return "Project not found!"
     if (!global.data.page) return "No pages found!"
@@ -212,20 +211,19 @@ const status = () => {
     return "Document is ready!"
 }
 
-const initialize = ({ req, res }) => {
+const initialize = ({ window }) => {
   
     // Create a cookies object
-    var host = req.headers.host || req.headers.referer// || req.headers["x-forwarded-host"]
+    var { req, res } = window, host = req.headers.host || req.headers.referer
     if (!host && req.headers.host && req.headers.host.includes("localhost")) host = req.headers.host
-    // if (req.url.split("/")[1] === "undefined") return res.send("")
     if (!host) return res.send("Project cannot be found!")
     
     // current page
-    var currentPage = req.url.split("/")[1] || "", db = req.db
+    var currentPage = req.url.split("/")[1] || ""
     currentPage = currentPage || "main"
     
     // get assets & views
-    var global = {
+    window.global = {
         timer: new Date().getTime(),
         data: {
             account: {},  
@@ -255,7 +253,7 @@ const initialize = ({ req, res }) => {
         functions: []
     };
 
-    var views = {
+    window.views = {
         body: {
             id: "body",
         },
@@ -273,16 +271,13 @@ const initialize = ({ req, res }) => {
             "my-views": []
         }
     }
-
-    params = { req, res, global, views, db }
-    return { global, views }
 }
 
-const interpret = () => {
+const interpret = ({ window }) => {
 
     return new Promise(async resolve => {
 
-        var { req, res, global, views } = params
+        var { req, res, global, views } = window
         var _window = { global, views }
         if (res.headersSent) return
 
@@ -291,8 +286,8 @@ const interpret = () => {
 
         // controls & views
         views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
-        views.root.children.push(...Object.values(global.data.public))
-        // views.public.children.push(...(Object.values(global.data._public_) || []))
+        // views.root.children.push(...Object.values(global.data.public))
+        views.public.children = Object.values(global.data.public)
         // views.root.children[0].children = toArray(views.root.children[0].children)
 
         if (!global.data.project) return res.send("Project does not exist or something went wrong! Refresh")
@@ -309,7 +304,7 @@ const interpret = () => {
         // create views
         console.log("Create views started!")
 
-        var publicInnerHTML = ""//await createElement({ _window, id: "public", req, res })
+        var publicInnerHTML = await createElement({ _window, id: "public", req, res })
         var rootInnerHTML = await createElement({ _window, id: "root", req, res })
 
         console.log("Create views ended!")
@@ -326,13 +321,16 @@ const interpret = () => {
 }
 
 const app = async ({ req, res }) => {
-  
-    var { global, views } = initialize({ req, res })
+    
+    var window = { req, res }
+    initialize({ window })
     if (res.headersSent) return
-    await project({ req, res })
+    await project({ window })
     if (res.headersSent) return
-    await interpret({ req, res })
+    await interpret({ window })
     if (res.headersSent) return
+
+    var { global, views } = window
     
     var currentPage = global.currentPage
     var innerHTML = global.innerHTML

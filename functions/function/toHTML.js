@@ -15,9 +15,10 @@ module.exports = ({ _window, id, innerHTML }) => {
   // innerhtml
   innerHTML = innerHTML || (view.type !== "View" && view.type !== "Box" ? text : "")
   if (view.required && view.type === "Text") {
+    if (typeof view.required === "string") view.required = {}
     type = "View"
     view.style.display = "block"
-    innerHTML += `<span style='color:red; font-size:${view.style.fontSize||"1.6rem"}; padding:${view.style.padding||"0 .4rem"}'>*</span>`
+    innerHTML += `<span style='color:red; font-size:${(view.required.style && view.required.style.fontSize)||"1.6rem"}; padding:${(view.required.style && view.required.style.padding)||"0 0.4rem"}'>*</span>`
   }
   
   // set style
