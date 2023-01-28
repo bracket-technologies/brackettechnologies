@@ -306,15 +306,18 @@ module.exports = (view) => {
     "view": `View?class=flex align-center;style:[gap=1.5rem];${toString(style)}`,
     "children": [
       {
-        "view": `View:${view.id}-box?${toString(box)};CHECKBOX_STATE:().${group.state}.clicked=_list;if():[${group.multiple};!data()]:[data()=_list];class=flexbox pointer +${box.class||""};style:[height=[().style.height||2rem];width=[().style.width||2rem];position=[().style.position||relative];borderRadius=[().style.borderRadius||.35rem];transition=[().style.transition||.1s]];if():${model2}:[checked.style:[backgroundColor=[().checked.style.backgroundColor||#fff];border=[().checked.style.border||1px solid #ccc]]];style:[backgroundColor=if():[checked.checked]:[().checked.style.backgroundColor||'#2C6ECB']:[().style.backgroundColor||'#fff'];border=if():[checked.checked]:[().checked.style.border||'1px solid #ffffff00']:[().style.border||'1px solid #ccc']]`,
+        "view": `View:${view.id}-box?${toString(box)};if():[parent().group.state]:[CHECKBOX_STATE:().${group.state}.clicked=_list];if():[${group.multiple};!data()]:[data()=_list];class=flexbox pointer +${box.class||""};style:[height=[().style.height||2rem];width=[().style.width||2rem];position=[().style.position||relative];borderRadius=[().style.borderRadius||.35rem];transition=[().style.transition||.1s]];if():${model2}:[checked.style:[backgroundColor=[().checked.style.backgroundColor||#fff];border=[().checked.style.border||1px solid #ccc]]];style:[backgroundColor=if():[checked.checked]:[().checked.style.backgroundColor||'#2C6ECB']:[().style.backgroundColor||'#fff'];border=if():[checked.checked]:[().checked.style.border||'1px solid #ffffff00']:[().style.border||'1px solid #ccc']]`,
         "children": [{
           "view": `Icon:${view.id}-icon?name=check;google.symbol;${toString(icon)};style:[position=[().style.position||absolute];color=[().style.color||#fff];transition=[().style.transition||.1s]];if():${model2}:[style:[fontSize=[().style.fontSize||3.5rem];left=[().style.left||'-.5rem'];bottom=[().style.bottom||'-.5rem']];checked.style.color=[().checked.style.bottom||blue]]:[style.fontSize=[().style.fontSize||1.8rem]];style:[opacity=if():[checked.checked]:1:0]`
         }],
         "controls": [{
-          "event": `click?if():[parent().group.state;${!group.multiple};CHECKBOX_STATE:().${group.state}.clicked.0;if():[parent().required||parent().group.required]:true:[CHECKBOX_STATE:().${group.state}.clicked.0!=().id]]:[clickedItem=CHECKBOX_STATE:().${group.state}.clicked.0;CHECKBOX_STATE:().${group.state}.clicked.pull():0;():[().clickedItem]._():[_.checked.checked=false;_.child()._():[_.style().opacity=0;_.checked.style._():[__.style()._=[__.style._||null]]];if():${!group.multiple}:[_.data().del()]:[_.data().pullItem():[_.next().value]];_.style():[backgroundColor=#fff;border=1px solid #ccc];_.checked.style._():[__.style()._=[__.style._||null]]]];if():[!checked.checked]:[checked.checked=true;CHECKBOX_STATE:().${group.state}.clicked.push():[().id];child()._():[_.style().opacity=1;_.style():[_.checked.style]];if():${!group.multiple}:[data()=next().value]:[data().replaceItem():[next().value]];style():[backgroundColor=#2C6ECB;border=1px solid #ffffff00];style():[().checked.style]]:[if():[[parent().group.required;data().len()>[parent().group.min||1]]||!parent().group.required]:[checked.checked=false;CHECKBOX_STATE:().${group.state}.clicked.pullItem():[().id];child()._():[_.style().opacity=0;_.checked.style._():[__.style()._=[__.style._||null]]];if():${!group.multiple}:[data().del()]:[data().pullItem():[next().value]];style():[backgroundColor=#fff;border=1px solid #ccc];().checked.style._():[style()._=[().style._||null]]]]`
+          "event": `click?if():[parent().group.state;${!group.multiple};CHECKBOX_STATE:().${group.state}.clicked.0;if():[parent().required||parent().group.required]:true:[CHECKBOX_STATE:().${group.state}.clicked.0!=().id]]:[clickedItem=CHECKBOX_STATE:().${group.state}.clicked.0;CHECKBOX_STATE:().${group.state}.clicked.pull():0;():[().clickedItem]._():[_.checked.checked=false;_.child()._():[_.style().opacity=0;_.checked.style._():[__.style()._=[__.style._||null]]];if():${!group.multiple}:[_.data().del()]:[_.data().pullItem():[_.next().value]];_.style():[backgroundColor=#fff;border=1px solid #ccc];_.checked.style._():[__.style()._=[__.style._||null]]]];if():[!checked.checked]:[checked.checked=true;if():[parent().group.state]:[CHECKBOX_STATE:().${group.state}.clicked.push():[().id]];child()._():[_.style().opacity=1;_.style():[_.checked.style]];if():${!group.multiple}:[data()=next().value]:[data().replaceItem():[next().value]];style():[backgroundColor=#2C6ECB;border=1px solid #ffffff00];style():[().checked.style]]:[if():[[parent().group.required;data().len()>[parent().group.min||1]]||!parent().group.required]:[checked.checked=false;CHECKBOX_STATE:().${group.state}.clicked.pullItem():[().id];child()._():[_.style().opacity=0;_.checked.style._():[__.style()._=[__.style._||null]]];if():[parent().group.state]:[${!group.multiple}:[data().del()]:[data().pullItem():[next().value]]];style():[backgroundColor=#fff;border=1px solid #ccc];().checked.style._():[style()._=[().style._||null]]]]?parent().group.state`
         },
         {
-          "event": `loaded?if():${group.multiple}:[if():[data().inc():[next().value]]:click()]:[if():[data()=next().value]:click()]`
+          "event": `loaded?if():${group.multiple}:[if():[data().inc():[next().value]]:click()]:[if():[[parent().boolean;data()]||data()=next().value]:click()]`
+        }, 
+        {
+          "event": `click?if():[checked.checked=true]:[data()=false;checked.checked=false;child()._():[_.style().opacity=0;_.checked.style._():[__.style()._=[__.style._||null]]];style():[backgroundColor=#fff;border=1px solid #ccc];checked.style._():[__.style()._=[__.style._||null]]]:[data()=true;checked.checked=true;child()._():[_.style().opacity=1;_.style():[_.checked.style]];style():[backgroundColor=#2C6ECB;border=1px solid #ffffff00];style():[().checked.style]]?!parent().group.state;parent().boolean`
         }]
       },
       {
@@ -519,6 +522,7 @@ const Input = (component) => {
     if (model === 'featured' || password || clearable || removable || duplicatable || copyable || generator) {
 
       delete component.type
+      
       var myView = {
             ...component,
             view: duplicatable ? "[View]" : "View",
@@ -4280,6 +4284,7 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
 
   } else {
+    
     global.promises[id].push(
       new Promise(async (resolve) => {
         var { data } = await require("axios").post(`/action`, func, {
@@ -8177,7 +8182,13 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
         } else if (k0 === "capitalize()") {
             
-            answer = capitalize(o)
+            if (isParam({ _window, string: args[1] })) {
+
+                _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
+                if (_params.all) answer = capitalize(o)
+                else answer = capitalizeFirst(o)
+
+            } else answer = capitalize(o)
             
         } else if (k0 === "capitalizeFirst()") {
             
@@ -9135,14 +9146,14 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (i === lastIndex && key && value !== undefined) {
 
                 var _index
-                if (k[0] === "_") _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
-                else _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
+                if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
+                else _index = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
                 if (_index !== undefined && _index !== -1) o[_index] = answer = value
                 
             } else {
 
-                if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
-                else answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
+                if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
+                else answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
             }
             
         } else if (k0 === "sort()") {
@@ -9851,13 +9862,13 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
           if (!res || res.headersSent) return
           if (isParam({ _window, string: args[1] })) {
             
-            var _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] }), _params_ = {}
-            _params_.data = _params.data
-            _params_.success = _params.success !== undefined ? _params.success : true
-            _params_.message = _params.message || _params.msg || "Action executed successfully!"
+            var _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })//, _params_ = {}
+
+            _params.success = _params.success !== undefined ? _params.success : true
+            _params.message = _params.message || _params.msg || "Action executed successfully!"
             
-            if (!_window.function) return global.func = _params_
-            else res.send(_params_)
+            if (!_window.function) return global.func = _params
+            else res.send(_params)
 
           } else {
             
@@ -10023,6 +10034,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (createElement && events.includes(k.split(":coded()")[0])) {
               
               if (o.id) {
+
                 var _conditions = ""
                 views[id].controls = toArray(views[id].controls)
                 if (k0 === "entry") k0 = "input"
@@ -10034,16 +10046,16 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                   _conditions += "e().ctrlKey"
                 } else if (k0 === "longclick") {
                   views[id].controls.push({
-                    "event": `mousedown:${o.id};touchstart:${o.id}?clickTimer=timestamp()`
+                    "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?clickTimer=timestamp()`
                   })
                   views[id].controls.push({
-                    "event": `mouseup:${o.id};touchend:${o.id}?${global.codes["coded()" + args[1].slice(-5)]}?timestamp()-clickTimer>=1000`
+                    "event": `mouseup:${o.id !== id ? (":" + o.id) : ""};touchend:${o.id !== id ? (":" + o.id) : ""}?${global.codes["coded()" + args[1].slice(-5)]}?timestamp()-clickTimer>=1000`
                   })
                   return
                 }
-
+                
                 views[id].controls.push({
-                  "event": k0 + ":" + o.id + "?" + global.codes["coded()" + args[1].slice(-5)] + "?" + _conditions
+                  "event": k0 + (o.id !== id ? (":" + o.id) : "") + "?" + global.codes["coded()" + args[1].slice(-5)] + "?" + _conditions
                 })
               }
               return
@@ -11414,7 +11426,7 @@ const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 
-const sort = ({ _window = {}, sort = {}, id, e }) => {
+const sort = ({ _window, sort = {}, id, e }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
   if (!view) return
@@ -11446,13 +11458,13 @@ const sort = ({ _window = {}, sort = {}, id, e }) => {
       a = a.toString()
 
       // date
-      if (a.split("-")[2] && !isNaN(a.split("-")[2].split("T")[0])) {
+      /*if (a.split("-")[2] && !isNaN(a.split("-")[2].split("T")[0])) {
         var year = parseInt(a.split("-")[2].split("T")[0])
         var month = parseInt(a.split("-")[1])
         var day = parseInt(a.split("-")[0])
         a = {year, month, day}
         isDate = true
-      }
+      }*/
     }
 
     b = reducer({ _window, id, path, object: b, e }) || "!"
@@ -11461,13 +11473,13 @@ const sort = ({ _window = {}, sort = {}, id, e }) => {
       b = b.toString()
 
       // date
-      if (b.split("-")[2] && !isNaN(b.split("-")[2].split("T")[0])) {
+      /*if (b.split("-")[2] && !isNaN(b.split("-")[2].split("T")[0])) {
         var year = parseInt(b.split("-")[2].split("T")[0])
         var month = parseInt(b.split("-")[1])
         var day = parseInt(b.split("-")[0])
         b = {year, month, day}
         isDate = true
-      }
+      }*/
     }
 
     if ((!isNaN(a) && b === "!") || (!isNaN(b) && a === "!")) {
@@ -11901,7 +11913,10 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
     // /////////////////// key /////////////////////
 
     if (key && key.includes('coded()') && key.length === 12) key = global.codes[key]
-    if (key && key.includes('codedS()') && key.length === 13) return approval = global.codes[key] ? true : false
+    if (key && key.includes('codedS()') && key.length === 13) {
+      if (value === undefined) return approval = global.codes[key] ? true : false
+      else return approval = global.codes[key] === value
+    }
 
     // operator has !
     if (key.includes("!")) {

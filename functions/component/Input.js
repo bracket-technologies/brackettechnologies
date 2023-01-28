@@ -182,6 +182,7 @@ const Input = (component) => {
     if (model === 'featured' || password || clearable || removable || duplicatable || copyable || generator) {
 
       delete component.type
+      
       var myView = {
             ...component,
             view: duplicatable ? "[View]" : "View",

@@ -389,7 +389,7 @@
       ]
     },
     {
-      "type": "View?class=flexbox;style:[position=fixed;right=3rem;bottom=3rem;height=1rem;transition=.2s;pointerEvents=none];hover.style.opacity=0",
+      "type": "View?class=flexbox;style:[position=fixed;right=3rem;bottom=3rem;height=1rem;transition=.2s;pointerEvents=none];hover.style.opacity=0?false",
       "children": [
         {
           "type": "View?style:[height=100%;width=2rem;backgroundColor=#a35521]"

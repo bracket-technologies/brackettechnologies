@@ -73,7 +73,10 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
     // /////////////////// key /////////////////////
 
     if (key && key.includes('coded()') && key.length === 12) key = global.codes[key]
-    if (key && key.includes('codedS()') && key.length === 13) return approval = global.codes[key] ? true : false
+    if (key && key.includes('codedS()') && key.length === 13) {
+      if (value === undefined) return approval = global.codes[key] ? true : false
+      else return approval = global.codes[key] === value
+    }
 
     // operator has !
     if (key.includes("!")) {

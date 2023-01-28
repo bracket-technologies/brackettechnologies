@@ -2,7 +2,7 @@ const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 
-const sort = ({ _window = {}, sort = {}, id, e }) => {
+const sort = ({ _window, sort = {}, id, e }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
   if (!view) return
@@ -34,13 +34,13 @@ const sort = ({ _window = {}, sort = {}, id, e }) => {
       a = a.toString()
 
       // date
-      if (a.split("-")[2] && !isNaN(a.split("-")[2].split("T")[0])) {
+      /*if (a.split("-")[2] && !isNaN(a.split("-")[2].split("T")[0])) {
         var year = parseInt(a.split("-")[2].split("T")[0])
         var month = parseInt(a.split("-")[1])
         var day = parseInt(a.split("-")[0])
         a = {year, month, day}
         isDate = true
-      }
+      }*/
     }
 
     b = reducer({ _window, id, path, object: b, e }) || "!"
@@ -49,13 +49,13 @@ const sort = ({ _window = {}, sort = {}, id, e }) => {
       b = b.toString()
 
       // date
-      if (b.split("-")[2] && !isNaN(b.split("-")[2].split("T")[0])) {
+      /*if (b.split("-")[2] && !isNaN(b.split("-")[2].split("T")[0])) {
         var year = parseInt(b.split("-")[2].split("T")[0])
         var month = parseInt(b.split("-")[1])
         var day = parseInt(b.split("-")[0])
         b = {year, month, day}
         isDate = true
-      }
+      }*/
     }
 
     if ((!isNaN(a) && b === "!") || (!isNaN(b) && a === "!")) {

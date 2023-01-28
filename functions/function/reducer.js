@@ -2800,7 +2800,13 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
         } else if (k0 === "capitalize()") {
             
-            answer = capitalize(o)
+            if (isParam({ _window, string: args[1] })) {
+
+                _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
+                if (_params.all) answer = capitalize(o)
+                else answer = capitalizeFirst(o)
+
+            } else answer = capitalize(o)
             
         } else if (k0 === "capitalizeFirst()") {
             
@@ -3758,14 +3764,14 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (i === lastIndex && key && value !== undefined) {
 
                 var _index
-                if (k[0] === "_") _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
-                else _index = toArray(o).findIndex((o, index) => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
+                if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
+                else _index = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
                 if (_index !== undefined && _index !== -1) o[_index] = answer = value
                 
             } else {
 
-                if (k[0] === "_") answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
-                else answer = toArray(o).find((o, index) => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
+                if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
+                else answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
             }
             
         } else if (k0 === "sort()") {
@@ -4474,13 +4480,13 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
           if (!res || res.headersSent) return
           if (isParam({ _window, string: args[1] })) {
             
-            var _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] }), _params_ = {}
-            _params_.data = _params.data
-            _params_.success = _params.success !== undefined ? _params.success : true
-            _params_.message = _params.message || _params.msg || "Action executed successfully!"
+            var _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })//, _params_ = {}
+
+            _params.success = _params.success !== undefined ? _params.success : true
+            _params.message = _params.message || _params.msg || "Action executed successfully!"
             
-            if (!_window.function) return global.func = _params_
-            else res.send(_params_)
+            if (!_window.function) return global.func = _params
+            else res.send(_params)
 
           } else {
             
@@ -4646,6 +4652,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (createElement && events.includes(k.split(":coded()")[0])) {
               
               if (o.id) {
+
                 var _conditions = ""
                 views[id].controls = toArray(views[id].controls)
                 if (k0 === "entry") k0 = "input"
@@ -4657,16 +4664,16 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                   _conditions += "e().ctrlKey"
                 } else if (k0 === "longclick") {
                   views[id].controls.push({
-                    "event": `mousedown:${o.id};touchstart:${o.id}?clickTimer=timestamp()`
+                    "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?clickTimer=timestamp()`
                   })
                   views[id].controls.push({
-                    "event": `mouseup:${o.id};touchend:${o.id}?${global.codes["coded()" + args[1].slice(-5)]}?timestamp()-clickTimer>=1000`
+                    "event": `mouseup:${o.id !== id ? (":" + o.id) : ""};touchend:${o.id !== id ? (":" + o.id) : ""}?${global.codes["coded()" + args[1].slice(-5)]}?timestamp()-clickTimer>=1000`
                   })
                   return
                 }
-
+                
                 views[id].controls.push({
-                  "event": k0 + ":" + o.id + "?" + global.codes["coded()" + args[1].slice(-5)] + "?" + _conditions
+                  "event": k0 + (o.id !== id ? (":" + o.id) : "") + "?" + global.codes["coded()" + args[1].slice(-5)] + "?" + _conditions
                 })
               }
               return
