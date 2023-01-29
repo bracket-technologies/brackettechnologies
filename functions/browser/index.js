@@ -1170,7 +1170,7 @@ module.exports = ({ controls, id }) => {
     event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
     actions: `droplist:${id}?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
   }, {
-    event: `keyup:input()?if():[droplist-positioner:();keyup-index:()]:[():droplist.children().[keyup-index:()].click();().break=true;():droplist.mouseleave()];keyup-index:()=0;if():[droplist-positioner:()!=2ndChild().id]:[2ndChild().click()];timer():[():droplist.children().0.mouseenter()]:200?!():${id}.droplist.preventDefault;e().key=Enter`
+    event: `keyup:input()?if():[droplist-positioner:();keyup-index:()]:[():droplist.children().[keyup-index:()].click();().break=true;#():droplist.mouseleave()];keyup-index:()=0;if():[droplist-positioner:()!=2ndChild().id]:[2ndChild().click()];timer():[():droplist.children().0.mouseenter()]:200?!():${id}.droplist.preventDefault;e().key=Enter`
   }, {
     event: `keyup:input()?():droplist.children().():mouseleave();keyup-index:()=if():[e().keyCode=40]:[keyup-index:()+1]:[[keyup-index:()]-1];():droplist.children().[keyup-index:()].mouseenter()?!():${id}.droplist.preventDefault;e().keyCode=40||e().keyCode=38;droplist-positioner:();if():[e().keyCode=38]:[keyup-index:()>0].elif():[e().keyCode=40]:[keyup-index:()<():droplist.children.lastIndex()]`
   }]
@@ -1575,6 +1575,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
     string = string.replaceAll("<", "&#60;")
     string = string.replaceAll(">", "&#62;")
+    //string = string.replaceAll("'", "&apos;")
 
     while (string.includes("coded()")) {
 
@@ -1588,7 +1589,8 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
       var string0 = string.split("codedS()")[0]
       var key = global.codes["codedS()" + string.split("codedS()")[1].slice(0, 5)]
-      key = colorize({ id, string: `'` + key + `'`, index: index + 1 })
+      key = `<span contenteditable style="background-color:#00000000; color:${colors[index + 1]}; white-space:nowrap">&apos;${key}&apos;</span>`
+      // key = colorize({ id, string: "&apos;" + key + "&apos;", index: index + 1 })
       string = string0 + key + string.split("codedS()")[1].slice(5) + (string.split("codedS()").length > 2 ? "codedS()" + string.split("codedS()").slice(2).join("codedS()") : "")
     }
 
@@ -1606,6 +1608,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
     // change font for arabic chars
     if (arabic.test(string)) {
+
       var i = 0, lastIndex = string.length - 1, start = false, newString = ""
       while (i <= lastIndex) {
         if ((arabic.test(string[i]) && !english.test(string[i])) || /*(start === false && arabic.test(string[i+1]) && !english.test(string[i+1])) ||*/ (start !== false && string[i] === " ")) {
@@ -1640,9 +1643,9 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
         var _actions = string.split("()")
         string = _actions.map((str, index) => {
           var lastIndex = str.length - 1
-          if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[lastIndex] !== "_" && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
+          if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[lastIndex] !== "_" && str[lastIndex] !== " " && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
             var i = lastIndex - 1
-            while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
+            while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[i] !== "_" && str[i] !== " " && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
             return str.slice(0, i+1) + `<span contenteditable class="colorizeActions" >${str.slice(i+1)}()</span>`
@@ -1651,7 +1654,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
         }).join("")
         return string
       }).join(";")
-      
+
       return string
     }
 }
@@ -1964,10 +1967,12 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
           derivations.push(..._params.path)
           if (_params.data === undefined && global[Data]) _params.data = reducer({ _window, id, path: derivations, object: global[Data], req, res, _, __, ___ })
         } 
-        
+        if (_params.doc) _params.mount = true
         if (_params.mount) {
 
-          view.Data = Data
+          if (_params.doc) view.doc = view.Data = _params.doc
+          else if (_params.data && !_params.doc) view.doc = view.Data = generate()
+          view.Data = Data = view.Data || Data
           global[Data] = global[Data] || _params.data || {}
           _params.data = reducer({ _window, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
         }
@@ -5211,7 +5216,7 @@ const note = ({ note: _note }) => {
 
   var views = window.views
   var note = views["action-note"]
-  var type = (_note.type || "success").toLowerCase()
+  var type = (_note.type || (_note.danger && "danger") || (_note.info && "info") || (_note.warning && "warning") || "success").toLowerCase()
   var noteText = views["action-note-text"]
   var backgroundColor = type === "success" 
   ? "#2FB886" : type === "danger" 
@@ -8982,6 +8987,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
         } else if (k0 === "replaceItem()") {
 
+            if (!Array.isArray(o)) return
             if (isParam({ _window, string: args[1] })) {
 
                 var _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
@@ -9866,6 +9872,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
             _params.success = _params.success !== undefined ? _params.success : true
             _params.message = _params.message || _params.msg || "Action executed successfully!"
+            delete _params.msg
             
             if (!_window.function) return global.func = _params
             else res.send(_params)

@@ -72,10 +72,12 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
           derivations.push(..._params.path)
           if (_params.data === undefined && global[Data]) _params.data = reducer({ _window, id, path: derivations, object: global[Data], req, res, _, __, ___ })
         } 
-        
+        if (_params.doc) _params.mount = true
         if (_params.mount) {
 
-          view.Data = Data
+          if (_params.doc) view.doc = view.Data = _params.doc
+          else if (_params.data && !_params.doc) view.doc = view.Data = generate()
+          view.Data = Data = view.Data || Data
           global[Data] = global[Data] || _params.data || {}
           _params.data = reducer({ _window, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
         }

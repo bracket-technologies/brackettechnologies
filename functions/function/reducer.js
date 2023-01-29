@@ -3600,6 +3600,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
         } else if (k0 === "replaceItem()") {
 
+            if (!Array.isArray(o)) return
             if (isParam({ _window, string: args[1] })) {
 
                 var _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
@@ -4484,6 +4485,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
             _params.success = _params.success !== undefined ? _params.success : true
             _params.message = _params.message || _params.msg || "Action executed successfully!"
+            delete _params.msg
             
             if (!_window.function) return global.func = _params
             else res.send(_params)

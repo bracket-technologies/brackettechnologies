@@ -10,6 +10,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
     string = string.replaceAll("<", "&#60;")
     string = string.replaceAll(">", "&#62;")
+    //string = string.replaceAll("'", "&apos;")
 
     while (string.includes("coded()")) {
 
@@ -23,7 +24,8 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
       var string0 = string.split("codedS()")[0]
       var key = global.codes["codedS()" + string.split("codedS()")[1].slice(0, 5)]
-      key = colorize({ id, string: `'` + key + `'`, index: index + 1 })
+      key = `<span contenteditable style="background-color:#00000000; color:${colors[index + 1]}; white-space:nowrap">&apos;${key}&apos;</span>`
+      // key = colorize({ id, string: "&apos;" + key + "&apos;", index: index + 1 })
       string = string0 + key + string.split("codedS()")[1].slice(5) + (string.split("codedS()").length > 2 ? "codedS()" + string.split("codedS()").slice(2).join("codedS()") : "")
     }
 
@@ -41,6 +43,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
     // change font for arabic chars
     if (arabic.test(string)) {
+
       var i = 0, lastIndex = string.length - 1, start = false, newString = ""
       while (i <= lastIndex) {
         if ((arabic.test(string[i]) && !english.test(string[i])) || /*(start === false && arabic.test(string[i+1]) && !english.test(string[i+1])) ||*/ (start !== false && string[i] === " ")) {
@@ -75,9 +78,9 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
         var _actions = string.split("()")
         string = _actions.map((str, index) => {
           var lastIndex = str.length - 1
-          if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[lastIndex] !== "_" && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
+          if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[lastIndex] !== "_" && str[lastIndex] !== " " && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
             var i = lastIndex - 1
-            while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[i] !== "_" && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
+            while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[i] !== "_" && str[i] !== " " && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
             return str.slice(0, i+1) + `<span contenteditable class="colorizeActions" >${str.slice(i+1)}()</span>`
@@ -86,7 +89,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
         }).join("")
         return string
       }).join(";")
-      
+
       return string
     }
 }
