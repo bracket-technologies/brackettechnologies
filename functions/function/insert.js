@@ -10,9 +10,11 @@ module.exports = {
     
     var insert = params.insert, { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
+
     var views = window.views, global = window.global, appendTo = (insert.id || insert.parent)
     if (appendTo && typeof appendTo === "object") appendTo = appendTo.id
     else if (!appendTo) appendTo = id
+
     var view = views[appendTo], lDiv
     
     if (index === undefined) {
@@ -31,25 +33,26 @@ module.exports = {
     
     if (component || replace) {
 
-      var _view = clone(component || replace)
+      var children = clone(component || replace)
+      children.type = children.type || children.view
       
       // remove mapping
-      if (_view.type.slice(0, 1) === "[") {
-        var _type = _view.type.slice(1).split("]")[0]
-        _view.type = _type + _view.type.split("]").slice(1).join("]")
+      if (children.type.slice(0, 1) === "[") {
+        var _type = children.type.slice(1).split("]")[0]
+        children.type = children.view = _type + "?" + children.type.split("?").slice(1).join("?")
       }
       
       // data
       if (data) {
-        _view.data = clone(data)
-        _view.Data = views[appendTo].Data || insert.Data || insert.doc || generate()
-        global[_view.Data] = _view.data
+        children.data = clone(data)
+        children.Data = views[appendTo].Data || insert.Data || insert.doc || generate()
+        global[children.Data] = children.data
       }
 
       // path
-      if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
+      if (path) children.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       
-      var innerHTML = await Promise.all(toArray(_view).map(async (child, i) => {
+      var innerHTML = await Promise.all(toArray(children).map(async (child, i) => {
 
         var id = child.id || generate()
         views[id] = child

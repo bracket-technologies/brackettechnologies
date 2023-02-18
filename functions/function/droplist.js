@@ -3,6 +3,7 @@ const { clone } = require("./clone")
 const { toValue } = require("./toValue")
 const { toString } = require("./toString")
 const { reducer } = require("./reducer")
+const { toCode } = require("./toCode")
 
 const droplist = ({ id, e, droplist: params = {} }) => {
   
@@ -38,7 +39,15 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   }
 
   // items
-  if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
+  if (typeof items === "string") {
+    //items = toCode({ _window, id, string: items, start: "'", end: "'" })
+    //console.log(items);
+    //if (items.includes("codedS()")) items = global.codes["codedS()" + items.slice(-5)]
+    //console.log(items);
+    //items = toCode({ string: items })
+    
+    items = clone(toValue({ id, e, value: items }))
+  }
 
   // filterable
   if (!view.droplist.preventDefault) {
@@ -96,24 +105,25 @@ const droplist = ({ id, e, droplist: params = {} }) => {
     dropList.children.push(...clone(items).map(item => {
 
       if (typeof item === "string" || typeof item === "number") item = { text: item }
-      item.text = `'${item.text}'`
+      item.text = item.text !== undefined ? `'${item.text}'` : ""
       if (item.icon) {
   
         if (typeof item.icon === "string") item.icon = { name: item.icon }
+        if (typeof item.text === "string") item.text = { text: item.text }
         var _item = clone(item)
   
         delete _item.icon
         delete _item.container
         
         return ({
-          type: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString({ style: view.droplist.item && view.droplist.item.style || {} })};${toString(view.droplist.item && view.droplist.item.container || {})};${toString(item.container || {})};class=flex align-items pointer ${(item.container || {}).class || ""}`,
+          type: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(_item || {})};class=flex align-items pointer ${(item || {}).class || ""}`,
           children: [{
             type: `View?style:[height=inherit;width=fit-content];${toString(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
             children: [{
               type: `Icon?style:[color=#888;fontSize=1.8rem];${toString(view.droplist.icon || {})};${toString(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
             }]
           }, {
-            type: `Text?style:[fontSize=1.3rem;width=100%];${toString(_item)};class=flex align-center ${(_item || {}).class || ""};caller=${id}`,
+            type: `Text?style:[fontSize=1.3rem;width=100%];${toString(_item.text)};class=flex align-center ${(_item.text || {}).class || ""};caller=${id}?${_item.text.text ? true : false}`,
             controls: [...(view.droplist.controls || []), {
               event: `click??!():${id}.droplist.preventDefault`,
               actions: [ // :[focus:${input_id}]

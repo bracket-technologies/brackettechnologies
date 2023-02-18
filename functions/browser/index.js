@@ -244,7 +244,7 @@ window.addEventListener('appinstalled', () => {
   link.href = window.location.href.replace('http://', 'https://');
   requireHTTPS.classList.remove('hidden');
 }*/
-},{"../function/execute":68,"../function/setElement":109,"../function/starter":112,"../function/toApproval":117,"../function/toCode":122,"../function/toParam":132}],2:[function(require,module,exports){
+},{"../function/execute":68,"../function/setElement":110,"../function/starter":113,"../function/toApproval":118,"../function/toCode":123,"../function/toParam":133}],2:[function(require,module,exports){
 const { toString } = require('../function/toString')
 
 module.exports = (view) => {
@@ -265,7 +265,7 @@ module.exports = (view) => {
     }]
   }
 }
-},{"../function/toString":135}],3:[function(require,module,exports){
+},{"../function/toString":136}],3:[function(require,module,exports){
 const { clone } = require('../function/clone')
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
@@ -330,7 +330,7 @@ module.exports = (view) => {
     ]
   }
 }
-},{"../function/clone":46,"../function/toComponent":123,"../function/toString":135}],4:[function(require,module,exports){
+},{"../function/clone":46,"../function/toComponent":124,"../function/toString":136}],4:[function(require,module,exports){
 module.exports = (view) => {
   return {
     ...view,
@@ -523,15 +523,15 @@ const Input = (component) => {
 
       delete component.type
       
-      var myView = {
+      return {
             ...component,
-            view: duplicatable ? "[View]" : "View",
+            view: "View",
             class: `flex align-items-center unselectable ${component.class || ""}`,
             // remove from comp
             controls: [{
-                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1]?!mobile()`
+                event: `mouseenter?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():generator:[():[${id}+'-generate'].style().opacity=1];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=1]?!mobile()`
             }, {
-                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():generator:[():[${id}+'-generate'].style().opacity=0]?!mobile()`
+                event: `mouseleave?if():[clearable||removable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():generator:[():[${id}+'-generate'].style().opacity=0];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=0]?!mobile()`
             }],
             style: {
                 cursor: readonly ? "pointer" : "auto",
@@ -595,7 +595,7 @@ const Input = (component) => {
                     fontSize: style.fontSize || '1.4rem',
                     maxHeight: style.maxHeight || "initial",
                     border: '0',
-                    height: "100%",
+                    height: style.height || "100%",
                     padding: "0.5rem",
                     color: input.type === "number" ? "blue" : '#444',
                     outline: 'none',
@@ -612,14 +612,16 @@ const Input = (component) => {
                 }, {
                     event: "select;mousedown?preventDefault()"
                 }, {
-                    event: "keyup?Data():[path=derivations().clone().pullLast().push():[derivations().lastEl().num()+1]]=_string;update():[().parent().parent()]?duplicatable;e().key=Enter",
+                    event: `keyup?():'${id}-duplicate'.click()?duplicatable;e().key=Enter`
                 }]
             }, {
-              view: `Icon?class=pointer;id=${id}-clear;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:'0.5rem']:[right=if():[parent().password]:4rem:'0.5rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt();${readonly?false:true}]:[prev().data().del();prev().txt()=;#prev().focus()].elif():[parent().clearable;${readonly?false:true}]:[#prev().focus()].elif():[${readonly?false:true};parent().removable;!prev().txt();parent().data().len()!=1]:[${readonly?false:true};parent().rem()]]?parent().clearable||parent().removable`,
+              view: `Icon:${id}-clear?class=pointer;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:'0.5rem']:[right=if():[parent().password]:4rem:'0.5rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();prev().txt()=;#prev().focus()].elif():[parent().removable;!prev().txt();doc():[path=path().slice():0:-1].len()>0]:[parent().rem()]]?parent().clearable||parent().removable`,
             }, {
-              view: `Text?class=flexbox pointer;id=${id}-generate;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
+              view: `Icon:${id}-duplicate?class=pointer duplicater;name=bi-plus;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:[if():[parent().clearable]:'5.5rem':'3rem']:[if():[parent().clearable]:'3rem':'0.5rem']]:[right=if():[parent().password]:[if():[parent().clearable]:'5.5rem':'3rem']:[if():[parent().clearable]:'3rem':'0.5rem']];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().duplicatable]:[if():[!parent().max||parent().max>2ndParent().className():duplicater.len()]:[doc():[path=path().slice():0:'-1'].push():[if():[data().type()=number]:0:''];2ndParent().update()]]]?parent().duplicatable`,
             }, {
-              view: `Icon?class=pointer;id=${id}-copy;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();#():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
+              view: `Text:${id}-generate?class=flexbox pointer;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
+            }, {
+              view: `Icon:${id}-copy?class=pointer;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();#():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
             }, {
               view: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
                 children: [{
@@ -635,15 +637,6 @@ const Input = (component) => {
                 }]
             }]
         }
-        
-        if (duplicatable) {
-          
-          return {
-            view: "View?if():[data().type()!=array]:[data()=_list];class=vertical;style:[gap=1rem;width=100%]",
-            children: [myView]
-          }
-
-        } else return myView
     }
     
     if (model === 'classic') {
@@ -676,7 +669,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":46,"../function/generate":75,"../function/merge":91,"../function/toComponent":123,"../function/toString":135}],6:[function(require,module,exports){
+},{"../function/clone":46,"../function/generate":75,"../function/merge":92,"../function/toComponent":124,"../function/toString":136}],6:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -815,7 +808,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":123}],7:[function(require,module,exports){
+},{"../function/toComponent":124}],7:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -939,8 +932,7 @@ module.exports = (component) => {
                         children: [{
                             type: "View?class=flex aling-center;colorize;editable;#if():[path().lastElement()=id]:[readonly=true];style:[alignItems=center;overflowY=hidden;width=fit-content;minWidth=1rem;minHeight=3rem;maxHeight=3rem;height=3rem;border=1px solid #ffffff00;borderRadius=.5rem;color=#a35521;fontSize=1.4rem;padding=.5rem];hover.style.border=1px solid #ddd;input.style.color=#a35521",
                             controls: [{
-                                event: "keyup?insert-index:()=2ndParent().2ndParent().parent().children().findIndex():[id=2ndParent().2ndParent().id]+1;if():[2ndParent().2ndParent().parent().data().type()=map]:[2ndParent().2ndParent().parent().data().[_string]=_string];if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[2ndParent().2ndParent().parent().data().len()+1];2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
-                                actions: "wait():[insert:[2ndParent().2ndParent().parent().id]]?insert.component=2ndParent().2ndParent().parent().children.1;insert.path=if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().derivations.clone().push():[insert-index:()]].else():[2ndParent().2ndParent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.getInput().focus()]"
+                                event: "keyup?insert-index:()=2ndParent().2ndParent().parent().children().findIndex():[id=2ndParent().2ndParent().id]+1;if():[2ndParent().2ndParent().parent().data().type()=map]:[2ndParent().2ndParent().parent().data().[_string]=_string];if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[2ndParent().2ndParent().parent().data().len()+1];2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]];#######;2ndParent().2ndParent().parent().insert():[component=2ndParent().2ndParent().parent().children.1;path=if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().derivations.clone().push():[insert-index:()]]:[2ndParent().2ndParent().parent().derivations.clone().push():_string];index=insert-index:()]:[().insert.view.getInput().focus()]?e().key=Enter;!ctrlKey:()"
                             },
                             {
                                 event: "keyup?insert-index:()=2ndParent().2ndParent().2ndParent().2ndParent().children().findIndex():[id=2ndParent().2ndParent().2ndParent().parent().id]+1;2ndParent().2ndParent().2ndParent().2ndParent().data().splice():[if():[path().lastEl()=type||path().lastEl()=view]:[_map:view:_string].elif():[path().lastEl()=event||path().lastEl()=actions]:[_map:event:_string]]:[insert-index:()];if():[insert-index:().less():[2ndParent().2ndParent().2ndParent().2ndParent().data().len()+1]]:[2ndParent().2ndParent().2ndParent().2ndParent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;ctrlKey:();path().lastEl()=type||path().lastEl()=view||path().lastEl()=event||path().lastEl()=actions",
@@ -979,9 +971,9 @@ module.exports = (component) => {
                 }, {
                     type: "Text?style.display=none;text=};style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem?data().type()=map"
                 }, {
-                    type: "View?class=flex-box;style.gap=.5rem;style.opacity=0;style.flex=1;style.marginRight=.5rem;style.transition=.1s;style.justifyContent=flex-end",
+                    type: "View?class=flexbox;style.gap=.5rem;style.opacity=0;style.flex=1;style.marginRight=.5rem;style.transition=.1s;style.justifyContent=flex-end",
                     children: [{
-                        type: "Icon?actionlist.placement=left;class=flex-box pointer;style.color=#888;icon.name=bi-three-dots-vertical;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
+                        type: "Icon?class=flexbox pointer actionlister;actionlist.placement=left;style.color=#888;icon.name=bi-three-dots-vertical;style.width=2rem;style.fontSize=2rem;hover.style.color=blue;style.transition=.2s"
                     }]
                 }]
             }, {
@@ -990,16 +982,16 @@ module.exports = (component) => {
                     type: "Map?arrange=parent().arrange;isField"
                 }]
             }, {
-                type: "Text?class=flex-box;text=];style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=array"
+                type: "Text?class=flex align-center;text=']';style.height=2.5rem;style.justifyContent=flex-start;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=array"
             }, {
-                type: "Text?class=flex-box;text=};style.height=2.5rem;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=map"
+                type: "Text?class=flex align-center;text='}';style.height=2.5rem;style.justifyContent=flex-start;style.display=flex;style.marginLeft=2rem;style.color=green;style.fontSize=1.4rem;style.width=fit-content?data().type()=map"
             }]
         }, {
-            type: "Text?class=flexbox;style.justifyContent=flex-start;text=};style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;style.color=green;style.fontSize=1.4rem?!parent().isField",
+            type: "Text?class=flexbox;style.justifyContent=flex-start;text='}';style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;style.color=green;style.fontSize=1.4rem?!parent().isField",
         }]
     }
 }
-},{"../function/toComponent":123}],8:[function(require,module,exports){
+},{"../function/toComponent":124}],8:[function(require,module,exports){
 module.exports = (view) => {
   return {
     ...view,
@@ -1045,7 +1037,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":123,"../function/toString":135}],11:[function(require,module,exports){
+},{"../function/toComponent":124,"../function/toString":136}],11:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Item : require("./Item"),
@@ -1065,7 +1057,7 @@ module.exports = ({ controls, id }) => {
   window.views[id].actionlist.id = controls.id = id = controls.id || id
   
   return [{
-    event: `click?if():[actionlistCaller:()!=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()].elif():[actionlistCaller:()!=${id}]:[().actionlist.undeletable||=_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;actionlistCaller:()=${id};actionlistCallerId:()=${id};path=${controls.path || ""};update():actionlist;():actionlist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._];timer():[():actionlist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}]]:100]`
+    event: `click?if():[actionlistCaller:()!=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=${id}]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];actionlistCaller:().del()].elif():[actionlistCaller:()!=${id}]:[().actionlist.undeletable||=_string;():actionlist.Data=().Data;():actionlist.derivations=().derivations;actionlistCaller:()=${id};actionlistCallerId:()=${id};path=${controls.path || ""};():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transition=null;pointerEvents=none]];update():actionlist;timer():[():actionlist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];():actionlist.():[children().():[style().pointerEvents=auto];style():[transition='opacity .2s, transform .2s';transform='scale(1)';opacity=1;pointerEvents=auto]];().actionlist.style.keys()._():[():actionlist.style()._=().actionlist.style._]]:0]`
   }]
 }
 },{}],13:[function(require,module,exports){
@@ -1165,10 +1157,14 @@ module.exports = ({ controls, id }) => {
   return [{
     event: "keyup:input()?clearTimer():[droplist-timer:()];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()?e().key=Escape"
   }, {
-    event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[droplist-timer:()=timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()]:0];if():[droplist-positioner:()!=().id]:[droplist-positioner:()=${id};():${id}.droplist();timer():[():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]]]:0]`,
+    event: `click?keyup-index:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[droplist-positioner:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[droplist-positioner:()=${id}]:[droplist-timer:()=timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];droplist-positioner:().del()]:0];if():[droplist-positioner:()!=().id]:[droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transition=null;pointerEvents=none]];():${id}.droplist();timer():[():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];():droplist.():[children().():[style().pointerEvents=auto];style():[transition='opacity .1s, transform .1s';opacity=1;transform='scale(1)';pointerEvents=auto]]]:0]`,
+  }, {
+    event: `mouseenter?clearTimer():[().droplistLeaved];if():[droplist-mouseenterer:()!=().id]:[click();droplist-mouseenterer:()=().id]?droplist.hoverable`
+  }, {
+    event: `mouseleave?droplistLeaved=timer():[if():[!():droplist.mouseentered;droplist-mouseenterer:()=().id;():droplist.style().opacity='1']:[click();droplist-mouseenterer:().del()]]:400?droplist.hoverable`
   }, {
     event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
-    actions: `droplist:${id}?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform=scale(1);pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
+    actions: `droplist:${id}?droplist-positioner:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform='scale(1)';pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
   }, {
     event: `keyup:input()?if():[droplist-positioner:();keyup-index:()]:[():droplist.children().[keyup-index:()].click();().break=true;#():droplist.mouseleave()];keyup-index:()=0;if():[droplist-positioner:()!=2ndChild().id]:[2ndChild().click()];timer():[():droplist.children().0.mouseenter()]:200?!():${id}.droplist.preventDefault;e().key=Enter`
   }, {
@@ -1395,7 +1391,7 @@ module.exports=[
  , "refresh()", "save()", "search()", "override()", "click()", "is()", "setPosition()", "new()"
  , "gen()", "generate()", "route()", "getInput()", "input()", "getEntry()", "entry()", "capitalize()" 
  , "getEntries()", "entries()", "toggleView()", "clearTimer()", "timer()", "range()", "focus()" 
- , "siblings()", "todayStart()", "time()", "remove()", "rem()", "removeChild()", "remChild()" 
+ , "siblings()", "todayStart()", "time()", "remove()", "rem()", "removeChild()", "remChild()", "keyup()", "keydown()"
  , "contains()", "contain()", "def()", "price()", "clone()", "uuid()", "touchable()", "px()"
  , "timezone()", "timeDifference", "position()", "setPosition()", "classList()", "csvToJson()"
  , "classlist()", "nextSibling()", "2ndNextSibling()", "axios()", "newTab()", "droplist()", "sort()" 
@@ -1452,7 +1448,7 @@ const axios = async ({ id, ...params }) => {
 }
 
 module.exports = { axios }
-},{"./toAwait":119,"axios":145}],43:[function(require,module,exports){
+},{"./toAwait":120,"axios":146}],43:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -1552,7 +1548,7 @@ const clone = (obj) => {
   else {
     copy = {}
     Object.entries(obj).map(([key, value]) => {
-      if (key !== "element") copy[key] = clone(value)
+      if (key !== "element") copy[key] = typeof value === "object" ? clone(value) : value
       else copy[key] = value
     })
   }
@@ -1577,21 +1573,25 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
     string = string.replaceAll(">", "&#62;")
     //string = string.replaceAll("'", "&apos;")
 
+    while (string.includes("codedS()")) {
+
+      var string0 = string.split("codedS()")[0]
+      var key = global.codes["codedS()" + string.split("codedS()")[1].slice(0, 5)]
+      /*while (key.includes("coded()")) {
+        key = string.split("coded()")[0] + string.split("coded()").slice(1).map(code => colorize({ id, string: "[" + global.codes["coded()" + code.slice(0, 5)] + "]", index: index + 2 }) + code.slice(5)).join("")
+      }*/
+
+      key = `<span contenteditable style="background-color:#00000000; color:${colors[index + 1]}; white-space:nowrap">&apos;${key}&apos;</span>`
+      // key = colorize({ id, string: "&apos;" + key + "&apos;", index: index + 1 })
+      string = string0 + key + string.split("codedS()")[1].slice(5) + (string.split("codedS()").length > 2 ? "codedS()" + string.split("codedS()").slice(2).join("codedS()") : "")
+    }
+
     while (string.includes("coded()")) {
 
       var string0 = string.split("coded()")[0]
       var key = global.codes["coded()" + string.split("coded()")[1].slice(0, 5)]
       key = colorize({ id, string: start + key + end, index: index + 1 })
       string = string0 + key + string.split("coded()")[1].slice(5) + (string.split("coded()").length > 2 ? "coded()" + string.split("coded()").slice(2).join("coded()") : "")
-    }
-
-    while (string.includes("codedS()")) {
-
-      var string0 = string.split("codedS()")[0]
-      var key = global.codes["codedS()" + string.split("codedS()")[1].slice(0, 5)]
-      key = `<span contenteditable style="background-color:#00000000; color:${colors[index + 1]}; white-space:nowrap">&apos;${key}&apos;</span>`
-      // key = colorize({ id, string: "&apos;" + key + "&apos;", index: index + 1 })
-      string = string0 + key + string.split("codedS()")[1].slice(5) + (string.split("codedS()").length > 2 ? "codedS()" + string.split("codedS()").slice(2).join("codedS()") : "")
     }
 
     // #comments
@@ -1611,7 +1611,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
       var i = 0, lastIndex = string.length - 1, start = false, newString = ""
       while (i <= lastIndex) {
-        if ((arabic.test(string[i]) && !english.test(string[i])) || /*(start === false && arabic.test(string[i+1]) && !english.test(string[i+1])) ||*/ (start !== false && string[i] === " ")) {
+        if ((arabic.test(string[i]) && !english.test(string[i])) || (start !== false && string[i] === " ")) {
           if (start === false) {
             start = i
             newString += `<span contenteditable class="arabic" style="color:inherit; background-color:#00000000; white-space:nowrap">`
@@ -1627,16 +1627,10 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
     }
     
     if (index !== 0) {
-      /*
-      var views = _window ? _window.view : window.views
-      var _id = generate()
-      views[_id] = { id: _id, parent: id, colorize: true, editable: true, type: "Span" }
-      */
-      return `<span contenteditable style="background-color:#00000000; color:${colors[index]}; white-space:nowrap">${string}</span>`
-    } else {
       
-      // semicolon
-      //string = string.split(";").join(`<span contenteditable style="color:#000">;</span>`)
+      return `<span contenteditable style="background-color:#00000000; color:${colors[index]}; white-space:nowrap">${string}</span>`
+
+    } else {
 
       // actions
       string = string.split(";").map(string => {
@@ -1644,12 +1638,13 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
         string = _actions.map((str, index) => {
           var lastIndex = str.length - 1
           if (str[0] && str[lastIndex] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[lastIndex] !== "_" && str[lastIndex] !== " " && str[lastIndex] !== "?" && str[lastIndex] !== "!" && str[lastIndex] !== "[" && str[lastIndex] !== "(" && str[lastIndex] !== "=" && str[lastIndex] !== "." && str[lastIndex] !== ":" && index !== _actions.length - 1) {
+
             var i = lastIndex - 1
             while (str[i] && str[i] !== ";" && str[lastIndex] !== "+" && str[lastIndex] !== "-" && str[i] !== "_" && str[i] !== " " && str[i] !== "?" && str[i] !== "!" && str[i] !== "[" && str[i] !== "(" && str[i] !== "=" && str[i] !== "." && str[i] !== ":") { 
               i--
             }
             return str.slice(0, i+1) + `<span contenteditable class="colorizeActions" >${str.slice(i+1)}()</span>`
-            //else return (index !== _actions.length - 1) ? str + "()" : str
+
           } else return (index !== _actions.length - 1) ? str + "()" : str
         }).join("")
         return string
@@ -1660,7 +1655,6 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 }
 
 module.exports = { colorize }
-
 },{}],48:[function(require,module,exports){
 module.exports = {
     compare: (value1, operator, value2) => {
@@ -1750,7 +1744,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":66,"./toArray":118,"./watch":144}],51:[function(require,module,exports){
+},{"./event":66,"./toArray":119,"./watch":145}],51:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
@@ -1892,7 +1886,7 @@ module.exports = {
   }
 }
 
-},{"../component/component":11,"./clone":46,"./generate":75,"./toApproval":117,"./toCode":122,"./toParam":132}],55:[function(require,module,exports){
+},{"../component/component":11,"./clone":46,"./generate":75,"./toApproval":118,"./toCode":123,"./toParam":133}],55:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -1938,28 +1932,20 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     // [type]
     if (!view.duplicatedElement && type.includes("coded()")) {
 
-      type = toValue({ _window, value: type, id, req, res, _, __, ___ })
-      
-      // sub params
-      if (subParams) {
+      type = global.codes[type]
 
+      // sub params
+      if (subParams && isParam({ _window, string: subParams })) {
+        
         var _params = {}
-        var derivations = view.derivations = clone(view.derivations || parent.derivations || [])
+        var derivations = view.derivations = clone(view.derivations || [...(parent.derivations || [])])
         var Data = view.Data = view.Data || parent.Data || generate()
 
         if (isParam({ _window, string: subParams })) {
           
           _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
-
+          
         } else _params.data = toValue({ _window, req, res, id, value: subParams, _, __, ___ })
-        
-        /*if (_params.preventDefault) {
-          if (_params.derive === undefined) _params.derive = false
-          if (_params.mount === undefined) _params.mount = false
-        } else {
-          if (_params.derive === undefined) _params.derive = true
-          if (_params.mount === undefined) _params.mount = true
-        }*/
 
         if (_params.path) {
 
@@ -1977,26 +1963,53 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
           _params.data = reducer({ _window, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
         }
         
-        var tags = await Promise.all(toArray(_params.data).map(async (_data, index) => {
+        var tags = []
 
-          var id = view.id + generate()
+        if (toArray(_params.data).length > 0) {
+
+          tags = await Promise.all(toArray(_params.data).map(async (_data, index) => {
+
+            var _id = view.id + generate()
+            var _type = type + "?" + view.type.split("?").slice(1).join("?")
+            var _view = clone({ ...view, id: _id, view: _type, i: index, mapIndex: index, derivations, _: _data, __: index })
+
+            if (!_params.preventDefault) {
+
+              if (type === "Chevron") _view.direction = _data
+              else if (type === "Icon") _view.name = _data
+              else if (type === "Image") _view.src = _data
+              else if (type === "Text") _view.text = _data
+              else if (type === "Checkbox") _view.label = { text: _data }
+            }
+
+            if (_params.mount || _params.path) _view.derivations = [...derivations, index]
+            
+            views[_id] = _view
+            return await createElement({ _window, id: _id, req, res, _: _data, __: index, ___: _ })
+          }))
+
+        } else {
+
+          var _id = view.id + generate()
           var _type = type + "?" + view.type.split("?").slice(1).join("?")
-          var _view = clone({ ...view, id, view: _type, i: index, mapIndex: index, derivations, _: _data, __: index })
+          var _view = clone({ ...view, id: _id, view: _type, i: 0, mapIndex: 0, derivations, _: "", __: 0 })
 
           if (!_params.preventDefault) {
 
-            if (type === "Chevron") _view.direction = _data
-            else if (type === "Icon") _view.name = _data
-            else if (type === "Image") _view.src = _data
-            else if (type === "Text") _view.text = _data
-            else if (type === "Checkbox") _view.label = { text: _data }
+            if (type === "Chevron") _view.direction = "left"
+            else if (type === "Icon") _view.name = "icon"
+            else if (type === "Text") _view.text = ""
+            else if (type === "Checkbox") _view.label = { text: "" }
           }
 
-          if (_params.mount || _params.path) _view.derivations = [...derivations, index]
+          if (_params.mount || _params.path) _view.derivations = [...derivations, "0"]
           
-          views[id] = _view
-          return await createElement({ _window, id, req, res, _: _data, __: index, ___: _ })
-        }))
+          views[_id] = _view
+          tags = await createElement({ _window, id: _id, req, res, _: "", __: 0, ___: _ })
+          
+          delete views[view.id]
+          return resolve(tags)
+        }
         
         delete views[view.id]
         return resolve(tags.join(""))
@@ -2021,14 +2034,17 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       if (isParam({ _window, string: subParams })) {
 
         inheritedParams = {...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, _, __, ___ })}
+
       } else {
         
-        var _id = subParams
+        view.Data = view.Data || view.doc || parent.Data
+        view.derivations = view.derivations || [...(parent.derivations || [])]
+        var _id = toValue({ _window, value: subParams, id, req, res, _, __, ___ })
         
         if (views[_id] && view.id !== _id) view.id = _id + generate()
         else view.id = id = _id
         
-        if (!view["creation-date"] && global.data.view[_id] && id !== _id) {
+        if (global.data.view[_id] && !view["creation-date"] && id !== _id) {
           
           view["my-views"].push(_id)
           views[_id] = { ...view, ...clone(global.data.view[_id]) }
@@ -2046,23 +2062,12 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     if (!_import) {
 
       view.style = view.style || {}
-
-      // class
       view.class = view.class || ""
-      
-      // Data
       view.Data = view.Data || view.doc || parent.Data
-
-      // derivations
       view.derivations = view.derivations || [...(parent.derivations || [])]
-
-      // controls
       view.controls = view.controls || []
-
-      // status
       view.status = "Loading"
-
-      // first mount of view
+      view.childrenID = []
       views[id] = view
 
       // approval
@@ -2114,10 +2119,6 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     if (params) {
       
       params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true, _, __, ___ })
-
-      // break
-      /*if (params["break()"]) delete params["break()"]
-      if (params["return()"]) return delete params["return()"]*/
 
       if (params.id && params.id !== id) {
 
@@ -2190,7 +2191,7 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
 }
 
 module.exports = { createElement }
-},{"./clone":46,"./createHtml":56,"./createTags":57,"./generate":75,"./isParam":86,"./merge":91,"./reducer":98,"./toApproval":117,"./toArray":118,"./toCode":122,"./toParam":132,"./toValue":137,"./views.json":142}],56:[function(require,module,exports){
+},{"./clone":46,"./createHtml":56,"./createTags":57,"./generate":75,"./isParam":86,"./merge":92,"./reducer":99,"./toApproval":118,"./toArray":119,"./toCode":123,"./toParam":133,"./toValue":138,"./views.json":143}],56:[function(require,module,exports){
 const { clone } = require("./clone")
 const { colorize } = require("./colorize")
 const { generate } = require("./generate")
@@ -2210,7 +2211,7 @@ module.exports = {
       // views
       var views = _window ? _window.views : window.views, id = _id
       var global = _window ? _window.global : window.global
-      var view = views[id], type = view.type
+      var view = views[id], type = view.type, siblings = "", prevSiblings = ""
       
       if (view.children) view.children = toArray(view.children)
       
@@ -2227,6 +2228,46 @@ module.exports = {
         
         return await createElement({ _window, id, req, res, import: _import, _, __, ___ })
       }))
+
+      // siblings
+      if (view.sibling || view.siblings) {
+        
+        var _siblings = await Promise.all(toArray(view.sibling || view.siblings).map(async (child, index) => {
+    
+          if (!child) return ""
+          var id = child.id
+          if (id && views[id]) id += generate()
+          else if (!id) id = generate()
+          views[id] = clone(child)
+          views[id].id = id
+          views[id].index = view.index + ":" + index
+          views[id].parent = view.parent
+          
+          return await createElement({ _window, id, req, res, _, __, ___ })
+        }))
+
+        siblings += _siblings.join("")
+      }
+
+      // prev siblings
+      if (view.prevSibling || view.prevSiblings) {
+        
+        var _siblings = await Promise.all(toArray(view.prevSibling || view.prevSiblings).map(async (child, index) => {
+    
+          if (!child) return ""
+          var id = child.id
+          if (id && views[id]) id += generate()
+          else if (!id) id = generate()
+          views[id] = clone(child)
+          views[id].id = id
+          views[id].index = view.index + ":" + index
+          views[id].parent = view.parent
+          
+          return await createElement({ _window, id, req, res, _, __, ___ })
+        }))
+
+        prevSiblings += _siblings.join("")
+      }
       
       innerHTML = innerHTML.join("")
 
@@ -2241,7 +2282,9 @@ module.exports = {
 
       if (_id === "body") return resolve("")
       
-      var tag = require("./toHTML")({ _window, id: _id, innerHTML }) || ""
+      var tag = _import ? "" : require("./toHTML")({ _window, id: _id, innerHTML }) || ""
+      if (prevSiblings) tag = prevSiblings + tag
+      if (siblings) tag += siblings
       
       if (!tag && _imports.includes(type.toLowerCase())) {
 
@@ -2305,7 +2348,7 @@ module.exports = {
     })
   }
 }
-},{"./clone":46,"./colorize":47,"./createElement":55,"./generate":75,"./styleName":115,"./toArray":118,"./toCode":122,"./toHTML":128,"./toStyle":136}],57:[function(require,module,exports){
+},{"./clone":46,"./colorize":47,"./createElement":55,"./generate":75,"./styleName":116,"./toArray":119,"./toCode":123,"./toHTML":129,"./toStyle":137}],57:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2582,7 +2625,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":46,"./createComponent":54,"./createElement":55,"./createHtml":56,"./generate":75,"./toArray":118}],58:[function(require,module,exports){
+},{"./clone":46,"./createComponent":54,"./createElement":55,"./createHtml":56,"./generate":75,"./toArray":119}],58:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -2600,7 +2643,7 @@ const createView = ({ view, id = generate() }) => {
 }
 
 module.exports = {createView}
-},{"./clone":46,"./generate":75,"./toArray":118,"./update":139}],59:[function(require,module,exports){
+},{"./clone":46,"./generate":75,"./toArray":119,"./update":140}],59:[function(require,module,exports){
 const { toParam } = require("./toParam");
 
 module.exports = {
@@ -2651,7 +2694,7 @@ module.exports = {
         reader.readAsBinaryString(file || e.target.files[0]);
     }
 }
-},{"./toParam":132}],60:[function(require,module,exports){
+},{"./toParam":133}],60:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -2689,51 +2732,50 @@ const clearData = ({ id, e, clear = {} }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":46,"./reducer":98,"./setContent":107,"./setData":108}],61:[function(require,module,exports){
+},{"./clone":46,"./reducer":99,"./setContent":108,"./setData":109}],61:[function(require,module,exports){
 const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
 const { toArray } = require("./toArray")
 
-var getdb = async ({ req, res }) => {
-
-  var _window = { global: { codes: {} }, views: {} }
+var getdb = async ({ _window, req, res }) => {
+  
   var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
   
   if (string) params = toParam({ _window, string, id: "" })
   var search = params.search || {}
-  var { data, success, message } = await getData({ req, res, search })
+  var { data, success, message } = await getData({ _window, req, res, search })
 
   return res.send({ data, success, message })
 }
 
-var postdb = async ({ req, res }) => {
+var postdb = async ({ _window, req, res }) => {
   
   var save = req.body.save || {}
-  var { data, success, message } = await postData({ req, res, save })
+  var { data, success, message } = await postData({ _window, req, res, save })
 
   return res.send({ data, success, message })
 }
 
-var deletedb = async ({ req, res }) => {
+var deletedb = async ({ _window, req, res }) => {
   
-  var _window = { global: { codes: {} }, views: {} }
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   
   if (string) params = toParam({ _window, string, id: "" })
   var erase = params.erase || {}
 
-  var { data, success, message } = await deleteData({ req, res, erase })
+  var { success, message } = await deleteData({ _window, req, res, erase })
   
   return res.send({ success, message })
 }
 
-const getData = async ({ req, res, search }) => {
+const getData = async ({ _window, req, res, search }) => {
 
   var db = req.db
   var collection = search.collection
+  if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
 
   var doc = search.document || search.doc,
@@ -2743,9 +2785,6 @@ const getData = async ({ req, res, search }) => {
     data = {}, success, message,
     ref = collection && db.collection(collection),
     promises = [], project
-  
-  /////////////////// verify access key ///////////////////// access key is stopped
-  project = { ["accesskey"]: req.headers["accesskey"] }
   
   if (search.url) {
 
@@ -2819,12 +2858,6 @@ const getData = async ({ req, res, search }) => {
     })
 
     await Promise.all(promises)
-    if (project["accesskey"] !== req.headers["accesskey"]) {
-
-      success = false
-      message = `Your are not verified!`
-      return ({ success, message })
-    }
 
     return ({ data, success, message })
   }
@@ -2847,12 +2880,6 @@ const getData = async ({ req, res, search }) => {
     })
     
     await Promise.all(promises)
-    if (project["accesskey"] !== req.headers["accesskey"]) {
-
-      success = false
-      message = `Your are not verified!`
-      return ({ success, message })
-    }
 
     return ({ data, success, message })
   }
@@ -2911,12 +2938,13 @@ const getData = async ({ req, res, search }) => {
   return ({ data, success, message })
 }
 
-const postData = async ({ req, res, save }) => {
+const postData = async ({ _window, req, res, save }) => {
 
   // collection
   var db = req.db
   var data = req.body.data
   var collection = save.collection, schema
+  if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   var ref = db.collection(collection)
@@ -2987,7 +3015,7 @@ const postData = async ({ req, res, save }) => {
     if (!data["creation-date"]) {
       if (req.headers.timestamp) {
 
-        data["creation-date"] = req.headers.timestamp
+        data["creation-date"] = parseInt(req.headers.timestamp)
 
       } else {
 
@@ -3011,17 +3039,16 @@ const postData = async ({ req, res, save }) => {
   return ({ data, success, message })
 }
 
-const deleteData = async ({ req, res, erase }) => {
+const deleteData = async ({ _window, req, res, erase }) => {
 
   var db = req.db, docs
   var storage = req.storage
   var collection = erase.collection
+  if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   
   var ref = db.collection(collection)
   var success, message
-
-  /////////////////// verify access key ///////////////////// access key is stopped
 
   if (erase.collection === "storage" && erase.field) {
 
@@ -3032,6 +3059,7 @@ const deleteData = async ({ req, res, erase }) => {
       var multiIN = false, _ref = ref
       if (field) Object.entries(field).map(([key, value]) => {
   
+        if (typeof value !== "object") value = { equal: value }
         var _value = value[Object.keys(value)[0]]
         var operator = toFirebaseOperator(Object.keys(value)[0])
         if (operator === "in" && _value.length > 10) {
@@ -3112,7 +3140,7 @@ module.exports = {
   deletedb,
   deleteData
 }
-},{"./toArray":118,"./toCode":122,"./toFirebaseOperator":126,"./toParam":132,"axios":145}],62:[function(require,module,exports){
+},{"./toArray":119,"./toCode":123,"./toFirebaseOperator":127,"./toParam":133,"axios":146}],62:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -3360,12 +3388,13 @@ module.exports = { defaultInputHandler }
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
 }*/
-},{"./colorize":47,"./data":60,"./isArabic":83,"./resize":102,"./toCode":122}],64:[function(require,module,exports){
+},{"./colorize":47,"./data":60,"./isArabic":83,"./resize":103,"./toCode":123}],64:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
 const { toString } = require("./toString")
 const { reducer } = require("./reducer")
+const { toCode } = require("./toCode")
 
 const droplist = ({ id, e, droplist: params = {} }) => {
   
@@ -3401,7 +3430,15 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   }
 
   // items
-  if (typeof items === "string") items = clone(toValue({ id, e, value: items }))
+  if (typeof items === "string") {
+    //items = toCode({ _window, id, string: items, start: "'", end: "'" })
+    //console.log(items);
+    //if (items.includes("codedS()")) items = global.codes["codedS()" + items.slice(-5)]
+    //console.log(items);
+    //items = toCode({ string: items })
+    
+    items = clone(toValue({ id, e, value: items }))
+  }
 
   // filterable
   if (!view.droplist.preventDefault) {
@@ -3459,24 +3496,25 @@ const droplist = ({ id, e, droplist: params = {} }) => {
     dropList.children.push(...clone(items).map(item => {
 
       if (typeof item === "string" || typeof item === "number") item = { text: item }
-      item.text = `'${item.text}'`
+      item.text = item.text !== undefined ? `'${item.text}'` : ""
       if (item.icon) {
   
         if (typeof item.icon === "string") item.icon = { name: item.icon }
+        if (typeof item.text === "string") item.text = { text: item.text }
         var _item = clone(item)
   
         delete _item.icon
         delete _item.container
         
         return ({
-          type: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString({ style: view.droplist.item && view.droplist.item.style || {} })};${toString(view.droplist.item && view.droplist.item.container || {})};${toString(item.container || {})};class=flex align-items pointer ${(item.container || {}).class || ""}`,
+          type: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(_item || {})};class=flex align-items pointer ${(item || {}).class || ""}`,
           children: [{
             type: `View?style:[height=inherit;width=fit-content];${toString(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
             children: [{
               type: `Icon?style:[color=#888;fontSize=1.8rem];${toString(view.droplist.icon || {})};${toString(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
             }]
           }, {
-            type: `Text?style:[fontSize=1.3rem;width=100%];${toString(_item)};class=flex align-center ${(_item || {}).class || ""};caller=${id}`,
+            type: `Text?style:[fontSize=1.3rem;width=100%];${toString(_item.text)};class=flex align-center ${(_item.text || {}).class || ""};caller=${id}?${_item.text.text ? true : false}`,
             controls: [...(view.droplist.controls || []), {
               event: `click??!():${id}.droplist.preventDefault`,
               actions: [ // :[focus:${input_id}]
@@ -3577,7 +3615,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":46,"./reducer":98,"./toString":135,"./toValue":137,"./update":139}],65:[function(require,module,exports){
+},{"./clone":46,"./reducer":99,"./toCode":123,"./toString":136,"./toValue":138,"./update":140}],65:[function(require,module,exports){
 const axios = require("axios");
 const { clone } = require("./clone");
 const { deleteData } = require("./database");
@@ -3628,7 +3666,7 @@ const erase = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 }
 
 module.exports = { erase }
-},{"./clone":46,"./database":61,"./toArray":118,"./toAwait":119,"./toString":135,"axios":145}],66:[function(require,module,exports){
+},{"./clone":46,"./database":61,"./toArray":119,"./toAwait":120,"./toString":136,"axios":146}],66:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -3958,12 +3996,12 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":46,"./execute":68,"./generate":75,"./toApproval":117,"./toArray":118,"./toCode":122,"./toParam":132,"./toValue":137}],67:[function(require,module,exports){
+},{"./clone":46,"./execute":68,"./generate":75,"./toApproval":118,"./toArray":119,"./toCode":123,"./toParam":133,"./toValue":138}],67:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
   "keydown", "scroll", "beforeLoading", "loaded", "controls", "children", "child", "change", "entry", 
-  "enter", "longclick"
+  "enter", "longclick", "sibling", "siblings", "prevSiblings", "prevSibling"
 ]
 },{}],68:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
@@ -4119,7 +4157,7 @@ const execute = ({ _window, controls, actions, e, id, params }) => {
 
 module.exports = { execute }
 
-},{"./function":74,"./isParam":86,"./toApproval":117,"./toArray":118,"./toAwait":119,"./toCode":122,"./toParam":132,"./toValue":137}],69:[function(require,module,exports){
+},{"./function":74,"./isParam":86,"./toApproval":118,"./toArray":119,"./toAwait":120,"./toCode":123,"./toParam":133,"./toValue":138}],69:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, filename }) => {
         
@@ -4209,7 +4247,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":46,"./compare":48,"./isEqual":85,"./toArray":118,"./toOperator":131}],72:[function(require,module,exports){
+},{"./clone":46,"./compare":48,"./isEqual":85,"./toArray":119,"./toOperator":132}],72:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -4233,7 +4271,7 @@ const focus = ({ id }) => {
         _view.element.value = value
 
         return
-      }
+      } else view.element.focus()
     }
   }
 
@@ -4292,6 +4330,8 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     
     global.promises[id].push(
       new Promise(async (resolve) => {
+
+        console.log("Action execution requested!");
         var { data } = await require("axios").post(`/action`, func, {
           headers: {
             "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
@@ -4318,7 +4358,7 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
 }
 
 module.exports = { func }
-},{"./clone":46,"./cookie":51,"./toArray":118,"./toAwait":119,"./toCode":122,"./toParam":132,"axios":145}],74:[function(require,module,exports){
+},{"./clone":46,"./cookie":51,"./toArray":119,"./toAwait":120,"./toCode":123,"./toParam":133,"axios":146}],74:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -4494,15 +4534,14 @@ module.exports = {
   insert,
   axios
 }
-},{"./axios":42,"./blur":43,"./capitalize":44,"./clearValues":45,"./clone":46,"./compare":48,"./contentful":49,"./controls":50,"./cookie":51,"./createActions":53,"./createComponent":54,"./createElement":55,"./createHtml":56,"./createView":58,"./data":60,"./decode":62,"./defaultInputHandler":63,"./droplist":64,"./erase":65,"./event":66,"./execute":68,"./exportJson":69,"./fileReader":70,"./filter":71,"./focus":72,"./generate":75,"./getDateTime":77,"./getDaysInMonth":78,"./getParam":79,"./importJson":81,"./insert":82,"./isArabic":83,"./isEqual":85,"./isPath":87,"./jsonFiles":88,"./keys":89,"./log":90,"./merge":91,"./note":92,"./overflow":93,"./popup":94,"./position":95,"./preventDefault":96,"./reducer":98,"./refresh":99,"./reload":100,"./remove":101,"./resize":102,"./route":103,"./save":104,"./search":106,"./setContent":107,"./setData":108,"./setElement":109,"./setPosition":110,"./sort":111,"./starter":112,"./state":113,"./style":114,"./switchMode":116,"./toApproval":117,"./toArray":118,"./toAwait":119,"./toCSV":120,"./toCode":122,"./toComponent":123,"./toControls":124,"./toId":129,"./toNumber":130,"./toOperator":131,"./toParam":132,"./toString":135,"./toStyle":136,"./toValue":137,"./toggleView":138,"./update":139,"./upload":141,"./wait":143}],75:[function(require,module,exports){
+},{"./axios":42,"./blur":43,"./capitalize":44,"./clearValues":45,"./clone":46,"./compare":48,"./contentful":49,"./controls":50,"./cookie":51,"./createActions":53,"./createComponent":54,"./createElement":55,"./createHtml":56,"./createView":58,"./data":60,"./decode":62,"./defaultInputHandler":63,"./droplist":64,"./erase":65,"./event":66,"./execute":68,"./exportJson":69,"./fileReader":70,"./filter":71,"./focus":72,"./generate":75,"./getDateTime":77,"./getDaysInMonth":78,"./getParam":79,"./importJson":81,"./insert":82,"./isArabic":83,"./isEqual":85,"./isPath":87,"./jsonFiles":88,"./keys":89,"./log":91,"./merge":92,"./note":93,"./overflow":94,"./popup":95,"./position":96,"./preventDefault":97,"./reducer":99,"./refresh":100,"./reload":101,"./remove":102,"./resize":103,"./route":104,"./save":105,"./search":107,"./setContent":108,"./setData":109,"./setElement":110,"./setPosition":111,"./sort":112,"./starter":113,"./state":114,"./style":115,"./switchMode":117,"./toApproval":118,"./toArray":119,"./toAwait":120,"./toCSV":121,"./toCode":123,"./toComponent":124,"./toControls":125,"./toId":130,"./toNumber":131,"./toOperator":132,"./toParam":133,"./toString":136,"./toStyle":137,"./toValue":138,"./toggleView":139,"./update":140,"./upload":142,"./wait":144}],75:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
 const generate = (params = {}) => {
 
-  var { length, number } = params
+  var { length = 5, number } = params
   var result = "", chars = number ? numbers : characters
-  if (!length) length = 5
 
   var charactersLength = chars.length
   for (let i = 0; i < length; i++) {
@@ -4591,7 +4630,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":132}],80:[function(require,module,exports){
+},{"./toParam":133}],80:[function(require,module,exports){
 const getType = (value) => {
   const { emptySpaces } = require("./toValue")
 
@@ -4612,7 +4651,7 @@ const getType = (value) => {
   if (typeof value === "string") return "string"
 }
 module.exports = { getType }
-},{"./toValue":137}],81:[function(require,module,exports){
+},{"./toValue":138}],81:[function(require,module,exports){
 (function (global){(function (){
 const { toAwait } = require("./toAwait")
 
@@ -4653,7 +4692,7 @@ const importJson = ({ id, e, ...params }) => {
 
 module.exports = {importJson, getJson}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toAwait":119}],82:[function(require,module,exports){
+},{"./toAwait":120}],82:[function(require,module,exports){
 const { clone } = require("./clone")
 const { createElement } = require("./createElement")
 const { starter } = require("./starter")
@@ -4666,9 +4705,11 @@ module.exports = {
     
     var insert = params.insert, { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
+
     var views = window.views, global = window.global, appendTo = (insert.id || insert.parent)
     if (appendTo && typeof appendTo === "object") appendTo = appendTo.id
     else if (!appendTo) appendTo = id
+
     var view = views[appendTo], lDiv
     
     if (index === undefined) {
@@ -4687,25 +4728,26 @@ module.exports = {
     
     if (component || replace) {
 
-      var _view = clone(component || replace)
+      var children = clone(component || replace)
+      children.type = children.type || children.view
       
       // remove mapping
-      if (_view.type.slice(0, 1) === "[") {
-        var _type = _view.type.slice(1).split("]")[0]
-        _view.type = _type + _view.type.split("]").slice(1).join("]")
+      if (children.type.slice(0, 1) === "[") {
+        var _type = children.type.slice(1).split("]")[0]
+        children.type = children.view = _type + "?" + children.type.split("?").slice(1).join("?")
       }
       
       // data
       if (data) {
-        _view.data = clone(data)
-        _view.Data = views[appendTo].Data || insert.Data || insert.doc || generate()
-        global[_view.Data] = _view.data
+        children.data = clone(data)
+        children.Data = views[appendTo].Data || insert.Data || insert.doc || generate()
+        global[children.Data] = children.data
       }
 
       // path
-      if (path) _view.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
+      if (path) children.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
       
-      var innerHTML = await Promise.all(toArray(_view).map(async (child, i) => {
+      var innerHTML = await Promise.all(toArray(children).map(async (child, i) => {
 
         var id = child.id || generate()
         views[id] = child
@@ -4764,7 +4806,7 @@ module.exports = {
     if (params.asyncer) require("./toAwait").toAwait({ id, _: view.insert, __: _, ___: __, params })
   }
 }
-},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":109,"./starter":112,"./toArray":118,"./toAwait":119}],83:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":110,"./starter":113,"./toArray":119,"./toAwait":120}],83:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -5125,20 +5167,53 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":118,"./toOperator":131,"fs":174}],89:[function(require,module,exports){
+},{"./toArray":119,"./toOperator":132,"fs":176}],89:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
 },{}],90:[function(require,module,exports){
+const { generate } = require("./generate")
+const { toStyle } = require("./toStyle")
+
+module.exports = {
+  labelHandler: ({ _window, tag, id }) => {
+
+    var views = _window ? _window.views : window.views
+    var view = views[id]
+
+    if (typeof view.label === "string") view.label = { text: view.label }
+    if (!view.container) view.container = {}
+
+    // container
+    var containerId = view.container.id || generate()
+    var container = views[containerId] = {id: containerId, index: view.index, class: `flex column ${view.container.class || ""}`, style: { gap: ".5rem", ...view.container.style }, parent: view.id}
+    var containerStyle = toStyle({ _window, id: containerId })
+    var containerAtts = Object.entries(view.container.att || view.container.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
+
+    // label
+    var labelId = view.label.id || generate()
+    var label = views[labelId] = {id: labelId, index: 0, style: { fontSize: "1.3rem", textAlign: "left", ...view.label.style }, parent: containerId}
+    var labelStyles = toStyle({ _window, id: labelId })
+    var labelAtts = Object.entries(view.label.att || view.label.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
+    var labelTag = `<p ${labelAtts} ${label.editable || label.contenteditable ? "contenteditable ": ""}class='${label.class || ""}' id='${labelId}' style='${labelStyles}' index='0'>${view.label.text||""}</p>`
+
+    // view
+    view.parent = containerId
+    view.index = 1
+    
+    return `<div ${containerAtts} ${container.draggable !== undefined ? `draggable='${container.draggable}'` : ''} spellcheck='false' ${container.editable && !container.readonly ? 'contenteditable' : ''} class='${container.class}' id='${containerId}' style='${containerStyle}' index='${container.index || 0}'>${labelTag}${tag}</div>`
+  }
+}
+},{"./generate":75,"./toStyle":137}],91:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -5209,7 +5284,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":46,"./toArray":118}],92:[function(require,module,exports){
+},{"./clone":46,"./toArray":119}],93:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -5245,7 +5320,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":83}],93:[function(require,module,exports){
+},{"./isArabic":83}],94:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var view = window.views[id]
@@ -5302,14 +5377,14 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],94:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 const popup = ({ id }) => {
   
 }
 
 module.exports = {popup}
 
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 const { lengthConverter } = require("./resize")
 
 const getPadding = (el) => {
@@ -5356,14 +5431,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":102}],96:[function(require,module,exports){
+},{"./resize":103}],97:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 module.exports = {
@@ -5384,7 +5459,7 @@ module.exports = {
         window.print()
     }
 }
-},{"./toParam":132}],98:[function(require,module,exports){
+},{"./toParam":133}],99:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -5411,8 +5486,12 @@ const { lengthConverter } = require("./resize")
 const actions = require("./actions.json")
 const events = require("./events.json")
 
-const reducer = ({ _window, id = "root", path, value, key, params, object, index = 0, _, __, ___,  e, req, res, mount, condition, createElement }) => {
+const reducer = ({ _window, id = "root", path, value, key, params = {}, object, index = 0, _, __, ___,  e, req, res, mount, condition, createElement }) => {
     
+    // break
+    if (params && params["return()"] !== undefined) return params["return()"]
+    else if (params["break()"]) return params
+
     const { remove } = require("./remove")
     const { toValue, calcSubs, calcDivision, calcModulo } = require("./toValue")
     const { toParam } = require("./toParam")
@@ -5520,7 +5599,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     }
     
     // function
-    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, createElement, object })
+    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, mount, createElement, object })
     if (isFn !== "__CONTINUE__") return isFn
 
     // addition
@@ -5564,29 +5643,35 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
 
     // if
     if (path0 === "if()") {
-      var approved = toApproval({ _window, e, string: args[1], id, _, __, ___,  req, res, object })
+      var approved = toApproval({ _window, e, string: args[1], params, id, _, __, ___,  req, res, object })
 
       if (!approved) {
           
         if (args[3]) {
-            if (condition) return toApproval({ _window, e, string: args[3], id, _, __, ___,  req, res, object })
-            return toValue({ req, res, _window, id, value: args[3], params, _, __, ___,  e, object, mount, createElement })
+
+            if (condition) return toApproval({ _window, e, params, string: args[3], id, _, __, ___,  req, res, object })
+            if (path[1]) _object = toValue({ req, res, _window, id, value: args[3], params, _, __, ___,  e, object, mount, createElement, condition })
+            else return toValue({ req, res, _window, id, value: args[3], params, _, __, ___,  e, object, mount, createElement })
         }
 
-        if (path[1] && path[1].includes("else()")) return toValue({ req, res, _window, id, value: path[1].split(":")[1], params, _, __, ___,  e, object, mount })
+        if (path[1] && path[1].includes("else()")) {
+          if (path[2]) _object = toValue({ req, res, _window, id, value: path[1].split(":")[1], params, _, __, ___,  e, object, mount })
+          else return toValue({ req, res, _window, id, value: path[1].split(":")[1], params, _, __, ___,  e, object, mount })
+        }
 
         if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
 
             var _path = path.slice(2)
             _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
-            return reducer({ _window, id, value, key, path: _path, params, object, params, _, __, ___,  e, req, res, mount })
+            return reducer({ _window, id, value, key, path: _path, params, object, _, __, ___,  e, req, res, mount, condition })
 
         } else return 
 
       } else {
-        
-        if (condition) return toApproval({ _window, e, string: args[2], id, _, __, ___,  req, res, object })
-        _object = toValue({ req, res, _window, id, value: args[2], params, _, __, ___,  e, object, mount, createElement })
+
+        if (condition) return toApproval({ _window, e, params, string: args[2], id, _, __, ___,  req, res, object })
+        if (path[1]) _object = toValue({ req, res, _window, id, value: args[2], params, _, __, ___,  e, object, mount, createElement, condition })
+        else return toValue({ req, res, _window, id, value: args[2], params, _, __, ___,  e, object, mount, createElement })
 
         path.shift()
         while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
@@ -5671,17 +5756,20 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     }
 
     // initialize by methods
-    if (!object && actions.includes(path0)) {
+    if (actions.includes(path0)) {
 
       if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
+        if (!object) {
           path.unshift("document()")
           path0 = "document()"
+        }
 
       } else {
         
-          if (view && view.labeled && path0 !== "txt()" && path0 !== "val()" && path0 !== "min()" && path0 !== "max()" && path0 !== "Data()" && path0 !== "doc()" && 
-          path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()") {
+          if (/*view && view.labeled && path0 !== "txt()" && path0 !== "val()" && path0 !== "Data()" && path0 !== "doc()" && 
+          path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()" && path0 !== "min()" && path0 !== "max()"*/
+          (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
 
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
@@ -5691,8 +5779,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
               if (view.islabel || view.templated || view.link || view.labeled) path.unshift("input()")
           }
           
-          path.unshift("()")
-          path0 = "()"
+          if (!object) {
+            path.unshift("()")
+            path0 = "()"
+          }
       }
 
     }/* else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
@@ -5707,22 +5797,21 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
     }*/
 
     _object = path0 === "()" ? view
-    : path0 === "index()" ? index
     : (path0 === "global()" || path0 === ")(") ? _window ? _window.global : window.global
-    : path0 === "e()" ? e
+    : (path0 === "e()" || path0 === "event()") ? e
     : path0 === "_" ? _
     : path0 === "__" ? __
     : path0 === "___" ? ___
-    : (path0 === "console()") ? console
+    : (path0 === "console()" || path0 === "con()") ? console
     : (path0 === "document()") ? document
     : (path0 === "window()" || path0 === "win()") ? _window || window
-    : path0 === "history()" ? history
+    : (path0 === "history()" || path0 === "his()") ? history
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
     : _object !== undefined ? _object
     : object
 
     if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "___" || path0 === "document()" 
-    || path0 === "window()" || path0 === "win()" || path0 === "history()"/* || path0 === "return()"*/) path = path.slice(1)
+    || path0 === "window()" || path0 === "win()" || path0 === "history()") path = path.slice(1)
         
     if (!_object && _object !== 0 && _object !== false) {
 
@@ -5903,9 +5992,9 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
         // log
         if (k0.includes("log()")) {
 
-            var ____
-            if (k0[0] === "_") ____ = o
-            var _log = args.slice(1).map(arg => toValue({ req, res, _window, id, e, _: ____ ? ____ : _, __, ___,  value: arg, params }))
+            var tolog
+            if (k0[0] === "_") tolog = o
+            var _log = args.slice(1).map(arg => toValue({ req, res, _window, id, e, _: tolog ? tolog : _, __, ___,  value: arg, params }))
             if (_log.length === 0) _log = o !== undefined ? [o] : ["here"]
             console.log(..._log)
             return o
@@ -5968,6 +6057,11 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             else if (k0.slice(0, 8) === "codedS()") _coded = global.codes[k]
 
             if (i === lastIndex && key && value !== undefined) answer = o[_coded] = value
+            else if (key && value !== undefined && o[_coded] === undefined) {
+              
+              if (!isNaN(toValue({ req, res, _window, id, value: path[i + 1], params, _, __, ___, e }))) answer = o[_coded] = []
+              else answer = o[_coded] = {}
+            }
             else answer = o[_coded]
             /*
             _coded = _coded !== undefined ? [...toArray(_coded), ...path.slice(i + 1)] : path.slice(i + 1)
@@ -7071,7 +7165,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                     _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
                     _o = _params.view || _params.el || _params.id || _params.element || o
 
-                } else _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                } else {
+                  _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                  _o = views[_id]
+                }
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -7091,7 +7188,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                     _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
                     _o = _params.view || _params.el || _params.id || _params.element || o
 
-                } else _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                } else {
+                  _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                  _o = views[_id]
+                }
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -7111,7 +7211,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                     _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
                     _o = _params.view || _params.el || _params.id || _params.element || o
 
-                } else _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                } else {
+                  _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                  _o = views[_id]
+                }
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -7131,7 +7234,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
                     _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
                     _o = _params.view || _params.el || _params.id || _params.element || o
 
-                } else _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                } else {
+                  _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                  _o = views[_id]
+                }
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
@@ -7141,7 +7247,55 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(mouseleaveEvent)
             else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(mouseleaveEvent)
 
-        } else if (k0 === "device()") {
+        } else if (k0 === "keyup()") {
+
+          var _params = {}, _o, _id
+          if (args[1]) {
+
+              if (isParam({ _window, string: args[1] })) {
+
+                  _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
+                  _o = _params.view || _params.el || _params.id || _params.element || o
+
+              } else {
+                _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                _o = views[_id]
+              }
+
+          } else _o = o
+
+          if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+          var keyupevent = new Event("keyup")
+
+          if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(keyupevent)
+          else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(keyupevent)
+
+      } else if (k0 === "keydown()") {
+
+        var _params = {}, _o, _id
+        if (args[1]) {
+
+            if (isParam({ _window, string: args[1] })) {
+
+                _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
+                _o = _params.view || _params.el || _params.id || _params.element || o
+
+            } else {
+              _id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+              _o = views[_id]
+            }
+
+        } else _o = o
+
+        if (typeof _o === "string" && views[_o]) _o = views[_o]
+
+        var keyupevent = new Event("keydown")
+
+        if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(keyupevent)
+        else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(keyupevent)
+
+    } else if (k0 === "device()") {
 
             answer = global.device.type
 
@@ -7401,12 +7555,10 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
         } else if (k0 === "return()") {
 
-            var isparam = isParam({ _window, string: args[1] })
-            if (isparam) toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
-            else answer = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, ___, e })
-            
-            if (params) params["return()"] = true
-            view["return()"] = true
+            if (isParam({ _window, string: args[1] })) params["return()"] = toParam({ req, res, _window, id, e, _, __, ___, string: args[1], params, condition })
+            else params["return()"] = toValue({ req, res, _window, id: mainId, value: args[1], params, _, __, ___, e, condition })
+
+            return params["return()"]
             
         } else if (k0 === "reload()") {
 
@@ -8106,6 +8258,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             _parent.length = (_parent.element.children.length - 1) || 0
             
             remove({ id: o.id })
+            return true
 
         } else if (k0 === "removeChild()" || k0 === "remChild()" || k0 === "removeView()" || k0 === "remView()") { // remove only view without removing data
 
@@ -8873,7 +9026,13 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             removeDuplicates(o);
             return o
 
-        } else if (k0 === "stopWatchers()") {
+          } /*else if (k0 === "duplicate()") {
+
+            var _id = args[1] ? toValue({ req, res, _window, id, e, _, __, ___,  value: args[1], params }) : o.id
+            require("./duplicate").duplicate({ _window, _, __, ___, id: _id })
+            return true
+
+          } */else if (k0 === "stopWatchers()") {
             
             var _view
             if (args[1]) _view = toValue({ req, res, _window, id, e, _, __, ___,  value: args[1], params })
@@ -8902,22 +9061,6 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
             answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
 
-        } else if (k0 === "doesnotHasNestedArray()") {
-            
-            answer = !hasNestedArray(o) || false
-
-        } else if (k0 === "hasNestedArray()") {
-            
-            answer = hasNestedArray(o) || false
-            
-        } else if (k0 === "doesnotHasEmptyField()") {
-            
-            answer = !hasEmptyField(o) || false
-            
-        } else if (k0 === "hasEmptyField()") {
-            
-            answer = hasEmptyField(o) || false
-            
         } else if (k0 === "exist()" || k0 === "exists()") {
             
             answer = o !== undefined ? true : false
@@ -9133,8 +9276,8 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
             else args.map(arg => {
                 
-                if (k[0] === "_") answer = toArray(o).filter((o, index) => toApproval({ _window, e, string: arg, id, __: _, _: o, req, res }) )
-                else answer = toArray(o).filter((o, index) => toApproval({ _window, e, string: arg, id, object: o, req, res, _, __, ___ }))
+                if (k[0] === "_") answer = toArray(o).filter((o, index) => toApproval({ _window, e, string: arg, params, id, __: _, _: o, req, res }) )
+                else answer = toArray(o).filter((o, index) => toApproval({ _window, e, string: arg, id, params, object: o, req, res, _, __, ___ }))
             })
             
         } /*else if (k0.includes("filterById()")) {
@@ -9152,14 +9295,14 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (i === lastIndex && key && value !== undefined) {
 
                 var _index
-                if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
-                else _index = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
+                if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], params, id, ___: __, __: _, _: o, req, res }) )
+                else _index = toArray(o).findIndex(o => toApproval({ _window, e, string: args[1], id, params, _, __, ___, req, res, object: o }) )
                 if (_index !== undefined && _index !== -1) o[_index] = answer = value
                 
             } else {
 
-                if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, ___: __, __: _, _: o, req, res }) )
-                else answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, _, __, ___, req, res, object: o }) )
+                if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], params, id, ___: __, __: _, _: o, req, res }) )
+                else answer = toArray(o).find(o => toApproval({ _window, e, string: args[1], id, params, _, __, ___, req, res, object: o }) )
             }
             
         } else if (k0 === "sort()") {
@@ -9168,7 +9311,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             if (Array.isArray(o)) _array = o
             if (isParam({ _window, string: args[1] })) {
                 
-                _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
+                _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1], params })
                 _params.data = _params.data || _params.map || _params.array || _params.object || _params.list || _array
 
             } else if (args[1]) {
@@ -9402,11 +9545,6 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
           if (args[1]) _id = toValue({ req, res, _window, id, e, _, __, ___, params, value: args[1] })
           require("./getCoords")({ id: _id || id })
 
-        } else if (k0 === "newTab()") {
-
-            var _params = toParam({ req, res, _window, id, e, _,/* params,*/ __, ___, string: args[1], object })
-            window.open(_params.url || _params.URL, _params.name, _params.specs || "")
-
         } else if (k0 === "function()") {
             
             answer = (...my_) => {
@@ -9475,8 +9613,13 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
         } else if (k0 === "toString()" || k0 === "string()" || k0 === "str()") {
             
-            if (typeof o !== "object") answer = o + ""
-            else answer = toString(o)
+            if (args[1]) {
+              var number = toValue({ req, res, _window, id, e, _, __, ___, params, value: args[1] })
+              answer = number + ""
+            } else {
+              if (typeof o !== "object") answer = o + ""
+              else answer = toString(o)
+            }
             
         } else if (k0 === "1stElement()" || k0 === "1stEl()") {
             
@@ -9687,11 +9830,13 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             
             if (isParam({ _window, string: args[1] })) {
               var _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
-              return note({ note: _params })
+              note({ note: _params })
+            } else {
+              var text = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+              var type = toValue({ req, res, _window, id, e, _, __, ___, value: args[2], params })
+              note({ note: { text, type } })
             }
-            var text = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
-            var type = toValue({ req, res, _window, id, e, _, __, ___, value: args[2], params })
-            return note({ note: { text, type } })
+            return true
             
         } else if (k0 === "mininote()") {
           
@@ -9699,6 +9844,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             _text = toValue({ req, res, _window, id, e, _, __, ___, value: _text, params })
             var mininoteControls = toCode({ _window, string: `():mininote-text.txt()=${_text};clearTimer():[)(:mininote-timer];():mininote.style():[opacity=1;transform=scale(1)];)(:mininote-timer=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _, __, ___ })
+            return true
 
         } else if (k0 === "tooltip()") {
           
@@ -9706,6 +9852,7 @@ const reducer = ({ _window, id = "root", path, value, key, params, object, index
             _text = toValue({ req, res, _window, id, e, _, __, ___, value: _text, params })
             var mininoteControls = toCode({ _window, string: `():tooltip-text.txt()=${_text};clearTimer():[)(:tooltip-timer];():tooltip.style():[opacity=1;transform=scale(1)];)(:tooltip-timer=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
             toParam({ _window, string: mininoteControls, e, id, req, res, _, __, ___ })
+            return true
 
         } else if (k0 === "readonly()") {
           
@@ -10203,46 +10350,6 @@ const getDeepParentId = ({ _window, id }) => {
     return all
 }
 
-const hasNestedArray = (o) => {
-    
-    var _nested = false
-    if (Array.isArray(o)) {
-
-        o.map(o => {
-
-            if (_nested) return
-            if (Array.isArray(o)) _nested = true
-            else hasNestedArray(o)
-        })
-
-    } else if (typeof o === "object") {
-
-        Object.values(o).map(o => hasNestedArray(o))
-    }
-
-    return _nested
-}
-
-const hasEmptyField = (o) => {
-    
-    var _hasEmptyField = false
-    if (Array.isArray(o)) {
-
-        o.map(o => hasEmptyField(o))
-
-    } else if (typeof o === "object") {
-
-        Object.entries(o).map(([k, o]) => {
-
-            if (_hasEmptyField) return
-            if (k === "") _hasEmptyField = true
-            else hasEmptyField(o)
-        })
-    }
-    
-    return _hasEmptyField
-}
-
 function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
@@ -10293,25 +10400,13 @@ const toDataURL = url => fetch(url)
     reader.readAsDataURL(blob)
 }))
 
-const open = (url) => {
-  /*
-  const downloadLink = document.createElement("a");
-  const fileName = "file";
-
-  downloadLink.href = url;
-  downloadLink.download = fileName;
-  downloadLink.click();
-  */
-  window.open(url, "_blank")
-}
-
 var formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./actions.json":41,"./axios":42,"./capitalize":44,"./clone":46,"./cookie":51,"./counter":52,"./csvToJson":59,"./droplist":64,"./erase":65,"./events.json":67,"./exportJson":69,"./focus":72,"./generate":75,"./getCoords":76,"./getDateTime":77,"./getDaysInMonth":78,"./getType":80,"./importJson":81,"./insert":82,"./isCondition":84,"./isEqual":85,"./isParam":86,"./note":92,"./print":97,"./refresh":99,"./remove":101,"./resize":102,"./route":103,"./save":104,"./search":106,"./setPosition":110,"./sort":111,"./toApproval":117,"./toArray":118,"./toAwait":119,"./toCSV":120,"./toClock":121,"./toCode":122,"./toExcel":125,"./toFunction":127,"./toHTML":128,"./toId":129,"./toNumber":130,"./toParam":132,"./toPdf":133,"./toSimplifiedDate":134,"./toValue":137,"./toggleView":138,"./update":139,"./updateSelf":140,"./upload":141}],99:[function(require,module,exports){
+},{"./actions.json":41,"./axios":42,"./capitalize":44,"./clone":46,"./cookie":51,"./counter":52,"./csvToJson":59,"./droplist":64,"./erase":65,"./events.json":67,"./exportJson":69,"./focus":72,"./generate":75,"./getCoords":76,"./getDateTime":77,"./getDaysInMonth":78,"./getType":80,"./importJson":81,"./insert":82,"./isCondition":84,"./isEqual":85,"./isParam":86,"./note":93,"./print":98,"./refresh":100,"./remove":102,"./resize":103,"./route":104,"./save":105,"./search":107,"./setPosition":111,"./sort":112,"./toApproval":118,"./toArray":119,"./toAwait":120,"./toCSV":121,"./toClock":122,"./toCode":123,"./toExcel":126,"./toFunction":128,"./toHTML":129,"./toId":130,"./toNumber":131,"./toParam":133,"./toPdf":134,"./toSimplifiedDate":135,"./toValue":138,"./toggleView":139,"./update":140,"./updateSelf":141,"./upload":142}],100:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -10400,13 +10495,13 @@ const refresh = async ({ id, update = {} }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":109,"./starter":112,"./toArray":118,"./update":139}],100:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":110,"./starter":113,"./toArray":119,"./update":140}],101:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],101:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -10428,10 +10523,13 @@ const remove = ({ _window, remove: _remove, id }) => {
   if (!_remove.onlyChild && keys.length > 0 && !_remove.keepData) {
 
     keys.unshift(`${view.Data}:()`)
-    // keys.unshift(")(")
-    keys.push("delete()")
-
-    reducer({ id, path: keys })
+    var parentData = reducer({ id, path: keys.slice(0, -1) })
+    if (Array.isArray(parentData) && parentData.length === 0) {
+      reducer({ id, path: keys.slice(0, -1), value: [], key: true })
+    } else {
+      keys.push("del()")
+      reducer({ id, path: keys })
+    }
   }
 
   // close droplist
@@ -10447,9 +10545,9 @@ const remove = ({ _window, remove: _remove, id }) => {
   }
 
   removeChildren({ id })
-
+  
   if (keys.length === 0) {
-
+    
     view.element.remove()
     delete window.views[id]
     return
@@ -10459,7 +10557,7 @@ const remove = ({ _window, remove: _remove, id }) => {
   var nextSibling = false
   var children = [...window.views[view.parent].element.children]
   var index = view.derivations.length - 1
-
+  
   children.map((child) => {
 
     var id = child.id
@@ -10492,7 +10590,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":46,"./reducer":98,"./toCode":122,"./toParam":132,"./update":139}],102:[function(require,module,exports){
+},{"./clone":46,"./reducer":99,"./toCode":123,"./toParam":133,"./update":140}],103:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -10595,7 +10693,7 @@ var lengthConverter = (length) => {
 
 module.exports = {resize, dimensions, lengthConverter}
 
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 const { clone } = require("./clone")
 const { update } = require("./update")
 const { createElement } = require("./createElement")
@@ -10645,7 +10743,7 @@ module.exports = {
       }
     }
 }
-},{"./clone":46,"./createElement":55,"./toArray":118,"./update":139}],104:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./toArray":119,"./update":140}],105:[function(require,module,exports){
 var { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { generate } = require("./generate")
@@ -10700,6 +10798,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
   if (_window) {
     
     var collection = save.collection, success, message, project = headers.project || req.headers.project, schema
+    if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
     if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
     
     // get schema
@@ -10831,7 +10930,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
 }
 
 module.exports = { save }
-},{"./clone":46,"./generate":75,"./schematize":105,"./toArray":118,"./toAwait":119,"./toParam":132,"axios":145}],105:[function(require,module,exports){
+},{"./clone":46,"./generate":75,"./schematize":106,"./toArray":119,"./toAwait":120,"./toParam":133,"axios":146}],106:[function(require,module,exports){
 const schematize = ({ data, schema }) => {
   var _data = {}
   schema.map(schema => {
@@ -10851,7 +10950,7 @@ const schematize = ({ data, schema }) => {
 }
 
 module.exports = { schematize }
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { clone } = require('./clone')
@@ -10878,8 +10977,9 @@ module.exports = {
       
       global.promises[id] = toArray(global.promises[id])
       var collection = search.collection, project = headers.project || req.headers.project
+      if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
       if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${project}`
-
+      
       var doc = search.document || search.doc,
       docs = search.documents || search.docs,
       field = search.field || search.fields,
@@ -11016,14 +11116,16 @@ module.exports = {
       }
 
       else {
+        
         const myPromise = () => new Promise(async resolve => {
 
           // search field
           var multiIN = false, _ref = ref
           if (field) Object.entries(field).map(([key, value]) => {
-
+            if (typeof value !== "object") value = { equal: value }
             var _value = value[Object.keys(value)[0]]
             var operator = toFirebaseOperator(Object.keys(value)[0])
+            
             if (operator === "in" && _value.length > 10) {
 
               field[key][Object.keys(value)[0]] = [..._value.slice(10)]
@@ -11043,7 +11145,7 @@ module.exports = {
 
           if (search.endAt) _ref = _ref.endAt(search.endAt)
           if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
-
+          
           // retrieve data
           await _ref.get().then(query => {
 
@@ -11129,7 +11231,7 @@ module.exports = {
     // if (_data.message === "Force reload!") return location.reload()
   }
 }
-},{"./clone":46,"./toArray":118,"./toAwait":119,"./toFirebaseOperator":126,"./toString":135,"axios":145}],107:[function(require,module,exports){
+},{"./clone":46,"./toArray":119,"./toAwait":120,"./toFirebaseOperator":127,"./toString":136,"axios":146}],108:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -11152,7 +11254,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":83}],108:[function(require,module,exports){
+},{"./isArabic":83}],109:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
@@ -11196,7 +11298,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":46,"./reducer":98}],109:[function(require,module,exports){
+},{"./clone":46,"./reducer":99}],110:[function(require,module,exports){
 const { controls } = require("./controls")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -11245,7 +11347,7 @@ const setElement = ({ _window, id }) => {
 }
     
 module.exports = { setElement }
-},{"./controls":50,"./defaultInputHandler":63,"./isArabic":83,"./resize":102,"./toApproval":117,"./toArray":118,"./toCode":122,"./toParam":132}],110:[function(require,module,exports){
+},{"./controls":50,"./defaultInputHandler":63,"./isArabic":83,"./resize":103,"./toApproval":118,"./toArray":119,"./toCode":123,"./toParam":133}],111:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
   var views = window.views
@@ -11427,7 +11529,7 @@ const setPosition = ({ position = {}, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],111:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
@@ -11552,7 +11654,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":98,"./toArray":118,"./toCode":122}],112:[function(require,module,exports){
+},{"./reducer":99,"./toArray":119,"./toCode":123}],113:[function(require,module,exports){
 const _controls_ = require("../control/control")
 const { toArray } = require("./toArray")
 
@@ -11589,12 +11691,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":17,"./controls":50,"./event":66,"./toArray":118}],113:[function(require,module,exports){
+},{"../control/control":17,"./controls":50,"./event":66,"./toArray":119}],114:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],114:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -11714,7 +11816,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":102,"./toArray":118}],115:[function(require,module,exports){
+},{"./resize":103,"./toArray":119}],116:[function(require,module,exports){
 module.exports = (k) => {
   
   if (k === "userSelect") k = "user-select";
@@ -11780,7 +11882,7 @@ module.exports = (k) => {
   else if (k === "writingMode") k = "writing-mode";
   return k
 }
-},{}],116:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -11844,14 +11946,17 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":44,"./clone":46,"./style":114}],117:[function(require,module,exports){
+},{"./capitalize":44,"./clone":46,"./style":115}],118:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 
-const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, object, elser }) => {
+const toApproval = ({ _window, e, string, params = {}, id = "root", _, __, ___, req, res, object, elser }) => {
 
   const { toFunction } = require("./toFunction")
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
+
+  if (params && params["return()"] !== undefined) return params["return()"]
+  else if (params["break()"]) return params
 
   // no string but object exists
   if (!string)
@@ -11890,7 +11995,7 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
       var conditions = condition.split("||"), _i = 0
       approval = false
       while (!approval && conditions[_i] !== undefined) {
-        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, ___, req, res, object, elser: true })
+        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, ___, params, req, res, object, elser: true })
         _i += 1
       }
       return approval
@@ -11915,7 +12020,7 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
 
     // /////////////////// value /////////////////////
 
-    if (value) value = toValue({ _window, id: mainId, value, e, _, __, ___, req, res, condition: true })
+    if (value) value = toValue({ _window, id: mainId, value, e, _, __, ___, req, res, params, condition: true })
 
     // /////////////////// key /////////////////////
 
@@ -11946,7 +12051,7 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
 
     // function
     var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition: true });
-    if (isFn !== "__CONTINUE__") return approval = isFn
+    if (isFn !== "__CONTINUE__") return approval = notEqual ? !isFn : isFn
 
     if (!key && object !== undefined) myKey = object
     else if (key === "false" || key === "undefined") myKey = false
@@ -11957,12 +12062,20 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
     else if (key === "_") myKey = _
     else if (key === "__") myKey = __
     else if (key === "___") myKey = ___
-    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) myKey = reducer({ _window, id, path, e, _, __, ___, req, res, object, condition: true })
-    else myKey = reducer({ _window, id, path, e, _, __, ___, req, res, object: object ? object : view, condition: true })
+    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) myKey = reducer({ _window, id, path, e, _, __, ___, params, req, res, object, condition: true })
+    else myKey = reducer({ _window, id, path, e, _, __, ___, req, res, params, object: object ? object : view, condition: true })
     // else myKey = key
 
-    if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !myKey : (myKey === 0 ? true : myKey)
-    else {
+    if (params["return()"] !== undefined) {
+
+      approval = params["return()"]
+
+    } else if (!equalOp && !greaterOp && !lessOp) {
+
+      approval = notEqual ? !myKey : (myKey === 0 ? true : myKey)
+
+    } else {
+      
       if (equalOp) approval = notEqual ? !isEqual(myKey, value) : isEqual(myKey, value)
       if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(myKey) > parseFloat(value)) : (parseFloat(myKey) > parseFloat(value))
       if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(myKey) < parseFloat(value)) : (parseFloat(myKey) < parseFloat(value))
@@ -11974,14 +12087,14 @@ const toApproval = ({ _window, e, string, id = "root", _, __, ___, req, res, obj
 
 module.exports = { toApproval }
 
-},{"./isEqual":85,"./reducer":98,"./toFunction":127,"./toValue":137}],118:[function(require,module,exports){
+},{"./isEqual":85,"./reducer":99,"./toFunction":128,"./toValue":138}],119:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 const { toCode } = require("./toCode")
 
 const toAwait = ({ _window, id, e, params = {}, req, res, _, __, ___ }) => {
@@ -12008,7 +12121,7 @@ const toAwait = ({ _window, id, e, params = {}, req, res, _, __, ___ }) => {
 }
 
 module.exports = {toAwait}
-},{"./execute":68,"./toCode":122,"./toParam":132}],120:[function(require,module,exports){
+},{"./execute":68,"./toCode":123,"./toParam":133}],121:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -12083,7 +12196,7 @@ module.exports = {
         }
     }
 }
-},{}],121:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -12104,7 +12217,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],122:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
@@ -12166,8 +12279,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 }
 
 module.exports = { toCode }
-
-},{"./generate":75}],123:[function(require,module,exports){
+},{"./generate":75}],124:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -12200,12 +12312,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":75,"./toArray":118}],124:[function(require,module,exports){
+},{"./generate":75,"./toArray":119}],125:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],125:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 // const XLSX = require("xlsx")
 
 module.exports = {
@@ -12230,7 +12342,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{}],126:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 module.exports = {
     toFirebaseOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -12246,16 +12358,17 @@ module.exports = {
         else return string
     }
 }
-},{}],127:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 const { func } = require("./func")
 const { clone } = require("./clone")
 const { toCode } = require("./toCode")
 const { isParam } = require("./isParam")
 const { toValue } = require("./toValue")
 const { toParam } = require("./toParam")
+const { toApproval } = require("./toApproval")
 const _functions = require("./function")
 
-const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object }) => {
+const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, condition, params = {}, mount, asyncer, createElement, executer, object }) => {
 
     var global = _window ? _window.global : window.global
     var views = _window ? _window.views : window.views
@@ -12299,7 +12412,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
             if (isParam({ _window, string: args[1] })) {
 
                 var _await = ""
-                var _data = toParam({ req, res, _, __, ___, e, _window, id, string: args[1], condition })
+                var _data = toParam({ req, res, _, __, ___, e, _window, id, string: args[1], params, condition })
                 var _func = { function: isFn, data: _data }
                 if (args[2]) _await = global.codes[args[2]]
                 
@@ -12310,25 +12423,26 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
             var _func = { function: isFn, data: _data }
             if (args[2]) _await = global.codes[args[2]]
 
-            return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
+            return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, params, await: _await })
         }
 
         if (_params) {
 
-            if (isParam({ _window, string: _params })) _params = toParam({ req, res, _window, id, e, _, __, ___, string: _params, condition })
-            else _params = toValue({ req, res, _window, id, e, _, __, ___, value: _params, condition })
+            if (isParam({ _window, string: _params })) _params = toParam({ req, res, _window, id, e, _, __, ___, string: _params, params, condition })
+            else _params = toValue({ req, res, _window, id, e, _, __, ___, value: _params, params, condition })
         }
-
+        
         if (!condition) return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, createElement, params, executer, condition })
-        else return toApproval({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i })
+        else return toApproval({ _window, string: isFn, e, id, req, res, mount, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___) })
     
     } else return "__CONTINUE__"
   }
 
   module.exports = { toFunction }
-},{"./clone":46,"./func":73,"./function":74,"./isParam":86,"./toCode":122,"./toParam":132,"./toValue":137}],128:[function(require,module,exports){
+},{"./clone":46,"./func":73,"./function":74,"./isParam":86,"./toApproval":118,"./toCode":123,"./toParam":133,"./toValue":138}],129:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
+const { labelHandler } = require("./labelHandler")
 
 module.exports = ({ _window, id, innerHTML }) => {
 
@@ -12338,11 +12452,19 @@ module.exports = ({ _window, id, innerHTML }) => {
   var text = view.text !== undefined && view.text !== null ? view.text.toString() : typeof view.data !== "object" ? view.data : ''
   var checked = view.input && view.input.type === "radio" && parseFloat(view.data) === parseFloat(view.input.defaultValue)
   var value = "", type = view.type
+  
+  // children IDs
+  if (view.parent) {
+    if(!views[view.parent].childrenID) views[view.parent].childrenID = []
+    views[view.parent].childrenID.push(id)
+  }
 
   if (view.type === "Input") value = (view.input && view.input.value) !== undefined ? view.input.value : view.data !== undefined ? view.data : ""
 
   // innerhtml
   innerHTML = innerHTML || (view.type !== "View" && view.type !== "Box" ? text : "")
+
+  // required
   if (view.required && view.type === "Text") {
     if (typeof view.required === "string") view.required = {}
     type = "View"
@@ -12350,72 +12472,78 @@ module.exports = ({ _window, id, innerHTML }) => {
     innerHTML += `<span style='color:red; font-size:${(view.required.style && view.required.style.fontSize)||"1.6rem"}; padding:${(view.required.style && view.required.style.padding)||"0 0.4rem"}'>*</span>`
   }
   
-  // set style
+  // styles
   var tag, style = toStyle({ _window, id })
   if (typeof value === 'object') value = ''
   if (innerHTML) innerHTML = innerHTML.toString().replace(/\\/g, '');
 
+  // html attributes
+  var atts = Object.entries(view.att || view.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
+  
   if (type === "View" || type === "Box") {
-    tag = `<div ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ''} spellcheck='false' ${view.editable && !view.readonly ? 'contenteditable' : ''} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ''}</div>`
+    tag = `<div ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ''} spellcheck='false' ${view.editable && !view.readonly ? 'contenteditable' : ''} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ''}</div>`
   } else if (type === "Image") {
-    tag = `<img ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' ${view.src ? `src='${view.src}'` : ""}></img>`
-  } else if (type === "Table") {
-    tag = `<table ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</table>`
+    tag = `<img ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' ${view.src ? `src='${view.src}'` : ""}></img>`
+  } else if (type === "Tag" && view.tag) {
+    tag = `<${view.tag.toLowerCase()} ${atts} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${view.content}</${view.tag.toLowerCase()}>`
+  } /*else if (type === "Table") {
+    tag = `<table ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</table>`
   } else if (type === "Row") {
-    tag = `<tr ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</tr>`
+    tag = `<tr ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</tr>`
   } else if (type === "Header") {
-    tag = `<th ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</th>`
+    tag = `<th ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</th>`
   } else if (type === "Cell") {
-    tag = `<td ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</td>`
+    tag = `<td ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</td>`
   } else if (type === "Label") {
-    tag = `<label ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
+    tag = `<label ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
   } else if (type === "Span") {
-    tag = `<span ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</span>`
-  } else if (type === "Text") {
+    tag = `<span ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</span>`
+  } */else if (type === "Text") {
     if (view.label) {
-      tag = `<label ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
+      tag = `<label ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
     } else if (view.h1) {
-      tag = `<h1 ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h1>`
+      tag = `<h1 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h1>`
     } else if (view.h2) {
-      tag = `<h2 ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h2>`
+      tag = `<h2 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h2>`
     } else if (view.h3) {
-      tag = `<h3 ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h3>`
+      tag = `<h3 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h3>`
     } else if (view.h4) {
-      tag = `<h4 ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h4>`
+      tag = `<h4 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h4>`
     } else if (view.h5) {
-      tag = `<h5 ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h5>`
+      tag = `<h5 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h5>`
     } else if (view.h6) {
-      tag = `<h6 ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h6>`
+      tag = `<h6 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h6>`
     } else if (view.span) {
-      tag = `<span ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</span>`
+      tag = `<span ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</span>`
     } else {
-      tag = `<p ${view.editable || view.contenteditable ? "contenteditable ": ""}class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${text}</p>`
+      tag = `<p ${atts} ${view.editable || view.contenteditable ? "contenteditable ": ""}class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${text}</p>`
     }
-  } /*else if (type === "Entry") {
-    tag = `<div ${view.readonly ? "" : "contenteditable"} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${value}</div>`
-  } */else if (type === "Icon") {
-    tag = `<i ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.outlined ? "material-icons-outlined" : (view.symbol.outlined) ? "material-symbols-outlined": (view.rounded || view.round) ? "material-icons-round" : (view.symbol.rounded || view.symbol.round) ? "material-symbols-round" : view.sharp ? "material-icons-sharp" : view.symbol.sharp ? "material-symbols-sharp" : (view.filled || view.fill) ? "material-icons" : (view.symbol.filled || view.symbol.fill) ? "material-symbols" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || "" || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index || 0}'>${view.google ? view.icon.name : ""}</i>`
+  } else if (type === "Icon") {
+    tag = `<i ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.outlined ? "material-icons-outlined" : (view.symbol.outlined) ? "material-symbols-outlined": (view.rounded || view.round) ? "material-icons-round" : (view.symbol.rounded || view.symbol.round) ? "material-symbols-round" : view.sharp ? "material-icons-sharp" : view.symbol.sharp ? "material-symbols-sharp" : (view.filled || view.fill) ? "material-icons" : (view.symbol.filled || view.symbol.fill) ? "material-symbols" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || "" || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index || 0}'>${view.google ? view.icon.name : ""}</i>`
   } else if (type === "Textarea") {
-    tag = `<textarea ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${view.data || view.input.value || ""}</textarea>`
+    tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${view.data || view.input.value || ""}</textarea>`
   } else if (type === "Input") {
     if (view.textarea) {
-      tag = `<textarea ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${value}</textarea>`
+      tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${value}</textarea>`
     } else {
-      tag = `<input ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} ${view.multiple?"multiple":""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index || 0}'/>`
+      tag = `<input ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} ${view.multiple?"multiple":""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index || 0}'/>`
     }
-  } else if (type === "Paragraph") {
-    tag = `<textarea ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index || 0}'>${text}</textarea>`
-  } else if (type === "Video") {
+  } /*else if (type === "Paragraph") {
+    tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index || 0}'>${text}</textarea>`
+  } */else if (type === "Video") {
 
-    tag = `<video style='${style}' controls>
+    tag = `<video ${atts} style='${style}' controls>
       ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>`: "")}
       ${view.alt || view.message || ""}
     </video>`
   }
 
+  // label
+  if (view.label && !view.labeled) tag = labelHandler({ _window, id, tag })
+
   return tag
 }
-},{"./toArray":118,"./toStyle":136}],129:[function(require,module,exports){
+},{"./labelHandler":90,"./toArray":119,"./toStyle":137}],130:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -12444,7 +12572,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":75}],130:[function(require,module,exports){
+},{"./generate":75}],131:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -12465,7 +12593,7 @@ module.exports = {
   },
 };
 
-},{}],131:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -12481,7 +12609,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],132:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -12503,6 +12631,10 @@ function sleep(milliseconds) {
 
 const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, createElement, params = {}, executer, condition }) => {
   
+  // break
+  if (params && params["return()"] !== undefined) return params["return()"]
+  else if (params["break()"]) return params
+
   const { toFunction } = require("./toFunction")
   const { toApproval } = require("./toApproval")
   var _functions = require("./function")
@@ -12529,8 +12661,8 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     if (param === "") return
 
     // break
-    if (view && (view.break || view.return)) return
-    if (view && (view["break()"] || view["return()"])) return
+    if (params && params["return()"] !== undefined) return params["return()"]
+    else if (params["break()"]) return params
 
     if (param.charAt(0) === "#") return
     
@@ -12542,6 +12674,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       value = param.substring(key.length + 1)
 
     } else {
+
       key = param
     
       // execute function: coded()xxxxx() => [params that inherited function attributes in underscore]()
@@ -12656,7 +12789,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.controls = toArray(view.controls)
       view.controls.push({ event: `beforeLoading?${param}` })
-      return
+      return true
     }
 
     // controls
@@ -12672,7 +12805,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
 
       view.controls = toArray(view.controls)
       view.controls.unshift(..._controls)
-      return //view.controls
+      return true
     }
 
     // children
@@ -12693,7 +12826,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         view.passToChildren = view.passToChildren || {}
         view.passToChildren._ = _
       }
-      return //view.children
+      return true
     }
 
     // children
@@ -12715,7 +12848,70 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         view.passToChildren = view.passToChildren || {}
         view.passToChildren._ = _
       }
-      return //view.children
+      return true
+    }
+
+    // siblings
+    if (param.slice(0, 9) === "siblings:") {
+
+      var siblings = []
+      param = param.slice(9)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        siblings.push({ view: param })
+      })
+
+      view.siblings = toArray(view.siblings)
+      view.siblings.unshift(...siblings)
+      if (_) {
+        view._ = _
+        view.passToChildren = view.passToChildren || {}
+        view.passToChildren._ = _
+      }
+      return true
+    }
+
+    // sibling
+    if (param.slice(0, 8) === "sibling:") {
+
+      var siblings = []
+      param = param.slice(8)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        siblings.push({ view: param })
+      })
+
+      view.siblings = toArray(view.siblings)
+      view.siblings.unshift(...siblings)
+      if (_) {
+        view._ = _
+        view.passToChildren = view.passToChildren || {}
+        view.passToChildren._ = _
+      }
+      return true
+    }
+
+    // siblings
+    if (param.slice(0, 12) === "prevSibling:") {
+
+      var siblings = []
+      param = param.slice(12)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        siblings.push({ view: param })
+      })
+
+      view.prevSiblings = toArray(view.prevSiblings)
+      view.prevSiblings.unshift(...siblings)
+      if (_) {
+        view._ = _
+        view.passToChildren = view.passToChildren || {}
+        view.passToChildren._ = _
+      }
+      return true
     }
     
     if (typeof value === 'string') value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
@@ -12731,7 +12927,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     if (path0 === "") return
 
     // function
-    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object })
+    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, createElement, executer, object })
     if (isFn !== "__CONTINUE__") return isFn
     else isFn = false
     
@@ -12771,7 +12967,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       global.codes[`coded()${_key}`] = isFn
 
       // if (backendFn) return require("./func").func({ _window, req, res, id, e, func: `${_field}:coded()${_key}`, _, __, ___, asyncer: true })
-      return toParam({ _window, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, createElement, params, executer })
+      return toParam({ _window, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, createElement, executer })
     }
 
     ////////////////////////////////// end of function /////////////////////////////////////////
@@ -12902,13 +13098,13 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     //////////////////////////////////////////////////////// End /////////////////////////////////////////////////////////
   })
 
-  if (params["return()"]) return params["return()"]
+  if (params["return()"] !== undefined) return params["return()"]
   return params
 }
 
 module.exports = { toParam }
 
-},{"./actions.json":41,"./clone":46,"./decode":62,"./function":74,"./generate":75,"./getType":80,"./isParam":86,"./reducer":98,"./toApproval":117,"./toArray":118,"./toCode":122,"./toFunction":127,"./toValue":137}],133:[function(require,module,exports){
+},{"./actions.json":41,"./clone":46,"./decode":62,"./function":74,"./generate":75,"./getType":80,"./isParam":86,"./reducer":99,"./toApproval":118,"./toArray":119,"./toCode":123,"./toFunction":128,"./toValue":138}],134:[function(require,module,exports){
 module.exports = {
     toPdf: async ({ id, options }) => {
 
@@ -12937,7 +13133,7 @@ module.exports = {
         }
     }
 }
-},{}],134:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -12985,7 +13181,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],135:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -13019,7 +13215,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],136:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -13040,7 +13236,7 @@ module.exports = {
   }
 }
 
-},{"./styleName":115}],137:[function(require,module,exports){
+},{"./styleName":116}],138:[function(require,module,exports){
 const { clone } = require("./clone");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
@@ -13055,7 +13251,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, mount, asyncer, createElement, executer, condition }) => {
+const toValue = ({ _window, value, params = {}, _, __, ___, id, e, req, res, object, mount, asyncer, createElement, executer, condition }) => {
 
   const { toFunction } = require("./toFunction")
   const { toParam } = require("./toParam")
@@ -13077,8 +13273,8 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   else if (value === "_string") return ""
   
   // break & return
-  if (view && (view.break || view.return)) return
-  if (view && (view["break()"] || view["return()"])) return
+  if (params && params["return()"] !== undefined) return params["return()"]
+  if (params["break()"]) return params
   
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
@@ -13214,7 +13410,7 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
   
   // function
-  var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object })
+  var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, createElement, executer, object })
   if (isFn !== "__CONTINUE__") return isFn
 
   /* value */
@@ -13598,7 +13794,7 @@ const calcModulo = ({ _window, value, params, _, __, ___, id, e, req, res, objec
 
 module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces }
 
-},{"./clone":46,"./generate":75,"./isParam":86,"./reducer":98,"./toCode":122,"./toFunction":127,"./toParam":132}],138:[function(require,module,exports){
+},{"./clone":46,"./generate":75,"./isParam":86,"./reducer":99,"./toCode":123,"./toFunction":128,"./toParam":133}],139:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -13745,7 +13941,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":46,"./createElement":55,"./generate":75,"./search":106,"./setElement":109,"./starter":112,"./toCode":122,"./toParam":132,"./update":139}],139:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./search":107,"./setElement":110,"./starter":113,"./toCode":123,"./toParam":133,"./update":140}],140:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -13852,7 +14048,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":109,"./starter":112,"./toArray":118,"./toCode":122,"./toParam":132}],140:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":110,"./starter":113,"./toArray":119,"./toCode":123,"./toParam":133}],141:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -13969,7 +14165,8 @@ const updateSelf = async ({ _window, id, update = {}, route }) => {
 }
 
 module.exports = {updateSelf}
-},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":109,"./starter":112,"./toArray":118,"./toCode":122,"./update":139}],141:[function(require,module,exports){
+},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":110,"./starter":113,"./toArray":119,"./toCode":123,"./update":140}],142:[function(require,module,exports){
+(function (Buffer){(function (){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
@@ -13978,29 +14175,28 @@ const { toArray } = require("./toArray")
 module.exports = async ({ id, _window, req, res, e, _, __, ___, ...params }) => {
         
   var upload = params.upload, promises = []
-  var global = window.global
-  var view = window.views[id]
-  var alldata = toArray(upload.data || [])
+  var global = _window ? _window.global : window.global
+  var view = _window ? _window.views : window.views[id]
+  var alldata = toArray(upload.data || []), uploadedData = [], local = false
   var headers = clone(upload.headers) || {}
   var files = toArray(upload.file || upload.files)
   var docs = toArray(upload.doc || upload.docs || [])
   var collection = upload.collection || "storage"
+  if (_window) collection += `-${req.headers["project"]}`
   
   if (!headers.project) headers.project = global.projectId;
   
-  ([...files]).map(async (f, i) => {
+  promises.push(...([...files]).map(async (f, i) => {
 
-    /*if (upload.file) delete upload.file
-    if (upload.files) delete upload.files*/
     if (typeof f === "string") f = { file: f }
-    
+
     var upload = {collection}
     var data = alldata[i] || {}
     var file = await readFile(f)
 
     upload.doc = f.id || f.doc || docs[i] || generate({ length: 20 })
     data.name = f.name || data.name || generate({ length: 20 })
-
+    
     // get file type
     var type = data.type = f.type
     
@@ -14013,38 +14209,76 @@ module.exports = async ({ id, _window, req, res, e, _, __, ___, ...params }) => 
 
     // data
     upload.data = clone(data)
-    
-    if (!view) return
-    promises.push(await axios.post(`/storage`, { upload, file }, {
-      headers: {
-        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-        ...headers
-      }
-    }))
 
-    if (promises.length === files.length) {
+    if (_window) {
 
-      view.uploads = []
-      global.uploads = []
+      var db = req.db
+      var storage = req.storage
 
-      promises.map(({ data }, i) => {
-
-        if (!view) return
-        
-        view.upload = clone(data)
-        view.uploads.push(clone(data))
-        
-        global.upload = clone(data)
-        global.uploads.push(clone(data))
-    
-        if (files.length > 1) console.log(view.uploads)
-        else console.log(view.upload)
+      // convert base64 to buffer
+      var buffer = Buffer.from(file, "base64")
+      
+      await storage.bucket().file(`${collection}/${upload.doc}`).save(buffer, { contentType: data.type }, async () => {
+        url = await storage.bucket().file(`${collection}/${upload.doc}`).getSignedUrl({ action: 'read', expires: '03-09-3000' })
       })
-    
-      // await params
-      if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, _: global.uploads.length > 0 ? global.uploads : global.upload, __: _, ___: __, params })
+      
+      // post api
+      data = {
+        url: url[0],
+        id: upload.doc,
+        name: data.name,
+        description: data.description || "",
+        type: data.type,
+        tags: data.tags || [],
+        title: data.title || data.type.toUpperCase(),
+        "creation-date": (new Date).getTime()
+      }
+
+      return await db.collection(collection).doc(upload.doc).set(data).then(() => {
+
+        success = true
+        message = `Document saved successfuly!`
+        uploadedData.push({ success, message, data })
+
+      }).catch(error => {
+
+        success = false
+        message = error
+      })
+
+    } else {
+
+      local = true
+      return await axios.post(`/storage`, { upload, file }, {
+        headers: {
+          "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+          ...headers
+        }
+      })
     }
+  }))
+
+  await Promise.all(promises)
+  if (local) uploadedData.push(promises.map(({ data }) => data))
+
+  view.uploads = []
+  global.uploads = []
+
+  uploadedData.map(data => {
+
+    view.upload = clone(data)
+    view.uploads.push(clone(data))
+
+    if (files.length > 1) console.log(view.uploads)
+    else console.log(view.upload)
+    
+    global.upload = clone(data)
+    global.uploads.push(clone(data))
   })
+  
+  // await params
+  if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, _: global.uploads.length === 1 ? global.uploads[0] : global.uploads, __: _, ___: __, params })
+  
 }
 
 const readFile = (file) => {
@@ -14089,12 +14323,13 @@ module.exports = {
         !upload.save && toAwait({ id, params, e })
     }
 }*/
-},{"./clone":46,"./generate":75,"./toArray":118,"./toAwait":119,"axios":145}],142:[function(require,module,exports){
+}).call(this)}).call(this,require("buffer").Buffer)
+},{"./clone":46,"./generate":75,"./toArray":119,"./toAwait":120,"axios":146,"buffer":177}],143:[function(require,module,exports){
 module.exports=[ 
   "View", "Box", "Text", "Icon", "Image", "Input", "Video", "Entry", "Map",
-  "Swiper", "Switch", "Checkbox", "Swiper", "List", "Item", "Chevron"
+  "Swiper", "Switch", "Checkbox", "Swiper", "List", "Item", "Chevron", "Tag"
 ]
-},{}],143:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 const wait = async ({ id, e, ...params }) => {
 
   // await params
@@ -14102,7 +14337,7 @@ const wait = async ({ id, e, ...params }) => {
 }
 
 module.exports = { wait }
-},{"./toAwait":119}],144:[function(require,module,exports){
+},{"./toAwait":120}],145:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -14169,9 +14404,9 @@ const watch = ({ _window, controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":46,"./execute":68,"./isEqual":85,"./toApproval":117,"./toCode":122,"./toParam":132,"./toValue":137}],145:[function(require,module,exports){
+},{"./clone":46,"./execute":68,"./isEqual":85,"./toApproval":118,"./toCode":123,"./toParam":133,"./toValue":138}],146:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":147}],146:[function(require,module,exports){
+},{"./lib/axios":148}],147:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14362,7 +14597,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":153,"../core/createError":154,"./../core/settle":158,"./../helpers/buildURL":162,"./../helpers/cookies":164,"./../helpers/isURLSameOrigin":167,"./../helpers/parseHeaders":169,"./../utils":172}],147:[function(require,module,exports){
+},{"../core/buildFullPath":154,"../core/createError":155,"./../core/settle":159,"./../helpers/buildURL":163,"./../helpers/cookies":165,"./../helpers/isURLSameOrigin":168,"./../helpers/parseHeaders":170,"./../utils":173}],148:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -14420,7 +14655,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":148,"./cancel/CancelToken":149,"./cancel/isCancel":150,"./core/Axios":151,"./core/mergeConfig":157,"./defaults":160,"./helpers/bind":161,"./helpers/isAxiosError":166,"./helpers/spread":170,"./utils":172}],148:[function(require,module,exports){
+},{"./cancel/Cancel":149,"./cancel/CancelToken":150,"./cancel/isCancel":151,"./core/Axios":152,"./core/mergeConfig":158,"./defaults":161,"./helpers/bind":162,"./helpers/isAxiosError":167,"./helpers/spread":171,"./utils":173}],149:[function(require,module,exports){
 'use strict';
 
 /**
@@ -14441,7 +14676,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],149:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -14500,14 +14735,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":148}],150:[function(require,module,exports){
+},{"./Cancel":149}],151:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],151:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14657,7 +14892,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":162,"../helpers/validator":171,"./../utils":172,"./InterceptorManager":152,"./dispatchRequest":155,"./mergeConfig":157}],152:[function(require,module,exports){
+},{"../helpers/buildURL":163,"../helpers/validator":172,"./../utils":173,"./InterceptorManager":153,"./dispatchRequest":156,"./mergeConfig":158}],153:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14713,7 +14948,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":172}],153:[function(require,module,exports){
+},{"./../utils":173}],154:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -14735,7 +14970,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":163,"../helpers/isAbsoluteURL":165}],154:[function(require,module,exports){
+},{"../helpers/combineURLs":164,"../helpers/isAbsoluteURL":166}],155:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -14755,7 +14990,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":156}],155:[function(require,module,exports){
+},{"./enhanceError":157}],156:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -14839,7 +15074,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":150,"../defaults":160,"./../utils":172,"./transformData":159}],156:[function(require,module,exports){
+},{"../cancel/isCancel":151,"../defaults":161,"./../utils":173,"./transformData":160}],157:[function(require,module,exports){
 'use strict';
 
 /**
@@ -14883,7 +15118,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],157:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -14972,7 +15207,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":172}],158:[function(require,module,exports){
+},{"../utils":173}],159:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -14999,7 +15234,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":154}],159:[function(require,module,exports){
+},{"./createError":155}],160:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15023,7 +15258,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":160,"./../utils":172}],160:[function(require,module,exports){
+},{"./../defaults":161,"./../utils":173}],161:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -15161,7 +15396,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":146,"./adapters/xhr":146,"./core/enhanceError":156,"./helpers/normalizeHeaderName":168,"./utils":172,"_process":175}],161:[function(require,module,exports){
+},{"./adapters/http":147,"./adapters/xhr":147,"./core/enhanceError":157,"./helpers/normalizeHeaderName":169,"./utils":173,"_process":179}],162:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -15174,7 +15409,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],162:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15246,7 +15481,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":172}],163:[function(require,module,exports){
+},{"./../utils":173}],164:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15262,7 +15497,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],164:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15317,7 +15552,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":172}],165:[function(require,module,exports){
+},{"./../utils":173}],166:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15333,7 +15568,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],166:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15346,7 +15581,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15416,7 +15651,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":172}],168:[function(require,module,exports){
+},{"./../utils":173}],169:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -15430,7 +15665,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":172}],169:[function(require,module,exports){
+},{"../utils":173}],170:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15485,7 +15720,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":172}],170:[function(require,module,exports){
+},{"./../utils":173}],171:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15514,7 +15749,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],171:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -15621,7 +15856,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":173}],172:[function(require,module,exports){
+},{"./../../package.json":174}],173:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -15972,7 +16207,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":161}],173:[function(require,module,exports){
+},{"./helpers/bind":162}],174:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -16058,9 +16293,2029 @@ module.exports={
   ]
 }
 
-},{}],174:[function(require,module,exports){
-
 },{}],175:[function(require,module,exports){
+'use strict'
+
+exports.byteLength = byteLength
+exports.toByteArray = toByteArray
+exports.fromByteArray = fromByteArray
+
+var lookup = []
+var revLookup = []
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+for (var i = 0, len = code.length; i < len; ++i) {
+  lookup[i] = code[i]
+  revLookup[code.charCodeAt(i)] = i
+}
+
+// Support decoding URL-safe base64 strings, as Node.js does.
+// See: https://en.wikipedia.org/wiki/Base64#URL_applications
+revLookup['-'.charCodeAt(0)] = 62
+revLookup['_'.charCodeAt(0)] = 63
+
+function getLens (b64) {
+  var len = b64.length
+
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // Trim off extra bytes after placeholder bytes are found
+  // See: https://github.com/beatgammit/base64-js/issues/42
+  var validLen = b64.indexOf('=')
+  if (validLen === -1) validLen = len
+
+  var placeHoldersLen = validLen === len
+    ? 0
+    : 4 - (validLen % 4)
+
+  return [validLen, placeHoldersLen]
+}
+
+// base64 is 4/3 + up to two characters of the original data
+function byteLength (b64) {
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function _byteLength (b64, validLen, placeHoldersLen) {
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function toByteArray (b64) {
+  var tmp
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+
+  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+  var curByte = 0
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  var len = placeHoldersLen > 0
+    ? validLen - 4
+    : validLen
+
+  var i
+  for (i = 0; i < len; i += 4) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 18) |
+      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+      revLookup[b64.charCodeAt(i + 3)]
+    arr[curByte++] = (tmp >> 16) & 0xFF
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 2) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 2) |
+      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 1) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 10) |
+      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  return arr
+}
+
+function tripletToBase64 (num) {
+  return lookup[num >> 18 & 0x3F] +
+    lookup[num >> 12 & 0x3F] +
+    lookup[num >> 6 & 0x3F] +
+    lookup[num & 0x3F]
+}
+
+function encodeChunk (uint8, start, end) {
+  var tmp
+  var output = []
+  for (var i = start; i < end; i += 3) {
+    tmp =
+      ((uint8[i] << 16) & 0xFF0000) +
+      ((uint8[i + 1] << 8) & 0xFF00) +
+      (uint8[i + 2] & 0xFF)
+    output.push(tripletToBase64(tmp))
+  }
+  return output.join('')
+}
+
+function fromByteArray (uint8) {
+  var tmp
+  var len = uint8.length
+  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+  var parts = []
+  var maxChunkLength = 16383 // must be multiple of 3
+
+  // go through the array every three bytes, we'll deal with trailing stuff later
+  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+  }
+
+  // pad the end with zeros, but make sure to not forget the extra bytes
+  if (extraBytes === 1) {
+    tmp = uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 2] +
+      lookup[(tmp << 4) & 0x3F] +
+      '=='
+    )
+  } else if (extraBytes === 2) {
+    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 10] +
+      lookup[(tmp >> 4) & 0x3F] +
+      lookup[(tmp << 2) & 0x3F] +
+      '='
+    )
+  }
+
+  return parts.join('')
+}
+
+},{}],176:[function(require,module,exports){
+
+},{}],177:[function(require,module,exports){
+(function (Buffer){(function (){
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+/* eslint-disable no-proto */
+
+'use strict'
+
+var base64 = require('base64-js')
+var ieee754 = require('ieee754')
+
+exports.Buffer = Buffer
+exports.SlowBuffer = SlowBuffer
+exports.INSPECT_MAX_BYTES = 50
+
+var K_MAX_LENGTH = 0x7fffffff
+exports.kMaxLength = K_MAX_LENGTH
+
+/**
+ * If `Buffer.TYPED_ARRAY_SUPPORT`:
+ *   === true    Use Uint8Array implementation (fastest)
+ *   === false   Print warning and recommend using `buffer` v4.x which has an Object
+ *               implementation (most compatible, even IE6)
+ *
+ * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+ * Opera 11.6+, iOS 4.2+.
+ *
+ * We report that the browser does not support typed arrays if the are not subclassable
+ * using __proto__. Firefox 4-29 lacks support for adding new properties to `Uint8Array`
+ * (See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438). IE 10 lacks support
+ * for __proto__ and has a buggy typed array implementation.
+ */
+Buffer.TYPED_ARRAY_SUPPORT = typedArraySupport()
+
+if (!Buffer.TYPED_ARRAY_SUPPORT && typeof console !== 'undefined' &&
+    typeof console.error === 'function') {
+  console.error(
+    'This browser lacks typed array (Uint8Array) support which is required by ' +
+    '`buffer` v5.x. Use `buffer` v4.x if you require old browser support.'
+  )
+}
+
+function typedArraySupport () {
+  // Can typed array instances can be augmented?
+  try {
+    var arr = new Uint8Array(1)
+    arr.__proto__ = { __proto__: Uint8Array.prototype, foo: function () { return 42 } }
+    return arr.foo() === 42
+  } catch (e) {
+    return false
+  }
+}
+
+Object.defineProperty(Buffer.prototype, 'parent', {
+  enumerable: true,
+  get: function () {
+    if (!Buffer.isBuffer(this)) return undefined
+    return this.buffer
+  }
+})
+
+Object.defineProperty(Buffer.prototype, 'offset', {
+  enumerable: true,
+  get: function () {
+    if (!Buffer.isBuffer(this)) return undefined
+    return this.byteOffset
+  }
+})
+
+function createBuffer (length) {
+  if (length > K_MAX_LENGTH) {
+    throw new RangeError('The value "' + length + '" is invalid for option "size"')
+  }
+  // Return an augmented `Uint8Array` instance
+  var buf = new Uint8Array(length)
+  buf.__proto__ = Buffer.prototype
+  return buf
+}
+
+/**
+ * The Buffer constructor returns instances of `Uint8Array` that have their
+ * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+ * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+ * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+ * returns a single octet.
+ *
+ * The `Uint8Array` prototype remains unmodified.
+ */
+
+function Buffer (arg, encodingOrOffset, length) {
+  // Common case.
+  if (typeof arg === 'number') {
+    if (typeof encodingOrOffset === 'string') {
+      throw new TypeError(
+        'The "string" argument must be of type string. Received type number'
+      )
+    }
+    return allocUnsafe(arg)
+  }
+  return from(arg, encodingOrOffset, length)
+}
+
+// Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+if (typeof Symbol !== 'undefined' && Symbol.species != null &&
+    Buffer[Symbol.species] === Buffer) {
+  Object.defineProperty(Buffer, Symbol.species, {
+    value: null,
+    configurable: true,
+    enumerable: false,
+    writable: false
+  })
+}
+
+Buffer.poolSize = 8192 // not used by this implementation
+
+function from (value, encodingOrOffset, length) {
+  if (typeof value === 'string') {
+    return fromString(value, encodingOrOffset)
+  }
+
+  if (ArrayBuffer.isView(value)) {
+    return fromArrayLike(value)
+  }
+
+  if (value == null) {
+    throw TypeError(
+      'The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' +
+      'or Array-like Object. Received type ' + (typeof value)
+    )
+  }
+
+  if (isInstance(value, ArrayBuffer) ||
+      (value && isInstance(value.buffer, ArrayBuffer))) {
+    return fromArrayBuffer(value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'number') {
+    throw new TypeError(
+      'The "value" argument must not be of type number. Received type number'
+    )
+  }
+
+  var valueOf = value.valueOf && value.valueOf()
+  if (valueOf != null && valueOf !== value) {
+    return Buffer.from(valueOf, encodingOrOffset, length)
+  }
+
+  var b = fromObject(value)
+  if (b) return b
+
+  if (typeof Symbol !== 'undefined' && Symbol.toPrimitive != null &&
+      typeof value[Symbol.toPrimitive] === 'function') {
+    return Buffer.from(
+      value[Symbol.toPrimitive]('string'), encodingOrOffset, length
+    )
+  }
+
+  throw new TypeError(
+    'The first argument must be one of type string, Buffer, ArrayBuffer, Array, ' +
+    'or Array-like Object. Received type ' + (typeof value)
+  )
+}
+
+/**
+ * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+ * if value is a number.
+ * Buffer.from(str[, encoding])
+ * Buffer.from(array)
+ * Buffer.from(buffer)
+ * Buffer.from(arrayBuffer[, byteOffset[, length]])
+ **/
+Buffer.from = function (value, encodingOrOffset, length) {
+  return from(value, encodingOrOffset, length)
+}
+
+// Note: Change prototype *after* Buffer.from is defined to workaround Chrome bug:
+// https://github.com/feross/buffer/pull/148
+Buffer.prototype.__proto__ = Uint8Array.prototype
+Buffer.__proto__ = Uint8Array
+
+function assertSize (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('"size" argument must be of type number')
+  } else if (size < 0) {
+    throw new RangeError('The value "' + size + '" is invalid for option "size"')
+  }
+}
+
+function alloc (size, fill, encoding) {
+  assertSize(size)
+  if (size <= 0) {
+    return createBuffer(size)
+  }
+  if (fill !== undefined) {
+    // Only pay attention to encoding if it's a string. This
+    // prevents accidentally sending in a number that would
+    // be interpretted as a start offset.
+    return typeof encoding === 'string'
+      ? createBuffer(size).fill(fill, encoding)
+      : createBuffer(size).fill(fill)
+  }
+  return createBuffer(size)
+}
+
+/**
+ * Creates a new filled Buffer instance.
+ * alloc(size[, fill[, encoding]])
+ **/
+Buffer.alloc = function (size, fill, encoding) {
+  return alloc(size, fill, encoding)
+}
+
+function allocUnsafe (size) {
+  assertSize(size)
+  return createBuffer(size < 0 ? 0 : checked(size) | 0)
+}
+
+/**
+ * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+ * */
+Buffer.allocUnsafe = function (size) {
+  return allocUnsafe(size)
+}
+/**
+ * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+ */
+Buffer.allocUnsafeSlow = function (size) {
+  return allocUnsafe(size)
+}
+
+function fromString (string, encoding) {
+  if (typeof encoding !== 'string' || encoding === '') {
+    encoding = 'utf8'
+  }
+
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError('Unknown encoding: ' + encoding)
+  }
+
+  var length = byteLength(string, encoding) | 0
+  var buf = createBuffer(length)
+
+  var actual = buf.write(string, encoding)
+
+  if (actual !== length) {
+    // Writing a hex string, for example, that contains invalid characters will
+    // cause everything after the first invalid character to be ignored. (e.g.
+    // 'abxxcd' will be treated as 'ab')
+    buf = buf.slice(0, actual)
+  }
+
+  return buf
+}
+
+function fromArrayLike (array) {
+  var length = array.length < 0 ? 0 : checked(array.length) | 0
+  var buf = createBuffer(length)
+  for (var i = 0; i < length; i += 1) {
+    buf[i] = array[i] & 255
+  }
+  return buf
+}
+
+function fromArrayBuffer (array, byteOffset, length) {
+  if (byteOffset < 0 || array.byteLength < byteOffset) {
+    throw new RangeError('"offset" is outside of buffer bounds')
+  }
+
+  if (array.byteLength < byteOffset + (length || 0)) {
+    throw new RangeError('"length" is outside of buffer bounds')
+  }
+
+  var buf
+  if (byteOffset === undefined && length === undefined) {
+    buf = new Uint8Array(array)
+  } else if (length === undefined) {
+    buf = new Uint8Array(array, byteOffset)
+  } else {
+    buf = new Uint8Array(array, byteOffset, length)
+  }
+
+  // Return an augmented `Uint8Array` instance
+  buf.__proto__ = Buffer.prototype
+  return buf
+}
+
+function fromObject (obj) {
+  if (Buffer.isBuffer(obj)) {
+    var len = checked(obj.length) | 0
+    var buf = createBuffer(len)
+
+    if (buf.length === 0) {
+      return buf
+    }
+
+    obj.copy(buf, 0, 0, len)
+    return buf
+  }
+
+  if (obj.length !== undefined) {
+    if (typeof obj.length !== 'number' || numberIsNaN(obj.length)) {
+      return createBuffer(0)
+    }
+    return fromArrayLike(obj)
+  }
+
+  if (obj.type === 'Buffer' && Array.isArray(obj.data)) {
+    return fromArrayLike(obj.data)
+  }
+}
+
+function checked (length) {
+  // Note: cannot use `length < K_MAX_LENGTH` here because that fails when
+  // length is NaN (which is otherwise coerced to zero.)
+  if (length >= K_MAX_LENGTH) {
+    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+                         'size: 0x' + K_MAX_LENGTH.toString(16) + ' bytes')
+  }
+  return length | 0
+}
+
+function SlowBuffer (length) {
+  if (+length != length) { // eslint-disable-line eqeqeq
+    length = 0
+  }
+  return Buffer.alloc(+length)
+}
+
+Buffer.isBuffer = function isBuffer (b) {
+  return b != null && b._isBuffer === true &&
+    b !== Buffer.prototype // so Buffer.isBuffer(Buffer.prototype) will be false
+}
+
+Buffer.compare = function compare (a, b) {
+  if (isInstance(a, Uint8Array)) a = Buffer.from(a, a.offset, a.byteLength)
+  if (isInstance(b, Uint8Array)) b = Buffer.from(b, b.offset, b.byteLength)
+  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+    throw new TypeError(
+      'The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array'
+    )
+  }
+
+  if (a === b) return 0
+
+  var x = a.length
+  var y = b.length
+
+  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    if (a[i] !== b[i]) {
+      x = a[i]
+      y = b[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+Buffer.isEncoding = function isEncoding (encoding) {
+  switch (String(encoding).toLowerCase()) {
+    case 'hex':
+    case 'utf8':
+    case 'utf-8':
+    case 'ascii':
+    case 'latin1':
+    case 'binary':
+    case 'base64':
+    case 'ucs2':
+    case 'ucs-2':
+    case 'utf16le':
+    case 'utf-16le':
+      return true
+    default:
+      return false
+  }
+}
+
+Buffer.concat = function concat (list, length) {
+  if (!Array.isArray(list)) {
+    throw new TypeError('"list" argument must be an Array of Buffers')
+  }
+
+  if (list.length === 0) {
+    return Buffer.alloc(0)
+  }
+
+  var i
+  if (length === undefined) {
+    length = 0
+    for (i = 0; i < list.length; ++i) {
+      length += list[i].length
+    }
+  }
+
+  var buffer = Buffer.allocUnsafe(length)
+  var pos = 0
+  for (i = 0; i < list.length; ++i) {
+    var buf = list[i]
+    if (isInstance(buf, Uint8Array)) {
+      buf = Buffer.from(buf)
+    }
+    if (!Buffer.isBuffer(buf)) {
+      throw new TypeError('"list" argument must be an Array of Buffers')
+    }
+    buf.copy(buffer, pos)
+    pos += buf.length
+  }
+  return buffer
+}
+
+function byteLength (string, encoding) {
+  if (Buffer.isBuffer(string)) {
+    return string.length
+  }
+  if (ArrayBuffer.isView(string) || isInstance(string, ArrayBuffer)) {
+    return string.byteLength
+  }
+  if (typeof string !== 'string') {
+    throw new TypeError(
+      'The "string" argument must be one of type string, Buffer, or ArrayBuffer. ' +
+      'Received type ' + typeof string
+    )
+  }
+
+  var len = string.length
+  var mustMatch = (arguments.length > 2 && arguments[2] === true)
+  if (!mustMatch && len === 0) return 0
+
+  // Use a for loop to avoid recursion
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'ascii':
+      case 'latin1':
+      case 'binary':
+        return len
+      case 'utf8':
+      case 'utf-8':
+        return utf8ToBytes(string).length
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return len * 2
+      case 'hex':
+        return len >>> 1
+      case 'base64':
+        return base64ToBytes(string).length
+      default:
+        if (loweredCase) {
+          return mustMatch ? -1 : utf8ToBytes(string).length // assume utf8
+        }
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+Buffer.byteLength = byteLength
+
+function slowToString (encoding, start, end) {
+  var loweredCase = false
+
+  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+  // property of a typed array.
+
+  // This behaves neither like String nor Uint8Array in that we set start/end
+  // to their upper/lower bounds if the value passed is out of range.
+  // undefined is handled specially as per ECMA-262 6th Edition,
+  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+  if (start === undefined || start < 0) {
+    start = 0
+  }
+  // Return early if start > this.length. Done here to prevent potential uint32
+  // coercion fail below.
+  if (start > this.length) {
+    return ''
+  }
+
+  if (end === undefined || end > this.length) {
+    end = this.length
+  }
+
+  if (end <= 0) {
+    return ''
+  }
+
+  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+  end >>>= 0
+  start >>>= 0
+
+  if (end <= start) {
+    return ''
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  while (true) {
+    switch (encoding) {
+      case 'hex':
+        return hexSlice(this, start, end)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Slice(this, start, end)
+
+      case 'ascii':
+        return asciiSlice(this, start, end)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Slice(this, start, end)
+
+      case 'base64':
+        return base64Slice(this, start, end)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return utf16leSlice(this, start, end)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = (encoding + '').toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+// This property is used by `Buffer.isBuffer` (and the `is-buffer` npm package)
+// to detect a Buffer instance. It's not possible to use `instanceof Buffer`
+// reliably in a browserify context because there could be multiple different
+// copies of the 'buffer' package in use. This method works even for Buffer
+// instances that were created from another copy of the `buffer` package.
+// See: https://github.com/feross/buffer/issues/154
+Buffer.prototype._isBuffer = true
+
+function swap (b, n, m) {
+  var i = b[n]
+  b[n] = b[m]
+  b[m] = i
+}
+
+Buffer.prototype.swap16 = function swap16 () {
+  var len = this.length
+  if (len % 2 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 16-bits')
+  }
+  for (var i = 0; i < len; i += 2) {
+    swap(this, i, i + 1)
+  }
+  return this
+}
+
+Buffer.prototype.swap32 = function swap32 () {
+  var len = this.length
+  if (len % 4 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 32-bits')
+  }
+  for (var i = 0; i < len; i += 4) {
+    swap(this, i, i + 3)
+    swap(this, i + 1, i + 2)
+  }
+  return this
+}
+
+Buffer.prototype.swap64 = function swap64 () {
+  var len = this.length
+  if (len % 8 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 64-bits')
+  }
+  for (var i = 0; i < len; i += 8) {
+    swap(this, i, i + 7)
+    swap(this, i + 1, i + 6)
+    swap(this, i + 2, i + 5)
+    swap(this, i + 3, i + 4)
+  }
+  return this
+}
+
+Buffer.prototype.toString = function toString () {
+  var length = this.length
+  if (length === 0) return ''
+  if (arguments.length === 0) return utf8Slice(this, 0, length)
+  return slowToString.apply(this, arguments)
+}
+
+Buffer.prototype.toLocaleString = Buffer.prototype.toString
+
+Buffer.prototype.equals = function equals (b) {
+  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+  if (this === b) return true
+  return Buffer.compare(this, b) === 0
+}
+
+Buffer.prototype.inspect = function inspect () {
+  var str = ''
+  var max = exports.INSPECT_MAX_BYTES
+  str = this.toString('hex', 0, max).replace(/(.{2})/g, '$1 ').trim()
+  if (this.length > max) str += ' ... '
+  return '<Buffer ' + str + '>'
+}
+
+Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+  if (isInstance(target, Uint8Array)) {
+    target = Buffer.from(target, target.offset, target.byteLength)
+  }
+  if (!Buffer.isBuffer(target)) {
+    throw new TypeError(
+      'The "target" argument must be one of type Buffer or Uint8Array. ' +
+      'Received type ' + (typeof target)
+    )
+  }
+
+  if (start === undefined) {
+    start = 0
+  }
+  if (end === undefined) {
+    end = target ? target.length : 0
+  }
+  if (thisStart === undefined) {
+    thisStart = 0
+  }
+  if (thisEnd === undefined) {
+    thisEnd = this.length
+  }
+
+  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+    throw new RangeError('out of range index')
+  }
+
+  if (thisStart >= thisEnd && start >= end) {
+    return 0
+  }
+  if (thisStart >= thisEnd) {
+    return -1
+  }
+  if (start >= end) {
+    return 1
+  }
+
+  start >>>= 0
+  end >>>= 0
+  thisStart >>>= 0
+  thisEnd >>>= 0
+
+  if (this === target) return 0
+
+  var x = thisEnd - thisStart
+  var y = end - start
+  var len = Math.min(x, y)
+
+  var thisCopy = this.slice(thisStart, thisEnd)
+  var targetCopy = target.slice(start, end)
+
+  for (var i = 0; i < len; ++i) {
+    if (thisCopy[i] !== targetCopy[i]) {
+      x = thisCopy[i]
+      y = targetCopy[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+//
+// Arguments:
+// - buffer - a Buffer to search
+// - val - a string, Buffer, or number
+// - byteOffset - an index into `buffer`; will be clamped to an int32
+// - encoding - an optional encoding, relevant is val is a string
+// - dir - true for indexOf, false for lastIndexOf
+function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+  // Empty buffer means no match
+  if (buffer.length === 0) return -1
+
+  // Normalize byteOffset
+  if (typeof byteOffset === 'string') {
+    encoding = byteOffset
+    byteOffset = 0
+  } else if (byteOffset > 0x7fffffff) {
+    byteOffset = 0x7fffffff
+  } else if (byteOffset < -0x80000000) {
+    byteOffset = -0x80000000
+  }
+  byteOffset = +byteOffset // Coerce to Number.
+  if (numberIsNaN(byteOffset)) {
+    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+    byteOffset = dir ? 0 : (buffer.length - 1)
+  }
+
+  // Normalize byteOffset: negative offsets start from the end of the buffer
+  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+  if (byteOffset >= buffer.length) {
+    if (dir) return -1
+    else byteOffset = buffer.length - 1
+  } else if (byteOffset < 0) {
+    if (dir) byteOffset = 0
+    else return -1
+  }
+
+  // Normalize val
+  if (typeof val === 'string') {
+    val = Buffer.from(val, encoding)
+  }
+
+  // Finally, search either indexOf (if dir is true) or lastIndexOf
+  if (Buffer.isBuffer(val)) {
+    // Special case: looking for empty string/buffer always fails
+    if (val.length === 0) {
+      return -1
+    }
+    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+  } else if (typeof val === 'number') {
+    val = val & 0xFF // Search for a byte value [0-255]
+    if (typeof Uint8Array.prototype.indexOf === 'function') {
+      if (dir) {
+        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+      } else {
+        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+      }
+    }
+    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+  }
+
+  throw new TypeError('val must be string, number or Buffer')
+}
+
+function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+  var indexSize = 1
+  var arrLength = arr.length
+  var valLength = val.length
+
+  if (encoding !== undefined) {
+    encoding = String(encoding).toLowerCase()
+    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+        encoding === 'utf16le' || encoding === 'utf-16le') {
+      if (arr.length < 2 || val.length < 2) {
+        return -1
+      }
+      indexSize = 2
+      arrLength /= 2
+      valLength /= 2
+      byteOffset /= 2
+    }
+  }
+
+  function read (buf, i) {
+    if (indexSize === 1) {
+      return buf[i]
+    } else {
+      return buf.readUInt16BE(i * indexSize)
+    }
+  }
+
+  var i
+  if (dir) {
+    var foundIndex = -1
+    for (i = byteOffset; i < arrLength; i++) {
+      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+        if (foundIndex === -1) foundIndex = i
+        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+      } else {
+        if (foundIndex !== -1) i -= i - foundIndex
+        foundIndex = -1
+      }
+    }
+  } else {
+    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+    for (i = byteOffset; i >= 0; i--) {
+      var found = true
+      for (var j = 0; j < valLength; j++) {
+        if (read(arr, i + j) !== read(val, j)) {
+          found = false
+          break
+        }
+      }
+      if (found) return i
+    }
+  }
+
+  return -1
+}
+
+Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+  return this.indexOf(val, byteOffset, encoding) !== -1
+}
+
+Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+}
+
+Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+}
+
+function hexWrite (buf, string, offset, length) {
+  offset = Number(offset) || 0
+  var remaining = buf.length - offset
+  if (!length) {
+    length = remaining
+  } else {
+    length = Number(length)
+    if (length > remaining) {
+      length = remaining
+    }
+  }
+
+  var strLen = string.length
+
+  if (length > strLen / 2) {
+    length = strLen / 2
+  }
+  for (var i = 0; i < length; ++i) {
+    var parsed = parseInt(string.substr(i * 2, 2), 16)
+    if (numberIsNaN(parsed)) return i
+    buf[offset + i] = parsed
+  }
+  return i
+}
+
+function utf8Write (buf, string, offset, length) {
+  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+function asciiWrite (buf, string, offset, length) {
+  return blitBuffer(asciiToBytes(string), buf, offset, length)
+}
+
+function latin1Write (buf, string, offset, length) {
+  return asciiWrite(buf, string, offset, length)
+}
+
+function base64Write (buf, string, offset, length) {
+  return blitBuffer(base64ToBytes(string), buf, offset, length)
+}
+
+function ucs2Write (buf, string, offset, length) {
+  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+Buffer.prototype.write = function write (string, offset, length, encoding) {
+  // Buffer#write(string)
+  if (offset === undefined) {
+    encoding = 'utf8'
+    length = this.length
+    offset = 0
+  // Buffer#write(string, encoding)
+  } else if (length === undefined && typeof offset === 'string') {
+    encoding = offset
+    length = this.length
+    offset = 0
+  // Buffer#write(string, offset[, length][, encoding])
+  } else if (isFinite(offset)) {
+    offset = offset >>> 0
+    if (isFinite(length)) {
+      length = length >>> 0
+      if (encoding === undefined) encoding = 'utf8'
+    } else {
+      encoding = length
+      length = undefined
+    }
+  } else {
+    throw new Error(
+      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+    )
+  }
+
+  var remaining = this.length - offset
+  if (length === undefined || length > remaining) length = remaining
+
+  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+    throw new RangeError('Attempt to write outside buffer bounds')
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'hex':
+        return hexWrite(this, string, offset, length)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Write(this, string, offset, length)
+
+      case 'ascii':
+        return asciiWrite(this, string, offset, length)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Write(this, string, offset, length)
+
+      case 'base64':
+        // Warning: maxLength not taken into account in base64Write
+        return base64Write(this, string, offset, length)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return ucs2Write(this, string, offset, length)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+Buffer.prototype.toJSON = function toJSON () {
+  return {
+    type: 'Buffer',
+    data: Array.prototype.slice.call(this._arr || this, 0)
+  }
+}
+
+function base64Slice (buf, start, end) {
+  if (start === 0 && end === buf.length) {
+    return base64.fromByteArray(buf)
+  } else {
+    return base64.fromByteArray(buf.slice(start, end))
+  }
+}
+
+function utf8Slice (buf, start, end) {
+  end = Math.min(buf.length, end)
+  var res = []
+
+  var i = start
+  while (i < end) {
+    var firstByte = buf[i]
+    var codePoint = null
+    var bytesPerSequence = (firstByte > 0xEF) ? 4
+      : (firstByte > 0xDF) ? 3
+        : (firstByte > 0xBF) ? 2
+          : 1
+
+    if (i + bytesPerSequence <= end) {
+      var secondByte, thirdByte, fourthByte, tempCodePoint
+
+      switch (bytesPerSequence) {
+        case 1:
+          if (firstByte < 0x80) {
+            codePoint = firstByte
+          }
+          break
+        case 2:
+          secondByte = buf[i + 1]
+          if ((secondByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+            if (tempCodePoint > 0x7F) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 3:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 4:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          fourthByte = buf[i + 3]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+              codePoint = tempCodePoint
+            }
+          }
+      }
+    }
+
+    if (codePoint === null) {
+      // we did not generate a valid codePoint so insert a
+      // replacement char (U+FFFD) and advance only 1 byte
+      codePoint = 0xFFFD
+      bytesPerSequence = 1
+    } else if (codePoint > 0xFFFF) {
+      // encode to utf16 (surrogate pair dance)
+      codePoint -= 0x10000
+      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+      codePoint = 0xDC00 | codePoint & 0x3FF
+    }
+
+    res.push(codePoint)
+    i += bytesPerSequence
+  }
+
+  return decodeCodePointsArray(res)
+}
+
+// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+// the lowest limit is Chrome, with 0x10000 args.
+// We go 1 magnitude less, for safety
+var MAX_ARGUMENTS_LENGTH = 0x1000
+
+function decodeCodePointsArray (codePoints) {
+  var len = codePoints.length
+  if (len <= MAX_ARGUMENTS_LENGTH) {
+    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+  }
+
+  // Decode in chunks to avoid "call stack size exceeded".
+  var res = ''
+  var i = 0
+  while (i < len) {
+    res += String.fromCharCode.apply(
+      String,
+      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+    )
+  }
+  return res
+}
+
+function asciiSlice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i] & 0x7F)
+  }
+  return ret
+}
+
+function latin1Slice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i])
+  }
+  return ret
+}
+
+function hexSlice (buf, start, end) {
+  var len = buf.length
+
+  if (!start || start < 0) start = 0
+  if (!end || end < 0 || end > len) end = len
+
+  var out = ''
+  for (var i = start; i < end; ++i) {
+    out += toHex(buf[i])
+  }
+  return out
+}
+
+function utf16leSlice (buf, start, end) {
+  var bytes = buf.slice(start, end)
+  var res = ''
+  for (var i = 0; i < bytes.length; i += 2) {
+    res += String.fromCharCode(bytes[i] + (bytes[i + 1] * 256))
+  }
+  return res
+}
+
+Buffer.prototype.slice = function slice (start, end) {
+  var len = this.length
+  start = ~~start
+  end = end === undefined ? len : ~~end
+
+  if (start < 0) {
+    start += len
+    if (start < 0) start = 0
+  } else if (start > len) {
+    start = len
+  }
+
+  if (end < 0) {
+    end += len
+    if (end < 0) end = 0
+  } else if (end > len) {
+    end = len
+  }
+
+  if (end < start) end = start
+
+  var newBuf = this.subarray(start, end)
+  // Return an augmented `Uint8Array` instance
+  newBuf.__proto__ = Buffer.prototype
+  return newBuf
+}
+
+/*
+ * Need to make sure that buffer isn't trying to write out of bounds.
+ */
+function checkOffset (offset, ext, length) {
+  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+}
+
+Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) {
+    checkOffset(offset, byteLength, this.length)
+  }
+
+  var val = this[offset + --byteLength]
+  var mul = 1
+  while (byteLength > 0 && (mul *= 0x100)) {
+    val += this[offset + --byteLength] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  return this[offset]
+}
+
+Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return this[offset] | (this[offset + 1] << 8)
+}
+
+Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return (this[offset] << 8) | this[offset + 1]
+}
+
+Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return ((this[offset]) |
+      (this[offset + 1] << 8) |
+      (this[offset + 2] << 16)) +
+      (this[offset + 3] * 0x1000000)
+}
+
+Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] * 0x1000000) +
+    ((this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    this[offset + 3])
+}
+
+Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var i = byteLength
+  var mul = 1
+  var val = this[offset + --i]
+  while (i > 0 && (mul *= 0x100)) {
+    val += this[offset + --i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  if (!(this[offset] & 0x80)) return (this[offset])
+  return ((0xff - this[offset] + 1) * -1)
+}
+
+Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset] | (this[offset + 1] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset + 1] | (this[offset] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset]) |
+    (this[offset + 1] << 8) |
+    (this[offset + 2] << 16) |
+    (this[offset + 3] << 24)
+}
+
+Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] << 24) |
+    (this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    (this[offset + 3])
+}
+
+Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, true, 23, 4)
+}
+
+Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, false, 23, 4)
+}
+
+Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, true, 52, 8)
+}
+
+Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+  offset = offset >>> 0
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, false, 52, 8)
+}
+
+function checkInt (buf, value, offset, ext, max, min) {
+  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+}
+
+Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var mul = 1
+  var i = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  byteLength = byteLength >>> 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  this[offset] = (value & 0xff)
+  this[offset + 1] = (value >>> 8)
+  return offset + 2
+}
+
+Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  this[offset] = (value >>> 8)
+  this[offset + 1] = (value & 0xff)
+  return offset + 2
+}
+
+Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  this[offset + 3] = (value >>> 24)
+  this[offset + 2] = (value >>> 16)
+  this[offset + 1] = (value >>> 8)
+  this[offset] = (value & 0xff)
+  return offset + 4
+}
+
+Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  this[offset] = (value >>> 24)
+  this[offset + 1] = (value >>> 16)
+  this[offset + 2] = (value >>> 8)
+  this[offset + 3] = (value & 0xff)
+  return offset + 4
+}
+
+Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) {
+    var limit = Math.pow(2, (8 * byteLength) - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = 0
+  var mul = 1
+  var sub = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) {
+    var limit = Math.pow(2, (8 * byteLength) - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  var sub = 0
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+  if (value < 0) value = 0xff + value + 1
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  this[offset] = (value & 0xff)
+  this[offset + 1] = (value >>> 8)
+  return offset + 2
+}
+
+Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  this[offset] = (value >>> 8)
+  this[offset + 1] = (value & 0xff)
+  return offset + 2
+}
+
+Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  this[offset] = (value & 0xff)
+  this[offset + 1] = (value >>> 8)
+  this[offset + 2] = (value >>> 16)
+  this[offset + 3] = (value >>> 24)
+  return offset + 4
+}
+
+Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (value < 0) value = 0xffffffff + value + 1
+  this[offset] = (value >>> 24)
+  this[offset + 1] = (value >>> 16)
+  this[offset + 2] = (value >>> 8)
+  this[offset + 3] = (value & 0xff)
+  return offset + 4
+}
+
+function checkIEEE754 (buf, value, offset, ext, max, min) {
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+  if (offset < 0) throw new RangeError('Index out of range')
+}
+
+function writeFloat (buf, value, offset, littleEndian, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+  return offset + 4
+}
+
+Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, false, noAssert)
+}
+
+function writeDouble (buf, value, offset, littleEndian, noAssert) {
+  value = +value
+  offset = offset >>> 0
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+  return offset + 8
+}
+
+Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, false, noAssert)
+}
+
+// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+  if (!Buffer.isBuffer(target)) throw new TypeError('argument should be a Buffer')
+  if (!start) start = 0
+  if (!end && end !== 0) end = this.length
+  if (targetStart >= target.length) targetStart = target.length
+  if (!targetStart) targetStart = 0
+  if (end > 0 && end < start) end = start
+
+  // Copy 0 bytes; we're done
+  if (end === start) return 0
+  if (target.length === 0 || this.length === 0) return 0
+
+  // Fatal error conditions
+  if (targetStart < 0) {
+    throw new RangeError('targetStart out of bounds')
+  }
+  if (start < 0 || start >= this.length) throw new RangeError('Index out of range')
+  if (end < 0) throw new RangeError('sourceEnd out of bounds')
+
+  // Are we oob?
+  if (end > this.length) end = this.length
+  if (target.length - targetStart < end - start) {
+    end = target.length - targetStart + start
+  }
+
+  var len = end - start
+
+  if (this === target && typeof Uint8Array.prototype.copyWithin === 'function') {
+    // Use built-in when available, missing from IE11
+    this.copyWithin(targetStart, start, end)
+  } else if (this === target && start < targetStart && targetStart < end) {
+    // descending copy from end
+    for (var i = len - 1; i >= 0; --i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else {
+    Uint8Array.prototype.set.call(
+      target,
+      this.subarray(start, end),
+      targetStart
+    )
+  }
+
+  return len
+}
+
+// Usage:
+//    buffer.fill(number[, offset[, end]])
+//    buffer.fill(buffer[, offset[, end]])
+//    buffer.fill(string[, offset[, end]][, encoding])
+Buffer.prototype.fill = function fill (val, start, end, encoding) {
+  // Handle string cases:
+  if (typeof val === 'string') {
+    if (typeof start === 'string') {
+      encoding = start
+      start = 0
+      end = this.length
+    } else if (typeof end === 'string') {
+      encoding = end
+      end = this.length
+    }
+    if (encoding !== undefined && typeof encoding !== 'string') {
+      throw new TypeError('encoding must be a string')
+    }
+    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+      throw new TypeError('Unknown encoding: ' + encoding)
+    }
+    if (val.length === 1) {
+      var code = val.charCodeAt(0)
+      if ((encoding === 'utf8' && code < 128) ||
+          encoding === 'latin1') {
+        // Fast path: If `val` fits into a single byte, use that numeric value.
+        val = code
+      }
+    }
+  } else if (typeof val === 'number') {
+    val = val & 255
+  }
+
+  // Invalid ranges are not set to a default, so can range check early.
+  if (start < 0 || this.length < start || this.length < end) {
+    throw new RangeError('Out of range index')
+  }
+
+  if (end <= start) {
+    return this
+  }
+
+  start = start >>> 0
+  end = end === undefined ? this.length : end >>> 0
+
+  if (!val) val = 0
+
+  var i
+  if (typeof val === 'number') {
+    for (i = start; i < end; ++i) {
+      this[i] = val
+    }
+  } else {
+    var bytes = Buffer.isBuffer(val)
+      ? val
+      : Buffer.from(val, encoding)
+    var len = bytes.length
+    if (len === 0) {
+      throw new TypeError('The value "' + val +
+        '" is invalid for argument "value"')
+    }
+    for (i = 0; i < end - start; ++i) {
+      this[i + start] = bytes[i % len]
+    }
+  }
+
+  return this
+}
+
+// HELPER FUNCTIONS
+// ================
+
+var INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g
+
+function base64clean (str) {
+  // Node takes equal signs as end of the Base64 encoding
+  str = str.split('=')[0]
+  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+  str = str.trim().replace(INVALID_BASE64_RE, '')
+  // Node converts strings with length < 2 to ''
+  if (str.length < 2) return ''
+  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+  while (str.length % 4 !== 0) {
+    str = str + '='
+  }
+  return str
+}
+
+function toHex (n) {
+  if (n < 16) return '0' + n.toString(16)
+  return n.toString(16)
+}
+
+function utf8ToBytes (string, units) {
+  units = units || Infinity
+  var codePoint
+  var length = string.length
+  var leadSurrogate = null
+  var bytes = []
+
+  for (var i = 0; i < length; ++i) {
+    codePoint = string.charCodeAt(i)
+
+    // is surrogate component
+    if (codePoint > 0xD7FF && codePoint < 0xE000) {
+      // last char was a lead
+      if (!leadSurrogate) {
+        // no lead yet
+        if (codePoint > 0xDBFF) {
+          // unexpected trail
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        } else if (i + 1 === length) {
+          // unpaired lead
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        }
+
+        // valid lead
+        leadSurrogate = codePoint
+
+        continue
+      }
+
+      // 2 leads in a row
+      if (codePoint < 0xDC00) {
+        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+        leadSurrogate = codePoint
+        continue
+      }
+
+      // valid surrogate pair
+      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+    } else if (leadSurrogate) {
+      // valid bmp char, but last char was a lead
+      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+    }
+
+    leadSurrogate = null
+
+    // encode utf8
+    if (codePoint < 0x80) {
+      if ((units -= 1) < 0) break
+      bytes.push(codePoint)
+    } else if (codePoint < 0x800) {
+      if ((units -= 2) < 0) break
+      bytes.push(
+        codePoint >> 0x6 | 0xC0,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x10000) {
+      if ((units -= 3) < 0) break
+      bytes.push(
+        codePoint >> 0xC | 0xE0,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x110000) {
+      if ((units -= 4) < 0) break
+      bytes.push(
+        codePoint >> 0x12 | 0xF0,
+        codePoint >> 0xC & 0x3F | 0x80,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else {
+      throw new Error('Invalid code point')
+    }
+  }
+
+  return bytes
+}
+
+function asciiToBytes (str) {
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    // Node's code seems to be doing this and not & 0x7F..
+    byteArray.push(str.charCodeAt(i) & 0xFF)
+  }
+  return byteArray
+}
+
+function utf16leToBytes (str, units) {
+  var c, hi, lo
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    if ((units -= 2) < 0) break
+
+    c = str.charCodeAt(i)
+    hi = c >> 8
+    lo = c % 256
+    byteArray.push(lo)
+    byteArray.push(hi)
+  }
+
+  return byteArray
+}
+
+function base64ToBytes (str) {
+  return base64.toByteArray(base64clean(str))
+}
+
+function blitBuffer (src, dst, offset, length) {
+  for (var i = 0; i < length; ++i) {
+    if ((i + offset >= dst.length) || (i >= src.length)) break
+    dst[i + offset] = src[i]
+  }
+  return i
+}
+
+// ArrayBuffer or Uint8Array objects from other contexts (i.e. iframes) do not pass
+// the `instanceof` check but they should be treated as of that type.
+// See: https://github.com/feross/buffer/issues/166
+function isInstance (obj, type) {
+  return obj instanceof type ||
+    (obj != null && obj.constructor != null && obj.constructor.name != null &&
+      obj.constructor.name === type.name)
+}
+function numberIsNaN (obj) {
+  // For IE11 support
+  return obj !== obj // eslint-disable-line no-self-compare
+}
+
+}).call(this)}).call(this,require("buffer").Buffer)
+},{"base64-js":175,"buffer":177,"ieee754":178}],178:[function(require,module,exports){
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = ((value * c) - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+},{}],179:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

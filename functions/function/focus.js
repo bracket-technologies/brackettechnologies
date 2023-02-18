@@ -21,7 +21,7 @@ const focus = ({ id }) => {
         _view.element.value = value
 
         return
-      }
+      } else view.element.focus()
     }
   }
 

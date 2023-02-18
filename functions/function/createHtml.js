@@ -17,7 +17,7 @@ module.exports = {
       // views
       var views = _window ? _window.views : window.views, id = _id
       var global = _window ? _window.global : window.global
-      var view = views[id], type = view.type
+      var view = views[id], type = view.type, siblings = "", prevSiblings = ""
       
       if (view.children) view.children = toArray(view.children)
       
@@ -34,6 +34,46 @@ module.exports = {
         
         return await createElement({ _window, id, req, res, import: _import, _, __, ___ })
       }))
+
+      // siblings
+      if (view.sibling || view.siblings) {
+        
+        var _siblings = await Promise.all(toArray(view.sibling || view.siblings).map(async (child, index) => {
+    
+          if (!child) return ""
+          var id = child.id
+          if (id && views[id]) id += generate()
+          else if (!id) id = generate()
+          views[id] = clone(child)
+          views[id].id = id
+          views[id].index = view.index + ":" + index
+          views[id].parent = view.parent
+          
+          return await createElement({ _window, id, req, res, _, __, ___ })
+        }))
+
+        siblings += _siblings.join("")
+      }
+
+      // prev siblings
+      if (view.prevSibling || view.prevSiblings) {
+        
+        var _siblings = await Promise.all(toArray(view.prevSibling || view.prevSiblings).map(async (child, index) => {
+    
+          if (!child) return ""
+          var id = child.id
+          if (id && views[id]) id += generate()
+          else if (!id) id = generate()
+          views[id] = clone(child)
+          views[id].id = id
+          views[id].index = view.index + ":" + index
+          views[id].parent = view.parent
+          
+          return await createElement({ _window, id, req, res, _, __, ___ })
+        }))
+
+        prevSiblings += _siblings.join("")
+      }
       
       innerHTML = innerHTML.join("")
 
@@ -48,7 +88,9 @@ module.exports = {
 
       if (_id === "body") return resolve("")
       
-      var tag = require("./toHTML")({ _window, id: _id, innerHTML }) || ""
+      var tag = _import ? "" : require("./toHTML")({ _window, id: _id, innerHTML }) || ""
+      if (prevSiblings) tag = prevSiblings + tag
+      if (siblings) tag += siblings
       
       if (!tag && _imports.includes(type.toLowerCase())) {
 

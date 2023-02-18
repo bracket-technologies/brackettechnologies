@@ -1,21 +1,47 @@
 const { getdb, postdb, deletedb } = require("./database")
 const { getFile, postFile, deleteFile } = require("./storage")
-const router = require('./router')
 const { sendConfirmationEmail } = require("./sendConfirmationEmail")
 const { execFunction } = require("./execFunction")
+const { generate } = require("./generate")
+const { authorizer } = require("./authorizer")
+const router = require('./router')
 const Global = { today: (new Date()).getDay(), functions: {} }
+
+const initialize = ({ req, id }) => {
+
+  return {
+    global: { 
+      timer: new Date().getTime(),
+      codes: {}, 
+      promises: {}, 
+      innerHTML: {}, 
+      breakCreateElement: {}, 
+      host: req.headers.host || req.headers.referer,
+      data: { project: {}, server: {} } 
+    }, 
+    views: { backend: {}, "my-views": [], [id]: {} },
+    actions: {},
+  }
+}
 
 module.exports = ({ app, db, storage, rdb }) => {
 
     // post
-    app.post("*", (req, res) => {
+    app.post("*", async (req, res) => {
 
         req.db = db
         req.global = Global
         req.storage = storage
         req.rdb = rdb
         req.cookies = JSON.parse(req.cookies.__session || "{}")
-        var path = req.url.split("/"), i = 1
+        var path = req.url.split("/"), i = 1, id = generate()
+        var _window = initialize({ req, id })
+        console.log("POST", path); 
+  
+        // authorize
+        if (!_window.global.host) return res.send({ success: false, message: "Host does not exist!" })
+        var {success, message, error} = await authorizer({ window: _window, req })
+        if (!success) return res.send({ success, message, error })
 
         // bracket
         /*if (req.headers.project === "bracket") {
@@ -28,27 +54,34 @@ module.exports = ({ app, db, storage, rdb }) => {
         }*/
         
         // function
-        if (path[i] === "action") return execFunction({ req, res })
+        if (path[i] === "action") return execFunction({ _window, req, res, id })
 
         // confirmEmail
-        if (path[i] === "confirmEmail") return sendConfirmationEmail({ req, res })
+        if (path[i] === "confirmEmail") return sendConfirmationEmail({ _window, req, res, id })
 
         // storage
-        if (path[i] === "storage") return postFile({ req, res })
+        if (path[i] === "storage") return postFile({ _window, req, res, id })
 
         // database
-        if (path[i] === "database") return postdb({ req, res })
+        if (path[i] === "database") return postdb({ _window, req, res, id })
     })
 
     // delete
-    app.delete("*", (req, res) => {
+    app.delete("*", async (req, res) => {
 
         req.db = db
         req.global = Global
         req.storage = storage
         req.rdb = rdb
         req.cookies = JSON.parse(req.cookies.__session || "{}")
-        var path = req.url.split("/"), i = 1
+        var path = req.url.split("/"), i = 1, id = generate()
+        var _window = initialize({ req, id })
+        console.log("DELETE", path);
+  
+        // authorize
+        if (!_window.global.host) return res.send({ success: false, message: "Host does not exist!" })
+        var {success, message, error} = await authorizer({ window: _window, req })
+        if (!success) return res.send({ success, message, error })
 
         // bracket
         /*if (req.headers.project === "bracket") {
@@ -61,24 +94,29 @@ module.exports = ({ app, db, storage, rdb }) => {
         }*/
 
         // storage
-        if (path[i] === "storage") return deleteFile({ req, res })
+        if (path[i] === "storage") return deleteFile({ _window, req, res, id })
 
         // database
-        if (path[i] === "database") return deletedb({ req, res })
+        if (path[i] === "database") return deletedb({ _window, req, res, id })
     })
 
     // get
-    app.get("*", (req, res) => {
+    app.get("*", async (req, res) => {
 
         res.status(200)
         req.db = db
         req.global = Global
         req.storage = storage
         req.rdb = rdb
-        
         req.cookies = JSON.parse(req.cookies.__session || "{}")
         
-        var path = req.url.split("/"), i = 1
+        var path = req.url.split("/"), i = 1, id = generate()
+        var _window = initialize({ req, id })
+        console.log("GET", path); 
+
+        // favicon
+        if (req.url === "/favicon.ico") return res.sendStatus(204)
+
         /*var host = req.headers["x-forwarded-host"] || req.headers["host"]
         
         // bracket
@@ -90,24 +128,22 @@ module.exports = ({ app, db, storage, rdb }) => {
         // database
         if (path[1] === "database") return require("./databaseLocal").getdb({ req, res })
         }*/
-        
-console.log(path); 
+
         // resources
-        if (path[i] === "resources") return require("./storageLocal").getFile({ req, res })
-        
-        // storage
-        // if (path[i] === "image") return require("./getImage").getImage({ req, res })
+        if (path[i] === "resources") return require("./storageLocal").getFile({ _window, req, res, id })
+  
+        // authorize
+        if (!_window.global.host) return res.send({ success: false, message: "Host does not exist!" })
+        var {success, message, error} = await authorizer({ window: _window, req })
+        if (!success) return res.send({ success, message, error })
 
         // storage
-        if (path[i] === "storage") return getFile({ req, res })
+        if (path[i] === "storage") return getFile({ _window, req, res, id })
 
         // database
-        if (path[i] === "database") return getdb({ req, res })
-
-        // favicon
-        if (req.url === "/favicon.ico") return res.sendStatus(204)
+        if (path[i] === "database") return getdb({ _window, req, res, id })
         
         // respond
-        return router.app({ req, res })
+        return router.app({ _window, req, res, id })
     })
 }

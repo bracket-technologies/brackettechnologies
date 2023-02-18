@@ -44,6 +44,8 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     
     global.promises[id].push(
       new Promise(async (resolve) => {
+
+        console.log("Action execution requested!");
         var { data } = await require("axios").post(`/action`, func, {
           headers: {
             "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",

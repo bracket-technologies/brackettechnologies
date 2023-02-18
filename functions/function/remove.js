@@ -19,10 +19,13 @@ const remove = ({ _window, remove: _remove, id }) => {
   if (!_remove.onlyChild && keys.length > 0 && !_remove.keepData) {
 
     keys.unshift(`${view.Data}:()`)
-    // keys.unshift(")(")
-    keys.push("delete()")
-
-    reducer({ id, path: keys })
+    var parentData = reducer({ id, path: keys.slice(0, -1) })
+    if (Array.isArray(parentData) && parentData.length === 0) {
+      reducer({ id, path: keys.slice(0, -1), value: [], key: true })
+    } else {
+      keys.push("del()")
+      reducer({ id, path: keys })
+    }
   }
 
   // close droplist
@@ -38,9 +41,9 @@ const remove = ({ _window, remove: _remove, id }) => {
   }
 
   removeChildren({ id })
-
+  
   if (keys.length === 0) {
-
+    
     view.element.remove()
     delete window.views[id]
     return
@@ -50,7 +53,7 @@ const remove = ({ _window, remove: _remove, id }) => {
   var nextSibling = false
   var children = [...window.views[view.parent].element.children]
   var index = view.derivations.length - 1
-
+  
   children.map((child) => {
 
     var id = child.id

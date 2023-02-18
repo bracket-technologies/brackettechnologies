@@ -12,7 +12,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, mount, asyncer, createElement, executer, condition }) => {
+const toValue = ({ _window, value, params = {}, _, __, ___, id, e, req, res, object, mount, asyncer, createElement, executer, condition }) => {
 
   const { toFunction } = require("./toFunction")
   const { toParam } = require("./toParam")
@@ -34,8 +34,8 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   else if (value === "_string") return ""
   
   // break & return
-  if (view && (view.break || view.return)) return
-  if (view && (view["break()"] || view["return()"])) return
+  if (params && params["return()"] !== undefined) return params["return()"]
+  if (params["break()"]) return params
   
   // coded
   if (value.includes('coded()') && value.length === 12) value = global.codes[value]
@@ -171,7 +171,7 @@ const toValue = ({ _window, value, params, _, __, ___, id, e, req, res, object, 
   var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
   
   // function
-  var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object })
+  var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, createElement, executer, object })
   if (isFn !== "__CONTINUE__") return isFn
 
   /* value */

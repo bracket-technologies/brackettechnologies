@@ -52,6 +52,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
   if (_window) {
     
     var collection = save.collection, success, message, project = headers.project || req.headers.project, schema
+    if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
     if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
     
     // get schema

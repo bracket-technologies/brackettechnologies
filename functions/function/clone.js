@@ -7,7 +7,7 @@ const clone = (obj) => {
   else {
     copy = {}
     Object.entries(obj).map(([key, value]) => {
-      if (key !== "element") copy[key] = clone(value)
+      if (key !== "element") copy[key] = typeof value === "object" ? clone(value) : value
       else copy[key] = value
     })
   }

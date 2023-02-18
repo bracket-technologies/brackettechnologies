@@ -19,6 +19,10 @@ function sleep(milliseconds) {
 
 const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, createElement, params = {}, executer, condition }) => {
   
+  // break
+  if (params && params["return()"] !== undefined) return params["return()"]
+  else if (params["break()"]) return params
+
   const { toFunction } = require("./toFunction")
   const { toApproval } = require("./toApproval")
   var _functions = require("./function")
@@ -45,8 +49,8 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     if (param === "") return
 
     // break
-    if (view && (view.break || view.return)) return
-    if (view && (view["break()"] || view["return()"])) return
+    if (params && params["return()"] !== undefined) return params["return()"]
+    else if (params["break()"]) return params
 
     if (param.charAt(0) === "#") return
     
@@ -58,6 +62,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       value = param.substring(key.length + 1)
 
     } else {
+
       key = param
     
       // execute function: coded()xxxxx() => [params that inherited function attributes in underscore]()
@@ -172,7 +177,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
       view.controls = toArray(view.controls)
       view.controls.push({ event: `beforeLoading?${param}` })
-      return
+      return true
     }
 
     // controls
@@ -188,7 +193,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
 
       view.controls = toArray(view.controls)
       view.controls.unshift(..._controls)
-      return //view.controls
+      return true
     }
 
     // children
@@ -209,7 +214,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         view.passToChildren = view.passToChildren || {}
         view.passToChildren._ = _
       }
-      return //view.children
+      return true
     }
 
     // children
@@ -231,7 +236,70 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
         view.passToChildren = view.passToChildren || {}
         view.passToChildren._ = _
       }
-      return //view.children
+      return true
+    }
+
+    // siblings
+    if (param.slice(0, 9) === "siblings:") {
+
+      var siblings = []
+      param = param.slice(9)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        siblings.push({ view: param })
+      })
+
+      view.siblings = toArray(view.siblings)
+      view.siblings.unshift(...siblings)
+      if (_) {
+        view._ = _
+        view.passToChildren = view.passToChildren || {}
+        view.passToChildren._ = _
+      }
+      return true
+    }
+
+    // sibling
+    if (param.slice(0, 8) === "sibling:") {
+
+      var siblings = []
+      param = param.slice(8)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        siblings.push({ view: param })
+      })
+
+      view.siblings = toArray(view.siblings)
+      view.siblings.unshift(...siblings)
+      if (_) {
+        view._ = _
+        view.passToChildren = view.passToChildren || {}
+        view.passToChildren._ = _
+      }
+      return true
+    }
+
+    // siblings
+    if (param.slice(0, 12) === "prevSibling:") {
+
+      var siblings = []
+      param = param.slice(12)
+      param.split(":").map(param => {
+
+        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+        siblings.push({ view: param })
+      })
+
+      view.prevSiblings = toArray(view.prevSiblings)
+      view.prevSiblings.unshift(...siblings)
+      if (_) {
+        view._ = _
+        view.passToChildren = view.passToChildren || {}
+        view.passToChildren._ = _
+      }
+      return true
     }
     
     if (typeof value === 'string') value = toValue({ _window, req, res, id, e, value, params, _, __, ___, condition })
@@ -247,7 +315,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     if (path0 === "") return
 
     // function
-    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object })
+    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, createElement, executer, object })
     if (isFn !== "__CONTINUE__") return isFn
     else isFn = false
     
@@ -287,7 +355,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
       global.codes[`coded()${_key}`] = isFn
 
       // if (backendFn) return require("./func").func({ _window, req, res, id, e, func: `${_field}:coded()${_key}`, _, __, ___, asyncer: true })
-      return toParam({ _window, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, createElement, params, executer })
+      return toParam({ _window, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, createElement, executer })
     }
 
     ////////////////////////////////// end of function /////////////////////////////////////////
@@ -418,7 +486,7 @@ const toParam = ({ _window, string, e, id = "root", req, res, mount, object, _, 
     //////////////////////////////////////////////////////// End /////////////////////////////////////////////////////////
   })
 
-  if (params["return()"]) return params["return()"]
+  if (params["return()"] !== undefined) return params["return()"]
   return params
 }
 

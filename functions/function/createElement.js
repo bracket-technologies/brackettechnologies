@@ -43,28 +43,20 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     // [type]
     if (!view.duplicatedElement && type.includes("coded()")) {
 
-      type = toValue({ _window, value: type, id, req, res, _, __, ___ })
-      
-      // sub params
-      if (subParams) {
+      type = global.codes[type]
 
+      // sub params
+      if (subParams && isParam({ _window, string: subParams })) {
+        
         var _params = {}
-        var derivations = view.derivations = clone(view.derivations || parent.derivations || [])
+        var derivations = view.derivations = clone(view.derivations || [...(parent.derivations || [])])
         var Data = view.Data = view.Data || parent.Data || generate()
 
         if (isParam({ _window, string: subParams })) {
           
           _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
-
+          
         } else _params.data = toValue({ _window, req, res, id, value: subParams, _, __, ___ })
-        
-        /*if (_params.preventDefault) {
-          if (_params.derive === undefined) _params.derive = false
-          if (_params.mount === undefined) _params.mount = false
-        } else {
-          if (_params.derive === undefined) _params.derive = true
-          if (_params.mount === undefined) _params.mount = true
-        }*/
 
         if (_params.path) {
 
@@ -82,26 +74,53 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
           _params.data = reducer({ _window, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
         }
         
-        var tags = await Promise.all(toArray(_params.data).map(async (_data, index) => {
+        var tags = []
 
-          var id = view.id + generate()
+        if (toArray(_params.data).length > 0) {
+
+          tags = await Promise.all(toArray(_params.data).map(async (_data, index) => {
+
+            var _id = view.id + generate()
+            var _type = type + "?" + view.type.split("?").slice(1).join("?")
+            var _view = clone({ ...view, id: _id, view: _type, i: index, mapIndex: index, derivations, _: _data, __: index })
+
+            if (!_params.preventDefault) {
+
+              if (type === "Chevron") _view.direction = _data
+              else if (type === "Icon") _view.name = _data
+              else if (type === "Image") _view.src = _data
+              else if (type === "Text") _view.text = _data
+              else if (type === "Checkbox") _view.label = { text: _data }
+            }
+
+            if (_params.mount || _params.path) _view.derivations = [...derivations, index]
+            
+            views[_id] = _view
+            return await createElement({ _window, id: _id, req, res, _: _data, __: index, ___: _ })
+          }))
+
+        } else {
+
+          var _id = view.id + generate()
           var _type = type + "?" + view.type.split("?").slice(1).join("?")
-          var _view = clone({ ...view, id, view: _type, i: index, mapIndex: index, derivations, _: _data, __: index })
+          var _view = clone({ ...view, id: _id, view: _type, i: 0, mapIndex: 0, derivations, _: "", __: 0 })
 
           if (!_params.preventDefault) {
 
-            if (type === "Chevron") _view.direction = _data
-            else if (type === "Icon") _view.name = _data
-            else if (type === "Image") _view.src = _data
-            else if (type === "Text") _view.text = _data
-            else if (type === "Checkbox") _view.label = { text: _data }
+            if (type === "Chevron") _view.direction = "left"
+            else if (type === "Icon") _view.name = "icon"
+            else if (type === "Text") _view.text = ""
+            else if (type === "Checkbox") _view.label = { text: "" }
           }
 
-          if (_params.mount || _params.path) _view.derivations = [...derivations, index]
+          if (_params.mount || _params.path) _view.derivations = [...derivations, "0"]
           
-          views[id] = _view
-          return await createElement({ _window, id, req, res, _: _data, __: index, ___: _ })
-        }))
+          views[_id] = _view
+          tags = await createElement({ _window, id: _id, req, res, _: "", __: 0, ___: _ })
+          
+          delete views[view.id]
+          return resolve(tags)
+        }
         
         delete views[view.id]
         return resolve(tags.join(""))
@@ -126,14 +145,17 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
       if (isParam({ _window, string: subParams })) {
 
         inheritedParams = {...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, _, __, ___ })}
+
       } else {
         
-        var _id = subParams
+        view.Data = view.Data || view.doc || parent.Data
+        view.derivations = view.derivations || [...(parent.derivations || [])]
+        var _id = toValue({ _window, value: subParams, id, req, res, _, __, ___ })
         
         if (views[_id] && view.id !== _id) view.id = _id + generate()
         else view.id = id = _id
         
-        if (!view["creation-date"] && global.data.view[_id] && id !== _id) {
+        if (global.data.view[_id] && !view["creation-date"] && id !== _id) {
           
           view["my-views"].push(_id)
           views[_id] = { ...view, ...clone(global.data.view[_id]) }
@@ -151,23 +173,12 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     if (!_import) {
 
       view.style = view.style || {}
-
-      // class
       view.class = view.class || ""
-      
-      // Data
       view.Data = view.Data || view.doc || parent.Data
-
-      // derivations
       view.derivations = view.derivations || [...(parent.derivations || [])]
-
-      // controls
       view.controls = view.controls || []
-
-      // status
       view.status = "Loading"
-
-      // first mount of view
+      view.childrenID = []
       views[id] = view
 
       // approval
@@ -219,10 +230,6 @@ const createElement = ({ _window, id, req, res, import: _import, params: inherit
     if (params) {
       
       params = toParam({ _window, string: params, id, req, res, mount: true, createElement: true, _, __, ___ })
-
-      // break
-      /*if (params["break()"]) delete params["break()"]
-      if (params["return()"]) return delete params["return()"]*/
 
       if (params.id && params.id !== id) {
 

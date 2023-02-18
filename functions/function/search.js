@@ -24,8 +24,9 @@ module.exports = {
       
       global.promises[id] = toArray(global.promises[id])
       var collection = search.collection, project = headers.project || req.headers.project
+      if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
       if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${project}`
-
+      
       var doc = search.document || search.doc,
       docs = search.documents || search.docs,
       field = search.field || search.fields,
@@ -162,14 +163,16 @@ module.exports = {
       }
 
       else {
+        
         const myPromise = () => new Promise(async resolve => {
 
           // search field
           var multiIN = false, _ref = ref
           if (field) Object.entries(field).map(([key, value]) => {
-
+            if (typeof value !== "object") value = { equal: value }
             var _value = value[Object.keys(value)[0]]
             var operator = toFirebaseOperator(Object.keys(value)[0])
+            
             if (operator === "in" && _value.length > 10) {
 
               field[key][Object.keys(value)[0]] = [..._value.slice(10)]
@@ -189,7 +192,7 @@ module.exports = {
 
           if (search.endAt) _ref = _ref.endAt(search.endAt)
           if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
-
+          
           // retrieve data
           await _ref.get().then(query => {
 

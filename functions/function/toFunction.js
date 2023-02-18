@@ -4,9 +4,10 @@ const { toCode } = require("./toCode")
 const { isParam } = require("./isParam")
 const { toValue } = require("./toValue")
 const { toParam } = require("./toParam")
+const { toApproval } = require("./toApproval")
 const _functions = require("./function")
 
-const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, condition, params, mount, asyncer, createElement, executer, object }) => {
+const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, condition, params = {}, mount, asyncer, createElement, executer, object }) => {
 
     var global = _window ? _window.global : window.global
     var views = _window ? _window.views : window.views
@@ -50,7 +51,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
             if (isParam({ _window, string: args[1] })) {
 
                 var _await = ""
-                var _data = toParam({ req, res, _, __, ___, e, _window, id, string: args[1], condition })
+                var _data = toParam({ req, res, _, __, ___, e, _window, id, string: args[1], params, condition })
                 var _func = { function: isFn, data: _data }
                 if (args[2]) _await = global.codes[args[2]]
                 
@@ -61,17 +62,17 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
             var _func = { function: isFn, data: _data }
             if (args[2]) _await = global.codes[args[2]]
 
-            return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, await: _await })
+            return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, params, await: _await })
         }
 
         if (_params) {
 
-            if (isParam({ _window, string: _params })) _params = toParam({ req, res, _window, id, e, _, __, ___, string: _params, condition })
-            else _params = toValue({ req, res, _window, id, e, _, __, ___, value: _params, condition })
+            if (isParam({ _window, string: _params })) _params = toParam({ req, res, _window, id, e, _, __, ___, string: _params, params, condition })
+            else _params = toValue({ req, res, _window, id, e, _, __, ___, value: _params, params, condition })
         }
-
+        
         if (!condition) return toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, createElement, params, executer, condition })
-        else return toApproval({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), _i })
+        else return toApproval({ _window, string: isFn, e, id, req, res, mount, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___) })
     
     } else return "__CONTINUE__"
   }

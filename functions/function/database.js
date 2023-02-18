@@ -3,45 +3,44 @@ const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
 const { toArray } = require("./toArray")
 
-var getdb = async ({ req, res }) => {
-
-  var _window = { global: { codes: {} }, views: {} }
+var getdb = async ({ _window, req, res }) => {
+  
   var string = decodeURI(req.headers.search), params = {}
   string = toCode({ _window, string })
   
   if (string) params = toParam({ _window, string, id: "" })
   var search = params.search || {}
-  var { data, success, message } = await getData({ req, res, search })
+  var { data, success, message } = await getData({ _window, req, res, search })
 
   return res.send({ data, success, message })
 }
 
-var postdb = async ({ req, res }) => {
+var postdb = async ({ _window, req, res }) => {
   
   var save = req.body.save || {}
-  var { data, success, message } = await postData({ req, res, save })
+  var { data, success, message } = await postData({ _window, req, res, save })
 
   return res.send({ data, success, message })
 }
 
-var deletedb = async ({ req, res }) => {
+var deletedb = async ({ _window, req, res }) => {
   
-  var _window = { global: { codes: {} }, views: {} }
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   
   if (string) params = toParam({ _window, string, id: "" })
   var erase = params.erase || {}
 
-  var { data, success, message } = await deleteData({ req, res, erase })
+  var { success, message } = await deleteData({ _window, req, res, erase })
   
   return res.send({ success, message })
 }
 
-const getData = async ({ req, res, search }) => {
+const getData = async ({ _window, req, res, search }) => {
 
   var db = req.db
   var collection = search.collection
+  if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
 
   var doc = search.document || search.doc,
@@ -51,9 +50,6 @@ const getData = async ({ req, res, search }) => {
     data = {}, success, message,
     ref = collection && db.collection(collection),
     promises = [], project
-  
-  /////////////////// verify access key ///////////////////// access key is stopped
-  project = { ["accesskey"]: req.headers["accesskey"] }
   
   if (search.url) {
 
@@ -127,12 +123,6 @@ const getData = async ({ req, res, search }) => {
     })
 
     await Promise.all(promises)
-    if (project["accesskey"] !== req.headers["accesskey"]) {
-
-      success = false
-      message = `Your are not verified!`
-      return ({ success, message })
-    }
 
     return ({ data, success, message })
   }
@@ -155,12 +145,6 @@ const getData = async ({ req, res, search }) => {
     })
     
     await Promise.all(promises)
-    if (project["accesskey"] !== req.headers["accesskey"]) {
-
-      success = false
-      message = `Your are not verified!`
-      return ({ success, message })
-    }
 
     return ({ data, success, message })
   }
@@ -219,12 +203,13 @@ const getData = async ({ req, res, search }) => {
   return ({ data, success, message })
 }
 
-const postData = async ({ req, res, save }) => {
+const postData = async ({ _window, req, res, save }) => {
 
   // collection
   var db = req.db
   var data = req.body.data
   var collection = save.collection, schema
+  if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   var ref = db.collection(collection)
@@ -295,7 +280,7 @@ const postData = async ({ req, res, save }) => {
     if (!data["creation-date"]) {
       if (req.headers.timestamp) {
 
-        data["creation-date"] = req.headers.timestamp
+        data["creation-date"] = parseInt(req.headers.timestamp)
 
       } else {
 
@@ -319,17 +304,16 @@ const postData = async ({ req, res, save }) => {
   return ({ data, success, message })
 }
 
-const deleteData = async ({ req, res, erase }) => {
+const deleteData = async ({ _window, req, res, erase }) => {
 
   var db = req.db, docs
   var storage = req.storage
   var collection = erase.collection
+  if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   
   var ref = db.collection(collection)
   var success, message
-
-  /////////////////// verify access key ///////////////////// access key is stopped
 
   if (erase.collection === "storage" && erase.field) {
 
@@ -340,6 +324,7 @@ const deleteData = async ({ req, res, erase }) => {
       var multiIN = false, _ref = ref
       if (field) Object.entries(field).map(([key, value]) => {
   
+        if (typeof value !== "object") value = { equal: value }
         var _value = value[Object.keys(value)[0]]
         var operator = toFirebaseOperator(Object.keys(value)[0])
         if (operator === "in" && _value.length > 10) {

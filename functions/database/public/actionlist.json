@@ -1,5 +1,5 @@
 {
-    "type": "View?class=box-shadow flex column;id=actionlist;style:[width=fit-content;transition=opacity .1s, transform .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
+    "type": "View:actionlist?class=box-shadow flex column;style:[width=fit-content;transition='opacity .2s, transform .2s';height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
     "children": [{
         "type": "Icon?style:[height=3.5rem;width=3.5rem;fontSize=1.4rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];class=pointer flexbox;tooltip.text=add new;name=bi-plus;style.fontSize=1.7rem;map-length=data().len();map-items=_list;while():[map-length>-1]:[().map-items.push():[().map-length];().map-length--];droplist.items=().map-items;droplist.placement=left;droplist.readonly;droplist.preventDefault?data();data().type()=map||data().type()=array",
         "controls": [{
@@ -48,9 +48,9 @@
         }]
     }],
     "controls": [{
-        "event": "click:body?clearTimer():[actionlist-timer:()];actionlist-timer:()=timer():[if():[actionlistCaller:()!=():[actionlistCaller:()].id]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=():[actionlistCaller:()].id]:[timer():[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()]:0]]:400?actionlistCaller:();!actionlistCaller:().contains():[clicked:()];!actionlist.contains():[clicked:()]"
+        "event": "click:body?mouseleave()?actionlistCaller:();!clicked:().classlist().inc():actionlister;!actionlist.contains():[clicked:()]"
     }, {
-        "event": "mouseleave?clearTimer():[actionlist-timer:()];actionlist-timer:()=timer():[if():[actionlistCaller:()!=():[actionlistCaller:()].id]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=():[actionlistCaller:()].id]:[timer():[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()]:0]]:400"
+        "event": "mouseleave?clearTimer():[actionlist-timer:()];actionlist-timer:()=timer():[if():[actionlistCaller:()!=():[actionlistCaller:()].id]:[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._]];clearTimer():[actionlist-timer:()];if():[actionlistCaller:()=():[actionlistCaller:()].id]:[timer():[():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];actionlistCaller:().del()]:0]]:400"
     }, {
         "event": "mouseenter?clearTimer():[actionlist-timer:()]"
     }]

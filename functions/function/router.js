@@ -2,17 +2,17 @@
 const { createElement } = require("./createElement");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
-const { toArray } = require("./toArray");
+const { authorizer } = require("./authorizer");
 const fs = require("fs");
 const bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
 
 require("dotenv").config();
 
-const project = ({ window }) => {
+const getProject = ({ window }) => {
     
     return new Promise (async resolve => {
 
-        var { req, res, global } = window, db = req.db, promises = [], project, host = global.host
+        var { req, res, global } = window, db = req.db, promises = [], project = global.data.project, host = global.host
         if (!host) return res.send("Project cannot be found!")
 
         // is brakcet domain
@@ -22,89 +22,36 @@ const project = ({ window }) => {
             if (isBracket) host = "bracketjs.com"
         }
         
-        // public views
+        // get local public views
         global.data.public = getJsonFiles({ search: { collection: "public" } })
 
-        // collections
+        // get local collections
         global.data.collection = getJsonFiles({ search: { collection: "collection" } })
-        
-        /*Object.entries(global.data.public).map(([id, view]) => {
-          view[id] = id
-          view["view-id"] = id
-        })*/
 
         console.log("Document started loading:")
-        console.log("before project", new Date().getTime() - global.timer)
         
-        // get project
-        promises.push(db
-          .collection("_project_")
-          .where("domains", "array-contains", host)
-          .get()
-          .then((doc) => {
-              if (doc.docs[0] && doc.docs[0].exists) {
-                  global.data.project = project = { ...doc.docs[0].data(), id: doc.docs[0].id }
-                  global.projectId = global.data.project.id
-                  global.functions = Object.keys(project.functions || {})
-
-                  // require("fs").writeFileSync(`database/_project_/${doc.docs[0].id}.json`, JSON.stringify(doc.docs[0].data(), null, 2))
-              }
-              console.log("after project", new Date().getTime() - global.timer)
-          }))
-
-        await Promise.all(promises)
-        if (!project) return res.send("Project cannot found!")
-        /* 
-        if (global) {
-
-        } else {
-            // session
-            /* global.session = {
-            id: generate({ length: 20 }),
-            "creation-date": (new Date()).getTime(),
-            "expiry-date": (new Date()).getTime() + 1800000,
-            "host": host,
-            "counter": 0 // max requests (max requests depends on project session max requests data)
-            }
-            db.collection("_session_").doc(global.session.id).set(global.session)
-
-        }*/
-
-        /*promises.push(db
-        .collection("_function_")
-        .doc(project.id)
-        .get()
-        .then((doc) => {
-            if (doc.data()) {
-            // req.global.functions[project.id] = doc.data() || {}
-            global.functions = Object.keys(doc.data() || {})
-            global.projectFunctions = doc.data() || {}
-            } else global.functions = []
-            console.log("after functions", new Date().getTime() - global.timer);
-        }))*/
-
         if (isBracket) {
 
-            // get page
-            console.log("before page", new Date().getTime() - global.timer);
-            global.data.page = getJsonFiles({
-                search: { collection: `page-${project.id}` },
-            });
-            console.log("after page", new Date().getTime() - global.timer);
+          // get page
+          console.log("before page", new Date().getTime() - global.timer);
+          global.data.page = getJsonFiles({
+              search: { collection: `page-${project.id}` },
+          });
+          console.log("after page", new Date().getTime() - global.timer);
 
-            // get view
-            console.log("before view", new Date().getTime() - global.timer);
-            global.data.view = getJsonFiles({
-                search: { collection: `view-${project.id}` },
-            });
-            console.log("after view", new Date().getTime() - global.timer);
+          // get view
+          console.log("before view", new Date().getTime() - global.timer);
+          global.data.view = getJsonFiles({
+              search: { collection: `view-${project.id}` },
+          });
+          console.log("after view", new Date().getTime() - global.timer);
 
-            // get collection
-            console.log("before collection", new Date().getTime() - global.timer);
-            global.data.collection = getJsonFiles({
-                search: { collection: `collection-${project.id}` },
-            });
-            console.log("after collection", new Date().getTime() - global.timer);
+          // get collection
+          console.log("before collection", new Date().getTime() - global.timer);
+          global.data.collection = getJsonFiles({
+              search: { collection: `collection-${project.id}` },
+          });
+          console.log("after collection", new Date().getTime() - global.timer);
 
         } else {
 
@@ -124,17 +71,17 @@ const project = ({ window }) => {
             console.log("before page / firestore", new Date().getTime() - global.timer);
             
             promises.push(db
-                .collection(`page-${project.id}`)
-                .get()
-                .then(q => {
-                    q.forEach(doc => {
-                        global.data.page[doc.id] = { ...doc.data(), id: doc.id }
-                    })
-                    console.log("after page", new Date().getTime() - global.timer)
-                    
-                    // page doesnot exist
-                    if (!global.data.page[global.currentPage]) return res.send("Page not found!")
-                }))
+              .collection(`page-${project.id}`)
+              .get()
+              .then(q => {
+                  q.forEach(doc => {
+                      global.data.page[doc.id] = { ...doc.data(), id: doc.id }
+                  })
+                  console.log("after page", new Date().getTime() - global.timer)
+                  
+                  // page doesnot exist
+                  if (!global.data.page[global.currentPage]) return res.send("Page not found!")
+              }))
 
             /*
             view = rdb.ref(`view-${project.id}`).once("value").then(snapshot => {
@@ -162,7 +109,7 @@ const project = ({ window }) => {
                 .get()
                 .then(q => {
                     q.forEach(doc => {
-                    global.data.view[doc.id] = { ...doc.data() }
+                      global.data.view[doc.id] = { ...doc.data() }
                     })
                     console.log("after view", new Date().getTime() - global.timer)
                 }))
@@ -188,7 +135,7 @@ const project = ({ window }) => {
                 .get()
                 .then(q => {
                     q.forEach(doc => {
-                    global.data.collection[doc.id] = { ...doc.data() }
+                      global.data.collection[doc.id] = { ...doc.data() }
                     })
                     console.log("after collection", new Date().getTime() - global.timer)
                 }))
@@ -211,7 +158,7 @@ const status = (window = {}) => {
     return "Document is ready!"
 }
 
-const initialize = ({ window }) => {
+const initializer = ({ window }) => {
   
     // Create a cookies object
     var { req, res } = window, host = req.headers.host || req.headers.referer
@@ -224,16 +171,6 @@ const initialize = ({ window }) => {
     
     // get assets & views
     window.global = {
-        timer: new Date().getTime(),
-        data: {
-            account: {},  
-            view: {},
-            page: {},
-            public: {},
-            editor: {},
-            project: {},
-            collection: {}
-        },
         children: { head: "", body: "" },
         innerHTML: {},
         codes: {},
@@ -250,35 +187,48 @@ const initialize = ({ window }) => {
         cookies: req.cookies,
         promises: {},
         breakCreateElement: {},
-        functions: []
+        functions: [],
+        ...window.global,
+        data: {
+          account: {},  
+          view: {},
+          page: {},
+          public: {},
+          editor: {},
+          project: {},
+          collection: {},
+          ...window.global.data,
+      }
     };
 
     window.views = {
         body: {
             id: "body",
+            childrenID: []
         },
         root: {
             id: "root",
             type: "View",
             "my-views": [],
             derivations: [],
+            childrenID: [],
             style: { backgroundColor: "#fff", position: "relative" },
         },
         public: {
             id: "public",
             type: "Box",
             parent: "body",
-            "my-views": []
+            "my-views": [],
+            childrenID: []
         }
     }
 }
 
-const interpret = ({ window }) => {
+const interpreter = ({ window: _window }) => {
 
     return new Promise(async resolve => {
-
-        var { req, res, global, views } = window
-        var _window = { global, views }
+      
+        var { req, res, global, views } = _window
         if (res.headersSent) return
 
         var currentPage = global.currentPage
@@ -320,14 +270,15 @@ const interpret = ({ window }) => {
     })
 }
 
-const app = async ({ req, res }) => {
+const app = async ({ _window: window, req, res }) => {
     
-    var window = { req, res }
-    initialize({ window })
+    window.req = req
+    window.res = res
+    initializer({ window })
     if (res.headersSent) return
-    await project({ window })
+    await getProject({ window })
     if (res.headersSent) return
-    await interpret({ window })
+    await interpreter({ window })
     if (res.headersSent) return
 
     var { global, views } = window
@@ -355,7 +306,7 @@ const app = async ({ req, res }) => {
     delete global.children;
     delete global.innerHTML;
     delete global.data.project;
-    
+    // test
     console.log("Document is ready!");
     
     res.send(
@@ -392,10 +343,10 @@ const app = async ({ req, res }) => {
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
         </body>
       </html>`
     )
 }
 
-module.exports = { status, project, initialize, interpret, app }
+module.exports = { status, getProject, initializer, interpreter, app }
