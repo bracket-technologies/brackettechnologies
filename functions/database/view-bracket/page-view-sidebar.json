@@ -1,348 +1,480 @@
 {
   "creation-date": 1643565851564,
-  "type": "View?id=page-view-sidebar;class=flex column;style.transition=.2s;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0;style.zIndex=2",
+  "view": "View:page-view-sidebar?class=flex column;style:[transition=.2s;backgroundColor=#f0f0f0;overflowY=auto;height=100%;padding=.5rem 0;width=0;zIndex=2]",
   "children": [
     {
-      "type": "View?class=flex column;style.display=flex",
+      "view": "View?class=flex column;style:[height=fit-content;width=100%;overflowY=auto]",
       "children": [
         {
-          "type": "View?id=user-file;tooltip.text=account;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
+          "view": "View?class=flex column;style.display=flex",
           "children": [
             {
-              "type": "Icon?name=person;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
-            },
-            {
-              "type": "Text?class=dots;text=getCookie():_id;style.fontSize=1.3rem"
-            }
-          ],
-          "controls": [
-            {
-              "event": "click?open-doc:()=data:().editor.account.id;open-collection:()=_account_;open-map:()=data:().editor.account;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():['account/'+data:().editor.account.id]"
-            },
-            {
-              "actions": [
-                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=account/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
-                "wait():[insert:functions:0]?insert.component=():functions.children.0;insert.data=[open-map:().clone().functions||_map];insert.index=():functions.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]",
-                "wait():[insert:data-viewer:0]?insert.component=():data-viewer.children.0;insert.data=open-map:();insert.index=():data-viewer.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]"
-              ],
-              "event": "click?open-doc:()=data:().editor.account.id;open-docs:().push():['account/'+open-doc:()];open-collection:()=_account_;open-map:()=data:().editor.account;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():data-viewer.():[style().display=none]?!open-docs:().inc():['account/'+data:().editor.account.id]"
-            }
-          ]
-        },
-        {
-          "children": [
-            {
-              "type": "Icon?name=store;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
-            },
-            {
-              "type": "Text?class=dots;text=project:();style.fontSize=1.3rem"
-            }
-          ],
-          "type": "View?id=project-file;tooltip.text=project;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
-          "controls": [
-            {
-              "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=project:();open-collection:()=_project_;open-map:()=data:().editor.project;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():['project/'+project:()]"
-            },
-            {
-              "event": "click?loader.show;():my-functions.style():[height=functionsHeight:()+rem;display=flex];():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';className():functions.():[style().display=none];open-doc:()=project:();open-docs:().push():['project/'+open-doc:()];open-collection:()=_project_;open-map:()=data:().editor.project;():data-viewer-bar.style():[display=flex];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():data-viewer.():[style().display=none]?!open-docs:().inc():['project/'+project:()]",
-              "actions": [
-                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=project/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
-                "wait():[insert:functions:0]?insert.component=():functions.children.0;insert.data=[open-map:().clone().functions||_map];insert.index=():functions.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]",
-                "wait():[insert:data-viewer:0]?insert.component=():data-viewer.children.0;insert.data=open-map:().clone().functions.del();insert.index=():data-viewer.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "children": [
-        {
-          "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
-        },
-        {
-          "type": "Text?class=dots;text=Page;style.fontSize=1.3rem"
-        },
-        {
-          "type": "Icon?style.display=none;tooltip.text=create new page;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
-          "controls": [
-            {
-              "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=page",
-              "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
-            }
-          ]
-        }
-      ],
-      "type": "View?id=page;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
-      "controls": [
-        {
-          "event": "mouseenter?lastChild().style().display=flex"
-        },
-        {
-          "event": "mouseleave?lastChild().style().display=none"
-        },
-        {
-          "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
-          "actions": "wait():search:[update:page-list]?search.collection=page;search.limit=100;search.headers.project=project:();wait():[data:().editor.page=().search.data]?next().style().display=flex"
-        }
-      ]
-    },
-    {
-      "type": "View?id=page-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
-      "children": [
-        {
-          "type": "[View]?data=data:().editor.page.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.page.keys().len()>0||[!open-doc:();open-collection:()=page]",
-          "children": [
-            {
-              "type": "Icon?name=document_scanner;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
-            },
-            {
-              "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
-            },
-            {
-              "controls": [
-                {
-                  "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.page.[open-doc:()]]:[parent().rem()]?e().key=Escape"
-                },
-                {
-                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.page.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
-                },
-                {
-                  "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.page.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
-                  "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.page.keys().inc():txt()||!txt()||txt().inc(): "
-                },
-                {
-                  "actions": [
-                    "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
-                    "wait():save:note:[update:page-list]?save.collection=page;save.doc=txt();save.data=data:().editor.page.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
-                  ],
-                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.page.txt()=data:().editor.page.[open-doc:()||duplicate-doc:()].clone();data:().editor.page.[txt()].id=txt()]:[data:().editor.page.txt()=_map:view:[txt()+'?title='+[txt().split():-.join(): .capitalize()]+';path=/'+if():[txt()!=main]:txt():'']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.page.keys().inc():txt();!txt().inc(): "
-                }
-              ],
-              "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
-            },
-            {
-              "controls": [
-                {
-                  "event": "click?if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=page;():'file-action-popup'.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
-                }
-              ],
-              "type": "Icon?open-doc=data();open-collection=page;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
-            }
-          ],
-          "controls": [
-            {
-              "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
-            },
-            {
-              "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
-            },
-            {
-              "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.page.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
-            },
-            {
-              "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[page/+().data]"
-            },
-            {
-              "event": "click?loader.show;():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[page/+open-doc:()];open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];():data-viewer-bar.style().display=flex;className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[page/+().data]",
-              "actions": [
-                "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=page/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
-                "wait():[insert:functions:0]?insert.component=():functions.children.0;insert.data=[open-map:().clone().functions||_map];insert.index=():functions.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]",
-                "wait():[insert:data-viewer:0]?insert.component=():data-viewer.children.0;insert.data=open-map:().clone().functions.del();insert.index=():data-viewer.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "children": [
-        {
-          "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
-        },
-        {
-          "type": "Text?class=dots;text=View;style.fontSize=1.3rem"
-        },
-        {
-          "type": "Icon?style.display=none;tooltip.text=create new view;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
-          "controls": [
-            {
-              "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=view;parent().next().insert():[view=parent().next().children.2]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
-            }
-          ]
-        }
-      ],
-      "type": "View?id=view;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
-      "controls": [
-        {
-          "event": "mouseenter?lastChild().style().display=flex"
-        },
-        {
-          "event": "mouseleave?lastChild().style().display=none"
-        },
-        {
-          "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)];if():[next().style().display=flex]:[search():[collection=view;limit=100;headers.project=project:()]:[data:().editor.view=_.data;update():'view-list']]?!3rdChild().contains():[clicked:()]"
-        }
-      ]
-    },
-    {
-      "type": "View:view-list?class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
-      "children": [
-        {
-          "children": [
-            {
-              "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
-            },
-            {
-              "type": "Text?class=dots;text=Public;style.fontSize=1.3rem"
-            },
-            {
-              "type": "Icon?style.display=none;tooltip.text=create new public view;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
-              "controls": [
-                {
-                  "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=public;parent().next().insert():[component=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
-                }
-              ]
-            }
-          ],
-          "type": "View:public-view-list?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
-          "controls": [
-            {
-              "event": "mouseenter?lastChild().style().display=flex"
-            },
-            {
-              "event": "mouseleave?lastChild().style().display=none"
-            },
-            {
-              "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[publicOpen:()=true;next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg);search():[collection=public;limit=100;headers.project=project:()]:[data:().editor.public=_.data;update():next()]]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]"
-            },
-            {
-              "event": "loaded?next().style().display=flex;1stChild().style().transform=rotate(90deg)?publicOpen:()"
-            }
-          ]
-        },
-        {
-          "type": "View:public-list?class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
-          "children": [
-            {
-              "type": "[View]?data=data:().editor.public.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.public.keys().len()>0||[!open-doc:();open-collection:()=public]",
+              "view": "View:user-file?tooltip.text=account;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
               "children": [
                 {
-                  "type": "Icon?name=layers;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
+                  "view": "Icon?name=person;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
                 },
                 {
-                  "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
-                },
-                {
-                  "controls": [
-                    {
-                      "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.public.[open-doc:()]]:[parent().rem()]?e().key=Escape"
-                    },
-                    {
-                      "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.public.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
-                    },
-                    {
-                      "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.public.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",
-                      "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.public.keys().inc():txt()||!txt()||txt().inc(): "
-                    },
-                    {
-                      "actions": [
-                        "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
-                        "wait():save:note:[update:public-list]?save.collection=public;save.doc=txt();save.data=data:().editor.public.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
-                      ],
-                      "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.public.txt()=data:().editor.public.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.public.txt()=_map:view:['View:'+txt()+'?class=column']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.public.keys().inc():txt();!txt().inc(): "
-                    }
-                  ],
-                  "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
-                },
-                {
-                  "controls": [
-                    {
-                      "event": "click?if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=public;():'file-action-popup'.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
-                    }
-                  ],
-                  "type": "Icon?open-doc=data();open-collection=public;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                  "view": "Text?class=dots;text=getCookie():_id;style.fontSize=1.3rem"
                 }
               ],
               "controls": [
                 {
-                  "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                  "event": "click?open-doc:()=data:().editor.account.id;open-collection:()=_account_;open-map:()=data:().editor.account;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():['account/'+data:().editor.account.id]"
                 },
                 {
-                  "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                  "actions": [
+                    "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=account/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                    "wait():[insert:functions:0]?insert.component=():functions.children.0;insert.data=[open-map:().clone().functions||_map];insert.index=():functions.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]",
+                    "wait():[insert:data-viewer:0]?insert.component=():data-viewer.children.0;insert.data=open-map:();insert.index=():data-viewer.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]"
+                  ],
+                  "event": "click?open-doc:()=data:().editor.account.id;open-docs:().push():['account/'+open-doc:()];open-collection:()=_account_;open-map:()=data:().editor.account;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():data-viewer.():[style().display=none]?!open-docs:().inc():['account/'+data:().editor.account.id]"
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "view": "Icon?name=store;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
                 },
                 {
-                  "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.public.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                  "view": "Text?class=dots;text=project:();style.fontSize=1.3rem"
+                }
+              ],
+              "view": "View?id=project-file;tooltip.text=project;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
+              "controls": [
+                {
+                  "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=project:();open-collection:()=_project_;open-map:()=data:().editor.project;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():['project/'+project:()]"
                 },
                 {
-                  "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-publicer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[public/+().data]"
-                },
-                {
-                  "event": "click?loader.show;timer():[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[public/+open-doc:()];open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];#insert data bar;():'data-viewer-bar'.insert():[component=():data-viewer-bar.children.0;data=public/+open-doc:()]:[():'data-viewer-bar'.style().display=flex;_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];#insert functions;():functions.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];#insert data map;():data-viewer.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():data-viewer.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:50?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[public/+().data]"
+                  "event": "click?loader.show;():my-functions.style():[height=functionsHeight:()+rem;display=flex];():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';className():functions.():[style().display=none];open-doc:()=project:();open-docs:().push():['project/'+open-doc:()];open-collection:()=_project_;open-map:()=data:().editor.project;():data-viewer-bar.style():[display=flex];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():data-viewer.():[style().display=none]?!open-docs:().inc():['project/'+project:()]",
+                  "actions": [
+                    "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=project/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                    "wait():[insert:functions:0]?insert.component=():functions.children.0;insert.data=[open-map:().clone().functions||_map];insert.index=():functions.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]",
+                    "wait():[insert:data-viewer:0]?insert.component=():data-viewer.children.0;insert.data=open-map:().clone().functions.del();insert.index=():data-viewer.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
+                  ]
                 }
               ]
             }
           ]
         },
         {
-          "view": "[View]:[data=data:().editor.view.keys();mount]?class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.view.keys().len()>0||[!open-doc:();open-collection:()=view]",
+          "view": "View?tooltip.text=browser;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
           "children": [
             {
-              "type": "Icon?name=layers;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
+              "view": "Icon?name=bi-chevron-right;style:[fontSize=1.3rem;padding=0 0.5rem;fontWeight=100;color=#666;transition=.2s]"
             },
             {
-              "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
-            },
-            {
-              "controls": [
-                {
-                  "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.view.[open-doc:()]]:[parent().rem()]?e().key=Escape"
-                },
-                {
-                  "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.view.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
-                },
-                {
-                  "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.view.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",
-                  "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.view.keys().inc():txt()||!txt()||txt().inc(): "
-                },
-                {
-                  "actions": [
-                    "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
-                    "wait():save:note:[update:view-list]?save.collection=view;save.doc=txt();save.data=data:().editor.view.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
-                  ],
-                  "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.view.txt()=data:().editor.view.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.view.txt()=_map:view:['View:'+txt()+'?class=column;style:[minHeight=100vh]']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.view.keys().inc():txt();!txt().inc(): "
-                }
-              ],
-              "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
-            },
-            {
-              "controls": [
-                {
-                  "event": "click?if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=view;():'file-action-popup'.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
-                }
-              ],
-              "type": "Icon?open-doc=data();open-collection=view;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+              "view": "Text?class=dots;text=Browser;style.fontSize=1.3rem"
             }
           ],
-          "controls": [
+          "event": "click?if():[next().style().display=flex]:[next().style().display=none;child().style().transform='rotate(0deg)']:[next().style().display=flex;child().style().transform='rotate(90deg)']"
+        },
+        {
+          "view": "View?class=flex column;style:[display=none;width='calc(100% - 1.2rem)';overflowX=hidden;marginLeft=1.2rem;borderLeft=1px solid #ddd;height=fit-content;overflowY=visible]",
+          "children": [
             {
-              "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+              "view": "View?class=flex pointer align-center;style:[minHeight=3rem;width=100%;position=relative];hover.style:[backgroundColor=#e9e9e9]",
+              "children": [
+                {
+                  "view": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;padding=0 0.5rem;fontWeight=100;color=#666]"
+                },
+                {
+                  "view": "Text?class=dots;text=browser;style.fontSize=1.3rem"
+                }
+              ]
             },
             {
-              "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+              "children": [
+                {
+                  "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                },
+                {
+                  "view": "Text?class=dots;text=Page;style.fontSize=1.3rem"
+                },
+                {
+                  "view": "Icon?style.display=none;tooltip.text=create new page;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                  "controls": [
+                    {
+                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=page",
+                      "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                    }
+                  ]
+                }
+              ],
+              "view": "View?id=page;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+              "controls": [
+                {
+                  "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                  "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
+                  "actions": "wait():search:[update:page-list]?search.collection=page;search.limit=100;search.headers.project=project:();wait():[data:().editor.page=().search.data]?next().style().display=flex"
+                }
+              ]
             },
             {
-              "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.view.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+              "view": "View:page-list?class=flex column;style:[width='calc(100% - 1.2rem)';display=none;marginLeft=1.2rem;borderLeft=1px solid #ddd;#overflowY=auto]",
+              "children": [
+                {
+                  "view": "[View]?data=data:().editor.page.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.page.keys().len()>0||[!open-doc:();open-collection:()=page]",
+                  "children": [
+                    {
+                      "view": "Icon?name=document_scanner;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
+                    },
+                    {
+                      "view": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                    },
+                    {
+                      "controls": [
+                        {
+                          "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.page.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                        },
+                        {
+                          "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.page.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
+                        },
+                        {
+                          "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.page.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!'",
+                          "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.page.keys().inc():txt()||!txt()||txt().inc(): "
+                        },
+                        {
+                          "actions": [
+                            "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                            "wait():save:note:[update:page-list]?save.collection=page;save.doc=txt();save.data=data:().editor.page.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
+                          ],
+                          "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.page.txt()=data:().editor.page.[open-doc:()||duplicate-doc:()].clone();data:().editor.page.[txt()].id=txt()]:[data:().editor.page.txt()=_map:view:[txt()+'?title='+[txt().split():-.join(): .capitalize()]+';path=/'+if():[txt()!=main]:txt():'']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.page.keys().inc():txt();!txt().inc(): "
+                        }
+                      ],
+                      "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                    },
+                    {
+                      "controls": [
+                        {
+                          "event": "click?if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=page;():'file-action-popup'.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                        }
+                      ],
+                      "view": "Icon?open-doc=data();open-collection=page;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                    },
+                    {
+                      "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                    },
+                    {
+                      "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.page.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                    },
+                    {
+                      "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[page/+().data]"
+                    },
+                    {
+                      "event": "click?loader.show;():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[page/+open-doc:()];open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];():data-viewer-bar.style().display=flex;className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[page/+().data]",
+                      "actions": [
+                        "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=page/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
+                        "wait():[insert:functions:0]?insert.component=():functions.children.0;insert.data=[open-map:().clone().functions||_map];insert.index=():functions.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]",
+                        "wait():[insert:data-viewer:0]?insert.component=():data-viewer.children.0;insert.data=open-map:().clone().functions.del();insert.index=():data-viewer.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
+                      ]
+                    }
+                  ]
+                }
+              ]
             },
             {
-              "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[view/+().data]"
+              "children": [
+                {
+                  "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                },
+                {
+                  "view": "Text?class=dots;text=View;style.fontSize=1.3rem"
+                },
+                {
+                  "view": "Icon?style.display=none;tooltip.text=create new view;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                  "controls": [
+                    {
+                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=view;parent().next().insert():[view=parent().next().children.2]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                    }
+                  ]
+                }
+              ],
+              "view": "View?id=view;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+              "controls": [
+                {
+                  "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                  "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)];if():[next().style().display=flex]:[search():[collection=view;limit=100;headers.project=project:()]:[data:().editor.view=_.data;update():'view-list']]?!3rdChild().contains():[clicked:()]"
+                }
+              ]
             },
             {
-              "event": "click?loader.show;timer():[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[view/+open-doc:()];open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];#insert data bar;():'data-viewer-bar'.insert():[component=():data-viewer-bar.children.0;data=view/+open-doc:()]:[():data-viewer-bar.style().display=flex;().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];#insert functions;():functions.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]];#insert data map;():data-viewer.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():data-viewer.children().len()]:[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:50?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[view/+().data]"
+              "view": "View:view-list?class=flex column;style:[width='calc(100% - 1.2rem)';display=none;marginLeft=1.2rem;borderLeft=1px solid #ddd;#overflowY=auto]",
+              "children": [
+                {
+                  "children": [
+                    {
+                      "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                    },
+                    {
+                      "view": "Text?class=dots;text=Public;style.fontSize=1.3rem"
+                    },
+                    {
+                      "view": "Icon?style.display=none;tooltip.text=create new public view;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                      "controls": [
+                        {
+                          "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=public;parent().next().insert():[component=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                        }
+                      ]
+                    }
+                  ],
+                  "view": "View:public-view-list?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+                  "controls": [
+                    {
+                      "event": "mouseenter?lastChild().style().display=flex"
+                    },
+                    {
+                      "event": "mouseleave?lastChild().style().display=none"
+                    },
+                    {
+                      "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[publicOpen:()=true;next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg);search():[collection=public;limit=100;headers.project=project:()]:[data:().editor.public=_.data;update():next()]]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]"
+                    },
+                    {
+                      "event": "loaded?next().style().display=flex;1stChild().style().transform=rotate(90deg)?publicOpen:()"
+                    }
+                  ]
+                },
+                {
+                  "view": "View:public-list?class=flex column;style:[width='calc(100% - 1.2rem)';display=none;marginLeft=1.2rem;borderLeft=1px solid #ddd]",
+                  "children": [
+                    {
+                      "view": "[View]?data=data:().editor.public.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.public.keys().len()>0||[!open-doc:();open-collection:()=public]",
+                      "children": [
+                        {
+                          "view": "Icon?name=layers;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
+                        },
+                        {
+                          "view": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                        },
+                        {
+                          "controls": [
+                            {
+                              "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.public.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                            },
+                            {
+                              "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.public.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
+                            },
+                            {
+                              "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.public.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",
+                              "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.public.keys().inc():txt()||!txt()||txt().inc(): "
+                            },
+                            {
+                              "actions": [
+                                "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                                "wait():save:note:[update:public-list]?save.collection=public;save.doc=txt();save.data=data:().editor.public.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
+                              ],
+                              "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.public.txt()=data:().editor.public.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.public.txt()=_map:view:['View:'+txt()+'?class=column']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.public.keys().inc():txt();!txt().inc(): "
+                            }
+                          ],
+                          "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                        },
+                        {
+                          "controls": [
+                            {
+                              "event": "click?if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=public;():'file-action-popup'.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                            }
+                          ],
+                          "view": "Icon?open-doc=data();open-collection=public;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                        }
+                      ],
+                      "controls": [
+                        {
+                          "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                        },
+                        {
+                          "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                        },
+                        {
+                          "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.public.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                        },
+                        {
+                          "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-publicer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[public/+().data]"
+                        },
+                        {
+                          "event": "click?loader.show;timer():[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[public/+open-doc:()];open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];#insert data bar;():'data-viewer-bar'.insert():[component=():data-viewer-bar.children.0;data=public/+open-doc:()]:[():'data-viewer-bar'.style().display=flex;_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];#insert functions;():functions.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];#insert data map;():data-viewer.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():data-viewer.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:50?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[public/+().data]"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "view": "[View]:[data=data:().editor.view.keys();mount]?class=flex pointer align-center;style:[width='calc(100% - 1.2rem)';minHeight=3rem;width=100%;position=relative]?data:().editor.view.keys().len()>0||[!open-doc:();open-collection:()=view]",
+                  "children": [
+                    {
+                      "view": "Icon?name=layers;google.symbol;style.fontSize=1.8rem;style.padding=0 0.5rem;style.fontWeight=100;style.color=#666"
+                    },
+                    {
+                      "view": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                    },
+                    {
+                      "controls": [
+                        {
+                          "event": "keyup?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.view.[open-doc:()]]:[parent().rem()]?e().key=Escape"
+                        },
+                        {
+                          "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.view.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
+                        },
+                        {
+                          "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.view.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",
+                          "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.view.keys().inc():txt()||!txt()||txt().inc(): "
+                        },
+                        {
+                          "actions": [
+                            "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
+                            "wait():save:note:[update:view-list]?save.collection=view;save.doc=txt();save.data=data:().editor.view.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
+                          ],
+                          "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.view.txt()=data:().editor.view.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.view.txt()=_map:view:['View:'+txt()+'?class=column;style:[minHeight=100vh]']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.view.keys().inc():txt();!txt().inc(): "
+                        }
+                      ],
+                      "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                    },
+                    {
+                      "controls": [
+                        {
+                          "event": "click?if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=view;():'file-action-popup'.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
+                        }
+                      ],
+                      "view": "Icon?open-doc=data();open-collection=view;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "mouseenter?style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none"
+                    },
+                    {
+                      "event": "mouseleave?lastChild().style().display=none;style().backgroundColor=inherit"
+                    },
+                    {
+                      "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.view.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
+                    },
+                    {
+                      "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[view/+().data]"
+                    },
+                    {
+                      "event": "click?loader.show;timer():[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[view/+open-doc:()];open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];#insert data bar;():'data-viewer-bar'.insert():[component=():data-viewer-bar.children.0;data=view/+open-doc:()]:[():data-viewer-bar.style().display=flex;().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];#insert functions;():functions.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]];#insert data map;():data-viewer.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():data-viewer.children().len()]:[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:50?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[view/+().data]"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?tooltip.text=server;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style:[minHeight=3rem;width=100%]",
+          "children": [
+            {
+              "view": "Icon?name=bi-chevron-right;style:[fontSize=1.3rem;padding=0 0.5rem;fontWeight=100;color=#666;transition=.2s]"
+            },
+            {
+              "view": "Text?class=dots;text=Server;style.fontSize=1.3rem"
+            }
+          ],
+          "event": "click?if():[next().style().display=flex]:[next().style().display=none;child().style().transform='rotate(0deg)']:[next().style().display=flex;child().style().transform='rotate(90deg)']"
+        },
+        {
+          "view": "View?class=flex column;style:[display=none;#overflowY=auto;overflowX=hidden;width='calc(100% - 1.2rem)';marginLeft=1.2rem;borderLeft=1px solid #ddd;height=fit-content]",
+          "children": [
+            {
+              "view": "View?class=flex pointer align-center;style:[minHeight=3rem;width=100%;position=relative];hover.style:[backgroundColor=#e9e9e9]",
+              "children": [
+                {
+                  "view": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;padding=0 0.5rem;fontWeight=100;color=#666]"
+                },
+                {
+                  "view": "Text?class=dots;text=server;style.fontSize=1.3rem"
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                },
+                {
+                  "view": "Text?class=dots;text=Router;style.fontSize=1.3rem"
+                },
+                {
+                  "view": "Icon?style.display=none;tooltip.text=create new router;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                  "controls": [
+                    {
+                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=router",
+                      "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                    }
+                  ]
+                }
+              ],
+              "view": "View:router?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style:[minHeight=3rem;width=100%;position=relative]",
+              "controls": [
+                {
+                  "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                  "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)']?!3rdChild().contains():[clicked:()]",
+                  "actions": "wait():search:[update:router-list]?search.collection=router;search.limit=100;search.headers.project=project:();wait():[data:().editor.router=().search.data]?next().style().display=flex"
+                }
+              ]
+            },
+            {
+              "view": "View?style:[display=flex]"
+            },
+            {
+              "children": [
+                {
+                  "view": "Icon?name=bi-chevron-right;style:[fontSize=1.3rem;width=2.25rem;transition=.2s]"
+                },
+                {
+                  "view": "Text?class=dots;text=Package;style.fontSize=1.3rem"
+                },
+                {
+                  "view": "Icon?style.display=none;tooltip.text=create new package;name=bi-plus;style:[color=#000;fontSize=1.9rem;position=absolute;right=.5rem;height=2rem;width=2rem;borderRadius=.25rem];hover.style.color=blue",
+                  "controls": [
+                    {
+                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=package",
+                      "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)']]"
+                    }
+                  ]
+                }
+              ],
+              "view": "View:router?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style:[minHeight=3rem;width=100%;position=relative]",
+              "controls": [
+                {
+                  "event": "mouseenter?lastChild().style().display=flex"
+                },
+                {
+                  "event": "mouseleave?lastChild().style().display=none"
+                },
+                {
+                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)']?!3rdChild().contains():[clicked:()]",
+                  "actions": "wait():search:[update:router-list]?search.collection=router;search.limit=100;search.headers.project=project:();wait():[data:().editor.router=().search.data]?next().style().display=flex"
+                }
+              ]
+            },
+            {
+              "view": "View?style:[display=flex]"
             }
           ]
         }
       ]
     }
   ]
+  
 }

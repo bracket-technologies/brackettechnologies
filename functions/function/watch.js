@@ -5,36 +5,36 @@ const { toValue } = require("./toValue")
 const { isEqual } = require("./isEqual")
 const { toCode } = require("./toCode")
 
-const watch = ({ _window, controls, id }) => {
+const watch = ({ _window, lookupActions, controls, id }) => {
 
     const { execute } = require("./execute")
 
     var view = window.views[id]
     if (!view) return
 
-    var watch = toCode({ _window, id, string: controls.watch })
-    watch = toCode({ _window, string: watch, start: "'", end: "'" })
+    var watch = toCode({ _window, lookupActions, id, string: controls.watch })
+    watch = toCode({ _window, lookupActions, string: watch, start: "'", end: "'" })
 
-    var approved = toApproval({ id, string: watch.split('?')[2] })
+    var approved = toApproval({ id, lookupActions, string: watch.split('?')[2] })
     if (!approved || !watch) return
 
     watch.split('?')[0].split(';').map(_watch => {
 
         var timer = 500
-        view[`${_watch}-watch`] = clone(toValue({ id, value: _watch }))
+        view[`${_watch}-watch`] = clone(toValue({ id, lookupActions, value: _watch }))
         
         const myFn = async () => {
             
             if (!window.views[id]) return clearInterval(view[`${_watch}-timer`])
             
-            var value = toValue({ id, value: _watch })
+            var value = toValue({ id, lookupActions, value: _watch })
 
             if ((value === undefined && view[`${_watch}-watch`] === undefined) || isEqual(value, view[`${_watch}-watch`])) return
 
             view[`${_watch}-watch`] = clone(value)
             
             // params
-            toParam({ id, string: watch.split('?')[1], mount: true })
+            toParam({ id, lookupActions, string: watch.split('?')[1], mount: true })
 
             // break
             if (view["break()"]) delete view["break()"]
@@ -47,14 +47,14 @@ const watch = ({ _window, controls, id }) => {
             }
             
             // approval
-            var approved = toApproval({ id, string: watch.split('?')[2] })
+            var approved = toApproval({ id, lookupActions, string: watch.split('?')[2] })
             if (!approved) return
             
             // once
-            if (controls.actions || controls.action) await execute({ controls, id })
+            if (controls.actions || controls.action) await execute({ controls, lookupActions, id })
                 
             // await params
-            if (view.await) toParam({ id, string: view.await.join(';') })
+            if (view.await) toParam({ id, lookupActions, string: view.await.join(';') })
         }
 
         if (view[`${_watch}-timer`]) clearInterval(view[`${_watch}-timer`])

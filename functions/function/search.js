@@ -5,7 +5,7 @@ const { toFirebaseOperator } = require('./toFirebaseOperator')
 const { toArray } = require('./toArray')
 
 module.exports = {
-  search: async ({ _window, id = "root", req, res, e, _, __, ___, ...params }) => {
+  search: async ({ _window, lookupActions, id = "root", req, res, e, _, __, ___, ...params }) => {
       
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -227,7 +227,7 @@ module.exports = {
       view.search = global.search = clone(_data)
     
       // await params
-      if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res, _: global.search, __: _, ___: __ })
+      if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, id, e, params, req, res, _: global.search, __: _, ___: __ })
 
     } else {
 
@@ -252,7 +252,7 @@ module.exports = {
             view.search = global.search = clone(_data)
     
             // await params
-            if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res, _: global.search, __: _, ___: __ })
+            if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, id, e, params, req, res, _: global.search, __: _, ___: __ })
     
             resolve()
           })
@@ -271,7 +271,7 @@ module.exports = {
         view.search = global.search = clone(_data)
 
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res, _: global.search, __: _, ___: __ })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, id, e, params, req, res, _: global.search, __: _, ___: __ })
       }
     }
     

@@ -1,14 +1,14 @@
 {
-    "type": "View?id=sidebar;class=flex;style.transition=.2s;style.height=calc(100vh - 4rem);style.position=relative;sidebar-open-manager:()=page-view-sidebar;mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]",
+    "view": "View?id=sidebar;class=flex;style.transition=.2s;style.height=calc(100vh - 4rem);style.position=relative;sidebar-open-manager:()=page-view-sidebar;mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]",
     "creation-date": 1640440075917,
     "children": [
         {
             "children": [
                 {
-                    "type": "View?id=page-view-btn;tooltip.text=main;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "view": "View?id=page-view-btn;tooltip.text=main;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
-                            "type": "Icon?class=flexbox;name=code;google.symbol.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem]"
+                            "view": "Icon?class=flexbox;name=code;google.symbol.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem]"
                         }
                     ],
                     "controls": [
@@ -18,10 +18,10 @@
                     ]
                 },
                 {
-                    "type": "View?id=collection-btn;tooltip.text=database;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "view": "View?id=collection-btn;tooltip.text=datastore;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
-                            "type": "Icon?class=flexbox;name=bi-menu-button-wide-fill;#google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2rem"
+                            "view": "Icon?class=flexbox;name=bi-menu-button-wide-fill;#google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2rem"
                         }
                     ],
                     "controls": [
@@ -31,7 +31,7 @@
                     ]
                 },
                 {
-                    "type": "Icon?id=gallery-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-images;tooltip.text=gallery;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.minHeight=4.5rem",
+                    "view": "Icon?id=gallery-icon;class=flexbox;open=if():[sidebar-item-open:()=().id]:true:false;name=bi-images;tooltip.text=gallery;style.color=if():open:#000:#888;style.borderRight=if():open:2px solid #000:2px solid #ffffff00;style.fontSize=2rem;style.padding=1.25rem .5rem;class=pointer;style.width=100%;style.minHeight=4.5rem",
                     "controls": [
                         {
                             "event": "click?parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;style().color=#888];1stChild():page-view-btn.style().color=#888;1stChild():collection-btn.style().color=#888;if():open:[style().borderRight=2px solid #000;style().color=#000;sidebar-item-open:()=().id];parent().parent().children().slice():1:-1.():[style().width=0px];():gallery-view.style().display=if():open:grid:none;():data-viewer.children().():[style().display=none];():gallery-view.style().display=grid;style():[borderRight=2px solid #000;color=#000];open=true;():main-data-viewer.style().display=none;():data-viewer-bar.style().display=none;search():[collection=storage;headers.project=project:();limit=250]:[gallery-images:()=_.data.values().sort():[path=creation-date];update():'gallery-view']"
@@ -39,16 +39,16 @@
                     ]
                 }
             ],
-            "type": "View?id=sidebar-items;class=flex column;style.width=4.5rem;style.backgroundColor=#f9f9f9;sidebar-item-open:()=false"
+            "view": "View?id=sidebar-items;class=flex column;style.width=4.5rem;style.backgroundColor=#f9f9f9;sidebar-item-open:()=false"
         },
         {
-            "type": "View?view=page-view-sidebar"
+            "view": "page-view-sidebar"
         },
         {
-            "type": "View?view=collection-sidebar"
+            "view": "collection-sidebar"
         },
         {
-            "type": "View?id=sidebar-width-controller;style:[minHeight=100%;width=7px;backgroundColor=#34aeeb;cursor=ew-resize;position=absolute;right=-3px;top=0;zIndex=100;opacity=0;transition=.2s];#mouseenter:[():[sidebar-width-controller-1].style().opacity=1];#mouseleave:[():[sidebar-width-controller-1].style().opacity=0]",
+            "view": "View?id=sidebar-width-controller;style:[minHeight=100%;width=7px;backgroundColor=#34aeeb;cursor=ew-resize;position=absolute;right=-3px;top=0;zIndex=100;opacity=0;transition=.2s];#mouseenter:[():[sidebar-width-controller-1].style().opacity=1];#mouseleave:[():[sidebar-width-controller-1].style().opacity=0]",
             "controls": [
                 {
                 "event": "mousedown?mousedown=true;document().style().cursor=ew-resize;():[sidebar-open-manager:()].style().transition=null;():data-viewer.style().transition=null;():my-functions.style().transition=null;width=():[sidebar-open-manager:()].style().width.split():rem.0.num();screenX=mousePosX:()"

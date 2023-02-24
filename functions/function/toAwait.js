@@ -1,6 +1,6 @@
 const { toCode } = require("./toCode")
 
-const toAwait = ({ _window, id, e, params = {}, req, res, _, __, ___ }) => {
+const toAwait = ({ _window, lookupActions, id, e, params = {}, req, res, _, __, ___ }) => {
 
   const { execute } = require("./execute")
   const { toParam } = require("./toParam")
@@ -13,14 +13,14 @@ const toAwait = ({ _window, id, e, params = {}, req, res, _, __, ___ }) => {
   delete params.await
 
   // get params
-  awaits = toCode({ _window, string: awaits, e })
-  awaits = toCode({ _window, string: awaits, e, start: "'", end: "'" })
-  if (awaits && awaits.length > 0) _params = toParam({ _window, id, e, string: awaits, asyncer: true, _, __, ___, req, res })
+  awaits = toCode({ _window, lookupActions, string: awaits, e })
+  awaits = toCode({ _window, lookupActions, string: awaits, e, start: "'", end: "'" })
+  if (awaits && awaits.length > 0) _params = toParam({ _window, lookupActions, id, e, string: awaits, asyncer: true, _, __, ___, req, res })
   if (_params && _params.break) return
 
   // override params
   if (_params) params = { ...params, ..._params }
-  if (awaiter) execute({ _window, id, e, actions: awaiter, params, _, __, ___, req, res})
+  if (awaiter) execute({ _window, lookupActions, id, e, actions: awaiter, params, _, __, ___, req, res})
 }
 
 module.exports = {toAwait}

@@ -7,6 +7,12 @@
       "view": "collection-list"
     },
     {
+      "view": "storage"
+    },
+    {
+      "view": "storage-list"
+    },
+    {
       "view": "new-schema"
     },
     {
@@ -20,5 +26,5 @@
     }
   ],
   "creation-date": 1643562122803,
-  "type": "View?id=collection-sidebar;class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0px;style.zIndex=2"
+  "view": "View:collection-sidebar?class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0px;style.zIndex=2"
 }

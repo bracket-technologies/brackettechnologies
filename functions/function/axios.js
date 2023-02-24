@@ -1,6 +1,6 @@
 const { toAwait } = require("./toAwait")
 
-const axios = async ({ id, ...params }) => {
+const axios = async ({ id, lookupActions, ...params }) => {
 
     var view = window.views[id]
     var { method, url, headers, payload } = params, data
@@ -37,7 +37,7 @@ const axios = async ({ id, ...params }) => {
     console.log(data)
     view.axios = data
 
-    toAwait({ id, params })
+    toAwait({ id, lookupActions, params })
 }
 
 module.exports = { axios }

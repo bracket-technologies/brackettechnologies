@@ -1,6 +1,6 @@
 const { isEqual } = require("./isEqual")
 
-const toApproval = ({ _window, e, string, params = {}, id = "root", _, __, ___, req, res, object, elser }) => {
+const toApproval = ({ _window, lookupActions, e, string, params = {}, id = "root", _, __, ___, req, res, object, elser }) => {
 
   const { toFunction } = require("./toFunction")
   const { toValue } = require("./toValue")
@@ -46,7 +46,7 @@ const toApproval = ({ _window, e, string, params = {}, id = "root", _, __, ___, 
       var conditions = condition.split("||"), _i = 0
       approval = false
       while (!approval && conditions[_i] !== undefined) {
-        approval = toApproval({ _window, e, string: conditions[_i], id, _, __, ___, params, req, res, object, elser: true })
+        approval = toApproval({ _window, lookupActions, e, string: conditions[_i], id, _, __, ___, params, req, res, object, elser: true })
         _i += 1
       }
       return approval
@@ -71,7 +71,7 @@ const toApproval = ({ _window, e, string, params = {}, id = "root", _, __, ___, 
 
     // /////////////////// value /////////////////////
 
-    if (value) value = toValue({ _window, id: mainId, value, e, _, __, ___, req, res, params, condition: true })
+    if (value) value = toValue({ _window, lookupActions, id: mainId, value, e, _, __, ___, req, res, params, condition: true })
 
     // /////////////////// key /////////////////////
 
@@ -101,7 +101,7 @@ const toApproval = ({ _window, e, string, params = {}, id = "root", _, __, ___, 
     var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0], myKey
 
     // function
-    var isFn = toFunction({ _window, id, req, res, _, __, ___, e, path, path0, condition: true });
+    var isFn = toFunction({ _window, lookupActions, id, req, res, _, __, ___, e, path, path0, condition: true });
     if (isFn !== "__CONTINUE__") return approval = notEqual ? !isFn : isFn
 
     if (!key && object !== undefined) myKey = object
@@ -113,8 +113,8 @@ const toApproval = ({ _window, e, string, params = {}, id = "root", _, __, ___, 
     else if (key === "_") myKey = _
     else if (key === "__") myKey = __
     else if (key === "___") myKey = ___
-    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) myKey = reducer({ _window, id, path, e, _, __, ___, params, req, res, object, condition: true })
-    else myKey = reducer({ _window, id, path, e, _, __, ___, req, res, params, object: object ? object : view, condition: true })
+    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) myKey = reducer({ _window, lookupActions, id, path, e, _, __, ___, params, req, res, object, condition: true })
+    else myKey = reducer({ _window, lookupActions, id, path, e, _, __, ___, req, res, params, object: object ? object : view, condition: true })
     // else myKey = key
 
     if (params["return()"] !== undefined) {

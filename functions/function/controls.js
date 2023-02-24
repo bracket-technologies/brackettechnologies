@@ -1,6 +1,6 @@
 const { toArray } = require("./toArray")
 
-const controls = ({ _window, controls, id, req, res }) => {
+const controls = ({ _window, lookupActions, controls, id, req, res }) => {
 
   const { addEventListener } = require("./event")
   const { watch } = require("./watch")
@@ -12,9 +12,9 @@ const controls = ({ _window, controls, id, req, res }) => {
   
   controls && toArray(controls).map(controls => {
     // watch
-    if (controls.watch) watch({ _window, controls, id, req, res })
+    if (controls.watch) watch({ _window, lookupActions, controls, id, req, res })
     // event
-    else if (controls.event) addEventListener({ _window, controls, id, req, res })
+    else if (controls.event) addEventListener({ _window, lookupActions, controls, id, req, res })
   })
 }
 

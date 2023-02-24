@@ -1,0 +1,31 @@
+{
+    "children": [
+        {
+            "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+        },
+        {
+            "view": "Text?class=dots;text=Storage;style.fontSize=1.3rem"
+        },
+        {
+            "view": "Icon?style.display=none;tooltip.text=create new storage;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+            "controls": [
+                {
+                    "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=storage",
+                    "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform='scale(0)']]"
+                }
+            ]
+        }
+    ],
+    "view": "View:storage?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+    "controls": [
+        {
+            "event": "mouseenter?lastChild().style().display=flex"
+        },
+        {
+            "event": "mouseleave?lastChild().style().display=none"
+        },
+        {
+            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)];search():[collection=storage;headers.project=project:()]:[data:().editor.storage=_.data;update():'storage-list']?!3rdChild().contains():[clicked:()]"
+        }
+    ]
+}

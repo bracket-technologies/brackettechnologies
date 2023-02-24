@@ -4,7 +4,7 @@ const { deleteData } = require("./database");
 const { toArray } = require("./toArray");
 const { toString } = require("./toString")
 
-const erase = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
+const erase = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...params }) => {
 
   var global = _window ? _window.global : window.global
   var view = _window ? _window.views[id] : window.views[id]
@@ -22,7 +22,7 @@ const erase = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
     view.erase = global.erase = clone(data)
     console.log("erase", data)
   
-    if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
+    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, req , res, id, e, _: data, __: _, ___: __, params })
 
   } else {
 
@@ -43,7 +43,7 @@ const erase = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
     view.erase = global.erase = clone(data)
     console.log("erase", data)
   
-    if (params.asyncer) require("./toAwait").toAwait({ _window, req , res, id, e, _: data, __: _, ___: __, params })
+    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, req , res, id, e, _: data, __: _, ___: __, params })
   }
 }
 

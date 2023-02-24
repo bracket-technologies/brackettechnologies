@@ -5,7 +5,7 @@ const { getCookie } = require("./cookie")
 const { toAwait } = require("./toAwait")
 const { toArray } = require("./toArray")
 
-const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }) => {
+const func = async ({ _window, lookupActions, id = "root", req, _, __, ___, res, e, ...params }) => {
   
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -27,9 +27,9 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     //  if (functions[func.function].includes("send()"))
     //  functions[func.function] = functions[func.function].replace("send():", "func:()=")
     
-    var _func = toCode({ _window, string: functions[func.function] })
-    _func = toCode({ _window, string: _func, start: "'", end: "'" })
-    toParam({ _window, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
+    var _func = toCode({ _window, lookupActions, string: functions[func.function] })
+    _func = toCode({ _window, lookupActions, string: _func, start: "'", end: "'" })
+    toParam({ _window, lookupActions, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
     
     await Promise.all(global.promises[id] || [])
     await Promise.all(global.promises[id] || [])
@@ -38,7 +38,7 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
     // await params
   
     console.log(params.func, global.func)
-    if (params.asyncer) toAwait({ _window, id, e, params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
+    if (params.asyncer) toAwait({ _window, lookupActions, id, e, params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
 
   } else {
     
@@ -59,15 +59,15 @@ const func = async ({ _window, id = "root", req, _, __, ___, res, e, ...params }
         console.log(params.func, global.func)
     
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, id, e, params, req, res,  _: global.func, __: _, ___: __ })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, id, e, params, req, res,  _: global.func, __: _, ___: __ })
         resolve()
       })
     )
   }
 
   /*if (data.params) {
-    data.params = toCode({ _window, string: data.params, e })
-    params = { ...toParam({ _window, id, e, string: data.params, asyncer: true, _: data, __: _, ___: __, req, res }), params }
+    data.params = toCode({ _window, lookupActions, string: data.params, e })
+    params = { ...toParam({ _window, lookupActions, id, e, string: data.params, asyncer: true, _: data, __: _, ___: __, req, res }), params }
   }*/
 }
 

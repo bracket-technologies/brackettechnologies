@@ -4,7 +4,7 @@ const { generate } = require("./generate")
 const { schematize } = require("./schematize")
 const { toArray } = require("./toArray")
 
-const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
+const save = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...params }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -44,7 +44,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
   if (save.schematize && (save.doc || save.schema)) {
 
     var schema = save.doc ? global[`${save.doc}-schema`] : save.schema
-    if (!save.schema) return toParam({ _window, string: "note():[text=Schema does not exist!;type=danger]" })
+    if (!save.schema) return toParam({ _window, lookupActions, string: "note():[text=Schema does not exist!;type=danger]" })
     if (Array.isArray(save.data)) save.data = save.data.map(data => schematize({ data, schema }))
     else save.data = schematize({ data: save.data, schema })
   }
@@ -180,7 +180,7 @@ const save = async ({ _window, req, res, id, e, _, __, ___, ...params }) => {
   /*if (!_window) */console.log("save", _data)
 
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, req, res, id, e, _: _data, __: _, ___: __, params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, req, res, id, e, _: _data, __: _, ___: __, params })
 }
 
 module.exports = { save }

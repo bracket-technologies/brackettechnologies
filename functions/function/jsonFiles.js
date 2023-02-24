@@ -9,7 +9,7 @@ var getJsonFiles = ({ search = {} }) => {
   doc = search.document || search.doc, 
   docs = search.documents || search.docs, 
   fields = search.fields || search.field, 
-  limit = search.limit || 25,
+  limit = search.limit || 100,
   path = `database/${collection}`
   
   // create folder if it doesnot exist

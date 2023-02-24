@@ -6,7 +6,7 @@ const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 
 module.exports = {
-  insert: async ({ id, _, __, ___, ...params }) => {
+  insert: async ({ _window, lookupActions, id, _, __, ___, ...params }) => {
     
     var insert = params.insert, { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
@@ -66,7 +66,7 @@ module.exports = {
         views[id].style.opacity = "0"
         views[id]["my-views"] = [...views[appendTo]["my-views"]]
         
-        return await createElement({ id })
+        return await createElement({ id, lookupActions })
       }))
       
       innerHTML = innerHTML.join("")
@@ -92,8 +92,8 @@ module.exports = {
     else view.element.insertBefore(el, view.element.children[index])
 
     var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-    idList.map(id => setElement({ id }))
-    idList.map(id => starter({ id }))
+    idList.map(id => setElement({ id, lookupActions }))
+    idList.map(id => starter({ id, lookupActions }))
     
     views[el.id].style.transition = views[el.id].element.style.transition = (views[el.id].reservedStyles && views[el.id].reservedStyles.transition) || null
     views[el.id].style.opacity = views[el.id].element.style.opacity = (views[el.id].reservedStyles && views[el.id].reservedStyles.opacity) || "1"
@@ -108,6 +108,6 @@ module.exports = {
     }
 
     // await params
-    if (params.asyncer) require("./toAwait").toAwait({ id, _: view.insert, __: _, ___: __, params })
+    if (params.asyncer) require("./toAwait").toAwait({ id, lookupActions, _: view.insert, __: _, ___: __, params })
   }
 }

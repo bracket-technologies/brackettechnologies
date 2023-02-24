@@ -139,8 +139,8 @@ const defaultInputHandler = ({ id }) => {
       // removeChildren({ id })
       var _value = toCode({ string: value })
       _value = toCode({ string: _value, start: "'", end: "'"  })
-      if (view.type === "Input") e.target.value = colorize({ string: _value })
-      else e.target.innerHTML = colorize({ string: _value })
+      if (view.type === "Input") e.target.value = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
+      else e.target.innerHTML = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
       /*
       var sel = window.getSelection()
       var selected_node = sel.anchorNode

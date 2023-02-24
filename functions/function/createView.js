@@ -3,7 +3,7 @@ const {toArray} = require("./toArray")
 const {clone} = require("./clone")
 const { generate } = require("./generate")
 
-const createView = ({ view, id = generate() }) => {
+const createView = ({ view, id = generate(), lookupActions }) => {
 
   var view = window.views[id] || {}
   var global = window.global
@@ -11,7 +11,7 @@ const createView = ({ view, id = generate() }) => {
   view.children = toArray(clone(global.data.view[view]))
 
   // update
-  update({ id })
+  update({ id, lookupActions })
 }
 
 module.exports = {createView}

@@ -1,9 +1,12 @@
-const colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
+const _colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
-const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) => {
+const colorize = ({ _window, id, string, start = "[", end = "]", index = 0, ...params }) => {
   
+    var { colors = _colors } = params
+    if (typeof colors === 'string') colors = [colors]
+
     if (index === 8) index = 1
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
@@ -29,7 +32,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0 }) =>
 
       var string0 = string.split("coded()")[0]
       var key = global.codes["coded()" + string.split("coded()")[1].slice(0, 5)]
-      key = colorize({ id, string: start + key + end, index: index + 1 })
+      key = colorize({ id, string: start + key + end, index: index + 1, ...params })
       string = string0 + key + string.split("coded()")[1].slice(5) + (string.split("coded()").length > 2 ? "coded()" + string.split("coded()").slice(2).join("coded()") : "")
     }
 

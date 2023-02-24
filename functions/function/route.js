@@ -30,7 +30,7 @@ module.exports = {
           var myFn = () => {
             return new Promise (async resolve => {
               
-              var innerHTML = await createElement({ _window, id: "root", req, res })
+              var innerHTML = await createElement({ _window, id: "root", req, res, lookupActions })
               if (!global.innerHTML.root) global.innerHTML.root = innerHTML
               global.breakCreateElement[id] = true
               resolve()
