@@ -4,7 +4,7 @@ const { createElement } = require("./createElement")
 const { toArray } = require("./toArray")
 
 module.exports = {
-    route: async ({ id, _window, route = {}, req, res }) => {
+    route: async ({ id, _window, route = {}, req, res, lookupActions }) => {
       
       var views = _window ? _window.views : window.views
       var global = _window ? _window.global : window.global

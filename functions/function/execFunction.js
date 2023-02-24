@@ -16,6 +16,7 @@ const execFunction = async ({ _window, lookupActions, req, res, id = generate() 
   if (!project.functions[func]) return res.send({ success, message: `Action ${func} does not exist!` })
 
   // interpret
+  lookupActions = { view: "_project_", fn: [func] }
   interpret({ _window, lookupActions, id, string: project.functions[func], req, res, _: data })
   
   global.timeout = req.body.timeout || project.timeout || 40000
@@ -24,7 +25,7 @@ const execFunction = async ({ _window, lookupActions, req, res, id = generate() 
 
 const interpret = ({ _window, lookupActions, id, string, req, res, _, __, ___ }) => {
 
-  string = toCode({ _window, lookupActions, id, string: toCode({ _window, lookupActions, id, string }), start: "'", end: "'" })
+  string = toCode({ _window, id, string: toCode({ _window, id, string }), start: "'", end: "'" })
   toParam({ _window, lookupActions, id, string, req, res, _, __, ___, mount: true })
 }
 

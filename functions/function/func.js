@@ -24,11 +24,8 @@ const func = async ({ _window, lookupActions, id = "root", req, _, __, ___, res,
     
     var functions = global.data.project.functions
     if (!functions[func.function]) return
-    //  if (functions[func.function].includes("send()"))
-    //  functions[func.function] = functions[func.function].replace("send():", "func:()=")
     
-    var _func = toCode({ _window, lookupActions, string: functions[func.function] })
-    _func = toCode({ _window, lookupActions, string: _func, start: "'", end: "'" })
+    var _func = toCode({ _window, string: toCode({ _window, string: functions[func.function] }), start: "'", end: "'" })
     toParam({ _window, lookupActions, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
     
     await Promise.all(global.promises[id] || [])
