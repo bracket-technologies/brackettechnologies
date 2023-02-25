@@ -16,15 +16,16 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
   if (path.length === 1 && path0.slice(-2) === "()" && !actions.includes(path0) && path0 !== "if()" && path0 !== "while()") {
     
     var newLookupActions
-    var functions = (_window ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
-    var myViews = (_window ? ["_project_"] : view["my-views"]) || []
+    var functions = {}
+    var myViews = view["my-views"] || []
     
     // lookup in open actions
     if (lookupActions.fn) {
         
       var fn = lookupActions.fn
       fn.map((myfn, i) => {
-
+        
+        functions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
         isFn = Object.keys(fn.slice(0, fn.length - i).reduce((o, k) => o[k], functions)).find(fn => fn === path0.slice(0, -2))
         if (isFn) {
 
@@ -38,17 +39,25 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
     // lookup in view actions
     if (!isFn) {
 
-      clone(myViews).reverse().map(view => {
+      clone(["_project_", ...myViews]).reverse().map(view => {
         if (!isFn) {
-
-          isFn = Object.keys(functions).find(fn => fn === path0.slice(0, -2))
+          
+          var functions = view === "_project_" ? global.functions : global.data.view[view].functions
+          isFn = (Array.isArray(functions) ? functions : Object.keys(functions)).find(fn => fn === path0.slice(0, -2))
           if (isFn) {
 
-            // backend function
-            isFn = functions[isFn]
-            if (typeof isFn === "object") isFn = isFn._ || ""
-            newLookupActions = { view, fn: [path0.slice(0, -2)] }
-            if (view === "_project_") backendFn = true
+            newLookupActions = { view, fn: [isFn] }
+
+            if (view === "_project_") {
+              
+              // backend function
+              backendFn = true
+
+            } else {
+
+              isFn = functions[isFn]
+              if (typeof isFn === "object") isFn = isFn._ || ""
+            }
           }
         }
       })
@@ -80,14 +89,13 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
       
       if (isFn) {
 
-        isFn = toCode({ _window, id, string: isFn })
-        isFn = toCode({ _window, id, string: isFn, start: "'", end: "'" })
+        isFn = toCode({ _window, id, string: toCode({ _window, id, string: isFn }), start: "'", end: "'" })
 
         var answer//, awaits = `():${id}.my-actions.pull():${lastEl}`
         if (!condition) answer = toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, createElement, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions })
         else answer = toApproval({ _window, string: isFn, e, id, req, res, mount, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), lookupActions: newLookupActions ? newLookupActions : lookupActions })
 
-        console.log({ action: path0, data: _params, success: true, message: "Action executed!", path: (newLookupActions ? newLookupActions : lookupActions).fn });
+        console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn });
         return answer
       }
     }

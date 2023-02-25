@@ -23,9 +23,12 @@ const func = async ({ _window, lookupActions, id = "root", req, _, __, ___, res,
   if (_window) {
     
     var functions = global.data.project.functions
-    if (!functions[func.function]) return
+    var myfn = clone(functions[func.function])
     
-    var _func = toCode({ _window, string: toCode({ _window, string: functions[func.function] }), start: "'", end: "'" })
+    if (!myfn) return
+    console.log(lookupActions);
+    if (typeof myfn === "object") myfn = myfn._ || ""
+    var _func = toCode({ _window, string: toCode({ _window, string: myfn }), start: "'", end: "'" })
     toParam({ _window, lookupActions, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
     
     await Promise.all(global.promises[id] || [])
