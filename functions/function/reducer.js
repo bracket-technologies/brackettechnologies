@@ -4555,7 +4555,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var _await = ""
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await })
+                awaits.unshift({ hold: true, await: _await, action: "search()" })
             }
             require("./search").search({ _window, lookupActions, awaits, myawait: _await, req, res, id, e, search: _collection, _, __, ___, asyncer: true })
             return true

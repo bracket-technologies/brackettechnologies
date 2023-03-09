@@ -1399,7 +1399,7 @@ module.exports=[
  , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()", "promise()", "type()"
  , "3rdLastChild()", "2ndLastChild()", "parent()", "next()", "text()", "val()", "txt()", "loader()", "resolve()"
  , "element()", "el()", "checked()", "check()", "prev()", "format()", "lastSibling()", "interval()"
- , "1stSibling()", "derivations()", "path()", "mouseleave()", "mouseenter()", "mouseup()", "blur()"
+ , "1stSibling()", "derivations()", "path()", "mouseleave()", "mouseenter()", "mouseup()", "blur()", "log()"
  , "mousedown()", "copyToClipBoard()", "mininote()", "note()", "date()", "tooltip()", "update()", "updateSelf()" 
  , "refresh()", "save()", "search()", "override()", "click()", "is()", "new()", "preventDefault()", "device()", "mobile()", "tablet()", "desktop()"
  , "gen()", "generate()", "route()", "getInput()", "input()", "getEntry()", "entry()", "capitalize()" 
@@ -4339,6 +4339,7 @@ const func = async ({ _window, lookupActions, awaits, oldlookupActions, id = "ro
     var _func = toCode({ _window, string: toCode({ _window, string: myfn }), start: "'", end: "'" })
     toParam({ _window, lookupActions, awaits, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
     
+    await Promise.all(global.promises[id] || [])
     await Promise.all(global.promises[id] || [])
     await Promise.all(global.promises[id] || [])
     await Promise.all(global.promises[id] || [])
@@ -10040,7 +10041,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var _await = ""
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await })
+                awaits.unshift({ hold: true, await: _await, action: "search()" })
             }
             require("./search").search({ _window, lookupActions, awaits, myawait: _await, req, res, id, e, search: _collection, _, __, ___, asyncer: true })
             return true
@@ -12162,6 +12163,7 @@ module.exports = {toArray}
 const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
+const { decode } = require("./decode")
 
 const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res, _, __, ___, asyncer, awaiter }) => {
 
@@ -12170,27 +12172,32 @@ const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res
   
   if (!asyncer) return
   var _params, keepGoingOn = true
-console.log("here", myawait, awaits.findIndex(item => item.await === myawait), clone(awaits));
-  var _await_ = toCode({ _window, string: toCode({ _window, string: myawait }), start: "'", end: "'" })
-  _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res })
-  awaits.splice(awaits.findIndex(item => item.await === myawait), 1)
+
+  if (myawait) {
+
+    var _await_ = toCode({ _window, string: toCode({ _window, string: myawait }), start: "'", end: "'" })
+    _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res })
+    if (awaits.findIndex(item => item.await === myawait) !== -1) console.log(awaits.find(item => item.await === myawait).log);
+    awaits.splice(awaits.findIndex(item => item.await === myawait), 1)
+  }
 
   // get params
-  if (!awaits.find(item => item.hold)) {
-    toArray(awaits).map((_await, i) => {
-      
-      if (keepGoingOn) {
+  toArray(awaits).map((_await, i) => {
+  
+    if (keepGoingOn) keepGoingOn = !_await.hold
 
-        var _await_ = toCode({ _window, string: toCode({ _window, string: _await.await }), start: "'", end: "'" })
-        _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res })
-        
-        var index = toArray(awaits).findIndex(item => item.await === _await.await)
-        if (index !== -1) toArray(awaits).splice(index, 1)
-        if (index !== i) keepGoingOn = false
-        console.log("here", index, _await, clone(awaits));
-      }
-    })
-  }
+    if (keepGoingOn) {
+
+      if (_await.log) console.log(_await.log);
+
+      var _await_ = toCode({ _window, string: toCode({ _window, string: _await.await }), start: "'", end: "'" })
+      _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res, ...(_await.params || {}) })
+      
+      var index = toArray(awaits).findIndex(item => item.await === _await.await)
+      if (index !== -1) toArray(awaits).splice(index, 1)
+      if (index !== i) keepGoingOn = false
+    }
+  })
 
   if (_params && _params.break) return
 
@@ -12199,7 +12206,7 @@ console.log("here", myawait, awaits.findIndex(item => item.await === myawait), c
 }
 
 module.exports = {toAwait}
-},{"./clone":46,"./execute":68,"./toArray":119,"./toCode":123,"./toParam":133}],121:[function(require,module,exports){
+},{"./clone":46,"./decode":62,"./execute":68,"./toArray":119,"./toCode":123,"./toParam":133}],121:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -12466,7 +12473,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
         if (!isFn) {
 
           var functions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
-          isFn = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o[k], functions)).find(fn => fn === path0.slice(0, -2))
+          isFn = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o[k] || {}, functions)).find(fn => fn === path0.slice(0, -2))
 
           if (isFn) {
 
@@ -12539,20 +12546,20 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
 
         // await
         var _await = global.codes[args[2]]
-        if (_await) awaits.unshift({ hold: false, await: _await, action: path0 })
+        if (_await) awaits.unshift({ await: _await, action: path0, log: { action: path0, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn }, params: {e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, createElement, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions} })
         isFn = toCode({ _window, id, string: toCode({ _window, id, string: isFn }), start: "'", end: "'" })
 
         var answer
+        console.log("ACTION " + path0);
+        if (!condition) answer = toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, createElement, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+        else answer = toApproval({ _window, string: isFn, e, id, req, res, mount, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions: newLookupActions ? newLookupActions : lookupActions })
         
-        if (!condition) answer = toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, createElement, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions })
-        else answer = toApproval({ _window, string: isFn, e, id, req, res, mount, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), lookupActions: newLookupActions ? newLookupActions : lookupActions })
-        
-        console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn })
 
         // await params
-        if (_await && awaits.findIndex(i => i.await === _await) === 0) {
+        if (!_await) console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn })
+        else if (_await && awaits.findIndex(i => i.await === _await) === 0) {
 
-          require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, awaits: [{ hold: false, await: _await }], req, res, _: global.search, __: _, ___: __ })
+          require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait: _await, awaits, req, res, _: global.search, __: _, ___: __ })
           awaits.splice(0, 1)
         }
 
@@ -13375,9 +13382,14 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
 
   var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
+  
+  if (!value || value === " ") return value
+  
+  // coded
+  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
+  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
 
   // no value
-  if (!value || value === " ") return value
   else if (value === "()") return view
   else if (value === undefined) return generate()
   else if (value === "undefined") return undefined
@@ -13392,10 +13404,6 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   // break & return
   if (params && params["return()"] !== undefined) return params["return()"]
   if (params["break()"]) return params
-  
-  // coded
-  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
-  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
   
   // string
   if (value.split("'").length > 1) value = toCode({ _window, lookupActions, awaits, string: value, start: "'", end: "'" })

@@ -2,7 +2,7 @@ const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 
-const execFunction = async ({ _window, lookupActions, awaits, req, res, id = generate() }) => {
+const execFunction = async ({ _window, lookupActions, req, res, id = generate() }) => {
 
   var data = req.body.data
   var func = req.body.function
@@ -17,7 +17,12 @@ const execFunction = async ({ _window, lookupActions, awaits, req, res, id = gen
 
   // interpret
   lookupActions = { view: "_project_", fn: [func] }
-  interpret({ _window, lookupActions, awaits, id, string: project.functions[func], req, res, _: data })
+
+  var isFn = ""
+  if (typeof project.functions[func] === "object") isFn = project.functions[func]._
+  else isFn = project.functions[func]
+
+  interpret({ _window, lookupActions, awaits: [], id, string: isFn, req, res, _: data })
   
   global.timeout = req.body.timeout || project.timeout || 40000
   setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action ${func} request timeout` }) }, global.timeout)

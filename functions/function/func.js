@@ -38,6 +38,7 @@ const func = async ({ _window, lookupActions, awaits, oldlookupActions, id = "ro
     await Promise.all(global.promises[id] || [])
     await Promise.all(global.promises[id] || [])
     await Promise.all(global.promises[id] || [])
+    await Promise.all(global.promises[id] || [])
     
     // await params
   

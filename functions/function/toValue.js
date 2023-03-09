@@ -19,9 +19,14 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
 
   var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
+  
+  if (!value || value === " ") return value
+  
+  // coded
+  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
+  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
 
   // no value
-  if (!value || value === " ") return value
   else if (value === "()") return view
   else if (value === undefined) return generate()
   else if (value === "undefined") return undefined
@@ -36,10 +41,6 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   // break & return
   if (params && params["return()"] !== undefined) return params["return()"]
   if (params["break()"]) return params
-  
-  // coded
-  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
-  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
   
   // string
   if (value.split("'").length > 1) value = toCode({ _window, lookupActions, awaits, string: value, start: "'", end: "'" })
