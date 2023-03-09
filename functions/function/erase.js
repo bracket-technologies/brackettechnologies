@@ -22,13 +22,15 @@ const erase = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...p
     view.erase = global.erase = clone(data)
     console.log("erase", data)
   
-    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, req , res, id, e, _: data, __: _, ___: __, params })
+    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, _: data, __: _, ___: __, ...params })
 
   } else {
 
     // erase
     headers.erase = encodeURI(toString({ erase }))
-    headers.timestamp = (new Date()).getTime()
+
+    headers["timestamp"] = (new Date()).getTime()
+    headers["timezone"] = Math.abs((new Date()).getTimezoneOffset())
 
     // access key
     if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
@@ -43,7 +45,7 @@ const erase = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...p
     view.erase = global.erase = clone(data)
     console.log("erase", data)
   
-    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, req , res, id, e, _: data, __: _, ___: __, params })
+    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, _: data, __: _, ___: __, ...params })
   }
 }
 

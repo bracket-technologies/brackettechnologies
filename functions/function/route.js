@@ -4,7 +4,7 @@ const { createElement } = require("./createElement")
 const { toArray } = require("./toArray")
 
 module.exports = {
-    route: async ({ id, _window, route = {}, req, res, lookupActions }) => {
+    route: async ({ id, _window, route = {}, req, res }) => {
       
       var views = _window ? _window.views : window.views
       var global = _window ? _window.global : window.global
@@ -17,7 +17,7 @@ module.exports = {
 
       global.currentPage = currentPage
       global.path = route.path ? path : currentPage === "main" ? "/" : (currentPage.charAt(0) === "/" ? currentPage : `/${currentPage}`)
-      
+      console.log(global.path);
       if (res) {
         
         global.updateLocation= true
@@ -30,7 +30,7 @@ module.exports = {
           var myFn = () => {
             return new Promise (async resolve => {
               
-              var innerHTML = await createElement({ _window, id: "root", req, res, lookupActions })
+              var innerHTML = await createElement({ _window, id: "root", req, res })
               if (!global.innerHTML.root) global.innerHTML.root = innerHTML
               global.breakCreateElement[id] = true
               resolve()

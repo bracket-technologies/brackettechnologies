@@ -23,12 +23,7 @@
                   "event": "click?open-doc:()=data:().editor.account.id;open-collection:()=_account_;open-map:()=data:().editor.account;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():['account/'+data:().editor.account.id]"
                 },
                 {
-                  "actions": [
-                    "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=account/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
-                    "wait():[insert:functions:0]?insert.component=():functions.children.0;insert.data=[open-map:().clone().functions||_map];insert.index=():functions.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]",
-                    "wait():[insert:data-viewer:0]?insert.component=():data-viewer.children.0;insert.data=open-map:();insert.index=():data-viewer.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]"
-                  ],
-                  "event": "click?open-doc:()=data:().editor.account.id;open-docs:().push():['account/'+open-doc:()];open-collection:()=_account_;open-map:()=data:().editor.account;():data-viewer-bar.style().display=flex;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():data-viewer.():[style().display=none]?!open-docs:().inc():['account/'+data:().editor.account.id]"
+                  "event": "click?openAccount()?!open-docs:().inc():['account/'+data:().editor.account.id]"
                 }
               ]
             },
@@ -44,15 +39,10 @@
               "view": "View?id=project-file;tooltip.text=project;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%",
               "controls": [
                 {
-                  "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=project:();open-collection:()=_project_;open-map:()=data:().editor.project;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():['project/'+project:()]"
+                  "event": "click?():'my-functions'.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=project:();open-collection:()=_project_;open-map:()=data:().editor.project;():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?open-docs:().inc():['project/'+project:()]"
                 },
                 {
-                  "event": "click?loader.show;():my-functions.style():[height=functionsHeight:()+rem;display=flex];():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';className():functions.():[style().display=none];open-doc:()=project:();open-docs:().push():['project/'+open-doc:()];open-collection:()=_project_;open-map:()=data:().editor.project;():data-viewer-bar.style():[display=flex];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():data-viewer.():[style().display=none]?!open-docs:().inc():['project/'+project:()]",
-                  "actions": [
-                    "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=project/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
-                    "wait():[insert:functions:0]?insert.component=():functions.children.0;insert.data=[open-map:().clone().functions||_map];insert.index=():functions.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]",
-                    "wait():[insert:data-viewer:0]?insert.component=():data-viewer.children.0;insert.data=open-map:().clone().functions.del();insert.index=():data-viewer.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
-                  ]
+                  "event": "click?openProject()?!open-docs:().inc():['project/'+project:()]"
                 }
               ]
             }
@@ -96,13 +86,12 @@
                   "view": "Icon?style.display=none;tooltip.text=create new page;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                   "controls": [
                     {
-                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=page",
-                      "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                      "event": "click?createNewPage()"
                     }
                   ]
                 }
               ],
-              "view": "View?id=page;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+              "view": "View:page?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
               "controls": [
                 {
                   "event": "mouseenter?lastChild().style().display=flex"
@@ -111,8 +100,7 @@
                   "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]",
-                  "actions": "wait():search:[update:page-list]?search.collection=page;search.limit=100;search.headers.project=project:();wait():[data:().editor.page=().search.data]?next().style().display=flex"
+                  "event": "click?openPages()?!3rdChild().contains():[clicked:()]"
                 }
               ]
             },
@@ -170,15 +158,10 @@
                       "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.page.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
                     },
                     {
-                      "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[page/+().data]"
+                      "event": "click?():'my-functions'.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():'data-viewer'.():[style().display=none];className():'data-viewer'.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():['page/'+().data]"
                     },
                     {
-                      "event": "click?loader.show;():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[page/+open-doc:()];open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];():data-viewer-bar.style().display=flex;className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none]?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[page/+().data]",
-                      "actions": [
-                        "wait():[insert:data-viewer-bar:0]?insert.component=():data-viewer-bar.children.0;insert.data=page/+open-doc:();wait():[().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]]",
-                        "wait():[insert:functions:0]?insert.component=():functions.children.0;insert.data=[open-map:().clone().functions||_map];insert.index=():functions.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]]",
-                        "wait():[insert:data-viewer:0]?insert.component=():data-viewer.children.0;insert.data=open-map:().clone().functions.del();insert.index=():data-viewer.children().len();wait():[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]"
-                      ]
+                      "event": "click?openPage()?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[page/+().data]"
                     }
                   ]
                 }
@@ -201,7 +184,7 @@
                   ]
                 }
               ],
-              "view": "View?id=view;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+              "view": "View:view?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
               "controls": [
                 {
                   "event": "mouseenter?lastChild().style().display=flex"
@@ -210,7 +193,7 @@
                   "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)];if():[next().style().display=flex]:[search():[collection=view;limit=100;headers.project=project:()]:[data:().editor.view=_.data;update():'view-list']]?!3rdChild().contains():[clicked:()]"
+                  "event": "click?openViews()?!3rdChild().contains():[clicked:()]"
                 }
               ]
             },
@@ -275,11 +258,7 @@
                               "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.public.keys().inc():txt()||!txt()||txt().inc(): "
                             },
                             {
-                              "actions": [
-                                "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
-                                "wait():save:note:[update:public-list]?save.collection=public;save.doc=txt();save.data=data:().editor.public.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
-                              ],
-                              "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.public.txt()=data:().editor.public.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.public.txt()=_map:view:['View:'+txt()+'?class=column']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.public.keys().inc():txt();!txt().inc(): "
+                              "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.public.txt()=data:().editor.public.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.public.txt()=_map:view:['View:'+txt()+'?class=column']:functions:_map];save():[collection=public;doc=txt();data=data:().editor.public.txt();headers.project=project:()]:[note():[text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!'];if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del();update():'public-list'];if():[open-doc:()]:[data:().editor.[open-collection:()].[open-doc:()].del();erase():[collection=open-collection:();doc=open-doc:();headers.project=project:()]]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.public.keys().inc():txt();!txt().inc(): "
                             }
                           ],
                           "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -304,10 +283,10 @@
                           "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.public.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
                         },
                         {
-                          "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-publicer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[public/+().data]"
+                          "event": "click?():'my-functions'.style().height=functionsHeight:()+rem;():data-publicer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[public/+().data]"
                         },
                         {
-                          "event": "click?loader.show;timer():[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[public/+open-doc:()];open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];#insert data bar;():'data-viewer-bar'.insert():[component=():data-viewer-bar.children.0;data=public/+open-doc:()]:[():'data-viewer-bar'.style().display=flex;_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];#insert functions;():functions.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];#insert data map;():data-viewer.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():data-viewer.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:50?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[public/+().data]"
+                          "event": "click?loader.show;timer():[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[public/+open-doc:()];open-collection:()=public;open-map:()=data:().editor.public.[open-doc:()];className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];#insert data bar;():'data-viewer-bar'.insert():[component=():data-viewer-bar.children.0;data=public/+open-doc:()]:[():'data-viewer-bar'.style().display=flex;_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];#insert functions;():functions.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];#insert data map;():data-viewer.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():data-viewer.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:50?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():['public/'+().data]"
                         }
                       ]
                     }
@@ -331,15 +310,10 @@
                           "event": "blur?txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.view.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked:()]"
                         },
                         {
-                          "actions": "note?note.text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.view.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]",
-                          "event": "keyup??e().key=Enter||e().key=Tab;data:().editor.view.keys().inc():txt()||!txt()||txt().inc(): "
+                          "event": "keyup?note():[text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.view.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:[File name should not contain any spaces!]]?e().key=Enter||e().key=Tab;data:().editor.view.keys().inc():txt()||!txt()||txt().inc(): "
                         },
                         {
-                          "actions": [
-                            "wait():erase?erase.collection=open-collection:();erase.doc=open-doc:();erase.headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()?open-doc:()",
-                            "wait():save:note:[update:view-list]?save.collection=view;save.doc=txt();save.data=data:().editor.view.txt();save.headers.project=project:();note.text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!';if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()"
-                          ],
-                          "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.view.txt()=data:().editor.view.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.view.txt()=_map:view:['View:'+txt()+'?class=column;style:[minHeight=100vh]']:functions:_map]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.view.keys().inc():txt();!txt().inc(): "
+                          "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.view.txt()=data:().editor.view.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.view.txt()=_map:view:['View:'+txt()+'?class=column;style:[minHeight=100vh]']:functions:_map];save():[collection=view;doc=txt();data=data:().editor.view.txt();headers.project=project:()]:[if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del();note():[text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!'];update():'view-list'];if():[open-doc:()]:[data:().editor.[open-collection:()].[open-doc:()].del();erase():[collection=open-collection:();doc=open-doc:();headers.project=project:()]]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.view.keys().inc():txt();!txt().inc(): "
                         }
                       ],
                       "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
@@ -364,10 +338,10 @@
                       "event": "loaded?if():[new-file-created:();mapIndex=data:().editor.view.keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]"
                     },
                     {
-                      "event": "click?():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[view/+().data]"
+                      "event": "click?():'my-functions'.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';open-doc:()=().data;open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;className():functions.():[style().display=none];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked:().id!=lastChild().id;open-docs:().inc():[view/+().data]"
                     },
                     {
-                      "event": "click?loader.show;timer():[():my-functions.style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)';():my-functions.style().display=flex;open-doc:()=().data;open-docs:().push():[view/+open-doc:()];open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];#insert data bar;():'data-viewer-bar'.insert():[component=():data-viewer-bar.children.0;data=view/+open-doc:()]:[():data-viewer-bar.style().display=flex;().insert.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];#insert functions;():functions.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()]];#insert data map;():data-viewer.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():data-viewer.children().len()]:[().insert.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:50?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():[view/+().data]"
+                      "event": "click?openView()?!2ndLastChild().contains():[clicked:()];!lastChild().contains():[clicked:()];!open-docs:().inc():['view/'+().data]"
                     }
                   ]
                 }
@@ -413,8 +387,7 @@
                   "view": "Icon?style.display=none;tooltip.text=create new router;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                   "controls": [
                     {
-                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=router",
-                      "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=router;parent().next().insert():[component=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
                     }
                   ]
                 }
@@ -428,8 +401,7 @@
                   "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)']?!3rdChild().contains():[clicked:()]",
-                  "actions": "wait():search:[update:router-list]?search.collection=router;search.limit=100;search.headers.project=project:();wait():[data:().editor.router=().search.data]?next().style().display=flex"
+                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)'];if():[next().style().display=flex]:[search():[collection=router;limit=100;headers.project=project:()]:[data:().editor.router=().search.data;update():'router-list']]?!3rdChild().contains():[clicked:()]"
                 }
               ]
             },
@@ -448,8 +420,7 @@
                   "view": "Icon?style.display=none;tooltip.text=create new package;name=bi-plus;style:[color=#000;fontSize=1.9rem;position=absolute;right=.5rem;height=2rem;width=2rem;borderRadius=.25rem];hover.style.color=blue",
                   "controls": [
                     {
-                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=package",
-                      "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)']]"
+                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=package;parent().next().insert():[component=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)']]"
                     }
                   ]
                 }
@@ -463,8 +434,7 @@
                   "event": "mouseleave?lastChild().style().display=none"
                 },
                 {
-                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)']?!3rdChild().contains():[clicked:()]",
-                  "actions": "wait():search:[update:router-list]?search.collection=router;search.limit=100;search.headers.project=project:();wait():[data:().editor.router=().search.data]?next().style().display=flex"
+                  "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)'];if():[next().style().display=flex]:[search():[collection=router;limit=100;headers.project=project:()]:[data:().editor.router=().search.data;update():'router-list']]?!3rdChild().contains():[clicked:()]"
                 }
               ]
             },
@@ -475,6 +445,14 @@
         }
       ]
     }
-  ]
-  
+  ],
+  "functions": {
+    "openPage": "loader.show;timer():[():'data-viewer-bar'.style().display=flex;():'my-functions'.style().height=functionsHeight:()+rem;():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)';():'my-functions'.style().display=flex;open-doc:()=().data;open-docs:().push():['page/'+open-doc:()];open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];className():'data-viewer'.():[style().display=none];():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];():'data-viewer-bar'.insert():[component=():'data-viewer-bar'.children.0;data='page/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():'functions'.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[component=():'data-viewer'.children.0;data=open-map:().clone().functions.del();index=():'data-viewer'.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];loader.hide]:50",
+    "openView": "loader.show;timer():[():'data-viewer-bar'.style().display=flex;():'my-functions'.style().height=functionsHeight:()+rem;():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)';():'my-functions'.style().display=flex;open-doc:()=().data;open-docs:().push():['view/'+open-doc:()];open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];className():'data-viewer'.():[style().display=none];():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];():'data-viewer-bar'.insert():[component=():'data-viewer-bar'.children.0;data='view/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():'functions'.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[component=():'data-viewer'.children.0;data=open-map:().clone().functions.del();index=():'data-viewer'.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];loader.hide]:50",
+    "createNewPage": "parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=page;parent().next().insert():[component=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)']]",
+    "openPages": "if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)'];if():[next().style().display=flex]:[search():[collection=page;limit=100;headers.project=project:()]:[data:().editor.page=_.data;update():'page-list']]",
+    "openViews": "if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)'];if():[next().style().display=flex]:[search():[collection=view;limit=100;headers.project=project:()]:[data:().editor.view=_.data;update():'view-list']]",
+    "openProject": "loader.show;():'my-functions'.style():[height=functionsHeight:()+'rem';display=flex];():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)';className():functions.():[style().display=none];open-doc:()=project:();open-docs:().push():['project/'+open-doc:()];open-collection:()='_project_';open-map:()=data:().editor.project;():'data-viewer-bar'.style():[display=flex];():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];className():'data-viewer'.():[style().display=none];timer():[():'data-viewer-bar'.insert():[view=():data-viewer-bar.children.0;data='project/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():functions.insert():[component=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():'data-viewer'.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:0",
+    "openAccount": "loader.show;open-doc:()=data:().editor.account.id;open-docs:().push():['account/'+open-doc:()];open-collection:()=_account_;open-map:()=data:().editor.account;():'data-viewer-bar'.style().display=flex;():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];className():'data-viewer'.():[style().display=none];timer():[():'data-viewer-bar'.insert():[component=():'data-viewer-bar'.children.0;data='account/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():functions.insert():[component=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[component=():data-viewer.children.0;data=open-map:();index=():data-viewer.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:0"
+  }
 }

@@ -2,7 +2,7 @@ const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 
-const execFunction = async ({ _window, lookupActions, req, res, id = generate() }) => {
+const execFunction = async ({ _window, lookupActions, awaits, req, res, id = generate() }) => {
 
   var data = req.body.data
   var func = req.body.function
@@ -17,16 +17,16 @@ const execFunction = async ({ _window, lookupActions, req, res, id = generate() 
 
   // interpret
   lookupActions = { view: "_project_", fn: [func] }
-  interpret({ _window, lookupActions, id, string: project.functions[func], req, res, _: data })
+  interpret({ _window, lookupActions, awaits, id, string: project.functions[func], req, res, _: data })
   
   global.timeout = req.body.timeout || project.timeout || 40000
   setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action ${func} request timeout` }) }, global.timeout)
 }
 
-const interpret = ({ _window, lookupActions, id, string, req, res, _, __, ___ }) => {
+const interpret = ({ _window, lookupActions, awaits, id, string, req, res, _, __, ___ }) => {
 
   string = toCode({ _window, id, string: toCode({ _window, id, string }), start: "'", end: "'" })
-  toParam({ _window, lookupActions, id, string, req, res, _, __, ___, mount: true })
+  toParam({ _window, lookupActions, awaits, id, string, req, res, _, __, ___, mount: true })
 }
 
 module.exports = { execFunction }

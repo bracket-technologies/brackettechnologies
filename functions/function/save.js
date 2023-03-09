@@ -4,7 +4,7 @@ const { generate } = require("./generate")
 const { schematize } = require("./schematize")
 const { toArray } = require("./toArray")
 
-const save = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...params }) => {
+const save = async ({ _window, lookupActions, awaits, req, res, id, e, _, __, ___, ...params }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -44,7 +44,7 @@ const save = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...pa
   if (save.schematize && (save.doc || save.schema)) {
 
     var schema = save.doc ? global[`${save.doc}-schema`] : save.schema
-    if (!save.schema) return toParam({ _window, lookupActions, string: "note():[text=Schema does not exist!;type=danger]" })
+    if (!save.schema) return toParam({ _window, lookupActions, awaits, string: "note():[text=Schema does not exist!;type=danger]" })
     if (Array.isArray(save.data)) save.data = save.data.map(data => schematize({ data, schema }))
     else save.data = schematize({ data: save.data, schema })
   }
@@ -114,10 +114,8 @@ const save = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...pa
         save.data.map((data, i) => {
 
           if (!data.id) data.id = generate({ length: 20 })
-          if (!data["creation-date"]) {
-            data["creation-date"] = (new Date()).getTime()
-            data.timezone = "GMT"
-          }
+
+          if (!data["creation-date"]) data["creation-date"] = req.headers.timestamp
 
           global.promises[id].push(ref.doc(data.id.toString()).set(data).then(() => {
 
@@ -136,10 +134,7 @@ const save = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...pa
 
       var data = save.data
       if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
-      if (!data["creation-date"]) {
-        data["creation-date"] = (new Date()).getTime()
-        data.timezone = "GMT"
-      }
+      if (!data["creation-date"]) data["creation-date"] = req.headers.timestamp
       
       global.promises[id].push(ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
 
@@ -163,7 +158,9 @@ const save = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...pa
     var _data_ = clone(save.data), data
     delete save.data
     
-    headers.timestamp = (new Date()).getTime()
+    headers["timestamp"] = (new Date()).getTime()
+    headers["timezone"] = Math.abs((new Date()).getTimezoneOffset())
+    
     var { data } = await require("axios").post(`/${store}`, { save, data: _data_ }, {
       headers: {
         "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
@@ -180,7 +177,7 @@ const save = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...pa
   /*if (!_window) */console.log("save", _data)
 
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, req, res, id, e, _: _data, __: _, ___: __, params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, _: _data, __: _, ___: __, ...params })
 }
 
 module.exports = { save }

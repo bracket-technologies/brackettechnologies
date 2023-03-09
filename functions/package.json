@@ -1,7 +1,7 @@
 {
   "name": "bracketjs",
   "version": "1.0.0",
-  "description": "Cloud Functions for Firebase",
+  "description": "Bracket Website Builder",
   "scripts": {
     "lint": "eslint .",
     "serve": "firebase emulators:start --only functions",
@@ -30,6 +30,7 @@
     "firebase-admin": "^10.2.0",
     "firebase-functions": "*",
     "html2pdf.js": "^0.10.1",
+    "node-device-detector": "^2.0.12",
     "nodemailer": "^6.7.7",
     "qrcode-terminal": "^0.12.0",
     "serialport": "^10.4.0",

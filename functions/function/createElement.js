@@ -13,7 +13,7 @@ const { isParam } = require("./isParam")
 
 const myViews = require("./views.json")
 
-const createElement = ({ _window, lookupActions, id, req, res, import: _import, params: inheritedParams = {}, _, __, ___ }) => {
+const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _import, params: inheritedParams = {}, _, __, ___ }) => {
 
   return new Promise (async resolve => {
 
@@ -30,8 +30,8 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
     if (!view["my-views"] && !_import) view["my-views"] = [...parent["my-views"]]
     
     // code ''
-    view.type = toCode({ _window, lookupActions, string: view.type })
-    view.type = toCode({ _window, lookupActions, string: view.type, start: "'", end: "'" })
+    view.type = toCode({ _window, lookupActions, awaits, string: view.type })
+    view.type = toCode({ _window, lookupActions, awaits, string: view.type, start: "'", end: "'" })
     
     // 
     var type = view.type.split("?")[0]
@@ -46,23 +46,23 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
       type = global.codes[type]
 
       // sub params
-      if (subParams && isParam({ _window, lookupActions, string: subParams })) {
+      if (subParams && isParam({ _window, lookupActions, awaits, string: subParams })) {
         
         var _params = {}
         var derivations = view.derivations = clone(view.derivations || [...(parent.derivations || [])])
         var Data = view.Data = view.Data || parent.Data || generate()
 
-        if (isParam({ _window, lookupActions, string: subParams })) {
+        if (isParam({ _window, lookupActions, awaits, string: subParams })) {
           
           _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
           
-        } else _params.data = toValue({ _window, lookupActions, req, res, id, value: subParams, _, __, ___ })
+        } else _params.data = toValue({ _window, lookupActions, awaits, req, res, id, value: subParams, _, __, ___ })
 
         if (_params.path) {
 
           _params.path = Array.isArray(_params.path) ? _params.path : _params.path.split(".")
           derivations.push(..._params.path)
-          if (_params.data === undefined && global[Data]) _params.data = reducer({ _window, lookupActions, id, path: derivations, object: global[Data], req, res, _, __, ___ })
+          if (_params.data === undefined && global[Data]) _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, _, __, ___ })
         } 
         if (_params.doc) _params.mount = true
         if (_params.mount) {
@@ -71,7 +71,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
           else if (_params.data && !_params.doc) view.doc = view.Data = generate()
           view.Data = Data = view.Data || Data
           global[Data] = global[Data] || _params.data || {}
-          _params.data = reducer({ _window, lookupActions, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
+          _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
         }
         
         var tags = []
@@ -96,7 +96,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
             if (_params.mount || _params.path) _view.derivations = [...derivations, index]
             
             views[_id] = _view
-            return await createElement({ _window, lookupActions, id: _id, req, res, _: _data, __: index, ___: _ })
+            return await createElement({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: index, ___: _ })
           }))
 
         } else {
@@ -116,7 +116,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
           if (_params.mount || _params.path) _view.derivations = [...derivations, "0"]
           
           views[_id] = _view
-          tags = await createElement({ _window, lookupActions, id: _id, req, res, _: "", __: 0, ___: _ })
+          tags = await createElement({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: 0, ___: _ })
           
           delete views[view.id]
           return resolve(tags)
@@ -142,7 +142,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
     // id
     if (subParams) {
 
-      if (isParam({ _window, lookupActions, string: subParams })) {
+      if (isParam({ _window, lookupActions, awaits, string: subParams })) {
 
         inheritedParams = {...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, _, __, ___ })}
 
@@ -150,7 +150,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
         
         view.Data = view.Data || view.doc || parent.Data
         view.derivations = view.derivations || [...(parent.derivations || [])]
-        var _id = toValue({ _window, lookupActions, value: subParams, id, req, res, _, __, ___ })
+        var _id = toValue({ _window, lookupActions, awaits, value: subParams, id, req, res, _, __, ___ })
         
         if (views[_id] && view.id !== _id) view.id = _id + generate()
         else view.id = id = _id
@@ -161,7 +161,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
           views[_id] = { ...view, ...clone(global.data.view[_id]) }
           delete views[id]
           
-          tags = await createElement({ _window, lookupActions, id: _id, req, res, _, __, ___ })
+          tags = await createElement({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___ })
           return resolve(tags)
         }
       }
@@ -182,7 +182,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
       views[id] = view
 
       // approval
-      var approved = toApproval({ _window, lookupActions, string: conditions, id, req, res, _, __, ___ })
+      var approved = toApproval({ _window, lookupActions, awaits, string: conditions, id, req, res, _, __, ___ })
       if (!approved) {
         delete views[id]
         return resolve("")
@@ -196,8 +196,8 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
 
         //
         if (!controls.event) return
-        var event = toCode({ _window, lookupActions, string: controls.event })
-        event = toCode({ _window, lookupActions, string: event, start: "'", end: "'" })
+        var event = toCode({ _window, lookupActions, awaits, string: controls.event })
+        event = toCode({ _window, lookupActions, awaits, string: event, start: "'", end: "'" })
 
         if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2], _, __, ___ })) {
 
@@ -229,7 +229,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, lookupActions, string: params, id, req, res, mount: true, createElement: true, _, __, ___ })
+      params = toParam({ _window, lookupActions, awaits, string: params, id, req, res, mount: true, createElement: true, _, __, ___ })
 
       if (params.id && params.id !== id) {
 
@@ -258,7 +258,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
 
         views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
         
-        tags = await createElement({ _window, lookupActions, id, req, res, params, _, __, ___ })
+        tags = await createElement({ _window, lookupActions, awaits, id, req, res, params, _, __, ___ })
         return resolve(tags)
       }
 
@@ -272,13 +272,13 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
       
       views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
 
-      tags = await createElement({ _window, lookupActions, id, req, res, _, __, ___ })
+      tags = await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
       return resolve(tags)
     }
 
     if (_import) {
 
-      tags = await createHtml({ _window, lookupActions, id, req, res, import: _import })
+      tags = await createHtml({ _window, lookupActions, awaits, id, req, res, import: _import })
       return resolve(tags)
     }
 
@@ -288,7 +288,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
       view.data = view.data || ""
       view.unDeriveData = true
 
-    } else view.data = reducer({ _window, lookupActions, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res, _, __, ___ })
+    } else view.data = reducer({ _window, lookupActions, awaits, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res, _, __, ___ })
     
     // doc
     if (!global[view.Data] && view.data) global[view.Data] = view.data
@@ -296,7 +296,7 @@ const createElement = ({ _window, lookupActions, id, req, res, import: _import, 
     // root
     if (view.parent === "root") views.root.child = view.id
     
-    tags = await createTags({ _window, lookupActions, id, req, res, _, __, ___ })
+    tags = await createTags({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
     resolve(tags)
   })
 }

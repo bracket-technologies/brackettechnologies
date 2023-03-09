@@ -3,7 +3,7 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-module.exports = async ({ _window, lookupActions, id, req, res, e, _, __, ___, ...params }) => {
+module.exports = async ({ _window, lookupActions, awaits, id, req, res, e, _, __, ___, ...params }) => {
         
   var upload = params.upload, promises = []
   var global = _window ? _window.global : window.global
@@ -62,7 +62,7 @@ module.exports = async ({ _window, lookupActions, id, req, res, e, _, __, ___, .
         type: data.type,
         tags: data.tags || [],
         title: data.title || data.type.toUpperCase(),
-        "creation-date": (new Date).getTime()
+        "creation-date": req.headers.timestamp
       }
 
       return await db.collection(collection).doc(upload.doc).set(data).then(() => {
@@ -79,19 +79,25 @@ module.exports = async ({ _window, lookupActions, id, req, res, e, _, __, ___, .
 
     } else {
 
+      headers["timestamp"] = (new Date()).getTime()
+      headers["timezone"] = Math.abs((new Date()).getTimezoneOffset())
+
       local = true
-      return await axios.post(`/storage`, { upload, file }, {
+      var {data} = await axios.post(`/storage`, { upload, file }, {
         headers: {
           "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
           ...headers
         }
       })
+
+      uploadedData.push(data)
+      return data
     }
   }))
 
   await Promise.all(promises)
-  if (local) uploadedData.push(promises.map(({ data }) => data))
-
+  //if (local) uploadedData = uploadedData.map(({ data }) => data)
+  
   view.uploads = []
   global.uploads = []
 
@@ -108,8 +114,7 @@ module.exports = async ({ _window, lookupActions, id, req, res, e, _, __, ___, .
   })
   
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, req, res, id, e, _: global.uploads.length === 1 ? global.uploads[0] : global.uploads, __: _, ___: __, params })
-  
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, _: global.uploads.length === 1 ? global.uploads[0] : global.uploads, __: _, ___: __, ...params })
 }
 
 const readFile = (file) => {

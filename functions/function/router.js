@@ -164,7 +164,7 @@ const initializer = ({ window }) => {
     var { req, res } = window, host = req.headers.host || req.headers.referer
     if (!host && req.headers.host && req.headers.host.includes("localhost")) host = req.headers.host
     if (!host) return res.send("Project cannot be found!")
-    
+
     // current page
     var currentPage = req.url.split("/")[1] || ""
     currentPage = currentPage || "main"
@@ -179,7 +179,6 @@ const initializer = ({ window }) => {
         currentPage,
         prevPath: ["/"],
         path: req.url,
-        device: req.device,
         os: req.headers["sec-ch-ua-platform"],
         browser: req.headers["sec-ch-ua"],
         country: req.headers["x-country-code"],

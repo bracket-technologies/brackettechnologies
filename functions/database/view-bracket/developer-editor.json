@@ -1,5 +1,5 @@
 {
-  "type": "View?id=developer-editor;style:[overflowX=hidden;minHeight=100vh];project:()=path:().split():/.2;functionsHeight:()=20",
+  "type": "View?id=developer-editor;style:[overflowX=hidden;minHeight=100vh];project:()=path:().split():/.2;log():[path:()];functionsHeight:()=20",
   "creation-date": 1637494484000,
   "children": [
     {
@@ -202,7 +202,7 @@
                           "type": "View?style.width=1px;style.position=absolute;style.height=50%;style.left=0;style.backgroundColor=#ddd"
                         },
                         {
-                          "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.padding=0 1rem"
+                          "type": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;height=2.25rem;width=2.25rem;borderRadius=2rem;margin=0 .5rem]"
                         },
                         {
                           "type": "Text?class=dots;text=data();style.fontSize=1.3rem;style.paddingRight=3.5rem"
@@ -250,24 +250,8 @@
                       ]
                     },
                     {
-                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().5.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().5.style():[opacity=0;pointerEvents=none]]",
+                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().3.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().3.style():[opacity=0;pointerEvents=none]]",
                       "children": [
-                        {
-                          "type": "View?class=flexbox pointer;tooltip.text=switch to browser side;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;left=.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[next().display();hide();mininote():switched to browser side]",
-                          "children": [
-                            {
-                              "type": "Icon?name=lock;google.symbol.outlined;style:[fontSize=1.8rem;color=#666]"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "View?class=flexbox pointer;tooltip.text=switch to server side;style:[display=none;position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;left=.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[prev().display();hide();mininote():switched to browser side]",
-                          "children": [
-                            {
-                              "type": "Icon?name=lock_open;google.symbol.outlined;style:[fontSize=1.8rem;color=#666]"
-                            }
-                          ]
-                        },
                         {
                           "type": "View?class=flexbox pointer;tooltip.text=fit;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=1rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height='calc(100% - 7.5rem)';():data-viewer.style().height=0rem;timer():[functionsHeight:()=parent().element.offsetHeight/10]:200]",
                           "children": [
@@ -352,10 +336,7 @@
         {
           "controls": [
             {
-              "event": "click?#():[parent().caller].prev().prev().style().display=none;():[parent().caller].prev().style().display=flex;():[parent().caller].prev().focus();parent().style():[opacity=0;pointerEvents=none;transform=scale(0)]"
-            },
-            {
-              "event": "click:body?():[parent().caller].prev().txt()=open-doc:();():[parent().caller].prev().style().display=none;():[parent().caller].prev().prev().style().display=flex?clicked:()!=el();clicked:().id!=[():[parent().caller].prev().id];():[parent().caller].prev().style().display=flex?false"
+              "event": "click?():[parent().caller].2ndPrev().style().display=none;():[parent().caller].prev().style().display=flex;():[parent().caller].prev().focus();parent().style():[opacity=0;pointerEvents=none;transform='scale(0)']"
             }
           ],
           "type": "Icon?class=pointer;tooltip.text=rename;name=bi-input-cursor-text;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#f0f0f0"
@@ -412,7 +393,7 @@
     }
   ],
   "functions": {
-    "saveDevData": "save():[collection=open-collection:();headers.project=project:();doc=open-doc:();().data=className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].data();if():[open-collection:()=page||open-collection:()=view||open-collection:()=public||open-collection:()=_project_]:[().data.functions=className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];data=().data]:[note():[text='File saved successfully!'];if():[open-collection:()=_project_]:[data:().editor.project=().data.clone()]:[data:().editor.[open-collection:()].[open-doc:()]=().data.clone()]]",
+    "saveDevData": "():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=0;save():[collection=open-collection:();headers.project=project:();doc=open-doc:();().data=className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].data();if():[open-collection:()=page||open-collection:()=view||open-collection:()=public||open-collection:()=_project_]:[().data.functions=className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];data=().data]:[note():[text='File saved successfully!'];if():[open-collection:()=_project_]:[data:().editor.project=().data.clone()]:[data:().editor.[open-collection:()].[open-doc:()]=().data.clone()]]",
     "hasNestedArray": "if():_:[if():[_.values()._find():[if():[_.type()=array]:[_._find():[if():[_.type()=array]:true.elif():[_.type()=map]:[hasNestedArray():_]:false]].elif():[_.type()=map]:[hasNestedArray():_]:false]]:[note():[text=You cannot create nested arrays!;danger];true]:false]:false",
     "hasEmptyField": "if():_:[if():[_.type()=map]:[if():[_.keys()._find():[_=''||!_]='']:[note():[text=You cannot leave an empty field!;danger];true].elif():[_.values()._find():[hasEmptyField():_]]:true:false].elif():[_.type()=array]:[_._find():[hasEmptyField():_]]:false]:false"
   }

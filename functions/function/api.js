@@ -4,11 +4,34 @@ const { sendConfirmationEmail } = require("./sendConfirmationEmail")
 const { execFunction } = require("./execFunction")
 const { generate } = require("./generate")
 const { authorizer } = require("./authorizer")
+const DeviceDetector = require('node-device-detector')
 const router = require('./router')
 const Global = { today: (new Date()).getDay(), functions: {} }
 
-const initialize = ({ req, id }) => {
+require("dotenv").config();
 
+const detector = new DeviceDetector({
+  clientIndexes: true,
+  deviceIndexes: true,
+  deviceAliasCode: false,
+  // ... all options scroll to Setter/Getter/Options
+});
+
+/*const deviceDetector = (details) => {
+
+  var device = {
+    os: {},
+    client: {},
+    device: {}
+  }
+
+  if (details.includes("Mobile")) device.device.type = "mobile"
+  else device.device.type = "desktop"
+  return device
+}*/
+
+const initialize = ({ req, res, id }) => {
+  console.log(req.headers['user-agent']);
   return {
     global: { 
       timer: new Date().getTime(),
@@ -17,7 +40,8 @@ const initialize = ({ req, id }) => {
       innerHTML: {}, 
       breakCreateElement: {}, 
       host: req.headers.host || req.headers.referer,
-      data: { project: {}, server: {} } 
+      data: { project: {}, server: {} },
+      device: /*deviceDetector(req.headers['user-agent'])*/detector.detect(req.headers['user-agent'])
     }, 
     views: { backend: {}, "my-views": [], [id]: {} },
     actions: {},
@@ -28,14 +52,13 @@ module.exports = ({ app, db, storage, rdb }) => {
 
     // post
     app.post("*", async (req, res) => {
-
         req.db = db
         req.global = Global
         req.storage = storage
         req.rdb = rdb
         req.cookies = JSON.parse(req.cookies.__session || "{}")
         var path = req.url.split("/"), i = 1, id = generate()
-        var _window = initialize({ req, id })
+        var _window = initialize({ req, res, id })
         console.log("POST", path); 
   
         // authorize
@@ -75,7 +98,7 @@ module.exports = ({ app, db, storage, rdb }) => {
         req.rdb = rdb
         req.cookies = JSON.parse(req.cookies.__session || "{}")
         var path = req.url.split("/"), i = 1, id = generate()
-        var _window = initialize({ req, id })
+        var _window = initialize({ req, res, id })
         console.log("DELETE", path);
   
         // authorize
@@ -111,7 +134,7 @@ module.exports = ({ app, db, storage, rdb }) => {
         req.cookies = JSON.parse(req.cookies.__session || "{}")
         
         var path = req.url.split("/"), i = 1, id = generate()
-        var _window = initialize({ req, id })
+        var _window = initialize({ req, res, id })
         console.log("GET", path); 
 
         // favicon

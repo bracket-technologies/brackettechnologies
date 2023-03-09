@@ -16,7 +16,7 @@ const events = [
   "touchend"
 ]
 
-const addEventListener = ({ _window, lookupActions, controls, id, req, res }) => {
+const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, res }) => {
   
   const { execute } = require("./execute")
 
@@ -38,12 +38,12 @@ const addEventListener = ({ _window, lookupActions, controls, id, req, res }) =>
   })
 
   events = _events
-  events = toCode({ _window, lookupActions, id, string: events })
-  events = toCode({ _window, lookupActions, id, string: events, start: "'", end: "'" })
-  // if (events.split("'").length > 2) events = toCode({ _window, lookupActions, string: events, start: "'", end: "'" })
+  events = toCode({ _window, lookupActions, awaits, id, string: events })
+  events = toCode({ _window, lookupActions, awaits, id, string: events, start: "'", end: "'" })
+  // if (events.split("'").length > 2) events = toCode({ _window, lookupActions, awaits, string: events, start: "'", end: "'" })
   
   events = events.split("?")
-  var _idList = toValue({ id, lookupActions, value: events[3] || id })
+  var _idList = toValue({ id, lookupActions, awaits, value: events[3] || id })
 
   // droplist
   /*var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
@@ -94,7 +94,7 @@ const addEventListener = ({ _window, lookupActions, controls, id, req, res }) =>
     }
 
     // id
-    if (viewEventIdList) mainID = toValue({ _window, lookupActions, req, res, id, value: viewEventIdList }) || viewEventIdList
+    if (viewEventIdList) mainID = toValue({ _window, lookupActions, awaits, req, res, id, value: viewEventIdList }) || viewEventIdList
     
     var timer = 0, idList, clickEvent, keyEvent
     var once = events[1] && events[1].includes('once')
@@ -115,7 +115,7 @@ const addEventListener = ({ _window, lookupActions, controls, id, req, res }) =>
 
     // action:id
     var eventid = event.split(":")[1]
-    if (eventid) idList = toValue({ _window, lookupActions, req, res, id, value: eventid })
+    if (eventid) idList = toValue({ _window, lookupActions, awaits, req, res, id, value: eventid })
     else idList = clone(_idList)
 
     idList = toArray(idList).map(id => {
@@ -145,28 +145,28 @@ const addEventListener = ({ _window, lookupActions, controls, id, req, res }) =>
           if (view[event] && typeof view[event] === "object" && view[event].disable) return
           // approval
           if (viewEventConditions) {
-            var approved = toApproval({ _window, lookupActions, req, res, string: viewEventConditions, e, id: mainID })
+            var approved = toApproval({ _window, lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID })
             if (!approved) return
           }
           
           // approval
-          var approved = toApproval({ _window, lookupActions, req, res, string: events[2], e, id: mainID })
+          var approved = toApproval({ _window, lookupActions, awaits, req, res, string: events[2], e, id: mainID })
           if (!approved) return
 
           // once
           if (once) e.target.removeEventListener(event, myFn)
           
           // params
-          await toParam({ _window, lookupActions, req, res, string: events[1], e, id: mainID, mount: true })
+          await toParam({ _window, lookupActions, awaits, req, res, string: events[1], e, id: mainID, mount: true })
 
           // break
           if (view.break) return delete view.break
           
           // approval
-          if (viewEventParams) await toParam({ _window, lookupActions, req, res, string: viewEventParams, e, id: mainID, mount: true })
+          if (viewEventParams) await toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true })
           
           // execute
-          if (controls.actions || controls.action) await execute({ _window, lookupActions, req, res, controls, e, id: mainID })
+          if (controls.actions || controls.action) await execute({ _window, lookupActions, awaits, req, res, controls, e, id: mainID })
         }, timer)
       }
       
@@ -219,7 +219,7 @@ const addEventListener = ({ _window, lookupActions, controls, id, req, res }) =>
             
             // approval
             if (viewEventConditions) {
-              var approved = toApproval({ _window, lookupActions, req, res, string: viewEventConditions, e, id: mainID })
+              var approved = toApproval({ _window, lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID })
               if (!approved) return
             }
             
@@ -235,7 +235,7 @@ const addEventListener = ({ _window, lookupActions, controls, id, req, res }) =>
             if (view["return()"]) return delete view["return()"]
           
             // approval
-            if (viewEventParams) await toParam({ _window, lookupActions, req, res, string: viewEventParams, e, id: mainID, mount: true })
+            if (viewEventParams) await toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true })
             
             if (controls.actions || controls.action) execute({ controls, e, id: mainID })
           }

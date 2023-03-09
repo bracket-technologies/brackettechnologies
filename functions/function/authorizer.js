@@ -6,8 +6,8 @@ module.exports = {
     project = req.headers["project"],
     global = window.global
     
-    console.log("before project", new Date().getTime() - global.timer)
-
+    console.log("Authorization started for " + global.host, new Date().getTime() - global.timer)
+    
     promises.push(ref.where("domains", "array-contains", global.host).get().then(doc => {
       
       if (doc.docs[0] && doc.docs[0].exists) {
@@ -35,7 +35,7 @@ module.exports = {
     }))
 
     await Promise.all(promises)
-    console.log("after project", new Date().getTime() - global.timer)
+    // console.log("after project", new Date().getTime() - global.timer)
     return {success, message, error, project}
   }
 }
