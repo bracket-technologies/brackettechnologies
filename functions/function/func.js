@@ -1,12 +1,11 @@
 const { clone } = require("./clone")
-const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const { getCookie } = require("./cookie")
-const { toAwait } = require("./toAwait")
 const { toArray } = require("./toArray")
 
-const func = async ({ _window, lookupActions, awaits, oldlookupActions, id = "root", req, _, __, ___, res, e, ...params }) => {
+const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions, id = "root", req, _, __, ___, res, e, ...params }) => {
   
+  const { toParam } = require("./toParam")
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
 
@@ -26,24 +25,37 @@ const func = async ({ _window, lookupActions, awaits, oldlookupActions, id = "ro
 
   if (_window) {
     
-    var functions = global.data.project.functions
-    var myfn = clone(functions[func.function])
-    
+    var myfn = func.actions || clone(global.data.project.functions[func.function])
+
     if (!myfn) return
     
     if (typeof myfn === "object") myfn = myfn._ || ""
     var _func = toCode({ _window, string: toCode({ _window, string: myfn }), start: "'", end: "'" })
     toParam({ _window, lookupActions, awaits, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
     
+    /*
     await Promise.all(global.promises[id] || [])
     await Promise.all(global.promises[id] || [])
     await Promise.all(global.promises[id] || [])
     await Promise.all(global.promises[id] || [])
-    
+    await Promise.all(global.promises[id] || [])
+    */
+
     // await params
-  
-    console.log(params.func, global.func)
-    if (params.asyncer) toAwait({ _window, lookupActions: oldlookupActions, awaits, id, e, ...params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
+    if (awaits.findIndex(i => i.await === myawait) === 0) {
+
+      if (myawait) {
+
+        require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ })
+
+      } else {
+
+        awaits.splice(0, 1)
+        console.log({ data: func.data, success: true, message: "Action executed successfully!" })
+      }
+    }
+    
+    //if (params.asyncer) toAwait({ _window, lookupActions: oldlookupActions, awaits, myawait, id, e, ...params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
 
   } else {
     
@@ -70,11 +82,6 @@ const func = async ({ _window, lookupActions, awaits, oldlookupActions, id = "ro
       })
     )
   }
-
-  /*if (data.params) {
-    data.params = toCode({ _window, lookupActions, awaits, string: data.params, e })
-    params = { ...toParam({ _window, lookupActions, awaits, id, e, string: data.params, asyncer: true, _: data, __: _, ___: __, req, res }), params }
-  }*/
 }
 
 module.exports = { func }

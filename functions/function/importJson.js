@@ -8,8 +8,9 @@ const getJson = (url) => {
     return Httpreq.responseText
 }
 
-const importJson = ({ id, e, ...params }) => {
+const importJson = ({ _window, id, e, ...params }) => {
     
+    var global = _window ? _window.global : window.global
     global.import = {}
     var inputEl = document.createElement('input')
     inputEl.style.position = "absolute"
@@ -20,15 +21,19 @@ const importJson = ({ id, e, ...params }) => {
     document.body.appendChild(inputEl)
     setTimeout(() => {
 
-        inputEl.addEventListener("change", (e) => {
+        inputEl.addEventListener("change", (event) => {
             
             var reader = new FileReader()
             reader.onload = (e) => {
                 
                 global.import.data = JSON.parse(e.target.result)
-                toAwait({ id, e, params })
+                toAwait({ _window, id, e, ...params })
             }
-            reader.readAsText(e.target.files[0])
+
+            global.import.files = [...event.target.files]
+            global.import.file = global.import.files[0]
+            
+            reader.readAsText(event.target.files[0])
         })
 
         inputEl.click()

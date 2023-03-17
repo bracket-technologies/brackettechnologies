@@ -1089,7 +1089,7 @@ $bootstrap-icons-map: (
   "save2": "\f527",
   "scissors": "\f528",
   "screwdriver": "\f529",
-  "search": "\f52a",
+  "SEARCH": "\f52a",
   "segmented-nav": "\f52b",
   "server": "\f52c",
   "share-fill": "\f52d",
@@ -2774,7 +2774,7 @@ $bootstrap-icons-map: (
 .bi-save2::before { content: map-get($bootstrap-icons-map, "save2"); }
 .bi-scissors::before { content: map-get($bootstrap-icons-map, "scissors"); }
 .bi-screwdriver::before { content: map-get($bootstrap-icons-map, "screwdriver"); }
-.bi-search::before { content: map-get($bootstrap-icons-map, "search"); }
+.bi-search::before { content: map-get($bootstrap-icons-map, "SEARCH"); }
 .bi-segmented-nav::before { content: map-get($bootstrap-icons-map, "segmented-nav"); }
 .bi-server::before { content: map-get($bootstrap-icons-map, "server"); }
 .bi-share-fill::before { content: map-get($bootstrap-icons-map, "share-fill"); }

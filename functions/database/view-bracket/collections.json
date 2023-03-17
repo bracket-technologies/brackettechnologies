@@ -2,7 +2,7 @@
   "view": "View:collections",
   "children": [
     {
-      "view": "[View]?data=data:().editor.project.collections;style:[width=100%]?data:().editor.project.collections.len()>0",
+      "view": "[View]?data=data:().editor.project.datastore.collections;style:[width=100%]?data:().editor.project.datastore.collections.len()>0",
       "children": [
         {
           "children": [

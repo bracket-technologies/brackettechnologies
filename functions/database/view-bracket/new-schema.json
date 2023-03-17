@@ -1,13 +1,13 @@
 {
   "children": [
     {
-      "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+      "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
     },
     {
-      "type": "Text?class=dots;text=Schema;style.fontSize=1.3rem"
+      "view": "Text?class=dots;text=Schema;style.fontSize=1.3rem"
     },
     {
-      "type": "Icon?style.display=none;tooltip.text=create new schema;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+      "view": "Icon?style.display=none;tooltip.text=create new schema;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
       "controls": [
         {
           "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=schema",

@@ -76,7 +76,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   }
 
   // value is a param it has key=value
-  if (isParam({ _window, lookupActions, awaits, string: value })) return toParam({ req, res, _window, id, e, string: value, _, __, ___, object, mount, params, createElement, condition })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, awaits, e, string: value, _, __, ___, object, mount, params, createElement, condition })
 
   // or
   if (value.includes("||")) {
@@ -94,7 +94,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
       
       value = value.slice(0, -2)
       value = `${value}=${value}+1`
-      toParam({ req, res, _window, id, e, string: value, _, __, ___, object, mount, params, createElement, condition })
+      toParam({ req, res, _window, lookupActions, id, e, string: value, _, __, ___, object, mount, params, createElement, condition })
       return (toValue({ _window, lookupActions, awaits, value, params, _, __, ___, id, e, req, res, object, mount, condition }) - 1)
 
     } else {

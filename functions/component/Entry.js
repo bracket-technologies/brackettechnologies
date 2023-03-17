@@ -72,25 +72,25 @@ const Entry = (component) => {
 
         return {
             id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true,
-            "type": `View?class=flex;style.alignItems=center;style.justifyContent=flex-start;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
+            "view": `View?class=flex;style.alignItems=center;style.justifyContent=flex-start;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=100%;${toString(container)}`,
             "children": [{
-                "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
+                "view": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
                 "children": [{
-                    "type": `Text?text='${text || "Label"}';style.color=#888;style.fontSize=1.1rem;style.width=fit-content;${toString(label)}`,
+                    "view": `Text?text='${text || "Label"}';style.color=#888;style.fontSize=1.1rem;style.width=fit-content;${toString(label)}`,
                     "controls": [{
                         "event": "click?next().getEntry().focus()"
                     }]
                 }, Entry({ ...component, component: true, labeled: true, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
                 ]
             }, {
-                "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${toString(password)}?${password}`,
+                "view": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${toString(password)}?${password}`,
                 "children": [{
-                    "type": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
+                    "view": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
                     "controls": [{
                         "event": "click?parent().prev().getEntry().element.type=text;next().style().display=flex;style().display=none"
                     }]
                 }, {
-                    "type": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
+                    "view": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
                     "controls": [{
                         "event": "click?parent().prev().getEntry().element.type=password;prev().style().display=flex;style().display=none"
                     }]
@@ -128,17 +128,17 @@ const Entry = (component) => {
 
         return {
             id, Data, parent, derivations, required, path, islabel: true,
-            "type": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
+            "view": `View?class=flex start column;style.gap=.5rem;${toString(container)}`,
             "children": [{
-                "type": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
+                "view": `Text?id=${id}-label;text='${text || "Label"}';style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`
             }, 
                 Entry({ ...component, component: true, labeled: true, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
             {
-                "type": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
+                "view": "View?class=flex start align-center gap-1;style.alignItems=center;style.display=none",
                 "children": [{
-                    "type": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
+                    "view": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
                 }, {
-                    "type": `Text?text=Entry is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
+                    "view": `Text?text=Entry is required;style.color=#D72C0D;style.fontSize=1.4rem;${toString(required)}`
                 }]
             }],
             "controls": [{

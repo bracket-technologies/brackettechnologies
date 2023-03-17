@@ -24,7 +24,7 @@ module.exports = {
       
       global.promises[id] = toArray(global.promises[id])
       var collection = search.collection, project = headers.project || req.headers.project
-      if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
+      if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
       if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${project}`
       
       var doc = search.document || search.doc,
@@ -223,11 +223,11 @@ module.exports = {
         _data = { data, success, message }
       }
       
-      console.log("search", _data)
+      console.log("SEARCH", _data)
       view.search = global.search = clone(_data)
     
       // await params
-      if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search, __: _, ___: __ })
+      if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search ? global.search : _, __: global.search ? _ : __, ___: global.search ? __ : ___ })
 
     } else {
 
@@ -249,11 +249,11 @@ module.exports = {
               }
             })
     
-            console.log("search", _data)
+            console.log("SEARCH", _data)
             view.search = global.search = clone(_data)
     
             // await params
-            if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search, __: _, ___: __ })
+            if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search ? global.search : _, __: global.search ? _ : __, ___: global.search ? __ : ___ })
     
             resolve()
           })
@@ -268,11 +268,11 @@ module.exports = {
           }
         })
 
-        console.log("search", _data)
+        console.log("SEARCH", _data)
         view.search = global.search = clone(_data)
 
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search, __: _, ___: __ })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search ? global.search : _, __: global.search ? _ : __, ___: global.search ? __ : ___ })
       }
     }
     

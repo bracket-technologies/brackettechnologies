@@ -40,7 +40,7 @@ const getData = async ({ _window, req, res, search }) => {
 
   var db = req.db
   var collection = search.collection
-  if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
+  if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
 
   var doc = search.document || search.doc,
@@ -209,7 +209,7 @@ const postData = async ({ _window, req, res, save }) => {
   var db = req.db
   var data = req.body.data
   var collection = save.collection, schema
-  if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
+  if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   var ref = db.collection(collection)
@@ -309,7 +309,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
   var db = req.db, docs
   var storage = req.storage
   var collection = erase.collection
-  if (_window.global.data.project.collections.includes(collection)) collection = 'collection-' + collection
+  if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   
   var ref = db.collection(collection)

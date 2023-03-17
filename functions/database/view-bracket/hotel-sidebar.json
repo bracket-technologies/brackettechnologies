@@ -3,13 +3,13 @@
         {
             "children": [
                 {
-                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                    "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                 },
                 {
-                    "type": "Text?class=dots;text=Hotels;style.fontSize=1.3rem"
+                    "view": "Text?class=dots;text=Hotels;style.fontSize=1.3rem"
                 },
                 {
-                    "type": "Icon?style.display=none;tooltip.text=create new hotel;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "view": "Icon?style.display=none;tooltip.text=create new hotel;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                     "controls": [
                         {
                             "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=hotel",
@@ -18,7 +18,7 @@
                     ]
                 }
             ],
-            "type": "View?id=hotel;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "view": "View?id=hotel;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
             "controls": [
                 {
                     "event": "mouseenter?lastChild().style().display=flex"
@@ -33,16 +33,16 @@
             ]
         },
         {
-            "type": "View?id=hotel-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "view": "View?id=hotel-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
             "children": [
                 {
-                    "type": "[View]?data=data:().editor.hotel.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel.keys().len()>0||[!open-doc:();open-collection:()=hotel]",
+                    "view": "[View]?data=data:().editor.hotel.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel.keys().len()>0||[!open-doc:();open-collection:()=hotel]",
                     "children": [
                         {
-                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                            "view": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
                         },
                         {
-                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                            "view": "Text?class=dots;text=().data;style.fontSize=1.3rem"
                         },
                         {
                             "controls": [
@@ -64,7 +64,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel.txt()=data:().editor.hotel.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel.[txt()].id=txt()]:[data:().editor.hotel.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -72,7 +72,7 @@
                                     "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=hotel;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                                 }
                             ],
-                            "type": "Icon?open-doc=data();open-collection=hotel;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                            "view": "Icon?open-doc=data();open-collection=hotel;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
                         }
                     ],
                     "controls": [
@@ -102,13 +102,13 @@
         {
             "children": [
                 {
-                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                    "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                 },
                 {
-                    "type": "Text?class=dots;text=Bookings;style.fontSize=1.3rem"
+                    "view": "Text?class=dots;text=Bookings;style.fontSize=1.3rem"
                 },
                 {
-                    "type": "Icon?style.display=none;tooltip.text=create new hotel booking;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "view": "Icon?style.display=none;tooltip.text=create new hotel booking;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                     "controls": [
                         {
                             "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=hotel-booking",
@@ -117,7 +117,7 @@
                     ]
                 }
             ],
-            "type": "View?id=hotel-booking;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "view": "View?id=hotel-booking;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
             "controls": [
                 {
                     "event": "mouseenter?lastChild().style().display=flex"
@@ -132,16 +132,16 @@
             ]
         },
         {
-            "type": "View?id=hotel-booking-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "view": "View?id=hotel-booking-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
             "children": [
                 {
-                    "type": "[View]?data=data:().editor.hotel-booking.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel-booking.keys().len()>0||[!open-doc:();open-collection:()=hotel-booking]",
+                    "view": "[View]?data=data:().editor.hotel-booking.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel-booking.keys().len()>0||[!open-doc:();open-collection:()=hotel-booking]",
                     "children": [
                         {
-                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                            "view": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
                         },
                         {
-                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                            "view": "Text?class=dots;text=().data;style.fontSize=1.3rem"
                         },
                         {
                             "controls": [
@@ -163,7 +163,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel-booking.txt()=data:().editor.hotel-booking.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel-booking.[txt()].id=txt()]:[data:().editor.hotel-booking.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel-booking.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -171,7 +171,7 @@
                                     "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=hotel-booking;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                                 }
                             ],
-                            "type": "Icon?open-doc=data();open-collection=hotel-booking;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                            "view": "Icon?open-doc=data();open-collection=hotel-booking;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
                         }
                     ],
                     "controls": [
@@ -201,13 +201,13 @@
         {
             "children": [
                 {
-                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                    "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                 },
                 {
-                    "type": "Text?class=dots;text=Accommodations;style.fontSize=1.3rem"
+                    "view": "Text?class=dots;text=Accommodations;style.fontSize=1.3rem"
                 },
                 {
-                    "type": "Icon?style.display=none;tooltip.text=create new hotel accommodation;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "view": "Icon?style.display=none;tooltip.text=create new hotel accommodation;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                     "controls": [
                         {
                             "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=hotel-accommodation",
@@ -216,7 +216,7 @@
                     ]
                 }
             ],
-            "type": "View?id=hotel-accommodation;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "view": "View?id=hotel-accommodation;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
             "controls": [
                 {
                     "event": "mouseenter?lastChild().style().display=flex"
@@ -231,16 +231,16 @@
             ]
         },
         {
-            "type": "View?id=hotel-accommodation-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "view": "View?id=hotel-accommodation-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
             "children": [
                 {
-                    "type": "[View]?data=data:().editor.hotel-accommodation.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel-accommodation.keys().len()>0||[!open-doc:();open-collection:()=hotel-accommodation]",
+                    "view": "[View]?data=data:().editor.hotel-accommodation.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel-accommodation.keys().len()>0||[!open-doc:();open-collection:()=hotel-accommodation]",
                     "children": [
                         {
-                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                            "view": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
                         },
                         {
-                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                            "view": "Text?class=dots;text=().data;style.fontSize=1.3rem"
                         },
                         {
                             "controls": [
@@ -262,7 +262,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel-accommodation.txt()=data:().editor.hotel-accommodation.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel-accommodation.[txt()].id=txt()]:[data:().editor.hotel-accommodation.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel-accommodation.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -270,7 +270,7 @@
                                     "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=hotel-accommodation;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                                 }
                             ],
-                            "type": "Icon?open-doc=data();open-collection=hotel-accommodation;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                            "view": "Icon?open-doc=data();open-collection=hotel-accommodation;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
                         }
                     ],
                     "controls": [
@@ -300,13 +300,13 @@
         {
             "children": [
                 {
-                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                    "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                 },
                 {
-                    "type": "Text?class=dots;text=Canceled Bookings;style.fontSize=1.3rem"
+                    "view": "Text?class=dots;text=Canceled Bookings;style.fontSize=1.3rem"
                 },
                 {
-                    "type": "Icon?style.display=none;tooltip.text=create new hotel canceled booking;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "view": "Icon?style.display=none;tooltip.text=create new hotel canceled booking;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                     "controls": [
                         {
                             "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=hotel-canceled-booking",
@@ -315,7 +315,7 @@
                     ]
                 }
             ],
-            "type": "View?id=hotel-canceled-booking;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "view": "View?id=hotel-canceled-booking;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
             "controls": [
                 {
                     "event": "mouseenter?lastChild().style().display=flex"
@@ -330,16 +330,16 @@
             ]
         },
         {
-            "type": "View?id=hotel-canceled-booking-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "view": "View?id=hotel-canceled-booking-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
             "children": [
                 {
-                    "type": "[View]?data=data:().editor.hotel-canceled-booking.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel-canceled-booking.keys().len()>0||[!open-doc:();open-collection:()=hotel-canceled-booking]",
+                    "view": "[View]?data=data:().editor.hotel-canceled-booking.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel-canceled-booking.keys().len()>0||[!open-doc:();open-collection:()=hotel-canceled-booking]",
                     "children": [
                         {
-                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                            "view": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
                         },
                         {
-                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                            "view": "Text?class=dots;text=().data;style.fontSize=1.3rem"
                         },
                         {
                             "controls": [
@@ -361,7 +361,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel-canceled-booking.txt()=data:().editor.hotel-canceled-booking.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel-canceled-booking.[txt()].id=txt()]:[data:().editor.hotel-canceled-booking.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel-canceled-booking.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -369,7 +369,7 @@
                                     "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=hotel-canceled-booking;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                                 }
                             ],
-                            "type": "Icon?open-doc=data();open-collection=hotel-canceled-booking;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                            "view": "Icon?open-doc=data();open-collection=hotel-canceled-booking;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
                         }
                     ],
                     "controls": [
@@ -399,13 +399,13 @@
         {
             "children": [
                 {
-                    "type": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+                    "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                 },
                 {
-                    "type": "Text?class=dots;text=Canceled accommodations;style.fontSize=1.3rem"
+                    "view": "Text?class=dots;text=Canceled accommodations;style.fontSize=1.3rem"
                 },
                 {
-                    "type": "Icon?style.display=none;tooltip.text=create new hotel canceled accommodation;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
+                    "view": "Icon?style.display=none;tooltip.text=create new hotel canceled accommodation;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                     "controls": [
                         {
                             "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=hotel-canceled-accommodation",
@@ -414,7 +414,7 @@
                     ]
                 }
             ],
-            "type": "View?id=hotel-canceled-accommodation;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
+            "view": "View?id=hotel-canceled-accommodation;class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
             "controls": [
                 {
                     "event": "mouseenter?lastChild().style().display=flex"
@@ -429,16 +429,16 @@
             ]
         },
         {
-            "type": "View?id=hotel-canceled-accommodation-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+            "view": "View?id=hotel-canceled-accommodation-list;class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
             "children": [
                 {
-                    "type": "[View]?data=data:().editor.hotel-canceled-accommodation.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel-canceled-accommodation.keys().len()>0||[!open-doc:();open-collection:()=hotel-canceled-accommodation]",
+                    "view": "[View]?data=data:().editor.hotel-canceled-accommodation.keys();class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative?data:().editor.hotel-canceled-accommodation.keys().len()>0||[!open-doc:();open-collection:()=hotel-canceled-accommodation]",
                     "children": [
                         {
-                            "type": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+                            "view": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
                         },
                         {
-                            "type": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+                            "view": "Text?class=dots;text=().data;style.fontSize=1.3rem"
                         },
                         {
                             "controls": [
@@ -460,7 +460,7 @@
                                     "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.hotel-canceled-accommodation.txt()=data:().editor.hotel-canceled-accommodation.[open-doc:()||duplicate-doc:()].clone();data:().editor.hotel-canceled-accommodation.[txt()].id=txt()]:[data:().editor.hotel-canceled-accommodation.txt()=_map:creation-date:[today().timestamp()]:id:txt()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.hotel-canceled-accommodation.keys().inc():txt();!txt().inc(): "
                                 }
                             ],
-                            "type": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                            "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
                         },
                         {
                             "controls": [
@@ -468,7 +468,7 @@
                                     "event": "click?if():[():file-action-popup.style().opacity=1;)(:action-popup-caller=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[)(:action-popup-caller=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=hotel-canceled-accommodation;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]"
                                 }
                             ],
-                            "type": "Icon?open-doc=data();open-collection=hotel-canceled-accommodation;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
+                            "view": "Icon?open-doc=data();open-collection=hotel-canceled-accommodation;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue"
                         }
                     ],
                     "controls": [
@@ -497,5 +497,5 @@
         }
     ],
     "creation-date": 1643562122803,
-    "type": "View?id=hotel-sidebar;class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0px;style.zIndex=2"
+    "view": "View?id=hotel-sidebar;class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0px;style.zIndex=2"
 }

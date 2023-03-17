@@ -34,7 +34,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
   document.getElementById("loader-container").style.display = "flex"
 
   // children
-  var children = clone([global.data.view[viewId]])
+  var children = clone([global.data[views[id].viewType][viewId]])
   if (togglePage) {
 
     global.prevPage.push(global.currentPage)

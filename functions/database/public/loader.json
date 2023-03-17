@@ -1,8 +1,8 @@
 {
-  "type": "View:loader-container?class=loader-container",
+  "view": "View:loader-container?class=loader-container",
   "children": [
     {
-      "type": "View:loader?class=loader"
+      "view": "View:loader?class=loader"
     }
   ]
 }

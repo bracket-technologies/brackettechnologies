@@ -5,7 +5,7 @@ const axios = async ({ id, lookupActions, awaits, ...params }) => {
     var view = window.views[id]
     var { method, url, headers, payload } = params, data
 
-    if (method === "get" || method === "search") {
+    if (method === "get" || method === "SEARCH") {
         
         data = await require("axios").get(url, {
             headers: {

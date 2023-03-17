@@ -141,6 +141,7 @@ const defaultInputHandler = ({ id }) => {
       _value = toCode({ string: _value, start: "'", end: "'"  })
       if (view.type === "Input") e.target.value = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
       else e.target.innerHTML = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
+      
       /*
       var sel = window.getSelection()
       var selected_node = sel.anchorNode
@@ -151,10 +152,32 @@ const defaultInputHandler = ({ id }) => {
       sel.collapse(selected_node, position + 1)
       */
     }
+
+    // 
+    if (value !== view.prevContent && global.__ISBRACKET__) {
+      global.redo = []
+      global.undo.push({
+        collection: global["open-collection"],
+        doc: global["open-doc"],
+        path: view.derivations,
+        value: view.prevContent,
+        id: view.element.parentNode.parentNode.parentNode.parentNode.id
+      })
+    }
+  }
+
+  const myFn2 = (e) => {
+    
+    var value = ""
+    if (view.type === "Input") value = view.element.value
+    else if (view.type === "Entry" || view.editable) value = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+
+    view.prevContent = value
   }
 
   view.element.addEventListener("input", myFn)
   view.element.addEventListener("blur", myFn1)
+  view.element.addEventListener("focus", myFn2)
 }
 
 function getCaretIndex(element) {

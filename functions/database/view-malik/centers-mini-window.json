@@ -1,16 +1,16 @@
 {
-  "type": "View?id=centers-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
+  "view": "View?id=centers-mini-window;class=flexbox pointer;style.opacity=0;style.pointerEvents=none;style.position=absolute;style.top=0;style.left=0;style.right=0;style.bottom=0;style.backgroundColor=#00000060;style.zIndex=1;style.transition=.2s;style.padding=5vh 0",
   "id": "centers-mini-window",
   "creation-date": "1663148119978",
   "functions": {},
   "children": [
     {
-      "type": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto",
+      "view": "View?class=flex column;style.width=90vw;style.height=100%;style.padding=4rem;style.borderRadius=1rem;style.backgroundColor=#fff;style.cursor=default;style.gap=2rem;style.overflowY=auto",
       "children": [
         {
           "children": [
             {
-              "type": "Text?text=إستمارة مركز +if():[)(:centers-copied]:(منسوخ).elif():[)(:centers-edit-readonly]:(عرض).elif():[)(:centers-edit]:(تعديل).else():(جديد);style.fontSize=1.8rem;style.fontWeight=bolder"
+              "view": "Text?text=إستمارة مركز +if():[)(:centers-copied]:(منسوخ).elif():[)(:centers-edit-readonly]:(عرض).elif():[)(:centers-edit]:(تعديل).else():(جديد);style.fontSize=1.8rem;style.fontWeight=bolder"
             },
             {
               "children": [
@@ -21,17 +21,17 @@
                       "actions": "async():erase:[update:centers-manager-list]?erase.collection=resources-centers;erase.doc=)(:centers-data.id;async():[():centers-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:new-centers.del()]"
                     }
                   ],
-                  "type": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-centers;!)(:centers-edit-readonly",
+                  "view": "View?class=flexbox pointer;tooltip.text=حذف;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:new-centers;!)(:centers-edit-readonly",
                   "children": [
                     {
-                      "type": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
+                      "view": "Icon?name=bi-trash;style.color=red;style.fontSize=1.8rem"
                     }
                   ]
                 },
                 {
                   "children": [
                     {
-                      "type": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
+                      "view": "Icon?name=bi-check2;style.color=blue;style.fontSize=2.6rem"
                     }
                   ],
                   "controls": [
@@ -39,43 +39,43 @@
                       "event": "click?save():[collection=resources-centers;data=centers-data:()]:[centers:().pullItem():[id=centers-data:().id].push():[centers-data:()];new-centers:().del();note():[text=تم حفظ المركز بنجاح];():centers-mini-window.style():[opacity=0;pointerEvents=none];update():'centers-views'];if():[centers-data:().members.len()>0;members:().find():[id.in():[centers-data:().members]]]:[members:().filter():[id.in():[centers-data:().members]]._():[_.center=centers-data:().id;save():[collection=resources-members;data=_]]];if():[centers-data:().networks.len()>0;networks:().find():[id.in():[centers-data:().networks]]]:[networks:().filter():[id.in():[centers-data:().networks]]._():[_.centers.replace():[centers-data:().id];save():[collection=resources-networks;data=_]]];if():[centers-data:().devices.len()>0;devices:().find():[id.in():[centers-data:().devices]]]:[devices:().filter():[id.in():[centers-data:().devices]]._():[_.center=centers-data:().id;save():[collection=resources-devices;data=_]]]"
                     }
                   ],
-                  "type": "View:save-center?class=flexbox pointer save-center;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:centers-edit-readonly"
+                  "view": "View:save-center?class=flexbox pointer save-center;tooltip.text=حفظ;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s?!)(:centers-edit-readonly"
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s;click:[():[close-center-window].click()]",
+                  "view": "View?class=flexbox pointer;tooltip.text=خروج;style.height=3.5rem;style.width=3.5rem;style.borderRadius=1.5rem;hover.style.backgroundColor=#eee;style.transition=.2s;click:[():[close-center-window].click()]",
                   "children": [
                     {
-                      "type": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.8rem"
+                      "view": "Icon?name=bi-x-lg;style.color=#000;style.fontSize=1.8rem"
                     }
                   ]
                 }
               ],
-              "type": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto"
+              "view": "View?class=flexbox;style.gap=.5rem;style.marginRight=auto"
             }
           ],
-          "type": "View?class=flex align-center;style.width=100%"
+          "view": "View?class=flex align-center;style.width=100%"
         },
         {
-          "type": "View?style.width=100%;style.height=1px;style.backgroundColor=#ddd"
+          "view": "View?style.width=100%;style.height=1px;style.backgroundColor=#ddd"
         },
         {
           "children": [
             {
               "children": [
                 {
-                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات التسجيل;style.padding=1rem 0;style.fontWeight=bold"
+                  "view": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات التسجيل;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
+                  "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                   "children": [
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=الرمز;label.location=outside;readonly;path=id;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
+                      "view": "Input?style.width=100%;style.height=4rem;label.text=الرمز;label.location=outside;readonly;path=id;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
                     },
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=تاريخ التسجيل;label.location=outside;readonly;input.value=data().creation-date.toSimplifiedDateTimeAr();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
+                      "view": "Input?style.width=100%;style.height=4rem;label.text=تاريخ التسجيل;label.location=outside;readonly;input.value=data().creation-date.toSimplifiedDateTimeAr();clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem"
                     },
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;path=active;input.value=if():data():فعّال:غير فعّال;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[)(:centers-edit-readonly]:[droplist.readonly=true]",
+                      "view": "Input?style.width=100%;style.height=4rem;label.text=فعّال;label.location=outside;readonly;path=active;input.value=if():data():فعّال:غير فعّال;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:فعّال:غير فعّال;droplist.align=right;if():[)(:centers-edit-readonly]:[droplist.readonly=true]",
                       "controls": [
                         {
                           "event": "click:droplist?data()=if():[droplist-txt:()=فعّال]:true:false"
@@ -85,77 +85,77 @@
                   ]
                 }
               ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              "view": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
               "children": [
                 {
-                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
+                  "view": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات عامة;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem",
+                  "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.rowGap=3rem;style.padding=1rem",
                   "children": [
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=إسم المركز;label.location=outside;path=name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
+                      "view": "Input?style.width=100%;style.height=4rem;label.text=إسم المركز;label.location=outside;path=name;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
                     },
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=نوع المركز;label.location=outside;readonly;path=type;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:مركز عمل:منزل:مركز ربط;droplist.align=right;if():[)(:centers-edit-readonly]:[droplist.readonly=true]"
+                      "view": "Input?style.width=100%;style.height=4rem;label.text=نوع المركز;label.location=outside;readonly;path=type;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=_array:مركز عمل:منزل:مركز ربط;droplist.align=right;if():[)(:centers-edit-readonly]:[droplist.readonly=true]"
                     },
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=إسم القسم;label.location=outside;path=section;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
+                      "view": "Input?style.width=100%;style.height=4rem;label.text=إسم القسم;label.location=outside;path=section;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
                     },
                     {
-                      "type": "Input?style.width=100%;style.height=4rem;label.text=الحالة;label.location=outside;readonly;path=status;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=)(:data.collection.centers-status.status;droplist.align=right;if():[)(:centers-edit-readonly]:[droplist.readonly=true]"
+                      "view": "Input?style.width=100%;style.height=4rem;label.text=الحالة;label.location=outside;readonly;path=status;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;droplist.items=)(:data.collection.centers-status.status;droplist.align=right;if():[)(:centers-edit-readonly]:[droplist.readonly=true]"
                     },
                     {
-                      "type": "View"
+                      "view": "View"
                     },
                     {
-                      "type": "View"
+                      "view": "View"
                     },
                     {
-                      "type": "Input?textarea;style.width=100%;style.height=8rem;label.text=عنوان المركز;label.location=outside;path=address;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
+                      "view": "Input?textarea;style.width=100%;style.height=8rem;label.text=عنوان المركز;label.location=outside;path=address;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
                     },
                     {
-                      "type": "Input?textarea;style.width=100%;style.height=8rem;label.text=وصف عمل المركز;label.location=outside;path=description;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
+                      "view": "Input?textarea;style.width=100%;style.height=8rem;label.text=وصف عمل المركز;label.location=outside;path=description;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
                     }
                   ]
                 }
               ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              "view": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
               "children": [
                 {
-                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الفروع;style.padding=1rem 0;style.fontWeight=bold"
+                  "view": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الفروع;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?class=flex column;path=branches",
+                  "view": "View?class=flex column;path=branches",
                   "children": [
                     {
                       "children": [
                         {
-                          "type": "Text?text=إسم الفرع;style.fontSize=1.5rem"
+                          "view": "Text?text=إسم الفرع;style.fontSize=1.5rem"
                         },
                         {
-                          "type": "Text?text=رمز الفرع;style.fontSize=1.5rem"
+                          "view": "Text?text=رمز الفرع;style.fontSize=1.5rem"
                         }
                       ],
-                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem;style.paddingBottom=0"
+                      "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem;style.paddingBottom=0"
                     },
                     {
                       "children": [
                         {
-                          "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
+                          "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                           "children": [
                             {
-                              "type": "Input?style.width=100%;style.height=4rem;path=name;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[)(:centers-edit-readonly]:[readonly=true]"
+                              "view": "Input?style.width=100%;style.height=4rem;path=name;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[)(:centers-edit-readonly]:[readonly=true]"
                             },
                             {
-                              "type": "Input?style.width=100%;style.height=4rem;path=code;if():[!data()]:[input.value=_string].code;clicked.style.border=2px solid #0080ff;style.border=1px solid #ccc;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
+                              "view": "Input?style.width=100%;style.height=4rem;path=code;if():[!data()]:[input.value=_string].code;clicked.style.border=2px solid #0080ff;style.border=1px solid #ccc;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
                             },
                             {
-                              "type": "View?class=flex;style.gap=1rem",
+                              "view": "View?class=flex;style.gap=1rem",
                               "children": [
                                 {
                                   "controls": [
@@ -164,10 +164,10 @@
                                       "event": "click?Data().branches.push():_map?!)(:centers-edit-readonly"
                                     }
                                   ],
-                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
+                                  "view": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                                 },
                                 {
-                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                                  "view": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                                   "controls": [
                                     {
                                       "actions": "remove:[parent().parent().id]",
@@ -180,24 +180,24 @@
                           ]
                         }
                       ],
-                      "type": "[View]?style.gapRow=2rem;style.gapColumn=1rem;style.width=100%;style.display=grid"
+                      "view": "[View]?style.gapRow=2rem;style.gapColumn=1rem;style.width=100%;style.display=grid"
                     }
                   ]
                 }
               ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              "view": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%;style.marginBottom=1rem",
+              "view": "View?class=flex column;style.gap=1rem;style.width=100%;style.marginBottom=1rem",
               "children": [
                 {
-                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات أخرى;style.padding=1rem 0;style.fontWeight=bold"
+                  "view": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=معلومات أخرى;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?class=flex;style.width=100%;style.gap=2rem;style.padding=0 1rem",
+                  "view": "View?class=flex;style.width=100%;style.gap=2rem;style.padding=0 1rem",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=data().case-sensitive",
+                      "view": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=data().case-sensitive",
                       "controls": [
                         {
                           "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;data().case-sensitive=().checked?!)(:centers-edit-readonly"
@@ -205,22 +205,22 @@
                       ],
                       "children": [
                         {
-                          "type": "Icon?class=flexbox;name=bi-check2;style.color=red;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                          "view": "Icon?class=flexbox;name=bi-check2;style.color=red;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                         }
                       ]
                     },
                     {
-                      "type": "Text?text=مركز حسّاس جدا;style.fontSize=1.6rem"
+                      "view": "Text?text=مركز حسّاس جدا;style.fontSize=1.6rem"
                     }
                   ]
                 },
                 {
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=data().visit-permission-needed",
+                      "view": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=data().visit-permission-needed",
                       "children": [
                         {
-                          "type": "Icon?class=flexbox;name=bi-check2;style.color=green;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                          "view": "Icon?class=flexbox;name=bi-check2;style.color=green;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                         }
                       ],
                       "controls": [
@@ -230,15 +230,15 @@
                       ]
                     },
                     {
-                      "type": "Text?text=الإذن ضروري قبل الزيارة;style.fontSize=1.6rem"
+                      "view": "Text?text=الإذن ضروري قبل الزيارة;style.fontSize=1.6rem"
                     }
                   ],
-                  "type": "View?class=flex;style.width=100%;style.gap=2rem;style.padding=0 1rem"
+                  "view": "View?class=flex;style.width=100%;style.gap=2rem;style.padding=0 1rem"
                 },
                 {
                   "children": [
                     {
-                      "type": "View?class=flex;style.width=100%;style.gap=2rem",
+                      "view": "View?class=flex;style.width=100%;style.gap=2rem",
                       "children": [
                         {
                           "controls": [
@@ -246,22 +246,22 @@
                               "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;if():[().checked]:[parent().next().style().display=grid]:[parent().next().style().display=none;data().station.del()]?!)(:centers-edit-readonly"
                             }
                           ],
-                          "type": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=data().station.exists().else():false",
+                          "view": "View?class=flexbox pointer;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=data().station.exists().else():false",
                           "children": [
                             {
-                              "type": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                              "view": "Icon?class=flexbox;name=bi-check2;style.color=#444;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                             }
                           ]
                         },
                         {
-                          "type": "Text?text=المركز هو أيضا محطة;style.fontSize=1.6rem"
+                          "view": "Text?text=المركز هو أيضا محطة;style.fontSize=1.6rem"
                         }
                       ]
                     },
                     {
                       "children": [
                         {
-                          "type": "Input?style.width=100%;style.height=4rem;path=station;if():data():[input.value=stations:().find():[id=data()].name];readonly;style.borderRadius=.5rem;style.border=1px solid #ccc;style.borderRadius=.5rem;clicked.style.border=2px solid #0080ff;tooltip.text=أدخل رمز المحطة;droplist.items='stations:().():name';if():[)(:centers-edit-readonly]:[droplist.readonly=true];droplist.align=right",
+                          "view": "Input?style.width=100%;style.height=4rem;path=station;if():data():[input.value=stations:().find():[id=data()].name];readonly;style.borderRadius=.5rem;style.border=1px solid #ccc;style.borderRadius=.5rem;clicked.style.border=2px solid #0080ff;tooltip.text=أدخل رمز المحطة;droplist.items='stations:().():name';if():[)(:centers-edit-readonly]:[droplist.readonly=true];droplist.align=right",
                           "controls": [
                             {
                               "event": "click:droplist?data()=stations:().find():[name=data()].id"
@@ -269,30 +269,30 @@
                           ]
                         }
                       ],
-                      "type": "View?)(:old-station=data().station;style.gap=2rem;style.width=100%;style.display=if():[data().station]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr"
+                      "view": "View?)(:old-station=data().station;style.gap=2rem;style.width=100%;style.display=if():[data().station]:grid:none;style.gridTemplateColumns=1fr 1fr 1fr"
                     }
                   ],
-                  "type": "View?style.gap=2rem;style.width=100%;class=flex column;style.padding=0 1rem"
+                  "view": "View?style.gap=2rem;style.width=100%;class=flex column;style.padding=0 1rem"
                 }
               ]
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
+              "view": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
-                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الأفراد;style.padding=1rem 0;style.fontWeight=bold"
+                  "view": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الأفراد;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?class=flex column;path=members",
+                  "view": "View?class=flex column;path=members",
                   "children": [
                     {
-                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
+                      "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                       "children": [
                         {
-                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
+                          "view": "[View]?style.width=100%;class=flexbox;style.position=relative",
                           "children": [
                             {
-                              "type": "Input?style.width=100%;style.height=4rem;if():[data()]:[input.value=members:().find():[id=data()].name];readonly;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;droplist.items='members:().():name';if():[)(:centers-edit-readonly]:[droplist.readonly=true];droplist.align=right",
+                              "view": "Input?style.width=100%;style.height=4rem;if():[data()]:[input.value=members:().find():[id=data()].name];readonly;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;droplist.items='members:().():name';if():[)(:centers-edit-readonly]:[droplist.readonly=true];droplist.align=right",
                               "controls": [
                                 {
                                   "event": "click:droplist?data()=members:().find():[name=data()].id"
@@ -300,7 +300,7 @@
                               ]
                             },
                             {
-                              "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
+                              "view": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
                               "controls": [
                                 {
                                   "event": "click?Data().members=_array;parent().getInput().text()=_string?Data().members.len()=1;!)(:centers-edit-readonly"
@@ -316,7 +316,7 @@
                         {
                           "children": [
                             {
-                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                              "view": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                               "controls": [
                                 {
                                   "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:members:[Data().members.len()-1];insert.index=parent().parent().children().len()-1",
@@ -325,7 +325,7 @@
                               ]
                             }
                           ],
-                          "type": "View?class=flex;style.gap=1rem"
+                          "view": "View?class=flex;style.gap=1rem"
                         }
                       ]
                     }
@@ -336,7 +336,7 @@
             {
               "children": [
                 {
-                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الشبكات;style.padding=1rem 0;style.fontWeight=bold"
+                  "view": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الشبكات;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
                   "children": [
@@ -353,7 +353,7 @@
                                   "event": "click:droplist?data()=networks:().find():[name=data()].id"
                                 }
                               ],
-                              "type": "Input?style.width=100%;style.height=4rem;if():[data()]:[input.value=networks:().find():[id=data()].name];readonly;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;droplist.items='networks:().():name';if():[)(:centers-edit-readonly]:[droplist.readonly=true];droplist.align=right"
+                              "view": "Input?style.width=100%;style.height=4rem;if():[data()]:[input.value=networks:().find():[id=data()].name];readonly;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;droplist.items='networks:().():name';if():[)(:centers-edit-readonly]:[droplist.readonly=true];droplist.align=right"
                             },
                             {
                               "controls": [
@@ -365,13 +365,13 @@
                                   "event": "click??Data().networks.len().greater():1;!)(:centers-edit-readonly"
                                 }
                               ],
-                              "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
+                              "view": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s"
                             }
                           ],
-                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative"
+                          "view": "[View]?style.width=100%;class=flexbox;style.position=relative"
                         },
                         {
-                          "type": "View?class=flex;style.gap=1rem",
+                          "view": "View?class=flex;style.gap=1rem",
                           "children": [
                             {
                               "controls": [
@@ -380,33 +380,33 @@
                                   "event": "click?Data().networks.push():_string?Data().networks.len().greater():0;!)(:centers-edit-readonly"
                                 }
                               ],
-                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
+                              "view": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                             }
                           ]
                         }
                       ],
-                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                      "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
                     }
                   ],
-                  "type": "View?class=flex column;path=networks"
+                  "view": "View?class=flex column;path=networks"
                 }
               ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              "view": "View?class=flex column;style.gap=1rem;style.width=100%"
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
+              "view": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
-                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الأجهزة;style.padding=1rem 0;style.fontWeight=bold"
+                  "view": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=الأجهزة;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?class=flex column;path=devices",
+                  "view": "View?class=flex column;path=devices",
                   "children": [
                     {
-                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
+                      "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                       "children": [
                         {
-                          "type": "[View]?style.width=100%;class=flexbox;style.position=relative",
+                          "view": "[View]?style.width=100%;class=flexbox;style.position=relative",
                           "children": [
                             {
                               "controls": [
@@ -414,10 +414,10 @@
                                   "event": "click:droplist?data()=devices:().find():[name=data()].id"
                                 }
                               ],
-                              "type": "Input?style.width=100%;log():[Data().clone()];style.height=4rem;if():[data()]:[input.value=devices:().find():[id=data()].name];readonly;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;droplist.items='devices:().():name';if():[)(:centers-edit-readonly]:[droplist.readonly=true];droplist.align=right"
+                              "view": "Input?style.width=100%;log():[Data().clone()];style.height=4rem;if():[data()]:[input.value=devices:().find():[id=data()].name];readonly;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;droplist.items='devices:().():name';if():[)(:centers-edit-readonly]:[droplist.readonly=true];droplist.align=right"
                             },
                             {
-                              "type": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
+                              "view": "Icon?class=flexbox pointer;name=bi-dash;style.position=absolute;style.left=0.5rem;style.fontSize=2.5rem;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.color=#888;hover.style.color=#666;hover.style.backgroundColor=#eee;style.transition=.2s",
                               "controls": [
                                 {
                                   "event": "click?Data().devices=_array;parent().getInput().text()=_string?Data().devices.len()=1;!)(:centers-edit-readonly"
@@ -433,7 +433,7 @@
                         {
                           "children": [
                             {
-                              "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                              "view": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                               "controls": [
                                 {
                                   "actions": "insert:[parent().parent().id]?insert.component=parent().parent().children.0;insert.path=_array:devices:[Data().devices.len()-1];insert.index=parent().parent().children().len()-1",
@@ -442,7 +442,7 @@
                               ]
                             }
                           ],
-                          "type": "View?class=flex;style.gap=1rem"
+                          "view": "View?class=flex;style.gap=1rem"
                         }
                       ]
                     }
@@ -451,40 +451,40 @@
               ]
             },
             {
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%",
+              "view": "View?class=flex column;style.gap=1rem;style.width=100%",
               "children": [
                 {
-                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=جهات الإتصال;style.padding=1rem 0;style.fontWeight=bold"
+                  "view": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=جهات الإتصال;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?class=flex column;path=contacts",
+                  "view": "View?class=flex column;path=contacts",
                   "children": [
                     {
                       "children": [
                         {
-                          "type": "Text?text=إسم الجهة;style.fontSize=1.5rem"
+                          "view": "Text?text=إسم الجهة;style.fontSize=1.5rem"
                         },
                         {
-                          "type": "Text?text=رقم الهاتف;style.fontSize=1.5rem"
+                          "view": "Text?text=رقم الهاتف;style.fontSize=1.5rem"
                         }
                       ],
-                      "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem;style.paddingBottom=0"
+                      "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem;style.paddingBottom=0"
                     },
                     {
                       "children": [
                         {
                           "children": [
                             {
-                              "type": "Input?style.width=100%;style.height=4rem;path=name;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[)(:centers-edit-readonly]:[readonly=true]"
+                              "view": "Input?style.width=100%;style.height=4rem;path=name;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;style.border=1px solid #ccc;if():[)(:centers-edit-readonly]:[readonly=true]"
                             },
                             {
-                              "type": "Input?style.width=100%;style.height=4rem;path=phone-number;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.border=1px solid #ccc;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
+                              "view": "Input?style.width=100%;style.height=4rem;path=phone-number;if():[!data()]:[input.value=_string];clicked.style.border=2px solid #0080ff;style.border=1px solid #ccc;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true]"
                             },
                             {
-                              "type": "View?class=flex;style.gap=1rem",
+                              "view": "View?class=flex;style.gap=1rem",
                               "children": [
                                 {
-                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
+                                  "view": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-plus;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s",
                                   "controls": [
                                     {
                                       "actions": "insert:[parent().parent().parent().id]?insert.component=parent().parent().parent().children.0;insert.path=_array:contacts:[Data().contacts.len().subs():1]",
@@ -499,15 +499,15 @@
                                       "actions": "remove:[parent().parent().id]"
                                     }
                                   ],
-                                  "type": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
+                                  "view": "Icon?class=flexbox pointer;style.marginTop=auto;name=bi-dash;style.fontSize=2.5rem;style.border=1px solid #ccc;style.borderRadius=2rem;style.height=3rem;style.width=3rem;style.marginBottom=.5rem;style.color=#888;hover.style.color=#666;hover.style.border=1px solid #aaa;style.transition=.2s"
                                 }
                               ]
                             }
                           ],
-                          "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
+                          "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem"
                         }
                       ],
-                      "type": "[View]?style.gapRow=2rem;style.gapColumn=1rem;style.width=100%;style.display=grid"
+                      "view": "[View]?style.gapRow=2rem;style.gapColumn=1rem;style.width=100%;style.display=grid"
                     }
                   ]
                 }
@@ -516,27 +516,27 @@
             {
               "children": [
                 {
-                  "type": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=ملاحظات;style.padding=1rem 0;style.fontWeight=bold"
+                  "view": "Text?style.width=100%;style.borderBottom=1px solid #ddd;style.fontSize=1.5rem;text=ملاحظات;style.padding=1rem 0;style.fontWeight=bold"
                 },
                 {
-                  "type": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
+                  "view": "View?style.gap=2rem;style.width=100%;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr;style.padding=1rem",
                   "children": [
                     {
-                      "type": "Input?textarea;style.width=100%;style.height=8rem;path=note;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true];style.border=1px solid #ccc;click:[():save-center.click()]"
+                      "view": "Input?textarea;style.width=100%;style.height=8rem;path=note;clicked.style.border=2px solid #0080ff;style.borderRadius=.5rem;if():[)(:centers-edit-readonly]:[readonly=true];style.border=1px solid #ccc;click:[():save-center.click()]"
                     }
                   ]
                 }
               ],
-              "type": "View?class=flex column;style.gap=1rem;style.width=100%"
+              "view": "View?class=flex column;style.gap=1rem;style.width=100%"
             }
           ],
-          "type": "View?class=flex column;style.width=100%;data=)(:centers-data;style.gap=2rem"
+          "view": "View?class=flex column;style.width=100%;data=)(:centers-data;style.gap=2rem"
         },
         {
-          "type": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem",
+          "view": "View?class=flexbox;style.width=100%;style.borderTop=1px solid #ddd;style.padding=2rem;style.justifyContent=flex-end;style.gap=1rem;style.marginTop=2rem;style.marginBottom=-1rem",
           "children": [
             {
-              "type": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s;click:[():[save-center].click()]?!centers-edit-readonly:()"
+              "view": "Text?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=blue;text=حفظ;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s;click:[():[save-center].click()]?!centers-edit-readonly:()"
             },
             {
               "controls": [
@@ -544,7 +544,7 @@
                   "event": "click?():centers-mini-window.style():[opacity=0;pointerEvents=none;)(:zIndex-counter=)(:zIndex-counter-1;zIndex=1];)(:centers-data.del();)(:new-centers.del()"
                 }
               ],
-              "type": "Text:close-center-window?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s"
+              "view": "Text:close-center-window?class=flexbox pointer;style.height=3.25rem;style.borderRadius=1.5rem;style.width=10rem;style.color=#fff;style.backgroundColor=#888;text=خروج;style.fontSize=1.3rem;style.opacity=0.8;hover.style.opacity=1;style.transition=.3s"
             }
           ]
         }

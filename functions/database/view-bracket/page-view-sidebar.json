@@ -64,7 +64,7 @@
           "view": "View?class=flex column;style:[display=none;width='calc(100% - 1.2rem)';overflowX=hidden;marginLeft=1.2rem;borderLeft=1px solid #ddd;height=fit-content;overflowY=visible]",
           "children": [
             {
-              "view": "View?class=flex pointer align-center;style:[minHeight=3rem;width=100%;position=relative];hover.style:[backgroundColor=#e9e9e9]",
+              "view": "View?class=flex pointer align-center;style:[minHeight=3rem;width=100%;position=relative];hover.style:[backgroundColor=#e9e9e9]?false",
               "children": [
                 {
                   "view": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;padding=0 0.5rem;fontWeight=100;color=#666]"
@@ -80,7 +80,7 @@
                   "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                 },
                 {
-                  "view": "Text?class=dots;text=Page;style.fontSize=1.3rem"
+                  "view": "Text?class=dots;text=Pages;style.fontSize=1.3rem"
                 },
                 {
                   "view": "Icon?style.display=none;tooltip.text=create new page;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
@@ -89,18 +89,26 @@
                       "event": "click?createNewPage()"
                     }
                   ]
+                },
+                {
+                  "view": "Icon?tooltip.text=import page;name=bi-download;style:[display=none;color=#000;fontSize=1.5rem;position=absolute;right=3rem;height=2rem;width=2rem;hover.color=blue;borderRadius=.25rem]",
+                  "controls": [
+                    {
+                      "event": "click?parent().next().style().display=flex;3rdPrev().style().transform='rotate(90deg)';import():[type=json]:[open-doc:()=import:().file.name.split():'.json'.0;if():[!data:().editor.page.[open-doc:()]]:[loader.show;open-map:()=import:().data;open-collection:()=page;save():[collection=open-collection:();data=open-map:();doc=open-doc:();headers.project=project:()]:[note():[text=File has been created!];parent().next().insert():[view=parent().next().children.0;data=open-doc:()]:[data:().editor.page.[open-doc:()]=open-map:();_.view.():[2ndChild().txt()=open-doc:();children().():[data=open-doc:();open-doc=open-doc:();open-collection=open-collection:()];_.view.click()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)'];loader.hide]]]:[note():[text=Document name already exists!;danger]]]"
+                    }
+                  ]
                 }
               ],
               "view": "View:page?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
               "controls": [
                 {
-                  "event": "mouseenter?lastChild().style().display=flex"
+                  "event": "mouseenter?if():[canImportPage:()]:[lastChild().style().display=flex];2ndLastChild().style().display=flex"
                 },
                 {
-                  "event": "mouseleave?lastChild().style().display=none"
+                  "event": "mouseleave?lastChild().style().display=none;2ndLastChild().style().display=none"
                 },
                 {
-                  "event": "click?openPages()?!3rdChild().contains():[clicked:()]"
+                  "event": "click?openPages()?!lastChild().contains():[clicked:()];!2ndLastChild().contains():[clicked:()]"
                 }
               ]
             },
@@ -173,13 +181,21 @@
                   "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                 },
                 {
-                  "view": "Text?class=dots;text=View;style.fontSize=1.3rem"
+                  "view": "Text?class=dots;text=Views;style.fontSize=1.3rem"
                 },
                 {
                   "view": "Icon?style.display=none;tooltip.text=create new view;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
                   "controls": [
                     {
-                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=view;parent().next().insert():[view=parent().next().children.2]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                      "event": "click?parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=view;parent().next().insert():[view=parent().next().children.2]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
+                    }
+                  ]
+                },
+                {
+                  "view": "Icon?style.display=none;tooltip.text=import view;name=bi-download;style:[color=#000;fontSize=1.5rem;position=absolute;right=3rem;height=2rem;width=2rem;hover.color=blue;borderRadius=.25rem]",
+                  "controls": [
+                    {
+                      "event": "click?parent().next().style().display=flex;3rdPrev().style().transform='rotate(90deg)';import():[type=json]:[open-doc:()=import:().file.name.split():'.json'.0;if():[!data:().editor.view.[open-doc:()]]:[loader.show;open-map:()=import:().data;open-collection:()=view;save():[collection=open-collection:();data=open-map:();doc=open-doc:();headers.project=project:()]:[note():[text=File has been created!];parent().next().insert():[view=parent().next().children.2;data=open-doc:()]:[data:().editor.view.[open-doc:()]=open-map:();_.view.():[2ndChild().txt()=open-doc:();children().():[data=open-doc:();open-doc=open-doc:();open-collection=open-collection:()];_.view.click()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)'];loader.hide]]]:[note():[text=Document name already exists!;danger]]]"
                     }
                   ]
                 }
@@ -187,13 +203,13 @@
               "view": "View:view?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
               "controls": [
                 {
-                  "event": "mouseenter?lastChild().style().display=flex"
+                  "event": "mouseenter?if():[canImportView:()]:[lastChild().style().display=flex];2ndLastChild().style().display=flex"
                 },
                 {
-                  "event": "mouseleave?lastChild().style().display=none"
+                  "event": "mouseleave?lastChild().style().display=none;2ndLastChild().style().display=none"
                 },
                 {
-                  "event": "click?openViews()?!3rdChild().contains():[clicked:()]"
+                  "event": "click?openViews()?!lastChild().contains():[clicked:()];!2ndLastChild().contains():[clicked:()]"
                 }
               ]
             },
@@ -215,18 +231,26 @@
                           "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=public;parent().next().insert():[component=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().data=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform=scale(0)]]"
                         }
                       ]
+                    },
+                    {
+                      "view": "Icon?style.display=none;tooltip.text=import public view;name=bi-download;style:[color=#000;fontSize=1.5rem;position=absolute;right=3rem;height=2rem;width=2rem;hover.color=blue;borderRadius=.25rem]",
+                      "controls": [
+                        {
+                          "event": "click?parent().next().style().display=flex;3rdPrev().style().transform='rotate(90deg)';import():[type=json]:[open-doc:()=import:().file.name.split():'.json'.0;if():[!data:().editor.public.[open-doc:()]]:[loader.show;open-map:()=import:().data;open-collection:()=public;save():[collection=open-collection:();data=open-map:();doc=open-doc:();headers.project=project:()]:[note():[text=File has been created!];parent().next().insert():[view=parent().next().children.0;data=open-doc:()]:[data:().editor.public.[open-doc:()]=open-map:();_.view.():[2ndChild().txt()=open-doc:();children().():[data=open-doc:();open-doc=open-doc:();open-collection=open-collection:()];_.view.click()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)'];loader.hide]]]:[note():[text=Document name already exists!;danger]]]"
+                        }
+                      ]
                     }
                   ],
                   "view": "View:public-view-list?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative",
                   "controls": [
                     {
-                      "event": "mouseenter?lastChild().style().display=flex"
+                      "event": "mouseenter?if():[canImportPublic:()]:[lastChild().style().display=flex];2ndLastChild().style().display=flex"
                     },
                     {
-                      "event": "mouseleave?lastChild().style().display=none"
+                      "event": "mouseleave?lastChild().style().display=none;2ndLastChild().style().display=none"
                     },
                     {
-                      "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[publicOpen:()=true;next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg);search():[collection=public;limit=100;headers.project=project:()]:[data:().editor.public=_.data;update():next()]]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!3rdChild().contains():[clicked:()]"
+                      "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[publicOpen:()=true;next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)';loader():show;search():[collection=public;limit=100;headers.project=project:()]:[data:().editor.public=_.data;loader():hide;update():next();canImportPublic:()=true]]:[next().style().display=none;1stChild().style().transform=rotate(0)]?!lastChild().contains():[clicked:()];!2ndLastChild().contains():[clicked:()]"
                     },
                     {
                       "event": "loaded?next().style().display=flex;1stChild().style().transform=rotate(90deg)?publicOpen:()"
@@ -316,7 +340,7 @@
                           "event": "keyup?if():[open-doc:()||duplicate-doc:()]:[data:().editor.view.txt()=data:().editor.view.[open-doc:()||duplicate-doc:()].clone()]:[data:().editor.view.txt()=_map:view:['View:'+txt()+'?class=column;style:[minHeight=100vh]']:functions:_map];save():[collection=view;doc=txt();data=data:().editor.view.txt();headers.project=project:()]:[if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del();note():[text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!'];update():'view-list'];if():[open-doc:()]:[data:().editor.[open-collection:()].[open-doc:()].del();erase():[collection=open-collection:();doc=open-doc:();headers.project=project:()]]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.view.keys().inc():txt();!txt().inc(): "
                         }
                       ],
-                      "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)]"
+                      "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width='calc(100% - 2.25rem)']"
                     },
                     {
                       "controls": [
@@ -365,7 +389,7 @@
           "view": "View?class=flex column;style:[display=none;#overflowY=auto;overflowX=hidden;width='calc(100% - 1.2rem)';marginLeft=1.2rem;borderLeft=1px solid #ddd;height=fit-content]",
           "children": [
             {
-              "view": "View?class=flex pointer align-center;style:[minHeight=3rem;width=100%;position=relative];hover.style:[backgroundColor=#e9e9e9]",
+              "view": "View?class=flex pointer align-center;style:[minHeight=3rem;width=100%;position=relative];hover.style:[backgroundColor=#e9e9e9]?false",
               "children": [
                 {
                   "view": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;padding=0 0.5rem;fontWeight=100;color=#666]"
@@ -381,7 +405,7 @@
                   "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
                 },
                 {
-                  "view": "Text?class=dots;text=Router;style.fontSize=1.3rem"
+                  "view": "Text?class=dots;text=Routers;style.fontSize=1.3rem"
                 },
                 {
                   "view": "Icon?style.display=none;tooltip.text=create new router;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
@@ -414,7 +438,7 @@
                   "view": "Icon?name=bi-chevron-right;style:[fontSize=1.3rem;width=2.25rem;transition=.2s]"
                 },
                 {
-                  "view": "Text?class=dots;text=Package;style.fontSize=1.3rem"
+                  "view": "Text?class=dots;text=Packages;style.fontSize=1.3rem"
                 },
                 {
                   "view": "Icon?style.display=none;tooltip.text=create new package;name=bi-plus;style:[color=#000;fontSize=1.9rem;position=absolute;right=.5rem;height=2rem;width=2rem;borderRadius=.25rem];hover.style.color=blue",
@@ -450,9 +474,9 @@
     "openPage": "loader.show;timer():[():'data-viewer-bar'.style().display=flex;():'my-functions'.style().height=functionsHeight:()+rem;():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)';():'my-functions'.style().display=flex;open-doc:()=().data;open-docs:().push():['page/'+open-doc:()];open-collection:()=page;open-map:()=data:().editor.page.[open-doc:()];className():'data-viewer'.():[style().display=none];():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];():'data-viewer-bar'.insert():[component=():'data-viewer-bar'.children.0;data='page/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():'functions'.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[component=():'data-viewer'.children.0;data=open-map:().clone().functions.del();index=():'data-viewer'.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];loader.hide]:50",
     "openView": "loader.show;timer():[():'data-viewer-bar'.style().display=flex;():'my-functions'.style().height=functionsHeight:()+rem;():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)';():'my-functions'.style().display=flex;open-doc:()=().data;open-docs:().push():['view/'+open-doc:()];open-collection:()=view;open-map:()=data:().editor.view.[open-doc:()];className():'data-viewer'.():[style().display=none];():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];className():functions.():[style().display=none];():'data-viewer-bar'.insert():[component=():'data-viewer-bar'.children.0;data='view/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():'functions'.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[component=():'data-viewer'.children.0;data=open-map:().clone().functions.del();index=():'data-viewer'.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];loader.hide]:50",
     "createNewPage": "parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=page;parent().next().insert():[component=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)']]",
-    "openPages": "if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)'];if():[next().style().display=flex]:[search():[collection=page;limit=100;headers.project=project:()]:[data:().editor.page=_.data;update():'page-list']]",
-    "openViews": "if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)'];if():[next().style().display=flex]:[search():[collection=view;limit=100;headers.project=project:()]:[data:().editor.view=_.data;update():'view-list']]",
-    "openProject": "loader.show;():'my-functions'.style():[height=functionsHeight:()+'rem';display=flex];():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)';className():functions.():[style().display=none];open-doc:()=project:();open-docs:().push():['project/'+open-doc:()];open-collection:()='_project_';open-map:()=data:().editor.project;():'data-viewer-bar'.style():[display=flex];():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];className():'data-viewer'.():[style().display=none];timer():[():'data-viewer-bar'.insert():[view=():data-viewer-bar.children.0;data='project/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():functions.insert():[component=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():'data-viewer'.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:0",
+    "openPages": "if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)'];if():[next().style().display=flex]:[loader():show;search():[collection=page;limit=100;headers.project=project:()]:[loader():hide;data:().editor.page=_.data;update():'page-list';canImportPage:()=true]]",
+    "openViews": "if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0)'];if():[next().style().display=flex]:[loader():show;search():[collection=view;limit=100;headers.project=project:()]:[loader():hide;data:().editor.view=_.data;update():'view-list';canImportView:()=true]]",
+    "openProject": "loader.show;():'my-functions'.style():[height=functionsHeight:()+'rem';display=flex];():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)';className():functions.():[style().display=none];open-doc:()=project:();open-docs:().push():['project/'+open-doc:()];open-collection:()='_project_';open-map:()=data:().editor.project;():'data-viewer-bar'.style():[display=flex];():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];className():'data-viewer'.():[style().display=none];timer():[():'data-viewer-bar'.insert():[view=():'data-viewer-bar'.children.0;data='project/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():functions.insert():[view=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[component=():data-viewer.children.0;data=open-map:().clone().functions.del();index=():'data-viewer'.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:0",
     "openAccount": "loader.show;open-doc:()=data:().editor.account.id;open-docs:().push():['account/'+open-doc:()];open-collection:()=_account_;open-map:()=data:().editor.account;():'data-viewer-bar'.style().display=flex;():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];className():'data-viewer'.():[style().display=none];timer():[():'data-viewer-bar'.insert():[component=():'data-viewer-bar'.children.0;data='account/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():functions.insert():[component=():functions.children.0;data=[open-map:().clone().functions||_map];index=():functions.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[component=():data-viewer.children.0;data=open-map:();index=():data-viewer.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]]:0"
   }
 }

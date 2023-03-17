@@ -1,7 +1,5 @@
-const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
-const { decode } = require("./decode")
 
 const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res, _, __, ___, asyncer, awaiter }) => {
 
@@ -10,28 +8,37 @@ const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res
   
   if (!asyncer) return
   var _params, keepGoingOn = true
+  var global = _window ? _window.global : window.global
 
   if (myawait) {
-
+    
     var _await_ = toCode({ _window, string: toCode({ _window, string: myawait }), start: "'", end: "'" })
     _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res })
-    if (awaits.findIndex(item => item.await === myawait) !== -1) console.log(awaits.find(item => item.await === myawait).log);
-    awaits.splice(awaits.findIndex(item => item.await === myawait), 1)
+
+    var index = awaits.findIndex(item => item.await === myawait)
+    if (index !== -1) {
+
+      if (awaits[index].log) console.log(awaits[index].log);
+      awaits.splice(index, 1)
+    }
   }
 
   // get params
   toArray(awaits).map((_await, i) => {
   
     if (keepGoingOn) keepGoingOn = !_await.hold
-
     if (keepGoingOn) {
 
       if (_await.log) console.log(_await.log);
 
-      var _await_ = toCode({ _window, string: toCode({ _window, string: _await.await }), start: "'", end: "'" })
-      _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res, ...(_await.params || {}) })
+      if (_await.await) {
+
+        var _await_ = toCode({ _window, string: toCode({ _window, string: _await.await }), start: "'", end: "'" })
+        const __params = _await.passGlobalFunc ? { _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ } : { _, __, ___ }
+        _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, ...__params, req, res, ...(_await.params || {}) })
+      }
       
-      var index = toArray(awaits).findIndex(item => item.await === _await.await)
+      var index = toArray(awaits).findIndex(item => item.id === _await.id)
       if (index !== -1) toArray(awaits).splice(index, 1)
       if (index !== i) keepGoingOn = false
     }

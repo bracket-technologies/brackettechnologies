@@ -1,5 +1,5 @@
 {
-  "type": "login?title=تسجيل دخول | برنامج مالك;language=ar;path=/login;beforeLoading:[if():[getCookie():_id]:[route():main]]",
+  "view": "login?title=تسجيل دخول | برنامج مالك;language=ar;path=/login;beforeLoading:[if():[getCookie():_id]:[route():main]]",
   "creation-date": 1647426596673,
   "functions": {}
 }

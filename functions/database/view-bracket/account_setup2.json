@@ -1,24 +1,24 @@
 {
   "children": [
     {
-      "type": "View?class=flex start;style.gap=1.5rem;style.padding=2rem;style.backgroundColor=#FFF4F4;style.borderRadius=.5rem;style.width=80rem;style.border=1px solid red;style.marginBottom=2rem;style.display=none",
+      "view": "View?class=flex start;style.gap=1.5rem;style.padding=2rem;style.backgroundColor=#FFF4F4;style.borderRadius=.5rem;style.width=80rem;style.border=1px solid red;style.marginBottom=2rem;style.display=none",
       "children": [
         {
-          "type": "Icon?name=bi-exclamation-diamond-fill;style.color=red;style.fontSize=2rem"
+          "view": "Icon?name=bi-exclamation-diamond-fill;style.color=red;style.fontSize=2rem"
         },
         {
           "children": [
             {
-              "type": "Text?class=pointer;text=Account details couldn't be saved.;style.fontSize=1.5rem;style.fontWeight=bold"
+              "view": "Text?class=pointer;text=Account details couldn't be saved.;style.fontSize=1.5rem;style.fontWeight=bold"
             },
             {
-              "type": "View?class=flex align-center gap-1",
+              "view": "View?class=flex align-center gap-1",
               "children": [
                 {
-                  "type": "Icon?name=bi-circle-fill;style.fontSize=.6rem"
+                  "view": "Icon?name=bi-circle-fill;style.fontSize=.6rem"
                 },
                 {
-                  "type": "Text?class=pointer;text=Enter your address;style.fontSize=1.5rem;style.textDecoration=underline;hover.style.textDecoration=none"
+                  "view": "Text?class=pointer;text=Enter your address;style.fontSize=1.5rem;style.textDecoration=underline;hover.style.textDecoration=none"
                 }
               ],
               "controls": [
@@ -28,7 +28,7 @@
               ]
             },
             {
-              "type": "View?class=flex align-center gap-1",
+              "view": "View?class=flex align-center gap-1",
               "controls": [
                 {
                   "event": "click?():postal-code.getInput().focus()"
@@ -36,10 +36,10 @@
               ],
               "children": [
                 {
-                  "type": "Icon?name=bi-circle-fill;style.fontSize=.6rem"
+                  "view": "Icon?name=bi-circle-fill;style.fontSize=.6rem"
                 },
                 {
-                  "type": "Text?class=pointer;text=Enter a valid zip/postal code;style.fontSize=1.5rem;style.textDecoration=underline;hover.style.textDecoration=none"
+                  "view": "Text?class=pointer;text=Enter a valid zip/postal code;style.fontSize=1.5rem;style.textDecoration=underline;hover.style.textDecoration=none"
                 }
               ]
             },
@@ -49,18 +49,18 @@
                   "event": "click?():phone.getInput().focus()"
                 }
               ],
-              "type": "View?class=flex align-center gap-1",
+              "view": "View?class=flex align-center gap-1",
               "children": [
                 {
-                  "type": "Icon?name=bi-circle-fill;style.fontSize=.6rem"
+                  "view": "Icon?name=bi-circle-fill;style.fontSize=.6rem"
                 },
                 {
-                  "type": "Text?class=pointer;text=Enter a valid phone number;style.fontSize=1.5rem;style.textDecoration=underline;hover.style.textDecoration=none"
+                  "view": "Text?class=pointer;text=Enter a valid phone number;style.fontSize=1.5rem;style.textDecoration=underline;hover.style.textDecoration=none"
                 }
               ]
             },
             {
-              "type": "View?class=flex align-center gap-1",
+              "view": "View?class=flex align-center gap-1",
               "controls": [
                 {
                   "event": "click?():city.getInput().focus()"
@@ -68,106 +68,106 @@
               ],
               "children": [
                 {
-                  "type": "Icon?name=bi-circle-fill;style.fontSize=.6rem"
+                  "view": "Icon?name=bi-circle-fill;style.fontSize=.6rem"
                 },
                 {
-                  "type": "Text?class=pointer;text=Enter your city;style.fontSize=1.5rem;style.textDecoration=underline;hover.style.textDecoration=none"
+                  "view": "Text?class=pointer;text=Enter your city;style.fontSize=1.5rem;style.textDecoration=underline;hover.style.textDecoration=none"
                 }
               ]
             }
           ],
-          "type": "View?class=flex column align-start;style.gap=1.5rem;style.width=100%"
+          "view": "View?class=flex column align-start;style.gap=1.5rem;style.width=100%"
         }
       ]
     },
     {
-      "type": "View?class=flexbox column;style.backgroundColor=#fff;style.borderRadius=.25rem;style.width=80rem",
+      "view": "View?class=flexbox column;style.backgroundColor=#fff;style.borderRadius=.25rem;style.width=80rem",
       "children": [
         {
           "children": [
             {
-              "type": "Text?text=Step 2 of 2;style.fontSize=1.3rem;style.color=#222"
+              "view": "Text?text=Step 2 of 2;style.fontSize=1.3rem;style.color=#222"
             },
             {
-              "type": "Text?text=Add an address so you can get paid;style.fontWeight=bold;style.fontSize=2.6rem;style.color=#222"
+              "view": "Text?text=Add an address so you can get paid;style.fontWeight=bold;style.fontSize=2.6rem;style.color=#222"
             },
             {
-              "type": "Text?text=This will be used as your default business address.;style.fontSize=1.75rem;style.color=#888"
+              "view": "Text?text=This will be used as your default business address.;style.fontSize=1.75rem;style.color=#888"
             },
             {
-              "type": "Text?text=You can always change this later.;style.fontSize=1.75rem;style.color=#888"
+              "view": "Text?text=You can always change this later.;style.fontSize=1.75rem;style.color=#888"
             }
           ],
-          "type": "View?class=flexbox column;style.gap=.4rem;style.padding=5rem"
+          "view": "View?class=flexbox column;style.gap=.4rem;style.padding=5rem"
         },
         {
           "children": [
             {
               "children": [
                 {
-                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=First name;label.style.fontSize=1.4rem;path=business-owner-first-name;data=data:().editor.account.first-name"
+                  "view": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=First name;label.style.fontSize=1.4rem;path=business-owner-first-name;data=data:().editor.account.first-name"
                 },
                 {
-                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Last name;label.style.fontSize=1.4rem;path=business-owner-last-name;data=data:().editor.account.last-name"
+                  "view": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Last name;label.style.fontSize=1.4rem;path=business-owner-last-name;data=data:().editor.account.last-name"
                 }
               ],
-              "type": "View?class=grid;style.gap=2rem;style.gridTemplateColumns=1fr 1fr;style.width=100%"
+              "view": "View?class=grid;style.gap=2rem;style.gridTemplateColumns=1fr 1fr;style.width=100%"
             },
             {
-              "type": "Input?id=address;path=business-address;required.text=Enter your address;clicked.style.border=2px solid #0099ee;label.location=outside;label.text=Address;label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;style.fontSize=1.4rem;style.width=100%;style.height=4rem"
+              "view": "Input?id=address;path=business-address;required.text=Enter your address;clicked.style.border=2px solid #0099ee;label.location=outside;label.text=Address;label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;style.fontSize=1.4rem;style.width=100%;style.height=4rem"
             },
             {
-              "type": "Input?path=business-apartment-suite-etc;clicked.style.border=2px solid #0099ee;label.location=outside;label.text=Apartment, suite, etc.;label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;style.height=4rem;style.fontSize=1.4rem;style.width=100%"
+              "view": "Input?path=business-apartment-suite-etc;clicked.style.border=2px solid #0099ee;label.location=outside;label.text=Apartment, suite, etc.;label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;style.height=4rem;style.fontSize=1.4rem;style.width=100%"
             },
             {
-              "type": "Input?id=city;path=business-city;required.text=Enter your city;clicked.style.border=2px solid #0099ee;label.location=outside;label.text=City;label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;style.fontSize=1.4rem;style.width=100%;style.height=4rem"
+              "view": "Input?id=city;path=business-city;required.text=Enter your city;clicked.style.border=2px solid #0099ee;label.location=outside;label.text=City;label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;style.fontSize=1.4rem;style.width=100%;style.height=4rem"
             },
             {
-              "type": "View?class=grid;style.gap=2rem;style.gridTemplateColumns=1fr 1fr;style.width=100%",
+              "view": "View?class=grid;style.gap=2rem;style.gridTemplateColumns=1fr 1fr;style.width=100%",
               "children": [
                 {
-                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Country/Region;label.style.fontSize=1.4rem;path=business-country-region"
+                  "view": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Country/Region;label.style.fontSize=1.4rem;path=business-country-region"
                 },
                 {
-                  "type": "Input?id=postal-code;required.text=Enter a valid zip/postal code;label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Postal code;label.style.fontSize=1.4rem;path=business-postal-code"
+                  "view": "Input?id=postal-code;required.text=Enter a valid zip/postal code;label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Postal code;label.style.fontSize=1.4rem;path=business-postal-code"
                 }
               ]
             },
             {
               "children": [
                 {
-                  "type": "Input?id=phone;required.text=Enter a valid phone number;label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Phone;label.style.fontSize=1.4rem;path=business-phone"
+                  "view": "Input?id=phone;required.text=Enter a valid phone number;label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Phone;label.style.fontSize=1.4rem;path=business-phone"
                 },
                 {
-                  "type": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Business or personal website (optional);label.style.fontSize=1.4rem;path=business-or-personal-website;input.placeholder=example.com"
+                  "view": "Input?label.postion=outside;clicked.style.border=2px solid #0099ee;label.text=Business or personal website (optional);label.style.fontSize=1.4rem;path=business-or-personal-website;input.placeholder=example.com"
                 }
               ],
-              "type": "View?class=grid;style.gap=2rem;style.gridTemplateColumns=1fr 1fr;style.width=100%"
+              "view": "View?class=grid;style.gap=2rem;style.gridTemplateColumns=1fr 1fr;style.width=100%"
             },
             {
-              "type": "View?class=flex align-center;style.gap=1rem;style.width=100%",
+              "view": "View?class=flex align-center;style.gap=1rem;style.width=100%",
               "children": [
                 {
-                  "type": "Checkbox?path=business-is-registered"
+                  "view": "Checkbox?path=business-is-registered"
                 },
                 {
-                  "type": "Text?text=This store is a registered business;style.fontSize=1.4rem"
+                  "view": "Text?text=This store is a registered business;style.fontSize=1.4rem"
                 }
               ]
             }
           ],
-          "type": "View?Data=account-setup-data;data=_map;class=flexbox column;style.width=100%;style.gap=2rem;style.padding=3rem 5rem;style.borderBottom=1px solid #f0f0f0;style.alignSelf=start"
+          "view": "View?Data=account-setup-data;data=_map;class=flexbox column;style.width=100%;style.gap=2rem;style.padding=3rem 5rem;style.borderBottom=1px solid #f0f0f0;style.alignSelf=start"
         },
         {
           "children": [
             {
-              "type": "View?class=flex align-center pointer;style.gap=.5rem",
+              "view": "View?class=flex align-center pointer;style.gap=.5rem",
               "children": [
                 {
-                  "type": "Icon?name=bi-chevron-left;style.fontSize=1.5rem"
+                  "view": "Icon?name=bi-chevron-left;style.fontSize=1.5rem"
                 },
                 {
-                  "type": "Text?text=Back;style.fontSize=1.5rem"
+                  "view": "Text?text=Back;style.fontSize=1.5rem"
                 }
               ],
               "controls": [
@@ -184,7 +184,7 @@
               ]
             },
             {
-              "type": "Text?class=pointer;text=Enter my store;style.fontSize=1.5rem;style.color=#fff;style.padding=1rem 2.5rem;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.borderRadius=.5rem",
+              "view": "Text?class=pointer;text=Enter my store;style.fontSize=1.5rem;style.color=#fff;style.padding=1rem 2.5rem;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.borderRadius=.5rem",
               "controls": [
                 {
                   "event": "click??data:().editor.project.id;)(:account-setup-data.business-address;)(:account-setup-data.business-city;)(:account-setup-data.business-postal-code;)(:account-setup-data.business-phone",
@@ -196,12 +196,12 @@
               ]
             }
           ],
-          "type": "View?style.padding=3rem 6rem;style.display=flex;style.justifyContent=space-between;style.width=100%"
+          "view": "View?style.padding=3rem 6rem;style.display=flex;style.justifyContent=space-between;style.width=100%"
         }
       ],
       "creation-date": 1640288448744
     }
   ],
   "creation-date": 1640288448744,
-  "type": "View?class=flex column"
+  "view": "View?class=flex column"
 }

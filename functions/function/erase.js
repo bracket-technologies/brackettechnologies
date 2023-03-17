@@ -4,7 +4,7 @@ const { deleteData } = require("./database");
 const { toArray } = require("./toArray");
 const { toString } = require("./toString")
 
-const erase = async ({ _window, lookupActions, req, res, id, e, _, __, ___, ...params }) => {
+const erase = async ({ _window, lookupActions, awaits, req, res, id, e, _, __, ___, ...params }) => {
 
   var global = _window ? _window.global : window.global
   var view = _window ? _window.views[id] : window.views[id]

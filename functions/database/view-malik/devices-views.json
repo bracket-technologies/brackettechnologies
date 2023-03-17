@@ -3,12 +3,12 @@
     {
       "children": [
         {
-          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
+          "view": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
           "children": [
             {
               "children": [
                 {
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                  "view": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "controls": [
                     {
                       "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():devices-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():devices-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
@@ -16,17 +16,17 @@
                   ],
                   "children": [
                     {
-                      "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                      "view": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                     }
                   ]
                 }
               ],
-              "type": "View?class=flexbox;style.height=100%;style.width=100%"
+              "view": "View?class=flexbox;style.height=100%;style.width=100%"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                  "view": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
                       "event": "click",
@@ -35,39 +35,39 @@
                   ]
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=إسم الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=إسم الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=مرجع الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=مرجع الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=نوع الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=نوع الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
@@ -78,40 +78,40 @@
                       "event": "click"
                     }
                   ],
-                  "type": "Text?class=flexbox pointer;style.color=#888;style.fontWeight=bold;style.fontSize=1.3rem;text=الحالة"
+                  "view": "Text?class=flexbox pointer;style.color=#888;style.fontWeight=bold;style.fontSize=1.3rem;text=الحالة"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الشبكة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الشبكة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=مكان الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=مكان الجهاز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الشاشة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الشاشة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الإسم على الشاشة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                  "view": "Text?class=ar pointer;text=الإسم على الشاشة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
                       "actions": "sort;update:devices-list-view?sort.Data=devices;sort.path=name-on-monitor",
@@ -124,16 +124,16 @@
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الأجهزة الداخلة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الأجهزة الداخلة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الأجهزة الخارجة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الأجهزة الخارجة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
@@ -146,26 +146,26 @@
                       "event": "click?if():[():devices-remove-all-popup.style().pointerEvents=none]:[():devices-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():devices-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
                     }
                   ],
-                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
+                  "view": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
                 }
               ],
-              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
+              "view": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
             }
           ]
         },
         {
           "children": [
             {
-              "type": "[View]?data=)(:devices;style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:devices-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
+              "view": "[View]?data=)(:devices;style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[)(:devices-view-type=list]:grid.else():none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 12rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
               "children": [
                 {
-                  "type": "View?class=flexbox;style.width=100%;style.height=100%",
+                  "view": "View?class=flexbox;style.width=100%;style.height=100%",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                      "view": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                       "children": [
                         {
-                          "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
+                          "view": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1.else():0;style.transition=.3s"
                         }
                       ],
                       "controls": [
@@ -185,16 +185,16 @@
                           "actions": "save?save.collection=resources-devices;save.doc=data().id;save.data=data()"
                         }
                       ],
-                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms"
+                      "view": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms"
                     }
                   ],
-                  "type": "View?class=flex align-center"
+                  "view": "View?class=flex align-center"
                 },
                 {
-                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
+                  "view": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
+                      "view": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
                     },
                     {
                       "controls": [
@@ -202,7 +202,7 @@
                           "event": "click?copyToClipBoard():[data().id]"
                         }
                       ],
-                      "type": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0"
+                      "view": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0"
                     }
                   ],
                   "controls": [
@@ -221,95 +221,95 @@
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().name"
+                      "view": "Text?style.fontSize=1.4rem;text=data().name"
                     }
                   ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flex align-center reference-device-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center reference-device-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=reference-devices:().find():[id=data().reference-device].name?data().reference-device"
+                      "view": "Text?style.fontSize=1.4rem;text=reference-devices:().find():[id=data().reference-device].name?data().reference-device"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center reference-device-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center reference-device-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=reference-devices:().find():[id=data().reference-device].type?data().reference-device"
+                      "view": "Text?style.fontSize=1.4rem;text=reference-devices:().find():[id=data().reference-device].type?data().reference-device"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
+                  "view": "View?class=flex align-center;style.height=100%;style.width=100%;path=status",
                   "children": [
                     {
                       "children": [
                         {
-                          "type": "View?class=flexbox;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206.else():#444;style.height=1rem;style.width=1rem;style.borderRadius=1rem"
+                          "view": "View?class=flexbox;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206.else():#444;style.height=1rem;style.width=1rem;style.borderRadius=1rem"
                         },
                         {
-                          "type": "Text?style.color=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206;style.fontSize=1.2rem;style.fontWeight=bold;text=data()"
+                          "view": "Text?style.color=if():[data()=يحتاج إلى صيانة]:red.elif():[data()=متصل]:#00c206;style.fontSize=1.2rem;style.fontWeight=bold;text=data()"
                         }
                       ],
-                      "type": "View?class=flexbox pointer;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:#ffdbdb.elif():[data()=متصل]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem"
+                      "view": "View?class=flexbox pointer;style.backgroundColor=if():[data()=يحتاج إلى صيانة]:#ffdbdb.elif():[data()=متصل]:#c2ffc4.else():#eee;style.padding=0 1rem;style.height=2rem;style.gap=.5rem;style.borderRadius=1.5rem"
                     }
                   ]
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=networks:().find():[id=data().network].name?data().network"
+                      "view": "Text?style.fontSize=1.4rem;text=networks:().find():[id=data().network].name?data().network"
                     }
                   ],
-                  "type": "View?class=flex align-center network-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  "view": "View?class=flex align-center network-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flex align-center centers-in-device stations-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center centers-in-device stations-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=if():[data().center]:[مركز +centers:().find():[id=data().center].name]:[if():[data().station]:[محطة +stations:().find():[id=data().station].name]:_string];if():[!text]:[text=]?data().center||data().station"
+                      "view": "Text?style.fontSize=1.4rem;text=if():[data().center]:[مركز +centers:().find():[id=data().center].name]:[if():[data().station]:[محطة +stations:().find():[id=data().station].name]:_string];if():[!text]:[text=]?data().center||data().station"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center monitor-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center monitor-in-device;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=monitors:().find():[id=data().monitor].serial-number?data().monitor"
+                      "view": "Text?style.fontSize=1.4rem;text=monitors:().find():[id=data().monitor].serial-number?data().monitor"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().name-on-monitor?data().name-on-monitor"
+                      "view": "Text?style.fontSize=1.4rem;text=data().name-on-monitor?data().name-on-monitor"
                     }
                   ]
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=[data().in-devices.len()||0].ar()"
+                      "view": "Text?style.fontSize=1.4rem;text=[data().in-devices.len()||0].ar()"
                     }
                   ],
-                  "type": "View?class=flex align-center devices;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
+                  "view": "View?class=flex align-center devices;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=[data().out-devices.len()||0].ar()"
+                      "view": "Text?style.fontSize=1.4rem;text=[data().out-devices.len()||0].ar()"
                     }
                   ],
-                  "type": "View?class=flex align-center devices;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
+                  "view": "View?class=flex align-center devices;style.flexWrap=wrap;style.height=100%;style.width=100%;style.gap=.6rem"
                 },
                 {
                   "children": [
                     {
-                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
+                      "view": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
                       "controls": [
                         {
                           "actions": "setPosition:devices-actions?position.placement=right;position.positioner=().id",
@@ -318,18 +318,18 @@
                       ]
                     }
                   ],
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
+                  "view": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem"
                 }
               ]
             }
           ],
-          "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:devices.len().greater():0"
+          "view": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:devices.len().greater():0"
         }
       ],
-      "type": "View?id=devices-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:devices-view-type=list]:flex.else():none?)(:devices-view-type=list"
+      "view": "View?id=devices-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:devices-view-type=list]:flex.else():none?)(:devices-view-type=list"
     }
   ],
   "id": "devices-views",
   "functions": {},
-  "type": "View?id=devices-views;class=flex column;style.gap=.2rem"
+  "view": "View?id=devices-views;class=flex column;style.gap=.2rem"
 }

@@ -5,12 +5,12 @@
         {
           "children": [
             {
-              "type": "View?class=flexbox;style.height=100%;style.width=100%",
+              "view": "View?class=flexbox;style.height=100%;style.width=100%",
               "children": [
                 {
                   "children": [
                     {
-                      "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                      "view": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                     }
                   ],
                   "controls": [
@@ -18,15 +18,15 @@
                       "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():maintenance-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():maintenance-views.getChildrenByClassName():checker.find():checked]:flex:none"
                     }
                   ],
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
+                  "view": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false"
                 }
               ]
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                  "view": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
                       "actions": "sort;update:maintenance-list-view?sort.Data=maintenance;sort.path=active",
@@ -37,90 +37,90 @@
               ]
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الحالة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الحالة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=حالة عمل الصيانة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
-                }
-              ]
-            },
-            {
-              "children": [
-                {
-                  "type": "Text?class=ar pointer;text=القائمين بالصيانة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
-                }
-              ],
-              "type": "View?class=flex align-center"
-            },
-            {
-              "type": "View?class=flex align-center",
-              "children": [
-                {
-                  "type": "Text?class=ar pointer;text=تاريخ البدء;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=حالة عمل الصيانة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=تاريخ الإنتهاء;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=القائمين بالصيانة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
+            },
+            {
+              "view": "View?class=flex align-center",
+              "children": [
+                {
+                  "view": "Text?class=ar pointer;text=تاريخ البدء;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                }
+              ]
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=مكان العطل الرئيسي;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=تاريخ الإنتهاء;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الجهاز الرئيسي المعطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=مكان العطل الرئيسي;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=وصف العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الجهاز الرئيسي المعطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=وصف العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center?false"
+              "view": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
               "children": [
                 {
-                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
+                  "view": "Text?class=ar pointer;text=;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                }
+              ],
+              "view": "View?class=flex align-center?false"
+            },
+            {
+              "view": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
+              "children": [
+                {
+                  "view": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none",
                   "controls": [
                     {
                       "actions": "setPosition:maintenance-remove-all-popup?position.placement=right;position.positioner=().id",
@@ -131,7 +131,7 @@
               ]
             }
           ],
-          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden"
+          "view": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden"
         },
         {
           "children": [
@@ -140,10 +140,10 @@
                 {
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                      "view": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                       "children": [
                         {
-                          "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                          "view": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                         }
                       ],
                       "controls": [
@@ -153,13 +153,13 @@
                       ]
                     }
                   ],
-                  "type": "View?class=flexbox;style.width=100%;style.height=100%"
+                  "view": "View?class=flexbox;style.width=100%;style.height=100%"
                 },
                 {
-                  "type": "View?class=flex align-center",
+                  "view": "View?class=flex align-center",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
+                      "view": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
                       "controls": [
                         {
                           "actions": "save?save.collection=maintenance;save.doc=data().id;save.data=data()",
@@ -170,10 +170,10 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
+                  "view": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
+                      "view": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
                     },
                     {
                       "controls": [
@@ -181,7 +181,7 @@
                           "event": "click?copyToClipBoard():[data().id]"
                         }
                       ],
-                      "type": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0"
+                      "view": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0"
                     }
                   ],
                   "controls": [
@@ -200,77 +200,77 @@
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().status"
+                      "view": "Text?style.fontSize=1.4rem;text=data().status"
                     }
                   ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().maintenance-status"
+                      "view": "Text?style.fontSize=1.4rem;text=data().maintenance-status"
                     }
                   ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flex align-center member;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center member;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=members:().filter():[id.in():[data().members]].():name.join(): ,"
+                      "view": "Text?style.fontSize=1.4rem;text=members:().filter():[id.in():[data().members]].():name.join(): ,"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().start-date.toSimplifiedDateTimeAr();tooltip.text=data().start-date.toSimplifiedDateTimeAr():time"
+                      "view": "Text?style.fontSize=1.4rem;text=data().start-date.toSimplifiedDateTimeAr();tooltip.text=data().start-date.toSimplifiedDateTimeAr():time"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;if():[data().end-date]:[text=data().end-date.toSimplifiedDateTimeAr();tooltip.text=data().end-date.toSimplifiedDateTimeAr():time]:[text=]"
-                    }
-                  ]
-                },
-                {
-                  "children": [
-                    {
-                      "type": "Text?style.fontSize=1.4rem;text=if():[data().issue-place]:[if():[data().issue-place-type=مركز]:[مركز +[centers:().find():[id=data().issue-place].name||]]:[محطة +[stations:().find():[id=data().issue-place].name||]]]:''"
-                    }
-                  ],
-                  "type": "View?class=flex align-center center station;style.flexWrap=wrap;style.height=100%;style.width=100%"
-                },
-                {
-                  "children": [
-                    {
-                      "type": "Text?style.fontSize=1.4rem;text=if():[data().issue-device]:[devices:().find():[id=data().issue-device].name]:"
-                    }
-                  ],
-                  "type": "View?class=flex align-center device;style.flexWrap=wrap;style.height=100%;style.width=100%"
-                },
-                {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
-                  "children": [
-                    {
-                      "type": "Text?class=dots;style.fontSize=1.4rem;text=if():[data().maintenance-description]:[data().maintenance-description]:"
+                      "view": "Text?style.fontSize=1.4rem;if():[data().end-date]:[text=data().end-date.toSimplifiedDateTimeAr();tooltip.text=data().end-date.toSimplifiedDateTimeAr():time]:[text=]"
                     }
                   ]
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text="
+                      "view": "Text?style.fontSize=1.4rem;text=if():[data().issue-place]:[if():[data().issue-place-type=مركز]:[مركز +[centers:().find():[id=data().issue-place].name||]]:[محطة +[stations:().find():[id=data().issue-place].name||]]]:''"
                     }
                   ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%?false"
+                  "view": "View?class=flex align-center center station;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
+                  "children": [
+                    {
+                      "view": "Text?style.fontSize=1.4rem;text=if():[data().issue-device]:[devices:().find():[id=data().issue-device].name]:"
+                    }
+                  ],
+                  "view": "View?class=flex align-center device;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                },
+                {
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "children": [
+                    {
+                      "view": "Text?class=dots;style.fontSize=1.4rem;text=if():[data().maintenance-description]:[data().maintenance-description]:"
+                    }
+                  ]
+                },
+                {
+                  "children": [
+                    {
+                      "view": "Text?style.fontSize=1.4rem;text="
+                    }
+                  ],
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%?false"
+                },
+                {
+                  "view": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem",
                   "children": [
                     {
                       "controls": [
@@ -279,21 +279,21 @@
                           "actions": "setPosition:maintenance-actions?position.placement=right;position.positioner=().id"
                         }
                       ],
-                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
+                      "view": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s"
                     }
                   ]
                 }
               ],
-              "type": "[View]?style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[maintenance-view-type:()=list]:grid:none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa"
+              "view": "[View]?style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[maintenance-view-type:()=list]:grid:none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa"
             }
           ],
-          "type": "View?doc=maintenances;class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?maintenances:().len()>0"
+          "view": "View?doc=maintenances;class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?maintenances:().len()>0"
         }
       ],
-      "type": "View?id=maintenance-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[maintenance-view-type:()=list]:flex:none?maintenance-view-type:()=list"
+      "view": "View?id=maintenance-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[maintenance-view-type:()=list]:flex:none?maintenance-view-type:()=list"
     }
   ],
-  "type": "View?id=maintenance-views;class=flex column;style.gap=.2rem",
+  "view": "View?id=maintenance-views;class=flex column;style.gap=.2rem",
   "id": "maintenance-views",
   "creation-date": "1663076548179",
   "functions": {}

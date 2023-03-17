@@ -1,14 +1,14 @@
 {
-    "type": "View:store-editor?class=flex;style:[transition=.2s;height=100%;position=relative]",
+    "view": "View:store-editor?class=flex;style:[transition=.2s;height=100%;position=relative]",
     "children": [
         {
-            "type": "View?style:[width=4.5rem;backgroundColor=#f9f9f9;height=100%]",
+            "view": "View?style:[width=4.5rem;backgroundColor=#f9f9f9;height=100%]",
             "children": [
                 {
-                    "type": "View:store-editor-btn?tooltip.text=store;class=flexbox pointer;open=false;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
+                    "view": "View:store-editor-btn?tooltip.text=store;class=flexbox pointer;open=false;style:[minHeight=4.5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #000:2px solid #ffffff00]",
                     "children": [
                         {
-                            "type": "Icon?class=flexbox;name=store;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
+                            "view": "Icon?class=flexbox;name=store;google.outlined;style.color=if():[parent().open]:#000:#888;style.fontSize=2.7rem"
                         }
                     ],
                     "controls": [
@@ -20,15 +20,15 @@
             ]
         },
         {
-            "type": "View:store-editor-sidebar?class=flex column;style:[width=19rem;transition=.2s;backgroundColor=#f0f0f0;overflow=auto;padding=.5rem 0;width=0;zIndex=2]",
+            "view": "View:store-editor-sidebar?class=flex column;style:[width=19rem;transition=.2s;backgroundColor=#f0f0f0;overflow=auto;padding=.5rem 0;width=0;zIndex=2]",
             "children": [
                 {
-                    "type": "View?"
+                    "view": "View?"
                 }
             ]
         },
         {
-            "type": "View?id=sidebar-width-controller-1;style:[minHeight=100%;width=6px;backgroundColor=#34aeeb;cursor=ew-resize;position=absolute;right=0;top=0;zIndex=100;opacity=0;transition=.2s];mouseenter:[style().opacity=1;():[sidebar-width-controller].style().opacity=1];mouseleave:[style().opacity=0;():[sidebar-width-controller].style().opacity=0]",
+            "view": "View?id=sidebar-width-controller-1;style:[minHeight=100%;width=6px;backgroundColor=#34aeeb;cursor=ew-resize;position=absolute;right=0;top=0;zIndex=100;opacity=0;transition=.2s];mouseenter:[style().opacity=1;():[sidebar-width-controller].style().opacity=1];mouseleave:[style().opacity=0;():[sidebar-width-controller].style().opacity=0]",
             "controls": [
                 {
                 "event": "mousedown?document().style().cursor=ew-resize;():[sidebar-open-manager:()].style().transition=null;():[store-editor-sidebar].style().transition=null;mousedown=true;width=():[sidebar-open-manager:()].style().width.split():rem.0.num();screenX=)(:screenX"

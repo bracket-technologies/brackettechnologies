@@ -5,10 +5,8 @@ const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 const { toStyle } = require("./toStyle")
 
-const _imports = [ "link", "meta", "title", "script", "style"]
-
 module.exports = {
-    createHtml: ({ _window, lookupActions, awaits, id: _id, req, res, import: _import, _, __, ___ }) => {
+    createHtml: ({ _window, lookupActions, awaits, id: _id, req, res, import: _import, _, __, ___, viewer }) => {
     
     return new Promise (async resolve => {
 
@@ -32,7 +30,7 @@ module.exports = {
         views[id].index = index
         views[id].parent = view.id
         
-        return await createElement({ _window, lookupActions, awaits, id, req, res, import: _import, _, __, ___ })
+        return await createElement({ _window, lookupActions, awaits, id, req, res, import: _import, _, __, ___, viewer })
       }))
 
       // siblings
@@ -49,7 +47,7 @@ module.exports = {
           views[id].index = view.index + ":" + index
           views[id].parent = view.parent
           
-          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
+          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
         }))
 
         siblings += _siblings.join("")
@@ -69,7 +67,7 @@ module.exports = {
           views[id].index = view.index + ":" + index
           views[id].parent = view.parent
           
-          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
+          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
         }))
 
         prevSiblings += _siblings.join("")
@@ -86,13 +84,13 @@ module.exports = {
         innerHTML = colorize({ _window, lookupActions, awaits, string: innerHTML, ...(typeof view.colorize === "object" ? view.colorize : {}) })
       }
 
-      if (_id === "body") return resolve("")
+      if (_id === "html") return resolve("")
       
       var tag = _import ? "" : require("./toHTML")({ _window, lookupActions, awaits, id: _id, innerHTML }) || ""
       if (prevSiblings) tag = prevSiblings + tag
       if (siblings) tag += siblings
       
-      if (!tag && _imports.includes(type.toLowerCase())) {
+      if (_import) {
 
         type = type.toLowerCase()
         delete view.text
@@ -100,14 +98,20 @@ module.exports = {
         delete view.view
         delete view.parent
         delete view["my-views"]
+        delete view.viewType
     
         /*if (view.body) view.body = true
         else view.head = true*/
     
         if (type === "link" || type === "meta") {
           
-          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value.toString().replace(/\\/g, '')}"`).join(" ")}>`
+          delete view.id
+          delete view.index
+
+          tag = `<${type} ${Object.entries(view).map(([key, value]) => key !== "head" && key !== "body" ? `${key}="${value.toString().replace(/\\/g, '')}"` : "").filter(i => i).join(" ")}>`
+
         } else if (type === "style") {
+
           tag = `
           <style>
     
@@ -120,21 +124,22 @@ module.exports = {
               `)}
             
           </style>`
+
         } else {
-          tag = `<${type} ${Object.entries(view).map(([key, value]) => `${key}="${value.toString().replace(/\\/g, '')}"`).join(" ")}>${(view.text || "").replace(/\\/g, '')}</${type}>`
+
+          tag = `<${type} ${Object.entries(view).map(([key, value]) => key !== "head" && key !== "body" ? `${key}="${value.toString().replace(/\\/g, '')}"` : "").filter(i => i).join(" ")}>${(view.text || "").replace(/\\/g, '')}</${type}>`
         }
         
-        if (view.body) {
+        if (view.head) {
     
-          global.children.body += tag.replace(` body="true"`, "")
-          return resolve(global.children.body)
-    
+          global.__TAGS__.head += tag.replace(` head="true"`, "")
+          return resolve(global.__TAGS__.head)
+
         } else {
     
-          global.children.head += tag.replace(` head="true"`, "")
-          return resolve(global.children.head)
+          global.__TAGS__.body += tag.replace(` body="true"`, "")
+          return resolve(global.__TAGS__.body)
         }
-    
       }
     
       // linkable

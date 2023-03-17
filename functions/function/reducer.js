@@ -23,6 +23,7 @@ const { toAwait } = require("./toAwait")
 const { lengthConverter } = require("./resize")
 const actions = require("./actions.json")
 const events = require("./events.json")
+const { func } = require("./func")
 
 const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value, key, params = {}, object, _, __, ___,  e, req, res, mount, condition, createElement }) => {
     
@@ -188,34 +189,41 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         if (args[3]) {
 
             if (condition) return toApproval({ _window, lookupActions, awaits, e, params, string: args[3], id, _, __, ___,  req, res, object })
-            if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, _, __, ___,  e, object, mount, createElement, condition })
+            if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, _, __, ___,  e, object, mount, createElement })
             else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, _, __, ___,  e, object, mount, createElement })
         }
 
         if (path[1] && path[1].includes("else()")) {
+
           if (path[2]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: path[1].split(":")[1], params, _, __, ___,  e, object, mount })
           else return toValue({ req, res, _window, lookupActions, awaits, id, value: path[1].split(":")[1], params, _, __, ___,  e, object, mount })
-        }
 
-        if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
+        } else if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
 
             var _path = path.slice(2)
             _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
             return reducer({ _window, lookupActions, awaits, id, value, key, path: _path, params, object, _, __, ___,  e, req, res, mount, condition })
 
-        } else return 
+        } else if (!path[1]) return
+        
+        path.shift()
+        path0 = path[0].split(":")[0] || ""
+        args = path[0].split(":")
 
       } else {
-
+        
         if (condition) return toApproval({ _window, lookupActions, awaits, e, params, string: args[2], id, _, __, ___,  req, res, object })
-        if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object, mount, createElement, condition })
+        if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object, mount, createElement })
         else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object, mount, createElement })
 
         path.shift()
         while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
             path.shift()
         }
-        path0 = path[0] || ""
+        if (path[0]) {
+            path0 = path[0].split(":")[0] || ""
+            args = path[0].split(":")
+        } else return _object
       }
     }
     
@@ -317,7 +325,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               if (view.islabel || view.templated || view.link || view.labeled) path.unshift("input()")
           }
           
-          if (!object) {
+          if (!object && !_object) {
             path.unshift("()")
             path0 = "()"
           }
@@ -376,10 +384,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 _object = toValue({ req, res, _window, lookupActions, awaits, object, id, value: global.codes[path0], params, _, __, ___, e })
             }
             
-            
-            
-            
-            
             else if (path0 === "today()") _object = new Date()
             else if (path0 === "" || path0 === "_string") _object = ""
             else if (path0 === "_array" || path0 === "_list") {
@@ -409,6 +413,15 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                   })
                 }
+            }
+
+            else if (path0 === "{}") {
+
+                _object = {}
+                path[0].split(":").slice(1).map(el => {
+                    el = toValue({ req, res, _window, lookupActions, awaits, id, _, __, ___, e, value: el, params }) || {}
+                    _object = { ..._object, ...el }
+                })
             }
             
             else if (mount) {
@@ -1965,8 +1978,21 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
             _o = _params.object || _params.map || o
             if (_params.index) return _o.derivations[_params.index]
-            else if (_params.path !== undefined) return toArray(_params.path).reduce((o, k) => o[k], _o)
-            else return _o.derivations
+            
+            if ((key && value !== undefined && lastIndex) || _params.value !== undefined) {
+
+                if (_params.path !== undefined) return toArray(_params.path).reduce((o, k, i) => {
+                    if (i === _params.path.length - 1) return o[k] = _params.value !== undefined ? _params.value : value
+                    else return o[k]
+                }, _o)
+
+                else return _o.derivations
+
+            } else {
+
+                if (_params.path !== undefined) return toArray(_params.path).reduce((o, k) => o[k], _o)
+                else return _o.derivations
+            }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2831,8 +2857,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "includes()" || k0 === "inc()") {
           
-            var _include = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, _, __, ___ })
-            answer = o.includes(_include)
+            var _item = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, _, __, ___ })
+            if (typeof _item !== "object") {
+                answer = o.includes(_item)
+            } else {
+                answer = o.find(item => isEqual(item, _item)) ? true : false
+            }
             
         } else if (k0 === "notInclude()" || k0 === "doesnotInclude()") {
             
@@ -2887,7 +2917,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
           res(toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1], params }))
 
-        } else if (k0 === "require()" || k0 === "import()") {
+        } else if (k0 === "require()") {
 
           require(toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1], params }))
 
@@ -3729,14 +3759,46 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 return o
             }
         
-        } else if (k0 === "importJson()") {
+        } else if (k0 === "import()") {
         
-            answer = importJson()
+            var _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
+            _params.type = _params.json ? "json" : _params.type
+            
+            var _await = ""
+            if (args[2]) {
+                _await = global.codes[args[2]]
+                awaits.unshift({ hold: true, await: _await, action: "import()" })
+            }
+
+            if (_params.type === "json") {
+                
+                importJson({ req, res, _window, myawait: _await, lookupActions, awaits, id, e, _, __, ___, params, asyncer: true })
+                return true
+
+            } else {
+
+                require(toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1], params }))
+            }
+        
+        } else if (k0 === "export()") {
+        
+            var _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
+            _params.type = _params.json ? "json" : _params.type
+
+            if (_params.type === "json") exportJson(_params)
         
         } else if (k0 === "exportJson()") {
             
-            var _name = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
-            exportJson({ data: o, filename: _name})
+            if (isParam({ _window, string: args[1] })) {
+
+                var _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
+                exportJson(_params)
+
+            } else {
+
+                var _name = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
+                exportJson({ data: o, name: _name})
+            }
             
         } else if (k0 === "flat()") {
             
@@ -3805,8 +3867,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               _params.path = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, params, value: args[1] })
             }
             
-            answer = require("./sort").sort({ _window, lookupActions, awaits, sort: _params, id, e })
-            if (Array.isArray(o)) o = answer
+            _params.data = answer = require("./sort").sort({ _window, lookupActions, awaits, sort: _params, id, e })
             
             return answer
 
@@ -3851,6 +3912,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
         } else if (k0 === "html2pdf()") {
 
+            window.devicePixelRatio = 2
             var _params = {}, _el, once
             if (isParam({ _window, string: args[1] })) {
 
@@ -3864,7 +3926,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 margin:       [0.1, 0.1],
                 filename:     _params.name || generate({ length: 20 }),
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 1.5, dpi: 192 },
+                html2canvas:  { scale: 2, dpi: 600 },
                 jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
                 execludeImages: _params.execludeImages || false
             }
@@ -3906,6 +3968,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                                 }).save().then(() => {
 
                                     if (args[2]) toParam({ req, res, _window, lookupActions, awaits, id, e, _, string: args[2] })
+                                    window.devicePixelRatio = 1
                                 })
                             }
                         })
@@ -3914,6 +3977,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 } else html2pdf().set(opt).from(_element).save().then(() => {
 
                     if (args[2]) toParam({ req, res, _window, lookupActions, awaits, id, e, _, string: args[2] })
+                    window.devicePixelRatio = 1
                 })
             })
 
@@ -4040,7 +4104,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
             
         } else if (k0 === "exec()") {
-            
+
             answer = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, string: args[1], object })
             
         } else if (k0 === "exportCSV()") {
@@ -4461,7 +4525,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 _await = global.codes[args[2]]
                 awaits.unshift({ hold: true, await: _await, action: "upload()" })
             }
-            var _upload = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+            var _upload = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
             require("./upload")({ _window, lookupActions, awaits, req, res, id, myawait: _await, e, _, __, ___,  upload: _upload, asyncer: true })
             return true
           }
@@ -4477,7 +4541,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 _await = global.codes[args[2]]
                 awaits.unshift({ hold: true, await: _await, action: "confirmEmail()" })
             }
-            var _save = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+            var _save = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
             _save.store = "confirmEmail"
             return require("./save").save({ id, lookupActions, awaits, e, _, __, ___, myawait: _await, save: _save, asyncer: true })
           }
@@ -4491,13 +4555,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 _await = global.codes[args[2]]
                 awaits.unshift({ hold: true, await: _await, action: "save()" })
             }
-            var _save = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+            var _save = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
             return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, _, __, ___, myawait: _await, save: _save, asyncer: true })
           }
 
-          var _collection = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
-          var _doc = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[2], params })
-          var _data = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[3], params })
+          var _collection = toValue({ req, res, _window, lookupActions, id, e, _, __, ___, value: args[1], params })
+          var _doc = toValue({ req, res, _window, lookupActions, id, e, _, __, ___, value: args[2], params })
+          var _data = toValue({ req, res, _window, lookupActions, id, e, _, __, ___, value: args[3], params })
           var _save = { collection: _collection, doc: _doc, data: _data }
 
           return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, save: _save, _, __, ___ })
@@ -4505,6 +4569,53 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "fetch()") {
 
 
+
+        } else if (k0.length === 14 && k0.slice(-2) === "()" && k0.slice(0, 7) === 'coded()') { // [actions?conditions]():[params]:[awaits]
+
+            k0 = k0.slice(0, 12)
+            var _await = ""
+            if (args[2]) {
+                _await = global.codes[args[2]]
+                awaits.unshift({ hold: true, await: _await, action: "action()" })
+            }
+
+            var _params = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
+            _params.server = (_params.type === "server" || _params.server) ? true : false
+
+            if (!_params.server) {
+
+                if (k0.includes('coded()') && k0.length === 12) k0 = global.codes[k0]
+
+                var conditions = k0.split("?")[1]
+                if (conditions) {
+                    var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___) })
+                    if (!approved) return false
+                }
+
+                k0 = k0.split("?")[0]
+
+                if (!condition) answer = toParam({ _window, string: k0, e, id, req, res, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer: true, awaits, lookupActions })
+                else answer = toApproval({ _window, string: k0, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+        
+                // await params
+                if (!_await || awaits.findIndex(i => i.await === _await) === 0) {
+    
+                    if (_await) {
+    
+                        require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait: _await, awaits, req, res, _: global.search, __: _, ___: __ })
+    
+                    } else {
+    
+                        awaits.splice(0, 1)
+                        console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (lookupActions).fn })
+                    }
+                }
+
+            } else {
+
+                var _func = { data: _params, actions: global.codes[k0] }
+                return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, lookupActions, awaits, myawait: _await })
+            }
 
         } else if (k0 === "insert()") {
             
@@ -4519,11 +4630,63 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     awaits.unshift({ hold: true, await: _await, action: "insert()" })
                 }
 
-                var _params = toParam({ req, res, _window, lookupActions, awaits, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+                var _params = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
                 insert({ id: _params.id || _id, insert: _params, lookupActions, awaits, asyncer: true, myawait: _await, _, __, ___ })
             }
 
             return true
+
+        } else if (k0 === "mail()") {
+
+            var _await = ""
+            if (args[2]) {
+                _await = global.codes[args[2]]
+                awaits.unshift({ hold: true, await: _await, action: "mail()" })
+            }
+
+            var _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
+
+            if (!_window) {
+
+                var _func = { data: _params, actions: `mail():[subject=_.subject;content=_.content;text=_.text;html=_.html;recipient=_.recipient;recipients=_.recipients;attachments=_.attachments]:[send():_]` }
+                return func({ _window, req, res, id, lookupActions, awaits, myawait: _await, asyncer: true, e, func: _func, _, __, ___, ...params })
+            }
+
+            //if (_window) {
+
+            else require("./mail").mail({ req, res, _window, lookupActions, awaits, myawait: _await, asyncer: true, id, e, _, __, ___, ..._params })
+            
+            /*} else {
+
+                if (isParam({ _window, string: args[1] })) {
+
+                    var _options = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+                    _options.body = _options.body || _options.text || _options.content
+                    _options.subject = _options.subject || _options.header || _options.title
+                    // window.open(`mailto:${_options.email}?subject=${_options.subject}&body=${_options.body}`)
+                    
+                    try{
+                        var theApp = new ActiveXObject("Outlook.Application");
+                        var objNS = theApp.GetNameSpace('MAPI');
+                        var theMailItem = theApp.CreateItem(0); // value 0 = MailItem
+                        theMailItem.to = (_options.to);
+                        theMailItem.Subject = (_options.subject);
+                        theMailItem.Body = (_options.body);
+                        // theMailItem.Attachments.Add("C:\\file.txt");
+                        theMailItem.display();
+                    }
+                    catch (err) {
+                        alert(err.message);
+                    }
+
+                } else {
+
+                    var _email = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1], params })
+                    var _subject = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[2], params })
+                    var _body = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[3], params })
+                    window.open(`mailto:${_email}?subject=${_subject}&body=${_body}`)
+                }
+            }*/
 
         } else if (k0 === "search()") {
 
@@ -4534,18 +4697,19 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 _await = global.codes[args[2]]
                 awaits.unshift({ hold: true, await: _await, action: "search()" })
             }
-            var _search = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
-            require("./search").search({ _window, lookupActions, awaits, myawait: _await, id, e, _, __, ___,  req, res, search: _search, asyncer: true })
+
+            var _search = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
+            require("./search").search({ _window, lookupActions, awaits, myawait: _await, asyncer: true, id, e, _, __, ___,  req, res, search: _search })
             return true
           }
 
-          var _collection = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1], params })
+          var _collection = toValue({ req, res, _window, lookupActions, id, e, _, __, ___,  value: args[1], params })
           var _search = {}
 
           if (typeof _collection === "string") {
 
-            var _doc = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[2], params })
-            var _data = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[3], params })
+            var _doc = toValue({ req, res, _window, lookupActions, id, e, _, __, ___,  value: args[2], params })
+            var _data = toValue({ req, res, _window, lookupActions, id, e, _, __, ___,  value: args[3], params })
             _search = { collection: _collection, doc: _doc, data: _data }
             require("./search").search({ _window, lookupActions, awaits, req, res, id, e, search: _search, _, __, ___ })
             return true
@@ -4557,6 +4721,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 _await = global.codes[args[2]]
                 awaits.unshift({ hold: true, await: _await, action: "search()" })
             }
+            
             require("./search").search({ _window, lookupActions, awaits, myawait: _await, req, res, id, e, search: _collection, _, __, ___, asyncer: true })
             return true
           }
@@ -4570,12 +4735,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     _await = global.codes[args[2]]
                     awaits.unshift({ hold: true, await: _await, action: "erase()" })
                 }
-              var _erase = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+              var _erase = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
               return require("./erase").erase({ _window, lookupActions, awaits, myawait: _await, req, res, id, e, _, __, ___,  erase: _erase, asyncer: true })
             }
   
-            var _collection = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
-            var _doc = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[2], params })
+            var _collection = toValue({ req, res, _window, lookupActions, id, e, _, __, ___, value: args[1], params })
+            var _doc = toValue({ req, res, _window, lookupActions, id, e, _, __, ___, value: args[2], params })
             var _erase = { collection: _collection, doc: _doc }
   
             return require("./erase").erase({ _window, lookupActions, awaits, req, res, id, e, save: _erase, _, __, ___ })
@@ -4586,7 +4751,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           if (!res || res.headersSent) return
           if (isParam({ _window, string: args[1] })) {
             
-            var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })//, _params_ = {}
+            var _params = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })//, _params_ = {}
 
             _params.success = _params.success !== undefined ? _params.success : true
             _params.message = _params.message || _params.msg || "Action executed successfully!"
@@ -4597,7 +4762,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
           } else {
             
-            var _data = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1], params })
+            var _data = toValue({ req, res, _window, lookupActions, id, e, _, __, ___,  value: args[1], params })
             if (!_window.function) return global.func = { success: true, message: "Action executed successfully!", data: _data }
             else res.send({ success: true, message: "Action executed successfully!", data: _data })
           }
@@ -4655,37 +4820,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 if (navigator.clipboard) navigator.clipboard.writeText(text)
                 else document.execCommand("copy")
                 document.body.removeChild(textArea)
-            }
-
-        } else if (k0 === "mail()") {
-
-            if (isParam({ _window, string: args[1] })) {
-
-                var _options = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
-                _options.body = _options.body || _options.text || _options.content
-                _options.subject = _options.subject || _options.header || _options.title
-                // window.open(`mailto:${_options.email}?subject=${_options.subject}&body=${_options.body}`)
-                
-                try{
-                    var theApp = new ActiveXObject("Outlook.Application");
-                    var objNS = theApp.GetNameSpace('MAPI');
-                    var theMailItem = theApp.CreateItem(0); // value 0 = MailItem
-                    theMailItem.to = (_options.to);
-                    theMailItem.Subject = (_options.subject);
-                    theMailItem.Body = (_options.body);
-                    // theMailItem.Attachments.Add("C:\\file.txt");
-                    theMailItem.display();
-                }
-                catch (err) {
-                    alert(err.message);
-                }
-
-            } else {
-
-                var _email = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1], params })
-                var _subject = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[2], params })
-                var _body = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[3], params })
-                window.open(`mailto:${_email}?subject=${_subject}&body=${_body}`)
             }
 
         } else if (k0 === "addClass()") {

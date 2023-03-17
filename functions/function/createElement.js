@@ -12,8 +12,9 @@ const { override } = require("./merge")
 const { isParam } = require("./isParam")
 
 const myViews = require("./views.json")
+const _imports = [ "link", "meta", "title", "script", "style" ]
 
-const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _import, params: inheritedParams = {}, _, __, ___ }) => {
+const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _import, params: inheritedParams = {}, _, __, ___, viewer = "view" }) => {
 
   return new Promise (async resolve => {
 
@@ -27,9 +28,10 @@ const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _
 
     // view is empty
     if (!view.type) return resolve("")
-    if (!view["my-views"] && !_import) view["my-views"] = [...parent["my-views"]]
+    if (!view["my-views"]) view["my-views"] = [...(parent["my-views"] || [])]
+    view.viewType = viewer = view.viewType || parent.viewType || viewer
     
-    // code ''
+    // encode
     view.type = toCode({ _window, lookupActions, awaits, string: view.type })
     view.type = toCode({ _window, lookupActions, awaits, string: view.type, start: "'", end: "'" })
     
@@ -39,6 +41,8 @@ const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _
     var conditions = view.type.split("?")[2]
     var subParams = type.split(":")[1]
     type = type.split(":")[0]
+
+    _import = view.id === "html" || (parent.id === "html" && _imports.includes(type.toLowerCase()))
     
     // [type]
     if (!view.duplicatedElement && type.includes("coded()")) {
@@ -96,7 +100,7 @@ const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _
             if (_params.mount || _params.path) _view.derivations = [...derivations, index]
             
             views[_id] = _view
-            return await createElement({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: index, ___: _ })
+            return await createElement({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: index, ___: _, viewer })
           }))
 
         } else {
@@ -116,7 +120,7 @@ const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _
           if (_params.mount || _params.path) _view.derivations = [...derivations, "0"]
           
           views[_id] = _view
-          tags = await createElement({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: 0, ___: _ })
+          tags = await createElement({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: 0, ___: _, viewer })
           
           delete views[view.id]
           return resolve(tags)
@@ -155,13 +159,13 @@ const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _
         if (views[_id] && view.id !== _id) view.id = _id + generate()
         else view.id = id = _id
         
-        if (global.data.view[_id] && !view["creation-date"] && id !== _id) {
+        if (global.data[viewer][_id] && !view["creation-date"] && id !== _id) {
           
           view["my-views"].push(_id)
-          views[_id] = { ...view, ...clone(global.data.view[_id]) }
+          views[_id] = { ...view, ...clone(global.data[viewer][_id]) }
           delete views[id]
           
-          tags = await createElement({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___ })
+          tags = await createElement({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___, viewer })
           return resolve(tags)
         }
       }
@@ -187,41 +191,46 @@ const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _
         delete views[id]
         return resolve("")
       }
-    }
 
-    // before loading controls
-    await new Promise (async resolve => {
-      
-      toArray(view.controls).map(async (controls = {}) => {
+      // before loading controls
+      if (view.controls.length > 0) {
+        await new Promise (async resolve => {
+          
+          toArray(view.controls).map(async (controls = {}) => {
 
-        //
-        if (!controls.event) return
-        var event = toCode({ _window, lookupActions, awaits, string: controls.event })
-        event = toCode({ _window, lookupActions, awaits, string: event, start: "'", end: "'" })
+            //
+            if (!controls.event) return
+            var event = toCode({ _window, lookupActions, awaits, string: controls.event })
+            event = toCode({ _window, lookupActions, awaits, string: event, start: "'", end: "'" })
 
-        if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2], _, __, ___ })) {
+            if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2], _, __, ___ })) {
 
-          toParam({ req, res, _window, id, string: event.split("?")[1], createElement: true })
-          view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
-        }
-      })
+              toParam({ req, res, _window, id, string: event.split("?")[1], createElement: true })
+              view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
+            }
+          })
 
-      if (global.promises[id] && global.promises[id].length > 0) {
-        
-        await Promise.all((global.promises[id] || []))
-        await Promise.all((global.promises[id] || []))
-        await Promise.all((global.promises[id] || []))
-        await Promise.all((global.promises[id] || []))
-        delete global.promises[id]
+          if (global.promises[id] && global.promises[id].length > 0) {
+            
+            await Promise.all((global.promises[id] || []))
+            await Promise.all((global.promises[id] || []))
+            await Promise.all((global.promises[id] || []))
+            await Promise.all((global.promises[id] || []))
+            await Promise.all((global.promises[id] || []))
+            await Promise.all((global.promises[id] || []))
+            
+            delete global.promises[id]
+          }
+
+          resolve()
+        })
       }
+      
+      if (global.breakCreateElement[id]) {
 
-      resolve()
-    })
-    
-    if (global.breakCreateElement[id]) {
-
-      global.breakCreateElement[id] = false
-      return resolve("")
+        global.breakCreateElement[id] = false
+        return resolve("")
+      }
     }
 
     /////////////////// approval & params /////////////////////
@@ -245,34 +254,34 @@ const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _
       if (parent.passToChildren) override(view, parent.passToChildren)
 
       // view
-      if (!_import && (params.view || (!myViews.includes(view.type) && global.data.view[view.type]))) {
+      if (!_import && (params.view || (!myViews.includes(view.type) && global.data[viewer][view.type]))) {
 
         var viewId = params.view || view.type
         delete view.view
         delete params.view
         view["my-views"].push(viewId)
         
-        var newView = clone(global.data.view[viewId])
+        var newView = clone(global.data[viewer][viewId])
         if (!newView) return resolve("")
         if (newView.id && views[newView.id]) newView.id += generate()
 
         views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
         
-        tags = await createElement({ _window, lookupActions, awaits, id, req, res, params, _, __, ___ })
+        tags = await createElement({ _window, lookupActions, awaits, id, req, res, params, _, __, ___, viewer })
         return resolve(tags)
       }
 
-    } else if (!_import && (!myViews.includes(view.type) && global.data.view[view.type])) {
+    } else if (!_import && (!myViews.includes(view.type) && global.data[viewer][view.type])) {
       
       var viewId = view.type
       view["my-views"].push(viewId)
-      var newView = clone(global.data.view[viewId])
+      var newView = clone(global.data[viewer][viewId])
       if (!newView) return resolve("")
       if (newView.id && views[newView.id]) newView.id += generate()
       
       views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
 
-      tags = await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
+      tags = await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
       return resolve(tags)
     }
 
@@ -295,8 +304,7 @@ const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _
 
     // root
     if (view.parent === "root") views.root.child = view.id
-    
-    tags = await createTags({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
+    tags = await createTags({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
     resolve(tags)
   })
 }

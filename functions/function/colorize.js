@@ -39,10 +39,18 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0, ...p
     // #comments
     /*while (string.includes("?#") || string.includes(";#")) {
 
-      var string0 = ""
-      if (string.split("?#")[1]) string0 = string.split("?#")[0]
-      else if (string.split(";#")[1]) string0 = string.split(";#")[0]
-      key = string.split(string0)[1].split
+      var string0 = "", operator = ""
+      if (string.split("?#")[1]) {
+        string0 = string.split("?#")[0]
+        operator = "?"
+      } else if (string.split(";#")[1]) {
+        string0 = string.split(";#")[0]
+        operator = ";"
+      }
+      key = string.split(string0 + operator).slice(1).join(string0 + operator)
+      var comment = key.split(";")[0]
+      key = key.split(comment)[1] || ""
+      string = string0 + operator + `<span contenteditable style="background-color:#00000000; color: green; white-space:nowrap">&apos;${comment}&apos;</span>` + key
     }*/
 
     // equal

@@ -4,16 +4,16 @@
   "which-industry-will-you-be-operating-in": "Travel & Tourism",
   "children": [
     {
-      "type": "script?body;src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js'"
+      "view": "script?body;src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js'"
     },
     {
-      "type": "script?body;src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'"
+      "view": "script?body;src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'"
     },
     {
-      "type": "script?body;src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'"
+      "view": "script?body;src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'"
     },
     {
-      "type": "script?body;src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/shim.min.js';integrity='sha512-nPnkC29R0sikt0ieZaAkk28Ib7Y1Dz7IqePgELH30NnSi1DzG4x+envJAOHz8ZSAveLXAHTR3ai2E9DZUsT8pQ==';crossorigin='anonymous';referrerpolicy='no-referrer'"
+      "view": "script?body;src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/shim.min.js';integrity='sha512-nPnkC29R0sikt0ieZaAkk28Ib7Y1Dz7IqePgELH30NnSi1DzG4x+envJAOHz8ZSAveLXAHTR3ai2E9DZUsT8pQ==';crossorigin='anonymous';referrerpolicy='no-referrer'"
     }
   ],
   "creation-date": 1651335662000,

@@ -53,7 +53,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
     else if (params["break()"]) return params
 
     if (param.charAt(0) === "#") return
-    
+
     // split
     if (param.includes("=")) {
 
@@ -61,16 +61,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       key = keys[0]
       value = param.substring(key.length + 1)
 
-    } else {
-
-      key = param
-    
-      // execute function: coded()xxxxx() => [params that inherited function attributes in underscore]()
-      if (key.length === 14 && key.slice(-2) === "()" && key.slice(0, 7) === 'coded()') key = global.codes[key.slice(0, 12)]
-    
-      // promise: coded()xxxxx:coded()xxxxx => promise():[]:[]
-      else if (key.length === 25 && key.split("coded()") === 2 && key.slice(0, 7) === 'coded()') key = "promise():" + key
-    }
+    } else key = param
 
     // increment
     if (key && value === undefined && key.slice(-2) === "++") {
@@ -94,8 +85,16 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       value = `coded()${_key}+coded()${_key0}`*/
     }
 
+    // {}=
+    else if (key && value && key.slice(-2) === "{}") {
+
+      key = key.slice(0, -2)
+      return ({ ...(toValue({ _window, lookupActions, awaits, req, res, id, e, value: key, params, _, __, ___, condition, object }) || {}), ...(toValue({ _window, lookupActions, awaits, req, res, id, e, value, params, _, __, ___, condition, object }) || {}) })
+    }
+
     // +=
     else if (key && value && key.slice(-1) === "+") {
+
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
@@ -107,6 +106,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
     // -=
     else if (key && value && key.slice(-1) === "-") {
+
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
@@ -119,6 +119,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
     // *=
     else if (key && value && key.slice(-1) === "*") {
+
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
@@ -143,7 +144,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       if (awaiter[0]) return params.await += `wait():${awaiter.join(":")};`
       else if (awaiter.length === 0) return
     }
-
+    
     // await
     if (key.includes("await().")) {
 
@@ -322,11 +323,11 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
     // field:action()
     if (path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
 
-      view && clone(view["my-views"] || []).reverse().map(view => {
+      view && clone(view["my-views"] || []).reverse().map(myview => {
         if (!isFn) {
-          isFn = Object.keys(global.data.view[view] && global.data.view[view].functions || {}).find(fn => fn === pathi.slice(0, -2))
+          isFn = Object.keys(global.data[view.viewType][myview] && global.data[view.viewType][myview].functions || {}).find(fn => fn === pathi.slice(0, -2))
           if (isFn) {
-            isFn = toCode({ _window, lookupActions, awaits, id, string: (global.data.view[view].functions || {})[isFn], start: "'", end: "'" })
+            isFn = toCode({ _window, lookupActions, awaits, id, string: (global.data[view.viewType][myview].functions || {})[isFn], start: "'", end: "'" })
             isFn = toCode({ _window, lookupActions, awaits, id, string: isFn })
           }
         }

@@ -5,7 +5,7 @@
     {
       "children": [
         {
-          "type": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
+          "view": "View?style.minHeight=3.5rem;style.flex=1;style.backgroundColor=#f6f6f6;style.display=grid;style.borderRadius=1rem 1rem 0 0;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden",
           "children": [
             {
               "children": [
@@ -15,20 +15,20 @@
                       "event": "click?().checked=().checked.opp();1stChild().style().opacity=if():[().checked]:1.else():0;():issues-views.getChildrenByClassName():checker.slice():1._map():[_.checked=().checked;_.1stChild().style().opacity=if():[_.checked]:1.else():0];():delete-all.style().display=if():[():issues-views.getChildrenByClassName():checker.find():checked]:flex.else():none"
                     }
                   ],
-                  "type": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                  "view": "View?id=main-checker;class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                   "children": [
                     {
-                      "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                      "view": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                     }
                   ]
                 }
               ],
-              "type": "View?class=flexbox;style.height=100%;style.width=100%"
+              "view": "View?class=flexbox;style.height=100%;style.width=100%"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
+                  "view": "Text?class=ar pointer;text=فعّال;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888",
                   "controls": [
                     {
                       "event": "click",
@@ -37,90 +37,90 @@
                   ]
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الرمز;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الحالة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الحالة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=حالة العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=حالة العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=كيفية التبليغ;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=كيفية التبليغ;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=المبلّغ;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=المبلّغ;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=المراقب;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=المراقب;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=مكان العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=مكان العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=الشبكة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=الشبكة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flex align-center",
+              "view": "View?class=flex align-center",
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=شاشة المراقبة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=شاشة المراقبة;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ]
             },
             {
               "children": [
                 {
-                  "type": "Text?class=ar pointer;text=حساسية العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
+                  "view": "Text?class=ar pointer;text=حساسية العطل;style.fontSize=1.3rem;style.fontWeight=bold;style.color=#888"
                 }
               ],
-              "type": "View?class=flex align-center"
+              "view": "View?class=flex align-center"
             },
             {
-              "type": "View?class=flexbox;style:[justifyContent=flex-end;padding=0 .5rem;flex=1]",
+              "view": "View?class=flexbox;style:[justifyContent=flex-end;padding=0 .5rem;flex=1]",
               "children": [
                 {
                   "controls": [
@@ -129,22 +129,22 @@
                       "event": "click?if():[():issues-remove-all-popup.style().pointerEvents=none]:[():issues-remove-all-popup.style():[pointerEvents=auto;opacity=1;transform=scale(1)]].else():[():issues-remove-all-popup.style():[pointerEvents=none;opacity=0;transform=scale(0.5)]]"
                     }
                   ],
-                  "type": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
+                  "view": "Icon?id=delete-all;tooltip.text=حذف جميع البيانات المحددة;name=bi-trash;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.transform=scale(1.1);style.color=red;style.fontSize=1.8rem;style.transition=.3s;style.display=none"
                 }
               ]
             }
           ]
         },
         {
-          "type": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:issues.len()>0",
+          "view": "View?class=flex column;style.overflow=auto;style.height=calc(100vh - 33rem);style.width=100%;style.gap=.2rem?)(:issues.len()>0",
           "children": [
             {
-              "type": "[View]?data=issues:();style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[issues-view-type:()=list]:grid:none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
+              "view": "[View]?data=issues:();style.padding=.25rem 0;style.minHeight=4rem;style.alignItems=center;style.width=100%;style.display=if():[issues-view-type:()=list]:grid:none;style.gridTemplateColumns=6rem 6rem 20rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 6rem;style.overflow=hidden;hover.style.backgroundColor=#fafafa",
               "children": [
                 {
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
+                      "view": "View?class=flexbox pointer checker;style.border=2px solid #ddd;style.borderRadius=.5rem;style.backgroundColor=#f6f6f6;style.height=2rem;style.width=2rem;checked=false",
                       "controls": [
                         {
                           "event": "click?checked=().checked.opp();1stChild().style().opacity=if():[checked]:1:0;if():[():main-checker.checked]:[():main-checker.():[checked=false;1stChild().style().opacity=0]];():delete-all.style().display=if():[():monitors-views.className():checker.find():checked]:flex:none"
@@ -152,18 +152,18 @@
                       ],
                       "children": [
                         {
-                          "type": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
+                          "view": "Icon?class=flexbox;name=bi-check2;style.color=blue;style.fontSize=2.75rem;style.marginRight=-.5rem;style.marginBottom=.25rem;style.opacity=if():[parent().checked]:1:0;style.transition=.3s"
                         }
                       ]
                     }
                   ],
-                  "type": "View?class=flexbox;style.width=100%;style.height=100%"
+                  "view": "View?class=flexbox;style.width=100%;style.height=100%"
                 },
                 {
-                  "type": "View?class=flex align-center",
+                  "view": "View?class=flex align-center",
                   "children": [
                     {
-                      "type": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
+                      "view": "View?class=flexbox pointer;style.height=1.25rem;style.width=1.25rem;style.backgroundColor=if():[data().active]:#15ff00.else():#ddd;style.borderRadius=1rem;style.transition=transform 50ms, background-color 400ms",
                       "controls": [
                         {
                           "actions": "save?save.collection=issues;save.doc=data().id;save.data=data()",
@@ -174,7 +174,7 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
+                  "view": "View?class=flex align-center pointer;style.position=relative;style.flexWrap=wrap;style.height=100%;style.width=100%;style.transition=.2s",
                   "controls": [
                     {
                       "event": "mouseenter?1stChild().style().fontWeight=bold;2ndChild().style().opacity=1"
@@ -189,10 +189,10 @@
                   ],
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
+                      "view": "Text?style.fontSize=1.4rem;text=data().id;style.transition=.3s"
                     },
                     {
-                      "type": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0",
+                      "view": "Icon?class=flexbox;mininote.text=copied;style.position=absolute;style.left=.5rem;style.height=2.5rem;style.width=2.5rem;style.borderRadius=0.5rem;style.transition=.3s;hover.style.backgroundColor=#ddd;style.backgroundColor=#eee;name=bi-clipboard;style.fontSize=1.3rem;style.opacity=0",
                       "controls": [
                         {
                           "event": "click?copyToClipBoard():[data().id]"
@@ -202,79 +202,79 @@
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().status"
+                      "view": "Text?style.fontSize=1.4rem;text=data().status"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().issue-status"
+                      "view": "Text?style.fontSize=1.4rem;text=data().issue-status"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().how-alert-received"
+                      "view": "Text?style.fontSize=1.4rem;text=data().how-alert-received"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center member center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center member center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=if():[data().alerter]:[members:().find():[id=data().alerter].name+' ('+centers:().find():[members.inc():[data().alerter]].name+')']:"
+                      "view": "Text?style.fontSize=1.4rem;text=if():[data().alerter]:[members:().find():[id=data().alerter].name+' ('+centers:().find():[members.inc():[data().alerter]].name+')']:"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center member center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center member center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=if():[data().receiver]:[members:().find():[id=data().receiver].name+' ('+centers:().find():[members.inc():[data().receiver]].name+')']:"
+                      "view": "Text?style.fontSize=1.4rem;text=if():[data().receiver]:[members:().find():[id=data().receiver].name+' ('+centers:().find():[members.inc():[data().receiver]].name+')']:"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flex align-center station center;style.flexWrap=wrap;style.height=100%;style.width=100%",
+                  "view": "View?class=flex align-center station center;style.flexWrap=wrap;style.height=100%;style.width=100%",
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().issue-place-type+ +if():[data().[issue-place-type]=محطة]:[stations:().find():[id=data().issue-place].name].elif():[data().[issue-place-type]=مركز]:[centers:().find():[id=data().issue-place].name]:"
+                      "view": "Text?style.fontSize=1.4rem;text=data().issue-place-type+ +if():[data().[issue-place-type]=محطة]:[stations:().find():[id=data().issue-place].name].elif():[data().[issue-place-type]=مركز]:[centers:().find():[id=data().issue-place].name]:"
                     }
                   ]
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=networks:().find():[id=data().network].name"
+                      "view": "Text?style.fontSize=1.4rem;text=networks:().find():[id=data().network].name"
                     }
                   ],
-                  "type": "View?class=flex align-center network;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  "view": "View?class=flex align-center network;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=if():[data().monitor]:[monitors:().find():[id=data().monitor].serial-number]:العطل غير ظاهر"
+                      "view": "Text?style.fontSize=1.4rem;text=if():[data().monitor]:[monitors:().find():[id=data().monitor].serial-number]:العطل غير ظاهر"
                     }
                   ],
-                  "type": "View?class=flex align-center monitor;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  "view": "View?class=flex align-center monitor;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
                   "children": [
                     {
-                      "type": "Text?style.fontSize=1.4rem;text=data().issue-sensitivity"
+                      "view": "Text?style.fontSize=1.4rem;text=data().issue-sensitivity"
                     }
                   ],
-                  "type": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
+                  "view": "View?class=flex align-center;style.flexWrap=wrap;style.height=100%;style.width=100%"
                 },
                 {
-                  "type": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem;style.gap=1.5rem",
+                  "view": "View?class=flexbox;style.justifyContent=flex-end;style.padding=0 .5rem;style.gap=1.5rem",
                   "children": [
                     {
                       "controls": [
@@ -285,10 +285,10 @@
                           "event": "click:droplist?loader.show;search():[collection=maintenances;field.issue.equal=data().id]:[maintenances:()=search:().data.values();unreset-maintenances:()=true;():fixes.click()]?droplist-txt:()=مشاهدة"
                         }
                       ],
-                      "type": "Icon?name=bi-tools;class=pointer;tooltip.text=أعمال الصيانة;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=1.7rem;style.transition=.3s;droplist:[items=_list:مشاهدة:تسجيل;preventDefault]"
+                      "view": "Icon?name=bi-tools;class=pointer;tooltip.text=أعمال الصيانة;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=1.7rem;style.transition=.3s;droplist:[items=_list:مشاهدة:تسجيل;preventDefault]"
                     },
                     {
-                      "type": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
+                      "view": "Icon?name=bi-three-dots-vertical;class=pointer;style.height=3.5rem;style.borderRadius=3rem;style.width=3.5rem;hover.style.backgroundColor=#fff;style.color=#999;hover.style.color=blue;style.fontSize=2rem;style.transition=.3s",
                       "controls": [
                         {
                           "event": "click?if():[)(:issues-data=data();():issues-actions.style().pointerEvents=auto]:[():issues-actions.style():[opacity=0;pointerEvents=none;transform=scale(0.8);)(:issues-data.del()]].else():[():issues-actions.style():[opacity=1;pointerEvents=auto;transform=scale(1);)(:issues-data=data().clone()]];)(:new-issues.del();)(:issues-copied.del();():issues-remove-popup.style():[opacity=0;pointerEvents=none;transform=scale(0.5)]",
@@ -303,9 +303,9 @@
           ]
         }
       ],
-      "type": "View?id=issues-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:issues-view-type=list]:flex:none?)(:issues-view-type=list"
+      "view": "View?id=issues-list-view;class=flex column;style.flex=1;style.gap=.2rem;style.display=if():[)(:issues-view-type=list]:flex:none?)(:issues-view-type=list"
     }
   ],
-  "type": "View?id=issues-views;class=flex column;style.gap=.2rem",
+  "view": "View?id=issues-views;class=flex column;style.gap=.2rem",
   "functions": {}
 }

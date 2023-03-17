@@ -44,6 +44,7 @@ const initialize = ({ req, res, id }) => {
       device: /*deviceDetector(req.headers['user-agent'])*/detector.detect(req.headers['user-agent'])
     }, 
     views: { backend: {}, "my-views": [], [id]: {} },
+    __PACKAGE__: {},
     actions: {},
   }
 }
@@ -76,7 +77,7 @@ module.exports = ({ app, db, storage, rdb }) => {
         if (path[i] === "database") return require("./databaseLocal").postdb({ req, res })
         }*/
         
-        // function
+        // action
         if (path[i] === "action") return execFunction({ _window, req, res, id })
 
         // confirmEmail

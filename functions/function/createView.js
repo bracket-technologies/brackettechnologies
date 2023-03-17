@@ -8,7 +8,7 @@ const createView = ({ view, id = generate(), lookupActions }) => {
   var view = window.views[id] || {}
   var global = window.global
   
-  view.children = toArray(clone(global.data.view[view]))
+  view.children = toArray(clone(global.data[view.viewType][view]))
 
   // update
   update({ id, lookupActions })

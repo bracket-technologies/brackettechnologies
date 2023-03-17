@@ -4,7 +4,7 @@ const { createComponent } = require("./createComponent")
 const { createHtml } = require("./createHtml")
 const { toArray } = require("./toArray")
 
-const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___ }) => {
+const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___, viewer }) => {
 
   const { createElement } = require("./createElement")
   return new Promise (async resolve => {
@@ -116,7 +116,7 @@ const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, 
           if (mapType[0] === "data") _view.derivations.push(lastEl)
          
           views[id] = _view
-          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
+          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
         }))
 
         tags = tags.join("")
@@ -138,26 +138,26 @@ const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, 
         if (mapType[0] === "data") _view.derivations.push(lastEl)
         
         views[id] = _view
-        tags = await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
+        tags = await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
       }
 
-    } else tags = await createTag({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
+    } else tags = await createTag({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
     
     resolve(tags)
   })
 }
 
-const createTag = async ({ _window, lookupActions, awaits, id, req, res, _, __, ___ }) => {
+const createTag = async ({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer }) => {
   
   // components
-  componentModifier({ _window, lookupActions, awaits, id })
+  componentModifier({ _window, id })
   createComponent({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
-  componentModifier({ _window, lookupActions, awaits, id })
+  componentModifier({ _window, id })
   
-  return await createHtml({ _window, lookupActions, awaits, id, req, res, _, __, ___ })
+  return await createHtml({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
 }
 
-const componentModifier = ({ _window, lookupActions, awaits, id }) => {
+const componentModifier = ({ _window, id }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
 

@@ -2,7 +2,7 @@
   "id": "tag1",
   "children": [
     {
-      "type": "link?href='https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400&display=swap';rel=stylesheet"
+      "view": "link?href='https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400&display=swap';rel=stylesheet"
     }
   ],
   "name": "Dr. Talal Abo Ghazaleh",

@@ -1,5 +1,5 @@
 {
-  "type": "project-login?title=Projects | Bracket;description=Choose project page",
+  "view": "project-login?title=Projects | Bracket;description=Choose project page",
   "controls": [
     {
       "event": "beforeLoading?if():[getCookie():_id]:[checkUser():[user=getCookie():_id]]:[route():login]?!data:().editor.account"

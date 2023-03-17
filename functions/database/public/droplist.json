@@ -1,5 +1,5 @@
 {
-    "type": "View:droplist?class=box-shadow flex column;style:[width=fit-content;transition=opacity .1s, transform .1s, background-color .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
+    "view": "View:droplist?class=box-shadow flex column;style:[width=fit-content;transition=opacity .1s, transform .1s, background-color .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
     "controls": [{
         "event": "click:body?mouseleave()?droplist-positioner:();!droplist-positioner:().contains():[clicked:()];!droplist.contains():[clicked:()]?false"
     }, {

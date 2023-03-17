@@ -1,8 +1,8 @@
 {
-    "type": "View?id=gallery-view;class=flex column;style:[maxHeight=100%;transition=.2s;gap=2rem;width=100%;position=absolute;left=0;right=0;overflowY=auto;padding=2rem;display=none]",
+    "view": "View?id=gallery-view;class=flex column;style:[maxHeight=100%;transition=.2s;gap=2rem;width=100%;position=absolute;left=0;right=0;overflowY=auto;padding=2rem;display=none]",
     "children": [
         {
-            "type": "View?style.display=flex;style.gap=2rem;style.width=100%",
+            "view": "View?style.display=flex;style.gap=2rem;style.width=100%",
             "children": [
                 {
                     "children": [
@@ -19,19 +19,19 @@
                                     ],
                                     "children": [
                                         {
-                                            "type": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                            "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
                                         },
                                         {
-                                            "type": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                            "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
                                         }
                                     ],
-                                    "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0"
+                                    "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0"
                                 },
                                 {
-                                    "type": "Image?src=gallery-images:().0.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "view": "Image?src=gallery-images:().0.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                                 }
                             ],
-                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().0",
+                            "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().0",
                             "controls": [
                                 {
                                     "event": "mouseenter?1stChild().style().opacity=1"
@@ -56,7 +56,7 @@
                                     "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().1.name;():new-image-name.txt()=gallery-images:().1.name;new-image-data:().url=gallery-images:().1.url;():new-image-url.update()"
                                 }
                             ],
-                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().1",
+                            "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().1",
                             "children": [
                                 {
                                     "controls": [
@@ -67,23 +67,23 @@
                                             "event": "mouseleave?1stChild().style().transform=scaleX(1)"
                                         }
                                     ],
-                                    "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
+                                    "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
                                     "children": [
                                         {
-                                            "type": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                            "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
                                         },
                                         {
-                                            "type": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                            "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
                                         }
                                     ]
                                 },
                                 {
-                                    "type": "Image?src=gallery-images:().1.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "view": "Image?src=gallery-images:().1.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                                 }
                             ]
                         },
                         {
-                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().2",
+                            "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().2",
                             "controls": [
                                 {
                                     "event": "mouseenter?1stChild().style().opacity=1"
@@ -97,7 +97,7 @@
                             ],
                             "children": [
                                 {
-                                    "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
+                                    "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
                                     "controls": [
                                         {
                                             "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
@@ -108,15 +108,15 @@
                                     ],
                                     "children": [
                                         {
-                                            "type": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                            "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
                                         },
                                         {
-                                            "type": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                            "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
                                         }
                                     ]
                                 },
                                 {
-                                    "type": "Image?src=gallery-images:().2.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "view": "Image?src=gallery-images:().2.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                                 }
                             ]
                         },
@@ -131,21 +131,21 @@
                                             "event": "mouseleave?1stChild().style().transform=scaleX(1)"
                                         }
                                     ],
-                                    "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
+                                    "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
                                     "children": [
                                         {
-                                            "type": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                            "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
                                         },
                                         {
-                                            "type": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                            "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
                                         }
                                     ]
                                 },
                                 {
-                                    "type": "Image?src=gallery-images:().3.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "view": "Image?src=gallery-images:().3.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                                 }
                             ],
-                            "type": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().3",
+                            "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().3",
                             "controls": [
                                 {
                                     "event": "mouseenter?1stChild().style().opacity=1"
@@ -159,13 +159,13 @@
                             ]
                         }
                     ],
-                    "type": "View?style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr;style.gap=2rem;style.width=80%"
+                    "view": "View?style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr;style.gap=2rem;style.width=80%"
                 },
                 {
-                    "type": "View?class=flexbox;style.border=1px dashed #ddd;style.width=calc(20% - 2rem);style.borderRadius=.5rem;style.height=15rem;style.backgroundColor=#f8f8f8;hover.style.backgroundColor=#f0f0f0;style.transition=.3s;style.position=relative;style.overflow=hidden",
+                    "view": "View?class=flexbox;style.border=1px dashed #ddd;style.width=calc(20% - 2rem);style.borderRadius=.5rem;style.height=15rem;style.backgroundColor=#f8f8f8;hover.style.backgroundColor=#f0f0f0;style.transition=.3s;style.position=relative;style.overflow=hidden",
                     "children": [
                         {
-                            "type": "Icon?name=bi-cloud-arrow-up;style.color=#999;style.fontSize=2.5rem;style.position=absolute;style.zIndex=2;style.pointerEvents=none"
+                            "view": "Icon?name=bi-cloud-arrow-up;style.color=#999;style.fontSize=2.5rem;style.position=absolute;style.zIndex=2;style.pointerEvents=none"
                         },
                         {
                             "controls": [
@@ -173,7 +173,7 @@
                                     "event": "change?new-image:()=true;():image-window.style():[pointerEvents=auto;opacity=1];():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();fileReader():[():image-window-img.src()=[e().target.result]];upload-file:()=e().target.files.0;new-image-data:().name=e().target.files.0.name;txt():new-image-name=e().target.files.0.name"
                                 }
                             ],
-                            "type": "Input?id=gallery-view-input;input.type=file;style.cursor=pointer;style.position=absolute;style.top=-100px;style.left=-100px;style.height=200%;style.width=200%;style.opacity=0"
+                            "view": "Input?id=gallery-view-input;input.type=file;style.cursor=pointer;style.position=absolute;style.top=-100px;style.left=-100px;style.height=200%;style.width=200%;style.opacity=0"
                         }
                     ]
                 }
@@ -193,18 +193,18 @@
                             "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=data().name;():new-image-name.txt()=data().name;new-image-data:().url=data().url;():new-image-url.update()"
                         }
                     ],
-                    "type": "[View]?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer",
+                    "view": "[View]?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer",
                     "children": [
                         {
                             "children": [
                                 {
-                                    "type": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                    "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
                                 },
                                 {
-                                    "type": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                    "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
                                 }
                             ],
-                            "type": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
+                            "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
                             "controls": [
                                 {
                                     "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
@@ -215,12 +215,12 @@
                             ]
                         },
                         {
-                            "type": "Image?src=data().url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                            "view": "Image?src=data().url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
                         }
                     ]
                 }
             ],
-            "type": "View?data=gallery-images:().slice():4;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;style.gap=2rem;style.width=100%?gallery-images:().len()>4"
+            "view": "View?data=gallery-images:().slice():4;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;style.gap=2rem;style.width=100%?gallery-images:().len()>4"
         }
     ],
     "id": "gallery-view",

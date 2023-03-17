@@ -17,7 +17,7 @@ module.exports = {
 
       global.currentPage = currentPage
       global.path = route.path ? path : currentPage === "main" ? "/" : (currentPage.charAt(0) === "/" ? currentPage : `/${currentPage}`)
-      console.log(global.path);
+      
       if (res) {
         
         global.updateLocation= true
@@ -27,17 +27,15 @@ module.exports = {
 
           global.promises[id] = toArray(global.promises[id])
 
-          var myFn = () => {
-            return new Promise (async resolve => {
+          global.promises[id].push(new Promise (async resolve => {
               
               var innerHTML = await createElement({ _window, id: "root", req, res })
-              if (!global.innerHTML.root) global.innerHTML.root = innerHTML
+              if (!global.__INNERHTML__.root) global.__INNERHTML__.root = innerHTML
               global.breakCreateElement[id] = true
               resolve()
             })
-          }
-
-          global.promises[id].push(myFn())
+          )
+          
         }
 
       } else {

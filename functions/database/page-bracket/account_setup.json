@@ -1,6 +1,6 @@
 {
     "creation-date": 1640182764348,
-    "type": "account_setup?path=/account_setup;name=Account Setup;title=Account setup | Bracket",
+    "view": "account_setup?path=/account_setup;name=Account Setup;title=Account setup | Bracket",
     "controls": [
         {
             "event": "loading?)(:currency=LBP"

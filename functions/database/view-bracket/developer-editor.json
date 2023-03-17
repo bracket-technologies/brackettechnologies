@@ -1,32 +1,32 @@
 {
-  "type": "View?id=developer-editor;style:[overflowX=hidden;minHeight=100vh];project:()=path:().split():/.2;log():[path:()];functionsHeight:()=20",
+  "view": "View?id=developer-editor;style:[overflowX=hidden;minHeight=100vh];project:()=path:().split():/.2;log():[path:()];functionsHeight:()=20",
   "creation-date": 1637494484000,
   "children": [
     {
       "children": [
         {
-          "type": "View?style.display=flex;style.alignItems=center;style.height=100%;style.width=100%;style.position=relative;style.gap=1rem",
+          "view": "View?style.display=flex;style.alignItems=center;style.height=100%;style.width=100%;style.position=relative;style.gap=1rem",
           "children": [
             {
-              "type": "Text?link:[path=/;preventDefault];text=Bracket;class=flexbox;style.margin=0 1rem;style.fontSize=2rem;style.width=fit-content;style.color=#ee384e;style.fontWeight=900"
+              "view": "Text?link:[path=/;preventDefault];text=Bracket;class=flexbox;style.margin=0 1rem;style.fontSize=2rem;style.width=fit-content;style.color=#ee384e;style.fontWeight=900"
             },
             {
-              "type": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #ddd;style.borderLeft=1px solid #ddd;style.transition=.2s;droplist:[items='data:().editor.account.projects';item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault]",
+              "view": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #ddd;style.borderLeft=1px solid #ddd;style.transition=.2s;droplist:[items='data:().editor.account.projects';item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault]",
               "children": [
                 {
-                  "type": "Text?text=project;style.fontSize=1.4rem;style.marginRight=.5rem;style.color=#888"
+                  "view": "Text?text=project;style.fontSize=1.4rem;style.marginRight=.5rem;style.color=#888"
                 },
                 {
-                  "type": "Text?text=:;style.marginRight=1rem;style.fontSize=1.4rem"
+                  "view": "Text?text=:;style.marginRight=1rem;style.fontSize=1.4rem"
                 },
                 {
-                  "type": "Text?text=project:();style:[fontSize=1.4rem;marginRight=.5rem]"
+                  "view": "Text?text=project:();style:[fontSize=1.4rem;marginRight=.5rem]"
                 },
                 {
-                  "type": "View?class=flexbox",
+                  "view": "View?class=flexbox",
                   "children": [
                     {
-                      "type": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;paddingTop=.25rem]"
+                      "view": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;paddingTop=.25rem]"
                     }
                   ]
                 }
@@ -38,24 +38,24 @@
               ]
             },
             {
-              "type": "View?class=flex-box;style.justifyContent=flex-end;style.flex=1;style.height=100%",
+              "view": "View?class=flex-box;style.justifyContent=flex-end;style.flex=1;style.height=100%",
               "children": [
                 {
-                  "type": "View?class=flex align-center;style:[gap=2rem]",
+                  "view": "View?class=flex align-center;style:[gap=2rem]",
                   "children": [
                     {
-                      "type": "View?class=flex pointer;style:[borderRadius=.25rem;width=3.25rem;height=3.25rem;marginLeft=auto;transition=width .3s;overflow=hidden]",
+                      "view": "View?class=flex pointer;style:[borderRadius=.25rem;width=3.25rem;height=3.25rem;marginLeft=auto;transition=width .3s;overflow=hidden]",
                       "children": [
                         {
-                          "type": "View?class=flexbox",
+                          "view": "View?class=flexbox",
                           "children": [
                             {
-                              "type": "Icon?class=flexbox;name=search;google.symbol.outlined;style:[color=#999;fontSize=2.2rem;minWidth=3.25rem]"
+                              "view": "Icon?class=flexbox;name=search;google.symbol.outlined;style:[color=#999;fontSize=2.2rem;minWidth=3.25rem]"
                             }
                           ]
                         },
                         {
-                          "type": "Input?style:[flex=1;height=100%;transition=background-color .3s;borderRadius=1.5rem;padding=0 2rem];placeholder=Search by ID or text for pages, views, collections, products, flights, hotels, storage, reviews...",
+                          "view": "Input?style:[flex=1;height=100%;transition=background-color .3s;borderRadius=1.5rem;padding=0 2rem];placeholder=Search by ID or text for pages, views, collections, products, flights, hotels, storage, reviews...",
                           "controls": [
                             {
                               "event": "focus?parent().():[style().width=70rem];style().backgroundColor=#e6e6e6;focus=true"
@@ -76,18 +76,18 @@
                       ]
                     },
                     {
-                      "type": "View?class=flexbox",
+                      "view": "View?class=flexbox",
                       "children": [
                         {
-                          "type": "Icon?class=flexbox pointer;name=support_agent;google.symbol.outlined;style:[fontSize=2.2rem;color=#999;transition=.2s];hover.style.color=blue"
+                          "view": "Icon?class=flexbox pointer;name=support_agent;google.symbol.outlined;style:[fontSize=2.2rem;color=#999;transition=.2s];hover.style.color=blue"
                         }
                       ]
                     },
                     {
-                      "type": "View?class=flexbox",
+                      "view": "View?class=flexbox",
                       "children": [
                         {
-                          "type": "Icon?class=flexbox pointer;name=notifications;google.symbol.outlined;style:[fontSize=2.2rem;color=#999;transition=.2s];hover.style.color=red",
+                          "view": "Icon?class=flexbox pointer;name=notifications;google.symbol.outlined;style:[fontSize=2.2rem;color=#999;transition=.2s];hover.style.color=red",
                           "controls": [
                             {
                               "event": "mouseenter?style().transform=rotate(30deg);trans-bell-1:()=timer():[style().transform=rotate(-30deg)]:200;trans-bell-2:()=timer():[style().transform=rotate(30deg)]:400;trans-bell-3:()=timer():[style().transform=rotate(-30deg)]:600;trans-bell-4:()=timer():[style().transform=rotate(0deg)]:800"
@@ -100,60 +100,60 @@
                       ]
                     },
                     {
-                      "type": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
+                      "view": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
                     },
                     {
-                      "type": "View?class=flexbox pointer;style:[gap=1.2rem];droplist:[items=_list:Manage Account:Sign out;item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault]",
+                      "view": "View?class=flexbox pointer;style:[gap=1.2rem];droplist:[items=_list:Manage Account:Sign out;item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault]",
                       "children": [
                         {
-                          "type": "Icon?name=person;google.symbol.outlined;style:[fontSize=2.5rem;color=#999]"
+                          "view": "Icon?name=person;google.symbol.outlined;style:[fontSize=2.5rem;color=#999]"
                         },
                         {
-                          "type": "Text?text=;style:[fontSize=1.4rem;color=#444];loaded:[txt()=Hi +data:().editor.account.first-name]"
+                          "view": "Text?text=;style:[fontSize=1.4rem;color=#444];loaded:[txt()=Hi +data:().editor.account.first-name]"
                         }
                       ],
                       "controls": [
                         {
-                          "event": "click:droplist?eraseCookie():_id;route():login?droplist-txt:()=Sign out"
+                          "event": "click:droplist?eraseCookie():_id;open-docs:()=_list;open-collection:().del();open-doc:().del();open-map:().del();route():login?droplist-txt:()=Sign out"
                         }
                       ]
                     },
                     {
-                      "type": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
+                      "view": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=undo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "view": "View?class=flexbox pointer;tooltip.text=undo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s];undo:()=_list",
                   "children": [
                     {
-                      "type": "Icon?name=undo;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=#000;hover.id=parent().id;style.width=100%"
+                      "view": "Icon?name=undo;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=#000;hover.id=parent().id;style.width=100%"
                     }
                   ],
                   "controls": [
                     {
-                      "event": "click"
+                      "event": "click?theEl=undo:().lastEl();().theEl.prevValue=():[().theEl.id].doc().reduce():[path=().theEl.path];():[().theEl.id].doc().reduce():[path=().theEl.path;value=().theEl.value];update():[().theEl.id];().theEl.value=().theEl.prevValue;redo:().push():[().theEl];undo:().pullLast()?undo:().len()>0;open-collection:()=view||open-collection:()=page"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=redo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "view": "View?class=flexbox pointer;tooltip.text=redo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s];redo:()=_list",
                   "children": [
                     {
-                      "type": "Icon?name=redo;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=#000;hover.id=parent().id;style.width=100%"
+                      "view": "Icon?name=redo;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=#000;hover.id=parent().id;style.width=100%"
                     }
                   ],
                   "controls": [
                     {
-                      "event": "click"
+                      "event": "click?theEl=redo:().lastEl();().theEl.prevValue=():[().theEl.id].doc().reduce():[path=().theEl.path];():[().theEl.id].doc().reduce():[path=().theEl.path;value=().theEl.value];update():[().theEl.id];().theEl.value=().theEl.prevValue;undo:().push():[().theEl];redo:().pullLast()?redo:().len()>0;open-collection:()=view||open-collection:()=page"
                     }
                   ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=publish & preview;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "view": "View?class=flexbox pointer;tooltip.text=publish & preview;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
                   "children": [
                     {
-                      "type": "Icon?name=preview;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=red;hover.id=parent().id;style.width=100%"
+                      "view": "Icon?name=preview;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=red;hover.id=parent().id;style.width=100%"
                     }
                   ],
                   "controls": [
@@ -163,15 +163,15 @@
                   ]
                 },
                 {
-                  "type": "View?class=flexbox pointer;tooltip.text=save;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "view": "View?class=flexbox pointer;tooltip.text=save;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
                   "children": [
                     {
-                      "type": "Icon?name=save_as;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=blue;hover.id=parent().id"
+                      "view": "Icon?name=save_as;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=blue;hover.id=parent().id"
                     }
                   ],
                   "controls": [
                     {
-                      "event": "click?saveDevData()?!hasNestedArray():[className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];!hasNestedArray():[className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];!hasEmptyField():[className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];!hasEmptyField():[className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].data()]"
+                      "event": "click?saveDevData()?():'data-viewer'.children().find():[style().display=flex]._():[open-collection:()=_.open-collection;open-doc:()=_.open-doc];!hasNestedArray():[className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];!hasNestedArray():[className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];!hasEmptyField():[className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];!hasEmptyField():[className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].data()]"
                     }
                   ]
                 }
@@ -180,35 +180,35 @@
           ]
         }
       ],
-      "type": "View?id=navbar;class=flex-start;style.position=absolute;style.zIndex=1;style.backgroundColor=#f9f9f9;style.top=0;style.whiteSpace=nowrap;style.width=100%;style.height=4rem"
+      "view": "View:navbar?class=flex-start;style.position=absolute;style.zIndex=1;style.backgroundColor=#f9f9f9;style.top=0;style.whiteSpace=nowrap;style.width=100%;style.height=4rem"
     },
     {
-      "type": "View?class=vertical;style.minHeight=100%;style.maxWidth=100%;style.marginTop=4rem",
+      "view": "View?class=vertical;style.minHeight=100%;style.maxWidth=100%;style.marginTop=4rem",
       "children": [
         {
-          "type": "View?class=flex",
+          "view": "View?class=flex",
           "children": [
             {
-              "type": "View?view=sidebar"
+              "view": "View?view=sidebar"
             },
             {
               "children": [
                 {
                   "children": [
                     {
-                      "type": "View?style.height=100%;style.width=fit-content;class=flexbox pointer;style.position=relative;style.maxWidth=22rem;hover.style.backgroundColor=#f9f9f9?().data",
+                      "view": "View?style.height=100%;style.width=fit-content;class=flexbox pointer;style.position=relative;style.maxWidth=22rem;hover.style.backgroundColor=#f9f9f9?().data",
                       "children": [
                         {
-                          "type": "View?style.width=1px;style.position=absolute;style.height=50%;style.left=0;style.backgroundColor=#ddd"
+                          "view": "View?style.width=1px;style.position=absolute;style.height=50%;style.left=0;style.backgroundColor=#ddd"
                         },
                         {
-                          "type": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;height=2.25rem;width=2.25rem;borderRadius=2rem;margin=0 .5rem]"
+                          "view": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;height=2.25rem;width=2.25rem;minWidth=2.25rem;borderRadius=2rem;margin=0 .5rem]"
                         },
                         {
-                          "type": "Text?class=dots;text=data();style.fontSize=1.3rem;style.paddingRight=3.5rem"
+                          "view": "Text?class=dots;text=data();style.fontSize=1.3rem;style.paddingRight=3.5rem"
                         },
                         {
-                          "type": "Icon?class=pointer;name=bi-x;style.fontSize=2rem;style.position=absolute;style.right=.5rem;hover.style.backgroundColor=#e9e9e9;style.borderRadius=.5rem;style.height=2.5rem;style.width=2.5rem",
+                          "view": "Icon?class=pointer;name=bi-x;style.fontSize=2rem;style.position=absolute;style.right=.5rem;hover.style.backgroundColor=#e9e9e9;style.borderRadius=.5rem;style.height=2.5rem;style.width=2.5rem",
                           "controls": [
                             {
                               "event": "click?if():[parent().open-collection=_account_]:[open-docs:().pullItem():['account/'+parent().open-doc]].elif():[parent().open-collection=_project_]:[open-docs:().pullItem():['project/'+parent().open-doc]].elif():[parent().open-head-collection]:[open-docs:().pullItem():['data/'+[parent().open-collection.split():'collection-'.1]+'/'+parent().open-doc]]:[open-docs:().pullItem():[parent().open-collection+'/'+parent().open-doc]];className():'data-viewer'.find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem():[data=false];className():functions.find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem():[data=false];if():[open-doc:()=parent().open-doc;parent().next();!parent().prev()]:[parent().next().():[style().backgroundColor=#fff;hover.disable=true];className():'data-viewer'.find():[open-doc=parent().next().open-doc]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;if():[open-collection:()=page||open-collection:()=view||open-collection:()=public||open-collection:()=_project_]:[():'my-functions'.style().height=functionsHeight:()+rem;():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)']:[():'my-functions'.style().height=0;():'data-viewer'.style().height=100%]].elif():[open-doc:()=parent().open-doc;parent().prev()]:[parent().prev().():[style().backgroundColor=#fff;hover.disable=true];className():'data-viewer'.find():[open-doc=parent().prev().open-doc;open-collection=parent().prev().open-collection]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;if():[open-collection:()=page||open-collection:()=view||open-collection:()=public||open-collection:()=_project_]:[():'my-functions'.style().height=functionsHeight:()+rem;():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)']:[():'my-functions'.style().height=0;():'data-viewer'.style().height=100%]];():'data-viewer-bar'.children().find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem();if():[open-docs:().len()=0]:[():'data-viewer-bar'.style().display=none;():'my-functions'.style().display=none]"
@@ -226,22 +226,22 @@
                       ]
                     }
                   ],
-                  "type": "View:'data-viewer-bar'?class=inline-flex;style.height=3.5rem;style.backgroundColor=#f0f0f0;style.display=if():[open-docs:().len()=0]:none:flex"
+                  "view": "View:'data-viewer-bar'?class=inline-flex;style.height=3.5rem;style.backgroundColor=#f0f0f0;style.display=if():[open-docs:().len()=0]:none:flex"
                 },
                 {
-                  "type": "View:main-data-viewer?style:[position=relative;height='calc(100vh - 7.5rem)']",
+                  "view": "View:main-data-viewer?style:[position=relative;height='calc(100vh - 7.5rem)'];click:[className():'data-viewer'.find():[style().display=flex]._():[open-collection:()=_.open-collection;open-doc:()=_.open-doc]]",
                   "children": [
                     {
-                      "type": "View:data-viewer?style:[width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+'rem)';height='calc(100% - '+functionsHeight:()+'rem)';transition=.2s]",
+                      "view": "View:data-viewer?style:[width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+'rem)';height='calc(100% - '+functionsHeight:()+'rem)';transition=.2s]",
                       "children": [
                         {
-                          "type": "View?class=data-viewer;style:[height=100%;width=100%;overflowY=auto]?open-map:()",
+                          "view": "View?class=data-viewer;style:[display=flex;height=100%;width=100%;overflowY=auto]?open-map:()",
                           "children": [
                             {
-                              "type": "View?class=flex column;style:[width=100%]",
+                              "view": "View?class=flex column;style:[width=100%]",
                               "children": [
                                 {
-                                  "type": "Map?arrange=_list:creation-date:id:name:title:path:description:type:view:children:controls:event:watch:actions"
+                                  "view": "Map?arrange=_list:creation-date:id:name:title:path:description:type:view:children:controls:event:watch:actions"
                                 }
                               ]
                             }
@@ -250,57 +250,57 @@
                       ]
                     },
                     {
-                      "type": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().3.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().3.style():[opacity=0;pointerEvents=none]]",
+                      "view": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().3.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().3.style():[opacity=0;pointerEvents=none]]",
                       "children": [
                         {
-                          "type": "View?class=flexbox pointer;tooltip.text=fit;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=1rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height='calc(100% - 7.5rem)';():data-viewer.style().height=0rem;timer():[functionsHeight:()=parent().element.offsetHeight/10]:200]",
+                          "view": "View?class=flexbox pointer;tooltip.text=fit;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=1rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height='calc(100% - 7.5rem)';():data-viewer.style().height=0rem;timer():[functionsHeight:()=parent().element.offsetHeight/10]:200]",
                           "children": [
                             {
-                              "type": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;transform=rotate(180deg);color=#666]"
+                              "view": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;transform=rotate(180deg);color=#666]"
                             }
                           ]
                         },
                         {
-                          "type": "View?class=flexbox pointer;tooltip.text=mini;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=3.75rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=20;parent().style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']",
+                          "view": "View?class=flexbox pointer;tooltip.text=mini;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=3.75rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=20;parent().style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']",
                           "children": [
                             {
-                              "type": "Icon?name=video_label;google.symbol.outlined;style:[fontSize=1.8rem;color=#666]"
+                              "view": "Icon?name=video_label;google.symbol.outlined;style:[fontSize=1.8rem;color=#666]"
                             }
                           ]
                         },
                         {
-                          "type": "View?class=flexbox pointer;tooltip.text=hide;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=6.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=0;parent().style().height=functionsHeight:();():data-viewer.style().height=100%]",
+                          "view": "View?class=flexbox pointer;tooltip.text=hide;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=6.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=0;parent().style().height=functionsHeight:();():data-viewer.style().height=100%]",
                           "children": [
                             {
-                              "type": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;color=#666]"
+                              "view": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;color=#666]"
                             }
                           ]
                         },
                         {
-                          "type": "View?style:[minWidth=100%;height=7px;backgroundColor=#34aeeb;cursor=ns-resize;position=absolute;left=0;top=-0.3rem;zIndex=100;opacity=0;transition=.2s]",
+                          "view": "View?style:[minWidth=100%;height=7px;backgroundColor=#34aeeb;cursor=ns-resize;position=absolute;left=0;top=-0.3rem;zIndex=100;opacity=0;transition=.2s]",
                           "controls": [
                             {
-                            "event": "mousedown?mousedowned=true;document().style().cursor=ns-resize;parent().style().transition=null;screenY=mousePosY:();className():data-viewer.find():[style().display!=none].style().overflowY=hidden"
+                            "event": "mousedown?_mousedowned=true;document().style().cursor=ns-resize;parent().style().transition=null;screenY=mousePosY:();className():'data-viewer'.filter():[style().display!=none].():[style().overflowY=hidden]"
                             },
                             {
-                            "event": "mousemove:body?diff=[mousePosY:()-().screenY]/10;if():[functionsHeight:()=7.5]:[functionsHeight:()=parent().element.offsetHeight/10];parent().style().height=[functionsHeight:()-().diff]+rem;():data-viewer.style().height='calc(100% - '+[functionsHeight:()-().diff]+'rem)'?mousedowned"
+                            "event": "mousemove:body?diff=[mousePosY:()-().screenY]/10;if():[functionsHeight:()=7.5]:[functionsHeight:()=parent().element.offsetHeight/10];parent().style().height=[functionsHeight:()-().diff]+rem;():data-viewer.style().height='calc(100% - '+[functionsHeight:()-().diff]+'rem)'?_mousedowned"
                             },
                             {
-                            "event": "mouseup:body?mousedowned=false;document().style().cursor=default;parent().style().transition=.2s;className():data-viewer.find():[style().display!=none].style().overflowY=auto;functionsHeight:()=functionsHeight:()-().diff?mousedowned"
+                            "event": "mouseup:body?_mousedowned=false;document().style().cursor=default;parent().style().transition=.2s;className():'data-viewer'.filter():[style().display!=none].():[style().overflowY=auto];functionsHeight:()-=().diff?_mousedowned"
                             }
                           ]
                         },
                         {
-                          "type": "View:functions?class=flex column;style:[width=100%;overflowY=auto;height=100%]",
+                          "view": "View:functions?class=flex column;style:[width=100%;overflowY=auto;height=100%]",
                           "children": [
                             {
-                              "type": "View?class=flex column functions;style:[height=100%;width=100%]?open-map:()",
+                              "view": "View?class=flex column functions;style:[height=100%;width=100%]?open-map:()",
                               "children": [
                                 {
-                                  "type": "View?class=flex column;style:[width=100%]",
+                                  "view": "View?class=flex column;style:[width=100%]",
                                   "children": [
                                     {
-                                      "type": "Map?sort"
+                                      "view": "Map?sort"
                                     }
                                   ]
                                 }
@@ -313,17 +313,17 @@
                   ]
                 },
                 {
-                  "type": "View?view=gallery-view"
+                  "view": "View?view=gallery-view"
                 }
               ],
-              "type": "View?id=open-view;class=flex column;style.width=100%;style.position=relative;open-docs:()=open-docs:()||_list"
+              "view": "View:open-view?class=flex column;style.width=100%;style.position=relative;open-docs:()||=_list"
             }
           ]
         }
       ]
     },
     {
-      "type": "View?class=box-shadow;id=file-action-popup;style():[transition=opacity .2s, transform .2s;width=fit-content;height=fit-content;overflowY=auto;transform=scale(0);opacity=0;pointerEvents=none;position=fixed;overflowY=auto;borderRadius=.5rem;backgroundColor=#fff;padding=.2rem]",
+      "view": "View:file-action-popup?class=box-shadow;style():[transition=opacity .2s, transform .2s;width=fit-content;height=fit-content;overflowY=auto;transform=scale(0);opacity=0;pointerEvents=none;position=fixed;overflowY=auto;borderRadius=.5rem;backgroundColor=#fff;padding=.2rem]",
       "controls": [
         {
           "event": "mouseleave?style():[opacity=0;pointerEvents=none;transform=scale(0)]"
@@ -339,7 +339,7 @@
               "event": "click?():[parent().caller].2ndPrev().style().display=none;():[parent().caller].prev().style().display=flex;():[parent().caller].prev().focus();parent().style():[opacity=0;pointerEvents=none;transform='scale(0)']"
             }
           ],
-          "type": "Icon?class=pointer;tooltip.text=rename;name=bi-input-cursor-text;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#f0f0f0"
+          "view": "Icon?class=pointer;tooltip.text=rename;name=bi-input-cursor-text;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#f0f0f0"
         },
         {
           "controls": [
@@ -347,44 +347,52 @@
               "event": "click?duplicate-doc:()=open-doc:();():[open-collection:()].lastChild().click();parent().style():[opacity=0;pointerEvents=none;transform=scale(0)]"
             }
           ],
-          "type": "Icon?class=pointer;tooltip.text=duplicate;name=bi-files;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;hover.style.backgroundColor=#f0f0f0"
+          "view": "Icon?class=pointer;tooltip.text=duplicate;name=bi-files;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;hover.style.backgroundColor=#f0f0f0"
         },
         {
           "controls": [
             {
-              "event": "click:popup?erase():[collection=open-collection:();doc=open-doc:();headers.project=project:()]:[note():'File has been erased!';if():[open-head-collection:()]:[data:().editor.[open-head-collection:()].[open-collection:().split():'collection-'.1].[open-doc:()].del();open-docs:().pullItem():['data/'+[open-collection:().split():'collection-'.1]+'/'+open-doc:()];update():[[open-collection:().split():'collection-'.1]+'-list']]:[data:().editor.[open-collection:()].[open-doc:()].del();open-docs:().pullItem():[open-collection:()+'/'+open-doc:()];update():[open-collection:()+'-list']];():'data-viewer'.children().find():[open-doc=open-doc:();open-collection=open-collection:()].rem():[data=false];():'data-viewer-bar'.children().find():[open-doc=open-doc:();open-collection=open-collection:()].rem();if():[open-docs:().len()=0]:[():'data-viewer-bar'.style().display=none];if():[open-collection:()=storage]:[gallery-images:()=gallery-images:().filter():[id!=open-doc:()];update():'gallery-view'];open-head-collection:().del()]"
+              "event": "click?export():[json;name=open-doc:();data=data:().editor.[open-collection:()].[open-doc:()]];parent().style():[opacity=0;pointerEvents=none;transform=scale(0)]"
             }
           ],
-          "type": "Icon?class=pointer;tooltip.text=remove;popup;name=bi-trash;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;style.borderRadius=0 0 .5rem .5rem;hover.style.backgroundColor=#f0f0f0"
+          "view": "Icon?class=pointer;tooltip.text=export;name=bi-upload;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;hover.style.backgroundColor=#f0f0f0"
+        },
+        {
+          "controls": [
+            {
+              "event": "click:popup?erase():[collection=open-collection:();doc=open-doc:();headers.project=project:()]:[note():'File has been erased!';if():[open-head-collection:()]:[data:().editor.[open-head-collection:()].[open-collection:().split():'collection-'.1].[open-doc:()].del();open-docs:().pullItem():['data/'+[open-collection:().split():'collection-'.1]+'/'+open-doc:()];update():[[open-collection:().split():'collection-'.1]+'-list']]:[data:().editor.[open-collection:()].[open-doc:()].del();open-docs:().pullItem():[open-collection:()+'/'+open-doc:()];update():[open-collection:()+'-list']];():'data-viewer'.children().find():[open-doc=open-doc:();open-collection=open-collection:()].rem():[data=false];():'data-viewer-bar'.children().find():[open-doc=open-doc:();open-collection=open-collection:()].rem();if():[open-docs:().len()=0]:[():'data-viewer-bar'.style().display=none;():'functions'.style().display=none];if():[open-collection:()=storage]:[gallery-images:()=gallery-images:().filter():[id!=open-doc:()];update():'gallery-view'];open-head-collection:().del()]"
+            }
+          ],
+          "view": "Icon?class=pointer;tooltip.text=remove;popup;name=bi-trash;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;style.borderRadius=0 0 .5rem .5rem;hover.style.backgroundColor=#f0f0f0"
         }
       ]
     },
     {
-      "type": "View?class=flexbox;style:[position=fixed;right=3rem;bottom=3rem;height=1rem;transition=.2s;pointerEvents=none];hover.style.opacity=0?false",
+      "view": "View?class=flexbox;style:[position=fixed;right=3rem;bottom=3rem;height=1rem;transition=.2s;pointerEvents=none];hover.style.opacity=0?false",
       "children": [
         {
-          "type": "View?style:[height=100%;width=2rem;backgroundColor=#a35521]"
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#a35521]"
         },
         {
-          "type": "View?style:[height=100%;width=2rem;backgroundColor=#1E90FF]"
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#1E90FF]"
         },
         {
-          "type": "View?style:[height=100%;width=2rem;backgroundColor=#FF4500]"
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#FF4500]"
         },
         {
-          "type": "View?style:[height=100%;width=2rem;backgroundColor=#02ad18]"
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#02ad18]"
         },
         {
-          "type": "View?style:[height=100%;width=2rem;backgroundColor=#5260FF]"
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#5260FF]"
         },
         {
-          "type": "View?style:[height=100%;width=2rem;backgroundColor=#bf9204]"
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#bf9204]"
         },
         {
-          "type": "View?style:[height=100%;width=2rem;backgroundColor=#585859]"
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#585859]"
         },
         {
-          "type": "View?style:[height=100%;width=2rem;backgroundColor=#e649c6]"
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#e649c6]"
         }
       ]
     },

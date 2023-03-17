@@ -1,6 +1,7 @@
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
+const readFile = require("./readFile")
 const { toArray } = require("./toArray")
 
 module.exports = async ({ _window, lookupActions, awaits, id, req, res, e, _, __, ___, ...params }) => {
@@ -34,9 +35,6 @@ module.exports = async ({ _window, lookupActions, awaits, id, req, res, e, _, __
     // get regex exp
     var regex = new RegExp(`^data:${type};base64,`, "gi")
     file = file.replace(regex, "")
-    
-    // access key
-    if (global["accesskey"]) headers["accesskey"] = global["accesskey"]
 
     // data
     upload.data = clone(data)
@@ -116,46 +114,3 @@ module.exports = async ({ _window, lookupActions, awaits, id, req, res, e, _, __
   // await params
   if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, _: global.uploads.length === 1 ? global.uploads[0] : global.uploads, __: _, ___: __, ...params })
 }
-
-const readFile = (file) => {
-  
-  return new Promise(res => {
-
-    var myFile = file.file || file.url
-    if (typeof myFile === "string" && myFile.slice(0, 5) === "data:") res(myFile)
-    else if (typeof file === "object" && file["readAsDataURL"]) res()
-    else {
-      let myReader = new FileReader()
-      myReader.onloadend = () => res(myReader.result)
-      myReader.readAsDataURL(file)
-    }
-  })
-}
-
-/* const { capitalize } = require("./capitalize")
-const { save } = require("./save")
-const { toAwait } = require("./toAwait")
-
-module.exports = {
-    upload: async ({ id, e, upload = {}, ...params }) => {
-
-        var global = window.global
-        var value = window.views
-        var view = value[id]
-        var storage = global.storage
-        
-        upload.save = upload.save !== undefined ? upload.save : true
-        
-        await storage.child(`images/${view.file.fileName}.${view.file.fileType}`).put(view.file.src)
-        await storage.child(`images/${view.file.fileName}.${view.file.fileType}`).getDownloadURL().then(url => view.file.url = url)
-        
-        view.file.id = `${view.file.fileName}.${view.file.fileType}`
-        var _save = { path: "image", data: {
-            "creation-date": new Date().getTime() + 10800000 + "", name: `${view.file.fileName}.${view.file.fileType}`, id: `${view.file.fileName}.${view.file.fileType}`, url: view.file.url, description: `${capitalize(view.file.fileName.split('-')[0])} Image`, active: true
-        }}
-
-        upload.save && await save({ ...params, save: _save, id, e })
-
-        !upload.save && toAwait({ id, params, e })
-    }
-}*/

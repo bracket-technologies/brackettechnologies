@@ -2,7 +2,6 @@
 const { createElement } = require("./createElement");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
-const { authorizer } = require("./authorizer");
 const fs = require("fs");
 const bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
 
@@ -52,6 +51,7 @@ const getProject = ({ window }) => {
               search: { collection: `collection-${project.id}` },
           });
           console.log("after collection", new Date().getTime() - global.timer);
+          global.__ISBRACKET__ = true
 
         } else {
 
@@ -171,8 +171,12 @@ const initializer = ({ window }) => {
     
     // get assets & views
     window.global = {
-        children: { head: "", body: "" },
-        innerHTML: {},
+        //children: { head: "", body: "" },
+        __INNERHTML__: {},
+        __TAGS__: {
+            body: "",
+            head: ""
+        },
         codes: {},
         host,
         prevPage: ["main"],
@@ -201,13 +205,20 @@ const initializer = ({ window }) => {
     };
 
     window.views = {
+        html: {
+            id: "html",
+            childrenID: []
+        },
         body: {
+            parent: "html",
             id: "body",
+            view: "View",
             childrenID: []
         },
         root: {
             id: "root",
-            type: "View",
+            parent: "body",
+            view: "View",
             "my-views": [],
             derivations: [],
             childrenID: [],
@@ -215,7 +226,8 @@ const initializer = ({ window }) => {
         },
         public: {
             id: "public",
-            type: "Box",
+            parent: "body",
+            view: "Box",
             parent: "body",
             "my-views": [],
             childrenID: []
@@ -235,35 +247,32 @@ const interpreter = ({ window: _window }) => {
 
         // controls & views
         views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
-        // views.root.children.push(...Object.values(global.data.public))
-        views.public.children = Object.values(global.data.public)
-        // views.root.children[0].children = toArray(views.root.children[0].children)
+        views.public.children = Object.keys(global.data.public).map(view => ({ view }))
+        views.body.children = [...views.public.children, ...views.root.children]
 
         if (!global.data.project) return res.send("Project does not exist or something went wrong! Refresh")
 
-        // project children
-        if (global.data.project.children) {
-
-          var __window = { views: { body: { id: "body", type: "View", children: global.data.project.children } }, global }
-          console.log("Create headers started!")
-          await createElement({ _window: __window, global: {}, id: "body", req, res, import: true })
-          console.log("Create headers ended!")
-        }
+        // create browser document
+        global.data.project.browser ||= {}
+        global.data.project.browser.children ||= []
+        global.data.project.browser.view ||= global.data.project.browser.type || "html"
+        // global.data.project.browser.children.push(views.body)
+        views.html = { ...views.html, ...global.data.project.browser }
 
         // create views
-        console.log("Create views started!")
+        console.log("Create document started!")
 
-        var publicInnerHTML = await createElement({ _window, id: "public", req, res })
+        await createElement({ _window, id: "html", req, res })
+
+        var publicInnerHTML = await createElement({ _window, id: "public", req, res, viewer: "public" })
         var rootInnerHTML = await createElement({ _window, id: "root", req, res })
 
-        console.log("Create views ended!")
+        console.log("Create document ended!")
         
-        if (global.innerHTML.root) rootInnerHTML = global.innerHTML.root
-        if (global.innerHTML.public) publicInnerHTML = global.innerHTML.public
+        if (global.__INNERHTML__.root) rootInnerHTML = global.__INNERHTML__.root
     
-        var innerHTML = rootInnerHTML + publicInnerHTML
-        global.idList = innerHTML.split("id='").slice(1).map((id) => id.split("'")[0])
-        global.innerHTML = innerHTML
+        global.__INNERHTML__ = rootInnerHTML + publicInnerHTML
+        global.idList = global.__INNERHTML__.split("id='").slice(1).map((id) => id.split("'")[0])
 
         resolve()
     })
@@ -283,69 +292,77 @@ const app = async ({ _window: window, req, res }) => {
     var { global, views } = window
     
     var currentPage = global.currentPage
-    var innerHTML = global.innerHTML
+    var innerHTML = global.__INNERHTML__
+    var html = views.html
     var view = views[global.currentPage] || {}
     
-    // main head tags
-    var favicon = global.data.project.favicon
-    var language = global.language = view.language || "en"
-    var direction = language === "ar" || language === "fa" ? "rtl" : "ltr"
-    var title = view.title || "My App Title"
-    var children = clone(global.children)
-  
-    // meta
-    view.meta = view.meta || {}
     global.promises = {}
     global.breakCreateElement = {}
-    var metaKeywords = view.meta.keywords || ""
-    var metaDescription = view.meta.keywords || ""
-    var metaTitle = view.meta.title || view.title || ""
-    var metaViewport = view.meta.viewport || "width=device-width, initial-scale=1.0"
+    
+    // head tags
+    var favicon = global.data.project.browser.favicon
+    var language = global.language = view.language || view.lang || html.lang || html.language || "en"
+    var direction = view.direction || view.dir || html.direction || html.dir || (language === "ar" || language === "fa" ? "rtl" : "ltr")
+    var title = view.title || html.title || "Bracket App Title"
+    var tags = clone(global.__TAGS__ || {})
   
-    delete global.children;
-    delete global.innerHTML;
+    // meta
+    view.meta ||= {}
+    var metaHTTPEquiv = view.meta["http-equiv"] || view.meta["httpEquiv"] || {}
+    if (typeof metaHTTPEquiv !== "object") metaHTTPEquiv = {}
+    if (!metaHTTPEquiv["content-type"]) metaHTTPEquiv["content-type"] = "text/html; charset=UTF-8"
+    var metaKeywords = view.meta.keywords || ""
+    var metaDescription = view.meta.description || ""
+    var metaTitle = view.meta.title || view.title || ""
+    var metaViewport = view.meta.viewport || ""
+  
+    delete global.__TAGS__;
+    delete global.__INNERHTML__;
     delete global.data.project;
-    // test
+    
     console.log("Document is ready!");
     
     res.send(
-      `<!DOCTYPE html>
-      <html lang="${language}" dir="${direction}" class="html">
-        <head>
-          <link rel="stylesheet" href="/resources/index.css"/>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap">
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400&display=swap">
-          ${children.head}
-          <title>${title}</title>
-          <meta charset="UTF-8">
-          <meta http-equiv="X-UA-Compatible" content="IE=edge">
-          ${metaViewport ? `<meta name="viewport" content="${metaViewport}">`: "" }
-          ${metaKeywords ? `<meta name="keywords" content="${metaKeywords}">` : ""}
-          ${metaDescription ? `<meta name="description" content="${metaDescription}">` : ""}
-          ${metaTitle ? `<meta name="title" content="${metaTitle}">` : ""}
-          ${favicon ? `<link rel="icon" type="image/x-icon" href="${favicon}"/>` : ""}
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <link rel="manifest" href="/resources/manifest.json" mimeType="application/json; charset=UTF-8"/>
-          <script id="views" type="application/json">${JSON.stringify(views)}</script>
-          <script id="global" type="application/json">${JSON.stringify(global)}</script>
-          ${global.updateLocation ? `<script defer>window.history.replaceState({}, "${title}", "/${currentPage === "main" ? "" : currentPage}")</script>` : ""}
-        </head>
-        <body>
-          ${children.body}
-          ${innerHTML}
-          <script src="/index.js"></script>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"/>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp"/>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-        </body>
-      </html>`
+    `<!DOCTYPE html>
+        <html lang="${language}" dir="${direction}" class="html">
+            <head>
+                <link rel="stylesheet" href="/resources/index.css"/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap">
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400&display=swap">
+                <title>${title}</title>
+                ${metaHTTPEquiv ? Object.entries(metaHTTPEquiv).map(([key, value]) => `<meta http-equiv="${key}" content="${value}">
+                `) : ""}
+                <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+                <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+                ${metaViewport ? `<meta name="viewport" content="${metaViewport}">` : ""}
+                ${metaKeywords ? `<meta name="keywords" content="${metaKeywords}">` : ""}
+                ${metaDescription ? `<meta name="description" content="${metaDescription}">` : ""}
+                ${metaTitle ? `<meta name="title" content="${metaTitle}">` : ""}
+                ${favicon ? `<link rel="icon" type="image/x-icon" href="${favicon}"/>` : ""}
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                <link rel="manifest" href="/resources/manifest.json" mimeType="application/json; charset=UTF-8"/>
+                <script id="views" type="application/json">${JSON.stringify(views)}</script>
+                <script id="global" type="application/json">${JSON.stringify(global)}</script>
+                ${global.updateLocation ? `<script defer>window.history.replaceState({}, "${title}", "/${currentPage === "main" ? "" : currentPage}")</script>` : ""}
+                ${tags.head || ""}
+            </head>
+            <body>
+                ${tags.body || ""}
+                ${innerHTML || ""}
+                <script src="/index.js"></script>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp"/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+            </body>
+        </html>`
     )
 }
 
+// <meta http-equiv="X-UA-Compatible" content="IE=edge">
 module.exports = { status, getProject, initializer, interpreter, app }

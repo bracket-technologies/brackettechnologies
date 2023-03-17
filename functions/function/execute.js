@@ -124,7 +124,7 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
           }
           
           await _method[name]({ _window, lookupActions, awaits, ...params, ...__params, e, id })
-          if (name !== "search" && name !== "save" && name !== "erase" && name !== "importJson" && name !== "upload" && name !== "wait") toAwait({ id, lookupActions, awaits, e, params })
+          if (name !== "SEARCH" && name !== "save" && name !== "erase" && name !== "importJson" && name !== "upload" && name !== "wait") toAwait({ id, lookupActions, awaits, e, params })
         })
       }
 
