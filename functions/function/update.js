@@ -35,7 +35,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
 
   // reset children for root
   if (id === "root") {
-    views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage }]
+    views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage, ["my-views"]: [global.currentPage] }]
   }
   
   var innerHTML = await Promise.all(children.map(async (child, index) => {
@@ -46,7 +46,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
     views[id].index = index
     views[id].parent = view.id
     views[id].style = views[id].style || {}
-    views[id]["my-views"] = [...view["my-views"]]
+    views[id]["my-views"] = views[id]["my-views"] || [...view["my-views"]]
     
     return await createElement({ _window, lookupActions, awaits, req, res, id })
   }))

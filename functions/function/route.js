@@ -10,18 +10,18 @@ module.exports = {
       var global = _window ? _window.global : window.global
       global.prevPath.push(global.path)
       if (global.prevPath.length > 5) global.prevPath.shift()
-      var path = route.path || global.path
+      var path = route.path || (route.page.includes("/") ? route.page : global.path)
       global.prevPage.push(global.currentPage)
       if (global.prevPage.length > 5) global.prevPage.shift()
-      var currentPage = global.currentPage = route.page || path.split("/")[1] || "main"
+      var currentPage = global.currentPage = route.page && (route.page.includes("/") ? (!route.page.split("/")[0] ? route.page.split("/")[1] : route.page.split("/")[0]): route.page ) || path.split("/")[1] || "main"
 
       global.currentPage = currentPage
       global.path = route.path ? path : currentPage === "main" ? "/" : (currentPage.charAt(0) === "/" ? currentPage : `/${currentPage}`)
       
       if (res) {
         
-        global.updateLocation= true
-        views.root.children = [{ ...clone(global.data.page[currentPage]), id: currentPage }]
+        global.updateLocation = true
+        views.root.children = [{ ...clone(global.data.page[currentPage]), id: currentPage, ["my-views"]: [currentPage] }]
         
         if (id !== "root") {
 

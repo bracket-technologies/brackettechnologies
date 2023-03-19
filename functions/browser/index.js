@@ -4741,7 +4741,7 @@ const getJson = (url) => {
     return Httpreq.responseText
 }
 
-const importJson = ({ _window, id, e, ...params }) => {
+const importJson = ({ _window, id, e, _, __, ___, ...params }) => {
     
     var global = _window ? _window.global : window.global
     global.import = {}
@@ -4760,7 +4760,7 @@ const importJson = ({ _window, id, e, ...params }) => {
             reader.onload = (e) => {
                 
                 global.import.data = JSON.parse(e.target.result)
-                toAwait({ _window, id, e, ...params })
+                toAwait({ _window, id, e, ...params, _: global.import, __: _, ___: __ })
             }
 
             global.import.files = [...event.target.files]
@@ -6118,9 +6118,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             return o
         }
 
-        if (o === undefined) return o
+        if (o === undefined || o === null) return o
 
-        if (path0.slice(-2) === "()" && typeof o === "object" && o.functions && o.functions[path0.slice(-2)]) {
+        if (path0.slice(-2) === "()" && typeof o === "object" && !Array.isArray(o) && o.functions && o.functions[path0.slice(-2)]) {
 
             return toFunction({ _window, lookupActions, awaits, id: o.id, req, res, _, __, ___, e, path, path0, condition, params, mount, createElement, object })
         }
@@ -9905,13 +9905,24 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
             var cookies = []
-            args.slice(1).map(arg => {
+            if (isParam({ _window, req, res, string: args[1] })) {
 
-                var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  params, string: arg })
-                setCookie({ ..._params, req, res, _window })
+                args.slice(1).map(arg => {
 
-                cookies.push(_params)
-            })
+                    var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  params, string: arg })
+                    setCookie({ ..._params, req, res, _window })
+
+                    cookies.push(_params)
+                })
+
+            } else {
+
+                var _name = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1] })
+                var _value = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[2] })
+                var _expiryDate = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[3] })
+
+                setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
+            }
 
             
             if (cookies.length === 1) return cookies[0]
@@ -9949,8 +9960,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
             
         } else if (k0 === "route()") {
-
-            // route():page:path
+            
             if (isParam({ _window, string: args[1] })) {
 
                 var route = toParam({ req, res, _window, lookupActions, awaits, id, e, string: args[1] || "", params, _, __, ___ })
@@ -9958,6 +9968,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 
             } else {
                 
+                // route():page:path
                 var _page = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1] || "", params, _, __, ___ })
                 var _path = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[2] || "", params, _, __, ___ })
                 require("./route").route({ _window, lookupActions, awaits, id, req, res, route: { path: _path, page: _page } })
@@ -11032,18 +11043,18 @@ module.exports = {
       var global = _window ? _window.global : window.global
       global.prevPath.push(global.path)
       if (global.prevPath.length > 5) global.prevPath.shift()
-      var path = route.path || global.path
+      var path = route.path || (route.page.includes("/") ? route.page : global.path)
       global.prevPage.push(global.currentPage)
       if (global.prevPage.length > 5) global.prevPage.shift()
-      var currentPage = global.currentPage = route.page || path.split("/")[1] || "main"
+      var currentPage = global.currentPage = route.page && (route.page.includes("/") ? (!route.page.split("/")[0] ? route.page.split("/")[1] : route.page.split("/")[0]): route.page ) || path.split("/")[1] || "main"
 
       global.currentPage = currentPage
       global.path = route.path ? path : currentPage === "main" ? "/" : (currentPage.charAt(0) === "/" ? currentPage : `/${currentPage}`)
       
       if (res) {
         
-        global.updateLocation= true
-        views.root.children = [{ ...clone(global.data.page[currentPage]), id: currentPage }]
+        global.updateLocation = true
+        views.root.children = [{ ...clone(global.data.page[currentPage]), id: currentPage, ["my-views"]: [currentPage] }]
         
         if (id !== "root") {
 
@@ -12433,7 +12444,7 @@ const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res
   if (myawait) {
     
     var _await_ = toCode({ _window, string: toCode({ _window, string: myawait }), start: "'", end: "'" })
-    _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res })
+    _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res, ...((awaits.find(item => item.await === myawait) || {}).params || {}) })
 
     var index = awaits.findIndex(item => item.await === myawait)
     if (index !== -1) {
@@ -12738,7 +12749,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
 
         if (!isFn) {
 
-          var functions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data[view.viewType][lookupActions.view].functions) || {}
+          var functions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data[lookupActions.viewType][lookupActions.view].functions) || {}
           isFn = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o[k] || {}, functions)).find(fn => fn === path0.slice(0, -2))
 
           if (isFn) {
@@ -12756,10 +12767,10 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
     // lookup in view actions
     if (!isFn) {
 
-      clone(["_project_", ...myViews]).reverse().map(myview => {
+      clone(["_project_", ...myViews]).reverse().map((myview, i) => {
         if (!isFn) {
           
-          var functions = myview === "_project_" ? global.functions : global.data[view.viewType][myview].functions || {}
+          var functions = myview === "_project_" ? global.functions : global.data[i === myViews.length - 1 ? "page" : view.viewType][myview].functions || {}
           isFn = (Array.isArray(functions) ? functions : Object.keys(functions)).find(fn => fn === path0.slice(0, -2))
           if (isFn) {
 
@@ -12768,24 +12779,13 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
               // backend function
               backendFn = true
               newLookupActions = { view: myview, fn: [isFn] }
-              /*if (_window) {
-                
-                var functions = global.data.project.functions
-                if (typeof functions[isFn] === "object") {
-
-                  isFn = functions[isFn]._ || ""
-                  newLookupActions = { view: myview, fn: [path0.slice(0, -2)] }
-  
-                } else isFn = functions[isFn]
-
-              } else newLookupActions = { view: myview, fn: [isFn] }*/
 
             } else {
 
               if (typeof functions[isFn] === "object") {
 
                 isFn = functions[isFn]._ || ""
-                newLookupActions = { view: myview, fn: [path0.slice(0, -2)] }
+                newLookupActions = { view: myview, fn: [path0.slice(0, -2)], viewType: i === myViews.length - 1 ? "page" : view.viewType }
 
               } else isFn = functions[isFn]
             }
@@ -12807,10 +12807,10 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
         var _func = { function: isFn, data: _data, log: { action: params.func, send: global.func } }
         var _await = global.codes[args[2]]
     
-        if (_await) awaits.unshift({ id: generate(), hold: false, await: _await, action: path0, passGlobalFunc: _window ? true: false })
+        if (_await) awaits.unshift({ id: generate(), hold: false, await: _await, action: path0, passGlobalFunc: _window ? true: false, params: { e, id, req, res, mount, object, asyncer, createElement, params, executer, condition, lookupActions } })
 
         console.log("ACTION " + path0);
-        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, oldLookupActions: lookupActions, awaits, myawait: _await, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait: _await, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
         
         return answer
       }
@@ -14399,7 +14399,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
 
   // reset children for root
   if (id === "root") {
-    views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage }]
+    views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage, ["my-views"]: [global.currentPage] }]
   }
   
   var innerHTML = await Promise.all(children.map(async (child, index) => {
@@ -14410,7 +14410,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
     views[id].index = index
     views[id].parent = view.id
     views[id].style = views[id].style || {}
-    views[id]["my-views"] = [...view["my-views"]]
+    views[id]["my-views"] = views[id]["my-views"] || [...view["my-views"]]
     
     return await createElement({ _window, lookupActions, awaits, req, res, id })
   }))

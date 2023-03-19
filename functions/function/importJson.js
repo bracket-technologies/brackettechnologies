@@ -8,7 +8,7 @@ const getJson = (url) => {
     return Httpreq.responseText
 }
 
-const importJson = ({ _window, id, e, ...params }) => {
+const importJson = ({ _window, id, e, _, __, ___, ...params }) => {
     
     var global = _window ? _window.global : window.global
     global.import = {}
@@ -27,7 +27,7 @@ const importJson = ({ _window, id, e, ...params }) => {
             reader.onload = (e) => {
                 
                 global.import.data = JSON.parse(e.target.result)
-                toAwait({ _window, id, e, ...params })
+                toAwait({ _window, id, e, ...params, _: global.import, __: _, ___: __ })
             }
 
             global.import.files = [...event.target.files]

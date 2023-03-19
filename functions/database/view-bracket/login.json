@@ -4,7 +4,7 @@
       "view": "View?style.backgroundColor=#fff;style.borderRadius=1rem;style.width=38%;style.left=8%;style.top=8%;style.padding=8rem 4rem;class=column;style.display=flex;style.paddingBottom=3rem;style.zIndex=1;style.position=fixed",
       "children": [
         {
-          "view": "Text?text=Bracket;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.marginBottom=6rem"
+          "view": "Text?text=Bracket Technologies;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.marginBottom=6rem"
         },
         {
           "children": [
@@ -12,7 +12,7 @@
               "view": "Text?text=Choose an account;style.fontSize=2.3rem;style.color=#000;style.marginBottom=.5rem"
             },
             {
-              "view": "Text?text=to continue to Bracket;style.fontSize=1.6rem;style.marginBottom=3.75rem;style.color=#888"
+              "view": "Text?text=to continue to Bracket Platform;style.fontSize=1.6rem;style.marginBottom=3.75rem;style.color=#888"
             },
             {
               "controls": [
@@ -77,7 +77,7 @@
               "view": "Text?text=Log in;style.fontSize=2.3rem;style.color=#000;style.marginBottom=.5rem"
             },
             {
-              "view": "Text?text=Continue To Bracket;style.fontSize=1.6rem;style.marginBottom=2rem;style.color=#888"
+              "view": "Text?text=Continue To Bracket Platform;style.fontSize=1.6rem;style.marginBottom=2rem;style.color=#888"
             },
             {
               "view": "Input?container.style.marginBottom=1.5rem;label.text=Email;label.location=inside"
@@ -96,7 +96,7 @@
             {
               "children": [
                 {
-                  "view": "Text?class=flexbox;style.fontSize=1.5rem;style.borderRadius=2rem;style.height=4rem;style.width=4rem;style.backgroundColor=#96BF48;text=data:().editor.account.first-name.0.capitalize()+data:().editor.account.last-name.0.capitalize();style.color=#fff"
+                  "view": "Text?class=flexbox;style.fontSize=1.5rem;style.borderRadius=2rem;style.height=4rem;style.width=4rem;style.backgroundColor=#96BF48;text=[data:().editor.account.first-name.0.capitalize()||]+[data:().editor.account.last-name.0.capitalize()||];style.color=#fff"
                 },
                 {
                   "children": [
@@ -115,7 +115,7 @@
                       "event": "click?eraseCookie():_id;data:().editor.account.del();():get-started.style().display=flex;():Next.style().display=flex;():back.style().display=none;():welcome.style().display=none;():login-text.style().display=flex;parent().parent().input().txt()=_string;parent().parent().prev().input().txt()=_string"
                     }
                   ],
-                  "view": "Text?text=Change email;style.color=#008060;link:[path=login;preventDefault];hover.style.textDecoration=underline;style.fontSize=1.3rem"
+                  "view": "Text?text=Change email;style.color=blue;link:[path=login;preventDefault];hover.style.textDecoration=underline;style.fontSize=1.3rem"
                 }
               ],
               "view": "View?class=flexbox flex-start;style.gap=1.5rem;style.width=100%;style.marginBottom=2rem"
@@ -134,7 +134,7 @@
               "event": "click;keyup:[prev().input()]?checkPassword():[password=prev().input().txt();user=data:().editor.account.id]:[if():[!_.data]:[note():[text=Password is incorrect!;type=danger]]:[setCookie():[name=_id;value=data:().editor.account.id];route():[path=/project-login/+data:().editor.account.id]]]?if():[e().type=keyup]:[e().key.is():Enter]:true;prev().style().display!=none;prev().input().txt()"
             }
           ],
-          "view": "Text:Next?#style.display=if():[data:().editor.account]:none:flex;text=Next;style.fontWeigt=bold;style.color=#fff;style.padding=2rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#008060;class=flex-box pointer;hover.style.backgroundColor=#084C3F"
+          "view": "Text:Next?#style.display=if():[data:().editor.account]:none:flex;text=Next;style.fontWeigt=bold;style.color=#fff;style.padding=2rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=blue;style:[opacity=.8;transition=.2s];class=flex-box pointer;hover.style.opacity=1"
         },
         {
           "view": "View:get-started?style.display=flex;style.marginTop=2.5rem;class=flexbox;style.gap=.5rem;style.justifyContent=flex-start?false",
@@ -149,7 +149,7 @@
                   "actions": "route?route.path=/signup"
                 }
               ],
-              "view": "Text?text=Get started;style.color=#008060;link.path=/signup;style.fontSize=1.4rem;hover.style.textDecoration=underline"
+              "view": "Text?text=Get started;style.color=blue;link.path=/signup;style.fontSize=1.4rem;hover.style.textDecoration=underline"
             }
           ]
         },
@@ -159,10 +159,10 @@
             {
               "children": [
                 {
-                  "view": "Icon?name=bi-chevron-left;style.fontSize=1.5rem;style.color=#008060"
+                  "view": "Icon?name=bi-chevron-left;style.fontSize=1.5rem;style.color=blue"
                 },
                 {
-                  "view": "Text?text=Back;style.fontSize=1.4rem;style.color=#008060;style.textDecoration=underline"
+                  "view": "Text?text=Back;style.fontSize=1.4rem;style.color=blue;style.textDecoration=underline"
                 }
               ],
               "controls": [
@@ -182,13 +182,13 @@
               "view": "View?class=flex-start;style.gap=2.5rem;style.width=fit-content",
               "children": [
                 {
-                  "view": "Text?text=Help;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/help;hover.style.textDecoration=underline"
+                  "view": "Text?text=Help;style.color=blue;style.fontSize=1.4rem;class=pointer;link.path=/help;hover.style.textDecoration=underline"
                 },
                 {
-                  "view": "Text?text=Privacy;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/privacy;hover.style.textDecoration=underline"
+                  "view": "Text?text=Privacy;style.color=blue;style.fontSize=1.4rem;class=pointer;link.path=/privacy;hover.style.textDecoration=underline"
                 },
                 {
-                  "view": "Text?text=Terms;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/terms;hover.style.textDecoration=underline"
+                  "view": "Text?text=Terms;style.color=blue;style.fontSize=1.4rem;class=pointer;link.path=/terms;hover.style.textDecoration=underline"
                 }
               ]
             }
@@ -199,7 +199,7 @@
     {
       "children": [
         {
-          "view": "Image?src='https://firebasestorage.googleapis.com/v0/b/bracketjs.appspot.com/o/gallery-bracketjs%2Fbackground.png?alt=media&token=16d2397a-cbc3-4316-b2af-ac2d45bde3a4';style:[minHeight=100%;minWidth=100%;maxHeight=100%;maxWidth=100%;height=100%;width=100%]"
+          "view": "Image?src='https://firebasestorage.googleapis.com/v0/b/bracketjs.appspot.com/o/storage-bracketjs%2FAbstract-Technology-Background-250119211.jpg?alt=media&token=1a293321-b412-4598-bbc3-f497db8205b1';style:[minHeight=100%;minWidth=100%;maxHeight=100%]"
         }
       ],
       "view": "View?style:[width=100vw;height=100vh;position=fixed;top=0;left=0;zIndex=0]"

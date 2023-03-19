@@ -13,7 +13,7 @@ const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res
   if (myawait) {
     
     var _await_ = toCode({ _window, string: toCode({ _window, string: myawait }), start: "'", end: "'" })
-    _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res })
+    _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res, ...((awaits.find(item => item.await === myawait) || {}).params || {}) })
 
     var index = awaits.findIndex(item => item.await === myawait)
     if (index !== -1) {

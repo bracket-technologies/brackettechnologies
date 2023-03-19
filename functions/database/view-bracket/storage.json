@@ -10,8 +10,7 @@
             "view": "Icon?style.display=none;tooltip.text=create new storage;name=bi-plus;style.color=#000;style.fontSize=1.9rem;style.position=absolute;style.right=.5rem;style.height=2rem;style.width=2rem;hover.style.color=blue;style.borderRadius=.25rem",
             "controls": [
                 {
-                    "event": "click?parent().next().style().display=flex;prev().prev().style().transform=rotate(90deg);open-doc:().del();open-collection:()=storage",
-                    "actions": "wait():[insert:[parent().next()]]?insert.component=parent().next().children.0;wait():[().insert.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform='scale(0)']]"
+                    "event": "click?parent().next().style().display=flex;prev().prev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=storage;parent().next().insert():[view=parent().next().children.0]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().txt()=_string;3rdChild().focus()];():file-action-popup.style():[opacity=0;pointerEvents=none;transform='scale(0)']]"
                 }
             ]
         }
@@ -25,7 +24,7 @@
             "event": "mouseleave?lastChild().style().display=none"
         },
         {
-            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform=rotate(90deg)]:[next().style().display=none;1stChild().style().transform=rotate(0)];search():[collection=storage;headers.project=project:()]:[data:().editor.storage=_.data;update():'storage-list']?!3rdChild().contains():[clicked:()]"
+            "event": "click?if():[next().style().display=none||3rdChild().contains():[clicked:()]]:[next().children().():rem();next().style().display=flex;1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform=rotate(0)];loader():show;search():[collection=storage;headers.project=project:()]:[data:().editor.storage=_.data;update():'storage-list';loader():hide]?!3rdChild().contains():[clicked:()]"
         }
     ]
 }

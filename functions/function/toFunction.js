@@ -27,7 +27,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
 
         if (!isFn) {
 
-          var functions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data[view.viewType][lookupActions.view].functions) || {}
+          var functions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data[lookupActions.viewType][lookupActions.view].functions) || {}
           isFn = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o[k] || {}, functions)).find(fn => fn === path0.slice(0, -2))
 
           if (isFn) {
@@ -45,10 +45,10 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
     // lookup in view actions
     if (!isFn) {
 
-      clone(["_project_", ...myViews]).reverse().map(myview => {
+      clone(["_project_", ...myViews]).reverse().map((myview, i) => {
         if (!isFn) {
           
-          var functions = myview === "_project_" ? global.functions : global.data[view.viewType][myview].functions || {}
+          var functions = myview === "_project_" ? global.functions : global.data[i === myViews.length - 1 ? "page" : view.viewType][myview].functions || {}
           isFn = (Array.isArray(functions) ? functions : Object.keys(functions)).find(fn => fn === path0.slice(0, -2))
           if (isFn) {
 
@@ -57,24 +57,13 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
               // backend function
               backendFn = true
               newLookupActions = { view: myview, fn: [isFn] }
-              /*if (_window) {
-                
-                var functions = global.data.project.functions
-                if (typeof functions[isFn] === "object") {
-
-                  isFn = functions[isFn]._ || ""
-                  newLookupActions = { view: myview, fn: [path0.slice(0, -2)] }
-  
-                } else isFn = functions[isFn]
-
-              } else newLookupActions = { view: myview, fn: [isFn] }*/
 
             } else {
 
               if (typeof functions[isFn] === "object") {
 
                 isFn = functions[isFn]._ || ""
-                newLookupActions = { view: myview, fn: [path0.slice(0, -2)] }
+                newLookupActions = { view: myview, fn: [path0.slice(0, -2)], viewType: i === myViews.length - 1 ? "page" : view.viewType }
 
               } else isFn = functions[isFn]
             }
@@ -96,10 +85,10 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
         var _func = { function: isFn, data: _data, log: { action: params.func, send: global.func } }
         var _await = global.codes[args[2]]
     
-        if (_await) awaits.unshift({ id: generate(), hold: false, await: _await, action: path0, passGlobalFunc: _window ? true: false })
+        if (_await) awaits.unshift({ id: generate(), hold: false, await: _await, action: path0, passGlobalFunc: _window ? true: false, params: { e, id, req, res, mount, object, asyncer, createElement, params, executer, condition, lookupActions } })
 
         console.log("ACTION " + path0);
-        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, oldLookupActions: lookupActions, awaits, myawait: _await, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait: _await, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
         
         return answer
       }

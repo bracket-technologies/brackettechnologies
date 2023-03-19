@@ -506,9 +506,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             return o
         }
 
-        if (o === undefined) return o
+        if (o === undefined || o === null) return o
 
-        if (path0.slice(-2) === "()" && typeof o === "object" && o.functions && o.functions[path0.slice(-2)]) {
+        if (path0.slice(-2) === "()" && typeof o === "object" && !Array.isArray(o) && o.functions && o.functions[path0.slice(-2)]) {
 
             return toFunction({ _window, lookupActions, awaits, id: o.id, req, res, _, __, ___, e, path, path0, condition, params, mount, createElement, object })
         }
@@ -4293,13 +4293,24 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
             var cookies = []
-            args.slice(1).map(arg => {
+            if (isParam({ _window, req, res, string: args[1] })) {
 
-                var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  params, string: arg })
-                setCookie({ ..._params, req, res, _window })
+                args.slice(1).map(arg => {
 
-                cookies.push(_params)
-            })
+                    var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  params, string: arg })
+                    setCookie({ ..._params, req, res, _window })
+
+                    cookies.push(_params)
+                })
+
+            } else {
+
+                var _name = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1] })
+                var _value = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[2] })
+                var _expiryDate = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[3] })
+
+                setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
+            }
 
             
             if (cookies.length === 1) return cookies[0]
@@ -4337,8 +4348,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
             
         } else if (k0 === "route()") {
-
-            // route():page:path
+            
             if (isParam({ _window, string: args[1] })) {
 
                 var route = toParam({ req, res, _window, lookupActions, awaits, id, e, string: args[1] || "", params, _, __, ___ })
@@ -4346,6 +4356,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 
             } else {
                 
+                // route():page:path
                 var _page = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1] || "", params, _, __, ___ })
                 var _path = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[2] || "", params, _, __, ___ })
                 require("./route").route({ _window, lookupActions, awaits, id, req, res, route: { path: _path, page: _page } })

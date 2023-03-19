@@ -122,7 +122,7 @@ const getProject = ({ window }) => {
                 .get()
                 .then(q => {
                     q.forEach(doc => {
-                      global.data.public[doc.id] = global.data.view[doc.id] = { ...doc.data(), "my-views": [doc.id], id: doc.id }
+                      global.data.public[doc.id] = global.data.view[doc.id] = { ...doc.data(), "my-views": ["main", doc.id], id: doc.id }
                     })
                     console.log("after public", new Date().getTime() - global.timer)
                 }))
@@ -246,7 +246,7 @@ const interpreter = ({ window: _window }) => {
         if (!global.data.page[currentPage]) return res.send("Page does not exist!")
 
         // controls & views
-        views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
+        views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage, ["my-views"]: [currentPage] }])
         views.public.children = Object.keys(global.data.public).map(view => ({ view }))
         views.body.children = [...views.public.children, ...views.root.children]
 
@@ -263,7 +263,7 @@ const interpreter = ({ window: _window }) => {
         console.log("Create document started!")
 
         await createElement({ _window, id: "html", req, res })
-
+        
         var publicInnerHTML = await createElement({ _window, id: "public", req, res, viewer: "public" })
         var rootInnerHTML = await createElement({ _window, id: "root", req, res })
 
