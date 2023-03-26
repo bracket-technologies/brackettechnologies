@@ -1,5 +1,5 @@
 const { clone } = require("./clone")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { starter } = require("./starter")
 const { generate } = require("./generate")
 const { setElement } = require("./setElement")
@@ -66,7 +66,7 @@ module.exports = {
         views[id].style.opacity = "0"
         views[id]["my-views"] = [...views[appendTo]["my-views"]]
         
-        return await createElement({ id, lookupActions })
+        return await toView({ id, lookupActions })
       }))
       
       innerHTML = innerHTML.join("")

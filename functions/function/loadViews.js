@@ -1,5 +1,5 @@
 const { clone } = require("./clone")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { setElement } = require("./setElement")
 const { starter } = require("./starter")
 const { search } = require("./search")
@@ -48,7 +48,7 @@ const loadViews = async (first) => {
       views[id].parent = parent
 
       // create html
-      var innerHTML = await createElement({ id })
+      var innerHTML = await toView({ id })
       
       lDiv = document.createElement("div")
       document.body.appendChild(lDiv)

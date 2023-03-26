@@ -49,7 +49,7 @@ const postFile = async ({ req, res }) => {
     type: data.type,
     tags: data.tags || [],
     title: data.title || data.type.toUpperCase(),
-    "creation-date": (new Date).getTime()
+    "creation-date": parseInt(req.headers.timestamp)
   }
   
   await db.collection(collection).doc(upload.doc).set(data).then(() => {

@@ -245,17 +245,13 @@ const postData = async ({ _window, req, res, save }) => {
 
         if (idList[i]) {
 
-          if (!data["creation-date"]) {
-            if (req.headers.timestamp) {
-
-              data["creation-date"] = parseInt(req.headers.timestamp)
-
-            } else {
-
-              data["creation-date"] = (new Date()).getTime()
-              data.timezone = "GMT"
-            }
+          if (!data["creation-date"] && req.headers.timestamp) {
+            data["creation-date"] = parseInt(req.headers.timestamp)
           }
+
+          /*if (!data["creation-date-gmt"]) {
+            data["creation-date-gmt"] = (new Date()).getTime()
+          }*/
 
           batch.set(db.collection(collection).document(idList[i].toString()), data)
 
@@ -277,16 +273,9 @@ const postData = async ({ _window, req, res, save }) => {
   } else if (save.doc) {
 
     if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
-    if (!data["creation-date"]) {
-      if (req.headers.timestamp) {
 
-        data["creation-date"] = parseInt(req.headers.timestamp)
-
-      } else {
-
-        data["creation-date"] = (new Date()).getTime()
-        data.timezone = "GMT"
-      }
+    if (!data["creation-date"] && req.headers.timestamp) {
+      data["creation-date"] = parseInt(req.headers.timestamp)
     }
 
     await ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {

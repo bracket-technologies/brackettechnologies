@@ -6,7 +6,7 @@ const { toArray } = require("./toArray")
 
 const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___, viewer }) => {
 
-  const { createElement } = require("./createElement")
+  const { toView } = require("./toView")
   return new Promise (async resolve => {
 
     var views = _window ? _window.views : window.views, id = _id, view = views[id], tags = ""
@@ -116,7 +116,7 @@ const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, 
           if (mapType[0] === "data") _view.derivations.push(lastEl)
          
           views[id] = _view
-          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+          return await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
         }))
 
         tags = tags.join("")
@@ -138,7 +138,7 @@ const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, 
         if (mapType[0] === "data") _view.derivations.push(lastEl)
         
         views[id] = _view
-        tags = await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+        tags = await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
       }
 
     } else tags = await createTag({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })

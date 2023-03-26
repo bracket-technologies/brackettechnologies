@@ -2,7 +2,7 @@ const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 const { toCode } = require("./toCode")
@@ -57,7 +57,7 @@ const updateSelf = async ({ _window, lookupActions, awaits, id, update = {}, rou
     //views[id].style.opacity = "0"
     //if (timer) views[id].style.transition = `opacity ${timer}ms`
     
-    return await createElement({ id })
+    return await toView({ id })
 
   }))
   

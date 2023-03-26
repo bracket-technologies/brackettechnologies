@@ -17,7 +17,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, createElement, params = {}, executer, condition }) => {
+const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, toView, params = {}, executer, condition }) => {
   
   // break
   if (params && params["return()"] !== undefined) return params["return()"]
@@ -38,9 +38,9 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
   if (string.includes('codedS()') && string.length === 13) return global.codes[string]
 
   // condition not param
-  if (!createElement && string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
+  if (!toView && string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
   return toApproval({ id, lookupActions, awaits, e, string: string.replace("==", "="), req, res, _window, _, __, ___, _i, object })
-  // if (createElement) _ = views[id]._
+  // if (toView) _ = views[id]._
   
   string.split(";").map(param => {
     
@@ -85,7 +85,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       value = `coded()${_key}+coded()${_key0}`*/
     }
 
-    // {}=
+    // {}= => { key, ...value }
     else if (key && value && key.slice(-2) === "{}") {
 
       key = key.slice(0, -2)
@@ -310,13 +310,13 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
     id = viewId
     
-    var path = typeof key === "string" ? key.split(".") : [], isFn = false, backendFn = false, i = path[0].split(":").length - 1, path0 = path[0].split(":")[0], pathi = path[0].split(":")[i]
+    var path = typeof key === "string" ? key.split(".") : [], isFn = false, i = path[0].split(":").length - 1, path0 = path[0].split(":")[0], pathi = path[0].split(":")[i]
 
     // :coded()1asd1
     if (path0 === "") return
 
     // function
-    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, createElement, executer, object })
+    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, toView, executer, object })
     if (isFn !== "__CONTINUE__") return isFn
     else isFn = false
     
@@ -347,7 +347,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       global.codes[`coded()${_key}`] = isFn
 
       // if (backendFn) return require("./func").func({ _window, lookupActions, awaits, req, res, id, e, func: `${_field}:coded()${_key}`, _, __, ___, asyncer: true })
-      return toParam({ _window, lookupActions, awaits, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, createElement, executer })
+      return toParam({ _window, lookupActions, awaits, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, toView, executer })
     }
 
     ////////////////////////////////// end of function /////////////////////////////////////////
@@ -363,12 +363,12 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       // mount state & value
       if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || path[0].includes(")(") || path[0].includes("_") || object) {
         
-        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, object, mount, createElement, condition })
+        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, object, mount, toView, condition })
 
       } else {
         
-        if (id && view && mount) reducer({ _window, lookupActions, awaits, id, path: ["()", ...path], value, key, params, e, req, res, _, __, ___, _i, mount, object, createElement, condition })
-        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: params, createElement, condition })
+        if (id && view && mount) reducer({ _window, lookupActions, awaits, id, path: ["()", ...path], value, key, params, e, req, res, _, __, ___, _i, mount, object, toView, condition })
+        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: params, toView, condition })
       }
       
       if (!params.path && _path !== undefined) params.path = _path
@@ -382,7 +382,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
-    if (mount && createElement) {
+    if (mount && toView) {
       
       if (view && view.doc) view.Data = view.doc
       if (params.doc) params.Data = params.doc

@@ -115,7 +115,7 @@ const save = async ({ _window, lookupActions, awaits, req, res, id, e, _, __, __
 
           if (!data.id) data.id = generate({ length: 20 })
 
-          if (!data["creation-date"]) data["creation-date"] = req.headers.timestamp
+          if (!data["creation-date"]) data["creation-date"] = parseInt(req.headers.timestamp)
 
           global.promises[id].push(ref.doc(data.id.toString()).set(data).then(() => {
 
@@ -134,7 +134,7 @@ const save = async ({ _window, lookupActions, awaits, req, res, id, e, _, __, __
 
       var data = save.data
       if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
-      if (!data["creation-date"]) data["creation-date"] = req.headers.timestamp
+      if (!data["creation-date"]) data["creation-date"] = parseInt(req.headers.timestamp)
       
       global.promises[id].push(ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
 

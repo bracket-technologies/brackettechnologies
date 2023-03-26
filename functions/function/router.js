@@ -1,5 +1,5 @@
 //
-const { createElement } = require("./createElement");
+const { toView } = require("./toView");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
 const fs = require("fs");
@@ -189,7 +189,7 @@ const initializer = ({ window }) => {
         headers: req.headers,
         cookies: req.cookies,
         promises: {},
-        breakCreateElement: {},
+        breaktoView: {},
         functions: [],
         ...window.global,
         data: {
@@ -262,10 +262,10 @@ const interpreter = ({ window: _window }) => {
         // create views
         console.log("Create document started!")
 
-        await createElement({ _window, id: "html", req, res })
+        await toView({ _window, id: "html", req, res })
         
-        var publicInnerHTML = await createElement({ _window, id: "public", req, res, viewer: "public" })
-        var rootInnerHTML = await createElement({ _window, id: "root", req, res })
+        var publicInnerHTML = await toView({ _window, id: "public", req, res, viewer: "public" })
+        var rootInnerHTML = await toView({ _window, id: "root", req, res })
 
         console.log("Create document ended!")
         
@@ -273,7 +273,7 @@ const interpreter = ({ window: _window }) => {
     
         global.__INNERHTML__ = rootInnerHTML + publicInnerHTML
         global.idList = global.__INNERHTML__.split("id='").slice(1).map((id) => id.split("'")[0])
-
+        
         resolve()
     })
 }
@@ -297,7 +297,7 @@ const app = async ({ _window: window, req, res }) => {
     var view = views[global.currentPage] || {}
     
     global.promises = {}
-    global.breakCreateElement = {}
+    global.breaktoView = {}
     
     // head tags
     var favicon = global.data.project.browser.favicon

@@ -1,6 +1,6 @@
 const { clone } = require("./clone")
 const { update } = require("./update")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { toArray } = require("./toArray")
 
 module.exports = {
@@ -29,9 +29,9 @@ module.exports = {
 
           global.promises[id].push(new Promise (async resolve => {
               
-              var innerHTML = await createElement({ _window, id: "root", req, res })
+              var innerHTML = await toView({ _window, id: "root", req, res })
               if (!global.__INNERHTML__.root) global.__INNERHTML__.root = innerHTML
-              global.breakCreateElement[id] = true
+              global.breaktoView[id] = true
               resolve()
             })
           )

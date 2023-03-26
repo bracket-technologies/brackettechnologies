@@ -51,6 +51,7 @@ window.onfocus = () => {
     global["key-events"] = []
     views.root.element.click()
     document.activeElement.blur()
+    toParam({ id: "root", string: "():mininote.style():[opacity=0;transform=scale(0)]" })
 }
 //console.log(downloadsFolder())
 // body clicked

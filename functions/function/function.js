@@ -17,7 +17,7 @@ const {generate} = require("./generate")
 const {refresh} = require("./refresh")
 const {axios} = require("./axios")
 const {wait} = require("./wait")
-const {createElement} = require("./createElement")
+const {toView} = require("./toView")
 const {addEventListener} = require("./event")
 const {execute} = require("./execute")
 const {controls} = require("./controls")
@@ -123,7 +123,7 @@ module.exports = {
   removeChildren,
   toArray,
   generate,
-  createElement,
+  toView,
   controls,
   setStyle,
   resetStyles,

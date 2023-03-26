@@ -60,7 +60,7 @@ module.exports = async ({ _window, lookupActions, awaits, id, req, res, e, _, __
         type: data.type,
         tags: data.tags || [],
         title: data.title || data.type.toUpperCase(),
-        "creation-date": req.headers.timestamp
+        "creation-date": parseInt(req.headers.timestamp)
       }
 
       return await db.collection(collection).doc(upload.doc).set(data).then(() => {

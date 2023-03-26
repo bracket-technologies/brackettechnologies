@@ -12,7 +12,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, ___, id, e, req, res, object, mount, asyncer, createElement, executer, condition }) => {
+const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, ___, id, e, req, res, object, mount, asyncer, toView, executer, condition }) => {
 
   const { toFunction } = require("./toFunction")
   const { toParam } = require("./toParam")
@@ -51,10 +51,10 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   }
 
   // create function: coded()xxxxx() => [params that inherited function attributes in underscore]()
-  if (value.slice(0, 7) === 'coded()' && value.length === 14 && value.slice(-2) === "()") value = "function():" + value.slice(0, 12)
+  /*if (value.slice(0, 7) === 'coded()' && value.length === 14 && value.slice(-2) === "()") value = "function():" + value.slice(0, 12)
     
   // promise: coded()xxxxx:coded()xxxxx => promise():[]:[]
-  else if (value.length === 25 && value.split("coded()") === 2 && value.slice(0, 7) === 'coded()') value = "promise():" + value
+  else if (value.length === 25 && value.split("coded()") === 2 && value.slice(0, 7) === 'coded()') value = "promise():" + value*/
 
   // (...)
   /*var valueParanthes = value.split("()").join("")
@@ -74,9 +74,9 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
     document.getElementById("loader-container").style.display = "none"
     return sleep(10)
   }
-
+  
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, awaits, e, string: value, _, __, ___, object, mount, params, createElement, condition })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, awaits, e, string: value, _, __, ___, object, mount, params, toView, condition })
 
   // or
   if (value.includes("||")) {
@@ -94,7 +94,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
       
       value = value.slice(0, -2)
       value = `${value}=${value}+1`
-      toParam({ req, res, _window, lookupActions, id, e, string: value, _, __, ___, object, mount, params, createElement, condition })
+      toParam({ req, res, _window, lookupActions, id, e, string: value, _, __, ___, object, mount, params, toView, condition })
       return (toValue({ _window, lookupActions, awaits, value, params, _, __, ___, id, e, req, res, object, mount, condition }) - 1)
 
     } else {
@@ -172,7 +172,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
   
   // function
-  var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, createElement, executer, object })
+  var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, toView, executer, object })
   if (isFn !== "__CONTINUE__") return isFn
 
   /* value */

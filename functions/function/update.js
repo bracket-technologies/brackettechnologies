@@ -2,7 +2,7 @@ const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
@@ -48,7 +48,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
     views[id].style = views[id].style || {}
     views[id]["my-views"] = views[id]["my-views"] || [...view["my-views"]]
     
-    return await createElement({ _window, lookupActions, awaits, req, res, id })
+    return await toView({ _window, lookupActions, awaits, req, res, id })
   }))
   
   innerHTML = innerHTML.join("")

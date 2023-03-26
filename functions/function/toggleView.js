@@ -1,7 +1,7 @@
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 const { search } = require("./search")
@@ -111,7 +111,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
     views[id].style.opacity = toggle.fadein.before.opacity || "0"
     views[id].style.transform = toggle.fadein.before.transform || null
 
-    return await createElement({ id })
+    return await toView({ id })
 
   }))
   

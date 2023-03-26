@@ -42,7 +42,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
     */
 
     // await params
-    if (awaits.findIndex(i => i.await === myawait) === 0) {
+    if (awaits.findIndex(i => i.id === myawait.id) === 0) {
 
       if (myawait) {
 
@@ -51,7 +51,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
       } else {
 
         awaits.splice(0, 1)
-        console.log({ data: func.data, success: true, message: "Action executed successfully!" })
+        console.log(myawait.log)
       }
     }
     
@@ -77,7 +77,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
         console.log(params.func, global.func, awaits)
     
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions: oldlookupActions, awaits, id, e, ...params, req, res,  _: global.func, __: _, ___: __ })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions: oldlookupActions, myawait, awaits, id, e, ...params, req, res,  _: global.func, __: _, ___: __ })
         resolve()
       })
     )

@@ -52,6 +52,7 @@ window.onfocus = () => {
     global["key-events"] = []
     views.root.element.click()
     document.activeElement.blur()
+    toParam({ id: "root", string: "():mininote.style():[opacity=0;transform=scale(0)]" })
 }
 //console.log(downloadsFolder())
 // body clicked
@@ -244,7 +245,7 @@ window.addEventListener('appinstalled', () => {
   link.href = window.location.href.replace('http://', 'https://');
   requireHTTPS.classList.remove('hidden');
 }*/
-},{"../function/execute":68,"../function/setElement":112,"../function/starter":115,"../function/toApproval":120,"../function/toCode":125,"../function/toParam":135}],2:[function(require,module,exports){
+},{"../function/execute":67,"../function/setElement":111,"../function/starter":114,"../function/toApproval":119,"../function/toCode":124,"../function/toParam":134}],2:[function(require,module,exports){
 const { toString } = require('../function/toString')
 
 module.exports = (view) => {
@@ -265,7 +266,7 @@ module.exports = (view) => {
     }]
   }
 }
-},{"../function/toString":138}],3:[function(require,module,exports){
+},{"../function/toString":137}],3:[function(require,module,exports){
 const { clone } = require('../function/clone')
 const { toComponent } = require('../function/toComponent')
 const { toString } = require('../function/toString')
@@ -330,7 +331,7 @@ module.exports = (view) => {
     ]
   }
 }
-},{"../function/clone":46,"../function/toComponent":126,"../function/toString":138}],4:[function(require,module,exports){
+},{"../function/clone":46,"../function/toComponent":125,"../function/toString":137}],4:[function(require,module,exports){
 module.exports = (view) => {
   return {
     ...view,
@@ -669,7 +670,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../function/clone":46,"../function/generate":75,"../function/merge":93,"../function/toComponent":126,"../function/toString":138}],6:[function(require,module,exports){
+},{"../function/clone":46,"../function/generate":74,"../function/merge":92,"../function/toComponent":125,"../function/toString":137}],6:[function(require,module,exports){
 const { toComponent } = require("../function/toComponent")
 
 module.exports = (component) => {
@@ -808,7 +809,7 @@ module.exports = (component) => {
     }
 }
 
-},{"../function/toComponent":126}],7:[function(require,module,exports){
+},{"../function/toComponent":125}],7:[function(require,module,exports){
 const { toComponent } = require('../function/toComponent')
 
 module.exports = (component) => {
@@ -821,7 +822,7 @@ module.exports = (component) => {
         children: [{
             view: "View?class=flex-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem;style.position=relative?!parent().isField",
             controls: [{
-                event: "click?().opened=1stChild().style().transform.inc():rotate(90deg);parent().children().pull():0.pullLast().():[style().display=if():[().opened]:none:flex];1stChild().style().transform=if():[().opened]:rotate(0deg):rotate(90deg);2ndLastChild().style().display=if():[().opened]:flex:none;lastSibling().style().display=if():[().opened]:none:flex;3rdLastChild().style().display=if():[().opened]:flex:none?clicked:().id!=2ndChild().id;clicked:().id!=3rdChild().id;clicked:().id!=lastChild().1stChild().id"
+                event: "click?().opened=1stChild().style().transform.inc():'rotate(90deg)';parent().children().pull():0.pullLast().():[style().display=if():[().opened]:none:flex];1stChild().style().transform=if():[().opened]:'rotate(0deg)':'rotate(90deg)';#2ndLastChild().style().display=if():[().opened]:flex:none;#lastSibling().style().display=if():[().opened]:none:flex;3rdLastChild().style().display=if():[().opened]:flex:none?clicked:().id!=2ndChild().id;clicked:().id!=3rdChild().id;clicked:().id!=lastChild().1stChild().id"
             }, {
                 event: "mouseenter?lastChild().style().opacity=1"
             }, {
@@ -830,11 +831,11 @@ module.exports = (component) => {
             children: [{
                 view: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;style.transform='rotate(90deg)';style.width=2rem;class=flex-box pointer;style.transition=transform .2s"
             }, {
-                view: "Text?class=flexbox;text={;style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.height=100%"
+                view: "Text?class=flexbox;text={;style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.height=100%;style.display=none"
             }, {
                 view: "Text?class=pointer;text=...;style.display=none;style.fontSize=1.4rem"
             }, {
-                view: "Text?style.display=none;text=};style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem"
+                view: "Text?style.display=none;text=};style.paddingBottom=.25rem;style.color=green;style.fontSize=1.4rem;style.display=none"
             }, {
                 view: "View?class=flex-box;style.gap=.5rem;style.opacity=0;style.flex=1;style.marginRight=.5rem;style.transition=.1s;style.justifyContent=flex-end",
                 children: [{
@@ -842,26 +843,26 @@ module.exports = (component) => {
                 }]
             }]
         }, {
-            view: "[View]?class=flex column;sort;arrange=parent().arrange;style.marginLeft=if():[!parent().isField]:2rem:0;style.position=relative?data().isdefined();data()!=_list;data()!=_map",
+            view: "[View]?class=flex column;sort;arrange=parent().arrange;#style.marginLeft=if():[!parent().isField]:2rem:0;style.position=relative?data().isdefined();data()!=_list;data()!=_map",
             children: [{
                 view: "View?class=flex align-start;style.alignItems=center;hover.style.backgroundColor=#f6f6f6;style.minHeight=3rem?path().lastEl()!=hezzzyawezzz;path().lastEl()!=clooossseeed",
                 controls: [{
-                    event: "click?():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888;doc().clooossseeed||=_list;if():[!doc().clooossseeed.inc():[_map:path:path()]]:[close=true;doc().clooossseeed.push():[_map:path:path()]]:[close=false;doc().clooossseeed.pullItem():[path=path()]];next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():'rotate(0deg)']:'rotate(90deg)':'rotate(0deg)';2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;3rdLastChild().style().display=if():[3rdLastChild().style().display=flex||data().len()=0]:none:flex;2ndLastChild().2ndPrev().style().display=if():[2ndLastChild().2ndPrev().style().display=flex||data().len()=0]:none:flex;if():[2ndNext()]:[2ndNext().style().display=if():[close]:none:flex]:[next().style().display=if():close:none:flex];3rdChild().2ndNext().style().display=if():[2ndNext().style().display=flex]:flex:none?data().type()=array||data().type()=map;clicked:().id!=2ndChild().id;clicked:().id!=3rdChild().id;clicked:().id!=3rdChild().2ndNext().id;!3rdChild().2ndNext().contains():[clicked:()];!2ndLastChild().contains():[clicked:()];clicked:().id!=lastChild().1stChild().id;!clicked:().classlist().inc():[mini-controls]"
+                    event: "click?():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888;doc().clooossseeed||=_list;if():[!doc().clooossseeed.inc():[_map:path:path()]]:[close=true;doc().clooossseeed.push():[_map:path:path()]]:[close=false;doc().clooossseeed.pullItem():[path=path()]];next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():'rotate(0deg)']:'rotate(90deg)':'rotate(0deg)';2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;#3rdLastChild().style().display=if():[3rdLastChild().style().display=flex||data().len()=0]:none:flex;2ndLastChild().2ndPrev().style().display=if():[2ndLastChild().2ndPrev().style().display=flex||data().len()=0]:none:flex;#if():[2ndNext()]:[2ndNext().style().display=if():[close]:none:flex]:[next().style().display=if():close:none:flex];3rdChild().2ndNext().style().display=if():[2ndNext().style().display=flex]:flex:none?data().type()=array||data().type()=map;clicked:().id!=2ndChild().id;clicked:().id!=3rdChild().id;clicked:().id!=3rdChild().2ndNext().id;!3rdChild().2ndNext().contains():[clicked:()];!2ndLastChild().contains():[clicked:()];clicked:().id!=lastChild().1stChild().id;!clicked:().classlist().inc():[mini-controls]"
                 }, {
                     event: "mouseenter?lastChild().style().opacity=1"
                 }, {
                     event: "mouseleave?lastChild().style().opacity=0"
                 }, {
-                    event: "loaded?next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():'rotate(0deg)']:'rotate(90deg)':'rotate(0deg)';2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;3rdLastChild().style().display=if():[3rdLastChild().style().display=flex||data().len()=0]:none:flex;2ndNext().style().display=if():[2ndNext().style().display=flex]:none:flex;3rdChild().2ndNext().style().display=if():[2ndNext().style().display=flex]:flex:none;2ndLastChild().2ndPrev().style().display=if():[2ndLastChild().2ndPrev().style().display=flex||data().len()=0]:none:flex?doc().clooossseeed.find():[path=path()]"
+                    event: "loaded?next().style().display=if():[next().style().display=flex]:none:flex;1stChild().style().transform=if():[1stChild().style().transform.inc():'rotate(0deg)']:'rotate(90deg)':'rotate(0deg)';2ndLastChild().style().display=if():[2ndLastChild().style().display=flex]:none:flex;#3rdLastChild().style().display=if():[3rdLastChild().style().display=flex||data().len()=0]:none:flex;#2ndNext().style().display=if():[2ndNext().style().display=flex]:none:flex;3rdChild().2ndNext().style().display=if():[2ndNext().style().display=flex]:flex:none;2ndLastChild().2ndPrev().style().display=if():[2ndLastChild().2ndPrev().style().display=flex||data().len()=0]:none:flex?doc().clooossseeed.find():[path=path()]"
                 }],
                 children: [{
                     view: "Icon?style.fontSize=1.3rem;name=bi-caret-right-fill;style.transform='rotate(90deg)';style.width=2rem;class=flex-box pointer;style.transition=transform .2s?data().type()=map||data().type()=array"
                 }, {
                     view: "View?style.minWidth=2rem;text=?data().type()!=map;data().type()!=array"
                 }, {
-                    view: "View?colorize:[colors=blue];class=flex align-center;preventDefault;editable;style:[alignItems=center;width=fit-content;minWidth=fit-content;height=3rem;border=1px solid #ffffff00;borderRadius=.5rem;backgroundColor=#ffffff00;fontSize=1.4rem;padding=.5rem;color=blue];hover.style.border=1px solid #ddd;text=path().lastElement()?2ndParent().parent().data().type()!=array",
+                    view: "View?colorize:[colors=blue];class=flex align-center;preventDefault;editable;style:[alignItems=center;width=fit-content;minWidth=fit-content;height=3rem;border=if():[path().lastElement()]:'1px solid #ffffff00':'1px solid #ddd';borderRadius=.5rem;backgroundColor=#ffffff00;fontSize=1.4rem;padding=.5rem;color=blue];mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=if():[txt()]:'1px solid #00000000':'1px solid #ddd'];text=path().lastElement()?2ndParent().parent().data().type()!=array",
                     controls: [{
-                        event: "input?():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888;doc():[path().clone().replaceLast():txt()]=data().clone();data().del();2ndParent().deepChildren().():[derivations.[path().lastIndex()]=txt()]?log():txt():here;if():[doc():[path().clone().replaceLast():txt()]!=undefined]:[note():[text=txt()+ field name already exists!;type=danger];false]:true"
+                        event: "input?style().border=if():[txt();!mouseentered]:'1px solid #00000000':'1px solid #ddd';():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888;doc():[path().clone().replaceLast():txt()]=data().clone();data().del();2ndParent().deepChildren().():[derivations.[path().lastIndex()]=txt()]?if():[doc():[path().clone().replaceLast():txt()]!=undefined]:[note():[text=txt()+ field name already exists!;type=danger];false]:true"
                     }, {
                         event: "keyup?if():[droplist-positioner:();keyup-index:()]:[():droplist.children().[keyup-index:()].click();timer():[keyup-index:().del()]:200;().break=true];keyup-index:()=0;if():[droplist-positioner:()!=next().id]:[next().click()];timer():[():droplist.children().0.mouseenter()]:200?e().key=Enter;!ctrlKey:()"
                     }, {
@@ -872,15 +873,15 @@ module.exports = (component) => {
                         event: "keyup?insert-index:()=3rdParent().children().findIndex():[id=2ndParent().id]+1;if():[data().type()=string]:[data()=_list];if():[path().lastEl()=children]:[data().push():[_map:view:_string]];if():[path().lastEl()=controls]:[data().push():[_map:event:_string]];update():2ndParent();update:().view.inputs().lastEl().focus()?e().key=Enter;ctrlKey:();path().lastEl()=controls||path().lastEl()=children"
                     }]
                 }, {
-                    view: "Text?text=path().lastElement();class=flexbox;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd?2ndParent().parent().data().type()=array"
+                    view: "Text?text=path().lastElement();class=flexbox;style.color=#666;style.fontSize=1.4rem;style.marginRight=.5rem;style.minWidth=3rem;style.minHeight=2rem;style.borderRadius=.5rem;style.border=1px solid #ddd;click:[next().click()]?2ndParent().parent().data().type()=array"
                 }, {
-                    view: "Text?text=:;tooltip.text=set type;class=flex-box pointer;style.fontSize=1.5rem;style.marginRight=.5rem;style.minWidth=2rem;style.minHeight=2rem;style.paddingBottom=.25rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_list:children:controls:string:number:boolean:map:array:timestamp:geopoint;droplist.isMap"
+                    view: "Text?text=;class=flex-box pointer;style.fontSize=1.5rem;style.borderRadius=.5rem;hover.style.backgroundColor=#e6e6e6;droplist.items=_list:children:text:map:list:number:boolean:timestamp:geopoint;droplist.isMap"
                 }, {
-                    view: `Text?text=";#mode.dark.style.color=#c39178;style.color=#a35521;style.marginRight=.3rem;style.fontSize=1.4rem?data().type()=string`
+                    view: `Text?text=";#mode.dark.style.color=#c39178;style.color=#a35521;style.marginRight=.3rem;style.fontSize=1.4rem;style.display=none?data().type()=string`
                 }, {
-                    view: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;style.color=#666;style.fontSize=1.4rem;style.height=100%?data().type()=array"
+                    view: "Text?class=flexbox;text=[;style.paddingBottom=.25rem;style.color=#666;style.fontSize=1.4rem;style.height=100%;style.display=none?data().type()=array"
                 }, {
-                    view: "Text?class=flexbox;text={;style.paddingBottom=.25rem;style.color=#666;style.fontSize=1.4rem;style.height=100%?data().type()=map"
+                    view: "Text?class=flexbox;text={;style.paddingBottom=.25rem;style.color=#666;style.fontSize=1.4rem;style.height=100%;style.display=none?data().type()=map"
                 }, {
                     view: "View?class=flex align-center;style:[marginLeft=1rem;opacity=.7];children:[Text?text='//';style:[display=if():[doc().hezzzyawezzz.find():[path=path()].note]:flex:none;color=green;fontSize=1.2rem]]:[View?text=doc().hezzzyawezzz.find():[path=path()].note;editable;preventDefault;style:[alignItems=center;width=fit-content;minWidth=fit-content;height=2.5rem;border=1px solid #ffffff00;borderRadius=.5rem;backgroundColor=#ffffff00;fontSize=1.2rem;padding=.5rem;color=green];hover.style.border=1px solid #ddd;entry:[():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888;2ndParent().2ndLastChild().2ndChild().():[if():[().txt()]:[prev().style().display=flex]:[prev().style().display=none];txt()=txt()];prev().style().display=if():txt():flex:none;doc().hezzzyawezzz||=_list;if():[doc().hezzzyawezzz.find():[path=path()]]:[doc().hezzzyawezzz.find():[path=path()].note=txt();if():[!txt()]:[doc().hezzzyawezzz.pullItem():[path=path()]]]:[doc().hezzzyawezzz.push():[_map:note:txt():path:path()]]]]?data().type()=map||data().type()=array"
                 }, {
@@ -930,13 +931,13 @@ module.exports = (component) => {
                         }
                     ]*/
                 }, {
-                    view: "View?style.overflow=auto;style.whiteSpace=nowrap?data().type()=string",
+                    view: "View?class=flex align-center;style.overflow=auto;style.whiteSpace=nowrap?data().type()=string",
                     children: [{
-                        view: "View?style.display=inline-flex",
+                        view: "View?class=flex align-center;style.display=inline-flex",
                         children: [{
-                            view: "View?class=flex aling-center;colorize;editable;#if():[path().lastElement()=id]:[readonly=true];style:[alignItems=center;overflowY=hidden;width=fit-content;minWidth=1rem;minHeight=3rem;maxHeight=3rem;height=3rem;border=1px solid #ffffff00;borderRadius=.5rem;color=#a35521;fontSize=1.4rem;padding=.5rem];hover.style.border=1px solid #ddd;input.style.color=#a35521",
+                            view: "View?class=flex aling-center;colorize;editable;#if():[path().lastElement()=id]:[readonly=true];style:[alignItems=center;overflowY=hidden;width=fit-content;minWidth=1rem;minHeight=3rem;maxHeight=3rem;height=3rem;border=if():[data()]:'1px solid #ffffff00':'1px solid #ddd';borderRadius=.5rem;color=#a35521;fontSize=1.4rem;padding=.5rem];mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=if():[txt()]:'1px solid #00000000':'1px solid #ddd'];input.style.color=#a35521",
                             controls: [{
-                                event: "input?():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888"
+                                event: "input?style().border=if():[txt();!mouseentered]:'1px solid #00000000':'1px solid #ddd';():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888"
                             }, {
                                 event: "keyup?insert-index:()=2ndParent().2ndParent().parent().children().findIndex():[id=2ndParent().2ndParent().id]+1;if():[2ndParent().2ndParent().parent().data().type()=map]:[2ndParent().2ndParent().parent().data().[_string]=_string];if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[2ndParent().2ndParent().parent().data().len()+1];2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]];#######;2ndParent().2ndParent().parent().insert():[component=2ndParent().2ndParent().parent().children.1;path=if():[2ndParent().2ndParent().parent().data().type()=array]:[2ndParent().2ndParent().parent().derivations.clone().push():[insert-index:()]]:[2ndParent().2ndParent().parent().derivations.clone().push():_string];index=insert-index:()]:[().insert.view.getInput().focus()]?e().key=Enter;!ctrlKey:()"
                             }, {
@@ -946,17 +947,17 @@ module.exports = (component) => {
                         }]
                     }]
                 }, {
-                    view: "Input?style.height=3.2rem;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.type=number;input.style.color=olive;style.width=fit-content;style.borderRadius=.5rem?data().type()=number",
+                    view: "Input?style.height=3.2rem;style.border='1px solid #ffffff00';hover.style.border=1px solid #ddd;input.type=number;input.style.color=olive;style.width=fit-content;style.borderRadius=.5rem?data().type()=number",
                     controls: [{
-                        event: "input?():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888"
+                        event: "input?style().border=if():[txt();!mouseentered]:'1px solid #00000000':'1px solid #ddd';():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888"
                     }, {
                         event: "keyup?insert-index:()=2ndParent().parent().children().findIndex():[id=2ndParent().id]+1;if():[2ndParent().parent().data().type()=map]:[2ndParent().parent().data().[_string]=_string];if():[2ndParent().parent().data().type()=array]:[2ndParent().parent().data().splice():_string:[insert-index:()]];if():[insert-index:().less():[2ndParent().parent().data().len()+1];2ndParent().parent().data().type()=array]:[2ndParent().parent().children().slice():[insert-index:()]._():[_.1stChild().2ndChild().txt()=_.1stChild().2ndChild().txt().num()+1;last-index:()=_.derivations.lastIndex();el-index:()=_.derivations.lastElement().num()+1;_.deepChildren().():[derivations.[last-index:()]=el-index:()]]]?e().key=Enter;!ctrlKey:()",
                         actions: "wait():[insert:[2ndParent().parent().id]]?insert.component=2ndParent().parent().children.1;insert.path=if():[2ndParent().parent().data().type()=array]:[2ndParent().parent().derivations.clone().push():[insert-index:()]]:[2ndParent().parent().derivations.clone().push():_string];insert.index=insert-index:();wait():[().insert.view.input().focus()]"
                     }]
                 }, {
-                    view: "Input?style.height=3.2rem;readonly;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.color=purple;style.width=fit-content;style.borderRadius=.5rem;droplist.items=_list:true:false?data().type()=boolean"
+                    view: "Input?style.height=3.2rem;readonly;style.border='1px solid #ffffff00';hover.style.border=1px solid #ddd;input.style.color=purple;style.width=fit-content;style.borderRadius=.5rem;droplist.items=_list:true:false?data().type()=boolean"
                 }, {
-                    view: "Input?style.height=3.2rem;input.type=datetime-local;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.minWidth=25rem;style.borderRadius=.5rem?data().type()=timestamp",
+                    view: "Input?style.height=3.2rem;input.type=datetime-local;style.border=if():[data()]:'1px solid #ffffff00':'1px solid #ddd';mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=if():[txt()]:'1px solid #00000000':'1px solid #ddd'];input.style.minWidth=25rem;style.borderRadius=.5rem?data().type()=timestamp",
                     controls: [{
                         event: "change?():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888"
                     }, {
@@ -965,7 +966,7 @@ module.exports = (component) => {
                         event: "loaded?txt()=date():data().getDateTime()"
                     }]
                 }, {
-                    view: "Input?style.height=3.2rem;input.type=time;style.border=1px solid #ffffff00;hover.style.border=1px solid #ddd;input.style.minWidth=25rem;style.borderRadius=.5rem?data().type()=time",
+                    view: "Input?style.height=3.2rem;input.type=time;style.border=if():[data()]:'1px solid #ffffff00':'1px solid #ddd';mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=if():[txt()]:'1px solid #00000000':'1px solid #ddd'];input.style.minWidth=25rem;style.borderRadius=.5rem?data().type()=time",
                     controls: [{
                         event: "change?():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888"
                     }, {
@@ -974,13 +975,13 @@ module.exports = (component) => {
                         event: "loaded?txt()=data().toClock():[hr;min]"
                     }]
                 }, {
-                    view: `Text?text=";#mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#a35521;style.fontSize=1.4rem?data().type()=string`
+                    view: `Text?text=";#mode.dark.style.color=#c39178;style.marginLeft=.3rem;style.color=#a35521;style.fontSize=1.4rem;style.display=none?data().type()=string`
                 }, {
                     view: "Text?class=flexbox pointer;style.display=none;text='...';style.fontSize=1.4rem"
                 }, {
-                    view: "Text?style.display=none;text=];style.paddingBottom=.25rem;style.color=#666;style.fontSize=1.4rem?data().type()=array"
+                    view: "Text?style.display=none;text=];style.paddingBottom=.25rem;style.color=#666;style.fontSize=1.4rem;style.display=none?data().type()=array"
                 }, {
-                    view: "Text?style.display=none;text=};style.paddingBottom=.25rem;style.color=#666;style.fontSize=1.4rem?data().type()=map"
+                    view: "Text?style.display=none;text=};style.paddingBottom=.25rem;style.color=#666;style.fontSize=1.4rem;style.display=none?data().type()=map"
                 }, {
                     view: "View?class=flex align-center;style:[display=none;marginLeft=1rem;opacity=.7];children:[Text?text='//';style:[display=if():[doc().hezzzyawezzz.find():[path=path()].note]:flex:none;color=green;fontSize=1.2rem]]:[View?text=doc().hezzzyawezzz.find():[path=path()].note;editable;preventDefault;style:[alignItems=center;width=fit-content;minWidth=fit-content;height=2.5rem;border=1px solid #ffffff00;borderRadius=.5rem;backgroundColor=#ffffff00;fontSize=1.2rem;padding=.5rem;color=green];hover.style.border=1px solid #ddd;entry:[():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=1px solid #888;2ndParent().3rdChild().2ndNext().2ndChild().():[if():[().txt()]:[prev().style().display=flex]:[prev().style().display=none];txt()=txt()];prev().style().display=if():txt():flex:none;doc().hezzzyawezzz||=_list;if():[doc().hezzzyawezzz.find():[path=path()]]:[doc().hezzzyawezzz.find():[path=path()].note=txt();if():[!txt()]:[doc().hezzzyawezzz.pullItem():[path=path()]]]:[doc().hezzzyawezzz.push():[_map:note:txt():path:path()]]]]?data().type()=map||data().type()=array"
                 }, {
@@ -995,20 +996,33 @@ module.exports = (component) => {
                     view: "Map?arrange=parent().arrange;isField"
                 }]
             }, {
-                view: "Text?class=flex align-center;text=']';style.height=2.5rem;style.justifyContent=flex-start;style.display=flex;style.marginLeft=2rem;style.color=#666;style.fontSize=1.4rem;style.width=fit-content?data().type()=array;path().lastEl()!=hezzzyawezzz;path().lastEl()!=clooossseeed"
+                view: "Text?class=flex align-center;text=];style.height=2.5rem;style.justifyContent=flex-start;style.display=flex;style.marginLeft=2rem;style.color=#666;style.fontSize=1.4rem;style.width=fit-content;style.display=none?data().type()=array;path().lastEl()!=hezzzyawezzz;path().lastEl()!=clooossseeed"
             }, {
-                view: "Text?class=flex align-center;text='}';style.height=2.5rem;style.justifyContent=flex-start;style.display=flex;style.marginLeft=2rem;style.color=#666;style.fontSize=1.4rem;style.width=fit-content?data().type()=map"
+                view: "Text?class=flex align-center;text=};style.height=2.5rem;style.justifyContent=flex-start;style.display=flex;style.marginLeft=2rem;style.color=#666;style.fontSize=1.4rem;style.width=fit-conten;style.display=none?data().type()=map"
             }]
         }, {
-            view: "Text?class=flexbox;style.justifyContent=flex-start;text='}';style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;style.color=#666;style.fontSize=1.4rem?!parent().isField",
+            view: "Text?class=flexbox;style.justifyContent=flex-start;text=;style.marginLeft=2rem;style.paddingBottom=.25rem;style.height=2.5rem;style.color=#666;style.fontSize=1.4rem?!parent().isField",
         }]
     }
 }
-},{"../function/toComponent":126}],8:[function(require,module,exports){
+},{"../function/toComponent":125}],8:[function(require,module,exports){
 module.exports = (view) => {
+
+  var AutorunScrollInPixel = `[px():[().autorun.scroll]||100]`
+  var toScrollWidth = `[${AutorunScrollInPixel}-().scroll%${AutorunScrollInPixel}||${AutorunScrollInPixel}]`
+  var autorunInterval = `mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]`
+  var loadedActions = `loaded:[scrollable=el().scrollWidth-parent().el().clientWidth;if():[autorun]:[${autorunInterval}]]`
+  var mouseenterActions = `mouseenter:[clearTimer():[().mytimer]]`
+  var mouseleaveActions = `mouseleave:[if():[!mousedn]:[style().transition=[().style.transition||.2s];${autorunInterval}]]`
+  var touchstartActions = `touchstart:[clearTimer():[().mytimer];touchst=true;style().transition=null;mouseposition=e().changedTouches.0.screenX;scrollLeft=().scroll]`
+  var mousedownActions = `mousedown:[mousedn=true;style().transition=null;mouseposition=e().screenX;scrollLeft=().scroll]`
+  var touchmoveActions = `touchmove:[if():[touchst]:[scroll=().scrollLeft+e().changedTouches.0.screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']]`
+  var bodyMousemoveActions = `():body.mousemove:[if():[mousedn]:[scroll=().scrollLeft+e().screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']]`
+  var touchendActions = `touchend:[if():[touchst]:[touchst=false;if():[autorun]:[mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`
+  var bodyMouseupActions = `():body.mouseup:[if():[mousedn]:[mousedn=false;if():[autorun;!mouseentered]:[mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`
   return {
     ...view,
-    view: `View?style:[display=flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;if():[vertical]:[flexDirection=column]];scrollLeft=0;scroll=0;loaded:[scrollable=el().scrollWidth-parent().el().clientWidth;if():[autorun]:[mytimer=interval():[().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]]];if():[autorun]:[mouseenter:[clearTimer():[().mytimer]];mouseleave:[if():[!mousedn]:[style().transition=[().style.transition||.2s];mytimer=interval():[().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]]]];touchstart:[clearTimer():[().mytimer];touchst=true;style().transition=null;mouseposition=e().changedTouches.0.screenX;scrollLeft=().scroll];mousedown:[mousedn=true;style().transition=null;mouseposition=e().screenX;scrollLeft=().scroll];touchmove:[if():[touchst]:[scroll=().scrollLeft+e().changedTouches.0.screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']];():body.mousemove:[if():[mousedn]:[scroll=().scrollLeft+e().screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']];touchend:[if():[touchst]:[touchst=false;if():[autorun]:[mytimer=interval():[().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]];():body.mouseup:[if():[mousedn]:[mousedn=false;if():[autorun;!mouseentered]:[mytimer=interval():[().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=[[px():[().autorun.scroll]||100]-().scroll%[px():[().autorun.scroll]||100]||[px():[().autorun.scroll]||100]];if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`,
+    view: `View?style:[display=flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;if():[vertical]:[flexDirection=column]];scrollLeft=0;scroll=0;${loadedActions};if():[autorun]:[${mouseenterActions};${mouseleaveActions}];${mousedownActions};${bodyMousemoveActions};${bodyMouseupActions};${touchstartActions};${touchmoveActions};${touchendActions}`,
   }
 }
 },{}],9:[function(require,module,exports){
@@ -1050,7 +1064,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../function/toComponent":126,"../function/toString":138}],11:[function(require,module,exports){
+},{"../function/toComponent":125,"../function/toString":137}],11:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Item : require("./Item"),
@@ -1130,7 +1144,7 @@ module.exports = ({ controls, id }) => {
     }
   ]
 }
-},{"../function/generate":75}],17:[function(require,module,exports){
+},{"../function/generate":74}],17:[function(require,module,exports){
 module.exports = {
   item: require("./item"),
   list: require("./list"),
@@ -1410,7 +1424,7 @@ module.exports=[
  , "classlist()", "nextSibling()", "2ndNextSibling()", "axios()", "newTab()", "droplist()", "sort()", "cookie()"
  , "fileReader()", "src()", "addClass()", "removeClass()", "remClass()", "wait()", "print()", "reduce()"
  , "monthStart()", "monthEnd()", "nextMonthStart()", "nextMonthEnd()", "prevMonthStart()", "prevMonthEnd()"
- , "yearStart()", "month()", "year()", "yearEnd()", "nextYearStart()", "nextYearEnd()", "prevYearStart()" 
+ , "yearStart()", "month()", "year()", "yearEnd()", "nextYearStart()", "nextYearEnd()", "prevYearStart()", "while()"
  , "prevYearEnd()", "counter()", "exportCSV()", "exportPdf()", "readonly()", "html()", "csvToJson()", "fetch()"
  , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "return()", "html2pdf()", "dblclick()"
  , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()", "sent()"
@@ -1461,7 +1475,7 @@ const axios = async ({ id, lookupActions, awaits, ...params }) => {
 }
 
 module.exports = { axios }
-},{"./toAwait":122,"axios":148}],43:[function(require,module,exports){
+},{"./toAwait":121,"axios":148}],43:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -1770,7 +1784,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":66,"./toArray":121,"./watch":147}],51:[function(require,module,exports){
+},{"./event":65,"./toArray":120,"./watch":147}],51:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
@@ -1858,7 +1872,7 @@ const createActions = ({ params, id }) => {
 
 module.exports = {createActions}
 
-},{"../control/control":17,"./execute":68}],54:[function(require,module,exports){
+},{"../control/control":17,"./execute":67}],54:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
@@ -1901,7 +1915,7 @@ module.exports = {
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, lookupActions, awaits, string: params, id, req, res, mount: true, createElement: true, _, __, ___ })
+      params = toParam({ _window, lookupActions, awaits, string: params, id, req, res, mount: true, toView: true, _, __, ___ })
 
       if (params.id) {
         
@@ -1912,320 +1926,7 @@ module.exports = {
   }
 }
 
-},{"../component/component":11,"./clone":46,"./generate":75,"./toApproval":120,"./toCode":125,"./toParam":135}],55:[function(require,module,exports){
-const { generate } = require("./generate")
-const { toParam } = require("./toParam")
-const { toApproval } = require("./toApproval")
-const { clone } = require("./clone")
-const { createTags } = require("./createTags")
-const { reducer } = require("./reducer")
-const { toCode } = require("./toCode")
-const { toValue } = require("./toValue")
-const { toArray } = require("./toArray")
-const { createHtml } = require("./createHtml")
-const { override } = require("./merge")
-const { isParam } = require("./isParam")
-
-const myViews = require("./views.json")
-const _imports = [ "link", "meta", "title", "script", "style" ]
-
-const createElement = ({ _window, lookupActions, awaits, id, req, res, import: _import, params: inheritedParams = {}, _, __, ___, viewer = "view" }) => {
-
-  return new Promise (async resolve => {
-
-    var views = _window ? _window.views : window.views
-    var global = _window ? _window.global : window.global
-    var view = views[id], tags = ""
-    var parent = views[view.parent] || {}
-
-    // use view instead of type
-    if (view.view) view.type = view.view
-
-    // view is empty
-    if (!view.type) return resolve("")
-    if (!view["my-views"]) view["my-views"] = [...(parent["my-views"] || [])]
-    view.viewType = viewer = view.viewType || parent.viewType || viewer
-    
-    // encode
-    view.type = toCode({ _window, lookupActions, awaits, string: view.type })
-    view.type = toCode({ _window, lookupActions, awaits, string: view.type, start: "'", end: "'" })
-    
-    // 
-    var type = view.type.split("?")[0]
-    var params = view.type.split("?")[1]
-    var conditions = view.type.split("?")[2]
-    var subParams = type.split(":")[1]
-    type = type.split(":")[0]
-
-    _import = view.id === "html" || (parent.id === "html" && _imports.includes(type.toLowerCase()))
-    
-    // [type]
-    if (!view.duplicatedElement && type.includes("coded()")) {
-
-      type = global.codes[type]
-
-      // sub params
-      if (subParams && isParam({ _window, lookupActions, awaits, string: subParams })) {
-        
-        var _params = {}
-        var derivations = view.derivations = clone(view.derivations || [...(parent.derivations || [])])
-        var Data = view.Data = view.Data || parent.Data || generate()
-
-        if (isParam({ _window, lookupActions, awaits, string: subParams })) {
-          
-          _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
-          
-        } else _params.data = toValue({ _window, lookupActions, awaits, req, res, id, value: subParams, _, __, ___ })
-
-        if (_params.path) {
-
-          _params.path = Array.isArray(_params.path) ? _params.path : _params.path.split(".")
-          derivations.push(..._params.path)
-          if (_params.data === undefined && global[Data]) _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, _, __, ___ })
-        } 
-        if (_params.doc) _params.mount = true
-        if (_params.mount) {
-
-          if (_params.doc) view.doc = view.Data = _params.doc
-          else if (_params.data && !_params.doc) view.doc = view.Data = generate()
-          view.Data = Data = view.Data || Data
-          global[Data] = global[Data] || _params.data || {}
-          _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
-        }
-        
-        var tags = []
-
-        if (toArray(_params.data).length > 0) {
-
-          tags = await Promise.all(toArray(_params.data).map(async (_data, index) => {
-
-            var _id = view.id + generate()
-            var _type = type + "?" + view.type.split("?").slice(1).join("?")
-            var _view = clone({ ...view, id: _id, view: _type, i: index, mapIndex: index, derivations, _: _data, __: index })
-
-            if (!_params.preventDefault) {
-
-              if (type === "Chevron") _view.direction = _data
-              else if (type === "Icon") _view.name = _data
-              else if (type === "Image") _view.src = _data
-              else if (type === "Text") _view.text = _data
-              else if (type === "Checkbox") _view.label = { text: _data }
-            }
-
-            if (_params.mount || _params.path) _view.derivations = [...derivations, index]
-            
-            views[_id] = _view
-            return await createElement({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: index, ___: _, viewer })
-          }))
-
-        } else {
-
-          var _id = view.id + generate()
-          var _type = type + "?" + view.type.split("?").slice(1).join("?")
-          var _view = clone({ ...view, id: _id, view: _type, i: 0, mapIndex: 0, derivations, _: "", __: 0 })
-
-          if (!_params.preventDefault) {
-
-            if (type === "Chevron") _view.direction = "left"
-            else if (type === "Icon") _view.name = "icon"
-            else if (type === "Text") _view.text = ""
-            else if (type === "Checkbox") _view.label = { text: "" }
-          }
-
-          if (_params.mount || _params.path) _view.derivations = [...derivations, "0"]
-          
-          views[_id] = _view
-          tags = await createElement({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: 0, ___: _, viewer })
-          
-          delete views[view.id]
-          return resolve(tags)
-        }
-        
-        delete views[view.id]
-        return resolve(tags.join(""))
-      }
-
-      view.mapType = ["data"]
-    }
-
-    view.type = type
-
-    // events
-    if (view.event) {
-
-      view.controls = toArray(view.controls)
-      toArray(view.event).map(event => view.controls.push({ event }))
-      delete view.event
-    }
-    
-    // id
-    if (subParams) {
-
-      if (isParam({ _window, lookupActions, awaits, string: subParams })) {
-
-        inheritedParams = {...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, _, __, ___ })}
-
-      } else {
-        
-        view.Data = view.Data || view.doc || parent.Data
-        view.derivations = view.derivations || [...(parent.derivations || [])]
-        var _id = toValue({ _window, lookupActions, awaits, value: subParams, id, req, res, _, __, ___ })
-        
-        if (views[_id] && view.id !== _id) view.id = _id + generate()
-        else view.id = id = _id
-        
-        if (global.data[viewer][_id] && !view["creation-date"] && id !== _id) {
-          
-          view["my-views"].push(_id)
-          views[_id] = { ...view, ...clone(global.data[viewer][_id]) }
-          delete views[id]
-          
-          tags = await createElement({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___, viewer })
-          return resolve(tags)
-        }
-      }
-    }
-
-    view.id = id = view.id || generate()
-
-    // style
-    if (!_import) {
-
-      view.style = view.style || {}
-      view.class = view.class || ""
-      view.Data = view.Data || view.doc || parent.Data
-      view.derivations = view.derivations || [...(parent.derivations || [])]
-      view.controls = view.controls || []
-      view.status = "Loading"
-      view.childrenID = []
-      views[id] = view
-
-      // approval
-      var approved = toApproval({ _window, lookupActions, awaits, string: conditions, id, req, res, _, __, ___ })
-      if (!approved) {
-        delete views[id]
-        return resolve("")
-      }
-
-      // before loading controls
-      if (view.controls.length > 0) {
-        await new Promise (async resolve => {
-          
-          toArray(view.controls).map(async (controls = {}) => {
-
-            //
-            if (!controls.event) return
-            var event = toCode({ _window, lookupActions, awaits, string: controls.event })
-            event = toCode({ _window, lookupActions, awaits, string: event, start: "'", end: "'" })
-
-            if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2], _, __, ___ })) {
-
-              toParam({ req, res, _window, id, string: event.split("?")[1], createElement: true })
-              view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
-            }
-          })
-
-          if (global.promises[id] && global.promises[id].length > 0) {
-            
-            await Promise.all((global.promises[id] || []))
-            await Promise.all((global.promises[id] || []))
-            await Promise.all((global.promises[id] || []))
-            await Promise.all((global.promises[id] || []))
-            await Promise.all((global.promises[id] || []))
-            await Promise.all((global.promises[id] || []))
-            
-            delete global.promises[id]
-          }
-
-          resolve()
-        })
-      }
-      
-      if (global.breakCreateElement[id]) {
-
-        global.breakCreateElement[id] = false
-        return resolve("")
-      }
-    }
-
-    /////////////////// approval & params /////////////////////
-
-    // push destructured params from type to view
-    if (params) {
-      
-      params = toParam({ _window, lookupActions, awaits, string: params, id, req, res, mount: true, createElement: true, _, __, ___ })
-
-      if (params.id && params.id !== id) {
-
-        if (views[params.id] && typeof views[params.id] === "object") params.id += generate()
-        delete Object.assign(views, { [params.id]: views[id] })[id]
-        id = params.id
-      }
-      
-      // inherited params
-      if (Object.keys(inheritedParams).length > 0) override(view, inheritedParams)
-
-      // pass to children
-      if (parent.passToChildren) override(view, parent.passToChildren)
-
-      // view
-      if (!_import && (params.view || (!myViews.includes(view.type) && global.data[viewer][view.type]))) {
-
-        var viewId = params.view || view.type
-        delete view.view
-        delete params.view
-        view["my-views"].push(viewId)
-        
-        var newView = clone(global.data[viewer][viewId])
-        if (!newView) return resolve("")
-        if (newView.id && views[newView.id]) newView.id += generate()
-
-        views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
-        
-        tags = await createElement({ _window, lookupActions, awaits, id, req, res, params, _, __, ___, viewer })
-        return resolve(tags)
-      }
-
-    } else if (!_import && (!myViews.includes(view.type) && global.data[viewer][view.type])) {
-      
-      var viewId = view.type
-      view["my-views"].push(viewId)
-      var newView = clone(global.data[viewer][viewId])
-      if (!newView) return resolve("")
-      if (newView.id && views[newView.id]) newView.id += generate()
-      
-      views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
-
-      tags = await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
-      return resolve(tags)
-    }
-
-    if (_import) {
-
-      tags = await createHtml({ _window, lookupActions, awaits, id, req, res, import: _import })
-      return resolve(tags)
-    }
-
-    // for droplist
-    if (parent.unDeriveData || view.unDeriveData) {
-
-      view.data = view.data || ""
-      view.unDeriveData = true
-
-    } else view.data = reducer({ _window, lookupActions, awaits, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res, _, __, ___ })
-    
-    // doc
-    if (!global[view.Data] && view.data) global[view.Data] = view.data
-
-    // root
-    if (view.parent === "root") views.root.child = view.id
-    tags = await createTags({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
-    resolve(tags)
-  })
-}
-
-module.exports = { createElement }
-},{"./clone":46,"./createHtml":56,"./createTags":57,"./generate":75,"./isParam":86,"./merge":93,"./reducer":101,"./toApproval":120,"./toArray":121,"./toCode":125,"./toParam":135,"./toValue":140,"./views.json":145}],56:[function(require,module,exports){
+},{"../component/component":11,"./clone":46,"./generate":74,"./toApproval":119,"./toCode":124,"./toParam":134}],55:[function(require,module,exports){
 const { clone } = require("./clone")
 const { colorize } = require("./colorize")
 const { generate } = require("./generate")
@@ -2238,7 +1939,7 @@ module.exports = {
     
     return new Promise (async resolve => {
 
-      var { createElement } = require("./createElement")
+      var { toView } = require("./toView")
 
       // views
       var views = _window ? _window.views : window.views, id = _id
@@ -2258,7 +1959,7 @@ module.exports = {
         views[id].index = index
         views[id].parent = view.id
         
-        return await createElement({ _window, lookupActions, awaits, id, req, res, import: _import, _, __, ___, viewer })
+        return await toView({ _window, lookupActions, awaits, id, req, res, import: _import, _, __, ___, viewer })
       }))
 
       // siblings
@@ -2275,7 +1976,7 @@ module.exports = {
           views[id].index = view.index + ":" + index
           views[id].parent = view.parent
           
-          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+          return await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
         }))
 
         siblings += _siblings.join("")
@@ -2295,7 +1996,7 @@ module.exports = {
           views[id].index = view.index + ":" + index
           views[id].parent = view.parent
           
-          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+          return await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
         }))
 
         prevSiblings += _siblings.join("")
@@ -2387,7 +2088,7 @@ module.exports = {
     })
   }
 }
-},{"./clone":46,"./colorize":47,"./createElement":55,"./generate":75,"./styleName":118,"./toArray":121,"./toCode":125,"./toHTML":131,"./toStyle":139}],57:[function(require,module,exports){
+},{"./clone":46,"./colorize":47,"./generate":74,"./styleName":117,"./toArray":120,"./toCode":124,"./toHTML":130,"./toStyle":138,"./toView":140}],56:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2396,7 +2097,7 @@ const { toArray } = require("./toArray")
 
 const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___, viewer }) => {
 
-  const { createElement } = require("./createElement")
+  const { toView } = require("./toView")
   return new Promise (async resolve => {
 
     var views = _window ? _window.views : window.views, id = _id, view = views[id], tags = ""
@@ -2506,7 +2207,7 @@ const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, 
           if (mapType[0] === "data") _view.derivations.push(lastEl)
          
           views[id] = _view
-          return await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+          return await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
         }))
 
         tags = tags.join("")
@@ -2528,7 +2229,7 @@ const createTags = ({ _window, lookupActions, awaits, id: _id, req, res, _, __, 
         if (mapType[0] === "data") _view.derivations.push(lastEl)
         
         views[id] = _view
-        tags = await createElement({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+        tags = await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
       }
 
     } else tags = await createTag({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
@@ -2664,7 +2365,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":46,"./createComponent":54,"./createElement":55,"./createHtml":56,"./generate":75,"./toArray":121}],58:[function(require,module,exports){
+},{"./clone":46,"./createComponent":54,"./createHtml":55,"./generate":74,"./toArray":120,"./toView":140}],57:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -2682,7 +2383,7 @@ const createView = ({ view, id = generate(), lookupActions }) => {
 }
 
 module.exports = {createView}
-},{"./clone":46,"./generate":75,"./toArray":121,"./update":142}],59:[function(require,module,exports){
+},{"./clone":46,"./generate":74,"./toArray":120,"./update":142}],58:[function(require,module,exports){
 const { toParam } = require("./toParam");
 
 module.exports = {
@@ -2733,7 +2434,7 @@ module.exports = {
         reader.readAsBinaryString(file || e.target.files[0]);
     }
 }
-},{"./toParam":135}],60:[function(require,module,exports){
+},{"./toParam":134}],59:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -2771,7 +2472,7 @@ const clearData = ({ id, e, clear = {} }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":46,"./reducer":101,"./setContent":110,"./setData":111}],61:[function(require,module,exports){
+},{"./clone":46,"./reducer":100,"./setContent":109,"./setData":110}],60:[function(require,module,exports){
 const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
@@ -3019,17 +2720,13 @@ const postData = async ({ _window, req, res, save }) => {
 
         if (idList[i]) {
 
-          if (!data["creation-date"]) {
-            if (req.headers.timestamp) {
-
-              data["creation-date"] = parseInt(req.headers.timestamp)
-
-            } else {
-
-              data["creation-date"] = (new Date()).getTime()
-              data.timezone = "GMT"
-            }
+          if (!data["creation-date"] && req.headers.timestamp) {
+            data["creation-date"] = parseInt(req.headers.timestamp)
           }
+
+          /*if (!data["creation-date-gmt"]) {
+            data["creation-date-gmt"] = (new Date()).getTime()
+          }*/
 
           batch.set(db.collection(collection).document(idList[i].toString()), data)
 
@@ -3051,16 +2748,9 @@ const postData = async ({ _window, req, res, save }) => {
   } else if (save.doc) {
 
     if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
-    if (!data["creation-date"]) {
-      if (req.headers.timestamp) {
 
-        data["creation-date"] = parseInt(req.headers.timestamp)
-
-      } else {
-
-        data["creation-date"] = (new Date()).getTime()
-        data.timezone = "GMT"
-      }
+    if (!data["creation-date"] && req.headers.timestamp) {
+      data["creation-date"] = parseInt(req.headers.timestamp)
     }
 
     await ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
@@ -3179,7 +2869,7 @@ module.exports = {
   deletedb,
   deleteData
 }
-},{"./toArray":121,"./toCode":125,"./toFirebaseOperator":129,"./toParam":135,"axios":148}],62:[function(require,module,exports){
+},{"./toArray":120,"./toCode":124,"./toFirebaseOperator":128,"./toParam":134,"axios":148}],61:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -3205,7 +2895,7 @@ const decode = ({ _window, string }) => {
 
 module.exports = {decode}
 
-},{}],63:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -3450,7 +3140,7 @@ module.exports = { defaultInputHandler }
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
 }*/
-},{"./colorize":47,"./data":60,"./isArabic":83,"./resize":105,"./toCode":125}],64:[function(require,module,exports){
+},{"./colorize":47,"./data":59,"./isArabic":82,"./resize":104,"./toCode":124}],63:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
@@ -3581,7 +3271,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
               event: `click??!():${id}.droplist.preventDefault`,
               actions: [ // :[focus:${input_id}]
                 `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-                `?if():[txt()=array||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;3rdParent():${id}.data().type()=map]:[_list:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;3rdParent():${id}.data().type()=map]:[_list:[_map:view:_string]].elif():[txt()=children]:[_map:view:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:[_list:_string].elif():[txt()=map]:[_map:_string:_string];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];droplist-positioner:().del();my-parent:()=2ndParent():${id};update():[2ndParent():${id}];().quit=false;my-parent:().inputs().():[if():[!().quit;!txt()||txt()=0]:[focus();().quit=true]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
+                `?if():[txt()=list||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;3rdParent():${id}.data().type()=map]:[_list:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;3rdParent():${id}.data().type()=map]:[_list:[_map:view:_string]].elif():[txt()=children]:[_map:view:_string].elif():[txt()=text]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=list]:[_list:_string].elif():[txt()=map]:[_map:_string:_string];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];droplist-positioner:().del();my-parent:()=2ndParent():${id};update():[2ndParent():${id}];().quit=false;my-parent:().inputs().():[if():[!().quit;!txt()||txt()=0]:[focus();().quit=true]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
                 `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
               ]
             }]
@@ -3596,7 +3286,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
             event: `click??!():${id}.droplist.preventDefault`,
             actions: [ // :[focus:${input_id}]
               `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-              `?if():[txt()=array||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;3rdParent():${id}.data().type()=map]:[_list:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;3rdParent():${id}.data().type()=map]:[_list:[_map:view:_string]].elif():[txt()=children]:[_map:view:_string].elif():[txt()=string]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=array]:[_list:_string].elif():[txt()=map]:[_map:_string:_string];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];droplist-positioner:().del();my-parent:()=2ndParent():${id};update():[2ndParent():${id}];().quit=false;my-parent:().inputs().():[if():[!().quit;!txt()||txt()=0]:[focus();().quit=true]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
+              `?if():[txt()=list||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;3rdParent():${id}.data().type()=map]:[_list:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;3rdParent():${id}.data().type()=map]:[_list:[_map:view:_string]].elif():[txt()=children]:[_map:view:_string].elif():[txt()=text]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=list]:[_list:_string].elif():[txt()=map]:[_map:_string:_string];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];droplist-positioner:().del();my-parent:()=2ndParent():${id};update():[2ndParent():${id}];().quit=false;my-parent:().inputs().():[if():[!().quit;!txt()||txt()=0]:[focus();().quit=true]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
               `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
             ]
           }]
@@ -3677,7 +3367,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":46,"./reducer":101,"./toCode":125,"./toString":138,"./toValue":140,"./update":142}],65:[function(require,module,exports){
+},{"./clone":46,"./reducer":100,"./toCode":124,"./toString":137,"./toValue":139,"./update":142}],64:[function(require,module,exports){
 const axios = require("axios");
 const { clone } = require("./clone");
 const { deleteData } = require("./database");
@@ -3730,7 +3420,7 @@ const erase = async ({ _window, lookupActions, awaits, req, res, id, e, _, __, _
 }
 
 module.exports = { erase }
-},{"./clone":46,"./database":61,"./toArray":121,"./toAwait":122,"./toString":138,"axios":148}],66:[function(require,module,exports){
+},{"./clone":46,"./database":60,"./toArray":120,"./toAwait":121,"./toString":137,"axios":148}],65:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -4060,7 +3750,7 @@ const defaultEventHandler = ({ id }) => {
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":46,"./execute":68,"./generate":75,"./toApproval":120,"./toArray":121,"./toCode":125,"./toParam":135,"./toValue":140}],67:[function(require,module,exports){
+},{"./clone":46,"./execute":67,"./generate":74,"./toApproval":119,"./toArray":120,"./toCode":124,"./toParam":134,"./toValue":139}],66:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
@@ -4069,7 +3759,7 @@ module.exports=[
   "resize", "redo", "popstate", "online", "offline", "message", "load", "languagechange",
   "error", "afterprint", "beforeprint", "beforeunload"
 ]
-},{}],68:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -4223,7 +3913,7 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
 
 module.exports = { execute }
 
-},{"./function":74,"./isParam":86,"./toApproval":120,"./toArray":121,"./toAwait":122,"./toCode":125,"./toParam":135,"./toValue":140}],69:[function(require,module,exports){
+},{"./function":73,"./isParam":85,"./toApproval":119,"./toArray":120,"./toAwait":121,"./toCode":124,"./toParam":134,"./toValue":139}],68:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, name }) => {
         
@@ -4239,7 +3929,7 @@ module.exports = {
         // linkElement.delete()
     }
 }
-},{}],70:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 const { toValue } = require("./function")
 
 module.exports = {
@@ -4250,7 +3940,7 @@ module.exports = {
         reader.readAsDataURL(file)
     }
 }
-},{"./function":74}],71:[function(require,module,exports){
+},{"./function":73}],70:[function(require,module,exports){
 (function (global){(function (){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
@@ -4313,7 +4003,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":46,"./compare":48,"./isEqual":85,"./toArray":121,"./toOperator":134}],72:[function(require,module,exports){
+},{"./clone":46,"./compare":48,"./isEqual":84,"./toArray":120,"./toOperator":133}],71:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -4349,7 +4039,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],73:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toCode } = require("./toCode")
 const { getCookie } = require("./cookie")
@@ -4394,7 +4084,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
     */
 
     // await params
-    if (awaits.findIndex(i => i.await === myawait) === 0) {
+    if (awaits.findIndex(i => i.id === myawait.id) === 0) {
 
       if (myawait) {
 
@@ -4403,7 +4093,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
       } else {
 
         awaits.splice(0, 1)
-        console.log({ data: func.data, success: true, message: "Action executed successfully!" })
+        console.log(myawait.log)
       }
     }
     
@@ -4429,7 +4119,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
         console.log(params.func, global.func, awaits)
     
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions: oldlookupActions, awaits, id, e, ...params, req, res,  _: global.func, __: _, ___: __ })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions: oldlookupActions, myawait, awaits, id, e, ...params, req, res,  _: global.func, __: _, ___: __ })
         resolve()
       })
     )
@@ -4437,7 +4127,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
 }
 
 module.exports = { func }
-},{"./clone":46,"./cookie":51,"./toArray":121,"./toAwait":122,"./toCode":125,"./toParam":135,"axios":148}],74:[function(require,module,exports){
+},{"./clone":46,"./cookie":51,"./toArray":120,"./toAwait":121,"./toCode":124,"./toParam":134,"axios":148}],73:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -4457,7 +4147,7 @@ const {generate} = require("./generate")
 const {refresh} = require("./refresh")
 const {axios} = require("./axios")
 const {wait} = require("./wait")
-const {createElement} = require("./createElement")
+const {toView} = require("./toView")
 const {addEventListener} = require("./event")
 const {execute} = require("./execute")
 const {controls} = require("./controls")
@@ -4563,7 +4253,7 @@ module.exports = {
   removeChildren,
   toArray,
   generate,
-  createElement,
+  toView,
   controls,
   setStyle,
   resetStyles,
@@ -4613,7 +4303,7 @@ module.exports = {
   insert,
   axios
 }
-},{"./axios":42,"./blur":43,"./capitalize":44,"./clearValues":45,"./clone":46,"./compare":48,"./contentful":49,"./controls":50,"./cookie":51,"./createActions":53,"./createComponent":54,"./createElement":55,"./createHtml":56,"./createView":58,"./data":60,"./decode":62,"./defaultInputHandler":63,"./droplist":64,"./erase":65,"./event":66,"./execute":68,"./exportJson":69,"./fileReader":70,"./filter":71,"./focus":72,"./generate":75,"./getDateTime":77,"./getDaysInMonth":78,"./getParam":79,"./importJson":81,"./insert":82,"./isArabic":83,"./isEqual":85,"./isPath":87,"./jsonFiles":88,"./keys":89,"./log":91,"./merge":93,"./note":94,"./overflow":95,"./popup":96,"./position":97,"./preventDefault":98,"./reducer":101,"./refresh":102,"./reload":103,"./remove":104,"./resize":105,"./route":106,"./save":107,"./search":109,"./setContent":110,"./setData":111,"./setElement":112,"./setPosition":113,"./sort":114,"./starter":115,"./state":116,"./style":117,"./switchMode":119,"./toApproval":120,"./toArray":121,"./toAwait":122,"./toCSV":123,"./toCode":125,"./toComponent":126,"./toControls":127,"./toId":132,"./toNumber":133,"./toOperator":134,"./toParam":135,"./toString":138,"./toStyle":139,"./toValue":140,"./toggleView":141,"./update":142,"./upload":144,"./wait":146}],75:[function(require,module,exports){
+},{"./axios":42,"./blur":43,"./capitalize":44,"./clearValues":45,"./clone":46,"./compare":48,"./contentful":49,"./controls":50,"./cookie":51,"./createActions":53,"./createComponent":54,"./createHtml":55,"./createView":57,"./data":59,"./decode":61,"./defaultInputHandler":62,"./droplist":63,"./erase":64,"./event":65,"./execute":67,"./exportJson":68,"./fileReader":69,"./filter":70,"./focus":71,"./generate":74,"./getDateTime":76,"./getDaysInMonth":77,"./getParam":78,"./importJson":80,"./insert":81,"./isArabic":82,"./isEqual":84,"./isPath":86,"./jsonFiles":87,"./keys":88,"./log":90,"./merge":92,"./note":93,"./overflow":94,"./popup":95,"./position":96,"./preventDefault":97,"./reducer":100,"./refresh":101,"./reload":102,"./remove":103,"./resize":104,"./route":105,"./save":106,"./search":108,"./setContent":109,"./setData":110,"./setElement":111,"./setPosition":112,"./sort":113,"./starter":114,"./state":115,"./style":116,"./switchMode":118,"./toApproval":119,"./toArray":120,"./toAwait":121,"./toCSV":122,"./toCode":124,"./toComponent":125,"./toControls":126,"./toId":131,"./toNumber":132,"./toOperator":133,"./toParam":134,"./toString":137,"./toStyle":138,"./toValue":139,"./toView":140,"./toggleView":141,"./update":142,"./upload":144,"./wait":146}],74:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -4632,7 +4322,7 @@ const generate = (params = {}) => {
 
 module.exports = {generate}
 
-},{}],76:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = ({ el, id }) => {
   var view = window.views[id]
   el = el || view.element
@@ -4658,7 +4348,7 @@ module.exports = ({ el, id }) => {
 
   return { top: Math.round(top), left: Math.round(left), right: Math.round(right), bottom: Math.round(bottom), height: Math.round(height), width: Math.round(width) };
 }
-},{}],77:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports = {
     getDateTime: (time) => {
         
@@ -4679,13 +4369,13 @@ module.exports = {
         return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],78:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],79:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 const getParam = ({ string, param, defValue }) => {
@@ -4709,7 +4399,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":135}],80:[function(require,module,exports){
+},{"./toParam":134}],79:[function(require,module,exports){
 const getType = (value) => {
   const { emptySpaces } = require("./toValue")
 
@@ -4730,7 +4420,7 @@ const getType = (value) => {
   if (typeof value === "string") return "string"
 }
 module.exports = { getType }
-},{"./toValue":140}],81:[function(require,module,exports){
+},{"./toValue":139}],80:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
 
 const getJson = (url) => {
@@ -4774,9 +4464,9 @@ const importJson = ({ _window, id, e, _, __, ___, ...params }) => {
 }
 
 module.exports = {importJson, getJson}
-},{"./toAwait":122}],82:[function(require,module,exports){
+},{"./toAwait":121}],81:[function(require,module,exports){
 const { clone } = require("./clone")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { starter } = require("./starter")
 const { generate } = require("./generate")
 const { setElement } = require("./setElement")
@@ -4843,7 +4533,7 @@ module.exports = {
         views[id].style.opacity = "0"
         views[id]["my-views"] = [...views[appendTo]["my-views"]]
         
-        return await createElement({ id, lookupActions })
+        return await toView({ id, lookupActions })
       }))
       
       innerHTML = innerHTML.join("")
@@ -4888,7 +4578,7 @@ module.exports = {
     if (params.asyncer) require("./toAwait").toAwait({ id, lookupActions, awaits, _: view.insert, __: _, ___: __, ...params })
   }
 }
-},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":112,"./starter":115,"./toArray":121,"./toAwait":122}],83:[function(require,module,exports){
+},{"./clone":46,"./generate":74,"./setElement":111,"./starter":114,"./toArray":120,"./toAwait":121,"./toView":140}],82:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -4922,7 +4612,7 @@ const isArabic = ({ id, value, text }) => {
 
 module.exports = { isArabic }
 
-},{}],84:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports = {
     isCondition: ({ _window, string }) => {
         
@@ -4934,7 +4624,7 @@ module.exports = {
         return false
     }
 }
-},{}],85:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -5045,7 +4735,7 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual}
 
-},{}],86:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 module.exports = {
   isParam: ({ _window, string }) => {
       
@@ -5058,7 +4748,7 @@ module.exports = {
     return false
   }
 }
-},{}],87:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
@@ -5075,7 +4765,7 @@ module.exports = {
   },
 };
 
-},{}],88:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -5249,13 +4939,13 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":121,"./toOperator":134,"fs":178}],89:[function(require,module,exports){
+},{"./toArray":120,"./toOperator":133,"fs":178}],88:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],90:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toStyle } = require("./toStyle")
 
@@ -5288,14 +4978,14 @@ module.exports = {
     return `<div ${containerAtts} ${container.draggable !== undefined ? `draggable='${container.draggable}'` : ''} spellcheck='false' ${container.editable && !container.readonly ? 'contenteditable' : ''} class='${container.class}' id='${containerId}' style='${containerStyle}' index='${container.index || 0}'>${labelTag}${tag}</div>`
   }
 }
-},{"./generate":75,"./toStyle":139}],91:[function(require,module,exports){
+},{"./generate":74,"./toStyle":138}],90:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],92:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const readFile = require("./readFile");
 
@@ -5351,7 +5041,7 @@ module.exports = {
         if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, _: global.mail, __: _, ___: __ })
     }
 }
-},{"./readFile":100,"./toArray":121,"./toAwait":122}],93:[function(require,module,exports){
+},{"./readFile":99,"./toArray":120,"./toAwait":121}],92:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -5422,7 +5112,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":46,"./toArray":121}],94:[function(require,module,exports){
+},{"./clone":46,"./toArray":120}],93:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -5458,7 +5148,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":83}],95:[function(require,module,exports){
+},{"./isArabic":82}],94:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var view = window.views[id]
@@ -5515,14 +5205,14 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],96:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 const popup = ({ id }) => {
   
 }
 
 module.exports = {popup}
 
-},{}],97:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 const { lengthConverter } = require("./resize")
 
 const getPadding = (el) => {
@@ -5569,14 +5259,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":105}],98:[function(require,module,exports){
+},{"./resize":104}],97:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],99:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 module.exports = {
@@ -5597,7 +5287,7 @@ module.exports = {
         window.print()
     }
 }
-},{"./toParam":135}],100:[function(require,module,exports){
+},{"./toParam":134}],99:[function(require,module,exports){
 module.exports = (file) => new Promise(res => {
 
     var myFile = file.file || file.url
@@ -5609,7 +5299,7 @@ module.exports = (file) => new Promise(res => {
         myReader.readAsDataURL(file)
     }
 })
-},{}],101:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -5637,7 +5327,7 @@ const actions = require("./actions.json")
 const events = require("./events.json")
 const { func } = require("./func")
 
-const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value, key, params = {}, object, _, __, ___,  e, req, res, mount, condition, createElement }) => {
+const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value, key, params = {}, object, _, __, ___,  e, req, res, mount, condition, toView }) => {
     
     // break
     if (params && params["return()"] !== undefined) return params["return()"]
@@ -5674,7 +5364,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0]) args = path[0].toString().split(":")
     
-    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, awaits, id, e, string: pathJoined, _, __, ___,  object, mount, createElement })
+    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, awaits, id, e, string: pathJoined, _, __, ___,  object, mount, toView })
     
     // function
     /*if (path0.slice(-2) === "()" && path0.slice(0, 2) !== ")(" && args[1] !== "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
@@ -5750,7 +5440,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     }
     
     // function
-    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, createElement, object })
+    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, toView, object })
     if (isFn !== "__CONTINUE__") return isFn
 
     // addition
@@ -5801,8 +5491,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         if (args[3]) {
 
             if (condition) return toApproval({ _window, lookupActions, awaits, e, params, string: args[3], id, _, __, ___,  req, res, object })
-            if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, _, __, ___,  e, object, mount, createElement })
-            else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, _, __, ___,  e, object, mount, createElement })
+            if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, _, __, ___,  e, object, mount, toView })
+            else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, _, __, ___,  e, object, mount, toView })
         }
 
         if (path[1] && path[1].includes("else()")) {
@@ -5824,9 +5514,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
       } else {
         
-        if (condition) return toApproval({ _window, lookupActions, awaits, e, params, string: args[2], id, _, __, ___,  req, res, object })
-        if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object, mount, createElement })
-        else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object, mount, createElement })
+        if (condition) return toApproval({ _window, lookupActions, awaits, e, params, string: args[2], id, _, __, ___,  req, res, object, toView })
+        if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object, mount, toView })
+        else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object, mount, toView })
 
         path.shift()
         while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
@@ -5907,7 +5597,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     if (path0 === "while()") {
             
       while (toApproval({ _window, lookupActions, awaits, e, string: args[1], id, _, __, ___,  req, res, object })) {
-        toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object, mount, createElement })
+        toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object, mount, toView })
       }
       // path = path.slice(1)
       return global.return = false
@@ -6122,7 +5812,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         if (path0.slice(-2) === "()" && typeof o === "object" && !Array.isArray(o) && o.functions && o.functions[path0.slice(-2)]) {
 
-            return toFunction({ _window, lookupActions, awaits, id: o.id, req, res, _, __, ___, e, path, path0, condition, params, mount, createElement, object })
+            return toFunction({ _window, lookupActions, awaits, id: o.id, req, res, _, __, ___, e, path, path0, condition, params, mount, toView, object })
         }
         
         if (k0 !== "data()" && k0 !== "Data()" && k0 !== "doc()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
@@ -7553,28 +7243,43 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "slice()") {
 
             if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
-            if (args[2] || !isNaN(toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, _, __, ___ }))) { // slice():start:end
+            var _start, _end, _params
 
-                var _start = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, _, __, ___,  object })
-                var _end = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[2], params, _, __, ___,  object })
-                // console.log(o, path, _start, _end, k);
-                if (_end !== undefined) answer = o.slice(parseInt(_start), parseInt(_end))
-                else answer = o.slice(parseInt(_start))
+            if (isParam({ _window, string: args[1] })) {
+
+                _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, string: args[1] })
+                _o = _params.object || _params.map || o
+                _start = _params.start
+                _end = _params.end
 
             } else {
 
-                var _params = {}, _o
-                if (args[1]) {
-
-                    if (isParam({ _window, string: args[1] })) {
-
-                        _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, string: args[1] })
-                        _o = _params.object || _params.map || o
-                        if (_params.end !== undefined) answer = _o.slice(parseInt(_params.start), parseInt(_params.end))
-                        else answer = _o.slice(parseInt(_params.start))
-                    }
-                }
+                _start = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, _, __, ___,  object })
+                _end = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[2], params, _, __, ___,  object })
             }
+                
+            if (_end !== undefined) {
+
+                if (!isNaN(_end)) {
+                    
+                    if (!isNaN(_start)) answer = o.slice(parseInt(_start), parseInt(_end))
+                    else {
+                        answer = o.split(_start)[1]
+                        answer = answer.slice(0, _end)
+                    }
+
+                } else {
+
+                    if (!isNaN(_start)) answer = o.slice(parseInt(_start))
+                    else answer = o.split(_start)[1]
+                    answer = answer.split(_end)[0]
+                }
+
+            } else {
+
+                if (!isNaN(_start)) answer = o.slice(parseInt(_start) || 0)
+                else answer = o.split(_start)[1]
+            }   
             
         } else if (k0 === "derivations()" || k0 === "path()" || k0 === "reduce()") {
 
@@ -9375,21 +9080,22 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         
             var _params = toParam({ req, res, _window, id, e, _, __, ___, string: args[1] })
             _params.type = _params.json ? "json" : _params.type
-            
-            var _await = ""
+
+            var _await = "", myawait = {}
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await, action: "import()" })
+                myawait = { id: generate(), hold: true, await: _await, action: "import()" }
+                awaits.unshift(myawait)
             }
 
             if (_params.type === "json") {
                 
-                importJson({ req, res, _window, myawait: _await, lookupActions, awaits, id, e, _, __, ___, params, asyncer: true })
+                importJson({ req, res, _window, myawait, lookupActions, awaits, id, e, _, __, ___, params, asyncer: true })
                 return true
 
             } else {
 
-                require(toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1], params }))
+                require(toValue({ req, res, _window, lookupActions, awaits, myawait, id, e, _, __, ___,  value: args[1], params }))
             }
         
         } else if (k0 === "export()") {
@@ -9497,16 +9203,16 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (typeof o === "object" && !Array.isArray(o)) notArray = true
             if (k0 === "_()") {
               
-              toArray(o).map(o => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], value, params, _: o, __: _, ___: __, e, object, createElement }) )
+              toArray(o).map(o => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], value, params, _: o, __: _, ___: __, e, object, toView }) )
               answer = o
                 
             } else if (k0 === "__()") {
               
-              toArray(o).map((o, index) => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], value, params, __: index, _: o, ___: _, e, object, createElement }) )
+              toArray(o).map((o, index) => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], value, params, __: index, _: o, ___: _, e, object, toView }) )
               answer = o
               
             } else {
-              answer = toArray(o).map(o  => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], object: o, value, params, _, __, ___, e, createElement }) )
+              answer = toArray(o).map(o  => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], object: o, value, params, _, __, ___, e, toView }) )
             }
 
             if (notArray) return o
@@ -10143,43 +9849,49 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           
           if (isParam({ _window, string: args[1] })) {
 
-            var _await = ""
+            var _await = "", myawait = {}
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await, action: "upload()" })
+                myawait = { id: generate(), hold: true, await: _await, action: "upload()" }
+                awaits.unshift(myawait)
             }
+            
             var _upload = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
-            require("./upload")({ _window, lookupActions, awaits, req, res, id, myawait: _await, e, _, __, ___,  upload: _upload, asyncer: true })
+            require("./upload")({ _window, lookupActions, awaits, req, res, id, myawait, e, _, __, ___,  upload: _upload, asyncer: true })
             return true
           }
 
-          return require("./upload")({ _window, lookupActions, awaits, req, res, id, e, myawait: _await, save: { upload: { file: global.upload } }, _, __, ___ })
+          return require("./upload")({ _window, lookupActions, awaits, req, res, id, e, save: { upload: { file: global.upload } }, _, __, ___ })
 
         } else if (k0 === "confirmEmail()") {
           
           if (isParam({ _window, string: args[1] })) {
 
-            var _await = ""
+            var _await = "", myawait = {}
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await, action: "confirmEmail()" })
+                myawait = { id: generate(), hold: true, await: _await, action: "confirmEmail()" }
+                awaits.unshift(myawait)
             }
+
             var _save = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
             _save.store = "confirmEmail"
-            return require("./save").save({ id, lookupActions, awaits, e, _, __, ___, myawait: _await, save: _save, asyncer: true })
+            return require("./save").save({ id, lookupActions, awaits, myawait, e, _, __, ___, save: _save, asyncer: true })
           }
 
         } else if (k0 === "save()") {
           
           if (isParam({ _window, string: args[1] })) {
 
-            var _await = ""
+            var _await = "", myawait = {}
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await, action: "save()" })
+                myawait = { id: generate(), hold: true, await: _await, action: "save()" }
+                awaits.unshift(myawait)
             }
+
             var _save = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
-            return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, _, __, ___, myawait: _await, save: _save, asyncer: true })
+            return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, _, __, ___, myawait, save: _save, asyncer: true })
           }
 
           var _collection = toValue({ req, res, _window, lookupActions, id, e, _, __, ___, value: args[1], params })
@@ -10196,10 +9908,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0.length === 14 && k0.slice(-2) === "()" && k0.slice(0, 7) === 'coded()') { // [actions?conditions]():[params]:[awaits]
 
             k0 = k0.slice(0, 12)
-            var _await = ""
+
+            var _await = "", myawait = {}
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await, action: "action()" })
+                myawait = { id: generate(), hold: true, await: _await, action: "action()" }
+                awaits.unshift(myawait)
             }
 
             var _params = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
@@ -10221,11 +9935,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 else answer = toApproval({ _window, string: k0, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
         
                 // await params
-                if (!_await || awaits.findIndex(i => i.await === _await) === 0) {
+                if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
     
                     if (_await) {
     
-                        require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait: _await, awaits, req, res, _: global.search, __: _, ___: __ })
+                        require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __: _, ___: __ })
     
                     } else {
     
@@ -10237,7 +9951,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else {
 
                 var _func = { data: _params, actions: global.codes[k0] }
-                return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, lookupActions, awaits, myawait: _await })
+                return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, lookupActions, awaits, myawait })
             }
 
         } else if (k0 === "insert()") {
@@ -10247,24 +9961,26 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
             if (isParam({ _window, string: args[1] })) {
 
-                var _await = ""
+                var _await = "", myawait = {}
                 if (args[2]) {
                     _await = global.codes[args[2]]
-                    awaits.unshift({ hold: true, await: _await, action: "insert()" })
+                    myawait = { id: generate(), hold: true, await: _await, action: "insert()" }
+                    awaits.unshift(myawait)
                 }
 
                 var _params = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
-                insert({ id: _params.id || _id, insert: _params, lookupActions, awaits, asyncer: true, myawait: _await, _, __, ___ })
+                insert({ id: _params.id || _id, insert: _params, lookupActions, awaits, asyncer: true, myawait, _, __, ___ })
             }
 
             return true
 
         } else if (k0 === "mail()") {
 
-            var _await = ""
+            var _await = "", myawait = {}
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await, action: "mail()" })
+                myawait = { id: generate(), hold: true, await: _await, action: "mail()" }
+                awaits.unshift(myawait)
             }
 
             var _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
@@ -10272,12 +9988,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (!_window) {
 
                 var _func = { data: _params, actions: `mail():[subject=_.subject;content=_.content;text=_.text;html=_.html;recipient=_.recipient;recipients=_.recipients;attachments=_.attachments]:[send():_]` }
-                return func({ _window, req, res, id, lookupActions, awaits, myawait: _await, asyncer: true, e, func: _func, _, __, ___, ...params })
+                return func({ _window, req, res, id, lookupActions, awaits, myawait, asyncer: true, e, func: _func, _, __, ___, ...params })
             }
 
             //if (_window) {
 
-            else require("./mail").mail({ req, res, _window, lookupActions, awaits, myawait: _await, asyncer: true, id, e, _, __, ___, ..._params })
+            else require("./mail").mail({ req, res, _window, lookupActions, awaits, myawait, asyncer: true, id, e, _, __, ___, ..._params })
             
             /*} else {
 
@@ -10314,15 +10030,16 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "search()") {
 
           if (isParam({ _window, string: args[1] })) {
-            
-            var _await = ""
+
+            var _await = "", myawait = {}
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await, action: "search()" })
+                myawait = { id: generate(), hold: true, await: _await, action: "search()" }
+                awaits.unshift(myawait)
             }
 
             var _search = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
-            require("./search").search({ _window, lookupActions, awaits, myawait: _await, asyncer: true, id, e, _, __, ___,  req, res, search: _search })
+            require("./search").search({ _window, lookupActions, awaits, myawait, asyncer: true, id, e, _, __, ___,  req, res, search: _search })
             return true
           }
 
@@ -10339,27 +10056,30 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
           } else {
 
-            var _await = ""
+            var _await = "", myawait = {}
             if (args[2]) {
                 _await = global.codes[args[2]]
-                awaits.unshift({ hold: true, await: _await, action: "search()" })
+                myawait = { id: generate(), hold: true, await: _await, action: "search()" }
+                awaits.unshift(myawait)
             }
             
-            require("./search").search({ _window, lookupActions, awaits, myawait: _await, req, res, id, e, search: _collection, _, __, ___, asyncer: true })
+            require("./search").search({ _window, lookupActions, awaits, myawait, req, res, id, e, search: _collection, _, __, ___, asyncer: true })
             return true
           }
 
         } else if (k0 === "erase()") {
           
             if (isParam({ _window, string: args[1] })) {
-  
-                var _await = ""
+
+                var _await = "", myawait = {}
                 if (args[2]) {
                     _await = global.codes[args[2]]
-                    awaits.unshift({ hold: true, await: _await, action: "erase()" })
+                    myawait = { id: generate(), hold: true, await: _await, action: "erase()" }
+                    awaits.unshift(myawait)
                 }
-              var _erase = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
-              return require("./erase").erase({ _window, lookupActions, awaits, myawait: _await, req, res, id, e, _, __, ___,  erase: _erase, asyncer: true })
+
+                var _erase = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
+                return require("./erase").erase({ _window, lookupActions, awaits, myawait, req, res, id, e, _, __, ___,  erase: _erase, asyncer: true })
             }
   
             var _collection = toValue({ req, res, _window, lookupActions, id, e, _, __, ___, value: args[1], params })
@@ -10483,11 +10203,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (_o.element) answer = _o.element.classList.remove(_class)
             else answer = _o.classList.remove(_class)
 
-        } /*else if (k === "files" && o && o.nodeType === Node.ELEMENT_NODE) {
-
-          answer = [...o.files]
-          
-        } */else if (k0.includes("()") && typeof o[k0.slice(0, -2)] === "function") {
+        } else if (k0.includes("()") && typeof o[k0.slice(0, -2)] === "function") {
           
           var myparams = []
           args.slice(1).map(arg => {
@@ -10496,20 +10212,15 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           
           answer = o[k0.slice(0, -2)](...myparams)
 
-        }/*else if (k.includes("def()")) {
-
-            var _name = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
-            var _params = global.codes[args[2]] ? global.codes[args[2]] : args[2]
-            var _string = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[3], params })
-            o[`${_name}()`] = {
-                name: _name,
-                params: _params ? _params.split(":") : [],
-                string: _string,
-                id, _, __, ___, e, mount,
-                req, res, 
-            }
+        } else if (k0.slice(-2) === "()") {
             
-        } */else if (k.includes(":coded()")) {
+            if (k0.charAt[0] === "_") {
+                return toFunction({ _window, lookupActions, awaits, id, req, res, _: o, __: _, ___: __, e, path: [k], path0: k0, condition, mount, toView, object })
+            } else {
+                return toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path: [k], path0: k0, condition, mount, toView, object: o })
+            }
+
+        } else if (k.includes(":coded()")) {
           
             breakRequest = true
             
@@ -10518,11 +10229,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             else if (k0.includes("codedS()") && k0.length === 13) k0 = global.codes["codedS()" + k0.slice(-5)]
 
             o[k0] = o[k0] || {}
-            if (createElement && events.includes(k.split(":coded()")[0])) {
+            if (toView && events.includes(k.split(":coded()")[0])) {
               
               if (o.id) {
 
-                var _conditions = ""
+                var _params_ = global.codes["coded()" + args[1].slice(-5)]
+                var _conditions = _params_.split("?")[1] || ""
+                _params_ = _params_.split("?")[0]
+
                 views[id].controls = toArray(views[id].controls)
                 if (k0 === "entry") k0 = "input"
                 else if (k0 === "enter") {
@@ -10533,10 +10247,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                   _conditions += "e().ctrlKey"
                 } else if (k0 === "longclick") {
                   views[id].controls.push({
-                    "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?clickTimer=timestamp()`
+                    "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?${_conditions};clickTimer=timestamp()`
                   })
                   views[id].controls.push({
-                    "event": `mouseup:${o.id !== id ? (":" + o.id) : ""};touchend:${o.id !== id ? (":" + o.id) : ""}?${global.codes["coded()" + args[1].slice(-5)]}?timestamp()-clickTimer>=1000`
+                    "event": `mouseup:${o.id !== id ? (":" + o.id) : ""};touchend:${o.id !== id ? (":" + o.id) : ""}?${global.codes["coded()" + args[1].slice(-5)]}?${_conditions};timestamp()-clickTimer>=1000`
                   })
                   return
                 }
@@ -10743,12 +10457,12 @@ var formatter = new Intl.NumberFormat('en-US', {
 });
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./actions.json":41,"./axios":42,"./capitalize":44,"./clone":46,"./cookie":51,"./counter":52,"./csvToJson":59,"./droplist":64,"./erase":65,"./events.json":67,"./exportJson":69,"./focus":72,"./func":73,"./generate":75,"./getCoords":76,"./getDateTime":77,"./getDaysInMonth":78,"./getType":80,"./importJson":81,"./insert":82,"./isCondition":84,"./isEqual":85,"./isParam":86,"./mail":92,"./note":94,"./print":99,"./refresh":102,"./remove":104,"./resize":105,"./route":106,"./save":107,"./search":109,"./setPosition":113,"./sort":114,"./toApproval":120,"./toArray":121,"./toAwait":122,"./toCSV":123,"./toClock":124,"./toCode":125,"./toExcel":128,"./toFunction":130,"./toHTML":131,"./toId":132,"./toNumber":133,"./toParam":135,"./toPdf":136,"./toSimplifiedDate":137,"./toValue":140,"./toggleView":141,"./update":142,"./updateSelf":143,"./upload":144}],102:[function(require,module,exports){
+},{"./actions.json":41,"./axios":42,"./capitalize":44,"./clone":46,"./cookie":51,"./counter":52,"./csvToJson":58,"./droplist":63,"./erase":64,"./events.json":66,"./exportJson":68,"./focus":71,"./func":72,"./generate":74,"./getCoords":75,"./getDateTime":76,"./getDaysInMonth":77,"./getType":79,"./importJson":80,"./insert":81,"./isCondition":83,"./isEqual":84,"./isParam":85,"./mail":91,"./note":93,"./print":98,"./refresh":101,"./remove":103,"./resize":104,"./route":105,"./save":106,"./search":108,"./setPosition":112,"./sort":113,"./toApproval":119,"./toArray":120,"./toAwait":121,"./toCSV":122,"./toClock":123,"./toCode":124,"./toExcel":127,"./toFunction":129,"./toHTML":130,"./toId":131,"./toNumber":132,"./toParam":134,"./toPdf":135,"./toSimplifiedDate":136,"./toValue":139,"./toggleView":141,"./update":142,"./updateSelf":143,"./upload":144}],101:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 
@@ -10788,7 +10502,7 @@ const refresh = async ({ id, update = {}, lookupActions }) => {
     views[id].style.opacity = "0"
     if (timer) views[id].style.transition = `opacity ${timer}ms`
     
-    return await createElement({ id, lookupActions })
+    return await toView({ id, lookupActions })
 
   }))
   
@@ -10832,13 +10546,13 @@ const refresh = async ({ id, update = {}, lookupActions }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":112,"./starter":115,"./toArray":121,"./update":142}],103:[function(require,module,exports){
+},{"./clone":46,"./generate":74,"./setElement":111,"./starter":114,"./toArray":120,"./toView":140,"./update":142}],102:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],104:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -10927,7 +10641,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":46,"./reducer":101,"./toCode":125,"./toParam":135,"./update":142}],105:[function(require,module,exports){
+},{"./clone":46,"./reducer":100,"./toCode":124,"./toParam":134,"./update":142}],104:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -11030,10 +10744,10 @@ var lengthConverter = (length) => {
 
 module.exports = {resize, dimensions, lengthConverter}
 
-},{}],106:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 const { clone } = require("./clone")
 const { update } = require("./update")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { toArray } = require("./toArray")
 
 module.exports = {
@@ -11062,9 +10776,9 @@ module.exports = {
 
           global.promises[id].push(new Promise (async resolve => {
               
-              var innerHTML = await createElement({ _window, id: "root", req, res })
+              var innerHTML = await toView({ _window, id: "root", req, res })
               if (!global.__INNERHTML__.root) global.__INNERHTML__.root = innerHTML
-              global.breakCreateElement[id] = true
+              global.breaktoView[id] = true
               resolve()
             })
           )
@@ -11078,7 +10792,7 @@ module.exports = {
       }
     }
 }
-},{"./clone":46,"./createElement":55,"./toArray":121,"./update":142}],107:[function(require,module,exports){
+},{"./clone":46,"./toArray":120,"./toView":140,"./update":142}],106:[function(require,module,exports){
 var { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { generate } = require("./generate")
@@ -11262,7 +10976,7 @@ const save = async ({ _window, lookupActions, awaits, req, res, id, e, _, __, __
 }
 
 module.exports = { save }
-},{"./clone":46,"./generate":75,"./schematize":108,"./toArray":121,"./toAwait":122,"./toParam":135,"axios":148}],108:[function(require,module,exports){
+},{"./clone":46,"./generate":74,"./schematize":107,"./toArray":120,"./toAwait":121,"./toParam":134,"axios":148}],107:[function(require,module,exports){
 const schematize = ({ data, schema }) => {
   var _data = {}
   schema.map(schema => {
@@ -11282,7 +10996,7 @@ const schematize = ({ data, schema }) => {
 }
 
 module.exports = { schematize }
-},{}],109:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 const axios = require('axios')
 const { toString } = require('./toString')
 const { clone } = require('./clone')
@@ -11564,7 +11278,7 @@ module.exports = {
     // if (_data.message === "Force reload!") return location.reload()
   }
 }
-},{"./clone":46,"./toArray":121,"./toAwait":122,"./toFirebaseOperator":129,"./toString":138,"axios":148}],110:[function(require,module,exports){
+},{"./clone":46,"./toArray":120,"./toAwait":121,"./toFirebaseOperator":128,"./toString":137,"axios":148}],109:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -11587,7 +11301,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":83}],111:[function(require,module,exports){
+},{"./isArabic":82}],110:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
@@ -11631,7 +11345,7 @@ const setData = ({ id, data }) => {
 
 module.exports = { setData }
 
-},{"./clone":46,"./reducer":101}],112:[function(require,module,exports){
+},{"./clone":46,"./reducer":100}],111:[function(require,module,exports){
 const { controls } = require("./controls")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -11680,7 +11394,7 @@ const setElement = ({ _window, id }) => {
 }
     
 module.exports = { setElement }
-},{"./controls":50,"./defaultInputHandler":63,"./isArabic":83,"./resize":105,"./toApproval":120,"./toArray":121,"./toCode":125,"./toParam":135}],113:[function(require,module,exports){
+},{"./controls":50,"./defaultInputHandler":62,"./isArabic":82,"./resize":104,"./toApproval":119,"./toArray":120,"./toCode":124,"./toParam":134}],112:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
   var views = window.views
@@ -11862,7 +11576,7 @@ const setPosition = ({ position = {}, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],114:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
@@ -11987,7 +11701,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":101,"./toArray":121,"./toCode":125}],115:[function(require,module,exports){
+},{"./reducer":100,"./toArray":120,"./toCode":124}],114:[function(require,module,exports){
 const _controls_ = require("../control/control")
 const { toArray } = require("./toArray")
 
@@ -12024,12 +11738,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":17,"./controls":50,"./event":66,"./toArray":121}],116:[function(require,module,exports){
+},{"../control/control":17,"./controls":50,"./event":65,"./toArray":120}],115:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],117:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -12149,7 +11863,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":105,"./toArray":121}],118:[function(require,module,exports){
+},{"./resize":104,"./toArray":120}],117:[function(require,module,exports){
 module.exports = (k) => {
   
   if (k === "userSelect") k = "user-select";
@@ -12215,7 +11929,7 @@ module.exports = (k) => {
   else if (k === "writingMode") k = "writing-mode";
   return k
 }
-},{}],119:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -12279,7 +11993,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":44,"./clone":46,"./style":117}],120:[function(require,module,exports){
+},{"./capitalize":44,"./clone":46,"./style":116}],119:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 
 const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id = "root", _, __, ___, req, res, object, elser }) => {
@@ -12421,14 +12135,15 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
 
 module.exports = { toApproval }
 
-},{"./isEqual":85,"./reducer":101,"./toFunction":130,"./toValue":140}],121:[function(require,module,exports){
+},{"./isEqual":84,"./reducer":100,"./toFunction":129,"./toValue":139}],120:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],122:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
+const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 
@@ -12443,10 +12158,18 @@ const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res
 
   if (myawait) {
     
-    var _await_ = toCode({ _window, string: toCode({ _window, string: myawait }), start: "'", end: "'" })
-    _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res, ...((awaits.find(item => item.await === myawait) || {}).params || {}) })
+    var _await_ = toCode({ _window, string: toCode({ _window, string: myawait.await }), start: "'", end: "'" })
 
-    var index = awaits.findIndex(item => item.await === myawait)
+    var conditions = _await_.split("?")[1], approved = true
+    if (conditions) {
+      approved = toApproval({ _window, string: conditions, e, id, req, res, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+    }
+
+    _await_ = _await_.split("?")[0]
+
+    if (approved) _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res, ...((awaits.find(item => item.id === myawait.id) || {}).params || {}) })
+
+    var index = awaits.findIndex(item => item.id === myawait.id)
     if (index !== -1) {
 
       if (awaits[index].log) console.log(awaits[index].log);
@@ -12455,25 +12178,33 @@ const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res
   }
 
   // get params
-  toArray(awaits).map((_await, i) => {
+  while (awaits.length > 0 && keepGoingOn) {
   
+    var _await = awaits[0]
     if (keepGoingOn) keepGoingOn = !_await.hold
     if (keepGoingOn) {
-
-      if (_await.log) console.log(_await.log);
 
       if (_await.await) {
 
         var _await_ = toCode({ _window, string: toCode({ _window, string: _await.await }), start: "'", end: "'" })
-        const __params = _await.passGlobalFunc ? { _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ } : { _, __, ___ }
-        _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, ...__params, req, res, ...(_await.params || {}) })
+        var __params = _await.passGlobalFuncData ? { _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ } : { _, __, ___ }
+
+        var conditions = _await_.split("?")[1], approved = true
+        if (conditions)
+          approved = toApproval({ _window, string: conditions, e, id, req, res, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+
+        _await_ = _await_.split("?")[0]
+
+        if (approved) _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, ...__params, req, res, ...(_await.params || {}) })
       }
+      
+      if (_await.log) console.log(_await.log);
       
       var index = toArray(awaits).findIndex(item => item.id === _await.id)
       if (index !== -1) toArray(awaits).splice(index, 1)
-      if (index !== i) keepGoingOn = false
+      if (index !== 0) keepGoingOn = false
     }
-  })
+  }
 
   if (_params && _params.break) return
 
@@ -12482,7 +12213,7 @@ const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res
 }
 
 module.exports = {toAwait}
-},{"./execute":68,"./toArray":121,"./toCode":125,"./toParam":135}],123:[function(require,module,exports){
+},{"./clone":46,"./execute":67,"./toArray":120,"./toCode":124,"./toParam":134}],122:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -12557,7 +12288,7 @@ module.exports = {
         }
     }
 }
-},{}],124:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -12578,7 +12309,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],125:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
@@ -12640,7 +12371,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 }
 
 module.exports = { toCode }
-},{"./generate":75}],126:[function(require,module,exports){
+},{"./generate":74}],125:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -12673,12 +12404,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":75,"./toArray":121}],127:[function(require,module,exports){
+},{"./generate":74,"./toArray":120}],126:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],128:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 // const XLSX = require("xlsx")
 
 module.exports = {
@@ -12703,7 +12434,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{}],129:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 module.exports = {
     toFirebaseOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -12719,7 +12450,7 @@ module.exports = {
         else return string
     }
 }
-},{}],130:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 const { func } = require("./func")
 const { clone } = require("./clone")
 const { toCode } = require("./toCode")
@@ -12730,13 +12461,13 @@ const { toApproval } = require("./toApproval")
 const actions = require("./actions.json")
 const { generate } = require("./generate")
 
-const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, condition, params = {}, mount, asyncer, createElement, executer, object, lookupActions = {}, awaits = [] }) => {
+const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, condition, params = {}, mount, asyncer, toView, executer, object, lookupActions = {}, awaits = [], isView = false }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
   var view = views[id], backendFn = false, isFn = false
   
-  if (path.length === 1 && path0.slice(-2) === "()" && !actions.includes(path0) && path0 !== "if()" && path0 !== "while()") {
+  if (path.length === 1 && path0.slice(-2) === "()" && !actions.includes(path0)) {
     
     var newLookupActions
     var myViews = view["my-views"] || []
@@ -12755,9 +12486,10 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
           if (isFn) {
 
             isFn = fn.slice(0, fn.length - i).reduce((o, k) => o[k], functions)[isFn]
-            if (typeof isFn === "object") {
-              newLookupActions = { view: lookupActions.view, fn: [...fn, path0.slice(0, -2)] }
-              isFn = isFn._
+            if (typeof isFn === "object" && isFn._) {
+
+              isFn = isFn._ || ""
+              newLookupActions = { view: lookupActions.view, fn: [...fn, path0.slice(0, -2)], viewType: lookupActions.viewType || "view" }
             }
           }
         }
@@ -12782,7 +12514,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
 
             } else {
 
-              if (typeof functions[isFn] === "object") {
+              if (!isView && typeof functions[isFn] === "object") {
 
                 isFn = functions[isFn]._ || ""
                 newLookupActions = { view: myview, fn: [path0.slice(0, -2)], viewType: i === myViews.length - 1 ? "page" : view.viewType }
@@ -12797,7 +12529,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
     if (isFn) {
       
       var _params, args = path[0].split(":")
-
+      
       if (backendFn) {
       
         var _data
@@ -12805,12 +12537,12 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
         else _data = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params, condition, lookupActions })
 
         var _func = { function: isFn, data: _data, log: { action: params.func, send: global.func } }
-        var _await = global.codes[args[2]]
+        var _await = global.codes[args[2]], myawait = { id: generate(), hold: false, await: _await, action: path0, passGlobalFuncData: _window ? true: false, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn || [] }, params: { e, id, req, res, mount, object, asyncer, toView, params, executer, condition, lookupActions } }
     
-        if (_await) awaits.unshift({ id: generate(), hold: false, await: _await, action: path0, passGlobalFunc: _window ? true: false, params: { e, id, req, res, mount, object, asyncer, createElement, params, executer, condition, lookupActions } })
-
-        console.log("ACTION " + path0);
-        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait: _await, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+        if (_await) awaits.unshift(myawait)
+        
+        console.log("ACTION " + path.join(":"));
+        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
         
         return answer
       }
@@ -12824,36 +12556,56 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
       if (isFn) {
 
         // await
-        var _await = global.codes[args[2]]
-        awaits.unshift({ id: generate(), await: _await, action: path0, log: { action: path0, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn }, params: {e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, createElement, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions} })
-        isFn = toCode({ _window, id, string: toCode({ _window, id, string: isFn }), start: "'", end: "'" })
+        var answer, _await = global.codes[args[2]], myawait = { id: generate(), await: _await, action: path0, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn }, params: {e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions} }
+        awaits.unshift(myawait)
+        
+        console.log("ACTION " + path.join(":"));
 
-        var answer
-        console.log("ACTION " + path0);
-        if (isFn.includes('coded()') && isFn.length === 12) isFn = global.codes[isFn]
+        if (!isView) {
 
-        var conditions = isFn.split("?")[1]
-        if (conditions) {
-          var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions: newLookupActions ? newLookupActions : lookupActions })
-          if (!approved) return
+          isFn = toCode({ _window, id, string: toCode({ _window, id, string: isFn, start: "'", end: "'" }) })
+
+          if (isFn.includes('coded()') && isFn.length === 12) isFn = global.codes[isFn]
+          
+          var conditions = isFn.split("?")[1]
+          if (conditions) {
+            var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+            if (!approved) return
+          }
+
+          isFn = isFn.split("?")[0]
+
+        } else {
+
+          var view = views[id]
+          if (typeof isFn === "object") views[id] = { ...view, ...isFn }
+          else view.view = view.type = isFn
+          
+          view.view = view.type = toCode({ _window, id, string: toCode({ _window, id, string: view.view, start: "'", end: "'" }) })
         }
+        
+        if (!condition) {
 
-        isFn = isFn.split("?")[0]
+          if (isView) 
+            answer = require("./toView").toView({ _window, lookupActions, awaits, id, req, res, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+          else if (isParam({ _window, string: isFn }))
+            answer = toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+          else 
+            answer = toValue({ _window, value: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions })
 
-        if (!condition) answer = toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, createElement, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions })
-        else answer = toApproval({ _window, string: isFn, e, id, req, res, mount, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+        } else answer = toApproval({ _window, string: isFn, e, id, req, res, mount, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions: newLookupActions ? newLookupActions : lookupActions })
         
         // await params
-        if (awaits.findIndex(i => i.await === _await) === 0) {
+        if (awaits.findIndex(i => i.id === myawait.id) === 0) {
 
           if (_await) {
 
-            require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait: _await, awaits, req, res, _: global.search, __: _, ___: __ })
+            require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __: _, ___: __ })
 
           } else {
 
             awaits.splice(0, 1)
-            console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn })
+            console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn || [] })
           }
         }
 
@@ -12866,7 +12618,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
 }
 
 module.exports = { toFunction }
-},{"./actions.json":41,"./clone":46,"./func":73,"./generate":75,"./isParam":86,"./toApproval":120,"./toAwait":122,"./toCode":125,"./toParam":135,"./toValue":140}],131:[function(require,module,exports){
+},{"./actions.json":41,"./clone":46,"./func":72,"./generate":74,"./isParam":85,"./toApproval":119,"./toAwait":121,"./toCode":124,"./toParam":134,"./toValue":139,"./toView":140}],130:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { labelHandler } = require("./labelHandler")
@@ -12970,7 +12722,7 @@ module.exports = ({ _window, id, innerHTML }) => {
 
   return tag
 }
-},{"./labelHandler":90,"./toArray":121,"./toStyle":139}],132:[function(require,module,exports){
+},{"./labelHandler":89,"./toArray":120,"./toStyle":138}],131:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -12999,7 +12751,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":75}],133:[function(require,module,exports){
+},{"./generate":74}],132:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -13020,7 +12772,7 @@ module.exports = {
   },
 };
 
-},{}],134:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -13036,7 +12788,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],135:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -13056,7 +12808,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, createElement, params = {}, executer, condition }) => {
+const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", req, res, mount, object, _, __, ___, _i, asyncer, toView, params = {}, executer, condition }) => {
   
   // break
   if (params && params["return()"] !== undefined) return params["return()"]
@@ -13077,9 +12829,9 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
   if (string.includes('codedS()') && string.length === 13) return global.codes[string]
 
   // condition not param
-  if (!createElement && string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
+  if (!toView && string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
   return toApproval({ id, lookupActions, awaits, e, string: string.replace("==", "="), req, res, _window, _, __, ___, _i, object })
-  // if (createElement) _ = views[id]._
+  // if (toView) _ = views[id]._
   
   string.split(";").map(param => {
     
@@ -13124,7 +12876,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       value = `coded()${_key}+coded()${_key0}`*/
     }
 
-    // {}=
+    // {}= => { key, ...value }
     else if (key && value && key.slice(-2) === "{}") {
 
       key = key.slice(0, -2)
@@ -13349,13 +13101,13 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
     id = viewId
     
-    var path = typeof key === "string" ? key.split(".") : [], isFn = false, backendFn = false, i = path[0].split(":").length - 1, path0 = path[0].split(":")[0], pathi = path[0].split(":")[i]
+    var path = typeof key === "string" ? key.split(".") : [], isFn = false, i = path[0].split(":").length - 1, path0 = path[0].split(":")[0], pathi = path[0].split(":")[i]
 
     // :coded()1asd1
     if (path0 === "") return
 
     // function
-    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, createElement, executer, object })
+    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, toView, executer, object })
     if (isFn !== "__CONTINUE__") return isFn
     else isFn = false
     
@@ -13386,7 +13138,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       global.codes[`coded()${_key}`] = isFn
 
       // if (backendFn) return require("./func").func({ _window, lookupActions, awaits, req, res, id, e, func: `${_field}:coded()${_key}`, _, __, ___, asyncer: true })
-      return toParam({ _window, lookupActions, awaits, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, createElement, executer })
+      return toParam({ _window, lookupActions, awaits, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, toView, executer })
     }
 
     ////////////////////////////////// end of function /////////////////////////////////////////
@@ -13402,12 +13154,12 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       // mount state & value
       if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || path[0].includes(")(") || path[0].includes("_") || object) {
         
-        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, object, mount, createElement, condition })
+        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, object, mount, toView, condition })
 
       } else {
         
-        if (id && view && mount) reducer({ _window, lookupActions, awaits, id, path: ["()", ...path], value, key, params, e, req, res, _, __, ___, _i, mount, object, createElement, condition })
-        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: params, createElement, condition })
+        if (id && view && mount) reducer({ _window, lookupActions, awaits, id, path: ["()", ...path], value, key, params, e, req, res, _, __, ___, _i, mount, object, toView, condition })
+        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: params, toView, condition })
       }
       
       if (!params.path && _path !== undefined) params.path = _path
@@ -13421,7 +13173,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
     /////////////////////////////////////////// Create Element Stuff ///////////////////////////////////////////////
 
-    if (mount && createElement) {
+    if (mount && toView) {
       
       if (view && view.doc) view.Data = view.doc
       if (params.doc) params.Data = params.doc
@@ -13523,7 +13275,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
 module.exports = { toParam }
 
-},{"./actions.json":41,"./clone":46,"./decode":62,"./function":74,"./generate":75,"./getType":80,"./isParam":86,"./reducer":101,"./toApproval":120,"./toArray":121,"./toCode":125,"./toFunction":130,"./toValue":140}],136:[function(require,module,exports){
+},{"./actions.json":41,"./clone":46,"./decode":61,"./function":73,"./generate":74,"./getType":79,"./isParam":85,"./reducer":100,"./toApproval":119,"./toArray":120,"./toCode":124,"./toFunction":129,"./toValue":139}],135:[function(require,module,exports){
 module.exports = {
     toPdf: async ({ id, options }) => {
 
@@ -13552,7 +13304,7 @@ module.exports = {
         }
     }
 }
-},{}],137:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -13600,7 +13352,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],138:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 const toString = (object, field) => {
 
   if (!object) return ""
@@ -13634,7 +13386,7 @@ const toString = (object, field) => {
 
 module.exports = {toString}
 
-},{}],139:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 module.exports = {
   toStyle: ({ _window, id }) => {
 
@@ -13655,7 +13407,7 @@ module.exports = {
   }
 }
 
-},{"./styleName":118}],140:[function(require,module,exports){
+},{"./styleName":117}],139:[function(require,module,exports){
 const { clone } = require("./clone");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
@@ -13670,7 +13422,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, ___, id, e, req, res, object, mount, asyncer, createElement, executer, condition }) => {
+const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, ___, id, e, req, res, object, mount, asyncer, toView, executer, condition }) => {
 
   const { toFunction } = require("./toFunction")
   const { toParam } = require("./toParam")
@@ -13709,10 +13461,10 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   }
 
   // create function: coded()xxxxx() => [params that inherited function attributes in underscore]()
-  if (value.slice(0, 7) === 'coded()' && value.length === 14 && value.slice(-2) === "()") value = "function():" + value.slice(0, 12)
+  /*if (value.slice(0, 7) === 'coded()' && value.length === 14 && value.slice(-2) === "()") value = "function():" + value.slice(0, 12)
     
   // promise: coded()xxxxx:coded()xxxxx => promise():[]:[]
-  else if (value.length === 25 && value.split("coded()") === 2 && value.slice(0, 7) === 'coded()') value = "promise():" + value
+  else if (value.length === 25 && value.split("coded()") === 2 && value.slice(0, 7) === 'coded()') value = "promise():" + value*/
 
   // (...)
   /*var valueParanthes = value.split("()").join("")
@@ -13732,9 +13484,9 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
     document.getElementById("loader-container").style.display = "none"
     return sleep(10)
   }
-
+  
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, awaits, e, string: value, _, __, ___, object, mount, params, createElement, condition })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, awaits, e, string: value, _, __, ___, object, mount, params, toView, condition })
 
   // or
   if (value.includes("||")) {
@@ -13752,7 +13504,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
       
       value = value.slice(0, -2)
       value = `${value}=${value}+1`
-      toParam({ req, res, _window, lookupActions, id, e, string: value, _, __, ___, object, mount, params, createElement, condition })
+      toParam({ req, res, _window, lookupActions, id, e, string: value, _, __, ___, object, mount, params, toView, condition })
       return (toValue({ _window, lookupActions, awaits, value, params, _, __, ___, id, e, req, res, object, mount, condition }) - 1)
 
     } else {
@@ -13830,7 +13582,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
   
   // function
-  var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, createElement, executer, object })
+  var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, toView, executer, object })
   if (isFn !== "__CONTINUE__") return isFn
 
   /* value */
@@ -14214,11 +13966,332 @@ const calcModulo = ({ _window, lookupActions, awaits, value, params, _, __, ___,
 
 module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces }
 
-},{"./clone":46,"./generate":75,"./isParam":86,"./reducer":101,"./toCode":125,"./toFunction":130,"./toParam":135}],141:[function(require,module,exports){
+},{"./clone":46,"./generate":74,"./isParam":85,"./reducer":100,"./toCode":124,"./toFunction":129,"./toParam":134}],140:[function(require,module,exports){
+const { generate } = require("./generate")
+const { toParam } = require("./toParam")
+const { toApproval } = require("./toApproval")
+const { clone } = require("./clone")
+const { createTags } = require("./createTags")
+const { reducer } = require("./reducer")
+const { toCode } = require("./toCode")
+const { toValue } = require("./toValue")
+const { toArray } = require("./toArray")
+const { createHtml } = require("./createHtml")
+const { override } = require("./merge")
+const { isParam } = require("./isParam")
+
+const myViews = require("./views.json")
+const { toFunction } = require("./toFunction")
+const _imports = [ "link", "meta", "title", "script", "style" ]
+
+const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import, params: inheritedParams = {}, _, __, ___, viewer = "view" }) => {
+
+  return new Promise (async resolve => {
+
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+    var view = views[id], tags = ""
+    var parent = views[view.parent] || {}
+
+    // use view instead of type
+    if (view.view) view.type = view.view
+
+    // view is empty
+    if (!view.type) return resolve("")
+    if (!view["my-views"]) view["my-views"] = [...(parent["my-views"] || [])]
+    view.viewType = viewer = view.viewType || parent.viewType || viewer
+    
+    // encode
+    view.type = toCode({ _window, string: toCode({ _window, string: view.type }), start: "'", end: "'" })
+    var isFn = await toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0], isView: true })
+    if (isFn !== "__CONTINUE__") return resolve(isFn)
+    
+    // 
+    var type = view.type.split("?")[0]
+    var params = view.type.split("?")[1]
+    var conditions = view.type.split("?")[2]
+    var subParams = type.split(":")[1]
+    type = type.split(":")[0]
+
+    _import = view.id === "html" || (parent.id === "html" && _imports.includes(type.toLowerCase()))
+    
+    // [type]
+    if (!view.duplicatedElement && type.includes("coded()")) {
+
+      type = global.codes[type]
+
+      // sub params
+      if (subParams && isParam({ _window, lookupActions, awaits, string: subParams })) {
+        
+        var _params = {}
+        var derivations = view.derivations = clone(view.derivations || [...(parent.derivations || [])])
+        var Data = view.Data = view.Data || parent.Data || generate()
+
+        if (isParam({ _window, lookupActions, awaits, string: subParams })) {
+          
+          _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
+          
+        } else _params.data = toValue({ _window, lookupActions, awaits, req, res, id, value: subParams, _, __, ___ })
+
+        if (_params.path) {
+
+          _params.path = Array.isArray(_params.path) ? _params.path : _params.path.split(".")
+          derivations.push(..._params.path)
+          if (_params.data === undefined && global[Data]) _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, _, __, ___ })
+        } 
+        if (_params.doc) _params.mount = true
+        if (_params.mount) {
+
+          if (_params.doc) view.doc = view.Data = _params.doc
+          else if (_params.data && !_params.doc) view.doc = view.Data = generate()
+          view.Data = Data = view.Data || Data
+          global[Data] = global[Data] || _params.data || {}
+          _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
+        }
+        
+        var tags = []
+
+        if (toArray(_params.data).length > 0) {
+
+          tags = await Promise.all(toArray(_params.data).map(async (_data, index) => {
+
+            var _id = view.id + generate()
+            var _type = type + "?" + view.type.split("?").slice(1).join("?")
+            var _view = clone({ ...view, id: _id, view: _type, i: index, mapIndex: index, derivations, _: _data, __: index })
+
+            if (!_params.preventDefault) {
+
+              if (type === "Chevron") _view.direction = _data
+              else if (type === "Icon") _view.name = _data
+              else if (type === "Image") _view.src = _data
+              else if (type === "Text") _view.text = _data
+              else if (type === "Checkbox") _view.label = { text: _data }
+            }
+
+            if (_params.mount || _params.path) _view.derivations = [...derivations, index]
+            
+            views[_id] = _view
+            return await toView({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: index, ___: _, viewer })
+          }))
+
+        } else {
+
+          var _id = view.id + generate()
+          var _type = type + "?" + view.type.split("?").slice(1).join("?")
+          var _view = clone({ ...view, id: _id, view: _type, i: 0, mapIndex: 0, derivations, _: "", __: 0 })
+
+          if (!_params.preventDefault) {
+
+            if (type === "Chevron") _view.direction = "left"
+            else if (type === "Icon") _view.name = "icon"
+            else if (type === "Text") _view.text = ""
+            else if (type === "Checkbox") _view.label = { text: "" }
+          }
+
+          if (_params.mount || _params.path) _view.derivations = [...derivations, "0"]
+          
+          views[_id] = _view
+          tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: 0, ___: _, viewer })
+          
+          delete views[view.id]
+          return resolve(tags)
+        }
+        
+        delete views[view.id]
+        return resolve(tags.join(""))
+      }
+
+      view.mapType = ["data"]
+    }
+
+    view.type = type
+
+    // events
+    if (view.event) {
+
+      view.controls = toArray(view.controls)
+      toArray(view.event).map(event => view.controls.push({ event }))
+      delete view.event
+    }
+    
+    // id
+    if (subParams) {
+
+      if (isParam({ _window, lookupActions, awaits, string: subParams })) {
+
+        inheritedParams = {...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, _, __, ___ })}
+
+      } else {
+        
+        view.Data = view.Data || view.doc || parent.Data
+        view.derivations = view.derivations || [...(parent.derivations || [])]
+        var _id = toValue({ _window, lookupActions, awaits, value: subParams, id, req, res, _, __, ___ })
+        
+        if (views[_id] && view.id !== _id) view.id = _id + generate()
+        else view.id = id = _id
+        
+        if (global.data[viewer][_id] && !view["creation-date"] && id !== _id) {
+          
+          view["my-views"].push(_id)
+          views[_id] = { ...view, ...clone(global.data[viewer][_id]) }
+          delete views[id]
+          
+          tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___, viewer })
+          return resolve(tags)
+        }
+      }
+    }
+
+    view.id = id = view.id || generate()
+
+    // style
+    if (!_import) {
+
+      view.style = view.style || {}
+      view.class = view.class || ""
+      view.Data = view.Data || view.doc || parent.Data
+      view.derivations = view.derivations || [...(parent.derivations || [])]
+      view.controls = view.controls || []
+      view.status = "Loading"
+      view.childrenID = []
+      views[id] = view
+
+      // approval
+      var approved = toApproval({ _window, lookupActions, awaits, string: conditions, id, req, res, _, __, ___ })
+      if (!approved) {
+        delete views[id]
+        return resolve("")
+      }
+      
+      if (global.breaktoView[id]) {
+
+        global.breaktoView[id] = false
+        return resolve("")
+      }
+    }
+
+    /////////////////// approval & params /////////////////////
+
+    // push destructured params from type to view
+    if (params) {
+      
+      params = toParam({ _window, lookupActions, awaits, string: params, id, req, res, mount: true, toView: true, _, __, ___ })
+
+      if (params.id && params.id !== id) {
+
+        if (views[params.id] && typeof views[params.id] === "object") params.id += generate()
+        delete Object.assign(views, { [params.id]: views[id] })[id]
+        id = params.id
+        view = views[id]
+      }
+
+      // view
+      /*if (!_import && (params.view || (!myViews.includes(view.type) && global.data[viewer][view.type]))) {
+
+        var viewId = params.view || view.type
+        delete view.view
+        delete params.view
+        view["my-views"].push(viewId)
+        
+        var newView = clone(global.data[viewer][viewId])
+        if (!newView) return resolve("")
+        if (newView.id && views[newView.id]) newView.id += generate()
+
+        views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
+        
+        tags = await toView({ _window, lookupActions, awaits, id, req, res, params, _, __, ___, viewer })
+        return resolve(tags)
+      }*/
+    } else params = {}
+      
+    // inherited params
+    if (Object.keys(inheritedParams).length > 0) override(view, inheritedParams)
+
+    // pass to children
+    if (parent.passToChildren) override(view, parent.passToChildren)
+
+    // before loading controls
+    if (!_import && view.controls.length > 0) {
+      await new Promise (async resolve => {
+        
+        toArray(view.controls).map(async (controls = {}) => {
+
+          //
+          if (!controls.event) return
+          var event = toCode({ _window, lookupActions, awaits, string: controls.event })
+          event = toCode({ _window, lookupActions, awaits, string: event, start: "'", end: "'" })
+
+          if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2], _, __, ___ })) {
+
+            toParam({ req, res, _window, id, string: event.split("?")[1], toView: true, _, __, ___ })
+            view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
+          }
+        })
+
+        if (global.promises[id] && global.promises[id].length > 0) {
+          
+          await Promise.all((global.promises[id] || []))
+          await Promise.all((global.promises[id] || []))
+          await Promise.all((global.promises[id] || []))
+          await Promise.all((global.promises[id] || []))
+          await Promise.all((global.promises[id] || []))
+          await Promise.all((global.promises[id] || []))
+          
+          delete global.promises[id]
+        }
+
+        resolve()
+      })
+    }
+    
+    if (!_import && (params.view || (!myViews.includes(view.type) && global.data[viewer][view.type]))) {
+      
+      var viewId = params.view || view.type
+      view["my-views"].push(viewId)
+
+      delete view.view
+      delete params.view
+
+      var newView = clone(global.data[viewer][viewId])
+      if (!newView) return resolve("")
+      if (newView.id && views[newView.id]) newView.id += generate()
+      
+      views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
+
+      tags = await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+      return resolve(tags)
+    }
+
+    if (_import) {
+
+      tags = await createHtml({ _window, lookupActions, awaits, id, req, res, import: _import })
+      return resolve(tags)
+    }
+
+    // for droplist
+    if (parent.unDeriveData || view.unDeriveData) {
+
+      view.data = view.data || ""
+      view.unDeriveData = true
+
+    } else view.data = reducer({ _window, lookupActions, awaits, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res, _, __, ___ })
+    
+    // doc
+    if (!global[view.Data] && view.data) global[view.Data] = view.data
+
+    // root
+    if (view.parent === "root") views.root.child = view.id
+    tags = await createTags({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+    resolve(tags)
+  })
+}
+
+module.exports = { toView }
+},{"./clone":46,"./createHtml":55,"./createTags":56,"./generate":74,"./isParam":85,"./merge":92,"./reducer":100,"./toApproval":119,"./toArray":120,"./toCode":124,"./toFunction":129,"./toParam":134,"./toValue":139,"./views.json":145}],141:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 const { search } = require("./search")
@@ -14328,7 +14401,7 @@ const toggleView = async ({ _window, toggle, id, res }) => {
     views[id].style.opacity = toggle.fadein.before.opacity || "0"
     views[id].style.transform = toggle.fadein.before.transform || null
 
-    return await createElement({ id })
+    return await toView({ id })
 
   }))
   
@@ -14361,12 +14434,12 @@ const toggleView = async ({ _window, toggle, id, res }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":46,"./createElement":55,"./generate":75,"./search":109,"./setElement":112,"./starter":115,"./toCode":125,"./toParam":135,"./update":142}],142:[function(require,module,exports){
+},{"./clone":46,"./generate":74,"./search":108,"./setElement":111,"./starter":114,"./toCode":124,"./toParam":134,"./toView":140,"./update":142}],142:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
@@ -14412,7 +14485,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
     views[id].style = views[id].style || {}
     views[id]["my-views"] = views[id]["my-views"] || [...view["my-views"]]
     
-    return await createElement({ _window, lookupActions, awaits, req, res, id })
+    return await toView({ _window, lookupActions, awaits, req, res, id })
   }))
   
   innerHTML = innerHTML.join("")
@@ -14468,12 +14541,12 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":112,"./starter":115,"./toArray":121,"./toCode":125,"./toParam":135}],143:[function(require,module,exports){
+},{"./clone":46,"./generate":74,"./setElement":111,"./starter":114,"./toArray":120,"./toCode":124,"./toParam":134,"./toView":140}],143:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
-const { createElement } = require("./createElement")
+const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 const { toCode } = require("./toCode")
@@ -14528,7 +14601,7 @@ const updateSelf = async ({ _window, lookupActions, awaits, id, update = {}, rou
     //views[id].style.opacity = "0"
     //if (timer) views[id].style.transition = `opacity ${timer}ms`
     
-    return await createElement({ id })
+    return await toView({ id })
 
   }))
   
@@ -14585,7 +14658,7 @@ const updateSelf = async ({ _window, lookupActions, awaits, id, update = {}, rou
 }
 
 module.exports = {updateSelf}
-},{"./clone":46,"./createElement":55,"./generate":75,"./setElement":112,"./starter":115,"./toArray":121,"./toCode":125,"./update":142}],144:[function(require,module,exports){
+},{"./clone":46,"./generate":74,"./setElement":111,"./starter":114,"./toArray":120,"./toCode":124,"./toView":140,"./update":142}],144:[function(require,module,exports){
 (function (Buffer){(function (){
 const axios = require("axios")
 const { clone } = require("./clone")
@@ -14704,7 +14777,7 @@ module.exports = async ({ _window, lookupActions, awaits, id, req, res, e, _, __
   if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, _: global.uploads.length === 1 ? global.uploads[0] : global.uploads, __: _, ___: __, ...params })
 }
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./clone":46,"./generate":75,"./readFile":100,"./toArray":121,"./toAwait":122,"axios":148,"buffer":179}],145:[function(require,module,exports){
+},{"./clone":46,"./generate":74,"./readFile":99,"./toArray":120,"./toAwait":121,"axios":148,"buffer":179}],145:[function(require,module,exports){
 module.exports=[ 
   "View", "Box", "Text", "Icon", "Image", "Input", "Video", "Entry", "Map",
   "Swiper", "Switch", "Checkbox", "Swiper", "List", "Item", "Chevron", "Tag"
@@ -14717,7 +14790,7 @@ const wait = async ({ id, e, lookupActions, awaits, ...params }) => {
 }
 
 module.exports = { wait }
-},{"./toAwait":122}],147:[function(require,module,exports){
+},{"./toAwait":121}],147:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -14784,7 +14857,7 @@ const watch = ({ _window, lookupActions, awaits, controls, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":46,"./execute":68,"./isEqual":85,"./toApproval":120,"./toCode":125,"./toParam":135,"./toValue":140}],148:[function(require,module,exports){
+},{"./clone":46,"./execute":67,"./isEqual":84,"./toApproval":119,"./toCode":124,"./toParam":134,"./toValue":139}],148:[function(require,module,exports){
 module.exports = require('./lib/axios');
 },{"./lib/axios":150}],149:[function(require,module,exports){
 'use strict';
