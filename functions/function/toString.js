@@ -10,8 +10,8 @@ const toString = (object, field) => {
 
     if (Array.isArray(value)) {
 
-      if (value.length === 0) string += `${key}=_array`
-      else string += `${key}=_array:${value.join(":")}`
+      if (value.length === 0) string += `${key}=_list`
+      else string += `${key}=_list:${value.join(":")}`
 
     } else if (typeof value === "object") {
 

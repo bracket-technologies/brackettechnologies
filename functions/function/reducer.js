@@ -63,41 +63,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     if (path[0]) args = path[0].toString().split(":")
     
     if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, awaits, id, e, string: pathJoined, _, __, ___,  object, mount, toView })
-    
-    // function
-    /*if (path0.slice(-2) === "()" && path0.slice(0, 2) !== ")(" && args[1] !== "()" && path0 !== "()" && view && (view[path0.charAt(0) === "_" ? path0.slice(1) : path0] || view[path0]) && path0.slice(0, 4) !== "if()") {
-            
-        var string = decode({ _window, lookupActions, awaits, string: view[path0].string }), _params = view[path0].params
-        if (_params.length > 0) {
-            _params.map((param, index) => {
-                var _index = 0
-                while(string.split(param).length > 1 && string.split(param)[_index].slice(-1) !== ".") {
-                var _replacemenet = path[0].split(":").slice(1)[index]
-                if (_replacemenet.slice(0, 7) === "coded()") _replacemenet = global.codes[_replacemenet]
-                string = string.replace(param, _replacemenet)
-                _index += 1
-                }
-            })
-        }
-        string = toCode({ _window, lookupActions, awaits, string })
-        console.log(string);
-        if (view[path0]) return toParam({ _window, lookupActions, awaits, ...view[path0], string })
-        else if (view[path0.slice(1)]) return toParam({ _window, lookupActions, awaits, ...view[path0], string })
-    }*/
-    
-    // execute function: coded()xxxxx() => [params that inherited function attributes in underscore]()
-    if (pathJoined.length === 14 && pathJoined.slice(-2) === "()" && pathJoined.slice(0, 7) === 'coded()') {
-      pathJoined = path[0] = global.codes[pathJoined.slice(0, 12)]
-      args = path[0].split(":")
-      path0 = path[0] ? args[0] : ""
-    }
-  
-    // promise: coded()xxxxx:coded()xxxxx => promise():[]:[]
-    else if (pathJoined.length === 25 && pathJoined.split("coded()") === 2 && pathJoined.slice(0, 7) === 'coded()') {
-      pathJoined = path[0] = "promise():" + pathJoined
-      args = path[0].split(":")
-      path0 = path[0] ? args[0] : ""
-    }
 
     // division
     if (pathJoined.includes("/") && pathJoined.split("/")[1] !== "" && !key) {
@@ -166,11 +131,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     }
 
     // coded
-    if (path0.slice(0, 7) === "coded()" && path.length === 1 && object === undefined) {
-        
-        coded = true
-        return toValue({ req, res, _window, lookupActions, awaits, object, id, value: global.codes[path[0]], params, _, __, ___, e })
-    }
+    /*if (path0.slice(0, 7) === "coded()" && path[0].length === 12 && path.length === 1 && object === undefined) {
+        //console.log(global.codes[path0], object);
+        //path0 = path[0] = global.codes[path0]
+        //coded = true
+        return toValue({ req, res, _window, lookupActions, awaits, object, id, value: global.codes[path0], params, _, __, ___, e })
+    }*/
 
     // codeds (string)
     if (path0.slice(0, 8) === "codedS()" && path0.length === 13 && path[0] === path0) {
@@ -241,18 +207,17 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         if (state) path.splice(1, 0, state)
         path0 = path[0] = ")("
 
-    } else if (path0 && args[1] === "()") {
+    } else if (path0 && args[1] === "()" && !args[2]) {
         
-        if (args[2]) {
+        /*if (args[2]) {
 
             var _timer = parseInt(args[2])
             path[0] = `${args.slice(0, -1).join(":")}`
             return setTimeout(() => reducer({ _window, lookupActions, awaits, id, path, value, key, params, object, _, __, ___, e, req, res }), _timer)
-        }
+        }*/
 
-        var state = args[0]
-        if (state.slice(0, 7) === "coded()" && state.length === 12) state = toValue({ req, res, _window, lookupActions, awaits, id, e, value: state, params, _, __, ___,  object })
-
+        var state = /*args[0].includes("coded()") || args[0].includes("codedS()") ? */toValue({ req, res, _window, id, e, value: args[0], params, _, __, ___ })// : args[0]
+        
         // state:()
         if (path.length === 1 && key && state) return global[state] = value
         
@@ -342,7 +307,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         }
     }*/
 
-    _object = path0 === "()" ? view
+    _object = path0 === "()" ? (view || views.root)
     : (path0 === "global()" || path0 === ")(") ? _window ? _window.global : window.global
     : (path0 === "e()" || path0 === "event()") ? e
     : path0 === "_" ? _
@@ -378,9 +343,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 console.log(..._log)
             }
 
-            else if (path0.slice(0, 7) === "coded()") {
+            else if (path0.slice(0, 7) === "coded()" && path[0].length === 12) {
 
-                coded = true
+                // coded = true
                 _object = toValue({ req, res, _window, lookupActions, awaits, object, id, value: global.codes[path0], params, _, __, ___, e })
             }
             
@@ -390,7 +355,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 _object = []
                 path[0].split(":").slice(1).map(el => {
-                    el = toValue({ req, res, _window, lookupActions, awaits, id, _, __, ___, e, value: el, params })
+
+                    if (isParam({ _window, string: el })) el = toParam({ req, res, _window, id, e, _, __, ___, string: el })
+                    else el = toValue({ req, res, _window, id, _, __, ___, e, value: el, params })
                     _object.push(el)
                 })
             } 
@@ -401,14 +368,17 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 if (isParam({ _window, string: args[1] })) {
 
                   return args.slice(1).map(arg => reducer({ _window, lookupActions, awaits, id, params, path: arg, object: _object, e, req, res, _, __, ___,  mount }))
+
                 } else {
 
                   var args = path[0].split(":").slice(1)
                   args.map((arg, i) => {
 
                       if (i % 2) return
-                      var f = toValue({ req, res, _window, lookupActions, awaits, id, _, __, ___, e, value: arg, params })
-                      var v = toValue({ req, res, _window, lookupActions, awaits, id, _, __, ___, e, value: args[i + 1], params })
+                      var f = toValue({ req, res, _window, id, _, __, ___, e, value: arg, params })
+                      var v
+                      if (isParam({ _window, string: args[i + 1] })) v = toParam({ req, res, _window, id, e, _, __, ___, string: args[i + 1] })
+                      else v = toValue({ req, res, _window, id, _, __, ___, e, value: args[i + 1], params })
                       if (v !== undefined) _object[f] = v
 
                   })
@@ -430,12 +400,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
         }
 
-        if (_object || _object === "" || _object === 0 || coded) path = path.slice(1)
+        if (_object || _object === "" || _object === 0/* || coded*/) path = path.slice(1)
         else {
 
             if (path[1] && path[1].toString().includes("()")) {
                 
-                _object = path[0]
+                _object = toValue({ req, res, _window, lookupActions, awaits, id, _, __, ___, e, value: path[0], params }) || {}//path[0]
                 path = path.slice(1)
 
             } else return pathJoined//return decode({ _window, lookupActions, awaits, string: pathJoined })
@@ -508,10 +478,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         if (o === undefined || o === null) return o
 
-        if (path0.slice(-2) === "()" && typeof o === "object" && !Array.isArray(o) && o.functions && o.functions[path0.slice(-2)]) {
+        /*if (path0.slice(-2) === "()" && typeof o === "object" && !Array.isArray(o) && o.__ISVIEW__ && o.functions[path0.slice(-2)]) {
 
-            return toFunction({ _window, lookupActions, awaits, id: o.id, req, res, _, __, ___, e, path, path0, condition, params, mount, toView, object })
-        }
+            return toFunction({ _window, lookupActions, awaits, id: o.id, req, res, _, __, ___, e, path: [k], path0: k0, condition, params, mount, toView, object })
+        }*/
         
         if (k0 !== "data()" && k0 !== "Data()" && k0 !== "doc()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
             
@@ -592,7 +562,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             // just get data()
             if (!_o.derivations) {
 
-              var _path = _params.path || views[id].derivations
+              var _path = _params.path || views[id].derivations || []
               var _data 
               if (_params.data) _data = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _params.path || views[id].derivations, object: _params.data || global[views[id].Data], params, _, __, ___ })
               else {
@@ -842,6 +812,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
             } else _o = o
 
+            if (Array.isArray(_o)) return answer = _o[_o.length - 1]
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             if (Array.isArray(_o)) {
@@ -867,6 +838,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
             } else _o = o
 
+            if (Array.isArray(_o)) return answer = _o[_o.length - 2]
             if (typeof _o === "string" && views[_o]) _o = views[_o]
 
             var element = _o.element
@@ -1496,7 +1468,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 if (typeof _o === "object" && _o.element) answer = [..._o.element.getElementsByClassName(className)]
                 else if (_o.nodeType === Node.ELEMENT_NODE) answer = [..._o.element.getElementsByClassName(className)]
             } else answer = []
-
+            
             answer = answer.map(o => window.views[o.id])
             
         } else if (k0 === "classlist()" || k0 === "classList()") {
@@ -1897,19 +1869,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "timer()" || k0 === "setTimeout()") {
             
-            if (args[2]) { // timer():params:timer
-
-                var _timer = parseInt(toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object }))
-                var myFn = () => { toParam({ req, res, _window, lookupActions, awaits, id, string: args[1], params, _, __, ___,  e, object }) }
-                answer = setTimeout(myFn, _timer)
-
-            } else if (isParam({ _window, string: args[1] }) && !args[2]) { // timer():[params;timer]
-
-                var _params
-                _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, string: args[1], object })
-                var myFn = () => toValue({ req, res, _window, lookupActions, awaits, id, value: _params.params || _params.parameters, params, _, __, ___, e, object })
-                answer = setTimeout(myFn, _params.timer)
-            }
+            // timer():params:timer
+            var _timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object })) : 0
+            var myFn = () => { toParam({ req, res, _window, lookupActions, awaits, id, string: args[1], params, _, __, ___,  e, object, toView }) }
+            answer = setTimeout(myFn, _timer)
             
             if (o.type && o.id) o[generate() + "-timer"] = answer
 
@@ -1938,7 +1901,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             _o.shift()
             answer = _o
 
-        } else if (k0 === "slice()") {
+        } else if (k0 === "slice()") { // slice by text or slice by number
 
             if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
             var _start, _end, _params
@@ -2339,19 +2302,19 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
             var b = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___, e })
             
-            o = o === 0 ? o : (o || "")
+            /*o = o === 0 ? o : (o || "")
             b = b === 0 ? b : (b || "")
             o = o.toString()
             b = b.toString()
             
             var isPrice
-            if (o.includes(",") || b.includes(",")) isPrice = true
+            if (o.includes(",") || b.includes(",")) isPrice = true*/
             
             b = toNumber(b)
             o = toNumber(o)
 
             answer = o % b
-            if (isPrice) answer = answer.tovieweString()
+            //if (isPrice) answer = answer.tovieweString()
             
         } else if (k0 === "sum()") {
             
@@ -2400,8 +2363,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           if (typeof _files !== "object") _files = [_files]
           _files = [..._files]
           global.fileReader = []
-          global.COUNTER = global.COUNTER || {}
-          global.COUNTER[id] = {
+          var __key = generate()
+          global.__COUNTER__ = global.__COUNTER__ || {}
+          global.__COUNTER__[__key] = {
             length: _files.length,
             count: 0
           }
@@ -2410,7 +2374,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
             var reader = new FileReader()
             reader.onload = (e) => {
-              global.COUNTER[id].count++;
+              global.__COUNTER__[__key].count++;
               global.fileReader.push({
                 readAsDataURL: true,
                 type: file.type,
@@ -2420,9 +2384,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 file: e.target.result,
                 url: e.target.result
               })
-              if (global.COUNTER[id].count === global.COUNTER[id].length) {
+              if (global.__COUNTER__[__key].count === global.__COUNTER__[__key].length) {
                 global.file = global.fileReader[0]
                 global.files = global.fileReader
+                console.log(global.files);
                 toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: _params })
               } 
             }
@@ -2666,9 +2631,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "pull()") { // pull by index
 
             // if no it pulls the last element
-            var _pull = args[1] !== undefined ? toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___,  e, object }) : o.length - 1
-            if (_pull === undefined) return undefined
-            o.splice(_pull,1)
+            var _last = 1
+            var _first = args[1] !== undefined ? toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___,  e, object }) : 0//o.length - 1
+            if (args[2]) _last = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object })
+            if (_first === undefined) return o
+
+            o.splice(_first, _last)
             answer = o
             
         } else if (k0 === "pullItems()") { // pull by item
@@ -3072,35 +3040,112 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               else if (format.replace(" ", "") === "format4")return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
             }
 
-        } else if (k0 === "toDateInputFormat()") { // returns date for input in format yyyy-mm-dd
+        } else if (k0 === "toDateInputFormat()" || k0 === "formatDate()") { // returns date for input in a specific format
 
+            var _params = {}
             if (isParam({ _window, string: args[1] })) {
 
-                var _options = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
-                var format = _options.from, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
-                if (format.split("/").length > 1) {
-                    var _date = o.split("/")
-                    format.split("/").map((format, i) => {
-                        if (format === "dd") day = _date[i]
-                        else if (format === "mm") month = _date[i]
-                        else if (format === "yyyy") year = _date[i]
-                        else if (format === "hh") hour = _date[i]
-                        else if (format === "mm") min = _date[i]
-                        else if (format === "ss") sec = _date[i]
-                    })
-                }
-                console.log(new Date(year, month, day, hour, min, sec));
-                return new Date(year, month, day, hour, min, sec)
+                _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+            } else if (args[1]) {
+                _params = { date: toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, _, __, ___ }) }
+            } else _params = { date: o }
 
-            } else {
+            var format = _params.format || "yyyy-mm-dd"
+            var date = new Date(_params.date || o)
+            if (!date) return
+
+            var day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
+            var newDate = ""
+
+            if (format.split("/").length === 3) {
+
+                format.split("/").map((format, i) => {
+                    if (i !== 0) newDate += "-"
+                    format = format.toLowerCase()
+                    if (format === "dd") {
+                        day = date.getDate()
+                        newDate += day.toString().length === 2 ? day : `0${day}`
+                    } else if (format === "mm") {
+                        month = date.getMonth() + 1
+                        newDate += month.toString().length === 2 ? month : `0${month}`
+                    } else if (format === "yyyy") {
+                        year = date.getFullYear()
+                        newDate += year
+                    } else if (format === "hh") {
+                        hour = date.getHours() || 0
+                        newDate += hour.toString().length === 2 ? hour : `0${hour}`
+                    } else if (format === "mm") {
+                        min = date.getMinutes() || 0
+                        newDate += min.toString().length === 2 ? min : `0${min}`
+                    } else if (format === "ss") {
+                        sec = date.getSeconds() || 0
+                        newDate += sec.toString().length === 2 ? sec : `0${sec}`
+                    } else if (format === "hh:mm:ss") {
+                        hour = date.getHours() || 0
+                        min = date.getMinutes() || 0
+                        sec = date.getSeconds() || 0
+                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
+                    } else if (format === "hh:mm") {
+                        hour = date.getHours() || 0
+                        min = date.getMinutes() || 0
+                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
+                    }
+                })
+
+            } else if (format.split("T").length === 2 || format.split("T")[0].split("-").length === 3) { 
+
+                var length = format.split("T").length
+                format.split("T").map((format, i) => {
+                    format.split("-").map((format, i) => {
+                        format = format.toLowerCase()
+                        if (i !== 0) newDate += "-"
+                        if (format === "dd") {
+                            day = date.getDate()
+                            newDate += day.toString().length === 2 ? day : `0${day}`
+                        } else if (format === "mm") {
+                            month = date.getMonth() + 1
+                            newDate += month.toString().length === 2 ? month : `0${month}`
+                        } else if (format === "yyyy") {
+                            year = date.getFullYear()
+                            newDate += year
+                        } else if (format === "hh") {
+                            hour = date.getHours() || 0
+                            newDate += (hour.toString().length === 2 ? hour : `0${hour}`)
+                        } else if (format === "mm") {
+                            min = date.getMinutes() || 0
+                            newDate += (min.toString().length === 2 ? min : `0${min}`)
+                        } else if (format === "ss") {
+                            sec = date.getSeconds() || 0
+                            newDate += (sec.toString().length === 2 ? sec : `0${sec}`)
+                        } else if (format === "hh:mm:ss") {
+                            hour = date.getHours() || 0
+                            min = date.getMinutes() || 0
+                            sec = date.getSeconds() || 0
+                            newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
+                        } else if (format === "hh:mm") {
+                            hour = date.getHours() || 0
+                            min = date.getMinutes() || 0
+                            newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
+                        }
+                    })
+                    if (length === 2 && i === 0) newDate += "T"
+                })
+
+            }/* else {
 
                 if (!isNaN(o) && typeof o === "string") o = parseInt(o)
                 var _date = new Date(o)
                 var _year = _date.getFullYear()
                 var _month = _date.getMonth() + 1
                 var _day = _date.getDate()
+                var _hour = _date.getHours() || 0
+                var _min = _date.getMinutes() || 0
+                
+                // T${_hour.toString().length === 1 ? `0${_hour}` :_hour}:${_min.toString().length === 1 ? `0${_min}` :_min}
                 return `${_year}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
-            }
+            }*/
+            
+            return newDate
 
         } else if (k0 === "toUTCString()") {
             
@@ -3883,6 +3928,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               _params.path = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, params, value: args[1] })
             }
             
+            if (!_params.data && _array) _params.data = _array
+            // else return o
             _params.data = answer = require("./sort").sort({ _window, lookupActions, awaits, sort: _params, id, e })
             
             return answer
@@ -3933,7 +3980,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (isParam({ _window, string: args[1] })) {
 
                 _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, string: args[1] })
-                _el = _params.element || _params.id || _params.view
+                _el = _params.element || _params.id || _params.view || o
 
             } else if (args[1]) _el = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, params, value: args[1] })
             else if (o) _el = o
@@ -3942,12 +3989,20 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 margin:       [0.1, 0.1],
                 filename:     _params.name || generate({ length: 20 }),
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, dpi: 600 },
+                html2canvas:  { scale: 2, dpi: 300 },
                 jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
                 execludeImages: _params.execludeImages || false
             }
+
+            var _await = "", myawait = {}
+            if (args[2]) {
+                _await = global.codes[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "html2pdf()" }
+                awaits.unshift(myawait)
+            }
             
             var pages = _params.pages || [_el], _elements = []
+            console.log("here", _params.pages);
             pages.map(page => {
                 
                 var _element
@@ -3957,6 +4012,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 _elements.push(_element)
                 var images = [..._element.getElementsByTagName("IMG")]
+                
                 if (images.length > 0) {
 
                     images.map((image, i) => {
@@ -3968,9 +4024,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                                 if (!once && pages.length > 1 && pages.length === _elements.length) {
 
                                     once = true
-                                    exportHTMLToPDF(_elements, opt)
+                                    exportHTMLToPDF({ _window, pages: _elements, opt, lookupActions, awaits, myawait, req, res, id, e, _, __, ___, args })
 
                                 } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
+
                                     var totalPages = pdf.internal.getNumberOfPages()
                                     
                                     for (i = 1; i <= totalPages; i++) {
@@ -3981,18 +4038,21 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                                         pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
                                     }
                                     
-                                }).save().then(() => {
+                                }).save().then((pdf) => {
 
-                                    if (args[2]) toParam({ req, res, _window, lookupActions, awaits, id, e, _, string: args[2] })
+                                    // await params
+                                    if (args[2]) require("./toAwait").toAwait({ _window, lookupActions, awaits, myawait, req, res, id, e, _: pdf, __: _, ___: __ })
                                     window.devicePixelRatio = 1
                                 })
                             }
                         })
                     })
 
-                } else html2pdf().set(opt).from(_element).save().then(() => {
+                } else html2pdf().set(opt).from(_element).save().then((pdf) => {
 
-                    if (args[2]) toParam({ req, res, _window, lookupActions, awaits, id, e, _, string: args[2] })
+
+                    // await params
+                    if (args[2]) require("./toAwait").toAwait({ _window, lookupActions, awaits, myawait, req, res, id, e, _: pdf, __: _, ___: __ })
                     window.devicePixelRatio = 1
                 })
             })
@@ -4145,6 +4205,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             else _price = o
             answer = parseFloat(_price);//.toLocaleString()
             answer = formatter.format(answer).slice(1)
+            
             /*var realnumbers = answer.toString().split(".")[1]
             if (realnumbers) {
               realnumbers.toString().split
@@ -4188,32 +4249,32 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
         } else if (k0 === "1stElement()" || k0 === "1stEl()") {
             
-            if (value !== undefined && key) answer = o[0] = value
+            if (value !== undefined && key && i === lastIndex) answer = o[0] = value
             answer = o[0]
             
         } else if (k0 === "2ndElement()" || k0 === "2ndEl()") {
             
-            if (value !== undefined && key) answer = o[1] = value
+            if (value !== undefined && key && i === lastIndex) answer = o[1] = value
             answer = o[1]
 
         } else if (k0 === "3rdElement()" || k0 === "3rdEl()") {
             
-            if (value !== undefined && key) answer = o[2] = value
+            if (value !== undefined && key && i === lastIndex) answer = o[2] = value
             answer = o[2]
 
         } else if (k0 === "3rdLastElement()" || k0 === "3rdLastEl()") {
 
-            if (value !== undefined && key) answer = o[o.length - 3] = value
+            if (value !== undefined && key && i === lastIndex) answer = o[o.length - 3] = value
             answer = o[o.length - 3]
             
         } else if (k0 === "2ndLastElement()" || k0 === "2ndLastEl()") {
 
-            if (value !== undefined && key) answer = o[o.length - 2] = value
+            if (value !== undefined && key && i === lastIndex) answer = o[o.length - 2] = value
             answer = o[o.length - 2]
             
         } else if (k0 === "lastElement()" || k0 === "lastEl()") {
 
-            if (value !== undefined && key) answer = o[o.length - 1] = value
+            if (value !== undefined && key && i === lastIndex) answer = o[o.length - 1] = value
             answer = o[o.length - 1]
             
         } else if (k0 === "lastIndex()") {
@@ -4367,20 +4428,26 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
             if (isParam({ _window, string: args[1] })) {
 
-                var route = toParam({ req, res, _window, lookupActions, awaits, id, e, string: args[1] || "", params, _, __, ___ })
+                var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, ___ })
                 require("./route").route({ _window, lookupActions, awaits, req, res, id, route })
                 
             } else {
                 
                 // route():page:path
-                var _page = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1] || "", params, _, __, ___ })
-                var _path = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[2] || "", params, _, __, ___ })
+                var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, ___ })
+                var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, _, __, ___ })
                 require("./route").route({ _window, lookupActions, awaits, id, req, res, route: { path: _path, page: _page } })
             }
 
         } else if (k0 === "toggleView()") {
           
-            var toggle = toParam({ req, res, _window, lookupActions, awaits, id, e, string: args[1] || "", params, _, __, ___ })
+            var toggle = {}
+            if (isParam({ _window, string: args[1] })) {
+
+                toggle = toParam({ req, res, _window, id, e, string: args[1] || "", params, _, __, ___ })
+
+            } else toggle = { view: toValue({ req, res, _window, id, e, value: args[1] || "", params, _, __, ___ }) }
+
             require("./toggleView").toggleView({ _window, lookupActions, awaits, req, res, toggle, id: o.id })
 
         } else if (k0 === "setChild()") {
@@ -4508,19 +4575,27 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           
           if (isParam({ _window, string: args[1] })) {
 
-            _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+            _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
             __id = _params.id || id
             _self = _params.self
 
-          } else if (args[1]) __id = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params }) || id
+          } else if (args[1]) __id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params }) || id
 
           if (typeof __id === "object" && __id.id) _id = __id.id
           else _id = __id
 
           if (!_id && o.id) _id = o.id
           
-          if (_self) return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, id: _id })
-          else return require("./update").update({ _window, lookupActions, awaits, req, res, id: _id })
+
+            var _await = "", myawait = {}
+            if (args[2]) {
+                _await = global.codes[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "update()" }
+                awaits.unshift(myawait)
+            }
+
+          if (_self) return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, id: _id, myawait, asyncer: true })
+          else return require("./update").update({ _window, lookupActions, awaits, req, res, id: _id, myawait, asyncer: true })
 
         } else if (k0 === "updateSelf()") {
           
@@ -4531,17 +4606,25 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           
           if (isParam({ _window, string: args[1] })) {
 
-            _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+            _params = toParam({ req, res, _window, id, e, _, __, ___,  string: args[1] })
             __id = _params.id || id
 
-          } else if (args[1]) __id = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params }) || id
+          } else if (args[1]) __id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params }) || id
 
           if (typeof __id === "object" && __id.id) _id = __id.id
           else _id = __id
 
           if (!_id && o.id) _id = o.id
           
-          return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, id: _id })
+
+          var _await = "", myawait = {}
+          if (args[2]) {
+              _await = global.codes[args[2]]
+              myawait = { id: generate(), hold: true, await: _await, action: "updateSelf()" }
+              awaits.unshift(myawait)
+          }
+          
+          return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, id: _id, myawait, asyncer: true })
 
         } else if (k0 === "upload()") {
           
@@ -4589,7 +4672,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
             var _save = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
-            return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, _, __, ___, myawait, save: _save, asyncer: true })
+            return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, _, __, ___, myawait, asyncer: true, save: _save })
           }
 
           var _collection = toValue({ req, res, _window, lookupActions, id, e, _, __, ___, value: args[1], params })
@@ -4602,55 +4685,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "fetch()") {
 
 
-
-        } else if (k0.length === 14 && k0.slice(-2) === "()" && k0.slice(0, 7) === 'coded()') { // [actions?conditions]():[params]:[awaits]
-
-            k0 = k0.slice(0, 12)
-
-            var _await = "", myawait = {}
-            if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "action()" }
-                awaits.unshift(myawait)
-            }
-
-            var _params = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
-            _params.server = (_params.type === "server" || _params.server) ? true : false
-
-            if (!_params.server) {
-
-                if (k0.includes('coded()') && k0.length === 12) k0 = global.codes[k0]
-
-                var conditions = k0.split("?")[1]
-                if (conditions) {
-                    var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___) })
-                    if (!approved) return false
-                }
-
-                k0 = k0.split("?")[0]
-
-                if (!condition) answer = toParam({ _window, string: k0, e, id, req, res, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer: true, awaits, lookupActions })
-                else answer = toApproval({ _window, string: k0, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
-        
-                // await params
-                if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
-    
-                    if (_await) {
-    
-                        require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __: _, ___: __ })
-    
-                    } else {
-    
-                        awaits.splice(0, 1)
-                        console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (lookupActions).fn })
-                    }
-                }
-
-            } else {
-
-                var _func = { data: _params, actions: global.codes[k0] }
-                return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, lookupActions, awaits, myawait })
-            }
 
         } else if (k0 === "insert()") {
             
@@ -4724,6 +4758,77 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     window.open(`mailto:${_email}?subject=${_subject}&body=${_body}`)
                 }
             }*/
+
+        } else if (k0 === "print()") {
+          
+            var _options = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
+            if (!_options.id && !_options.view) _options.id = o.id
+            if (_options.view) _options.id = _options.view.id
+
+            var _await = "", myawait = {}
+            if (args[2]) {
+                _await = global.codes[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "print()" }
+                awaits.unshift(myawait)
+            }
+
+            require("./print").print({ id, options: _options, lookupActions, awaits, myawait, asyncer: true, id, e, _, __, ___,  req, res })
+
+        } else if (k0 === "readFile()") {
+
+            var _params = {}
+            if (isParam({ _window, string: args[1] }))
+                _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
+             else _params.file = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
+
+            _params.files = (_params.file ? toArray(_params.file) : _params.files) || []
+
+            /*var _await = "", myawait = {}
+            if (args[2]) {
+                _await = global.codes[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "readFile()" }
+                awaits.unshift(myawait)
+            }*/
+
+            //_params.files = [..._params.files]
+            global.fileReader = []
+            var __key = generate()
+            global.__COUNTER__ = global.__COUNTER__ || {}
+            global.__COUNTER__[__key] = {
+              length: _params.files.length,
+              count: 0
+            };
+
+            ([..._params.files]).map(file => {
+              
+              var reader = new FileReader()
+              reader.onload = (e) => {
+
+                global.__COUNTER__[__key].count++;
+                global.fileReader.push({
+                  type: file[0].type,
+                  lastModified: file[0].lastModified,
+                  name: file[0].name,
+                  size: file[0].size,
+                  file: e.target.result,
+                  url: e.target.result
+                })
+
+                if (global.__COUNTER__[__key].count === global.__COUNTER__[__key].length) {
+
+                  global.file = global.fileReader[0]
+                  global.files = global.fileReader
+                  console.log(global.files, global.file);
+                  toParam({ req, res, _window, lookupActions, awaits, id, e, _: global.files.length === 1 ? global.files[0] : global.files, __: _, ___: __,  string: args[2] })
+                } 
+              }
+
+              try {
+                reader.readAsDataURL(file[0])
+              } catch (er) {
+                document.getElementById("loader-container").style.display = "none"
+              }
+            })
 
         } else if (k0 === "search()") {
 
@@ -4813,6 +4918,61 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           if (!res || res.headersSent) return true
           else return false
 
+        } else if (k0.length === 14 && k0.slice(-2) === "()" && k0.slice(0, 7) === 'coded()') { // [actions?conditions]():[params]:[awaits]
+            
+            k0 = k0.slice(0, 12)
+
+            var _await = "", myawait = {}
+            if (args[2]) {
+                _await = global.codes[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "action()" }
+                awaits.unshift(myawait)
+            }
+
+            var _params = args[1] ? toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] }) : undefined
+            var server = _params && (_params.type === "server" || _params.server) ? true : false
+
+            if (!server) {
+
+                if (k0.includes('coded()') && k0.length === 12) k0 = global.codes[k0]
+
+                var conditions = k0.split("?")[1]
+                if (conditions) {
+                    var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___) })
+                    if (!approved) return false
+                }
+
+                k0 = k0.split("?")[0]
+                
+                if (!condition) {
+                    answer = toValue({ _window, value: k0, e, id, req, res, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer: true, awaits, lookupActions })
+                    
+                    // ex: [_]() & _ = 'action_name()' --> action_name()
+                    if (typeof answer === "string")
+                        reducer({ _window, lookupActions, awaits, id, path: [answer], value, key, params, object, _, __, ___,  e, req, res, mount, condition, toView })
+                    
+                } else answer = toApproval({ _window, string: k0, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+        
+                // await params
+                if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
+                    
+                    if (_await) {
+    
+                        require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __: _, ___: __ })
+    
+                    } else {
+    
+                        awaits.splice(0, 1)
+                        console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (lookupActions || {}).fn })
+                    }
+                }
+
+            } else {
+
+                var _func = { data: _params, actions: global.codes[k0] }
+                return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, lookupActions, awaits, myawait })
+            }
+
         } else if (k0 === "setPosition()" || k0 === "position()") {
           
             // setPosition():toBePositioned:positioner:placement:align
@@ -4830,14 +4990,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           
             var _id = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params }) || id
             return require("./refresh").refresh({ id: _id, lookupActions })
-
-        } else if (k0 === "print()") {
-          
-            var _options = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
-            if (!_options.id && !_options.view) _options.id = o.id
-            if (_options.view) _options.id = _options.view.id
-
-            require("./print").print({ id, options: _options, lookupActions })
 
         } else if (k0 === "csvToJson()") {
           
@@ -4912,10 +5064,15 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0.slice(-2) === "()") {
             
+            if (k0.slice(0, -2).includes("coded()")) {
+                if (isParam({ _window, string: k0 })) return toParam({ req, res, _window, id, e, _, __, ___, string: k0, object })
+                else k0 = toValue({ req, res, _window, id, e, _, __, ___, value: k0, object })
+            }
+
             if (k0.charAt[0] === "_") {
                 return toFunction({ _window, lookupActions, awaits, id, req, res, _: o, __: _, ___: __, e, path: [k], path0: k0, condition, mount, toView, object })
             } else {
-                return toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path: [k], path0: k0, condition, mount, toView, object: o })
+                return toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path: [k], path0: k0, condition, mount, toView, object: object || o })
             }
 
         } else if (k.includes(":coded()")) {
@@ -5107,12 +5264,12 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
   }
   
-const exportHTMLToPDF = async (pages, opt) => {
+const exportHTMLToPDF = async ({ _window, pages, opt, lookupActions, awaits, myawait, req, res, id, e, _, __, ___ }) => {
     
     const { jsPDF } = jspdf
     const doc = new jsPDF(opt.jsPDF)
     const pageSize = jsPDF.getPageSize(opt.jsPDF)
-
+    
     if (opt.execludeImages) {
         
         var promises = []
@@ -5138,6 +5295,9 @@ const exportHTMLToPDF = async (pages, opt) => {
     }
     
     doc.save(opt.filename)
+
+    // await params
+    if (args[2]) require("./toAwait").toAwait({ _window, lookupActions, awaits, myawait, req, res, id, e, _, __, ___ })
 }
 
 const toDataURL = url => fetch(url)

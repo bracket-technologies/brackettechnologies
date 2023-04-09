@@ -23,6 +23,10 @@ const getProject = ({ window }) => {
         
         // get local public views
         global.data.public = getJsonFiles({ search: { collection: "public" } })
+        Object.entries(global.data.public).map(([doc, data]) => {
+            data["my-views"] = ["main", doc]
+            data.id = doc
+        })
 
         // get local collections
         global.data.collection = getJsonFiles({ search: { collection: "collection" } })
@@ -243,7 +247,7 @@ const interpreter = ({ window: _window }) => {
         if (res.headersSent) return
 
         var currentPage = global.currentPage
-        if (!global.data.page[currentPage]) return res.send("Page does not exist!")
+        if (!global.data.page[currentPage]) return res.send("Page not found!")
 
         // controls & views
         views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage, ["my-views"]: [currentPage] }])

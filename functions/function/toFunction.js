@@ -49,7 +49,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
       clone(["_project_", ...myViews]).reverse().map((myview, i) => {
         if (!isFn) {
           
-          var functions = myview === "_project_" ? global.functions : global.data[i === myViews.length - 1 ? "page" : view.viewType][myview].functions || {}
+          var functions = myview === "_project_" ? global.functions : (global.data[i === myViews.length - 1 ? "page" : view.viewType][myview].functions) || {}
           isFn = (Array.isArray(functions) ? functions : Object.keys(functions)).find(fn => fn === path0.slice(0, -2))
           if (isFn) {
 
@@ -88,7 +88,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
     
         if (_await) awaits.unshift(myawait)
         
-        console.log("ACTION " + path.join(":"));
+        console.log("ACTION " + path0);
         var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
         
         return answer
@@ -106,7 +106,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
         var answer, _await = global.codes[args[2]], myawait = { id: generate(), await: _await, action: path0, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn }, params: {e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions} }
         awaits.unshift(myawait)
         
-        console.log("ACTION " + path.join(":"));
+        console.log("ACTION " + path0);
 
         if (!isView) {
 

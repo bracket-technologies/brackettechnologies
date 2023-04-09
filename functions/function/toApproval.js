@@ -46,6 +46,7 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
       var conditions = condition.split("||"), _i = 0
       approval = false
       while (!approval && conditions[_i] !== undefined) {
+        if (conditions[_i].slice(0,2) === "=") conditions[_i] = conditions[0] + conditions[_i]
         approval = toApproval({ _window, lookupActions, awaits, e, string: conditions[_i], id, _, __, ___, params, req, res, object, elser: true })
         _i += 1
       }

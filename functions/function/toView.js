@@ -26,6 +26,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
 
     // use view instead of type
     if (view.view) view.type = view.view
+    view.__ISVIEW__ = true
 
     // view is empty
     if (!view.type) return resolve("")
@@ -47,48 +48,91 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     _import = view.id === "html" || (parent.id === "html" && _imports.includes(type.toLowerCase()))
     
     // [type]
-    if (!view.duplicatedElement && type.includes("coded()")) {
+    if (/*!view.duplicatedElement && */type.length === 12 && type.includes("coded()")) {
 
       type = global.codes[type]
 
       // sub params
-      if (subParams && isParam({ _window, lookupActions, awaits, string: subParams })) {
+      if (subParams) {
+
+        while (subParams.includes('coded()') && subParams.length === 12) { subParams = global.codes[subParams] }
+        var _conditions_ = subParams.split("?")[1]
+        
+        if (_conditions_) {
+          var approved = toApproval({ _window, string: _conditions_, id, req, res, _, __, ___ })
+          if (!approved) {
+            delete views[id]
+            return resolve("")
+          }
+        }
+        
+        subParams = subParams.split("?")[0]
         
         var _params = {}
-        var derivations = view.derivations = clone(view.derivations || [...(parent.derivations || [])])
-        var Data = view.Data = view.Data || parent.Data || generate()
+        if (isParam({ _window, string: subParams })) _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
+        else _params.data = toValue({ req, res, _window, id, value: subParams, _, __, ___ })
+        if (_params.data === "mount") {
+          _params.data = parent.data
+          _params.mount = true
+        }
 
-        if (isParam({ _window, lookupActions, awaits, string: subParams })) {
-          
-          _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
-          
-        } else _params.data = toValue({ _window, lookupActions, awaits, req, res, id, value: subParams, _, __, ___ })
+        if ((_params.doc || _params.path) && !_params.preventDefault) _params.mount = true
+        var loopData = []
 
         if (_params.path) {
-
+          
           _params.path = Array.isArray(_params.path) ? _params.path : _params.path.split(".")
-          derivations.push(..._params.path)
-          if (_params.data === undefined && global[Data]) _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, _, __, ___ })
-        } 
-        if (_params.doc) _params.mount = true
-        if (_params.mount) {
+
+          if (_params.data) {
+          
+            _params.Data = _params.doc = _params.doc || _params.Data || generate()
+            global[_params.Data] = global[_params.Data] || _params.data || {}
+            _params.derivations = [...(_params.derivations || []), ...(_params.path || [])]
+            loopData = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, _, __, ___ })
+
+          } else {
+
+            _params.Data = _params.doc = _params.doc || _params.Data || view.Data || parent.Data || generate()
+            global[_params.Data] = global[_params.Data] || _params.data || {}
+            _params.derivations = [...(_params.derivations || _params.derivations || parent.derivations || []), ...(_params.path || [])]
+            loopData = _params.data = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, _, __, ___ })
+          }
+
+        } else if (_params.data) {
+
+          _params.Data = _params.doc = _params.doc || _params.Data || (_params.mount && !_params.preventDefault && parent.Data) || generate()
+          global[_params.Data] = global[_params.Data] || _params.data || {}
+          _params.derivations = (_params.mount && !_params.preventDefault && !_params.doc && parent.derivations) || _params.derivations || []
+          loopData = _params.data
+          
+        } else if (_params.Data || _params.doc) {
+
+          _params.Data = _params.doc = _params.doc || _params.Data
+          global[_params.Data] = global[_params.Data] || {}
+          _params.derivations = _params.derivations || []
+          loopData = _params.data = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, _, __, ___ })
+        }
+        
+        /*if (_params.mount) {
 
           if (_params.doc) view.doc = view.Data = _params.doc
           else if (_params.data && !_params.doc) view.doc = view.Data = generate()
           view.Data = Data = view.Data || Data
           global[Data] = global[Data] || _params.data || {}
           _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
-        }
+        }*/
         
         var tags = []
+        var { Data, doc, data, path, derivations, preventDefault, ...myparams } = _params
+        
+        if (toArray(loopData).length > 0) {
 
-        if (toArray(_params.data).length > 0) {
+          tags = await Promise.all(toArray(loopData).map(async (_data, index) => {
 
-          tags = await Promise.all(toArray(_params.data).map(async (_data, index) => {
-
-            var _id = view.id + generate()
+            var _id = view.id + "-" + index
             var _type = type + "?" + view.type.split("?").slice(1).join("?")
-            var _view = clone({ ...view, id: _id, view: _type, i: index, mapIndex: index, derivations, _: _data, __: index })
+            var _view = clone({ ...view, ...myparams, id: _id, view: _type, i: index, mapIndex: index })
+            if (_params.mount) _view = {..._view, Data, doc, data: _data, derivations: [...(derivations || []), index] }
 
             if (!_params.preventDefault) {
 
@@ -98,18 +142,18 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
               else if (type === "Text") _view.text = _data
               else if (type === "Checkbox") _view.label = { text: _data }
             }
-
-            if (_params.mount || _params.path) _view.derivations = [...derivations, index]
             
             views[_id] = _view
-            return await toView({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: index, ___: _, viewer })
+            
+            return await toView({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: _, ___: __, viewer })
           }))
 
         } else {
 
-          var _id = view.id + generate()
+          var _id = view.id + "-" + 0
           var _type = type + "?" + view.type.split("?").slice(1).join("?")
-          var _view = clone({ ...view, id: _id, view: _type, i: 0, mapIndex: 0, derivations, _: "", __: 0 })
+          var _view = clone({ ...view, ...myparams, id: _id, view: _type, i: 0, mapIndex: 0 })
+          if (_params.mount) _view = {..._view, Data, doc, derivations: [...(derivations || []), 0] }
 
           if (!_params.preventDefault) {
 
@@ -118,14 +162,12 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
             else if (type === "Text") _view.text = ""
             else if (type === "Checkbox") _view.label = { text: "" }
           }
-
-          if (_params.mount || _params.path) _view.derivations = [...derivations, "0"]
           
           views[_id] = _view
-          tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: 0, ___: _, viewer })
-          
-          delete views[view.id]
+          var tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: _, ___: __, viewer })
           return resolve(tags)
+          
+          // return resolve(tags)
         }
         
         delete views[view.id]
@@ -185,20 +227,23 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       view.controls = view.controls || []
       view.status = "Loading"
       view.childrenID = []
+      view._ = _
+      view.__ = __
+      view.___ = ___
       views[id] = view
-
-      // approval
-      var approved = toApproval({ _window, lookupActions, awaits, string: conditions, id, req, res, _, __, ___ })
-      if (!approved) {
-        delete views[id]
-        return resolve("")
-      }
       
       if (global.breaktoView[id]) {
 
         global.breaktoView[id] = false
         return resolve("")
       }
+    }
+
+    // approval (after repeated  views conditions)
+    var approved = toApproval({ _window, lookupActions, awaits, string: conditions, id, req, res, _, __, ___ })
+    if (!approved) {
+      delete views[id]
+      return resolve("")
     }
 
     /////////////////// approval & params /////////////////////

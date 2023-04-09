@@ -11,7 +11,7 @@ module.exports = async ({ _window, lookupActions, awaits, id, req, res, e, _, __
   var view = _window ? _window.views : window.views[id]
   var alldata = toArray(upload.data || []), uploadedData = [], local = false
   var headers = clone(upload.headers) || {}
-  var files = toArray(upload.file || upload.files)
+  var files = toArray(/*upload.data.file || */upload.file || upload.files)
   var docs = toArray(upload.doc || upload.docs || [])
   var collection = upload.collection || "storage"
   if (_window) collection += `-${req.headers["project"]}`
@@ -20,17 +20,17 @@ module.exports = async ({ _window, lookupActions, awaits, id, req, res, e, _, __
   
   promises.push(...([...files]).map(async (f, i) => {
 
-    if (typeof f === "string") f = { file: f }
+    if (typeof f === "string") f = { file: f, type }
 
     var upload = {collection}
     var data = alldata[i] || {}
     var file = await readFile(f)
-
+if (!data) return console.log("Data does not exist!");
     upload.doc = f.id || f.doc || docs[i] || generate({ length: 20 })
     data.name = f.name || data.name || generate({ length: 20 })
     
     // get file type
-    var type = data.type = f.type
+    var type = data.type || f.type
     
     // get regex exp
     var regex = new RegExp(`^data:${type};base64,`, "gi")
@@ -81,6 +81,8 @@ module.exports = async ({ _window, lookupActions, awaits, id, req, res, e, _, __
       headers["timezone"] = Math.abs((new Date()).getTimezoneOffset())
 
       local = true
+      delete upload.data.url
+      delete upload.data.file
       var {data} = await axios.post(`/storage`, { upload, file }, {
         headers: {
           "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",

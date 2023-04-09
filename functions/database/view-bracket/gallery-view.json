@@ -28,7 +28,10 @@
                                     "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0"
                                 },
                                 {
-                                    "view": "Image?src=gallery-images:().0.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "view": "Image?src=gallery-images:().0.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?gallery-images:().0.type.inc():image"
+                                },
+                                {
+                                    "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!gallery-images:().0.type.inc():image"
                                 }
                             ],
                             "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().0",
@@ -40,7 +43,7 @@
                                     "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().0.name;():new-image-name.txt()=gallery-images:().0.name;new-image-data:().url=gallery-images:().0.url;():new-image-url.update()"
+                                    "event": "click?'new-image-data':()=gallery-images:().0.clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
                                 }
                             ]
                         },
@@ -53,7 +56,7 @@
                                     "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().1.name;():new-image-name.txt()=gallery-images:().1.name;new-image-data:().url=gallery-images:().1.url;():new-image-url.update()"
+                                    "event": "click?'new-image-data':()=gallery-images:().1.clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
                                 }
                             ],
                             "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().1",
@@ -78,7 +81,10 @@
                                     ]
                                 },
                                 {
-                                    "view": "Image?src=gallery-images:().1.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "view": "Image?src=gallery-images:().1.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?gallery-images:().1.type.inc():image"
+                                },
+                                {
+                                    "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!gallery-images:().1.type.inc():image"
                                 }
                             ]
                         },
@@ -92,7 +98,7 @@
                                     "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().2.name;():new-image-name.txt()=gallery-images:().2.name;new-image-data:().url=gallery-images:().2.url;():new-image-url.update()"
+                                    "event": "click?'new-image-data':()=gallery-images:().2.clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
                                 }
                             ],
                             "children": [
@@ -116,7 +122,10 @@
                                     ]
                                 },
                                 {
-                                    "view": "Image?src=gallery-images:().2.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "view": "Image?src=gallery-images:().2.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?gallery-images:().2.type.inc():image"
+                                },
+                                {
+                                    "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!gallery-images:().2.type.inc():image"
                                 }
                             ]
                         },
@@ -142,7 +151,10 @@
                                     ]
                                 },
                                 {
-                                    "view": "Image?src=gallery-images:().3.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                                    "view": "Image?src=gallery-images:().3.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?gallery-images:().3.type.inc():image"
+                                },
+                                {
+                                    "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!gallery-images:().3.type.inc():image"
                                 }
                             ],
                             "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().3",
@@ -154,7 +166,7 @@
                                     "event": "mouseleave?1stChild().style().opacity=0"
                                 },
                                 {
-                                    "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=gallery-images:().3.name;():new-image-name.txt()=gallery-images:().3.name;new-image-data:().url=gallery-images:().3.url;():new-image-url.update()"
+                                    "event": "click?'new-image-data':()=gallery-images:().3.clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
                                 }
                             ]
                         }
@@ -170,7 +182,7 @@
                         {
                             "controls": [
                                 {
-                                    "event": "change?new-image:()=true;():image-window.style():[pointerEvents=auto;opacity=1];():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();fileReader():[():image-window-img.src()=[e().target.result]];upload-file:()=e().target.files.0;new-image-data:().name=e().target.files.0.name;txt():new-image-name=e().target.files.0.name"
+                                    "event": "change?loader.show;'new-image':()=true;readFile():[el().files]:['new-image-data':()=file:();update():'image-window';():'image-window'.style():[pointerEvents=auto;opacity=1];loader.hide]"
                                 }
                             ],
                             "view": "Input?id=gallery-view-input;input.type=file;style.cursor=pointer;style.position=absolute;style.top=-100px;style.left=-100px;style.height=200%;style.width=200%;style.opacity=0"
@@ -190,7 +202,7 @@
                             "event": "mouseleave?1stChild().style().opacity=0"
                         },
                         {
-                            "event": "click?new-image-data:()=data().clone();():image-window.style().pointerEvents=auto;():image-window.style().opacity=1;():image-window.getInputs().():[txt()=];():new-image-tags.children().pull():0.():rem();():image-window-img.src()=2ndChild().src();new-image-data:().name=data().name;():new-image-name.txt()=data().name;new-image-data:().url=data().url;():new-image-url.update()"
+                            "event": "click?'new-image-data':()=data().clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
                         }
                     ],
                     "view": "[View]?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer",
@@ -215,7 +227,10 @@
                             ]
                         },
                         {
-                            "view": "Image?src=data().url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0"
+                            "view": "Image?src=data().url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?data().type.inc():image"
+                        },
+                        {
+                            "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!data().type.inc():image"
                         }
                     ]
                 }

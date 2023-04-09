@@ -12,6 +12,10 @@ var getdb = async ({ _window, req, res }) => {
   var search = params.search || {}
   var { data, success, message } = await getData({ _window, req, res, search })
 
+  toArray(data).map(data => {
+    delete data["creation-date"]
+  })
+
   return res.send({ data, success, message })
 }
 

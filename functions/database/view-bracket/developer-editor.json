@@ -205,7 +205,7 @@
                           "view": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;height=2.25rem;width=2.25rem;minWidth=2.25rem;borderRadius=2rem;margin=0 .5rem]"
                         },
                         {
-                          "view": "Text?class=dots;text=data();style.fontSize=1.3rem;style.paddingRight=3.5rem"
+                          "view": "Text?class=dots;text=data();tooltip.text=data();style.fontSize=1.3rem;style.paddingRight=3.5rem"
                         },
                         {
                           "view": "Icon?class=pointer;name=bi-x;style.fontSize=2rem;style.position=absolute;style.right=.5rem;hover.style.backgroundColor=#e9e9e9;style.borderRadius=.5rem;style.height=2.5rem;style.width=2.5rem",
@@ -250,7 +250,7 @@
                       ]
                     },
                     {
-                      "view": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().3.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().3.style():[opacity=0;pointerEvents=none]]",
+                      "view": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().4.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().4.style():[opacity=0;pointerEvents=none]]",
                       "children": [
                         {
                           "view": "View?class=flexbox pointer;tooltip.text=fit;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=1rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height='calc(100% - 7.5rem)';():data-viewer.style().height=0rem;timer():[functionsHeight:()=parent().element.offsetHeight/10]:200]",
@@ -261,7 +261,15 @@
                           ]
                         },
                         {
-                          "view": "View?class=flexbox pointer;tooltip.text=mini;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=3.75rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=20;parent().style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']",
+                          "view": "View?class=flexbox pointer;tooltip.text=maxi;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=3.75rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=60;parent().style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']",
+                          "children": [
+                            {
+                              "view": "Icon?name=web_asset;google.symbol.outlined;style:[fontSize=1.8rem;color=#666]"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "View?class=flexbox pointer;tooltip.text=mini;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=6.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=20;parent().style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']",
                           "children": [
                             {
                               "view": "Icon?name=video_label;google.symbol.outlined;style:[fontSize=1.8rem;color=#666]"
@@ -269,7 +277,7 @@
                           ]
                         },
                         {
-                          "view": "View?class=flexbox pointer;tooltip.text=hide;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=6.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=0;parent().style().height=functionsHeight:();():data-viewer.style().height=100%]",
+                          "view": "View?class=flexbox pointer;tooltip.text=hide;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=9.25rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=0;parent().style().height=functionsHeight:();():data-viewer.style().height=100%]",
                           "children": [
                             {
                               "view": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;color=#666]"

@@ -20,14 +20,14 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
   
-  if (!value || value === " ") return value
+  if (!value) return value
   
   // coded
-  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
-  if (value.includes('coded()') && value.length === 12) value = global.codes[value]
+  while (value.includes('coded()') && value.length === 12) { value = global.codes[value] }
+  // if (value.includes('coded()') && value.length === 12) value = global.codes[value]
 
   // no value
-  else if (value === "()") return view
+  if (value === "()") return view
   else if (value === undefined) return generate()
   else if (value === "undefined") return undefined
   else if (value === "false") return false
@@ -36,7 +36,11 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   else if (value === "_") return _
   else if (value === "__") return __
   else if (value === "___") return ___
+  else if (value === "_text") return ""
   else if (value === "_string") return ""
+  else if (value === "_map") return ({})
+  else if (value === "_list") return ([])
+  else if (value === " ") return value
   
   // break & return
   if (params && params["return()"] !== undefined) return params["return()"]
@@ -82,7 +86,10 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   if (value.includes("||")) {
     var answer
     value.split("||").map(value => {
-      if (answer === undefined) answer = toValue({ _window, lookupActions, awaits, value, params, _, __, ___, id, e, req, res, object, mount, condition })
+      if (!answer) { // or answer === undefined ?????
+        answer = toValue({ _window, lookupActions, awaits, value, params, _, __, ___, id, e, req, res, object, mount, condition })
+        //console.log(value, answer);
+      }
     })
     return answer
   }
@@ -101,6 +108,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
 
       var allAreNumbers = true
       var values = value.split("+").map(value => {
+        
         var _value = toValue({ _window, lookupActions, awaits, value, params, _, __, ___, id, e, req, res, object, mount, condition })
         if (allAreNumbers) {
           if (!isNaN(_value) && !emptySpaces(_value)) allAreNumbers = true
@@ -178,7 +186,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   /* value */
   if (!isNaN(value) && !emptySpaces(value) && (value.toString().length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
   else if (value === " ") return value
-  else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "min") value = "min(" + global.codes[value.slice(3, 15)] + ")"
+  /*else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "min") value = "min(" + global.codes[value.slice(3, 15)] + ")"
   else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "max") value = "max(" + global.codes[value.slice(3, 15)] + ")"
   else if (value.slice(4, 11) === "coded()" && value.slice(0, 4) === "calc") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
   else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "clamp") value = "clamp(" + global.codes[value.slice(5, 17)] + ")"
@@ -187,10 +195,10 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   else if (value.slice(9, 16) === "coded()" && value.slice(0, 9) === "translate") value = "translate(" + global.codes[value.slice(9, 21)] + ")"
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
   else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
-  else if (value.slice(15, 22) === "coded()" && value.slice(0, 15) === "linear-gradient") value = "linear-gradient(" + global.codes[value.slice(15, 27)] + ")"
-  else if (object) value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, condition })
-  else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, condition })
-  else if (path[0].includes("()") && path.length === 1) {
+  else if (value.slice(15, 22) === "coded()" && value.slice(0, 15) === "linear-gradient") value = "linear-gradient(" + global.codes[value.slice(15, 27)] + ")"*/
+  //else if (object) value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, condition })
+  //else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, condition })
+  /*else if (path[0].includes("()") && path.length === 1) {
 
     var val0 = value.split("coded()")[0]
     if (value.includes('coded()') && !val0.includes("()") && !val0.includes("_map") && !val0.includes("_array") && !val0.includes("_list")) {
@@ -202,15 +210,16 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
       value = val0
 
     } else value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, condition })
-  } else if (path[1] || path[0].includes(")(") || path[0].includes("()")) value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, condition })
-  else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, lookupActions, awaits, id, e, path, params, object, _, __, ___, req, res, mount, condition })
-  else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
+  } */else if (object || path[0].includes(":") || path[1] || path[0].includes(")(") || path[0].includes("()")) 
+    value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, toView, condition })
+  //else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, lookupActions, awaits, id, e, path, params, object, _, __, ___, req, res, mount, toView, condition })
+  /*else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
 
     var args = value.split(":")
-    var key = toValue({ _window, lookupActions, awaits, value: args[0], params, _, __, ___, id, e, req, res, object, mount, condition })
+    var key = toValue({ _window, lookupActions, awaits, value: args[0], params, _, __, ___, id, e, req, res, object, mount, toView, condition })
 
-    value = args.slice(1).map(arg => reducer({ _window, lookupActions, awaits, id, params, path: arg, object: key, e, req, res, _, __, ___, mount, condition }))
-  } 
+    value = args.slice(1).map(arg => reducer({ _window, lookupActions, awaits, id, params, path: arg, object: key, e, req, res, _, __, ___, mount, toView, condition }))
+  }*/
 
   return value
 }

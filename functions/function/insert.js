@@ -38,7 +38,7 @@ module.exports = {
       
       // remove mapping
       if (children.type.slice(0, 1) === "[") {
-        var _type = children.type.slice(1).split("]")[0]
+        var _type = children.type.slice(1).split(":")[0].split("]")[0]
         children.type = children.view = _type + "?" + children.type.split("?").slice(1).join("?")
       }
       
@@ -70,7 +70,6 @@ module.exports = {
       }))
       
       innerHTML = innerHTML.join("")
-      
       lDiv = document.createElement("div")
       document.body.appendChild(lDiv)
       lDiv.style.position = "absolute"

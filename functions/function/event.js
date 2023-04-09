@@ -142,31 +142,33 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
 
         setTimeout(async () => {
 
+          var myView = views[mainID]
+
           if (view[event] && typeof view[event] === "object" && view[event].disable) return
           // approval
           if (viewEventConditions) {
-            var approved = toApproval({ _window, lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID })
+            var approved = toApproval({ _window, lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
             if (!approved) return
           }
           
           // approval
-          var approved = toApproval({ _window, lookupActions, awaits, req, res, string: events[2], e, id: mainID })
+          var approved = toApproval({ _window, lookupActions, awaits, req, res, string: events[2], e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
           if (!approved) return
 
           // once
           if (once) e.target.removeEventListener(event, myFn)
           
           // params
-          await toParam({ _window, lookupActions, awaits, req, res, string: events[1], e, id: mainID, mount: true })
+          await toParam({ _window, lookupActions, awaits, req, res, string: events[1], e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
 
           // break
           if (view.break) return delete view.break
           
           // approval
-          if (viewEventParams) await toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true })
+          if (viewEventParams) await toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
           
           // execute
-          if (controls.actions || controls.action) await execute({ _window, lookupActions, awaits, req, res, controls, e, id: mainID })
+          if (controls.actions || controls.action) await execute({ _window, lookupActions, awaits, req, res, controls, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
         }, timer)
       }
       
@@ -216,28 +218,29 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
           // if (event === "input" && !views[id].contenteditable) return
 
           var _myFn = async () => {
+
+            var myView = views[mainID]
             
             // approval
             if (viewEventConditions) {
-              var approved = toApproval({ _window, lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID })
+              var approved = toApproval({ _window, lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
               if (!approved) return
             }
             
             // approval
-            var approved = toApproval({ string: events[2], e, id: mainID })
+            var approved = toApproval({ string: events[2], e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
             if (!approved) return
 
             // params
-            await toParam({ string: events[1], e, id: mainID, mount: true })
+            await toParam({ string: events[1], e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
 
             // break
             if (view["break()"]) delete view["break()"]
             if (view["return()"]) return delete view["return()"]
           
-            // approval
-            if (viewEventParams) await toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true })
+            if (viewEventParams) await toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
             
-            if (controls.actions || controls.action) execute({ controls, e, id: mainID })
+            if (controls.actions || controls.action) execute({ controls, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
           }
 
           if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") setTimeout(_myFn, 100)

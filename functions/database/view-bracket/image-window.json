@@ -4,12 +4,12 @@
             "view": "View?id=image-window-background;style.position=absolute;style.top=0;style.left=0;style.bottom=0;style.height=100%;style.width=100%;style.backgroundColor=#00000030;style.zIndex=-1",
             "controls": [
                 {
-                    "event": "click?new-image:()=false;():image-window.style().pointerEvents=none;():image-window.style().opacity=0;():gallery-view-input.txt()=_string"
+                    "event": "click?new-image:()=false;():image-window.style().pointerEvents=none;():image-window.style().opacity=0;():'gallery-view-input'.txt()="
                 }
             ]
         },
         {
-            "view": "View?class=flex box-shadow-2;style.gap=2rem;style.margin=5rem 0;style.height=calc(100vh - 10rem);style.alignSelf=start;style.width=90%;style.backgroundColor=#fff;style.borderRadius=.5rem;style.zIndex=1;style.padding=2rem;style.position=relative",
+            "view": "View?class=flex box-shadow-2;doc=new-image-data;style.gap=2rem;style.margin=5rem 0;style.height='calc(100vh - 10rem)';style.alignSelf=start;style.width=90%;style.backgroundColor=#fff;style.borderRadius=.5rem;style.zIndex=1;style.padding=2rem;style.position=relative",
             "children": [
                 {
                     "controls": [
@@ -20,7 +20,7 @@
                     "view": "Icon?class=flexbox pointer;name=bi-x;style.height=3rem;style.width=3rem;style.fontSize=3rem;style.borderRadius=.5rem;hover.style.backgroundColor=#f6f6f6;style.position=absolute;style.right=.5rem;style.top=.5rem"
                 },
                 {
-                    "view": "View?class=flex column;Data=new-image-data;style.overflowY=auto;style.width=30%;style.maxWidth=30%;style.maxHeight=100%;style.borderRadius=.5rem;style.gap=2rem;new-image-data:().title=image;if():[!new-image-data:().tags]:[new-image-data:().tags=_array];new-image-data:().type=",
+                    "view": "View?class=flex column;style.overflowY=auto;style.width=30%;style.maxWidth=30%;style.maxHeight=100%;style.borderRadius=.5rem;style.gap=2rem;if():[!new-image-data:().tags]:[new-image-data:().tags=_list]",
                     "children": [
                         {
                             "children": [
@@ -47,10 +47,10 @@
                         {
                             "children": [
                                 {
-                                    "view": "Text?style.fontSize=1.4rem;text=Image Url;style.width=fit-content"
+                                    "view": "Text?style.fontSize=1.4rem;text=File Url;style.width=fit-content"
                                 },
                                 {
-                                    "view": "Input:new-image-url?path=url;readonly;style.width=100%;style.height=4.5rem;style.borderRadius=.5rem;style.border=1px solid #ddd;copyable"
+                                    "view": "Input?path=url;readonly;style.width=100%;style.height=4.5rem;style.borderRadius=.5rem;style.border=1px solid #ddd;copyable"
                                 }
                             ],
                             "view": "View?class=flex column;style.width=100%;style.gap=.5rem"
@@ -69,11 +69,10 @@
                                                 {
                                                     "controls": [
                                                         {
-                                                            "actions": "insert:[parent().parent()]?insert.component=parent().parent().children.0",
-                                                            "event": "keyup??().txt();e().key=Enter"
+                                                            "event": "keyup?2ndParent().insert():[view=2ndParent().children.0]?().txt();e().key=Enter"
                                                         },
                                                         {
-                                                            "event": "keyup?data().delete()?!().txt()"
+                                                            "event": "keyup?data().del()?!txt()"
                                                         }
                                                     ],
                                                     "view": "Input?style.height=3.5rem;style.borderRadius=.5rem;style.border=1px solid #ddd;style.width=fit-content;style.padding=.5rem;style.paddingRight=1.5rem;if():[new-image-data:().tags.len()=0]:[style.minWidth=8rem]:[style.minWidth=5rem]"
@@ -82,16 +81,15 @@
                                                     "view": "Icon?class=flexbox pointer;name=bi-x;style.position=absolute;style.right=0;style.fontSize=2rem;style.width=fit-content;style.opacity=0;style.borderRadius=.5rem;style.transition=.2s;style.backgroundColor=inherit",
                                                     "controls": [
                                                         {
-                                                            "event": "click??Data().tags.len()>1",
-                                                            "actions": "remove:parent()"
+                                                            "event": "click?parent().rem()?doc().tags.len()>1"
                                                         },
                                                         {
-                                                            "event": "click?data().delete();prev().txt()=_string?Data().tags.len()=1"
+                                                            "event": "click?data().del();prev().txt()=?doc().tags.len()=1"
                                                         }
                                                     ]
                                                 }
                                             ],
-                                            "view": "View?path=new-image-data:().tags.len();class=flexbox;style.position=relative",
+                                            "view": "View?path='new-image-data':().tags.len();class=flexbox;style.position=relative",
                                             "controls": [
                                                 {
                                                     "event": "mouseenter?2ndChild().style().opacity=1"
@@ -113,7 +111,10 @@
                         {
                             "children": [
                                 {
-                                    "view": "Image?id=image-window-img;src=_string;style.maxWidth=100%;style.maxHeight=100%"
+                                    "view": "Image?src=data().url;style.maxWidth=100%;style.maxHeight=100%?data().type.inc():image"
+                                },
+                                {
+                                    "view": "Icon?name=bi-file-earmark;style.fontSize=6rem;style.maxWidth=100%;style.maxHeight=100%?!data().type.inc():image"
                                 }
                             ],
                             "view": "View?class=flexbox;style.overflow=hidden;style.width=100%;style.maxHeight=100%;style.height=100%"
@@ -124,7 +125,7 @@
                                     "view": "View?class=flexbox pointer;style.gap=1rem;style.height=3.5rem;style.width=10rem;style.borderRadius=.5rem;style.border=1px solid #ccc;hover.style.border=1px solid #aaa;style.transition=.3s",
                                     "controls": [
                                         {
-                                            "event": "click?new-image:()=false;():image-window.style().pointerEvents=none;():image-window.style().opacity=0;():gallery-view-input.txt()=_string"
+                                            "event": "click?():'image-window-background'.click()"
                                         }
                                     ],
                                     "children": [
@@ -136,11 +137,10 @@
                                 {
                                     "controls": [
                                         {
-                                            "event": "click?loader.show;upload():[data=new-image-data:();doc=new-image-data:().name.split(): .join():'-'.split():'.'.join():'-'+'-'+timestamp();headers.project=project:();file=upload-file:()]:[note():[text=Image saved succefully!];data:().editor.storage.[_.data.id]=_.data;if():[!gallery-images:().find():[id=_.data.id]]:[gallery-images:().push():[_.data]];():image-window-background.click();update():'gallery-view';update():'storage-list';loader.hide]?new-image:()"
+                                            "event": "click?loader.show;upload():[data='new-image-data':();doc='new-image-data':().name.split():' '.join():'-'.split():'.'.join():'-'+'-'+timestamp();headers.project=project:();file='new-image-data':().url]:[note():[text=Image saved succefully!];data:().editor.storage.[_.data.id]=_.data;gallery-images:().replaceItem():[_.data];():'image-window-background'.click();update():'gallery-view';update():'storage-list';loader.hide]?new-image:()"
                                         },
                                         {
-                                            "actions": "wait():[save::0]:[update:gallery-view]:[update:'storage-list']:note?note.text=File updated successfuly!;save.headers.project=project:();save.collection=storage;save.doc=new-image-data:().id;save.data=new-image-data:();wait():[():image-window-background.click();loader.hide]",
-                                            "event": "click?loader.show?!new-image:()"
+                                            "event": "click?loader.show;save():[headers.project=project:();collection=storage;doc=new-image-data:().id;data=new-image-data:()]:[note():[text=File updated successfuly!];():'image-window-background'.click();update():'gallery-view';update():'storage-list';loader.hide]?!new-image:()"
                                         }
                                     ],
                                     "view": "View?class=flexbox pointer;style.gap=1rem;style.height=3.5rem;style.width=10rem;style.borderRadius=.5rem;style.border=1px solid #32c74d;style.backgroundColor=#32c74d;hover.style.backgroundColor=#2ca842;hover.style.border=1px solid #2ca842;style.transition=.3s",

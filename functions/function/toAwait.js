@@ -2,7 +2,7 @@ const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 
-const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res, _, __, ___, asyncer, awaiter }) => {
+const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res, _, __, ___, asyncer, awaiter, ...params }) => {
 
   const { execute } = require("./execute")
   const { toParam } = require("./toParam")
@@ -11,18 +11,18 @@ const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res
   var _params, keepGoingOn = true
   var global = _window ? _window.global : window.global
 
-  if (myawait) {
+  if (myawait && myawait.await) {
     
     var _await_ = toCode({ _window, string: toCode({ _window, string: myawait.await }), start: "'", end: "'" })
 
     var conditions = _await_.split("?")[1], approved = true
     if (conditions) {
-      approved = toApproval({ _window, string: conditions, e, id, req, res, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+      approved = toApproval({ _window, string: conditions, e, id, req, res, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions, ...params })
     }
 
     _await_ = _await_.split("?")[0]
 
-    if (approved) _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res, ...((awaits.find(item => item.id === myawait.id) || {}).params || {}) })
+    if (approved) _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, _, __, ___, req, res, ...params, ...((awaits.find(item => item.id === myawait.id) || {}).params || {}) })
 
     var index = awaits.findIndex(item => item.id === myawait.id)
     if (index !== -1) {

@@ -4,24 +4,23 @@ const { setElement } = require("./setElement")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
-const { search } = require("./search")
 const { toCode } = require("./toCode")
 const { toParam } = require("./toParam")
 
-const toggleView = async ({ _window, toggle, id, res }) => {
+const toggleView = async ({ _window, toggle = {}, id, res }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
   var togglePage = toggle.page, view = {}
   var viewId = toggle.viewId || toggle.view
-  var toggleId = toggle.id
+  var toggleId = toggle.id || id
   var parentId = toggle.parent
   if (togglePage) parentId = "root"
   if (!toggleId) {
     if (!parentId) parentId = id
     toggleId = views[parentId].element.children[0] && views[parentId].element.children[0].id
-  } else if (!parentId) parentId = views[toggleId].element.parentNode.id && views[toggleId].element.parentNode.id
-  
+  } else if (!parentId) parentId = views[toggleId].parent
+
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
 
@@ -32,103 +31,104 @@ const toggleView = async ({ _window, toggle, id, res }) => {
   toggle.fadeout.after = toggle.fadeout.after || {}
 
   document.getElementById("loader-container").style.display = "flex"
+  
 
-  // children
-  var children = clone([global.data[views[id].viewType][viewId]])
-  if (togglePage) {
 
-    global.prevPage.push(global.currentPage)
-    if (global.prevPage.length > 5) global.prevPage.shift()
-    var currentPage = global.currentPage = togglePage.split("/")[0]
-    
-    viewId = currentPage
-    /*global.path = togglePage = togglePage === "main" ? "/" : togglePage
+    // children
+    var children = clone([global.data[views[toggleId].viewType][viewId] || { view: "View" }])
+    if (togglePage) {
 
-    history.pushState({}, title, togglePage)
-    document.title = title
-    view = views.root*/
+      global.prevPage.push(global.currentPage)
+      if (global.prevPage.length > 5) global.prevPage.shift()
+      var currentPage = global.currentPage = togglePage.split("/")[0]
+      
+      viewId = currentPage
+      /*global.path = togglePage = togglePage === "main" ? "/" : togglePage
 
-  } else {
-    view = views[parentId]
+      history.pushState({}, title, togglePage)
+      document.title = title
+      view = views.root*/
 
-    if (id === "root" && global.data.page[viewId]) {
+    } else {
+      view = views[parentId]
 
-      var page = global.data.page[viewId]
-      var _params = toParam({ string: page.type.split("?")[1] || "" })
-      global.prevPath.push(global.path)
-      if (global.prevPath.length > 5) global.prevPath.shift()
-      global.path = _params.path
-      history.pushState({}, _params.title, _params.path)
-      document.title = _params.title
+      if (id === "root" && global.data.page[viewId]) {
+
+        var page = global.data.page[viewId]
+        var _params = toParam({ string: page.type.split("?")[1] || "" })
+        global.prevPath.push(global.path)
+        if (global.prevPath.length > 5) global.prevPath.shift()
+        global.path = _params.path
+        history.pushState({}, _params.title, _params.path)
+        document.title = _params.title
+      }
     }
-  }
 
-  
-  if (children.length === 0) return
-  if (!view || !view.element) return
-
-  // close droplist
-  if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()" })
-    toParam({ string: closeDroplist, id: "droplist" })
-  }
-  
-  // close actionlist
-  if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
-    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()" })
-    toParam({ string: closeActionlist, id: "actionlist" })
-  }
-        
-  if (res) {
     
-    views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
-    return
-  }
+    if (children.length === 0) return
+    if (!view || !view.element) return
 
-  // fadeout
-  var timer = toggle.timer || toggle.fadeout.timer || 0
-
-  if (toggleId && views[toggleId] && views[toggleId].element) {
+    // close droplist
+    if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
+      var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()" })
+      toParam({ string: closeDroplist, id: "droplist" })
+    }
     
-    views[toggleId].element.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
-    views[toggleId].element.style.transform = toggle.fadeout.after.transform || null
-    views[toggleId].element.style.opacity = toggle.fadeout.after.opacity || "0"
+    // close actionlist
+    if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
+      var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()" })
+      toParam({ string: closeActionlist, id: "actionlist" })
+    }
+          
+    if (res) {
+      
+      views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
+      return
+    }
+
+    // fadeout
+    var timer = toggle.timer || toggle.fadeout.timer || 0
+  
+    var innerHTML = await Promise.all(children.map(async (child, index) => {
+
+      var id = child.id || generate()
+      views[id] = clone(child)
+      views[id].id = id
+      views[id].index = index
+      views[id].parent = view.id
+      views[id].style = {}
+      views[id]["my-views"] = viewId ? [...view["my-views"], viewId] : view["my-views"]
+      views[id].style.transition = toggle.fadein.before.transition || null
+      views[id].style.opacity = toggle.fadein.before.opacity || "0"
+      views[id].style.transform = toggle.fadein.before.transform || null
+
+      return await toView({ id })
+    }))
+
+    if (toggleId && views[toggleId] && views[toggleId].element) {
+      
+      views[toggleId].element.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
+      views[toggleId].element.style.transform = toggle.fadeout.after.transform || null
+      views[toggleId].element.style.opacity = toggle.fadeout.after.opacity || "0"
+      
+      removeChildren({ id: toggleId })
+      delete views[toggleId]
+    }
     
-    removeChildren({ id: toggleId })
-    delete views[toggleId]
-  }
+    innerHTML = innerHTML.join("")
+
+    // timer
+    var timer = toggle.timer || toggle.fadein.timer || 0
+    view.element.innerHTML = ""
+    view.element.innerHTML = innerHTML
+    
+    var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+    idList.map(id => setElement({ id }))
+    idList.map(id => starter({ id }))
   
-  var innerHTML = await Promise.all(children.map(async (child, index) => {
-
-    var id = child.id || generate()
-    views[id] = clone(child)
-    views[id].id = id
-    views[id].index = index
-    views[id].parent = view.id
-    views[id].style = {}
-    views[id]["my-views"] = [...view["my-views"], viewId]
-    views[id].style.transition = toggle.fadein.before.transition || null
-    views[id].style.opacity = toggle.fadein.before.opacity || "0"
-    views[id].style.transform = toggle.fadein.before.transform || null
-
-    return await toView({ id })
-
-  }))
-  
-  innerHTML = innerHTML.join("")
-
-  // timer
-  var timer = toggle.timer || toggle.fadein.timer || 0
-  view.element.innerHTML = ""
-  view.element.innerHTML = innerHTML
-  
-  var idList = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  idList.map(id => setElement({ id }))
-  idList.map(id => starter({ id }))
-
   // set visible
-  setTimeout(() => {
-  
+  setTimeout(async () => {
+
     var children = [...view.element.children]
     children.map(el => {
 

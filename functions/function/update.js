@@ -7,7 +7,7 @@ const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 
-const update = async ({ id, _window, lookupActions, awaits, req, res, update = {}, route }) => {
+const update = async ({ id, _window, lookupActions, awaits, req, res, update = {}, _, __, ___, route, ...params }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.views : window.global
@@ -50,6 +50,8 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
     
     return await toView({ _window, lookupActions, awaits, req, res, id })
   }))
+
+  if (id === "root" && route.currentPage && route.currentPage !== global.currentPage) return
   
   innerHTML = innerHTML.join("")
   
@@ -75,6 +77,9 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
 
     if (document.getElementById("loader-container")) document.getElementById("loader-container").style.display = "none"
   }
+
+  // await params
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, _: global.update, __: _, ___: __, object: global.update.view, ...params })
 }
 
 const removeChildren = ({ id }) => {
@@ -82,6 +87,8 @@ const removeChildren = ({ id }) => {
   var views = window.views
   var global = window.global
   var view = views[id]
+
+  if (!view.element) return
   var children = [...view.element.children]
   
   children.map((child) => {

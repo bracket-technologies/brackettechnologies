@@ -1,7 +1,7 @@
 const { toParam } = require("./toParam")
 
 module.exports = {
-    print: async ({ id, options }) => {
+    print: async ({ id, options, ...params }) => {
 
         var mediaQueryList = window.matchMedia('print')
 
@@ -10,11 +10,12 @@ module.exports = {
                 // console.log('before print dialog open');
                 if (options["before-print"]) toParam({ string: options["before-print"], id, mount: true })
             } else {
-                // console.log('after print dialog closed');
+                // await params
+                if (params.asyncer) require("./toAwait").toAwait({ id, ...params })
                 if (options["after-print"]) toParam({ string: options["after-print"], id, mount: true })
             }
         })
         
         window.print()
     }
-}
+}   

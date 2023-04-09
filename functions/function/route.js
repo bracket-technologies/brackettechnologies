@@ -11,6 +11,7 @@ module.exports = {
       global.prevPath.push(global.path)
       if (global.prevPath.length > 5) global.prevPath.shift()
       var path = route.path || (route.page.includes("/") ? route.page : global.path)
+      
       global.prevPage.push(global.currentPage)
       if (global.prevPage.length > 5) global.prevPage.shift()
       var currentPage = global.currentPage = route.page && (route.page.includes("/") ? (!route.page.split("/")[0] ? route.page.split("/")[1] : route.page.split("/")[0]): route.page ) || path.split("/")[1] || "main"
@@ -39,8 +40,11 @@ module.exports = {
         }
 
       } else {
-      
-        if (document.getElementById("loader-container")) document.getElementById("loader-container").style.display = "flex"
+        
+        route.path = global.path
+        route.currentPage = global.currentPage
+        
+        if (document.getElementById("loader-container").style.display === "none") document.getElementById("loader-container").style.display = "flex"
         update({ _window, req, res, id: "root", route })
       }
     }

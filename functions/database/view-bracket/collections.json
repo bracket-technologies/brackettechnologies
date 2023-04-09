@@ -2,7 +2,7 @@
   "view": "View:collections",
   "children": [
     {
-      "view": "[View]?data=data:().editor.project.datastore.collections;style:[width=100%]?data:().editor.project.datastore.collections.len()>0",
+      "view": "[View]:[data=data:().editor.project.datastore.collections;mount?data:().editor.project.datastore.collections.len()>0]?style:[width=100%]",
       "children": [
         {
           "children": [
@@ -37,7 +37,7 @@
           "view": "View:[data()+'-list']?class=flex column;style:[display=none;marginLeft=1.2rem;borderLeft=1px solid #ddd]",
           "children": [
             {
-              "view": "[View]?data=data:().editor.collections.[parent().data].keys();class=flex pointer align-center;style:[minHeight=3rem;width=100%;position=relative]?data:().editor.collections.[parent().data].keys().len()>0||[!open-doc:();open-collection:()='collection-'+parent().data]",
+              "view": "[View]:[doc;data=data:().editor.collections.[parent().data()].keys();mount?data:().editor.collections.[parent().data].keys().len()>0||[!open-doc:();open-collection:()='collection-'+parent().data]]?class=flex pointer align-center;style:[minHeight=3rem;width=100%;position=relative]",
               "children": [
                 {
                   "view": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"

@@ -34,7 +34,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
   if (typeof string !== "string" || !string) return string || {}
   params = object || params
 
-  if (string.includes('coded()') && string.length === 12) string = global.codes[string]
+  while (string.includes('coded()') && string.length === 12) { string = global.codes[string] }
   if (string.includes('codedS()') && string.length === 13) return global.codes[string]
 
   // condition not param
@@ -85,20 +85,26 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       value = `coded()${_key}+coded()${_key0}`*/
     }
 
-    // {}= => { key, ...value }
+    // {}= => { ...key, ...value }
     else if (key && value && key.slice(-2) === "{}") {
 
       key = key.slice(0, -2)
-      return ({ ...(toValue({ _window, lookupActions, awaits, req, res, id, e, value: key, params, _, __, ___, condition, object }) || {}), ...(toValue({ _window, lookupActions, awaits, req, res, id, e, value, params, _, __, ___, condition, object }) || {}) })
+      var val0, val1
+      if (isParam({ _window, string: key })) val0 = toParam({ req, res, _window, id, e, _, __, ___, string: key })
+      else val0 = toValue({ _window, lookupActions, awaits, req, res, id, e, value: key, params, _, __, ___, condition, object }) || {}
+      if (isParam({ _window, string: key })) val1 = toParam({ req, res, _window, id, e, _, __, ___, string: value })
+      else val1 = toValue({ _window, lookupActions, awaits, req, res, id, e, value, params, _, __, ___, condition, object }) || {}
+
+      return ({ ...(val0), ...(val1) })
     }
 
     // +=
     else if (key && value && key.slice(-1) === "+") {
 
       key = key.slice(0, -1)
-      var _key = generate(), _key0 = generate()
+      var _key = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
-      global.codes[`coded()${_key}`] = toCode({ _window, lookupActions, awaits, id, string: `${myVal}||[if():[type():[${value}]=number]:0:_string]` })
+      global.codes[`coded()${_key}`] = toCode({ _window, string: `${myVal}||[if():[type():[${value}]=number]:0:_string]` })
       value = `coded()${_key}+${value}`
       /*global.codes[`coded()${_key0}`] = `${value}||0`
       value = `coded()${_key}+coded()${_key0}`*/
@@ -108,11 +114,11 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
     else if (key && value && key.slice(-1) === "-") {
 
       key = key.slice(0, -1)
-      var _key = generate(), _key0 = generate()
+      var _key = generate(), __key = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
-      global.codes[`coded()${_key}`] = `${myVal}||0`
-      global.codes[`coded()${_key0}`] = `${value}||0`
-      value = `coded()${_key}-coded()${_key0}`
+      global.codes[`coded()${_key}`] = toCode({ _window, string: `${myVal}||0` })
+      global.codes[`coded()${__key}`] = toCode({ _window, string: `${value}||0` })
+      value = `coded()${_key}-coded()${__key}`
       /*global.codes[`coded()${_key0}`] = `${value}||0`
       value = `coded()${_key}-coded()${_key0}`*/
     }
@@ -171,136 +177,149 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       return sleep(10)
     }
 
-    // beforeLoading
-    if (param.slice(0, 14) === "beforeLoading:") {
+    if (toView) {
 
-      param = param.slice(14)
-      if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-      view.controls = toArray(view.controls)
-      view.controls.push({ event: `beforeLoading?${param}` })
-      return true
-    }
+      // loaded
+      /*if (param.slice(0, 7) === "loaded:") {
 
-    // controls
-    if (param.slice(0, 9) === "controls:") {
-
-      var _controls = []
-      param = param.slice(9)
-      param.split(":").map(param => {
-
+        param = param.slice(7)
         if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        _controls.push({ event: param })
-      })
-
-      view.controls = toArray(view.controls)
-      view.controls.unshift(..._controls)
-      return true
-    }
-
-    // children
-    if (param.slice(0, 9) === "children:") {
-
-      var _children = []
-      param = param.slice(9)
-      param.split(":").map(param => {
-
-        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        _children.push({ view: param })
-      })
-
-      view.children = toArray(view.children)
-      view.children.unshift(..._children)
-      if (_) {
-        view._ = _
-        view.passToChildren = view.passToChildren || {}
-        view.passToChildren._ = _
+        view.controls = toArray(view.controls)
+        view.controls.push({ event: `loaded?${param}` })
+        return true
       }
-      return true
-    }
 
-    // children
-    if (param.slice(0, 6) === "child:") {
+      // beforeLoading
+      if (param.slice(0, 14) === "beforeLoading:") {
 
-      var _children = []
-      param = param.slice(6)
-      param.split(":").map(param => {
-
+        param = param.slice(14)
         if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        _children.push({ view: param })
-      })
+        view.controls = toArray(view.controls)
+        view.controls.push({ event: `beforeLoading?${param}` })
+        return true
+      }*/
 
-      view.children = toArray(view.children)
-      view.children.unshift(..._children)
-      
-      if (_) {
-        view._ = _
-        view.passToChildren = view.passToChildren || {}
-        view.passToChildren._ = _
+      // controls
+      if (param.slice(0, 9) === "controls:") {
+
+        var _controls = []
+        param = param.slice(9)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _controls.push({ event: param })
+        })
+
+        view.controls = toArray(view.controls)
+        view.controls.unshift(..._controls)
+        return true
       }
-      return true
-    }
 
-    // siblings
-    if (param.slice(0, 9) === "siblings:") {
+      // children
+      if (param.slice(0, 9) === "children:") {
 
-      var siblings = []
-      param = param.slice(9)
-      param.split(":").map(param => {
+        var _children = []
+        param = param.slice(9)
+        param.split(":").map(param => {
 
-        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        siblings.push({ view: param })
-      })
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _children.push({ view: param })
+        })
 
-      view.siblings = toArray(view.siblings)
-      view.siblings.unshift(...siblings)
-      if (_) {
-        view._ = _
-        view.passToChildren = view.passToChildren || {}
-        view.passToChildren._ = _
+        view.children = toArray(view.children)
+        view.children.unshift(..._children)
+        if (_) {
+          view._ = _
+          view.passToChildren = view.passToChildren || {}
+          view.passToChildren._ = _
+        }
+        return true
       }
-      return true
-    }
 
-    // sibling
-    if (param.slice(0, 8) === "sibling:") {
+      // children
+      if (param.slice(0, 6) === "child:") {
 
-      var siblings = []
-      param = param.slice(8)
-      param.split(":").map(param => {
+        var _children = []
+        param = param.slice(6)
+        param.split(":").map(param => {
 
-        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        siblings.push({ view: param })
-      })
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          _children.push({ view: param })
+        })
 
-      view.siblings = toArray(view.siblings)
-      view.siblings.unshift(...siblings)
-      if (_) {
-        view._ = _
-        view.passToChildren = view.passToChildren || {}
-        view.passToChildren._ = _
+        view.children = toArray(view.children)
+        view.children.unshift(..._children)
+        
+        if (_) {
+          view._ = _
+          view.passToChildren = view.passToChildren || {}
+          view.passToChildren._ = _
+        }
+        return true
       }
-      return true
-    }
 
-    // siblings
-    if (param.slice(0, 12) === "prevSibling:") {
+      // siblings
+      if (param.slice(0, 9) === "siblings:") {
 
-      var siblings = []
-      param = param.slice(12)
-      param.split(":").map(param => {
+        var siblings = []
+        param = param.slice(9)
+        param.split(":").map(param => {
 
-        if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-        siblings.push({ view: param })
-      })
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          siblings.push({ view: param })
+        })
 
-      view.prevSiblings = toArray(view.prevSiblings)
-      view.prevSiblings.unshift(...siblings)
-      if (_) {
-        view._ = _
-        view.passToChildren = view.passToChildren || {}
-        view.passToChildren._ = _
+        view.siblings = toArray(view.siblings)
+        view.siblings.unshift(...siblings)
+        if (_) {
+          view._ = _
+          view.passToChildren = view.passToChildren || {}
+          view.passToChildren._ = _
+        }
+        return true
       }
-      return true
+
+      // sibling
+      if (param.slice(0, 8) === "sibling:") {
+
+        var siblings = []
+        param = param.slice(8)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          siblings.push({ view: param })
+        })
+
+        view.siblings = toArray(view.siblings)
+        view.siblings.unshift(...siblings)
+        if (_) {
+          view._ = _
+          view.passToChildren = view.passToChildren || {}
+          view.passToChildren._ = _
+        }
+        return true
+      }
+
+      // siblings
+      if (param.slice(0, 12) === "prevSibling:") {
+
+        var siblings = []
+        param = param.slice(12)
+        param.split(":").map(param => {
+
+          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          siblings.push({ view: param })
+        })
+
+        view.prevSiblings = toArray(view.prevSiblings)
+        view.prevSiblings.unshift(...siblings)
+        if (_) {
+          view._ = _
+          view.passToChildren = view.passToChildren || {}
+          view.passToChildren._ = _
+        }
+        return true
+      }
     }
     
     if (typeof value === 'string') value = toValue({ _window, lookupActions, awaits, req, res, id, e, value, params, _, __, ___, condition })
