@@ -257,9 +257,9 @@ const interpreter = ({ window: _window }) => {
         if (!global.data.project) return res.send("Project does not exist or something went wrong! Refresh")
 
         // create browser document
-        global.data.project.browser ||= {}
-        global.data.project.browser.children ||= []
-        global.data.project.browser.view ||= global.data.project.browser.type || "html"
+        global.data.project.browser = global.data.project.browser || {}
+        global.data.project.browser.children = global.data.project.browser.children || []
+        global.data.project.browser.view = global.data.project.browser.view || global.data.project.browser.type || "html"
         // global.data.project.browser.children.push(views.body)
         views.html = { ...views.html, ...global.data.project.browser }
 
@@ -311,7 +311,7 @@ const app = async ({ _window: window, req, res }) => {
     var tags = clone(global.__TAGS__ || {})
   
     // meta
-    view.meta ||= {}
+    view.meta = view.meta || {}
     var metaHTTPEquiv = view.meta["http-equiv"] || view.meta["httpEquiv"] || {}
     if (typeof metaHTTPEquiv !== "object") metaHTTPEquiv = {}
     if (!metaHTTPEquiv["content-type"]) metaHTTPEquiv["content-type"] = "text/html; charset=UTF-8"
