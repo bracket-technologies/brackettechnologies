@@ -232,13 +232,13 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
             if (!approved) return
 
             // params
-            await toParam({ string: events[1], e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
+            toParam({ string: events[1], e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
 
             // break
             if (view["break()"]) delete view["break()"]
             if (view["return()"]) return delete view["return()"]
           
-            if (viewEventParams) await toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
+            if (viewEventParams) toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
             
             if (controls.actions || controls.action) execute({ controls, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
           }
