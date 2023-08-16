@@ -42,8 +42,13 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     var type = view.type.split("?")[0]
     var params = view.type.split("?")[1]
     var conditions = view.type.split("?")[2]
-    var subParams = type.split(":")[1]
+    var subParams = type.split(":")[1] || ""
     type = type.split(":")[0]
+
+    if (subParams.slice(0, 7) !== "coded()" && subParams.slice(0, 8) !== "codedS()" && subParams.includes("()")) {
+      type = type + ":" + subParams
+      subParams = ""
+    }
 
     _import = view.id === "html" || (parent.id === "html" && _imports.includes(type.toLowerCase()))
     
@@ -51,9 +56,14 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     if (/*!view.duplicatedElement && */type.length === 12 && type.includes("coded()")) {
 
       type = global.codes[type]
+      type = toValue({ req, res, _window, id, value: type, _, __, ___ })
 
       // sub params
       if (subParams) {
+
+        // inherit data
+        view.Data = view.Data || view.doc || parent.Data
+        view.derivations = view.derivations || [...(parent.derivations || [])]
 
         while (subParams.includes('coded()') && subParams.length === 12) { subParams = global.codes[subParams] }
         var _conditions_ = subParams.split("?")[1]
@@ -123,7 +133,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         }*/
         
         var tags = []
-        var { Data, doc, data, path, derivations, preventDefault, ...myparams } = _params
+        var { Data, doc, data, path, derivations = [], preventDefault, ...myparams } = _params
         
         if (toArray(loopData).length > 0) {
 
@@ -132,7 +142,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
             var _id = view.id + "-" + index
             var _type = type + "?" + view.type.split("?").slice(1).join("?")
             var _view = clone({ ...view, ...myparams, id: _id, view: _type, i: index, mapIndex: index })
-            if (_params.mount) _view = {..._view, Data, doc, data: _data, derivations: [...(derivations || []), index] }
+            if (_params.mount) _view = {..._view, Data: Data || _view.Data, doc: doc || _view.doc, data: _data, derivations: [...((derivations.length > 0 ? derivations : _params.derivations) || []), index] }
 
             if (!_params.preventDefault) {
 
@@ -153,7 +163,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           var _id = view.id + "-" + 0
           var _type = type + "?" + view.type.split("?").slice(1).join("?")
           var _view = clone({ ...view, ...myparams, id: _id, view: _type, i: 0, mapIndex: 0 })
-          if (_params.mount) _view = {..._view, Data, doc, derivations: [...(derivations || []), 0] }
+          if (_params.mount) _view = {..._view, Data: Data || _view.Data, doc: doc || _view.doc, derivations: [...((derivations.length > 0 ? derivations : _params.derivations) || []), 0] }
 
           if (!_params.preventDefault) {
 
@@ -177,7 +187,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       view.mapType = ["data"]
     }
 
-    view.type = type
+    view.type = type = toValue({ req, res, _window, id, value: type, _, __, ___ })
 
     // events
     if (view.event) {
@@ -334,7 +344,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       
       views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
 
-      tags = await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+      tags = await toView({ _window, lookupActions, awaits, id, req, res, _: Object.keys(params).length > 0 ? params : _, __: Object.keys(params).length > 0 ? _ : __, ___: Object.keys(params).length > 0 ? __ : ___, viewer })
       return resolve(tags)
     }
 

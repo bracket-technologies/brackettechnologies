@@ -1,0 +1,22 @@
+{
+  "id": "brackettechnologies",
+  "domains": [
+    "localhost",
+    "brackettechnologies.localhost",
+    "www.brackettechnologies.com",
+    "brackettechnologies.com",
+    "localhost",
+    "https://bracket-technologies.web.app/"
+  ],
+  "functions": {
+    "checkEmail": "search():[collection=_account_;field.email.equal=_.email]:[account:()=search:().data.value();send():[account:()]]",
+    "publish": "if():[_.account]:[save():[collection=_account_;data=_.account]];if():[_.project]:[save():[collection=_project_;data=_.project]];if():[_.pages]:[save():[collection=page;map=_.pages]];if():[_.views]:[save():[collection=view;map=_.views]];send():[msg='Website published successfully!']",
+    "checkPassword": "search():[collection=_password_;field.user.equal=_.user;field.password.equal=_.password]:[if():[search:().data.value()]:[send():true]:[send():false]]",
+    "checkUser": "search():[collection=_account_;doc=_.user]:[if():[_.data]:[data:().editor.account=_.data]:[eraseCookie():_id;route():login]]",
+    "autoLogin": "search():[collection=_account_;doc=_.id]:[account:()=search:().data.value();send():[account:()]]",
+    "getProject": "if():[!_.user||!_.project]:[return():[send():[success=false;message='Missing Info!']]];search():[collection=_account_;doc=_.user]:[if():[_.data]:[user:()=_.data;search():[collection=_project_;doc=__.project]:[if():[_.data]:[if():[___.project.in():[user:().projects]]:[send():[_map.():[user=user:();project=_.data]]]:[send():[success=false;message='Project is not related to this user!']]]:[send():[message='Project does not exist!']]]]:[send():[message='User is not authorized!']]]"
+  },
+  "name": "Bracket",
+  "access-key": "oD8jelc3GS83jKT921Kl",
+  "creation-date": 1647359813700
+}

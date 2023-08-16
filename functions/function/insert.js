@@ -4,6 +4,7 @@ const { starter } = require("./starter")
 const { generate } = require("./generate")
 const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
+const { toCode } = require("./toCode")
 
 module.exports = {
   insert: async ({ _window, lookupActions, awaits, id, _, __, ___, ...params }) => {
@@ -38,8 +39,8 @@ module.exports = {
       
       // remove mapping
       if (children.type.slice(0, 1) === "[") {
-        var _type = children.type.slice(1).split(":")[0].split("]")[0]
-        children.type = children.view = _type + "?" + children.type.split("?").slice(1).join("?")
+        children.type = children.view = "View?" + toCode({ _window, string: children.type }).split("?").slice(1).join("?")
+        //children.type = children.view = _type + "?" + children.type.split("?").slice(1).join("?")
       }
       
       // data

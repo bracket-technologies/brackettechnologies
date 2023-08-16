@@ -1,0 +1,416 @@
+{
+  "view": "View?id=developer-editor;style:[overflowX=hidden;minHeight=100vh];project:()=path:().split():/.2;log():[path:()];functionsHeight:()=20",
+  "creation-date": 1637494484000,
+  "children": [
+    {
+      "children": [
+        {
+          "view": "View?style.display=flex;style.alignItems=center;style.height=100%;style.width=100%;style.position=relative;style.gap=1rem",
+          "children": [
+            {
+              "view": "Text?link:[path=/;preventDefault];text=Bracket;class=flexbox;style.margin=0 1rem;style.fontSize=2rem;style.width=fit-content;style.color=#ee384e;style.fontWeight=900"
+            },
+            {
+              "view": "View?class=flex-box pointer;style.padding=0 2rem;style.height=60%;style.borderRight=1px solid #ddd;style.borderLeft=1px solid #ddd;style.transition=.2s;droplist:[items='data:().editor.account.projects';item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault]",
+              "children": [
+                {
+                  "view": "Text?text=project;style.fontSize=1.4rem;style.marginRight=.5rem;style.color=#888"
+                },
+                {
+                  "view": "Text?text=:;style.marginRight=1rem;style.fontSize=1.4rem"
+                },
+                {
+                  "view": "Text?text=project:();style:[fontSize=1.4rem;marginRight=.5rem]"
+                },
+                {
+                  "view": "View?class=flexbox",
+                  "children": [
+                    {
+                      "view": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;paddingTop=.25rem]"
+                    }
+                  ]
+                }
+              ],
+              "controls": [
+                {
+                  "event": "click:droplist?route():[path=/developer-editor/+droplist-txt:()]?project:()!=droplist-txt:()"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex-box;style.justifyContent=flex-end;style.flex=1;style.height=100%",
+              "children": [
+                {
+                  "view": "View?class=flex align-center;style:[gap=2rem]",
+                  "children": [
+                    {
+                      "view": "View?class=flex pointer;style:[borderRadius=.25rem;width=3.25rem;height=3.25rem;marginLeft=auto;transition=width .3s;overflow=hidden]",
+                      "children": [
+                        {
+                          "view": "View?class=flexbox",
+                          "children": [
+                            {
+                              "view": "Icon?class=flexbox;name=search;google.symbol.outlined;style:[color=#999;fontSize=2.2rem;minWidth=3.25rem]"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "Input?style:[flex=1;height=100%;transition=background-color .3s;borderRadius=1.5rem;padding=0 2rem];placeholder=Search by ID or text for pages, views, collections, products, flights, hotels, storage, reviews...",
+                          "controls": [
+                            {
+                              "event": "focus?parent().():[style().width=70rem];style().backgroundColor=#e6e6e6;focus=true"
+                            },
+                            {
+                              "event": "blur?parent().style().width=3.5rem;style().backgroundColor=#fff;focus=false"
+                            }
+                          ]
+                        }
+                      ],
+                      "controls": [
+                        {
+                          "event": "mouseenter?style():[width=70rem];2ndChild().style().backgroundColor=#e6e6e6"
+                        },
+                        {
+                          "event": "mouseleave?if():[!2ndChild().focus]:[style().width=3.25rem;2ndChild().style().backgroundColor=#fff]"
+                        }
+                      ]
+                    },
+                    {
+                      "view": "View?class=flexbox",
+                      "children": [
+                        {
+                          "view": "Icon?class=flexbox pointer;name=support_agent;google.symbol.outlined;style:[fontSize=2.2rem;color=#999;transition=.2s];hover.style.color=blue"
+                        }
+                      ]
+                    },
+                    {
+                      "view": "View?class=flexbox",
+                      "children": [
+                        {
+                          "view": "Icon?class=flexbox pointer;name=notifications;google.symbol.outlined;style:[fontSize=2.2rem;color=#999;transition=.2s];hover.style.color=red",
+                          "controls": [
+                            {
+                              "event": "mouseenter?style().transform=rotate(30deg);trans-bell-1:()=timer():[style().transform=rotate(-30deg)]:200;trans-bell-2:()=timer():[style().transform=rotate(30deg)]:400;trans-bell-3:()=timer():[style().transform=rotate(-30deg)]:600;trans-bell-4:()=timer():[style().transform=rotate(0deg)]:800"
+                            },
+                            {
+                              "event": "mouseleave?clearTimer():[trans-bell-1:()]:[trans-bell-2:()]:[trans-bell-3:()]:[trans-bell-4:()];style().transform=rotate(0)"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "view": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
+                    },
+                    {
+                      "view": "View?class=flexbox pointer;style:[gap=1.2rem];droplist:[items=_list:Manage Account:Sign out;item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault]",
+                      "children": [
+                        {
+                          "view": "Icon?name=person;google.symbol.outlined;style:[fontSize=2.5rem;color=#999]"
+                        },
+                        {
+                          "view": "Text?text=;style:[fontSize=1.4rem;color=#444];loaded:[txt()=Hi +data:().editor.account.first-name]"
+                        }
+                      ],
+                      "controls": [
+                        {
+                          "event": "click:droplist?eraseCookie():_id;open-docs:()=_list;open-collection:().del();open-doc:().del();open-map:().del();route():login?droplist-txt:()=Sign out"
+                        }
+                      ]
+                    },
+                    {
+                      "view": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
+                    }
+                  ]
+                },
+                {
+                  "view": "View?class=flexbox pointer;tooltip.text=undo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s];undo:()=_list",
+                  "children": [
+                    {
+                      "view": "Icon?name=undo;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=#000;hover.id=parent().id;style.width=100%"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?theEl=undo:().lastEl();().theEl.prevValue=():[().theEl.id].doc().reduce():[path=().theEl.path];():[().theEl.id].doc().reduce():[path=().theEl.path;value=().theEl.value];update():[().theEl.id];().theEl.value=().theEl.prevValue;redo:().push():[().theEl];undo:().pullLast()?undo:().len()>0;open-collection:()=view||open-collection:()=page"
+                    }
+                  ]
+                },
+                {
+                  "view": "View?class=flexbox pointer;tooltip.text=redo;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s];redo:()=_list",
+                  "children": [
+                    {
+                      "view": "Icon?name=redo;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=#000;hover.id=parent().id;style.width=100%"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?theEl=redo:().lastEl();().theEl.prevValue=():[().theEl.id].doc().reduce():[path=().theEl.path];():[().theEl.id].doc().reduce():[path=().theEl.path;value=().theEl.value];update():[().theEl.id];().theEl.value=().theEl.prevValue;undo:().push():[().theEl];redo:().pullLast()?redo:().len()>0;open-collection:()=view||open-collection:()=page"
+                    }
+                  ]
+                },
+                {
+                  "view": "View?class=flexbox pointer;tooltip.text=publish & preview;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "children": [
+                    {
+                      "view": "Icon?name=preview;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=red;hover.id=parent().id;style.width=100%"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?publish():[views=data:().view;pages=data:().page;project=data:().project;account=data:().account]:[win().open():[if():[host:().inc():'localhost']:['http://'+data:().editor.project.domains.find():[inc():'localhost']].elif():[host:().inc():'bracketjs.com']:['https://'+data:().editor.project.domains.find():[inc():'bracketjs.com']]]:'_blank']"
+                    }
+                  ]
+                },
+                {
+                  "view": "View?class=flexbox pointer;tooltip.text=save;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "children": [
+                    {
+                      "view": "Icon?name=save_as;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=blue;hover.id=parent().id"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "event": "click?saveDevData()?():'data-viewer'.children().find():[style().display=flex]._():[open-collection:()=_.open-collection;open-doc:()=_.open-doc];!hasNestedArray():[className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];!hasNestedArray():[className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];!hasEmptyField():[className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];!hasEmptyField():[className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].data()]"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "view": "View:navbar?class=flex-start;style.position=absolute;style.zIndex=1;style.backgroundColor=#f9f9f9;style.top=0;style.whiteSpace=nowrap;style.width=100%;style.height=4rem"
+    },
+    {
+      "view": "View?class=vertical;style.minHeight=100%;style.maxWidth=100%;style.marginTop=4rem",
+      "children": [
+        {
+          "view": "View?class=flex",
+          "children": [
+            {
+              "view": "View?view=sidebar"
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "view": "View?style.height=100%;style.width=fit-content;class=flexbox pointer;style.position=relative;style.maxWidth=22rem;hover.style.backgroundColor=#f9f9f9?().data",
+                      "children": [
+                        {
+                          "view": "View?style.width=1px;style.position=absolute;style.height=50%;style.left=0;style.backgroundColor=#ddd"
+                        },
+                        {
+                          "view": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;height=2.25rem;width=2.25rem;minWidth=2.25rem;borderRadius=2rem;margin=0 .5rem]"
+                        },
+                        {
+                          "view": "Text?class=dots;text=data();tooltip.text=data();style.fontSize=1.3rem;style.paddingRight=3.5rem"
+                        },
+                        {
+                          "view": "Icon?class=pointer;name=bi-x;style.fontSize=2rem;style.position=absolute;style.right=.5rem;hover.style.backgroundColor=#e9e9e9;style.borderRadius=.5rem;style.height=2.5rem;style.width=2.5rem",
+                          "controls": [
+                            {
+                              "event": "click?if():[parent().open-collection=_account_]:[open-docs:().pullItem():['account/'+parent().open-doc]].elif():[parent().open-collection=_project_]:[open-docs:().pullItem():['project/'+parent().open-doc]].elif():[parent().open-head-collection]:[open-docs:().pullItem():['data/'+[parent().open-collection.split():'collection-'.1]+'/'+parent().open-doc]]:[open-docs:().pullItem():[parent().open-collection+'/'+parent().open-doc]];className():'data-viewer'.find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem():[data=false];className():functions.find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem():[data=false];if():[open-doc:()=parent().open-doc;parent().next();!parent().prev()]:[parent().next().():[style().backgroundColor=#fff;hover.disable=true];className():'data-viewer'.find():[open-doc=parent().next().open-doc]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;if():[open-collection:()=page||open-collection:()=view||open-collection:()=public||open-collection:()=_project_]:[():'my-functions'.style().height=functionsHeight:()+rem;():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)']:[():'my-functions'.style().height=0;():'data-viewer'.style().height=100%]].elif():[open-doc:()=parent().open-doc;parent().prev()]:[parent().prev().():[style().backgroundColor=#fff;hover.disable=true];className():'data-viewer'.find():[open-doc=parent().prev().open-doc;open-collection=parent().prev().open-collection]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data];className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex;if():[open-collection:()=page||open-collection:()=view||open-collection:()=public||open-collection:()=_project_]:[():'my-functions'.style().height=functionsHeight:()+rem;():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)']:[():'my-functions'.style().height=0;():'data-viewer'.style().height=100%]];():'data-viewer-bar'.children().find():[open-doc=parent().open-doc;open-collection=parent().open-collection].rem();if():[open-docs:().len()=0]:[():'data-viewer-bar'.style().display=none;():'my-functions'.style().display=none]"
+                            }
+                          ]
+                        }
+                      ],
+                      "controls": [
+                        {
+                          "event": "click?if():[().open-collection=page||().open-collection=view||().open-collection=public||().open-collection=_project_||().open-collection=_account_]:[():'my-functions'.style().height=functionsHeight:()+rem;():'data-viewer'.style().height='calc(100% - '+functionsHeight:()+'rem)']:[():'my-functions'.style().height=0;():'data-viewer'.style().height=100%];parent().children().():[style().backgroundColor=inherit;hover.disable=false];style().backgroundColor=#fff;hover.disable=true;className():'data-viewer'.():[style().display=none];className():'data-viewer'.find():[open-doc=().open-doc;open-collection=().open-collection]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data()];className():functions.():[style().display=none];className():functions.find():[open-doc=().open-doc;open-collection=().open-collection]._():[_.style().display=flex;open-doc:()=_.open-doc;open-collection:()=_.open-collection;open-map:()=_.data()]?clicked:().id!=lastChild().id"
+                        },
+                        {
+                          "event": "mousedown:window?e().preventDefault();lastChild().click()?e().button=1||e().buttons=4;contains():[e().target]"
+                        }
+                      ]
+                    }
+                  ],
+                  "view": "View:'data-viewer-bar'?class=inline-flex;style.height=3.5rem;style.backgroundColor=#f0f0f0;style.display=if():[open-docs:().len()=0]:none:flex"
+                },
+                {
+                  "view": "View:main-data-viewer?style:[position=relative;height='calc(100vh - 7.5rem)'];click:[className():'data-viewer'.find():[style().display=flex]._():[open-collection:()=_.open-collection;open-doc:()=_.open-doc]]",
+                  "children": [
+                    {
+                      "view": "View:data-viewer?style:[width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+'rem)';height='calc(100% - '+functionsHeight:()+'rem)';transition=.2s]",
+                      "children": [
+                        {
+                          "view": "View?class=data-viewer;style:[display=flex;height=100%;width=100%;overflowY=auto]?open-map:()",
+                          "children": [
+                            {
+                              "view": "View?class=flex column;style:[width=100%]",
+                              "children": [
+                                {
+                                  "view": "Map?arrange=_list:creation-date:id:name:title:path:description:type:view:children:controls:event:watch:actions"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "view": "View:my-functions?class=flex column;style:[borderTop=1px solid #ccc;display=none;position=fixed;bottom=0;width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5||23.5]+rem);height=functionsHeight:()+rem;maxHeight=calc(100% - 7.5rem);marginTop=auto;backgroundColor=#fff;borderTop=1px solid #ddd;transition=.2s];mouseenter:[children().4.style():[opacity=1;pointerEvents=auto]];mouseleave:[children().4.style():[opacity=0;pointerEvents=none]]",
+                      "children": [
+                        {
+                          "view": "View?class=flexbox pointer;tooltip.text=fit;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=1rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[parent().style().height='calc(100% - 7.5rem)';():data-viewer.style().height=0rem;timer():[functionsHeight:()=parent().element.offsetHeight/10]:200]",
+                          "children": [
+                            {
+                              "view": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;transform=rotate(180deg);color=#666]"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "View?class=flexbox pointer;tooltip.text=maxi;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=3.75rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=60;parent().style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']",
+                          "children": [
+                            {
+                              "view": "Icon?name=web_asset;google.symbol.outlined;style:[fontSize=1.8rem;color=#666]"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "View?class=flexbox pointer;tooltip.text=mini;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=6.5rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=20;parent().style().height=functionsHeight:()+rem;():data-viewer.style().height='calc(100% - '+functionsHeight:()+'rem)']",
+                          "children": [
+                            {
+                              "view": "Icon?name=video_label;google.symbol.outlined;style:[fontSize=1.8rem;color=#666]"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "View?class=flexbox pointer;tooltip.text=hide;style:[position=absolute;top=-2.5rem;height=2rem;opacity=1;pointerEvents=auto;width=2.25rem;backgroundColor=#ddd;borderRadius=.5rem;right=9.25rem;zIndex=10;transition=.2s];mouseenter:[style():[backgroundColor=#bbb];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#ddd];1stChild().style():[color=#666]];click:[functionsHeight:()=0;parent().style().height=functionsHeight:();():data-viewer.style().height=100%]",
+                          "children": [
+                            {
+                              "view": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;color=#666]"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "View?style:[minWidth=100%;height=7px;backgroundColor=#34aeeb;cursor=ns-resize;position=absolute;left=0;top=-0.3rem;zIndex=100;opacity=0;transition=.2s]",
+                          "controls": [
+                            {
+                            "event": "mousedown?_mousedowned=true;document().style().cursor=ns-resize;parent().style().transition=null;screenY=mousePosY:();className():'data-viewer'.filter():[style().display!=none].():[style().overflowY=hidden]"
+                            },
+                            {
+                            "event": "mousemove:body?diff=[mousePosY:()-().screenY]/10;if():[functionsHeight:()=7.5]:[functionsHeight:()=parent().element.offsetHeight/10];parent().style().height=[functionsHeight:()-().diff]+rem;():data-viewer.style().height='calc(100% - '+[functionsHeight:()-().diff]+'rem)'?_mousedowned"
+                            },
+                            {
+                            "event": "mouseup:body?_mousedowned=false;document().style().cursor=default;parent().style().transition=.2s;className():'data-viewer'.filter():[style().display!=none].():[style().overflowY=auto];functionsHeight:()-=().diff?_mousedowned"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "View:functions?class=flex column;style:[width=100%;overflowY=auto;height=100%]",
+                          "children": [
+                            {
+                              "view": "View?class=flex column functions;style:[height=100%;width=100%]?open-map:()",
+                              "children": [
+                                {
+                                  "view": "View?class=flex column;style:[width=100%]",
+                                  "children": [
+                                    {
+                                      "view": "Map?sort"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "view": "View?view=gallery-view"
+                }
+              ],
+              "view": "View:open-view?class=flex column;style.width=100%;style.position=relative;open-docs:()||=_list"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "View:file-action-popup?class=box-shadow;style():[transition=opacity .2s, transform .2s;width=fit-content;height=fit-content;overflowY=auto;transform=scale(0);opacity=0;pointerEvents=none;position=fixed;overflowY=auto;borderRadius=.5rem;backgroundColor=#fff;padding=.2rem]",
+      "controls": [
+        {
+          "event": "mouseleave?style():[opacity=0;pointerEvents=none;transform=scale(0)]"
+        },
+        {
+          "event": "click:body?style():[opacity=0;pointerEvents=none;transform=scale(0)]?!contains():[clicked:()];():[parent().caller]!=clicked:()"
+        }
+      ],
+      "children": [
+        {
+          "controls": [
+            {
+              "event": "click?():[parent().caller].2ndPrev().style().display=none;():[parent().caller].prev().style().display=flex;():[parent().caller].prev().focus();parent().style():[opacity=0;pointerEvents=none;transform='scale(0)']"
+            }
+          ],
+          "view": "Icon?class=pointer;tooltip.text=rename;name=bi-input-cursor-text;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;style.borderRadius=.5rem .5rem 0 0;hover.style.backgroundColor=#f0f0f0"
+        },
+        {
+          "controls": [
+            {
+              "event": "click?duplicate-doc:()=open-doc:();():[open-collection:()].lastChild().click();parent().style():[opacity=0;pointerEvents=none;transform=scale(0)]"
+            }
+          ],
+          "view": "Icon?class=pointer;tooltip.text=duplicate;name=bi-files;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;hover.style.backgroundColor=#f0f0f0"
+        },
+        {
+          "controls": [
+            {
+              "event": "click?export():[json;name=open-doc:();data=data:().editor.[open-collection:()].[open-doc:()]];parent().style():[opacity=0;pointerEvents=none;transform=scale(0)]"
+            }
+          ],
+          "view": "Icon?class=pointer;tooltip.text=export;name=bi-upload;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;hover.style.backgroundColor=#f0f0f0"
+        },
+        {
+          "controls": [
+            {
+              "event": "click:popup?erase():[collection=open-collection:();doc=open-doc:();headers.project=project:()]:[note():'File has been erased!';if():[open-head-collection:()]:[data:().editor.[open-head-collection:()].[open-collection:().split():'collection-'.1].[open-doc:()].del();open-docs:().pullItem():['data/'+[open-collection:().split():'collection-'.1]+'/'+open-doc:()];update():[[open-collection:().split():'collection-'.1]+'-list']]:[data:().editor.[open-collection:()].[open-doc:()].del();open-docs:().pullItem():[open-collection:()+'/'+open-doc:()];update():[open-collection:()+'-list']];():'data-viewer'.children().find():[open-doc=open-doc:();open-collection=open-collection:()].rem():[data=false];():'data-viewer-bar'.children().find():[open-doc=open-doc:();open-collection=open-collection:()].rem();if():[open-docs:().len()=0]:[():'data-viewer-bar'.style().display=none;():'functions'.style().display=none];if():[open-collection:()=storage]:[gallery-images:()=gallery-images:().filter():[id!=open-doc:()];update():'gallery-view'];open-head-collection:().del()]"
+            }
+          ],
+          "view": "Icon?class=pointer;tooltip.text=remove;popup;name=bi-trash;style.fontSize=1.5rem;style.width=3.25rem;style.height=3.5rem;style.borderRadius=0 0 .5rem .5rem;hover.style.backgroundColor=#f0f0f0"
+        }
+      ]
+    },
+    {
+      "view": "View?class=flexbox;style:[position=fixed;right=3rem;bottom=3rem;height=1rem;transition=.2s;pointerEvents=none];hover.style.opacity=0?false",
+      "children": [
+        {
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#a35521]"
+        },
+        {
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#1E90FF]"
+        },
+        {
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#FF4500]"
+        },
+        {
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#02ad18]"
+        },
+        {
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#5260FF]"
+        },
+        {
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#bf9204]"
+        },
+        {
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#585859]"
+        },
+        {
+          "view": "View?style:[height=100%;width=2rem;backgroundColor=#e649c6]"
+        }
+      ]
+    },
+    {
+      "view": "image-window"
+    }
+  ],
+  "functions": {
+    "saveDevData": "():'data-viewer-bar'.children().find():[open-collection=open-collection:();open-doc=open-doc:()].2ndChild().style().border=0;save():[collection=open-collection:();headers.project=project:();doc=open-doc:();().data=className():'data-viewer'.find():[open-doc=open-doc:();open-collection=open-collection:()].data();if():[open-collection:()=page||open-collection:()=view||open-collection:()=public||open-collection:()=_project_]:[().data.functions=className():functions.find():[open-doc=open-doc:();open-collection=open-collection:()].data()];data=().data]:[note():[text='File saved successfully!'];if():[open-collection:()=_project_]:[data:().editor.project=().data.clone()].elif():[open-collection:()=_account_]:[data:().editor.account=().data.clone()].elif():[className():'data-viewer'.find():[open-doc=open-doc:();open-collection=open-collection:()].open-head-collection]:[data:().editor.collections.[open-collection:().slice():'collection-'].[open-doc:()]=().data.clone()]:[data:().editor.[open-collection:()].[open-doc:()]=().data.clone()]]",
+    "hasNestedArray": "if():_:[if():[_.values()._find():[if():[_.type()=array]:[_._find():[if():[_.type()=array]:true.elif():[_.type()=map]:[hasNestedArray():_]:false]].elif():[_.type()=map]:[hasNestedArray():_]:false]]:[note():[text=You cannot create nested arrays!;danger];true]:false]:false",
+    "hasEmptyField": "if():_:[if():[_.type()=map]:[if():[_.keys()._find():[_=''||!_]='']:[note():[text=You cannot leave an empty field!;danger];true].elif():[_.values()._find():[hasEmptyField():_]]:true:false].elif():[_.type()=array]:[_._find():[hasEmptyField():_]]:false]:false"
+  }
+}

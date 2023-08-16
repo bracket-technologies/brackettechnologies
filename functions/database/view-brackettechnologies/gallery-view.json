@@ -1,0 +1,243 @@
+{
+    "view": "View?id=gallery-view;class=flex column;style:[maxHeight=100%;transition=.2s;gap=2rem;width=100%;position=absolute;left=0;right=0;overflowY=auto;padding=2rem;display=none]",
+    "children": [
+        {
+            "view": "View?style.display=flex;style.gap=2rem;style.width=100%",
+            "children": [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "controls": [
+                                        {
+                                            "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                        },
+                                        {
+                                            "event": "mouseleave?1stChild().style().transform=scaleX(1)"
+                                        }
+                                    ],
+                                    "children": [
+                                        {
+                                            "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                        },
+                                        {
+                                            "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                        }
+                                    ],
+                                    "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0"
+                                },
+                                {
+                                    "view": "Image?src=gallery-images:().0.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?gallery-images:().0.type.inc():image"
+                                },
+                                {
+                                    "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!gallery-images:().0.type.inc():image"
+                                }
+                            ],
+                            "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().0",
+                            "controls": [
+                                {
+                                    "event": "mouseenter?1stChild().style().opacity=1"
+                                },
+                                {
+                                    "event": "mouseleave?1stChild().style().opacity=0"
+                                },
+                                {
+                                    "event": "click?'new-image-data':()=gallery-images:().0.clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
+                                }
+                            ]
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "mouseenter?1stChild().style().opacity=1"
+                                },
+                                {
+                                    "event": "mouseleave?1stChild().style().opacity=0"
+                                },
+                                {
+                                    "event": "click?'new-image-data':()=gallery-images:().1.clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
+                                }
+                            ],
+                            "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().1",
+                            "children": [
+                                {
+                                    "controls": [
+                                        {
+                                            "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                        },
+                                        {
+                                            "event": "mouseleave?1stChild().style().transform=scaleX(1)"
+                                        }
+                                    ],
+                                    "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                        },
+                                        {
+                                            "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "Image?src=gallery-images:().1.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?gallery-images:().1.type.inc():image"
+                                },
+                                {
+                                    "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!gallery-images:().1.type.inc():image"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().2",
+                            "controls": [
+                                {
+                                    "event": "mouseenter?1stChild().style().opacity=1"
+                                },
+                                {
+                                    "event": "mouseleave?1stChild().style().opacity=0"
+                                },
+                                {
+                                    "event": "click?'new-image-data':()=gallery-images:().2.clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
+                                    "controls": [
+                                        {
+                                            "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                        },
+                                        {
+                                            "event": "mouseleave?1stChild().style().transform=scaleX(1)"
+                                        }
+                                    ],
+                                    "children": [
+                                        {
+                                            "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                        },
+                                        {
+                                            "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "Image?src=gallery-images:().2.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?gallery-images:().2.type.inc():image"
+                                },
+                                {
+                                    "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!gallery-images:().2.type.inc():image"
+                                }
+                            ]
+                        },
+                        {
+                            "children": [
+                                {
+                                    "controls": [
+                                        {
+                                            "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                        },
+                                        {
+                                            "event": "mouseleave?1stChild().style().transform=scaleX(1)"
+                                        }
+                                    ],
+                                    "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                        },
+                                        {
+                                            "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "Image?src=gallery-images:().3.url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?gallery-images:().3.type.inc():image"
+                                },
+                                {
+                                    "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!gallery-images:().3.type.inc():image"
+                                }
+                            ],
+                            "view": "View?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer?gallery-images:().3",
+                            "controls": [
+                                {
+                                    "event": "mouseenter?1stChild().style().opacity=1"
+                                },
+                                {
+                                    "event": "mouseleave?1stChild().style().opacity=0"
+                                },
+                                {
+                                    "event": "click?'new-image-data':()=gallery-images:().3.clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
+                                }
+                            ]
+                        }
+                    ],
+                    "view": "View?style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr;style.gap=2rem;style.width=80%"
+                },
+                {
+                    "view": "View?class=flexbox;style.border=1px dashed #ddd;style.width=calc(20% - 2rem);style.borderRadius=.5rem;style.height=15rem;style.backgroundColor=#f8f8f8;hover.style.backgroundColor=#f0f0f0;style.transition=.3s;style.position=relative;style.overflow=hidden",
+                    "children": [
+                        {
+                            "view": "Icon?name=bi-cloud-arrow-up;style.color=#999;style.fontSize=2.5rem;style.position=absolute;style.zIndex=2;style.pointerEvents=none"
+                        },
+                        {
+                            "controls": [
+                                {
+                                    "event": "change?loader.show;'new-image':()=true;readFile():[el().files]:['new-image-data':()=file:();update():'image-window';():'image-window'.style():[pointerEvents=auto;opacity=1];loader.hide]"
+                                }
+                            ],
+                            "view": "Input?id=gallery-view-input;input.type=file;style.cursor=pointer;style.position=absolute;style.top=-100px;style.left=-100px;style.height=200%;style.width=200%;style.opacity=0"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "children": [
+                {
+                    "controls": [
+                        {
+                            "event": "mouseenter?1stChild().style().opacity=1"
+                        },
+                        {
+                            "event": "mouseleave?1stChild().style().opacity=0"
+                        },
+                        {
+                            "event": "click?'new-image-data':()=data().clone();():'image-window'.():[update();style():[pointerEvents=auto;opacity=1]]"
+                        }
+                    ],
+                    "view": "[View]?class=flexbox;style.width=100%;style.borderRadius=.5rem;style.height=15rem;style.overflow=hidden;style.border=1px solid #f6f6f6;style.position=relative;style.cursor=pointer",
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "view": "View?class=flexbox;style.height=100%;style.width=100%;style.borderRadius=.5rem;style.border=2px solid #fff;style.transition=.3s;style.position=absolute;style.top=0;style.left=0"
+                                },
+                                {
+                                    "view": "Icon?name=bi-zoom-in;style.borderRadius=.25rem;style.fontSize=2.5rem;style.color=#fff"
+                                }
+                            ],
+                            "view": "View?class=flexbox;style.position=absolute;style.transition=.3s;style.height=100%;style.width=100%;style.backgroundColor=#00000033;style.zIndex=1;style.opacity=0",
+                            "controls": [
+                                {
+                                    "event": "mouseenter?1stChild().style().transform=scaleX(0.925) scaleY(0.875)"
+                                },
+                                {
+                                    "event": "mouseleave?1stChild().style().transform=scaleX(1)"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "Image?src=data().url;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0?data().type.inc():image"
+                        },
+                        {
+                            "view": "Icon?class=flexbox;name=bi-file-earmark;style.color=#888;style.maxHeight=100%;style.maxWidth=100%;style.zIndex=0;style.fontSize=5rem?!data().type.inc():image"
+                        }
+                    ]
+                }
+            ],
+            "view": "View?data=gallery-images:().slice():4;style.display=grid;style.gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;style.gap=2rem;style.width=100%?gallery-images:().len()>4"
+        }
+    ],
+    "id": "gallery-view",
+    "creation-date": 1643578421619
+}

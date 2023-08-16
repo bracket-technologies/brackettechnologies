@@ -187,7 +187,7 @@ const componentModifier = ({ _window, id }) => {
 
     } else if ((view.icon.google || view.google) && (view.symbol || view.google.symbol)) {
       
-      view.symbol = {}
+      view.symbol = view.google.symbol = {}
       if (view.google.symbol) view.symbol.outlined = true
       else if (view.google.symbol.filled) view.symbol.filled = true
       else if (view.google.symbol.rounded) view.symbol.rounded = true

@@ -1,0 +1,9 @@
+{
+    "creation-date": 1640182764348,
+    "view": "account_setup?path=/account_setup;name=Account Setup;title=Account setup | Bracket",
+    "controls": [
+        {
+            "event": "loading?)(:currency=LBP"
+        }
+    ]
+}

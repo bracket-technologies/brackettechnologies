@@ -4,6 +4,7 @@ const { toValue } = require("./toValue")
 const { toString } = require("./toString")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
+const { toParam } = require("./toParam")
 
 const droplist = ({ id, e, droplist: params = {} }) => {
   
@@ -39,15 +40,8 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   }
 
   // items
-  if (typeof items === "string") {
-    //items = toCode({ _window, id, string: items, start: "'", end: "'" })
-    //console.log(items);
-    //if (items.includes("codedS()")) items = global.codes["codedS()" + items.slice(-5)]
-    //console.log(items);
-    //items = toCode({ string: items })
-    
-    items = clone(toValue({ id, e, value: items }))
-  }
+  if (typeof items === "string")
+    items = clone(toValue({ id, e, value: toCode({ string: toCode({ string: items }), start: "'", end: "'" }) }))
 
   // filterable
   if (!view.droplist.preventDefault) {

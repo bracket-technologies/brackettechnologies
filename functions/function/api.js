@@ -14,32 +14,19 @@ const detector = new DeviceDetector({
   clientIndexes: true,
   deviceIndexes: true,
   deviceAliasCode: false,
-  // ... all options scroll to Setter/Getter/Options
 });
-
-/*const deviceDetector = (details) => {
-
-  var device = {
-    os: {},
-    client: {},
-    device: {}
-  }
-
-  if (details.includes("Mobile")) device.device.type = "mobile"
-  else device.device.type = "desktop"
-  return device
-}*/
 
 const initialize = ({ req, res, id }) => {
   console.log(req.headers['user-agent']);
   return {
     global: { 
       timer: new Date().getTime(),
+      __waiters__: [],
       codes: {}, 
       promises: {}, 
       innerHTML: {}, 
       breakCreateElement: {}, 
-      host: req.headers.host || req.headers.referer,
+      host: req.headers['x-forwarded-host'] || req.headers.host,
       data: { project: {}, server: {} },
       device: /*deviceDetector(req.headers['user-agent'])*/detector.detect(req.headers['user-agent'])
     }, 
@@ -66,16 +53,6 @@ module.exports = ({ app, db, storage, rdb }) => {
         if (!_window.global.host) return res.send({ success: false, message: "Host does not exist!" })
         var {success, message, error} = await authorizer({ window: _window, req })
         if (!success) return res.send({ success, message, error })
-
-        // bracket
-        /*if (req.headers.project === "bracket") {
-
-        // storage
-        if (path[i] === "storage") return require("./storageLocal").postFile({ req, res })
-
-        // database
-        if (path[i] === "database") return require("./databaseLocal").postdb({ req, res })
-        }*/
         
         // action
         if (path[i] === "action") return execFunction({ _window, req, res, id })
@@ -107,16 +84,6 @@ module.exports = ({ app, db, storage, rdb }) => {
         var {success, message, error} = await authorizer({ window: _window, req })
         if (!success) return res.send({ success, message, error })
 
-        // bracket
-        /*if (req.headers.project === "bracket") {
-
-        // storage
-        if (path[i] === "storage") return require("./storageLocal").deleteFile({ req, res })
-
-        // database
-        if (path[i] === "database") return require("./databaseLocal").deletedb({ req, res })
-        }*/
-
         // storage
         if (path[i] === "storage") return deleteFile({ _window, req, res, id })
 
@@ -140,18 +107,6 @@ module.exports = ({ app, db, storage, rdb }) => {
 
         // favicon
         if (req.url === "/favicon.ico") return res.sendStatus(204)
-
-        /*var host = req.headers["x-forwarded-host"] || req.headers["host"]
-        
-        // bracket
-        if (myHost.includes(host)) {
-        
-        // storage & resources
-        if (path[1] === "storage") return require("./storageLocal").getFile({ req, res })
-
-        // database
-        if (path[1] === "database") return require("./databaseLocal").getdb({ req, res })
-        }*/
 
         // resources
         if (path[i] === "resources") return require("./storageLocal").getFile({ _window, req, res, id })

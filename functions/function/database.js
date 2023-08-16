@@ -46,11 +46,11 @@ const getData = async ({ _window, req, res, search }) => {
   var collection = search.collection
   if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
-
+console.log("ttttttt", search);
   var doc = search.document || search.doc,
     docs = search.documents || search.docs,
     field = search.field || search.fields,
-    limit = search.limit || 25,
+    limit = search.limit || 100,
     data = {}, success, message,
     ref = collection && db.collection(collection),
     promises = [], project
@@ -171,12 +171,12 @@ const getData = async ({ _window, req, res, search }) => {
     })
     
     if (search.orderBy) _ref = _ref.orderBy(search.orderBy)
-    if (search.limit || 100) _ref = _ref.limit(search.limit || 100)
+    if (limit || 100) _ref = _ref.limit(limit || 100)
     if (search.offset) _ref = _ref.endAt(search.offset)
     if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
 
     if (search.startAt) _ref = _ref.startAt(search.startAt)
-    if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
+    if (search.startAfter || search.skip) _ref = _ref.startAfter(search.startAfter || search.skip)
 
     if (search.endAt) _ref = _ref.endAt(search.endAt)
     if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
@@ -308,7 +308,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
   var ref = db.collection(collection)
   var success, message
 
-  if (erase.collection === "storage" && erase.field) {
+  /*if (erase.collection === "storage" && erase.field) {
 
     var field = erase.field
     const myPromise = () => new Promise(async (resolve, rej) => {
@@ -364,7 +364,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
   
     var { data, success, message } = await myPromise()
     docs = Object.keys(data)
-  }
+  }*/
 
   docs = erase.docs
   await docs.map(async doc => {
@@ -380,10 +380,24 @@ const deleteData = async ({ _window, req, res, erase }) => {
       message = error
     })
 
-    if (erase.collection === "storage") {
+    if (erase.storage && erase.storage.doc) {
 
-      var exists = await storage.bucket().file(`${collection}/${doc}`).exists()
-      if (exists) await storage.bucket().file(`${collection}/${doc}`).delete()
+      var exists = await storage.bucket().file(`storage-${req.headers["project"]}/${erase.storage.doc}`).exists()
+      if (exists) {
+
+        await storage.bucket().file(`storage-${req.headers["project"]}/${erase.storage.doc}`).delete()
+
+        await db.collection(`storage-${req.headers["project"]}`).doc(erase.storage.doc.toString()).delete().then(() => {
+      
+          success = true,
+          message = `Document erased successfuly!`
+      
+        }).catch(error => {
+      
+          success = false
+          message = error
+        })
+      }
     }
   })
   

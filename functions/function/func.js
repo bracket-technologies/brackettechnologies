@@ -32,14 +32,6 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
     if (typeof myfn === "object") myfn = myfn._ || ""
     var _func = toCode({ _window, string: toCode({ _window, string: myfn }), start: "'", end: "'" })
     toParam({ _window, lookupActions, awaits, id, string: _func, req, res, _: func.data ? func.data : _, __: func.data ? _ : __, ___: func.data ? __ : ___ })
-    
-    /*
-    await Promise.all(global.promises[id] || [])
-    await Promise.all(global.promises[id] || [])
-    await Promise.all(global.promises[id] || [])
-    await Promise.all(global.promises[id] || [])
-    await Promise.all(global.promises[id] || [])
-    */
 
     // await params
     if (awaits.findIndex(i => i.id === myawait.id) === 0) {
@@ -50,13 +42,11 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
 
       } else {
 
-        awaits.splice(0, 1)
+        awaits.splice(awaits.findIndex(i => i.id === myawait.id), 1)
         console.log(myawait.log)
       }
     }
     
-    //if (params.asyncer) toAwait({ _window, lookupActions: oldlookupActions, awaits, myawait, id, e, ...params, req, res,  _: global.func ? global.func : _, __: global.func ? _ : __, ___: global.func ? __ : ___ }) 
-
   } else {
     
     global.promises[id].push(

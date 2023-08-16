@@ -104,7 +104,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       key = key.slice(0, -1)
       var _key = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") ? key : (`().` + key)
-      global.codes[`coded()${_key}`] = toCode({ _window, string: `${myVal}||[if():[type():[${value}]=number]:0:_string]` })
+      global.codes[`coded()${_key}`] = toCode({ _window, string: `${myVal}||[if():[type():[${value}]=number]:0:'']` })
       value = `coded()${_key}+${value}`
       /*global.codes[`coded()${_key0}`] = `${value}||0`
       value = `coded()${_key}+coded()${_key0}`*/

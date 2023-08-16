@@ -29,12 +29,14 @@ const postFile = async ({ req, res }) => {
   var storage = req.storage
   var file = req.body.file, url
   var upload = req.body.upload
-  var collection = upload.collection
-  collection += `-${req.headers["project"]}`
+  var collection = `storage-${req.headers["project"]}`
   var data = upload.data
   
   // convert base64 to buffer
   var buffer = Buffer.from(file, "base64")
+  
+  // 
+  upload.doc = upload.doc || generate({length: 20})
   
   await storage.bucket().file(`${collection}/${upload.doc}`).save(buffer, { contentType: data.type }, async () => {
     url = await storage.bucket().file(`${collection}/${upload.doc}`).getSignedUrl({ action: 'read', expires: '03-09-3000' })
@@ -76,8 +78,7 @@ const deleteFile = async ({ req, res }) => {
   if (string) params = toParam({ _window, string, id: "" })
   var erase = params.erase || {}
 
-  var collection = erase.collection
-  collection += `-${req.headers["project"]}`
+  var collection = `storage-${req.headers["project"]}`
 
   await storage.bucket().file(`${collection}/${erase.doc}`).delete()
 

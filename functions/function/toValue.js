@@ -80,7 +80,8 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   }
   
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, awaits, e, string: value, _, __, ___, object, mount, params, toView, condition })
+  
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, awaits, e, string: value, _, __, ___, object, mount, toView, condition })
 
   // or
   if (value.includes("||")) {

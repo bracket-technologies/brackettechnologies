@@ -3,6 +3,7 @@ const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
 const { colorize } = require("./colorize")
 const { toCode } = require("./toCode")
+const { clone } = require("./clone")
 
 const defaultInputHandler = ({ id }) => {
 
@@ -88,7 +89,10 @@ const defaultInputHandler = ({ id }) => {
         }
 
         // for uploads
-        if (view.input.type === "file") return global.files = [...e.target.files]
+        if (view.input.type === "file") {
+          global.file = e.target.files[0]
+          return global.files = [...e.target.files]
+        }
 
         // contentfull
         if (view.input.type === "text") {

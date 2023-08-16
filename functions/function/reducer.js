@@ -63,6 +63,73 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     if (path[0]) args = path[0].toString().split(":")
     
     if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, awaits, id, e, string: pathJoined, _, __, ___,  object, mount, toView })
+    
+    if (path0.length === 14 && path0.slice(-2) === "()" && path0.slice(0, 7) === 'coded()') { // [actions?conditions]():[params]:[awaits]
+            
+        path0 = path0.slice(0, -2)
+        
+        var _await = "", myawait = { id: generate(), hold: true }
+        if (args[2]) {
+
+            _await = global.codes[args[2]]
+            myawait = { id: generate(), hold: true, await: _await, action: "[...]()" }
+            awaits.unshift(myawait)
+
+            // push waiter id
+            if (global.__waiters__.length > 0) myawait.waiter = global.__waiters__[0]
+        }
+
+        var _params = args[1] ? toParam({ req, res, _window, lookupActions, id, e, _, __, ___, string: args[1] }) : undefined
+
+        global.__waiters__.unshift(myawait.id)
+        console.log("ACTION", "[...]()");
+
+            if (path0.includes('coded()') && path0.length === 12) path0 = global.codes[path0]
+
+            var conditions = path0.split("?")[1]
+            if (conditions) {
+                var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, _, __, ___ })
+                if (!approved) return global.__waiters__.splice(0, 1)
+            }
+
+            path0 = path0.split("?")[0]
+            
+            if (!condition) {
+                
+                _object = toValue({ _window, value: path0, e, id, req, res, object, asyncer: true, _, __, ___, awaits, lookupActions })
+                // ex: [_]() & _ = 'action_name()' --> action_name()
+                if (typeof _object === "string") {
+                    _object = toCode({ _window, string: toCode({ _window, string: _object, start: "'", end: "'" }) })
+                    _object = toValue({ _window, lookupActions, awaits, id, value: _object, key, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___),  e, req, res, mount, condition, toView })
+                }
+
+                global.__waiters__.splice(0, 1)
+            } else _object = toApproval({ _window, string: path0, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+    
+            // await params
+            if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
+                
+                if (_await) {
+
+                    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __: _, ___: __ })
+
+                } else {
+
+                    awaits.splice(awaits.findIndex(i => i.id === myawait.id), 1)
+                    console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (lookupActions || {}).fn })
+                }
+            }
+
+            
+            path0 = (path[1] || "").split(":")[0]
+            path.splice(0, 1)
+    }
+
+    if (path0.slice(-2) === "()" && path0.slice(-3) === ":()" && path0 !=="()") {
+
+        var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path: [path[0]], path0, condition, mount, toView, object })
+        if (isFn !== "__CONTINUE__") _object = isFn 
+    }
 
     // division
     if (pathJoined.includes("/") && pathJoined.split("/")[1] !== "" && !key) {
@@ -101,10 +168,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         })
         return newVal
     }
-    
-    // function
-    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, toView, object })
-    if (isFn !== "__CONTINUE__") return isFn
 
     // addition
     if (pathJoined.includes("+") && !key) {
@@ -306,7 +369,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             path0 = "()"
         }
     }*/
-
     _object = path0 === "()" ? (view || views.root)
     : (path0 === "global()" || path0 === ")(") ? _window ? _window.global : window.global
     : (path0 === "e()" || path0 === "event()") ? e
@@ -338,7 +400,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             else if (path0 === "mobile()") return global.device.device.type === "phone"
             else if (path0 === "clicked()") _object = global["clicked()"]
             else if (path0 === "log()") {
-                
                 var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, value: arg || "here", params, _, __, ___,  e, object }))
                 console.log(..._log)
             }
@@ -470,9 +531,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             var tolog
             if (k0[0] === "_") tolog = o
+            
             var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, e, _: tolog ? tolog : _, __, ___,  value: arg, params }))
-            if (_log.length === 0) _log = o !== undefined ? [o] : ["here"]
-            console.log(..._log)
+
+            console.log(o, ..._log)
             return o
         }
 
@@ -1542,7 +1604,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
               } else _o = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  value: args[1], params })
               
-          } else _o = o
+          } else _o = o.__ISVIEW__ ? o : views[id]
           
           if (typeof _o === "string" && views[_o]) views[_o].element.click()
           else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
@@ -1869,12 +1931,24 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "timer()" || k0 === "setTimeout()") {
             
-            // timer():params:timer
+            // timer():params:timer:repeats
             var _timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object })) : 0
+            var _repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, _, __, ___,  e, object })) : false
             var myFn = () => { toParam({ req, res, _window, lookupActions, awaits, id, string: args[1], params, _, __, ___,  e, object, toView }) }
-            answer = setTimeout(myFn, _timer)
+            if (typeof _repeats === "boolean") {
+                if (_repeats === true) answer = setInterval(myFn, _timer)
+                else if (_repeats === false) answer = setTimeout(myFn, _timer)
+            } else if (typeof _repeats === "number") {
+                answer = []
+                answer.push(setTimeout(myFn, _timer))
+                if (_repeats > 1) {
+                    for (let index = 0; index < _repeats; index++) {
+                        answer.push(setTimeout(myFn, _timer))
+                    }
+                }
+            }
             
-            if (o.type && o.id) o[generate() + "-timer"] = answer
+            if (o.__view__) toArray(answer).map(timer => o[generate() + "-timer"] = timer)
 
         } /*else if (k0 === "path()") {
 
@@ -2355,11 +2429,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           } else {
 
             // fileReader():file:actions
-            _files = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___,  e })
+            if (isParam({ _window, string: args[1] })) {
+                _params = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___,  e })
+                _files = _params.files ? _params.files : (_params.file ? toArray(_params.file) : [])
+            } else _files = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___,  e })
             _params = args[2]
           }
 
-          if (!_files) return
+          if (!_files || (Array.isArray(_files) && _files.length === 0)) return
           if (typeof _files !== "object") _files = [_files]
           _files = [..._files]
           global.fileReader = []
@@ -2388,12 +2465,16 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 global.file = global.fileReader[0]
                 global.files = global.fileReader
                 console.log(global.files);
-                toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: _params })
+                toParam({ req, res, _window, lookupActions, awaits, id, e, _: global.files.length > 1 ? global.files : global.file, __: _, ___: __,  string: _params })
               } 
             }
 
             reader.readAsDataURL(file)
           })
+
+        } else if (k0 === "clear()") {
+
+            o.element.value = null
 
         } else if (k0 === "arr()" || k0 === "list()") {
             
@@ -2607,7 +2688,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0.includes("push()")) {
             if (!Array.isArray(o)) return undefined
             
-            var _itemndex
+            var _item, _index
             if (k0.charAt(0) === "_") {
                 _item = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _: o, __: _, e, object })
                 _index = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _: o, __: _, e, object })
@@ -2628,66 +2709,35 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else if (Array.isArray(o)) o.splice(_index, 0, _item)
             answer = o
             
-        } else if (k0 === "pull()") { // pull by index
+        } else if (k0 === "pull()") { // pull by index or by conditions
 
-            // if no it pulls the last element
-            var _last = 1
-            var _first = args[1] !== undefined ? toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___,  e, object }) : 0//o.length - 1
-            if (args[2]) _last = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object })
-            if (_first === undefined) return o
+            // if no index pull the last element
+            var _last = 1, _text
+            var _first = args[1] !== undefined ? toValue({ _window, id, value: args[1], _, __, ___, e, object }) : 0
+            if (args[2]) _last = toValue({ _window, id, value: args[2], _, __, ___, e, object })
 
-            o.splice(_first, _last)
-            answer = o
-            
-        } else if (k0 === "pullItems()") { // pull by item
+            if (typeof _first !== "number") {
 
-            if (isParam({ _window, string: args[1] }) || isCondition({ _window, lookupActions, awaits, string: args[1] })) {
-            
-                var _items
-                
-                if (k[0] === "_") _items = o.filter(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __: _, _: o, req, res }) )
-                else _items = o.filter(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, object: o, req, res, _, __, ___ }))
+                var _items = o.filter(o => toApproval({ _window, e, string: args[1], id, object: o, _, __, ___ }))
                 
                 _items.filter(data => data !== undefined && data !== null).map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
                 })
                 
-                answer = o
-                
-            } else {
-
-                var _items = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___,  e, object }).filter(data => data !== undefined && data !== null)
-                
-                toArray(_items).map(_item => {
-                    var _index = o.findIndex(item => isEqual(item, _item))
-                    if (_index !== -1) o.splice(_index, 1)
-                })
-
-                answer = o
+                return answer = o
             }
+
+            o.splice(_first, _last || 1)
+            answer = o
             
-        } else if (k0 === "pullItem()") {
+        } else if (k0 === "pullItem()") { // pull item
 
-            if (isParam({ _window, string: args[1] }) || isCondition({ _window, lookupActions, awaits, string: args[1] })) {
+            var _item = toValue({ _window, id, value: args[1], _, __, ___, e, object })
+            var _index = o.findIndex(item => isEqual(item, _item))
+            if (_index !== -1) o.splice(_index,1)
+            answer = o
 
-                var _index
-
-                if (k[0] === "_") _index = o.findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __: _, _: o, req, res }) )
-                else _index = o.findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, object: o, req, res, _, __, ___ }))
-
-                if (_index !== -1) o.splice(_index , 1)
-                answer = o
-                
-            } else {
-
-                var _item = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___,  e, object })
-                var _index = o.findIndex(item => isEqual(item, _item))
-                if (_index !== -1) o.splice(_index,1)
-                answer = o
-                
-            }
-            
         } else if (k0 === "pullLastItem()" || k0 === "pullLast()") {
             
             // if no it pulls the last element
@@ -3678,17 +3728,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "replace()") { //replace():prev:new
 
             var rec0, rec1
-            if (isParam({ _window, string: args[1] })) {
 
-                var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, string: args[1] })
-                rec0 = _params["1"]
-                rec1 = _params["2"]
-
-            } else {
-
-                rec0 = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1] || "", params })
-                rec1 = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[2] || "", params })
-            }
+            rec0 = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1] || "", params })
+            rec1 = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[2] || "", params })
 
             if (typeof o === "string") {
 
@@ -3864,8 +3906,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "flat()") {
             
           if (typeof o === "object") {
-            o = [...o]
-            answer =  o.flat()
+            if (Array.isArray(o)) {
+                o = [...o]
+                answer =  o.flat()
+            } else {
+                _object = {..._object, ...o}
+                return _object
+            }
           } else return o
             
         } else if (k0 === "getDeepChildrenId()") {
@@ -4552,10 +4599,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var _steps = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[2], params }) || 1
             var _lang = args[3] || ""
             _index = _startIndex
-            while (_index < _endIndex) {
+            while (_index <= _endIndex) {
                 if ((_index - _startIndex) % _steps === 0) {
                     _range.push(_index)
-                    _index += 1
+                    _index += _steps
                 }
             }
             if (_lang === "ar") _range = _range.map(num => num.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d]))
@@ -4579,14 +4626,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             __id = _params.id || id
             _self = _params.self
 
-          } else if (args[1]) __id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params }) || id
+          } else if (args[1]) __id = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params })
 
           if (typeof __id === "object" && __id.id) _id = __id.id
           else _id = __id
 
           if (!_id && o.id) _id = o.id
           
-
             var _await = "", myawait = {}
             if (args[2]) {
                 _await = global.codes[args[2]]
@@ -4594,8 +4640,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 awaits.unshift(myawait)
             }
 
-          if (_self) return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, id: _id, myawait, asyncer: true })
-          else return require("./update").update({ _window, lookupActions, awaits, req, res, id: _id, myawait, asyncer: true })
+          if (_self) return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, mainId: id, id: _id, myawait, asyncer: true })
+          else return require("./update").update({ _window, lookupActions, awaits, req, res, id: _id, mainId: id, myawait, asyncer: true })
 
         } else if (k0 === "updateSelf()") {
           
@@ -4774,7 +4820,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             require("./print").print({ id, options: _options, lookupActions, awaits, myawait, asyncer: true, id, e, _, __, ___,  req, res })
 
-        } else if (k0 === "readFile()") {
+        } else if (k0 === "read()") {
 
             var _params = {}
             if (isParam({ _window, string: args[1] }))
@@ -4782,13 +4828,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
              else _params.file = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1], params })
 
             _params.files = (_params.file ? toArray(_params.file) : _params.files) || []
-
-            /*var _await = "", myawait = {}
-            if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "readFile()" }
-                awaits.unshift(myawait)
-            }*/
 
             //_params.files = [..._params.files]
             global.fileReader = []
@@ -4798,33 +4837,33 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               length: _params.files.length,
               count: 0
             };
-
+            
             ([..._params.files]).map(file => {
-              
+                
               var reader = new FileReader()
               reader.onload = (e) => {
 
                 global.__COUNTER__[__key].count++;
                 global.fileReader.push({
-                  type: file[0].type,
-                  lastModified: file[0].lastModified,
-                  name: file[0].name,
-                  size: file[0].size,
-                  file: e.target.result,
+                  type: file.type,
+                  lastModified: file.lastModified,
+                  name: file.name,
+                  size: file.size,
                   url: e.target.result
                 })
-
+                
                 if (global.__COUNTER__[__key].count === global.__COUNTER__[__key].length) {
 
                   global.file = global.fileReader[0]
                   global.files = global.fileReader
                   console.log(global.files, global.file);
-                  toParam({ req, res, _window, lookupActions, awaits, id, e, _: global.files.length === 1 ? global.files[0] : global.files, __: _, ___: __,  string: args[2] })
+                  var my_ = {success: true, data: global.files.length === 1 ? global.files[0] : global.files}
+                  toParam({ req, res, _window, lookupActions, awaits, id, e, _: my_, __: _, ___: __,  string: args[2] })
                 } 
               }
 
               try {
-                reader.readAsDataURL(file[0])
+                reader.readAsDataURL(file)
               } catch (er) {
                 document.getElementById("loader-container").style.display = "none"
               }
@@ -4832,43 +4871,18 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "search()") {
 
-          if (isParam({ _window, string: args[1] })) {
-
             var _await = "", myawait = {}
             if (args[2]) {
+
                 _await = global.codes[args[2]]
                 myawait = { id: generate(), hold: true, await: _await, action: "search()" }
                 awaits.unshift(myawait)
+                
+                if (global.__waiters__.length > 0) myawait.waiter = global.__waiters__[0]
             }
-
             var _search = toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] })
-            require("./search").search({ _window, lookupActions, awaits, myawait, asyncer: true, id, e, _, __, ___,  req, res, search: _search })
+            require("./search").search({ _window, lookupActions, awaits, myawait, asyncer: true, id, e, _, __, ___, req, res, search: _search })
             return true
-          }
-
-          var _collection = toValue({ req, res, _window, lookupActions, id, e, _, __, ___,  value: args[1], params })
-          var _search = {}
-
-          if (typeof _collection === "string") {
-
-            var _doc = toValue({ req, res, _window, lookupActions, id, e, _, __, ___,  value: args[2], params })
-            var _data = toValue({ req, res, _window, lookupActions, id, e, _, __, ___,  value: args[3], params })
-            _search = { collection: _collection, doc: _doc, data: _data }
-            require("./search").search({ _window, lookupActions, awaits, req, res, id, e, search: _search, _, __, ___ })
-            return true
-
-          } else {
-
-            var _await = "", myawait = {}
-            if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "search()" }
-                awaits.unshift(myawait)
-            }
-            
-            require("./search").search({ _window, lookupActions, awaits, myawait, req, res, id, e, search: _collection, _, __, ___, asyncer: true })
-            return true
-          }
 
         } else if (k0 === "erase()") {
           
@@ -4912,7 +4926,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (!_window.function) return global.func = { success: true, message: "Action executed successfully!", data: _data }
             else res.send({ success: true, message: "Action executed successfully!", data: _data })
           }
-
+          console.log("RESPONDED");
         } else if (k0 === "sent()") {
 
           if (!res || res.headersSent) return true
@@ -4928,49 +4942,42 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 myawait = { id: generate(), hold: true, await: _await, action: "action()" }
                 awaits.unshift(myawait)
             }
+            
+            var _params = args[1] ? toParam({ req, res, _window, lookupActions, id, e, _, __, ___, string: args[1] }) : undefined
 
-            var _params = args[1] ? toParam({ req, res, _window, lookupActions, id, e, _, __, ___,  string: args[1] }) : undefined
-            var server = _params && (_params.type === "server" || _params.server) ? true : false
+            if (k0.includes('coded()') && k0.length === 12) k0 = global.codes[k0]
 
-            if (!server) {
+            var conditions = k0.split("?")[1]
+            if (conditions) {
+                var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, _, __, ___ })
+                if (!approved) return false
+            }
 
-                if (k0.includes('coded()') && k0.length === 12) k0 = global.codes[k0]
-
-                var conditions = k0.split("?")[1]
-                if (conditions) {
-                    var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___) })
-                    if (!approved) return false
-                }
-
-                k0 = k0.split("?")[0]
+            k0 = k0.split("?")[0]
+            
+            if (!condition) {
+                answer = toValue({ _window, value: k0, e, id, req, res, object: object || o, asyncer: true, _, __, ___, awaits, lookupActions })
                 
-                if (!condition) {
-                    answer = toValue({ _window, value: k0, e, id, req, res, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer: true, awaits, lookupActions })
-                    
-                    // ex: [_]() & _ = 'action_name()' --> action_name()
-                    if (typeof answer === "string")
-                        reducer({ _window, lookupActions, awaits, id, path: [answer], value, key, params, object, _, __, ___,  e, req, res, mount, condition, toView })
-                    
-                } else answer = toApproval({ _window, string: k0, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
-        
-                // await params
-                if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
-                    
-                    if (_await) {
-    
-                        require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __: _, ___: __ })
-    
-                    } else {
-    
-                        awaits.splice(0, 1)
-                        console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (lookupActions || {}).fn })
-                    }
+                // ex: [_]() & _ = 'action_name()' --> action_name()
+                if (typeof answer === "string") {
+                    answer = toCode({ _window, string: toCode({ _window, string: answer, start: "'", end: "'" }) })
+                    reducer({ _window, lookupActions, awaits, id, path: [answer], value, key, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___),  e, req, res, mount, condition, toView })
                 }
+                
+            } else answer = toApproval({ _window, string: k0, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+    
+            // await params
+            if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
+                
+                if (_await) {
 
-            } else {
+                    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __: _, ___: __ })
 
-                var _func = { data: _params, actions: global.codes[k0] }
-                return func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, lookupActions, awaits, myawait })
+                } else {
+
+                    awaits.splice(awaits.findIndex(i => i.id === myawait.id), 1)
+                    console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (lookupActions || {}).fn })
+                }
             }
 
         } else if (k0 === "setPosition()" || k0 === "position()") {

@@ -3,7 +3,7 @@ const { toView } = require("./toView");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
 const fs = require("fs");
-const bracketDomains = ["bracketjs.com", "localhost:8080", "bracket.localhost:8080"];
+const bracketDomains = ["brackettechnologies.com", "localhost", "brackettechnologies.localhost", "bracket-technologies.web.app"];
 
 require("dotenv").config();
 
@@ -16,10 +16,6 @@ const getProject = ({ window }) => {
 
         // is brakcet domain
         var isBracket = bracketDomains.includes(host)
-        if (!isBracket) {
-            isBracket = host.includes(".loca.lt") || host.includes("amazonaws")
-            if (isBracket) host = "bracketjs.com"
-        }
         
         // get local public views
         global.data.public = getJsonFiles({ search: { collection: "public" } })
@@ -56,22 +52,8 @@ const getProject = ({ window }) => {
           });
           console.log("after collection", new Date().getTime() - global.timer);
           global.__ISBRACKET__ = true
-
+          
         } else {
-
-            /*if (host.includes("localhost") && project.id === "malik") {
-              if (!fs.existsSync(`database/page-${project.id}`)) fs.mkdirSync(`database/page-${project.id}`)
-              if (!fs.existsSync(`database/view-${project.id}`)) fs.mkdirSync(`database/view-${project.id}`)
-              if (!fs.existsSync(`database/collection-${project.id}`)) fs.mkdirSync(`database/collection-${project.id}`)
-            }*/
-
-            // get page
-            /*
-            page = rdb.ref(`page-${project.id}`).once("value").then(snapshot => {
-                global.data.page = snapshot.val()
-                console.log("after page", new Date().getTime() - global.timer);
-            })
-            */
             console.log("before page / firestore", new Date().getTime() - global.timer);
             
             promises.push(db
@@ -86,24 +68,6 @@ const getProject = ({ window }) => {
                   // page doesnot exist
                   if (!global.data.page[global.currentPage]) return res.send("Page not found!")
               }))
-
-            /*
-            view = rdb.ref(`view-${project.id}`).once("value").then(snapshot => {
-                global.data.view = snapshot.val()
-                console.log("after view", new Date().getTime() - global.timer);
-            })
-            */
-
-            /*promises.push(db
-              .collection(`collection-${project.id}`)
-              .get()
-              .then(q => {
-                  q.forEach(doc => {
-                  global.data.view[doc.id] = { ...doc.data() }
-                      if (host.includes("localhost") && project.id === "malik") 
-                      require("fs").writeFileSync(`database/collection-${project.id}/${doc.id}.json`, JSON.stringify(doc.data(), null, 2))
-                  })
-              }))*/
 
             // load views
             console.log("before view / firestore", new Date().getTime() - global.timer)
@@ -177,6 +141,7 @@ const initializer = ({ window }) => {
     window.global = {
         //children: { head: "", body: "" },
         __INNERHTML__: {},
+        __waiters__: [],
         __TAGS__: {
             body: "",
             head: ""

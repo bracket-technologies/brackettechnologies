@@ -14,7 +14,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
   var views = _window ? _window.views : window.views
   var view = views[id], backendFn = false, isFn = false
   
-  if (path.length === 1 && path0.slice(-2) === "()" && !actions.includes(path0)) {
+  if (path.length === 1 && path0.slice(-2) === "()" && !actions.includes(path0) && path0.slice(0, 7) !== "coded()") {
     
     var newLookupActions
     var myViews = view["my-views"] || []
@@ -84,9 +84,10 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
         else _data = toValue({ req, res, _window, id, e, _, __, ___, value: args[1], params, condition, lookupActions })
 
         var _func = { function: isFn, data: _data, log: { action: params.func, send: global.func } }
-        var _await = global.codes[args[2]], myawait = { id: generate(), hold: false, await: _await, action: path0, passGlobalFuncData: _window ? true: false, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn || [] }, params: { e, id, req, res, mount, object, asyncer, toView, params, executer, condition, lookupActions } }
+        var _await = global.codes[args[2]], myawait = { id: generate(), hold: false, await: _await, action: path0, passGlobalFuncData: _window ? true: false, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn || [] }, params: { e, id, mount, object, asyncer, toView, executer, condition, lookupActions } }
     
         if (_await) awaits.unshift(myawait)
+        if (global.__waiters__.length > 0) myawait.waiter = global.__waiters__[0]
         
         console.log("ACTION " + path0);
         var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
@@ -103,8 +104,9 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
       if (isFn) {
 
         // await
-        var answer, _await = global.codes[args[2]], myawait = { id: generate(), await: _await, action: path0, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn }, params: {e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions} }
+        var answer, _await = global.codes[args[2]], myawait = { id: generate(), await: _await, action: path0, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn }, params: {e, id, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions} }
         awaits.unshift(myawait)
+        if (global.__waiters__.length > 0) myawait.waiter = global.__waiters__[0]
         
         console.log("ACTION " + path0);
 
@@ -132,14 +134,14 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
         }
         
         if (!condition) {
-
+          
           if (isView) 
-            answer = require("./toView").toView({ _window, lookupActions, awaits, id, req, res, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+            answer = require("./toView").toView({ _window, lookupActions, id, req, res, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions: newLookupActions ? newLookupActions : lookupActions })
           else if (isParam({ _window, string: isFn }))
             answer = toParam({ _window, string: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions })
-          else 
+          else {
             answer = toValue({ _window, value: isFn, e, id, req, res, mount, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), asyncer, awaits, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions })
-
+          }
         } else answer = toApproval({ _window, string: isFn, e, id, req, res, mount, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions: newLookupActions ? newLookupActions : lookupActions })
         
         // await params
@@ -151,7 +153,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
 
           } else {
 
-            awaits.splice(0, 1)
+            awaits.splice(awaits.findIndex(i => i.id === myawait.id), 1)
             console.log({ action: path0, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn || [] })
           }
         }

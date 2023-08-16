@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "bracketjs"
+    "default": "bracket-technologies"
   },
   "targets": {
-    "bracketjs": {
+    "bracket-technologies": {
       "hosting": {
         "app": [
-          "bracketjs"
+          "bracket-technologies"
         ]
       }
     }

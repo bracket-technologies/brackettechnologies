@@ -34,7 +34,7 @@ module.exports = {
       data = {}, success, message,
       ref = req.db.collection(collection),
       promises = [], project
-    
+      
       /////////////////// verify access key ///////////////////// access key is stopped
       // promises.push(db.collection("_project_").doc(req.headers["project"]).get().then(doc => project = doc.data()))
       project = { ["accesskey"]: req.headers["accesskey"] }
@@ -183,12 +183,12 @@ module.exports = {
           })
           
           if (search.orderBy) _ref = _ref.orderBy(search.orderBy)
-          if (search.limit || 100) _ref = _ref.limit(search.limit || 100)
+          if (limit || 100) _ref = _ref.limit(limit || 100)
           if (search.offset) _ref = _ref.endAt(search.offset)
           if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
 
           if (search.startAt) _ref = _ref.startAt(search.startAt)
-          if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
+          if (search.startAfter || search.skip) _ref = _ref.startAfter(search.startAfter || search.skip)
 
           if (search.endAt) _ref = _ref.endAt(search.endAt)
           if (search.endBefore) _ref = _ref.endBefore(search.endBefore)

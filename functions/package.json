@@ -9,8 +9,8 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "server": "node index.js",
-    "browser": "cd browser && browserify browser.js > index.js",
-    "start": "npm-run-all --parallel browser server"
+    "browserify": "cd browser && browserify browser.js > index.js",
+    "start": "npm-run-all --parallel browserify server"
   },
   "engines": {
     "node": "16"
