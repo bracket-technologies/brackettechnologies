@@ -10,6 +10,7 @@ const { toParam } = require("../function/toParam")
 const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
 const { toCode } = require("../function/toCode")
+const { setData } = require("../function/setData")
 // const downloadsFolder = require('downloads-folder')
 
 window.views = JSON.parse(document.getElementById("views").textContent)
@@ -155,6 +156,10 @@ document.body.addEventListener("mouseup", (e) => {
 
 document.addEventListener('keydown', e => {
     if (e.ctrlKey) global.ctrlKey = true
+    if (global.projectId === "brackettechnologies" && e.ctrlKey && e.key === "s") {
+        e.preventDefault();
+        toParam({ id: "saveBtn", e, string: "click()" })
+    }
 })
 
 document.addEventListener('keyup', e => {
@@ -245,7 +250,7 @@ window.addEventListener('appinstalled', () => {
   link.href = window.location.href.replace('http://', 'https://');
   requireHTTPS.classList.remove('hidden');
 }*/
-},{"../function/execute":67,"../function/setElement":111,"../function/starter":114,"../function/toApproval":119,"../function/toCode":124,"../function/toParam":134}],2:[function(require,module,exports){
+},{"../function/execute":67,"../function/setData":110,"../function/setElement":111,"../function/starter":114,"../function/toApproval":119,"../function/toCode":124,"../function/toParam":134}],2:[function(require,module,exports){
 const { toString } = require('../function/toString')
 
 module.exports = (view) => {
@@ -1428,7 +1433,7 @@ module.exports=[
  , "gen()", "generate()", "route()", "getInput()", "input()", "getEntry()", "entry()", "capitalize()", "if()"
  , "getEntries()", "entries()", "toggleView()", "clearTimer()", "timer()", "range()", "focus()", "setCookie()"
  , "siblings()", "todayStart()", "time()", "remove()", "rem()", "removeChild()", "remChild()", "keyup()", "keydown()"
- , "contains()", "contain()", "def()", "price()", "clone()", "uuid()", "touchable()", "px()", "getCookie()"
+ , "contains()", "contain()", "def()", "price()", "clone()", "uuid()", "touchable()", "px()", "getCookie()", "repeat()"
  , "timezone()", "timeDifference", "position()", "setPosition()", "classList()", "csvToJson()", "eraseCookie()"
  , "classlist()", "nextSibling()", "2ndNextSibling()", "axios()", "newTab()", "droplist()", "sort()", "cookie()"
  , "fileReader()", "src()", "addClass()", "removeClass()", "remClass()", "wait()", "print()", "reduce()", "1stEl()"
@@ -1609,6 +1614,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0, ...p
     if (index === 8) index = 1
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
+    string = string.split("[]").join("__map__")
 
     string = string.replaceAll("<", "&#60;")
     string = string.replaceAll(">", "&#62;")
@@ -1674,6 +1680,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0, ...p
       }
       string = newString
     }
+    string = string.split("__map__").join("[]")
     
     if (index !== 0) {
       
@@ -1831,7 +1838,7 @@ const eraseCookie = ({ _window, name }) => {
 module.exports = {setCookie, getCookie, eraseCookie}
 },{}],52:[function(require,module,exports){
 module.exports = {
-  counter: ({ length = 0, counter = 0, end, reset = "daily", timer }) => {
+  counter: ({ length = 0, counter = 0, end, reset = "daily", timer = 0 }) => {
 
     counter = parseInt(counter)
     var _date = new Date(), timestamp
@@ -2530,11 +2537,11 @@ const getData = async ({ _window, req, res, search }) => {
   var collection = search.collection
   if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
-console.log("ttttttt", search);
+
   var doc = search.document || search.doc,
     docs = search.documents || search.docs,
     field = search.field || search.fields,
-    limit = search.limit || 100,
+    limit = search.limit || 1000,
     data = {}, success, message,
     ref = collection && db.collection(collection),
     promises = [], project
@@ -2785,7 +2792,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
 
   var db = req.db, docs
   var storage = req.storage
-  var collection = erase.collection
+  var collection = erase.collection, data
   if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   
@@ -2850,7 +2857,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
     docs = Object.keys(data)
   }*/
 
-  docs = erase.docs
+  docs = erase.docs || [erase.doc]
   await docs.map(async doc => {
     
     await ref.doc(doc.toString()).delete().then(() => {
@@ -2916,6 +2923,21 @@ const decode = ({ _window, string }) => {
       string += `[${statement}]` + after
     })
   }
+  
+  if (string.includes("codedS()")) {
+
+    string.split("codedS()").map((state, i) => {
+
+      if (i === 0) return string = state
+      
+      var code = state.slice(0, 5)
+      var after = state.slice(5)
+      var statement = global.codes[`codedS()${code}`]
+
+      statement = decode({ _window, string: statement })
+      string += `'${statement}'` + after
+    })
+  }
 
   return string
 }
@@ -2935,8 +2957,11 @@ const defaultInputHandler = ({ id }) => {
   var view = window.views[id]
   var global = window.global
 
+
   if (!view) return
   if (view.type !== "Input" && view.type !== "Entry" && !view.editable) return
+
+  if (view.input.preventDefault) return
 
   // checkbox input
   if (view.input && view.input.type === "checkbox") {
@@ -2993,6 +3018,20 @@ const defaultInputHandler = ({ id }) => {
       return 
     }
 
+    // contentfull
+    if (view.input.type === "text") {
+      
+      if (value.includes("&amp;")) {
+        value = value.replace('&amp;','&')
+        e.target.value = value
+      }
+
+      if (value.includes("&nbsp;")) {
+        value = value.replace('&nbsp;',' ')
+        e.target.value = value
+      }
+    }
+
     if (!view.preventDefault && view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : false) {
       
       // for number inputs, strings are rejected
@@ -3019,27 +3058,13 @@ const defaultInputHandler = ({ id }) => {
           return global.files = [...e.target.files]
         }
 
-        // contentfull
-        if (view.input.type === "text") {
-          
-          if (value.includes("&amp;")) {
-            value = value.replace('&amp;','&')
-            e.target.value = value
-          }
-
-          if (value.includes("&nbsp;")) {
-            value = value.replace('&nbsp;',' ')
-            e.target.value = value
-          }
-        }
-
-        if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
+        /*if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
 
           var _prev = value.slice(0, e.target.selectionStart - 1)
           var _next = value.slice(e.target.selectionStart)
           e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
-        }
+        }*/
       }
 
       if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
@@ -3057,6 +3082,26 @@ const defaultInputHandler = ({ id }) => {
   }
 
   var myFn1 = (e) => {
+
+    // contentfull
+    /*if (view.input.type === "text") {
+  
+      var value 
+      if (view.type === "Input") value = e.target.value
+      else if (view.type === "Entry" || view.editable) value = (e.target.textContent===undefined) ? e.target.innerText : e.target.textContent
+      
+      if (value.includes("&amp;")) {
+        value = value.replace('&amp;','&')
+        e.target.value = value
+      }
+
+      if (value.includes("&nbsp;")) {
+        value = value.replace('&nbsp;',' ')
+        e.target.value = value
+      }
+
+      if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
+    }*/
 
     var value
     if (view.type === "Input") value = view.element.value
@@ -3470,7 +3515,7 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
   var mainID = id
 
   // 'string'
-  var events = toArray(controls.event), _events = ""
+  var events = toArray(controls.event)[0]/*, _events = ""
     
   _events = events[0].split("{")[0]
   events[0].split("{").slice(1).map(str => {
@@ -3481,13 +3526,13 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
     }
   })
 
-  events = _events
-  events = toCode({ _window, lookupActions, awaits, id, string: events })
-  events = toCode({ _window, lookupActions, awaits, id, string: events, start: "'", end: "'" })
-  // if (events.split("'").length > 2) events = toCode({ _window, lookupActions, awaits, string: events, start: "'", end: "'" })
+  events = _events*/
+  events = toCode({ _window, id, string: events })
+  events = toCode({ _window, id, string: events, start: "'", end: "'" })
+  // if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   
   events = events.split("?")
-  var _idList = toValue({ id, lookupActions, awaits, value: events[3] || id })
+  var _idList = id // toValue({ id, lookupActions, awaits, value: events[3] || id })
 
   // droplist
   /*var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
@@ -3676,13 +3721,13 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
             if (!approved) return
 
             // params
-            await toParam({ string: events[1], e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
+            toParam({ string: events[1], lookupActions, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
 
             // break
             if (view["break()"]) delete view["break()"]
             if (view["return()"]) return delete view["return()"]
           
-            if (viewEventParams) await toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
+            if (viewEventParams) toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
             
             if (controls.actions || controls.action) execute({ controls, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
           }
@@ -4131,7 +4176,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
         global.function = global.func = clone(data)
   
         console.log(params.func, global.func, awaits)
-    
+
         // await params
         if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions: oldlookupActions, myawait, awaits, id, e, ...params, req, res,  _: global.func, __: _, ___: __ })
         resolve()
@@ -5341,6 +5386,7 @@ const { lengthConverter } = require("./resize")
 const actions = require("./actions.json")
 const events = require("./events.json")
 const { func } = require("./func")
+const { decode } = require("./decode")
 
 const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value, key, params = {}, object, _, __, ___,  e, req, res, mount, condition, toView }) => {
     
@@ -5378,6 +5424,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0]) args = path[0].toString().split(":")
+
     
     if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, awaits, id, e, string: pathJoined, _, __, ___,  object, mount, toView })
     
@@ -5410,25 +5457,28 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
             path0 = path0.split("?")[0]
+            _object = toValue({ _window, value: path0, e, id, req, res, object, asyncer: true, _, __, ___, awaits, lookupActions })
             
             if (!condition) {
                 
-                _object = toValue({ _window, value: path0, e, id, req, res, object, asyncer: true, _, __, ___, awaits, lookupActions })
                 // ex: [_]() & _ = 'action_name()' --> action_name()
-                if (typeof _object === "string") {
+                if (typeof _object === "string" && (_object.includes(".") || _object.includes("()"))) {
                     _object = toCode({ _window, string: toCode({ _window, string: _object, start: "'", end: "'" }) })
                     _object = toValue({ _window, lookupActions, awaits, id, value: _object, key, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___),  e, req, res, mount, condition, toView })
                 }
 
                 global.__waiters__.splice(0, 1)
-            } else _object = toApproval({ _window, string: path0, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
-    
+
+            } else {
+                _object = toApproval({ _window, string: _object, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+            }
+
             // await params
             if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
                 
                 if (_await) {
 
-                    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __: _, ___: __ })
+                    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _, __, ___ })
 
                 } else {
 
@@ -5510,24 +5560,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
       if (_value !== pathJoined) return _value
     }
 
-    // coded
-    /*if (path0.slice(0, 7) === "coded()" && path[0].length === 12 && path.length === 1 && object === undefined) {
-        //console.log(global.codes[path0], object);
-        //path0 = path[0] = global.codes[path0]
-        //coded = true
-        return toValue({ req, res, _window, lookupActions, awaits, object, id, value: global.codes[path0], params, _, __, ___, e })
-    }*/
-
-    // codeds (string)
-    if (path0.slice(0, 8) === "codedS()" && path0.length === 13 && path[0] === path0) {
-        
-        _object = global.codes[path[0]]
-        path.shift()
-        path0 = ""
-    }
-
     // if
     if (path0 === "if()") {
+        
       var approved = toApproval({ _window, lookupActions, awaits, e, string: args[1], params, id, _, __, ___,  req, res, object })
 
       if (!approved) {
@@ -5606,24 +5641,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     }
     
     var view
-    // view => ():id:timer:conditions
-    if (path0.slice(0, 2) === "()") {
+    // view => ():id
+    if (path0 === "()") {
 
-        if (args[1] || args[2] || args[3]) {
-
-            // timer
-            if (args[2]) {
-                var _timer = parseInt(args[2])
-                args[2] = ""
-                path[0] = args.join(":")
-                return setTimeout(() => reducer({ _window, lookupActions, awaits, id, path, value, key, params, object, _, __, ___, e, req, res }), _timer)
-            }
-
-            // conditions
-            if (args[3]) {
-                var approved = toApproval({ _window, lookupActions, awaits, e, string: args[3], id, _, __, ___, req, res })
-                if (!approved) return
-            }
+        if (args[1]) {
 
             // id
             var _id = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, _, __, ___,  object })
@@ -5658,9 +5679,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
       } else {
         
-          if (/*view && view.labeled && path0 !== "txt()" && path0 !== "val()" && path0 !== "Data()" && path0 !== "doc()" && 
-          path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()" && path0 !== "min()" && path0 !== "max()"*/
-          (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
+          if (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent")) {
 
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
@@ -5670,22 +5689,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               if (view.islabel || view.templated || view.link || view.labeled) path.unshift("input()")
           }
           
-          if (!object && !_object) {
+          /*if (!object && !_object) {
+
             path.unshift("()")
             path0 = "()"
-          }
+          }*/
       }
+    }
 
-    }/* else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
-        
-        if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "Data()" && path[1] !== "data()" && path[1] !== "derivations()" && path[1] !== "readonly()") {
-            
-            if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
-            else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
-
-            path0 = "()"
-        }
-    }*/
     _object = path0 === "()" ? (view || views.root)
     : (path0 === "global()" || path0 === ")(") ? _window ? _window.global : window.global
     : (path0 === "e()" || path0 === "event()") ? e
@@ -5699,17 +5710,22 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
     : (path0 === "req()" || path0 === "request()") ? req
     : (path0 === "res()" || path0 === "response()") ? res
+    : (path0 === "math()") ? Math
     : _object !== undefined ? _object
     : object
 
+    var sliced = false
     if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "___" || path0 === "document()" 
-    || path0 === "window()" || path0 === "win()" || path0 === "history()") path = path.slice(1)
-        
+    || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "math()") {
+        path = path.slice(1)
+        sliced = true
+    }
+
     if (!_object && _object !== 0 && _object !== false) {
 
         if (path[0]) {
 
-            if (path0 === "undefined") return undefined
+            if (path0 === "undefined" || sliced) return undefined
             else if (path0 === "false") return false
             else if (path0 === "true") return true
             else if (path0 === "desktop()") return global.device.device.type === "desktop"
@@ -5717,8 +5733,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             else if (path0 === "mobile()") return global.device.device.type === "phone"
             else if (path0 === "clicked()") _object = global["clicked()"]
             else if (path0 === "log()") {
-                var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, value: arg || "here", params, _, __, ___,  e, object }))
+
+                var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, value: arg || "here", params, _, __, ___, e, object }))
                 console.log(..._log)
+                path = path.slice(1)
+                path0 = (path[1] || "").split(":")[0]
             }
 
             else if (path0.slice(0, 7) === "coded()" && path[0].length === 12) {
@@ -5728,8 +5747,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
             
             else if (path0 === "today()") _object = new Date()
-            else if (path0 === "" || path0 === "_string") _object = ""
-            else if (path0 === "_array" || path0 === "_list") {
+            else if (path0 === "_array" || path0 === "_list" || (!path0 && path[0].charAt(0) === ":")) {
 
                 _object = []
                 path[0].split(":").slice(1).map(el => {
@@ -5740,6 +5758,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 })
             } 
             
+            else if (path0 === "" || path0 === "_string") _object = ""
             else if (path0 === "_map") {
 
                 _object = {}
@@ -5762,15 +5781,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                   })
                 }
             }
-
-            else if (path0 === "{}") {
-
-                _object = {}
-                path[0].split(":").slice(1).map(el => {
-                    el = toValue({ req, res, _window, lookupActions, awaits, id, _, __, ___, e, value: el, params }) || {}
-                    _object = { ..._object, ...el }
-                })
-            }
             
             else if (mount) {
                 _object = view
@@ -5780,8 +5790,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         if (_object || _object === "" || _object === 0/* || coded*/) path = path.slice(1)
         else {
-
-            if (path[1] && path[1].toString().includes("()")) {
+            if (actions.includes(path0)) {
+                _object = view
+            } else if (path[1] && path[1].toString().includes("()")) {
                 
                 _object = toValue({ req, res, _window, lookupActions, awaits, id, _, __, ___, e, value: path[0], params }) || {}//path[0]
                 path = path.slice(1)
@@ -5791,16 +5802,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     }
     
     var lastIndex = path.length - 1, k0
-    /*path.map((k, i) => {
-        k = k.toString()
-        var k0 = k.split(":")[0]
-        var k1 = k.split(":")[1]
-        if (k0 && k1 && !k0.includes("()") && k1 !== "()") {
-            path[i] = path[i].split(":").slice(1).join(":")
-            path.splice(i, 0, k0)
-            console.log(k,path);
-        }
-    })*/
     
     var answer = path.reduce((o, k, i) => {
         
@@ -5849,17 +5850,24 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var tolog
             if (k0[0] === "_") tolog = o
             
-            var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, e, _: tolog ? tolog : _, __, ___,  value: arg, params }))
+            var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, e, _: tolog ? tolog : _, __, ___,  value: arg, object: o }))
 
-            console.log(o, ..._log)
+            console.log(..._log)
             return o
         }
 
-        if (o === undefined || o === null) return o
+        if (o === undefined || o === null && k0 !== "push()") return o
 
         /*if (path0.slice(-2) === "()" && typeof o === "object" && !Array.isArray(o) && o.__ISVIEW__ && o.functions[path0.slice(-2)]) {
 
             return toFunction({ _window, lookupActions, awaits, id: o.id, req, res, _, __, ___, e, path: [k], path0: k0, condition, params, mount, toView, object })
+        }*/
+
+        // push() with undefined
+        /*if (path[i+1] === "push()" && !isNaN(toValue({ req, res, _window, id, e, _, __, ___, value: k0 })) && o[toValue({ req, res, _window, id, e, _, __, ___, value: k0 })] === undefined) {
+            breakRequest = i + 1
+            o[k0] = []
+            o[k0].push
         }*/
         
         if (k0 !== "data()" && k0 !== "Data()" && k0 !== "doc()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
@@ -5897,15 +5905,23 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
         } else if (k0 === "_" && _ !== undefined) {
           
+            if (o.__ISVIEW__) return o._
             if (value !== undefined && key && i === lastIndex) answer = o[_] = value
             else if (typeof o === "object") answer = o[_]
 
-        }else if (k0 === "__" && __ !== undefined) {
+        } else if (k0 === "__" && __ !== undefined) {
             
+            if (o.__ISVIEW__) return o.__
             if (value !== undefined && key && i === lastIndex) answer = o[__] = value
             else if (typeof o === "object") answer = o[__]
 
-        }  else if (k0 === ")(") {
+        } else if (k0 === "___" && ___ !== undefined) {
+            
+            if (o.__ISVIEW__) return o.___
+            if (value !== undefined && key && i === lastIndex) answer = o[___] = value
+            else if (typeof o === "object") answer = o[___]
+
+        } else if (k0 === ")(") {
 
             var _state = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___, e })
             answer = global[_state]
@@ -5922,7 +5938,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               if (!isNaN(toValue({ req, res, _window, lookupActions, awaits, id, value: path[i + 1], params, _, __, ___, e }))) answer = o[_coded] = []
               else answer = o[_coded] = {}
             }
-            else answer = o[_coded]
+            else answer = o[_coded] //|| _coded
             /*
             _coded = _coded !== undefined ? [...toArray(_coded), ...path.slice(i + 1)] : path.slice(i + 1)
             answer = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _coded, object: o, params, _, __, ___ })
@@ -6568,6 +6584,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "style()") { // style():key || style():[key=value;id||el||view||element]
             
             var _o, _params = {}
+            
             if (args[1]) {
                   
               if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
@@ -6585,7 +6602,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               if (!o.element) _o = views[id]
               else _o = o
             }
-
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             
             // get element
@@ -6605,6 +6621,64 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               })
             }
             
+        } else if (k0 === "qr()") {
+
+            if (res && !res.headersSent) {
+
+                var params = isParam({ _window, string: args[1] }) ? toParam({ req, res, _window, id, e, _, __, ___, string: args[1] }) : toValue({ req, res, _window, id, e, _, __, ___, value: args[1] })
+                if (typeof params !== "object") params = { data: params }
+                if (params.text && params.data === undefined) params.data = params.text
+                if (params.wifi && params.password && (params.ssid || params.name)) params.data = `WIFI:S:${params.name || params.ssid};T:${params.type || "WPA"};P:${params.password || ""};;${params.url || ""}` 
+                
+                require('qrcode').toDataURL(params.data).then(data => {
+
+                    var _params = { message: "QR generated successfully!", data, success: true }
+                    toParam({ req, res, _window, id, e, _: _params, __: _, ___: __, string: args[2] })
+                })
+            }
+
+        } else if (k0 === "contact()") {
+
+            if (res && !res.headersSent) {
+                
+                var data = toValue({ req, res, _window, id, e, _, __, ___, string: args[1] })
+                if (typeof data !== "obejct") return o
+
+                if (data.firstName && data.lastName && data.workPhone) {
+
+                    // create a new vCard
+                    const vCard = require("vcards-js")();
+                
+                    vCard.firstName = data.firstName || "";
+                    vCard.middleName = data.middleName || "";
+                    vCard.lastName = data.lastName || "";
+                    vCard.organization = data.organization || "";
+                    if (data.photo) vCard.photo.attachFromUrl(data.photo)
+                    if (data.logo) vCard.logo.attachFromUrl(data.logo)
+
+                    if (data.birthday && data.birthday.split("/")[0] !== undefined && data.birthday.split("/")[1] !== undefined && data.birthday.split("/")[2] !== undefined) 
+                        vCard.birthday = new Date(parseInt(data.birthday.split("/")[2]), parseInt(data.birthday.split("/")[1] - 1), parseInt(data.birthday.split("/")[0]));
+
+                    
+                        delete data.firstName
+                        delete data.lastName
+                        delete data.middleName
+                        delete data.photo
+                        delete data.logo
+                        delete data.birthday
+
+                    Object.entries(data).map(([key, value]) => {
+                        vCard[key] = value
+                    })
+                
+                    res.set('Content-Type', `text/vcard; name="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
+                    res.set('Content-Disposition', `inline; filename="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
+                    
+                    res.send(vCard.getFormattedString())
+                }
+                
+            } else func({ _window, id, e, func: { actions: decode({ _window, string: k }) }, _, __, ___, asyncer: true, awaits, myawait, lookupActions })
+
         } else if (k0 === "getTagElements()") {
 
             var _o, _params = {}, _tag_name
@@ -6850,6 +6924,31 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
             answer = answer.map(o => window.views[o.id])
             
+        } else if (k0 === "name()") {
+
+            var _o
+            if (o.__ISVIEW__) _o = o
+            else _o = views[id]
+            var _name = toValue({ req, res, _window, id, e, _, __, ___, value: args[1] })
+            if (_o.__viewName__ === _name) return _o
+            else {
+                var children_ = getDeepChildren({ _window, id: _o.id })
+                return children_.find(child => child.__viewName__ === _name)
+            }
+
+        } else if (k0 === "names()") {
+
+            var _o
+            if (o.__ISVIEW__) _o = o
+            else _o = views[id]
+            var _name = toValue({ req, res, _window, id, e, _, __, ___, value: args[1] }), _views_ = []
+            if (_o.__viewName__ === _name) _views_.push(_o)
+            else {
+                var children_ = getDeepChildren({ _window, id: _o.id })
+                _views_.push(...children_.filter(child => child.__viewName__ === _name))
+            }
+            return _views_
+
         } else if (k0 === "classlist()" || k0 === "classList()") {
             
             var _params = {}, _o
@@ -6923,7 +7022,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               
           } else _o = o.__ISVIEW__ ? o : views[id]
           
-          if (typeof _o === "string" && views[_o]) views[_o].element.click()
+          if (typeof _o === "string" && views[_o]) views[_o].element.q()
           else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
           else if (typeof _o === "object" && _o.element) _o.element.click()
 
@@ -7246,6 +7345,16 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (o.type && o.id) o[generate() + "-timer"] = answer
 
+        } else if (k0 === "repeat()") {
+
+            var _data_ = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___, e, object })
+            var times = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object })
+            var loop = []
+            for (var i = 0; i < times; i++) {
+                loop.push(_data_)
+            }
+            return loop
+
         } else if (k0 === "timer()" || k0 === "setTimeout()") {
             
             // timer():params:timer:repeats
@@ -7265,7 +7374,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 }
             }
             
-            if (o.__view__) toArray(answer).map(timer => o[generate() + "-timer"] = timer)
+            if (o.__ISVIEW__) toArray(answer).map(timer => o[generate() + "-timer"] = timer)
 
         } /*else if (k0 === "path()") {
 
@@ -7637,10 +7746,21 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 
                 if (answer.includes(",") || b.includes(",")) isPrice = true
                 
-                b = toNumber(b)
-                answer = toNumber(answer)
+                if (typeof b === "number") {
 
-                answer = answer * b
+                    b = toNumber(b)
+                    answer = toNumber(answer)
+
+                    answer = answer * b
+
+                } else if (typeof answer !== "number") {
+
+                    var textt = ""
+                    for (var i = 0; i < b; i++) {
+                        textt += answer
+                    }
+                    return textt
+                }
             })
             if (isPrice) answer = answer.tovieweString()
             
@@ -7923,6 +8043,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 
             } else if (view && view.type === "Input") {
 
+                console.log("ttttttttt0", _o);
                 if (i === lastIndex && key && value !== undefined) answer = _o[view.element.value] = value
                 else if (path[i + 1] === "del()") {
                   breakRequest = i + 1
@@ -7932,6 +8053,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             } else if (view && view.type !== "Input") {
 
+                console.log("ttttttttt1", _o);
                 if (i === lastIndex && key && value !== undefined) answer = _o[view.element.innerHTML] = value
                 else if (path[i + 1] === "del()") {
                   breakRequest = i + 1
@@ -8003,7 +8125,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           answer = o
             
         } else if (k0.includes("push()")) {
-            if (!Array.isArray(o)) return undefined
+
+            if (!Array.isArray(o)) {
+                o = reducer({ req, res, _window, id, path: path.slice(0, i), value: [], key: true, _, __, ___, e, object: _object })
+            }
             
             var _item, _index
             if (k0.charAt(0) === "_") {
@@ -8026,6 +8151,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else if (Array.isArray(o)) o.splice(_index, 0, _item)
             answer = o
             
+        } else if (k0 === "pushItems()") {
+
+            args.slice(1).map(arg => {
+                arg = toValue({ req, res, _window, id, value: args[1], _, __, e, object })
+                o.splice(o.length, 0, arg)
+            })
+
         } else if (k0 === "pull()") { // pull by index or by conditions
 
             // if no index pull the last element
@@ -9044,6 +9176,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           
         } else if (k0 === "replace()") { //replace():prev:new
 
+            if (!Array.isArray(o) && typeof o !== "string") {
+                o = reducer({ req, res, _window, id, path: path.slice(0, i), value: [], key: true, _, __, ___, e, object: _object })
+            }
+
             var rec0, rec1
 
             rec0 = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1] || "", params })
@@ -9896,11 +10032,39 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "readonly()") {
           
             if (typeof o === "object") {
+
                 if (key && value !== undefined) answer = o.element.readOnly = value
-                answer = o.element.readOnly
+                else answer = o.element.readOnly = true
+
+                if (key && value !== undefined) answer = o.element.setAttribute("contenteditable", value)
+                else answer = o.element.setAttribute("contenteditable", false)
+
             } else if (o.nodeType === Node.ELEMENT_NODE) {
+
                 if (key && value !== undefined) answer = o.readOnly = value
-                answer = o.readOnly
+                else answer = o.readOnly = true
+
+                if (key && value !== undefined) answer = o.setAttribute("contenteditable", value)
+                else answer = o.setAttribute("contenteditable", false)
+            }
+
+        } else if (k0 === "editable()") {
+          
+            if (typeof o === "object") {
+
+                if (key && value !== undefined) answer = o.element.readOnly = value
+                else answer = o.element.readOnly = false
+
+                if (key && value !== undefined) answer = o.element.setAttribute("contenteditable", value)
+                else answer = o.element.setAttribute("contenteditable", true)
+
+            } else if (o.nodeType === Node.ELEMENT_NODE) {
+
+                if (key && value !== undefined) answer = o.readOnly = value
+                else answer = o.readOnly = false
+
+                if (key && value !== undefined) answer = o.setAttribute("contenteditable", value)
+                else answer = o.setAttribute("contenteditable", true)
             }
 
         } else if (k0 === "html()") {
@@ -10273,6 +10437,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             k0 = k0.split("?")[0]
             
             if (!condition) {
+
                 answer = toValue({ _window, value: k0, e, id, req, res, object: object || o, asyncer: true, _, __, ___, awaits, lookupActions })
                 
                 // ex: [_]() & _ = 'action_name()' --> action_name()
@@ -10281,8 +10446,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     reducer({ _window, lookupActions, awaits, id, path: [answer], value, key, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___),  e, req, res, mount, condition, toView })
                 }
                 
-            } else answer = toApproval({ _window, string: k0, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
-    
+            } else {
+                answer = toValue({ _window, value: k0, e, id, req, res, object: object || o, asyncer: true, _, __, ___, awaits, lookupActions })
+                answer = toApproval({ _window, string: answer, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+            }
             // await params
             if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
                 
@@ -10402,7 +10569,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k.includes(":coded()")) {
           
             breakRequest = true
-            
+
             // k0 is encoded
             if (k0.includes("coded()") && k0.length === 12) k0 = global.codes["coded()" + k0.slice(-5)]
             else if (k0.includes("codedS()") && k0.length === 13) k0 = global.codes["codedS()" + k0.slice(-5)]
@@ -10410,10 +10577,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             o[k0] = o[k0] || {}
             if (toView && events.includes(k.split(":coded()")[0])) {
               
-              if (o.id) {
+              if (o.__ISVIEW__) {
 
                 var _params_ = global.codes["coded()" + args[1].slice(-5)]
                 var _conditions = _params_.split("?")[1] || ""
+                
                 _params_ = _params_.split("?")[0]
 
                 views[id].controls = toArray(views[id].controls)
@@ -10426,13 +10594,18 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                   _conditions += "e().ctrlKey"
                 } else if (k0 === "longclick") {
                   views[id].controls.push({
-                    "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?${_conditions};clickTimer=timestamp()`
+                    "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?clickTimer=timestamp()?${_conditions}`
                   })
                   views[id].controls.push({
                     "event": `mouseup:${o.id !== id ? (":" + o.id) : ""};touchend:${o.id !== id ? (":" + o.id) : ""}?${global.codes["coded()" + args[1].slice(-5)]}?${_conditions};timestamp()-clickTimer>=1000`
                   })
                   return
-                }
+                } else if (k0 === "dblclick") {
+                    views[id].controls.push({
+                      "event": `click:${o.id !== id ? (":" + o.id) : ""}?${_conditions};clickTimer=timestamp()`
+                    })
+                    return
+                  }
                 
                 views[id].controls.push({
                   "event": k0 + (o.id !== id ? (":" + o.id) : "") + "?" + global.codes["coded()" + args[1].slice(-5)] + "?" + _conditions
@@ -10522,7 +10695,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     return answer
 }
 
-const getDeepChildren = ({ _window, lookupActions, awaits, id }) => {
+const getDeepChildren = ({ _window, id }) => {
 
     var views = _window ? _window.views : window.views
     var view = views[id]
@@ -10544,7 +10717,7 @@ const getDeepChildren = ({ _window, lookupActions, awaits, id }) => {
     return all
 }
 
-const getDeepChildrenId = ({ _window, lookupActions, awaits, id }) => {
+const getDeepChildrenId = ({ _window, id }) => {
 
     var views = _window ? _window.views : window.views
     var view = views[id]
@@ -10639,7 +10812,7 @@ var formatter = new Intl.NumberFormat('en-US', {
 });
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./actions.json":41,"./axios":42,"./capitalize":44,"./clone":46,"./cookie":51,"./counter":52,"./csvToJson":58,"./droplist":63,"./erase":64,"./events.json":66,"./exportJson":68,"./focus":71,"./func":72,"./generate":74,"./getCoords":75,"./getDateTime":76,"./getDaysInMonth":77,"./getType":79,"./importJson":80,"./insert":81,"./isCondition":83,"./isEqual":84,"./isParam":85,"./mail":91,"./note":93,"./print":98,"./refresh":101,"./remove":103,"./resize":104,"./route":105,"./save":106,"./search":108,"./setPosition":112,"./sort":113,"./toApproval":119,"./toArray":120,"./toAwait":121,"./toCSV":122,"./toClock":123,"./toCode":124,"./toExcel":127,"./toFunction":129,"./toHTML":130,"./toId":131,"./toNumber":132,"./toParam":134,"./toPdf":135,"./toSimplifiedDate":136,"./toValue":139,"./toggleView":141,"./update":142,"./updateSelf":143,"./upload":144}],101:[function(require,module,exports){
+},{"./actions.json":41,"./axios":42,"./capitalize":44,"./clone":46,"./cookie":51,"./counter":52,"./csvToJson":58,"./decode":61,"./droplist":63,"./erase":64,"./events.json":66,"./exportJson":68,"./focus":71,"./func":72,"./generate":74,"./getCoords":75,"./getDateTime":76,"./getDaysInMonth":77,"./getType":79,"./importJson":80,"./insert":81,"./isCondition":83,"./isEqual":84,"./isParam":85,"./mail":91,"./note":93,"./print":98,"./refresh":101,"./remove":103,"./resize":104,"./route":105,"./save":106,"./search":108,"./setPosition":112,"./sort":113,"./toApproval":119,"./toArray":120,"./toAwait":121,"./toCSV":122,"./toClock":123,"./toCode":124,"./toExcel":127,"./toFunction":129,"./toHTML":130,"./toId":131,"./toNumber":132,"./toParam":134,"./toPdf":135,"./toSimplifiedDate":136,"./toValue":139,"./toggleView":141,"./update":142,"./updateSelf":143,"./upload":144,"qrcode":185,"vcards-js":212}],101:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -12284,8 +12457,10 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
     var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0], myKey
 
     // function
+    if (path0.slice(-2) === "()") {
     var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition: true });
     if (isFn !== "__CONTINUE__") return approval = notEqual ? !isFn : isFn
+    }
 
     if (!key && object !== undefined) myKey = object
     else if (key === "undefined") myKey = undefined
@@ -12515,6 +12690,9 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
   var codeName = start === "'" ? "codedS()" : "coded()", global = {}
   if (!codes) global = _window ? _window.global : window.global
 
+  // split []
+  if (start === "[") string = string.split("[]").join("__map__")
+
   // split () & )(
   if (start === "(") string = string.split("()").join("___action___").split(")(").join("___global___")
 
@@ -12546,6 +12724,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
     if (start === "(") subKey[0] = subKey[0].split("___action___").join("()").split("___global___").join(")(")
 
+    if (start === "[") subKey[0] = subKey[0].split("__map__").join("[]")
     if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, string: subKey[0], start: "'", end: "'" })
     if (codes) codes[key] = subKey[0]
     else global.codes[key] = subKey[0]
@@ -12562,6 +12741,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
   if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, string, e, start, end })
 
   // 
+  if (start === "[") string = string.split("__map__").join("[]")
   if (start === "(") string = string.split("___action___").join("()").split("___global___").join(")(")
 
   return string
@@ -12654,9 +12834,9 @@ const { toCode } = require("./toCode")
 const { isParam } = require("./isParam")
 const { toValue } = require("./toValue")
 const { toParam } = require("./toParam")
-const { toApproval } = require("./toApproval")
 const actions = require("./actions.json")
 const { generate } = require("./generate")
+const { toApproval } = require("./toApproval")
 
 const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, condition, params = {}, mount, asyncer, toView, executer, object, lookupActions = {}, awaits = [], isView = false }) => {
 
@@ -12676,7 +12856,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
       clone(fn).reverse().map((myfn, i) => {
 
         if (!isFn) {
-
+          
           var functions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data[lookupActions.viewType][lookupActions.view].functions) || {}
           isFn = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o[k] || {}, functions)).find(fn => fn === path0.slice(0, -2))
 
@@ -12697,8 +12877,10 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
     if (!isFn) {
 
       clone(["_project_", ...myViews]).reverse().map((myview, i) => {
+
         if (!isFn) {
           
+          if (myview !== "_project_" && !global.data[i === myViews.length - 1 ? "page" : view.viewType][myview]) return
           var functions = myview === "_project_" ? global.functions : (global.data[i === myViews.length - 1 ? "page" : view.viewType][myview].functions) || {}
           isFn = (Array.isArray(functions) ? functions : Object.keys(functions)).find(fn => fn === path0.slice(0, -2))
           if (isFn) {
@@ -12740,7 +12922,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
         if (global.__waiters__.length > 0) myawait.waiter = global.__waiters__[0]
         
         console.log("ACTION " + path0);
-        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait, params, lookupActions: newLookupActions ? newLookupActions : lookupActions, oldlookupActions: lookupActions })
         
         return answer
       }
@@ -12832,7 +13014,7 @@ module.exports = ({ _window, id, innerHTML }) => {
   var value = "", type = view.type
   
   // children IDs
-  if (view.parent) {
+  if (view.parent && views[view.parent]) {
     if(!views[view.parent].childrenID) views[view.parent].childrenID = []
     views[view.parent].childrenID.push(id)
   }
@@ -12857,6 +13039,8 @@ module.exports = ({ _window, id, innerHTML }) => {
 
   // html attributes
   var atts = Object.entries(view.att || view.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
+
+  if (view.editable) view.input = {type: "text"}
   
   if (type === "View" || type === "Box") {
     tag = `<div ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ''} spellcheck='false' ${view.editable && !view.readonly ? 'contenteditable' : ''} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ''}</div>`
@@ -12899,7 +13083,7 @@ module.exports = ({ _window, id, innerHTML }) => {
   } else if (type === "Icon") {
     tag = `<i ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.outlined ? "material-icons-outlined" : (view.symbol.outlined) ? "material-symbols-outlined": (view.rounded || view.round) ? "material-icons-round" : (view.symbol.rounded || view.symbol.round) ? "material-symbols-round" : view.sharp ? "material-icons-sharp" : view.symbol.sharp ? "material-symbols-sharp" : (view.filled || view.fill) ? "material-icons" : (view.symbol.filled || view.symbol.fill) ? "material-symbols" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || "" || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index || 0}'>${view.google ? view.icon.name : ""}</i>`
   } else if (type === "Textarea") {
-    tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${view.data || view.input.value || ""}</textarea>`
+    tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${view.data || view.value || view.input.value || ""}</textarea>`
   } else if (type === "Input") {
     if (view.textarea) {
       tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${value}</textarea>`
@@ -12998,6 +13182,7 @@ const { isParam } = require("./isParam")
 const { toArray } = require("./toArray")
 const actions = require("./actions.json")
 const { getType } = require("./getType")
+const { override } = require("./merge")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -13325,6 +13510,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
     if (path0 === "") return
 
     // function
+    if (path0.slice(-2) === "()") {
     var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, toView, executer, object })
     if (isFn !== "__CONTINUE__") return isFn
     else isFn = false
@@ -13358,6 +13544,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       // if (backendFn) return require("./func").func({ _window, lookupActions, awaits, req, res, id, e, func: `${_field}:coded()${_key}`, _, __, ___, asyncer: true })
       return toParam({ _window, lookupActions, awaits, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, toView, executer })
     }
+  }
 
     ////////////////////////////////// end of function /////////////////////////////////////////
     
@@ -13376,7 +13563,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
       } else {
         
-        if (id && view && mount) reducer({ _window, lookupActions, awaits, id, path: ["()", ...path], value, key, params, e, req, res, _, __, ___, _i, mount, object, toView, condition })
+        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: view, toView, condition })
         reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: params, toView, condition })
       }
       
@@ -13486,6 +13673,8 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
   
     //////////////////////////////////////////////////////// End /////////////////////////////////////////////////////////
   })
+  
+  //if (mount && toView && views[id]) override(views[id], params)
 
   if (params["return()"] !== undefined) return params["return()"]
   return params
@@ -13493,7 +13682,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
 module.exports = { toParam }
 
-},{"./actions.json":41,"./clone":46,"./decode":61,"./function":73,"./generate":74,"./getType":79,"./isParam":85,"./reducer":100,"./toApproval":119,"./toArray":120,"./toCode":124,"./toFunction":129,"./toValue":139}],135:[function(require,module,exports){
+},{"./actions.json":41,"./clone":46,"./decode":61,"./function":73,"./generate":74,"./getType":79,"./isParam":85,"./merge":92,"./reducer":100,"./toApproval":119,"./toArray":120,"./toCode":124,"./toFunction":129,"./toValue":139}],135:[function(require,module,exports){
 module.exports = {
     toPdf: async ({ id, options }) => {
 
@@ -13666,8 +13855,8 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   else if (value === "___") return ___
   else if (value === "_text") return ""
   else if (value === "_string") return ""
-  else if (value === "_map") return ({})
-  else if (value === "_list") return ([])
+  else if (value === "[]" || value === "_map") return ({})
+  else if (value === ":[]" || value === "_list") return ([])
   else if (value === " ") return value
   
   // break & return
@@ -13680,20 +13869,8 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
     
     if (!object) return global.codes[value]
     else value = global.codes[value]
+    return (object ? object[value] : view[value]) || value
   }
-
-  // create function: coded()xxxxx() => [params that inherited function attributes in underscore]()
-  /*if (value.slice(0, 7) === 'coded()' && value.length === 14 && value.slice(-2) === "()") value = "function():" + value.slice(0, 12)
-    
-  // promise: coded()xxxxx:coded()xxxxx => promise():[]:[]
-  else if (value.length === 25 && value.split("coded()") === 2 && value.slice(0, 7) === 'coded()') value = "promise():" + value*/
-
-  // (...)
-  /*var valueParanthes = value.split("()").join("")
-  if (valueParanthes.includes("(") && valueParanthes.includes(")") && valueParanthes.split("(").slice(1).find(string => string.split(")")[0] && string.split(")")[0].length > 0 && (string.split(")")[0].includes("-") || string.split(")")[0].includes("+") || string.split(")")[0].includes("*")))) { // (...)
-    
-    value = toCode({ _window, lookupActions, awaits, string: value, e, start: "(", end: ")" })
-  }*/
 
   // show loader
   if (value === "loader.show") {
@@ -13738,7 +13915,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
       var allAreNumbers = true
       var values = value.split("+").map(value => {
         
-        var _value = toValue({ _window, lookupActions, awaits, value, params, _, __, ___, id, e, req, res, object, mount, condition })
+        var _value = toValue({ _window, lookupActions, awaits, value, params, _, __, ___, id, e, req, res, object, mount/*, condition*/ })
         if (allAreNumbers) {
           if (!isNaN(_value) && !emptySpaces(_value)) allAreNumbers = true
           else allAreNumbers = false
@@ -13807,48 +13984,18 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, _, __, __
   // if (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") return value = value.slice(1, -1)
 
   var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
-  
+
   // function
+  if (path0.slice(-2) === "()") {
   var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, toView, executer, object })
   if (isFn !== "__CONTINUE__") return isFn
+  }
 
   /* value */
   if (!isNaN(value) && !emptySpaces(value) && (value.toString().length > 1 ? value.toString().charAt(0) !== "0" : true)) value = parseFloat(value)
   else if (value === " ") return value
-  /*else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "min") value = "min(" + global.codes[value.slice(3, 15)] + ")"
-  else if (value.slice(3, 10) === "coded()" && value.slice(0, 3) === "max") value = "max(" + global.codes[value.slice(3, 15)] + ")"
-  else if (value.slice(4, 11) === "coded()" && value.slice(0, 4) === "calc") value = "calc(" + global.codes[value.slice(4, 16)] + ")"
-  else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "clamp") value = "clamp(" + global.codes[value.slice(5, 17)] + ")"
-  else if (value.slice(5, 12) === "coded()" && value.slice(0, 5) === "scale") value = "scale(" + global.codes[value.slice(5, 17)] + ")"
-  else if (value.slice(6, 13) === "coded()" && value.slice(0, 6) === "rotate") value = "rotate(" + global.codes[value.slice(6, 18)] + ")"
-  else if (value.slice(9, 16) === "coded()" && value.slice(0, 9) === "translate") value = "translate(" + global.codes[value.slice(9, 21)] + ")"
-  else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateX") value = "translateX(" + global.codes[value.slice(10, 22)] + ")"
-  else if (value.slice(10, 17) === "coded()" && value.slice(0, 10) === "translateY") value = "translateY(" + global.codes[value.slice(10, 22)] + ")"
-  else if (value.slice(15, 22) === "coded()" && value.slice(0, 15) === "linear-gradient") value = "linear-gradient(" + global.codes[value.slice(15, 27)] + ")"*/
-  //else if (object) value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, condition })
-  //else if (value.charAt(0) === "[" && value.charAt(-1) === "]") value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, condition })
-  /*else if (path[0].includes("()") && path.length === 1) {
-
-    var val0 = value.split("coded()")[0]
-    if (value.includes('coded()') && !val0.includes("()") && !val0.includes("_map") && !val0.includes("_array") && !val0.includes("_list")) {
-
-      value.split("coded()").slice(1).map(val => {
-        val0 += toValue({ _window, lookupActions, awaits, value: global.codes[`coded()${val.slice(0, 5)}`], params, _, __, ___, id, e, req, res, object, mount, condition })
-        val0 += val.slice(5)
-      })
-      value = val0
-
-    } else value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, condition })
-  } */else if (object || path[0].includes(":") || path[1] || path[0].includes(")(") || path[0].includes("()")) 
-    value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, toView, condition })
-  //else if (path[0].includes("_array") || path[0].includes("_map") || path[0].includes("_list")) value = reducer({ _window, lookupActions, awaits, id, e, path, params, object, _, __, ___, req, res, mount, toView, condition })
-  /*else if (value.includes(":") && value.split(":")[1].slice(0, 7) === "coded()") {
-
-    var args = value.split(":")
-    var key = toValue({ _window, lookupActions, awaits, value: args[0], params, _, __, ___, id, e, req, res, object, mount, toView, condition })
-
-    value = args.slice(1).map(arg => reducer({ _window, lookupActions, awaits, id, params, path: arg, object: key, e, req, res, _, __, ___, mount, toView, condition }))
-  }*/
+  else if (object || path[0].includes(":") || path[1] || path[0].includes(")(") || path[0].includes("()")) 
+    value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, _, __, ___, e, req, res, mount, toView/*, condition*/ })
 
   return value
 }
@@ -14232,8 +14379,10 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     
     // encode
     view.type = toCode({ _window, string: toCode({ _window, string: view.type }), start: "'", end: "'" })
+    if (view.type.split(".")[0].split(":")[0].slice(-2) === "()") {
     var isFn = await toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0], isView: true })
     if (isFn !== "__CONTINUE__") return resolve(isFn)
+    }
     
     // 
     var type = view.type.split("?")[0]
@@ -14254,6 +14403,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
 
       type = global.codes[type]
       type = toValue({ req, res, _window, id, value: type, _, __, ___ })
+      view.__viewName__ = type
 
       // sub params
       if (subParams) {
@@ -14349,9 +14499,8 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
               else if (type === "Text") _view.text = _data
               else if (type === "Checkbox") _view.label = { text: _data }
             }
-            
+
             views[_id] = _view
-            
             return await toView({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: _, ___: __, viewer })
           }))
 
@@ -14373,8 +14522,6 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           views[_id] = _view
           var tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: _, ___: __, viewer })
           return resolve(tags)
-          
-          // return resolve(tags)
         }
         
         delete views[view.id]
@@ -14384,7 +14531,8 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       view.mapType = ["data"]
     }
 
-    view.type = type = toValue({ req, res, _window, id, value: type, _, __, ___ })
+    view.type = view.__viewName__ = type = toValue({ req, res, _window, id, value: type, _, __, ___ })
+
 
     // events
     if (view.event) {
@@ -14409,16 +14557,6 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         
         if (views[_id] && view.id !== _id) view.id = _id + generate()
         else view.id = id = _id
-        
-        if (global.data[viewer][_id] && !view["creation-date"] && id !== _id) {
-          
-          view["my-views"].push(_id)
-          views[_id] = { ...view, ...clone(global.data[viewer][_id]) }
-          delete views[id]
-          
-          tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___, viewer })
-          return resolve(tags)
-        }
       }
     }
 
@@ -14458,7 +14596,8 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, lookupActions, awaits, string: params, id, req, res, mount: true, toView: true, _, __, ___ })
+      params = toValue({ _window, lookupActions, awaits, value: params, id, req, res, mount: true, toView: true, _, __, ___ })
+      if (typeof params !== "object") params = { [params]: generate() }
 
       if (params.id && params.id !== id) {
 
@@ -14539,7 +14678,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       if (!newView) return resolve("")
       if (newView.id && views[newView.id]) newView.id += generate()
       
-      views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
+      views[id] = { ...view,  ...newView, __viewName__: viewId, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
 
       tags = await toView({ _window, lookupActions, awaits, id, req, res, _: Object.keys(params).length > 0 ? params : _, __: Object.keys(params).length > 0 ? _ : __, ___: Object.keys(params).length > 0 ? __ : ___, viewer })
       return resolve(tags)
@@ -16141,7 +16280,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":149,"./adapters/xhr":149,"./core/enhanceError":159,"./helpers/normalizeHeaderName":171,"./utils":175,"_process":181}],164:[function(require,module,exports){
+},{"./adapters/http":149,"./adapters/xhr":149,"./core/enhanceError":159,"./helpers/normalizeHeaderName":171,"./utils":175,"_process":184}],164:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -18973,7 +19112,231 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":177,"buffer":179,"ieee754":180}],180:[function(require,module,exports){
+},{"base64-js":177,"buffer":179,"ieee754":182}],180:[function(require,module,exports){
+'use strict';
+
+/******************************************************************************
+ * Created 2008-08-19.
+ *
+ * Dijkstra path-finding functions. Adapted from the Dijkstar Python project.
+ *
+ * Copyright (C) 2008
+ *   Wyatt Baldwin <self@wyattbaldwin.com>
+ *   All rights reserved
+ *
+ * Licensed under the MIT license.
+ *
+ *   http://www.opensource.org/licenses/mit-license.php
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *****************************************************************************/
+var dijkstra = {
+  single_source_shortest_paths: function(graph, s, d) {
+    // Predecessor map for each node that has been encountered.
+    // node ID => predecessor node ID
+    var predecessors = {};
+
+    // Costs of shortest paths from s to all nodes encountered.
+    // node ID => cost
+    var costs = {};
+    costs[s] = 0;
+
+    // Costs of shortest paths from s to all nodes encountered; differs from
+    // `costs` in that it provides easy access to the node that currently has
+    // the known shortest path from s.
+    // XXX: Do we actually need both `costs` and `open`?
+    var open = dijkstra.PriorityQueue.make();
+    open.push(s, 0);
+
+    var closest,
+        u, v,
+        cost_of_s_to_u,
+        adjacent_nodes,
+        cost_of_e,
+        cost_of_s_to_u_plus_cost_of_e,
+        cost_of_s_to_v,
+        first_visit;
+    while (!open.empty()) {
+      // In the nodes remaining in graph that have a known cost from s,
+      // find the node, u, that currently has the shortest path from s.
+      closest = open.pop();
+      u = closest.value;
+      cost_of_s_to_u = closest.cost;
+
+      // Get nodes adjacent to u...
+      adjacent_nodes = graph[u] || {};
+
+      // ...and explore the edges that connect u to those nodes, updating
+      // the cost of the shortest paths to any or all of those nodes as
+      // necessary. v is the node across the current edge from u.
+      for (v in adjacent_nodes) {
+        if (adjacent_nodes.hasOwnProperty(v)) {
+          // Get the cost of the edge running from u to v.
+          cost_of_e = adjacent_nodes[v];
+
+          // Cost of s to u plus the cost of u to v across e--this is *a*
+          // cost from s to v that may or may not be less than the current
+          // known cost to v.
+          cost_of_s_to_u_plus_cost_of_e = cost_of_s_to_u + cost_of_e;
+
+          // If we haven't visited v yet OR if the current known cost from s to
+          // v is greater than the new cost we just found (cost of s to u plus
+          // cost of u to v across e), update v's cost in the cost list and
+          // update v's predecessor in the predecessor list (it's now u).
+          cost_of_s_to_v = costs[v];
+          first_visit = (typeof costs[v] === 'undefined');
+          if (first_visit || cost_of_s_to_v > cost_of_s_to_u_plus_cost_of_e) {
+            costs[v] = cost_of_s_to_u_plus_cost_of_e;
+            open.push(v, cost_of_s_to_u_plus_cost_of_e);
+            predecessors[v] = u;
+          }
+        }
+      }
+    }
+
+    if (typeof d !== 'undefined' && typeof costs[d] === 'undefined') {
+      var msg = ['Could not find a path from ', s, ' to ', d, '.'].join('');
+      throw new Error(msg);
+    }
+
+    return predecessors;
+  },
+
+  extract_shortest_path_from_predecessor_list: function(predecessors, d) {
+    var nodes = [];
+    var u = d;
+    var predecessor;
+    while (u) {
+      nodes.push(u);
+      predecessor = predecessors[u];
+      u = predecessors[u];
+    }
+    nodes.reverse();
+    return nodes;
+  },
+
+  find_path: function(graph, s, d) {
+    var predecessors = dijkstra.single_source_shortest_paths(graph, s, d);
+    return dijkstra.extract_shortest_path_from_predecessor_list(
+      predecessors, d);
+  },
+
+  /**
+   * A very naive priority queue implementation.
+   */
+  PriorityQueue: {
+    make: function (opts) {
+      var T = dijkstra.PriorityQueue,
+          t = {},
+          key;
+      opts = opts || {};
+      for (key in T) {
+        if (T.hasOwnProperty(key)) {
+          t[key] = T[key];
+        }
+      }
+      t.queue = [];
+      t.sorter = opts.sorter || T.default_sorter;
+      return t;
+    },
+
+    default_sorter: function (a, b) {
+      return a.cost - b.cost;
+    },
+
+    /**
+     * Add a new item to the queue and ensure the highest priority element
+     * is at the front of the queue.
+     */
+    push: function (value, cost) {
+      var item = {value: value, cost: cost};
+      this.queue.push(item);
+      this.queue.sort(this.sorter);
+    },
+
+    /**
+     * Return the highest priority element in the queue.
+     */
+    pop: function () {
+      return this.queue.shift();
+    },
+
+    empty: function () {
+      return this.queue.length === 0;
+    }
+  }
+};
+
+
+// node.js module exports
+if (typeof module !== 'undefined') {
+  module.exports = dijkstra;
+}
+
+},{}],181:[function(require,module,exports){
+'use strict'
+
+module.exports = function encodeUtf8 (input) {
+  var result = []
+  var size = input.length
+
+  for (var index = 0; index < size; index++) {
+    var point = input.charCodeAt(index)
+
+    if (point >= 0xD800 && point <= 0xDBFF && size > index + 1) {
+      var second = input.charCodeAt(index + 1)
+
+      if (second >= 0xDC00 && second <= 0xDFFF) {
+        // https://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+        point = (point - 0xD800) * 0x400 + second - 0xDC00 + 0x10000
+        index += 1
+      }
+    }
+
+    // US-ASCII
+    if (point < 0x80) {
+      result.push(point)
+      continue
+    }
+
+    // 2-byte UTF-8
+    if (point < 0x800) {
+      result.push((point >> 6) | 192)
+      result.push((point & 63) | 128)
+      continue
+    }
+
+    // 3-byte UTF-8
+    if (point < 0xD800 || (point >= 0xE000 && point < 0x10000)) {
+      result.push((point >> 12) | 224)
+      result.push(((point >> 6) & 63) | 128)
+      result.push((point & 63) | 128)
+      continue
+    }
+
+    // 4-byte UTF-8
+    if (point >= 0x10000 && point <= 0x10FFFF) {
+      result.push((point >> 18) | 240)
+      result.push(((point >> 12) & 63) | 128)
+      result.push(((point >> 6) & 63) | 128)
+      result.push((point & 63) | 128)
+      continue
+    }
+
+    // Invalid character
+    result.push(0xEF, 0xBF, 0xBD)
+  }
+
+  return new Uint8Array(result).buffer
+}
+
+},{}],182:[function(require,module,exports){
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -19060,7 +19423,540 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],181:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
+(function (process){(function (){
+// 'path' module extracted from Node.js v8.11.1 (only the posix part)
+// transplited with Babel
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+'use strict';
+
+function assertPath(path) {
+  if (typeof path !== 'string') {
+    throw new TypeError('Path must be a string. Received ' + JSON.stringify(path));
+  }
+}
+
+// Resolves . and .. elements in a path with directory names
+function normalizeStringPosix(path, allowAboveRoot) {
+  var res = '';
+  var lastSegmentLength = 0;
+  var lastSlash = -1;
+  var dots = 0;
+  var code;
+  for (var i = 0; i <= path.length; ++i) {
+    if (i < path.length)
+      code = path.charCodeAt(i);
+    else if (code === 47 /*/*/)
+      break;
+    else
+      code = 47 /*/*/;
+    if (code === 47 /*/*/) {
+      if (lastSlash === i - 1 || dots === 1) {
+        // NOOP
+      } else if (lastSlash !== i - 1 && dots === 2) {
+        if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 /*.*/ || res.charCodeAt(res.length - 2) !== 46 /*.*/) {
+          if (res.length > 2) {
+            var lastSlashIndex = res.lastIndexOf('/');
+            if (lastSlashIndex !== res.length - 1) {
+              if (lastSlashIndex === -1) {
+                res = '';
+                lastSegmentLength = 0;
+              } else {
+                res = res.slice(0, lastSlashIndex);
+                lastSegmentLength = res.length - 1 - res.lastIndexOf('/');
+              }
+              lastSlash = i;
+              dots = 0;
+              continue;
+            }
+          } else if (res.length === 2 || res.length === 1) {
+            res = '';
+            lastSegmentLength = 0;
+            lastSlash = i;
+            dots = 0;
+            continue;
+          }
+        }
+        if (allowAboveRoot) {
+          if (res.length > 0)
+            res += '/..';
+          else
+            res = '..';
+          lastSegmentLength = 2;
+        }
+      } else {
+        if (res.length > 0)
+          res += '/' + path.slice(lastSlash + 1, i);
+        else
+          res = path.slice(lastSlash + 1, i);
+        lastSegmentLength = i - lastSlash - 1;
+      }
+      lastSlash = i;
+      dots = 0;
+    } else if (code === 46 /*.*/ && dots !== -1) {
+      ++dots;
+    } else {
+      dots = -1;
+    }
+  }
+  return res;
+}
+
+function _format(sep, pathObject) {
+  var dir = pathObject.dir || pathObject.root;
+  var base = pathObject.base || (pathObject.name || '') + (pathObject.ext || '');
+  if (!dir) {
+    return base;
+  }
+  if (dir === pathObject.root) {
+    return dir + base;
+  }
+  return dir + sep + base;
+}
+
+var posix = {
+  // path.resolve([from ...], to)
+  resolve: function resolve() {
+    var resolvedPath = '';
+    var resolvedAbsolute = false;
+    var cwd;
+
+    for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+      var path;
+      if (i >= 0)
+        path = arguments[i];
+      else {
+        if (cwd === undefined)
+          cwd = process.cwd();
+        path = cwd;
+      }
+
+      assertPath(path);
+
+      // Skip empty entries
+      if (path.length === 0) {
+        continue;
+      }
+
+      resolvedPath = path + '/' + resolvedPath;
+      resolvedAbsolute = path.charCodeAt(0) === 47 /*/*/;
+    }
+
+    // At this point the path should be resolved to a full absolute path, but
+    // handle relative paths to be safe (might happen when process.cwd() fails)
+
+    // Normalize the path
+    resolvedPath = normalizeStringPosix(resolvedPath, !resolvedAbsolute);
+
+    if (resolvedAbsolute) {
+      if (resolvedPath.length > 0)
+        return '/' + resolvedPath;
+      else
+        return '/';
+    } else if (resolvedPath.length > 0) {
+      return resolvedPath;
+    } else {
+      return '.';
+    }
+  },
+
+  normalize: function normalize(path) {
+    assertPath(path);
+
+    if (path.length === 0) return '.';
+
+    var isAbsolute = path.charCodeAt(0) === 47 /*/*/;
+    var trailingSeparator = path.charCodeAt(path.length - 1) === 47 /*/*/;
+
+    // Normalize the path
+    path = normalizeStringPosix(path, !isAbsolute);
+
+    if (path.length === 0 && !isAbsolute) path = '.';
+    if (path.length > 0 && trailingSeparator) path += '/';
+
+    if (isAbsolute) return '/' + path;
+    return path;
+  },
+
+  isAbsolute: function isAbsolute(path) {
+    assertPath(path);
+    return path.length > 0 && path.charCodeAt(0) === 47 /*/*/;
+  },
+
+  join: function join() {
+    if (arguments.length === 0)
+      return '.';
+    var joined;
+    for (var i = 0; i < arguments.length; ++i) {
+      var arg = arguments[i];
+      assertPath(arg);
+      if (arg.length > 0) {
+        if (joined === undefined)
+          joined = arg;
+        else
+          joined += '/' + arg;
+      }
+    }
+    if (joined === undefined)
+      return '.';
+    return posix.normalize(joined);
+  },
+
+  relative: function relative(from, to) {
+    assertPath(from);
+    assertPath(to);
+
+    if (from === to) return '';
+
+    from = posix.resolve(from);
+    to = posix.resolve(to);
+
+    if (from === to) return '';
+
+    // Trim any leading backslashes
+    var fromStart = 1;
+    for (; fromStart < from.length; ++fromStart) {
+      if (from.charCodeAt(fromStart) !== 47 /*/*/)
+        break;
+    }
+    var fromEnd = from.length;
+    var fromLen = fromEnd - fromStart;
+
+    // Trim any leading backslashes
+    var toStart = 1;
+    for (; toStart < to.length; ++toStart) {
+      if (to.charCodeAt(toStart) !== 47 /*/*/)
+        break;
+    }
+    var toEnd = to.length;
+    var toLen = toEnd - toStart;
+
+    // Compare paths to find the longest common path from root
+    var length = fromLen < toLen ? fromLen : toLen;
+    var lastCommonSep = -1;
+    var i = 0;
+    for (; i <= length; ++i) {
+      if (i === length) {
+        if (toLen > length) {
+          if (to.charCodeAt(toStart + i) === 47 /*/*/) {
+            // We get here if `from` is the exact base path for `to`.
+            // For example: from='/foo/bar'; to='/foo/bar/baz'
+            return to.slice(toStart + i + 1);
+          } else if (i === 0) {
+            // We get here if `from` is the root
+            // For example: from='/'; to='/foo'
+            return to.slice(toStart + i);
+          }
+        } else if (fromLen > length) {
+          if (from.charCodeAt(fromStart + i) === 47 /*/*/) {
+            // We get here if `to` is the exact base path for `from`.
+            // For example: from='/foo/bar/baz'; to='/foo/bar'
+            lastCommonSep = i;
+          } else if (i === 0) {
+            // We get here if `to` is the root.
+            // For example: from='/foo'; to='/'
+            lastCommonSep = 0;
+          }
+        }
+        break;
+      }
+      var fromCode = from.charCodeAt(fromStart + i);
+      var toCode = to.charCodeAt(toStart + i);
+      if (fromCode !== toCode)
+        break;
+      else if (fromCode === 47 /*/*/)
+        lastCommonSep = i;
+    }
+
+    var out = '';
+    // Generate the relative path based on the path difference between `to`
+    // and `from`
+    for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
+      if (i === fromEnd || from.charCodeAt(i) === 47 /*/*/) {
+        if (out.length === 0)
+          out += '..';
+        else
+          out += '/..';
+      }
+    }
+
+    // Lastly, append the rest of the destination (`to`) path that comes after
+    // the common path parts
+    if (out.length > 0)
+      return out + to.slice(toStart + lastCommonSep);
+    else {
+      toStart += lastCommonSep;
+      if (to.charCodeAt(toStart) === 47 /*/*/)
+        ++toStart;
+      return to.slice(toStart);
+    }
+  },
+
+  _makeLong: function _makeLong(path) {
+    return path;
+  },
+
+  dirname: function dirname(path) {
+    assertPath(path);
+    if (path.length === 0) return '.';
+    var code = path.charCodeAt(0);
+    var hasRoot = code === 47 /*/*/;
+    var end = -1;
+    var matchedSlash = true;
+    for (var i = path.length - 1; i >= 1; --i) {
+      code = path.charCodeAt(i);
+      if (code === 47 /*/*/) {
+          if (!matchedSlash) {
+            end = i;
+            break;
+          }
+        } else {
+        // We saw the first non-path separator
+        matchedSlash = false;
+      }
+    }
+
+    if (end === -1) return hasRoot ? '/' : '.';
+    if (hasRoot && end === 1) return '//';
+    return path.slice(0, end);
+  },
+
+  basename: function basename(path, ext) {
+    if (ext !== undefined && typeof ext !== 'string') throw new TypeError('"ext" argument must be a string');
+    assertPath(path);
+
+    var start = 0;
+    var end = -1;
+    var matchedSlash = true;
+    var i;
+
+    if (ext !== undefined && ext.length > 0 && ext.length <= path.length) {
+      if (ext.length === path.length && ext === path) return '';
+      var extIdx = ext.length - 1;
+      var firstNonSlashEnd = -1;
+      for (i = path.length - 1; i >= 0; --i) {
+        var code = path.charCodeAt(i);
+        if (code === 47 /*/*/) {
+            // If we reached a path separator that was not part of a set of path
+            // separators at the end of the string, stop now
+            if (!matchedSlash) {
+              start = i + 1;
+              break;
+            }
+          } else {
+          if (firstNonSlashEnd === -1) {
+            // We saw the first non-path separator, remember this index in case
+            // we need it if the extension ends up not matching
+            matchedSlash = false;
+            firstNonSlashEnd = i + 1;
+          }
+          if (extIdx >= 0) {
+            // Try to match the explicit extension
+            if (code === ext.charCodeAt(extIdx)) {
+              if (--extIdx === -1) {
+                // We matched the extension, so mark this as the end of our path
+                // component
+                end = i;
+              }
+            } else {
+              // Extension does not match, so our result is the entire path
+              // component
+              extIdx = -1;
+              end = firstNonSlashEnd;
+            }
+          }
+        }
+      }
+
+      if (start === end) end = firstNonSlashEnd;else if (end === -1) end = path.length;
+      return path.slice(start, end);
+    } else {
+      for (i = path.length - 1; i >= 0; --i) {
+        if (path.charCodeAt(i) === 47 /*/*/) {
+            // If we reached a path separator that was not part of a set of path
+            // separators at the end of the string, stop now
+            if (!matchedSlash) {
+              start = i + 1;
+              break;
+            }
+          } else if (end === -1) {
+          // We saw the first non-path separator, mark this as the end of our
+          // path component
+          matchedSlash = false;
+          end = i + 1;
+        }
+      }
+
+      if (end === -1) return '';
+      return path.slice(start, end);
+    }
+  },
+
+  extname: function extname(path) {
+    assertPath(path);
+    var startDot = -1;
+    var startPart = 0;
+    var end = -1;
+    var matchedSlash = true;
+    // Track the state of characters (if any) we see before our first dot and
+    // after any path separator we find
+    var preDotState = 0;
+    for (var i = path.length - 1; i >= 0; --i) {
+      var code = path.charCodeAt(i);
+      if (code === 47 /*/*/) {
+          // If we reached a path separator that was not part of a set of path
+          // separators at the end of the string, stop now
+          if (!matchedSlash) {
+            startPart = i + 1;
+            break;
+          }
+          continue;
+        }
+      if (end === -1) {
+        // We saw the first non-path separator, mark this as the end of our
+        // extension
+        matchedSlash = false;
+        end = i + 1;
+      }
+      if (code === 46 /*.*/) {
+          // If this is our first dot, mark it as the start of our extension
+          if (startDot === -1)
+            startDot = i;
+          else if (preDotState !== 1)
+            preDotState = 1;
+      } else if (startDot !== -1) {
+        // We saw a non-dot and non-path separator before our dot, so we should
+        // have a good chance at having a non-empty extension
+        preDotState = -1;
+      }
+    }
+
+    if (startDot === -1 || end === -1 ||
+        // We saw a non-dot character immediately before the dot
+        preDotState === 0 ||
+        // The (right-most) trimmed path component is exactly '..'
+        preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+      return '';
+    }
+    return path.slice(startDot, end);
+  },
+
+  format: function format(pathObject) {
+    if (pathObject === null || typeof pathObject !== 'object') {
+      throw new TypeError('The "pathObject" argument must be of type Object. Received type ' + typeof pathObject);
+    }
+    return _format('/', pathObject);
+  },
+
+  parse: function parse(path) {
+    assertPath(path);
+
+    var ret = { root: '', dir: '', base: '', ext: '', name: '' };
+    if (path.length === 0) return ret;
+    var code = path.charCodeAt(0);
+    var isAbsolute = code === 47 /*/*/;
+    var start;
+    if (isAbsolute) {
+      ret.root = '/';
+      start = 1;
+    } else {
+      start = 0;
+    }
+    var startDot = -1;
+    var startPart = 0;
+    var end = -1;
+    var matchedSlash = true;
+    var i = path.length - 1;
+
+    // Track the state of characters (if any) we see before our first dot and
+    // after any path separator we find
+    var preDotState = 0;
+
+    // Get non-dir info
+    for (; i >= start; --i) {
+      code = path.charCodeAt(i);
+      if (code === 47 /*/*/) {
+          // If we reached a path separator that was not part of a set of path
+          // separators at the end of the string, stop now
+          if (!matchedSlash) {
+            startPart = i + 1;
+            break;
+          }
+          continue;
+        }
+      if (end === -1) {
+        // We saw the first non-path separator, mark this as the end of our
+        // extension
+        matchedSlash = false;
+        end = i + 1;
+      }
+      if (code === 46 /*.*/) {
+          // If this is our first dot, mark it as the start of our extension
+          if (startDot === -1) startDot = i;else if (preDotState !== 1) preDotState = 1;
+        } else if (startDot !== -1) {
+        // We saw a non-dot and non-path separator before our dot, so we should
+        // have a good chance at having a non-empty extension
+        preDotState = -1;
+      }
+    }
+
+    if (startDot === -1 || end === -1 ||
+    // We saw a non-dot character immediately before the dot
+    preDotState === 0 ||
+    // The (right-most) trimmed path component is exactly '..'
+    preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+      if (end !== -1) {
+        if (startPart === 0 && isAbsolute) ret.base = ret.name = path.slice(1, end);else ret.base = ret.name = path.slice(startPart, end);
+      }
+    } else {
+      if (startPart === 0 && isAbsolute) {
+        ret.name = path.slice(1, startDot);
+        ret.base = path.slice(1, end);
+      } else {
+        ret.name = path.slice(startPart, startDot);
+        ret.base = path.slice(startPart, end);
+      }
+      ret.ext = path.slice(startDot, end);
+    }
+
+    if (startPart > 0) ret.dir = path.slice(0, startPart - 1);else if (isAbsolute) ret.dir = '/';
+
+    return ret;
+  },
+
+  sep: '/',
+  delimiter: ':',
+  win32: null,
+  posix: null
+};
+
+posix.posix = posix;
+
+module.exports = posix;
+
+}).call(this)}).call(this,require('_process'))
+},{"_process":184}],184:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -19246,4 +20142,3408 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
+},{}],185:[function(require,module,exports){
+
+const canPromise = require('./can-promise')
+
+const QRCode = require('./core/qrcode')
+const CanvasRenderer = require('./renderer/canvas')
+const SvgRenderer = require('./renderer/svg-tag.js')
+
+function renderCanvas (renderFunc, canvas, text, opts, cb) {
+  const args = [].slice.call(arguments, 1)
+  const argsNum = args.length
+  const isLastArgCb = typeof args[argsNum - 1] === 'function'
+
+  if (!isLastArgCb && !canPromise()) {
+    throw new Error('Callback required as last argument')
+  }
+
+  if (isLastArgCb) {
+    if (argsNum < 2) {
+      throw new Error('Too few arguments provided')
+    }
+
+    if (argsNum === 2) {
+      cb = text
+      text = canvas
+      canvas = opts = undefined
+    } else if (argsNum === 3) {
+      if (canvas.getContext && typeof cb === 'undefined') {
+        cb = opts
+        opts = undefined
+      } else {
+        cb = opts
+        opts = text
+        text = canvas
+        canvas = undefined
+      }
+    }
+  } else {
+    if (argsNum < 1) {
+      throw new Error('Too few arguments provided')
+    }
+
+    if (argsNum === 1) {
+      text = canvas
+      canvas = opts = undefined
+    } else if (argsNum === 2 && !canvas.getContext) {
+      opts = text
+      text = canvas
+      canvas = undefined
+    }
+
+    return new Promise(function (resolve, reject) {
+      try {
+        const data = QRCode.create(text, opts)
+        resolve(renderFunc(data, canvas, opts))
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
+  try {
+    const data = QRCode.create(text, opts)
+    cb(null, renderFunc(data, canvas, opts))
+  } catch (e) {
+    cb(e)
+  }
+}
+
+exports.create = QRCode.create
+exports.toCanvas = renderCanvas.bind(null, CanvasRenderer.render)
+exports.toDataURL = renderCanvas.bind(null, CanvasRenderer.renderToDataURL)
+
+// only svg for now.
+exports.toString = renderCanvas.bind(null, function (data, _, opts) {
+  return SvgRenderer.render(data, opts)
+})
+
+},{"./can-promise":186,"./core/qrcode":202,"./renderer/canvas":209,"./renderer/svg-tag.js":210}],186:[function(require,module,exports){
+// can-promise has a crash in some versions of react native that dont have
+// standard global objects
+// https://github.com/soldair/node-qrcode/issues/157
+
+module.exports = function () {
+  return typeof Promise === 'function' && Promise.prototype && Promise.prototype.then
+}
+
+},{}],187:[function(require,module,exports){
+/**
+ * Alignment pattern are fixed reference pattern in defined positions
+ * in a matrix symbology, which enables the decode software to re-synchronise
+ * the coordinate mapping of the image modules in the event of moderate amounts
+ * of distortion of the image.
+ *
+ * Alignment patterns are present only in QR Code symbols of version 2 or larger
+ * and their number depends on the symbol version.
+ */
+
+const getSymbolSize = require('./utils').getSymbolSize
+
+/**
+ * Calculate the row/column coordinates of the center module of each alignment pattern
+ * for the specified QR Code version.
+ *
+ * The alignment patterns are positioned symmetrically on either side of the diagonal
+ * running from the top left corner of the symbol to the bottom right corner.
+ *
+ * Since positions are simmetrical only half of the coordinates are returned.
+ * Each item of the array will represent in turn the x and y coordinate.
+ * @see {@link getPositions}
+ *
+ * @param  {Number} version QR Code version
+ * @return {Array}          Array of coordinate
+ */
+exports.getRowColCoords = function getRowColCoords (version) {
+  if (version === 1) return []
+
+  const posCount = Math.floor(version / 7) + 2
+  const size = getSymbolSize(version)
+  const intervals = size === 145 ? 26 : Math.ceil((size - 13) / (2 * posCount - 2)) * 2
+  const positions = [size - 7] // Last coord is always (size - 7)
+
+  for (let i = 1; i < posCount - 1; i++) {
+    positions[i] = positions[i - 1] - intervals
+  }
+
+  positions.push(6) // First coord is always 6
+
+  return positions.reverse()
+}
+
+/**
+ * Returns an array containing the positions of each alignment pattern.
+ * Each array's element represent the center point of the pattern as (x, y) coordinates
+ *
+ * Coordinates are calculated expanding the row/column coordinates returned by {@link getRowColCoords}
+ * and filtering out the items that overlaps with finder pattern
+ *
+ * @example
+ * For a Version 7 symbol {@link getRowColCoords} returns values 6, 22 and 38.
+ * The alignment patterns, therefore, are to be centered on (row, column)
+ * positions (6,22), (22,6), (22,22), (22,38), (38,22), (38,38).
+ * Note that the coordinates (6,6), (6,38), (38,6) are occupied by finder patterns
+ * and are not therefore used for alignment patterns.
+ *
+ * let pos = getPositions(7)
+ * // [[6,22], [22,6], [22,22], [22,38], [38,22], [38,38]]
+ *
+ * @param  {Number} version QR Code version
+ * @return {Array}          Array of coordinates
+ */
+exports.getPositions = function getPositions (version) {
+  const coords = []
+  const pos = exports.getRowColCoords(version)
+  const posLength = pos.length
+
+  for (let i = 0; i < posLength; i++) {
+    for (let j = 0; j < posLength; j++) {
+      // Skip if position is occupied by finder patterns
+      if ((i === 0 && j === 0) || // top-left
+          (i === 0 && j === posLength - 1) || // bottom-left
+          (i === posLength - 1 && j === 0)) { // top-right
+        continue
+      }
+
+      coords.push([pos[i], pos[j]])
+    }
+  }
+
+  return coords
+}
+
+},{"./utils":206}],188:[function(require,module,exports){
+const Mode = require('./mode')
+
+/**
+ * Array of characters available in alphanumeric mode
+ *
+ * As per QR Code specification, to each character
+ * is assigned a value from 0 to 44 which in this case coincides
+ * with the array index
+ *
+ * @type {Array}
+ */
+const ALPHA_NUM_CHARS = [
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+  ' ', '$', '%', '*', '+', '-', '.', '/', ':'
+]
+
+function AlphanumericData (data) {
+  this.mode = Mode.ALPHANUMERIC
+  this.data = data
+}
+
+AlphanumericData.getBitsLength = function getBitsLength (length) {
+  return 11 * Math.floor(length / 2) + 6 * (length % 2)
+}
+
+AlphanumericData.prototype.getLength = function getLength () {
+  return this.data.length
+}
+
+AlphanumericData.prototype.getBitsLength = function getBitsLength () {
+  return AlphanumericData.getBitsLength(this.data.length)
+}
+
+AlphanumericData.prototype.write = function write (bitBuffer) {
+  let i
+
+  // Input data characters are divided into groups of two characters
+  // and encoded as 11-bit binary codes.
+  for (i = 0; i + 2 <= this.data.length; i += 2) {
+    // The character value of the first character is multiplied by 45
+    let value = ALPHA_NUM_CHARS.indexOf(this.data[i]) * 45
+
+    // The character value of the second digit is added to the product
+    value += ALPHA_NUM_CHARS.indexOf(this.data[i + 1])
+
+    // The sum is then stored as 11-bit binary number
+    bitBuffer.put(value, 11)
+  }
+
+  // If the number of input data characters is not a multiple of two,
+  // the character value of the final character is encoded as a 6-bit binary number.
+  if (this.data.length % 2) {
+    bitBuffer.put(ALPHA_NUM_CHARS.indexOf(this.data[i]), 6)
+  }
+}
+
+module.exports = AlphanumericData
+
+},{"./mode":199}],189:[function(require,module,exports){
+function BitBuffer () {
+  this.buffer = []
+  this.length = 0
+}
+
+BitBuffer.prototype = {
+
+  get: function (index) {
+    const bufIndex = Math.floor(index / 8)
+    return ((this.buffer[bufIndex] >>> (7 - index % 8)) & 1) === 1
+  },
+
+  put: function (num, length) {
+    for (let i = 0; i < length; i++) {
+      this.putBit(((num >>> (length - i - 1)) & 1) === 1)
+    }
+  },
+
+  getLengthInBits: function () {
+    return this.length
+  },
+
+  putBit: function (bit) {
+    const bufIndex = Math.floor(this.length / 8)
+    if (this.buffer.length <= bufIndex) {
+      this.buffer.push(0)
+    }
+
+    if (bit) {
+      this.buffer[bufIndex] |= (0x80 >>> (this.length % 8))
+    }
+
+    this.length++
+  }
+}
+
+module.exports = BitBuffer
+
+},{}],190:[function(require,module,exports){
+/**
+ * Helper class to handle QR Code symbol modules
+ *
+ * @param {Number} size Symbol size
+ */
+function BitMatrix (size) {
+  if (!size || size < 1) {
+    throw new Error('BitMatrix size must be defined and greater than 0')
+  }
+
+  this.size = size
+  this.data = new Uint8Array(size * size)
+  this.reservedBit = new Uint8Array(size * size)
+}
+
+/**
+ * Set bit value at specified location
+ * If reserved flag is set, this bit will be ignored during masking process
+ *
+ * @param {Number}  row
+ * @param {Number}  col
+ * @param {Boolean} value
+ * @param {Boolean} reserved
+ */
+BitMatrix.prototype.set = function (row, col, value, reserved) {
+  const index = row * this.size + col
+  this.data[index] = value
+  if (reserved) this.reservedBit[index] = true
+}
+
+/**
+ * Returns bit value at specified location
+ *
+ * @param  {Number}  row
+ * @param  {Number}  col
+ * @return {Boolean}
+ */
+BitMatrix.prototype.get = function (row, col) {
+  return this.data[row * this.size + col]
+}
+
+/**
+ * Applies xor operator at specified location
+ * (used during masking process)
+ *
+ * @param {Number}  row
+ * @param {Number}  col
+ * @param {Boolean} value
+ */
+BitMatrix.prototype.xor = function (row, col, value) {
+  this.data[row * this.size + col] ^= value
+}
+
+/**
+ * Check if bit at specified location is reserved
+ *
+ * @param {Number}   row
+ * @param {Number}   col
+ * @return {Boolean}
+ */
+BitMatrix.prototype.isReserved = function (row, col) {
+  return this.reservedBit[row * this.size + col]
+}
+
+module.exports = BitMatrix
+
+},{}],191:[function(require,module,exports){
+const encodeUtf8 = require('encode-utf8')
+const Mode = require('./mode')
+
+function ByteData (data) {
+  this.mode = Mode.BYTE
+  if (typeof (data) === 'string') {
+    data = encodeUtf8(data)
+  }
+  this.data = new Uint8Array(data)
+}
+
+ByteData.getBitsLength = function getBitsLength (length) {
+  return length * 8
+}
+
+ByteData.prototype.getLength = function getLength () {
+  return this.data.length
+}
+
+ByteData.prototype.getBitsLength = function getBitsLength () {
+  return ByteData.getBitsLength(this.data.length)
+}
+
+ByteData.prototype.write = function (bitBuffer) {
+  for (let i = 0, l = this.data.length; i < l; i++) {
+    bitBuffer.put(this.data[i], 8)
+  }
+}
+
+module.exports = ByteData
+
+},{"./mode":199,"encode-utf8":181}],192:[function(require,module,exports){
+const ECLevel = require('./error-correction-level')
+
+const EC_BLOCKS_TABLE = [
+// L  M  Q  H
+  1, 1, 1, 1,
+  1, 1, 1, 1,
+  1, 1, 2, 2,
+  1, 2, 2, 4,
+  1, 2, 4, 4,
+  2, 4, 4, 4,
+  2, 4, 6, 5,
+  2, 4, 6, 6,
+  2, 5, 8, 8,
+  4, 5, 8, 8,
+  4, 5, 8, 11,
+  4, 8, 10, 11,
+  4, 9, 12, 16,
+  4, 9, 16, 16,
+  6, 10, 12, 18,
+  6, 10, 17, 16,
+  6, 11, 16, 19,
+  6, 13, 18, 21,
+  7, 14, 21, 25,
+  8, 16, 20, 25,
+  8, 17, 23, 25,
+  9, 17, 23, 34,
+  9, 18, 25, 30,
+  10, 20, 27, 32,
+  12, 21, 29, 35,
+  12, 23, 34, 37,
+  12, 25, 34, 40,
+  13, 26, 35, 42,
+  14, 28, 38, 45,
+  15, 29, 40, 48,
+  16, 31, 43, 51,
+  17, 33, 45, 54,
+  18, 35, 48, 57,
+  19, 37, 51, 60,
+  19, 38, 53, 63,
+  20, 40, 56, 66,
+  21, 43, 59, 70,
+  22, 45, 62, 74,
+  24, 47, 65, 77,
+  25, 49, 68, 81
+]
+
+const EC_CODEWORDS_TABLE = [
+// L  M  Q  H
+  7, 10, 13, 17,
+  10, 16, 22, 28,
+  15, 26, 36, 44,
+  20, 36, 52, 64,
+  26, 48, 72, 88,
+  36, 64, 96, 112,
+  40, 72, 108, 130,
+  48, 88, 132, 156,
+  60, 110, 160, 192,
+  72, 130, 192, 224,
+  80, 150, 224, 264,
+  96, 176, 260, 308,
+  104, 198, 288, 352,
+  120, 216, 320, 384,
+  132, 240, 360, 432,
+  144, 280, 408, 480,
+  168, 308, 448, 532,
+  180, 338, 504, 588,
+  196, 364, 546, 650,
+  224, 416, 600, 700,
+  224, 442, 644, 750,
+  252, 476, 690, 816,
+  270, 504, 750, 900,
+  300, 560, 810, 960,
+  312, 588, 870, 1050,
+  336, 644, 952, 1110,
+  360, 700, 1020, 1200,
+  390, 728, 1050, 1260,
+  420, 784, 1140, 1350,
+  450, 812, 1200, 1440,
+  480, 868, 1290, 1530,
+  510, 924, 1350, 1620,
+  540, 980, 1440, 1710,
+  570, 1036, 1530, 1800,
+  570, 1064, 1590, 1890,
+  600, 1120, 1680, 1980,
+  630, 1204, 1770, 2100,
+  660, 1260, 1860, 2220,
+  720, 1316, 1950, 2310,
+  750, 1372, 2040, 2430
+]
+
+/**
+ * Returns the number of error correction block that the QR Code should contain
+ * for the specified version and error correction level.
+ *
+ * @param  {Number} version              QR Code version
+ * @param  {Number} errorCorrectionLevel Error correction level
+ * @return {Number}                      Number of error correction blocks
+ */
+exports.getBlocksCount = function getBlocksCount (version, errorCorrectionLevel) {
+  switch (errorCorrectionLevel) {
+    case ECLevel.L:
+      return EC_BLOCKS_TABLE[(version - 1) * 4 + 0]
+    case ECLevel.M:
+      return EC_BLOCKS_TABLE[(version - 1) * 4 + 1]
+    case ECLevel.Q:
+      return EC_BLOCKS_TABLE[(version - 1) * 4 + 2]
+    case ECLevel.H:
+      return EC_BLOCKS_TABLE[(version - 1) * 4 + 3]
+    default:
+      return undefined
+  }
+}
+
+/**
+ * Returns the number of error correction codewords to use for the specified
+ * version and error correction level.
+ *
+ * @param  {Number} version              QR Code version
+ * @param  {Number} errorCorrectionLevel Error correction level
+ * @return {Number}                      Number of error correction codewords
+ */
+exports.getTotalCodewordsCount = function getTotalCodewordsCount (version, errorCorrectionLevel) {
+  switch (errorCorrectionLevel) {
+    case ECLevel.L:
+      return EC_CODEWORDS_TABLE[(version - 1) * 4 + 0]
+    case ECLevel.M:
+      return EC_CODEWORDS_TABLE[(version - 1) * 4 + 1]
+    case ECLevel.Q:
+      return EC_CODEWORDS_TABLE[(version - 1) * 4 + 2]
+    case ECLevel.H:
+      return EC_CODEWORDS_TABLE[(version - 1) * 4 + 3]
+    default:
+      return undefined
+  }
+}
+
+},{"./error-correction-level":193}],193:[function(require,module,exports){
+exports.L = { bit: 1 }
+exports.M = { bit: 0 }
+exports.Q = { bit: 3 }
+exports.H = { bit: 2 }
+
+function fromString (string) {
+  if (typeof string !== 'string') {
+    throw new Error('Param is not a string')
+  }
+
+  const lcStr = string.toLowerCase()
+
+  switch (lcStr) {
+    case 'l':
+    case 'low':
+      return exports.L
+
+    case 'm':
+    case 'medium':
+      return exports.M
+
+    case 'q':
+    case 'quartile':
+      return exports.Q
+
+    case 'h':
+    case 'high':
+      return exports.H
+
+    default:
+      throw new Error('Unknown EC Level: ' + string)
+  }
+}
+
+exports.isValid = function isValid (level) {
+  return level && typeof level.bit !== 'undefined' &&
+    level.bit >= 0 && level.bit < 4
+}
+
+exports.from = function from (value, defaultValue) {
+  if (exports.isValid(value)) {
+    return value
+  }
+
+  try {
+    return fromString(value)
+  } catch (e) {
+    return defaultValue
+  }
+}
+
+},{}],194:[function(require,module,exports){
+const getSymbolSize = require('./utils').getSymbolSize
+const FINDER_PATTERN_SIZE = 7
+
+/**
+ * Returns an array containing the positions of each finder pattern.
+ * Each array's element represent the top-left point of the pattern as (x, y) coordinates
+ *
+ * @param  {Number} version QR Code version
+ * @return {Array}          Array of coordinates
+ */
+exports.getPositions = function getPositions (version) {
+  const size = getSymbolSize(version)
+
+  return [
+    // top-left
+    [0, 0],
+    // top-right
+    [size - FINDER_PATTERN_SIZE, 0],
+    // bottom-left
+    [0, size - FINDER_PATTERN_SIZE]
+  ]
+}
+
+},{"./utils":206}],195:[function(require,module,exports){
+const Utils = require('./utils')
+
+const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0)
+const G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1)
+const G15_BCH = Utils.getBCHDigit(G15)
+
+/**
+ * Returns format information with relative error correction bits
+ *
+ * The format information is a 15-bit sequence containing 5 data bits,
+ * with 10 error correction bits calculated using the (15, 5) BCH code.
+ *
+ * @param  {Number} errorCorrectionLevel Error correction level
+ * @param  {Number} mask                 Mask pattern
+ * @return {Number}                      Encoded format information bits
+ */
+exports.getEncodedBits = function getEncodedBits (errorCorrectionLevel, mask) {
+  const data = ((errorCorrectionLevel.bit << 3) | mask)
+  let d = data << 10
+
+  while (Utils.getBCHDigit(d) - G15_BCH >= 0) {
+    d ^= (G15 << (Utils.getBCHDigit(d) - G15_BCH))
+  }
+
+  // xor final data with mask pattern in order to ensure that
+  // no combination of Error Correction Level and data mask pattern
+  // will result in an all-zero data string
+  return ((data << 10) | d) ^ G15_MASK
+}
+
+},{"./utils":206}],196:[function(require,module,exports){
+const EXP_TABLE = new Uint8Array(512)
+const LOG_TABLE = new Uint8Array(256)
+/**
+ * Precompute the log and anti-log tables for faster computation later
+ *
+ * For each possible value in the galois field 2^8, we will pre-compute
+ * the logarithm and anti-logarithm (exponential) of this value
+ *
+ * ref {@link https://en.wikiversity.org/wiki/Reed%E2%80%93Solomon_codes_for_coders#Introduction_to_mathematical_fields}
+ */
+;(function initTables () {
+  let x = 1
+  for (let i = 0; i < 255; i++) {
+    EXP_TABLE[i] = x
+    LOG_TABLE[x] = i
+
+    x <<= 1 // multiply by 2
+
+    // The QR code specification says to use byte-wise modulo 100011101 arithmetic.
+    // This means that when a number is 256 or larger, it should be XORed with 0x11D.
+    if (x & 0x100) { // similar to x >= 256, but a lot faster (because 0x100 == 256)
+      x ^= 0x11D
+    }
+  }
+
+  // Optimization: double the size of the anti-log table so that we don't need to mod 255 to
+  // stay inside the bounds (because we will mainly use this table for the multiplication of
+  // two GF numbers, no more).
+  // @see {@link mul}
+  for (let i = 255; i < 512; i++) {
+    EXP_TABLE[i] = EXP_TABLE[i - 255]
+  }
+}())
+
+/**
+ * Returns log value of n inside Galois Field
+ *
+ * @param  {Number} n
+ * @return {Number}
+ */
+exports.log = function log (n) {
+  if (n < 1) throw new Error('log(' + n + ')')
+  return LOG_TABLE[n]
+}
+
+/**
+ * Returns anti-log value of n inside Galois Field
+ *
+ * @param  {Number} n
+ * @return {Number}
+ */
+exports.exp = function exp (n) {
+  return EXP_TABLE[n]
+}
+
+/**
+ * Multiplies two number inside Galois Field
+ *
+ * @param  {Number} x
+ * @param  {Number} y
+ * @return {Number}
+ */
+exports.mul = function mul (x, y) {
+  if (x === 0 || y === 0) return 0
+
+  // should be EXP_TABLE[(LOG_TABLE[x] + LOG_TABLE[y]) % 255] if EXP_TABLE wasn't oversized
+  // @see {@link initTables}
+  return EXP_TABLE[LOG_TABLE[x] + LOG_TABLE[y]]
+}
+
+},{}],197:[function(require,module,exports){
+const Mode = require('./mode')
+const Utils = require('./utils')
+
+function KanjiData (data) {
+  this.mode = Mode.KANJI
+  this.data = data
+}
+
+KanjiData.getBitsLength = function getBitsLength (length) {
+  return length * 13
+}
+
+KanjiData.prototype.getLength = function getLength () {
+  return this.data.length
+}
+
+KanjiData.prototype.getBitsLength = function getBitsLength () {
+  return KanjiData.getBitsLength(this.data.length)
+}
+
+KanjiData.prototype.write = function (bitBuffer) {
+  let i
+
+  // In the Shift JIS system, Kanji characters are represented by a two byte combination.
+  // These byte values are shifted from the JIS X 0208 values.
+  // JIS X 0208 gives details of the shift coded representation.
+  for (i = 0; i < this.data.length; i++) {
+    let value = Utils.toSJIS(this.data[i])
+
+    // For characters with Shift JIS values from 0x8140 to 0x9FFC:
+    if (value >= 0x8140 && value <= 0x9FFC) {
+      // Subtract 0x8140 from Shift JIS value
+      value -= 0x8140
+
+    // For characters with Shift JIS values from 0xE040 to 0xEBBF
+    } else if (value >= 0xE040 && value <= 0xEBBF) {
+      // Subtract 0xC140 from Shift JIS value
+      value -= 0xC140
+    } else {
+      throw new Error(
+        'Invalid SJIS character: ' + this.data[i] + '\n' +
+        'Make sure your charset is UTF-8')
+    }
+
+    // Multiply most significant byte of result by 0xC0
+    // and add least significant byte to product
+    value = (((value >>> 8) & 0xff) * 0xC0) + (value & 0xff)
+
+    // Convert result to a 13-bit binary string
+    bitBuffer.put(value, 13)
+  }
+}
+
+module.exports = KanjiData
+
+},{"./mode":199,"./utils":206}],198:[function(require,module,exports){
+/**
+ * Data mask pattern reference
+ * @type {Object}
+ */
+exports.Patterns = {
+  PATTERN000: 0,
+  PATTERN001: 1,
+  PATTERN010: 2,
+  PATTERN011: 3,
+  PATTERN100: 4,
+  PATTERN101: 5,
+  PATTERN110: 6,
+  PATTERN111: 7
+}
+
+/**
+ * Weighted penalty scores for the undesirable features
+ * @type {Object}
+ */
+const PenaltyScores = {
+  N1: 3,
+  N2: 3,
+  N3: 40,
+  N4: 10
+}
+
+/**
+ * Check if mask pattern value is valid
+ *
+ * @param  {Number}  mask    Mask pattern
+ * @return {Boolean}         true if valid, false otherwise
+ */
+exports.isValid = function isValid (mask) {
+  return mask != null && mask !== '' && !isNaN(mask) && mask >= 0 && mask <= 7
+}
+
+/**
+ * Returns mask pattern from a value.
+ * If value is not valid, returns undefined
+ *
+ * @param  {Number|String} value        Mask pattern value
+ * @return {Number}                     Valid mask pattern or undefined
+ */
+exports.from = function from (value) {
+  return exports.isValid(value) ? parseInt(value, 10) : undefined
+}
+
+/**
+* Find adjacent modules in row/column with the same color
+* and assign a penalty value.
+*
+* Points: N1 + i
+* i is the amount by which the number of adjacent modules of the same color exceeds 5
+*/
+exports.getPenaltyN1 = function getPenaltyN1 (data) {
+  const size = data.size
+  let points = 0
+  let sameCountCol = 0
+  let sameCountRow = 0
+  let lastCol = null
+  let lastRow = null
+
+  for (let row = 0; row < size; row++) {
+    sameCountCol = sameCountRow = 0
+    lastCol = lastRow = null
+
+    for (let col = 0; col < size; col++) {
+      let module = data.get(row, col)
+      if (module === lastCol) {
+        sameCountCol++
+      } else {
+        if (sameCountCol >= 5) points += PenaltyScores.N1 + (sameCountCol - 5)
+        lastCol = module
+        sameCountCol = 1
+      }
+
+      module = data.get(col, row)
+      if (module === lastRow) {
+        sameCountRow++
+      } else {
+        if (sameCountRow >= 5) points += PenaltyScores.N1 + (sameCountRow - 5)
+        lastRow = module
+        sameCountRow = 1
+      }
+    }
+
+    if (sameCountCol >= 5) points += PenaltyScores.N1 + (sameCountCol - 5)
+    if (sameCountRow >= 5) points += PenaltyScores.N1 + (sameCountRow - 5)
+  }
+
+  return points
+}
+
+/**
+ * Find 2x2 blocks with the same color and assign a penalty value
+ *
+ * Points: N2 * (m - 1) * (n - 1)
+ */
+exports.getPenaltyN2 = function getPenaltyN2 (data) {
+  const size = data.size
+  let points = 0
+
+  for (let row = 0; row < size - 1; row++) {
+    for (let col = 0; col < size - 1; col++) {
+      const last = data.get(row, col) +
+        data.get(row, col + 1) +
+        data.get(row + 1, col) +
+        data.get(row + 1, col + 1)
+
+      if (last === 4 || last === 0) points++
+    }
+  }
+
+  return points * PenaltyScores.N2
+}
+
+/**
+ * Find 1:1:3:1:1 ratio (dark:light:dark:light:dark) pattern in row/column,
+ * preceded or followed by light area 4 modules wide
+ *
+ * Points: N3 * number of pattern found
+ */
+exports.getPenaltyN3 = function getPenaltyN3 (data) {
+  const size = data.size
+  let points = 0
+  let bitsCol = 0
+  let bitsRow = 0
+
+  for (let row = 0; row < size; row++) {
+    bitsCol = bitsRow = 0
+    for (let col = 0; col < size; col++) {
+      bitsCol = ((bitsCol << 1) & 0x7FF) | data.get(row, col)
+      if (col >= 10 && (bitsCol === 0x5D0 || bitsCol === 0x05D)) points++
+
+      bitsRow = ((bitsRow << 1) & 0x7FF) | data.get(col, row)
+      if (col >= 10 && (bitsRow === 0x5D0 || bitsRow === 0x05D)) points++
+    }
+  }
+
+  return points * PenaltyScores.N3
+}
+
+/**
+ * Calculate proportion of dark modules in entire symbol
+ *
+ * Points: N4 * k
+ *
+ * k is the rating of the deviation of the proportion of dark modules
+ * in the symbol from 50% in steps of 5%
+ */
+exports.getPenaltyN4 = function getPenaltyN4 (data) {
+  let darkCount = 0
+  const modulesCount = data.data.length
+
+  for (let i = 0; i < modulesCount; i++) darkCount += data.data[i]
+
+  const k = Math.abs(Math.ceil((darkCount * 100 / modulesCount) / 5) - 10)
+
+  return k * PenaltyScores.N4
+}
+
+/**
+ * Return mask value at given position
+ *
+ * @param  {Number} maskPattern Pattern reference value
+ * @param  {Number} i           Row
+ * @param  {Number} j           Column
+ * @return {Boolean}            Mask value
+ */
+function getMaskAt (maskPattern, i, j) {
+  switch (maskPattern) {
+    case exports.Patterns.PATTERN000: return (i + j) % 2 === 0
+    case exports.Patterns.PATTERN001: return i % 2 === 0
+    case exports.Patterns.PATTERN010: return j % 3 === 0
+    case exports.Patterns.PATTERN011: return (i + j) % 3 === 0
+    case exports.Patterns.PATTERN100: return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 === 0
+    case exports.Patterns.PATTERN101: return (i * j) % 2 + (i * j) % 3 === 0
+    case exports.Patterns.PATTERN110: return ((i * j) % 2 + (i * j) % 3) % 2 === 0
+    case exports.Patterns.PATTERN111: return ((i * j) % 3 + (i + j) % 2) % 2 === 0
+
+    default: throw new Error('bad maskPattern:' + maskPattern)
+  }
+}
+
+/**
+ * Apply a mask pattern to a BitMatrix
+ *
+ * @param  {Number}    pattern Pattern reference number
+ * @param  {BitMatrix} data    BitMatrix data
+ */
+exports.applyMask = function applyMask (pattern, data) {
+  const size = data.size
+
+  for (let col = 0; col < size; col++) {
+    for (let row = 0; row < size; row++) {
+      if (data.isReserved(row, col)) continue
+      data.xor(row, col, getMaskAt(pattern, row, col))
+    }
+  }
+}
+
+/**
+ * Returns the best mask pattern for data
+ *
+ * @param  {BitMatrix} data
+ * @return {Number} Mask pattern reference number
+ */
+exports.getBestMask = function getBestMask (data, setupFormatFunc) {
+  const numPatterns = Object.keys(exports.Patterns).length
+  let bestPattern = 0
+  let lowerPenalty = Infinity
+
+  for (let p = 0; p < numPatterns; p++) {
+    setupFormatFunc(p)
+    exports.applyMask(p, data)
+
+    // Calculate penalty
+    const penalty =
+      exports.getPenaltyN1(data) +
+      exports.getPenaltyN2(data) +
+      exports.getPenaltyN3(data) +
+      exports.getPenaltyN4(data)
+
+    // Undo previously applied mask
+    exports.applyMask(p, data)
+
+    if (penalty < lowerPenalty) {
+      lowerPenalty = penalty
+      bestPattern = p
+    }
+  }
+
+  return bestPattern
+}
+
+},{}],199:[function(require,module,exports){
+const VersionCheck = require('./version-check')
+const Regex = require('./regex')
+
+/**
+ * Numeric mode encodes data from the decimal digit set (0 - 9)
+ * (byte values 30HEX to 39HEX).
+ * Normally, 3 data characters are represented by 10 bits.
+ *
+ * @type {Object}
+ */
+exports.NUMERIC = {
+  id: 'Numeric',
+  bit: 1 << 0,
+  ccBits: [10, 12, 14]
+}
+
+/**
+ * Alphanumeric mode encodes data from a set of 45 characters,
+ * i.e. 10 numeric digits (0 - 9),
+ *      26 alphabetic characters (A - Z),
+ *   and 9 symbols (SP, $, %, *, +, -, ., /, :).
+ * Normally, two input characters are represented by 11 bits.
+ *
+ * @type {Object}
+ */
+exports.ALPHANUMERIC = {
+  id: 'Alphanumeric',
+  bit: 1 << 1,
+  ccBits: [9, 11, 13]
+}
+
+/**
+ * In byte mode, data is encoded at 8 bits per character.
+ *
+ * @type {Object}
+ */
+exports.BYTE = {
+  id: 'Byte',
+  bit: 1 << 2,
+  ccBits: [8, 16, 16]
+}
+
+/**
+ * The Kanji mode efficiently encodes Kanji characters in accordance with
+ * the Shift JIS system based on JIS X 0208.
+ * The Shift JIS values are shifted from the JIS X 0208 values.
+ * JIS X 0208 gives details of the shift coded representation.
+ * Each two-byte character value is compacted to a 13-bit binary codeword.
+ *
+ * @type {Object}
+ */
+exports.KANJI = {
+  id: 'Kanji',
+  bit: 1 << 3,
+  ccBits: [8, 10, 12]
+}
+
+/**
+ * Mixed mode will contain a sequences of data in a combination of any of
+ * the modes described above
+ *
+ * @type {Object}
+ */
+exports.MIXED = {
+  bit: -1
+}
+
+/**
+ * Returns the number of bits needed to store the data length
+ * according to QR Code specifications.
+ *
+ * @param  {Mode}   mode    Data mode
+ * @param  {Number} version QR Code version
+ * @return {Number}         Number of bits
+ */
+exports.getCharCountIndicator = function getCharCountIndicator (mode, version) {
+  if (!mode.ccBits) throw new Error('Invalid mode: ' + mode)
+
+  if (!VersionCheck.isValid(version)) {
+    throw new Error('Invalid version: ' + version)
+  }
+
+  if (version >= 1 && version < 10) return mode.ccBits[0]
+  else if (version < 27) return mode.ccBits[1]
+  return mode.ccBits[2]
+}
+
+/**
+ * Returns the most efficient mode to store the specified data
+ *
+ * @param  {String} dataStr Input data string
+ * @return {Mode}           Best mode
+ */
+exports.getBestModeForData = function getBestModeForData (dataStr) {
+  if (Regex.testNumeric(dataStr)) return exports.NUMERIC
+  else if (Regex.testAlphanumeric(dataStr)) return exports.ALPHANUMERIC
+  else if (Regex.testKanji(dataStr)) return exports.KANJI
+  else return exports.BYTE
+}
+
+/**
+ * Return mode name as string
+ *
+ * @param {Mode} mode Mode object
+ * @returns {String}  Mode name
+ */
+exports.toString = function toString (mode) {
+  if (mode && mode.id) return mode.id
+  throw new Error('Invalid mode')
+}
+
+/**
+ * Check if input param is a valid mode object
+ *
+ * @param   {Mode}    mode Mode object
+ * @returns {Boolean} True if valid mode, false otherwise
+ */
+exports.isValid = function isValid (mode) {
+  return mode && mode.bit && mode.ccBits
+}
+
+/**
+ * Get mode object from its name
+ *
+ * @param   {String} string Mode name
+ * @returns {Mode}          Mode object
+ */
+function fromString (string) {
+  if (typeof string !== 'string') {
+    throw new Error('Param is not a string')
+  }
+
+  const lcStr = string.toLowerCase()
+
+  switch (lcStr) {
+    case 'numeric':
+      return exports.NUMERIC
+    case 'alphanumeric':
+      return exports.ALPHANUMERIC
+    case 'kanji':
+      return exports.KANJI
+    case 'byte':
+      return exports.BYTE
+    default:
+      throw new Error('Unknown mode: ' + string)
+  }
+}
+
+/**
+ * Returns mode from a value.
+ * If value is not a valid mode, returns defaultValue
+ *
+ * @param  {Mode|String} value        Encoding mode
+ * @param  {Mode}        defaultValue Fallback value
+ * @return {Mode}                     Encoding mode
+ */
+exports.from = function from (value, defaultValue) {
+  if (exports.isValid(value)) {
+    return value
+  }
+
+  try {
+    return fromString(value)
+  } catch (e) {
+    return defaultValue
+  }
+}
+
+},{"./regex":204,"./version-check":207}],200:[function(require,module,exports){
+const Mode = require('./mode')
+
+function NumericData (data) {
+  this.mode = Mode.NUMERIC
+  this.data = data.toString()
+}
+
+NumericData.getBitsLength = function getBitsLength (length) {
+  return 10 * Math.floor(length / 3) + ((length % 3) ? ((length % 3) * 3 + 1) : 0)
+}
+
+NumericData.prototype.getLength = function getLength () {
+  return this.data.length
+}
+
+NumericData.prototype.getBitsLength = function getBitsLength () {
+  return NumericData.getBitsLength(this.data.length)
+}
+
+NumericData.prototype.write = function write (bitBuffer) {
+  let i, group, value
+
+  // The input data string is divided into groups of three digits,
+  // and each group is converted to its 10-bit binary equivalent.
+  for (i = 0; i + 3 <= this.data.length; i += 3) {
+    group = this.data.substr(i, 3)
+    value = parseInt(group, 10)
+
+    bitBuffer.put(value, 10)
+  }
+
+  // If the number of input digits is not an exact multiple of three,
+  // the final one or two digits are converted to 4 or 7 bits respectively.
+  const remainingNum = this.data.length - i
+  if (remainingNum > 0) {
+    group = this.data.substr(i)
+    value = parseInt(group, 10)
+
+    bitBuffer.put(value, remainingNum * 3 + 1)
+  }
+}
+
+module.exports = NumericData
+
+},{"./mode":199}],201:[function(require,module,exports){
+const GF = require('./galois-field')
+
+/**
+ * Multiplies two polynomials inside Galois Field
+ *
+ * @param  {Uint8Array} p1 Polynomial
+ * @param  {Uint8Array} p2 Polynomial
+ * @return {Uint8Array}    Product of p1 and p2
+ */
+exports.mul = function mul (p1, p2) {
+  const coeff = new Uint8Array(p1.length + p2.length - 1)
+
+  for (let i = 0; i < p1.length; i++) {
+    for (let j = 0; j < p2.length; j++) {
+      coeff[i + j] ^= GF.mul(p1[i], p2[j])
+    }
+  }
+
+  return coeff
+}
+
+/**
+ * Calculate the remainder of polynomials division
+ *
+ * @param  {Uint8Array} divident Polynomial
+ * @param  {Uint8Array} divisor  Polynomial
+ * @return {Uint8Array}          Remainder
+ */
+exports.mod = function mod (divident, divisor) {
+  let result = new Uint8Array(divident)
+
+  while ((result.length - divisor.length) >= 0) {
+    const coeff = result[0]
+
+    for (let i = 0; i < divisor.length; i++) {
+      result[i] ^= GF.mul(divisor[i], coeff)
+    }
+
+    // remove all zeros from buffer head
+    let offset = 0
+    while (offset < result.length && result[offset] === 0) offset++
+    result = result.slice(offset)
+  }
+
+  return result
+}
+
+/**
+ * Generate an irreducible generator polynomial of specified degree
+ * (used by Reed-Solomon encoder)
+ *
+ * @param  {Number} degree Degree of the generator polynomial
+ * @return {Uint8Array}    Buffer containing polynomial coefficients
+ */
+exports.generateECPolynomial = function generateECPolynomial (degree) {
+  let poly = new Uint8Array([1])
+  for (let i = 0; i < degree; i++) {
+    poly = exports.mul(poly, new Uint8Array([1, GF.exp(i)]))
+  }
+
+  return poly
+}
+
+},{"./galois-field":196}],202:[function(require,module,exports){
+const Utils = require('./utils')
+const ECLevel = require('./error-correction-level')
+const BitBuffer = require('./bit-buffer')
+const BitMatrix = require('./bit-matrix')
+const AlignmentPattern = require('./alignment-pattern')
+const FinderPattern = require('./finder-pattern')
+const MaskPattern = require('./mask-pattern')
+const ECCode = require('./error-correction-code')
+const ReedSolomonEncoder = require('./reed-solomon-encoder')
+const Version = require('./version')
+const FormatInfo = require('./format-info')
+const Mode = require('./mode')
+const Segments = require('./segments')
+
+/**
+ * QRCode for JavaScript
+ *
+ * modified by Ryan Day for nodejs support
+ * Copyright (c) 2011 Ryan Day
+ *
+ * Licensed under the MIT license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *
+//---------------------------------------------------------------------
+// QRCode for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//   http://www.opensource.org/licenses/mit-license.php
+//
+// The word "QR Code" is registered trademark of
+// DENSO WAVE INCORPORATED
+//   http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+*/
+
+/**
+ * Add finder patterns bits to matrix
+ *
+ * @param  {BitMatrix} matrix  Modules matrix
+ * @param  {Number}    version QR Code version
+ */
+function setupFinderPattern (matrix, version) {
+  const size = matrix.size
+  const pos = FinderPattern.getPositions(version)
+
+  for (let i = 0; i < pos.length; i++) {
+    const row = pos[i][0]
+    const col = pos[i][1]
+
+    for (let r = -1; r <= 7; r++) {
+      if (row + r <= -1 || size <= row + r) continue
+
+      for (let c = -1; c <= 7; c++) {
+        if (col + c <= -1 || size <= col + c) continue
+
+        if ((r >= 0 && r <= 6 && (c === 0 || c === 6)) ||
+          (c >= 0 && c <= 6 && (r === 0 || r === 6)) ||
+          (r >= 2 && r <= 4 && c >= 2 && c <= 4)) {
+          matrix.set(row + r, col + c, true, true)
+        } else {
+          matrix.set(row + r, col + c, false, true)
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Add timing pattern bits to matrix
+ *
+ * Note: this function must be called before {@link setupAlignmentPattern}
+ *
+ * @param  {BitMatrix} matrix Modules matrix
+ */
+function setupTimingPattern (matrix) {
+  const size = matrix.size
+
+  for (let r = 8; r < size - 8; r++) {
+    const value = r % 2 === 0
+    matrix.set(r, 6, value, true)
+    matrix.set(6, r, value, true)
+  }
+}
+
+/**
+ * Add alignment patterns bits to matrix
+ *
+ * Note: this function must be called after {@link setupTimingPattern}
+ *
+ * @param  {BitMatrix} matrix  Modules matrix
+ * @param  {Number}    version QR Code version
+ */
+function setupAlignmentPattern (matrix, version) {
+  const pos = AlignmentPattern.getPositions(version)
+
+  for (let i = 0; i < pos.length; i++) {
+    const row = pos[i][0]
+    const col = pos[i][1]
+
+    for (let r = -2; r <= 2; r++) {
+      for (let c = -2; c <= 2; c++) {
+        if (r === -2 || r === 2 || c === -2 || c === 2 ||
+          (r === 0 && c === 0)) {
+          matrix.set(row + r, col + c, true, true)
+        } else {
+          matrix.set(row + r, col + c, false, true)
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Add version info bits to matrix
+ *
+ * @param  {BitMatrix} matrix  Modules matrix
+ * @param  {Number}    version QR Code version
+ */
+function setupVersionInfo (matrix, version) {
+  const size = matrix.size
+  const bits = Version.getEncodedBits(version)
+  let row, col, mod
+
+  for (let i = 0; i < 18; i++) {
+    row = Math.floor(i / 3)
+    col = i % 3 + size - 8 - 3
+    mod = ((bits >> i) & 1) === 1
+
+    matrix.set(row, col, mod, true)
+    matrix.set(col, row, mod, true)
+  }
+}
+
+/**
+ * Add format info bits to matrix
+ *
+ * @param  {BitMatrix} matrix               Modules matrix
+ * @param  {ErrorCorrectionLevel}    errorCorrectionLevel Error correction level
+ * @param  {Number}    maskPattern          Mask pattern reference value
+ */
+function setupFormatInfo (matrix, errorCorrectionLevel, maskPattern) {
+  const size = matrix.size
+  const bits = FormatInfo.getEncodedBits(errorCorrectionLevel, maskPattern)
+  let i, mod
+
+  for (i = 0; i < 15; i++) {
+    mod = ((bits >> i) & 1) === 1
+
+    // vertical
+    if (i < 6) {
+      matrix.set(i, 8, mod, true)
+    } else if (i < 8) {
+      matrix.set(i + 1, 8, mod, true)
+    } else {
+      matrix.set(size - 15 + i, 8, mod, true)
+    }
+
+    // horizontal
+    if (i < 8) {
+      matrix.set(8, size - i - 1, mod, true)
+    } else if (i < 9) {
+      matrix.set(8, 15 - i - 1 + 1, mod, true)
+    } else {
+      matrix.set(8, 15 - i - 1, mod, true)
+    }
+  }
+
+  // fixed module
+  matrix.set(size - 8, 8, 1, true)
+}
+
+/**
+ * Add encoded data bits to matrix
+ *
+ * @param  {BitMatrix}  matrix Modules matrix
+ * @param  {Uint8Array} data   Data codewords
+ */
+function setupData (matrix, data) {
+  const size = matrix.size
+  let inc = -1
+  let row = size - 1
+  let bitIndex = 7
+  let byteIndex = 0
+
+  for (let col = size - 1; col > 0; col -= 2) {
+    if (col === 6) col--
+
+    while (true) {
+      for (let c = 0; c < 2; c++) {
+        if (!matrix.isReserved(row, col - c)) {
+          let dark = false
+
+          if (byteIndex < data.length) {
+            dark = (((data[byteIndex] >>> bitIndex) & 1) === 1)
+          }
+
+          matrix.set(row, col - c, dark)
+          bitIndex--
+
+          if (bitIndex === -1) {
+            byteIndex++
+            bitIndex = 7
+          }
+        }
+      }
+
+      row += inc
+
+      if (row < 0 || size <= row) {
+        row -= inc
+        inc = -inc
+        break
+      }
+    }
+  }
+}
+
+/**
+ * Create encoded codewords from data input
+ *
+ * @param  {Number}   version              QR Code version
+ * @param  {ErrorCorrectionLevel}   errorCorrectionLevel Error correction level
+ * @param  {ByteData} data                 Data input
+ * @return {Uint8Array}                    Buffer containing encoded codewords
+ */
+function createData (version, errorCorrectionLevel, segments) {
+  // Prepare data buffer
+  const buffer = new BitBuffer()
+
+  segments.forEach(function (data) {
+    // prefix data with mode indicator (4 bits)
+    buffer.put(data.mode.bit, 4)
+
+    // Prefix data with character count indicator.
+    // The character count indicator is a string of bits that represents the
+    // number of characters that are being encoded.
+    // The character count indicator must be placed after the mode indicator
+    // and must be a certain number of bits long, depending on the QR version
+    // and data mode
+    // @see {@link Mode.getCharCountIndicator}.
+    buffer.put(data.getLength(), Mode.getCharCountIndicator(data.mode, version))
+
+    // add binary data sequence to buffer
+    data.write(buffer)
+  })
+
+  // Calculate required number of bits
+  const totalCodewords = Utils.getSymbolTotalCodewords(version)
+  const ecTotalCodewords = ECCode.getTotalCodewordsCount(version, errorCorrectionLevel)
+  const dataTotalCodewordsBits = (totalCodewords - ecTotalCodewords) * 8
+
+  // Add a terminator.
+  // If the bit string is shorter than the total number of required bits,
+  // a terminator of up to four 0s must be added to the right side of the string.
+  // If the bit string is more than four bits shorter than the required number of bits,
+  // add four 0s to the end.
+  if (buffer.getLengthInBits() + 4 <= dataTotalCodewordsBits) {
+    buffer.put(0, 4)
+  }
+
+  // If the bit string is fewer than four bits shorter, add only the number of 0s that
+  // are needed to reach the required number of bits.
+
+  // After adding the terminator, if the number of bits in the string is not a multiple of 8,
+  // pad the string on the right with 0s to make the string's length a multiple of 8.
+  while (buffer.getLengthInBits() % 8 !== 0) {
+    buffer.putBit(0)
+  }
+
+  // Add pad bytes if the string is still shorter than the total number of required bits.
+  // Extend the buffer to fill the data capacity of the symbol corresponding to
+  // the Version and Error Correction Level by adding the Pad Codewords 11101100 (0xEC)
+  // and 00010001 (0x11) alternately.
+  const remainingByte = (dataTotalCodewordsBits - buffer.getLengthInBits()) / 8
+  for (let i = 0; i < remainingByte; i++) {
+    buffer.put(i % 2 ? 0x11 : 0xEC, 8)
+  }
+
+  return createCodewords(buffer, version, errorCorrectionLevel)
+}
+
+/**
+ * Encode input data with Reed-Solomon and return codewords with
+ * relative error correction bits
+ *
+ * @param  {BitBuffer} bitBuffer            Data to encode
+ * @param  {Number}    version              QR Code version
+ * @param  {ErrorCorrectionLevel} errorCorrectionLevel Error correction level
+ * @return {Uint8Array}                     Buffer containing encoded codewords
+ */
+function createCodewords (bitBuffer, version, errorCorrectionLevel) {
+  // Total codewords for this QR code version (Data + Error correction)
+  const totalCodewords = Utils.getSymbolTotalCodewords(version)
+
+  // Total number of error correction codewords
+  const ecTotalCodewords = ECCode.getTotalCodewordsCount(version, errorCorrectionLevel)
+
+  // Total number of data codewords
+  const dataTotalCodewords = totalCodewords - ecTotalCodewords
+
+  // Total number of blocks
+  const ecTotalBlocks = ECCode.getBlocksCount(version, errorCorrectionLevel)
+
+  // Calculate how many blocks each group should contain
+  const blocksInGroup2 = totalCodewords % ecTotalBlocks
+  const blocksInGroup1 = ecTotalBlocks - blocksInGroup2
+
+  const totalCodewordsInGroup1 = Math.floor(totalCodewords / ecTotalBlocks)
+
+  const dataCodewordsInGroup1 = Math.floor(dataTotalCodewords / ecTotalBlocks)
+  const dataCodewordsInGroup2 = dataCodewordsInGroup1 + 1
+
+  // Number of EC codewords is the same for both groups
+  const ecCount = totalCodewordsInGroup1 - dataCodewordsInGroup1
+
+  // Initialize a Reed-Solomon encoder with a generator polynomial of degree ecCount
+  const rs = new ReedSolomonEncoder(ecCount)
+
+  let offset = 0
+  const dcData = new Array(ecTotalBlocks)
+  const ecData = new Array(ecTotalBlocks)
+  let maxDataSize = 0
+  const buffer = new Uint8Array(bitBuffer.buffer)
+
+  // Divide the buffer into the required number of blocks
+  for (let b = 0; b < ecTotalBlocks; b++) {
+    const dataSize = b < blocksInGroup1 ? dataCodewordsInGroup1 : dataCodewordsInGroup2
+
+    // extract a block of data from buffer
+    dcData[b] = buffer.slice(offset, offset + dataSize)
+
+    // Calculate EC codewords for this data block
+    ecData[b] = rs.encode(dcData[b])
+
+    offset += dataSize
+    maxDataSize = Math.max(maxDataSize, dataSize)
+  }
+
+  // Create final data
+  // Interleave the data and error correction codewords from each block
+  const data = new Uint8Array(totalCodewords)
+  let index = 0
+  let i, r
+
+  // Add data codewords
+  for (i = 0; i < maxDataSize; i++) {
+    for (r = 0; r < ecTotalBlocks; r++) {
+      if (i < dcData[r].length) {
+        data[index++] = dcData[r][i]
+      }
+    }
+  }
+
+  // Apped EC codewords
+  for (i = 0; i < ecCount; i++) {
+    for (r = 0; r < ecTotalBlocks; r++) {
+      data[index++] = ecData[r][i]
+    }
+  }
+
+  return data
+}
+
+/**
+ * Build QR Code symbol
+ *
+ * @param  {String} data                 Input string
+ * @param  {Number} version              QR Code version
+ * @param  {ErrorCorretionLevel} errorCorrectionLevel Error level
+ * @param  {MaskPattern} maskPattern     Mask pattern
+ * @return {Object}                      Object containing symbol data
+ */
+function createSymbol (data, version, errorCorrectionLevel, maskPattern) {
+  let segments
+
+  if (Array.isArray(data)) {
+    segments = Segments.fromArray(data)
+  } else if (typeof data === 'string') {
+    let estimatedVersion = version
+
+    if (!estimatedVersion) {
+      const rawSegments = Segments.rawSplit(data)
+
+      // Estimate best version that can contain raw splitted segments
+      estimatedVersion = Version.getBestVersionForData(rawSegments, errorCorrectionLevel)
+    }
+
+    // Build optimized segments
+    // If estimated version is undefined, try with the highest version
+    segments = Segments.fromString(data, estimatedVersion || 40)
+  } else {
+    throw new Error('Invalid data')
+  }
+
+  // Get the min version that can contain data
+  const bestVersion = Version.getBestVersionForData(segments, errorCorrectionLevel)
+
+  // If no version is found, data cannot be stored
+  if (!bestVersion) {
+    throw new Error('The amount of data is too big to be stored in a QR Code')
+  }
+
+  // If not specified, use min version as default
+  if (!version) {
+    version = bestVersion
+
+  // Check if the specified version can contain the data
+  } else if (version < bestVersion) {
+    throw new Error('\n' +
+      'The chosen QR Code version cannot contain this amount of data.\n' +
+      'Minimum version required to store current data is: ' + bestVersion + '.\n'
+    )
+  }
+
+  const dataBits = createData(version, errorCorrectionLevel, segments)
+
+  // Allocate matrix buffer
+  const moduleCount = Utils.getSymbolSize(version)
+  const modules = new BitMatrix(moduleCount)
+
+  // Add function modules
+  setupFinderPattern(modules, version)
+  setupTimingPattern(modules)
+  setupAlignmentPattern(modules, version)
+
+  // Add temporary dummy bits for format info just to set them as reserved.
+  // This is needed to prevent these bits from being masked by {@link MaskPattern.applyMask}
+  // since the masking operation must be performed only on the encoding region.
+  // These blocks will be replaced with correct values later in code.
+  setupFormatInfo(modules, errorCorrectionLevel, 0)
+
+  if (version >= 7) {
+    setupVersionInfo(modules, version)
+  }
+
+  // Add data codewords
+  setupData(modules, dataBits)
+
+  if (isNaN(maskPattern)) {
+    // Find best mask pattern
+    maskPattern = MaskPattern.getBestMask(modules,
+      setupFormatInfo.bind(null, modules, errorCorrectionLevel))
+  }
+
+  // Apply mask pattern
+  MaskPattern.applyMask(maskPattern, modules)
+
+  // Replace format info bits with correct values
+  setupFormatInfo(modules, errorCorrectionLevel, maskPattern)
+
+  return {
+    modules: modules,
+    version: version,
+    errorCorrectionLevel: errorCorrectionLevel,
+    maskPattern: maskPattern,
+    segments: segments
+  }
+}
+
+/**
+ * QR Code
+ *
+ * @param {String | Array} data                 Input data
+ * @param {Object} options                      Optional configurations
+ * @param {Number} options.version              QR Code version
+ * @param {String} options.errorCorrectionLevel Error correction level
+ * @param {Function} options.toSJISFunc         Helper func to convert utf8 to sjis
+ */
+exports.create = function create (data, options) {
+  if (typeof data === 'undefined' || data === '') {
+    throw new Error('No input text')
+  }
+
+  let errorCorrectionLevel = ECLevel.M
+  let version
+  let mask
+
+  if (typeof options !== 'undefined') {
+    // Use higher error correction level as default
+    errorCorrectionLevel = ECLevel.from(options.errorCorrectionLevel, ECLevel.M)
+    version = Version.from(options.version)
+    mask = MaskPattern.from(options.maskPattern)
+
+    if (options.toSJISFunc) {
+      Utils.setToSJISFunction(options.toSJISFunc)
+    }
+  }
+
+  return createSymbol(data, version, errorCorrectionLevel, mask)
+}
+
+},{"./alignment-pattern":187,"./bit-buffer":189,"./bit-matrix":190,"./error-correction-code":192,"./error-correction-level":193,"./finder-pattern":194,"./format-info":195,"./mask-pattern":198,"./mode":199,"./reed-solomon-encoder":203,"./segments":205,"./utils":206,"./version":208}],203:[function(require,module,exports){
+const Polynomial = require('./polynomial')
+
+function ReedSolomonEncoder (degree) {
+  this.genPoly = undefined
+  this.degree = degree
+
+  if (this.degree) this.initialize(this.degree)
+}
+
+/**
+ * Initialize the encoder.
+ * The input param should correspond to the number of error correction codewords.
+ *
+ * @param  {Number} degree
+ */
+ReedSolomonEncoder.prototype.initialize = function initialize (degree) {
+  // create an irreducible generator polynomial
+  this.degree = degree
+  this.genPoly = Polynomial.generateECPolynomial(this.degree)
+}
+
+/**
+ * Encodes a chunk of data
+ *
+ * @param  {Uint8Array} data Buffer containing input data
+ * @return {Uint8Array}      Buffer containing encoded data
+ */
+ReedSolomonEncoder.prototype.encode = function encode (data) {
+  if (!this.genPoly) {
+    throw new Error('Encoder not initialized')
+  }
+
+  // Calculate EC for this data block
+  // extends data size to data+genPoly size
+  const paddedData = new Uint8Array(data.length + this.degree)
+  paddedData.set(data)
+
+  // The error correction codewords are the remainder after dividing the data codewords
+  // by a generator polynomial
+  const remainder = Polynomial.mod(paddedData, this.genPoly)
+
+  // return EC data blocks (last n byte, where n is the degree of genPoly)
+  // If coefficients number in remainder are less than genPoly degree,
+  // pad with 0s to the left to reach the needed number of coefficients
+  const start = this.degree - remainder.length
+  if (start > 0) {
+    const buff = new Uint8Array(this.degree)
+    buff.set(remainder, start)
+
+    return buff
+  }
+
+  return remainder
+}
+
+module.exports = ReedSolomonEncoder
+
+},{"./polynomial":201}],204:[function(require,module,exports){
+const numeric = '[0-9]+'
+const alphanumeric = '[A-Z $%*+\\-./:]+'
+let kanji = '(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|' +
+  '[uFF00-uFFEF]|[u4E00-u9FAF]|[u2605-u2606]|[u2190-u2195]|u203B|' +
+  '[u2010u2015u2018u2019u2025u2026u201Cu201Du2225u2260]|' +
+  '[u0391-u0451]|[u00A7u00A8u00B1u00B4u00D7u00F7])+'
+kanji = kanji.replace(/u/g, '\\u')
+
+const byte = '(?:(?![A-Z0-9 $%*+\\-./:]|' + kanji + ')(?:.|[\r\n]))+'
+
+exports.KANJI = new RegExp(kanji, 'g')
+exports.BYTE_KANJI = new RegExp('[^A-Z0-9 $%*+\\-./:]+', 'g')
+exports.BYTE = new RegExp(byte, 'g')
+exports.NUMERIC = new RegExp(numeric, 'g')
+exports.ALPHANUMERIC = new RegExp(alphanumeric, 'g')
+
+const TEST_KANJI = new RegExp('^' + kanji + '$')
+const TEST_NUMERIC = new RegExp('^' + numeric + '$')
+const TEST_ALPHANUMERIC = new RegExp('^[A-Z0-9 $%*+\\-./:]+$')
+
+exports.testKanji = function testKanji (str) {
+  return TEST_KANJI.test(str)
+}
+
+exports.testNumeric = function testNumeric (str) {
+  return TEST_NUMERIC.test(str)
+}
+
+exports.testAlphanumeric = function testAlphanumeric (str) {
+  return TEST_ALPHANUMERIC.test(str)
+}
+
+},{}],205:[function(require,module,exports){
+const Mode = require('./mode')
+const NumericData = require('./numeric-data')
+const AlphanumericData = require('./alphanumeric-data')
+const ByteData = require('./byte-data')
+const KanjiData = require('./kanji-data')
+const Regex = require('./regex')
+const Utils = require('./utils')
+const dijkstra = require('dijkstrajs')
+
+/**
+ * Returns UTF8 byte length
+ *
+ * @param  {String} str Input string
+ * @return {Number}     Number of byte
+ */
+function getStringByteLength (str) {
+  return unescape(encodeURIComponent(str)).length
+}
+
+/**
+ * Get a list of segments of the specified mode
+ * from a string
+ *
+ * @param  {Mode}   mode Segment mode
+ * @param  {String} str  String to process
+ * @return {Array}       Array of object with segments data
+ */
+function getSegments (regex, mode, str) {
+  const segments = []
+  let result
+
+  while ((result = regex.exec(str)) !== null) {
+    segments.push({
+      data: result[0],
+      index: result.index,
+      mode: mode,
+      length: result[0].length
+    })
+  }
+
+  return segments
+}
+
+/**
+ * Extracts a series of segments with the appropriate
+ * modes from a string
+ *
+ * @param  {String} dataStr Input string
+ * @return {Array}          Array of object with segments data
+ */
+function getSegmentsFromString (dataStr) {
+  const numSegs = getSegments(Regex.NUMERIC, Mode.NUMERIC, dataStr)
+  const alphaNumSegs = getSegments(Regex.ALPHANUMERIC, Mode.ALPHANUMERIC, dataStr)
+  let byteSegs
+  let kanjiSegs
+
+  if (Utils.isKanjiModeEnabled()) {
+    byteSegs = getSegments(Regex.BYTE, Mode.BYTE, dataStr)
+    kanjiSegs = getSegments(Regex.KANJI, Mode.KANJI, dataStr)
+  } else {
+    byteSegs = getSegments(Regex.BYTE_KANJI, Mode.BYTE, dataStr)
+    kanjiSegs = []
+  }
+
+  const segs = numSegs.concat(alphaNumSegs, byteSegs, kanjiSegs)
+
+  return segs
+    .sort(function (s1, s2) {
+      return s1.index - s2.index
+    })
+    .map(function (obj) {
+      return {
+        data: obj.data,
+        mode: obj.mode,
+        length: obj.length
+      }
+    })
+}
+
+/**
+ * Returns how many bits are needed to encode a string of
+ * specified length with the specified mode
+ *
+ * @param  {Number} length String length
+ * @param  {Mode} mode     Segment mode
+ * @return {Number}        Bit length
+ */
+function getSegmentBitsLength (length, mode) {
+  switch (mode) {
+    case Mode.NUMERIC:
+      return NumericData.getBitsLength(length)
+    case Mode.ALPHANUMERIC:
+      return AlphanumericData.getBitsLength(length)
+    case Mode.KANJI:
+      return KanjiData.getBitsLength(length)
+    case Mode.BYTE:
+      return ByteData.getBitsLength(length)
+  }
+}
+
+/**
+ * Merges adjacent segments which have the same mode
+ *
+ * @param  {Array} segs Array of object with segments data
+ * @return {Array}      Array of object with segments data
+ */
+function mergeSegments (segs) {
+  return segs.reduce(function (acc, curr) {
+    const prevSeg = acc.length - 1 >= 0 ? acc[acc.length - 1] : null
+    if (prevSeg && prevSeg.mode === curr.mode) {
+      acc[acc.length - 1].data += curr.data
+      return acc
+    }
+
+    acc.push(curr)
+    return acc
+  }, [])
+}
+
+/**
+ * Generates a list of all possible nodes combination which
+ * will be used to build a segments graph.
+ *
+ * Nodes are divided by groups. Each group will contain a list of all the modes
+ * in which is possible to encode the given text.
+ *
+ * For example the text '12345' can be encoded as Numeric, Alphanumeric or Byte.
+ * The group for '12345' will contain then 3 objects, one for each
+ * possible encoding mode.
+ *
+ * Each node represents a possible segment.
+ *
+ * @param  {Array} segs Array of object with segments data
+ * @return {Array}      Array of object with segments data
+ */
+function buildNodes (segs) {
+  const nodes = []
+  for (let i = 0; i < segs.length; i++) {
+    const seg = segs[i]
+
+    switch (seg.mode) {
+      case Mode.NUMERIC:
+        nodes.push([seg,
+          { data: seg.data, mode: Mode.ALPHANUMERIC, length: seg.length },
+          { data: seg.data, mode: Mode.BYTE, length: seg.length }
+        ])
+        break
+      case Mode.ALPHANUMERIC:
+        nodes.push([seg,
+          { data: seg.data, mode: Mode.BYTE, length: seg.length }
+        ])
+        break
+      case Mode.KANJI:
+        nodes.push([seg,
+          { data: seg.data, mode: Mode.BYTE, length: getStringByteLength(seg.data) }
+        ])
+        break
+      case Mode.BYTE:
+        nodes.push([
+          { data: seg.data, mode: Mode.BYTE, length: getStringByteLength(seg.data) }
+        ])
+    }
+  }
+
+  return nodes
+}
+
+/**
+ * Builds a graph from a list of nodes.
+ * All segments in each node group will be connected with all the segments of
+ * the next group and so on.
+ *
+ * At each connection will be assigned a weight depending on the
+ * segment's byte length.
+ *
+ * @param  {Array} nodes    Array of object with segments data
+ * @param  {Number} version QR Code version
+ * @return {Object}         Graph of all possible segments
+ */
+function buildGraph (nodes, version) {
+  const table = {}
+  const graph = { start: {} }
+  let prevNodeIds = ['start']
+
+  for (let i = 0; i < nodes.length; i++) {
+    const nodeGroup = nodes[i]
+    const currentNodeIds = []
+
+    for (let j = 0; j < nodeGroup.length; j++) {
+      const node = nodeGroup[j]
+      const key = '' + i + j
+
+      currentNodeIds.push(key)
+      table[key] = { node: node, lastCount: 0 }
+      graph[key] = {}
+
+      for (let n = 0; n < prevNodeIds.length; n++) {
+        const prevNodeId = prevNodeIds[n]
+
+        if (table[prevNodeId] && table[prevNodeId].node.mode === node.mode) {
+          graph[prevNodeId][key] =
+            getSegmentBitsLength(table[prevNodeId].lastCount + node.length, node.mode) -
+            getSegmentBitsLength(table[prevNodeId].lastCount, node.mode)
+
+          table[prevNodeId].lastCount += node.length
+        } else {
+          if (table[prevNodeId]) table[prevNodeId].lastCount = node.length
+
+          graph[prevNodeId][key] = getSegmentBitsLength(node.length, node.mode) +
+            4 + Mode.getCharCountIndicator(node.mode, version) // switch cost
+        }
+      }
+    }
+
+    prevNodeIds = currentNodeIds
+  }
+
+  for (let n = 0; n < prevNodeIds.length; n++) {
+    graph[prevNodeIds[n]].end = 0
+  }
+
+  return { map: graph, table: table }
+}
+
+/**
+ * Builds a segment from a specified data and mode.
+ * If a mode is not specified, the more suitable will be used.
+ *
+ * @param  {String} data             Input data
+ * @param  {Mode | String} modesHint Data mode
+ * @return {Segment}                 Segment
+ */
+function buildSingleSegment (data, modesHint) {
+  let mode
+  const bestMode = Mode.getBestModeForData(data)
+
+  mode = Mode.from(modesHint, bestMode)
+
+  // Make sure data can be encoded
+  if (mode !== Mode.BYTE && mode.bit < bestMode.bit) {
+    throw new Error('"' + data + '"' +
+      ' cannot be encoded with mode ' + Mode.toString(mode) +
+      '.\n Suggested mode is: ' + Mode.toString(bestMode))
+  }
+
+  // Use Mode.BYTE if Kanji support is disabled
+  if (mode === Mode.KANJI && !Utils.isKanjiModeEnabled()) {
+    mode = Mode.BYTE
+  }
+
+  switch (mode) {
+    case Mode.NUMERIC:
+      return new NumericData(data)
+
+    case Mode.ALPHANUMERIC:
+      return new AlphanumericData(data)
+
+    case Mode.KANJI:
+      return new KanjiData(data)
+
+    case Mode.BYTE:
+      return new ByteData(data)
+  }
+}
+
+/**
+ * Builds a list of segments from an array.
+ * Array can contain Strings or Objects with segment's info.
+ *
+ * For each item which is a string, will be generated a segment with the given
+ * string and the more appropriate encoding mode.
+ *
+ * For each item which is an object, will be generated a segment with the given
+ * data and mode.
+ * Objects must contain at least the property "data".
+ * If property "mode" is not present, the more suitable mode will be used.
+ *
+ * @param  {Array} array Array of objects with segments data
+ * @return {Array}       Array of Segments
+ */
+exports.fromArray = function fromArray (array) {
+  return array.reduce(function (acc, seg) {
+    if (typeof seg === 'string') {
+      acc.push(buildSingleSegment(seg, null))
+    } else if (seg.data) {
+      acc.push(buildSingleSegment(seg.data, seg.mode))
+    }
+
+    return acc
+  }, [])
+}
+
+/**
+ * Builds an optimized sequence of segments from a string,
+ * which will produce the shortest possible bitstream.
+ *
+ * @param  {String} data    Input string
+ * @param  {Number} version QR Code version
+ * @return {Array}          Array of segments
+ */
+exports.fromString = function fromString (data, version) {
+  const segs = getSegmentsFromString(data, Utils.isKanjiModeEnabled())
+
+  const nodes = buildNodes(segs)
+  const graph = buildGraph(nodes, version)
+  const path = dijkstra.find_path(graph.map, 'start', 'end')
+
+  const optimizedSegs = []
+  for (let i = 1; i < path.length - 1; i++) {
+    optimizedSegs.push(graph.table[path[i]].node)
+  }
+
+  return exports.fromArray(mergeSegments(optimizedSegs))
+}
+
+/**
+ * Splits a string in various segments with the modes which
+ * best represent their content.
+ * The produced segments are far from being optimized.
+ * The output of this function is only used to estimate a QR Code version
+ * which may contain the data.
+ *
+ * @param  {string} data Input string
+ * @return {Array}       Array of segments
+ */
+exports.rawSplit = function rawSplit (data) {
+  return exports.fromArray(
+    getSegmentsFromString(data, Utils.isKanjiModeEnabled())
+  )
+}
+
+},{"./alphanumeric-data":188,"./byte-data":191,"./kanji-data":197,"./mode":199,"./numeric-data":200,"./regex":204,"./utils":206,"dijkstrajs":180}],206:[function(require,module,exports){
+let toSJISFunction
+const CODEWORDS_COUNT = [
+  0, // Not used
+  26, 44, 70, 100, 134, 172, 196, 242, 292, 346,
+  404, 466, 532, 581, 655, 733, 815, 901, 991, 1085,
+  1156, 1258, 1364, 1474, 1588, 1706, 1828, 1921, 2051, 2185,
+  2323, 2465, 2611, 2761, 2876, 3034, 3196, 3362, 3532, 3706
+]
+
+/**
+ * Returns the QR Code size for the specified version
+ *
+ * @param  {Number} version QR Code version
+ * @return {Number}         size of QR code
+ */
+exports.getSymbolSize = function getSymbolSize (version) {
+  if (!version) throw new Error('"version" cannot be null or undefined')
+  if (version < 1 || version > 40) throw new Error('"version" should be in range from 1 to 40')
+  return version * 4 + 17
+}
+
+/**
+ * Returns the total number of codewords used to store data and EC information.
+ *
+ * @param  {Number} version QR Code version
+ * @return {Number}         Data length in bits
+ */
+exports.getSymbolTotalCodewords = function getSymbolTotalCodewords (version) {
+  return CODEWORDS_COUNT[version]
+}
+
+/**
+ * Encode data with Bose-Chaudhuri-Hocquenghem
+ *
+ * @param  {Number} data Value to encode
+ * @return {Number}      Encoded value
+ */
+exports.getBCHDigit = function (data) {
+  let digit = 0
+
+  while (data !== 0) {
+    digit++
+    data >>>= 1
+  }
+
+  return digit
+}
+
+exports.setToSJISFunction = function setToSJISFunction (f) {
+  if (typeof f !== 'function') {
+    throw new Error('"toSJISFunc" is not a valid function.')
+  }
+
+  toSJISFunction = f
+}
+
+exports.isKanjiModeEnabled = function () {
+  return typeof toSJISFunction !== 'undefined'
+}
+
+exports.toSJIS = function toSJIS (kanji) {
+  return toSJISFunction(kanji)
+}
+
+},{}],207:[function(require,module,exports){
+/**
+ * Check if QR Code version is valid
+ *
+ * @param  {Number}  version QR Code version
+ * @return {Boolean}         true if valid version, false otherwise
+ */
+exports.isValid = function isValid (version) {
+  return !isNaN(version) && version >= 1 && version <= 40
+}
+
+},{}],208:[function(require,module,exports){
+const Utils = require('./utils')
+const ECCode = require('./error-correction-code')
+const ECLevel = require('./error-correction-level')
+const Mode = require('./mode')
+const VersionCheck = require('./version-check')
+
+// Generator polynomial used to encode version information
+const G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0)
+const G18_BCH = Utils.getBCHDigit(G18)
+
+function getBestVersionForDataLength (mode, length, errorCorrectionLevel) {
+  for (let currentVersion = 1; currentVersion <= 40; currentVersion++) {
+    if (length <= exports.getCapacity(currentVersion, errorCorrectionLevel, mode)) {
+      return currentVersion
+    }
+  }
+
+  return undefined
+}
+
+function getReservedBitsCount (mode, version) {
+  // Character count indicator + mode indicator bits
+  return Mode.getCharCountIndicator(mode, version) + 4
+}
+
+function getTotalBitsFromDataArray (segments, version) {
+  let totalBits = 0
+
+  segments.forEach(function (data) {
+    const reservedBits = getReservedBitsCount(data.mode, version)
+    totalBits += reservedBits + data.getBitsLength()
+  })
+
+  return totalBits
+}
+
+function getBestVersionForMixedData (segments, errorCorrectionLevel) {
+  for (let currentVersion = 1; currentVersion <= 40; currentVersion++) {
+    const length = getTotalBitsFromDataArray(segments, currentVersion)
+    if (length <= exports.getCapacity(currentVersion, errorCorrectionLevel, Mode.MIXED)) {
+      return currentVersion
+    }
+  }
+
+  return undefined
+}
+
+/**
+ * Returns version number from a value.
+ * If value is not a valid version, returns defaultValue
+ *
+ * @param  {Number|String} value        QR Code version
+ * @param  {Number}        defaultValue Fallback value
+ * @return {Number}                     QR Code version number
+ */
+exports.from = function from (value, defaultValue) {
+  if (VersionCheck.isValid(value)) {
+    return parseInt(value, 10)
+  }
+
+  return defaultValue
+}
+
+/**
+ * Returns how much data can be stored with the specified QR code version
+ * and error correction level
+ *
+ * @param  {Number} version              QR Code version (1-40)
+ * @param  {Number} errorCorrectionLevel Error correction level
+ * @param  {Mode}   mode                 Data mode
+ * @return {Number}                      Quantity of storable data
+ */
+exports.getCapacity = function getCapacity (version, errorCorrectionLevel, mode) {
+  if (!VersionCheck.isValid(version)) {
+    throw new Error('Invalid QR Code version')
+  }
+
+  // Use Byte mode as default
+  if (typeof mode === 'undefined') mode = Mode.BYTE
+
+  // Total codewords for this QR code version (Data + Error correction)
+  const totalCodewords = Utils.getSymbolTotalCodewords(version)
+
+  // Total number of error correction codewords
+  const ecTotalCodewords = ECCode.getTotalCodewordsCount(version, errorCorrectionLevel)
+
+  // Total number of data codewords
+  const dataTotalCodewordsBits = (totalCodewords - ecTotalCodewords) * 8
+
+  if (mode === Mode.MIXED) return dataTotalCodewordsBits
+
+  const usableBits = dataTotalCodewordsBits - getReservedBitsCount(mode, version)
+
+  // Return max number of storable codewords
+  switch (mode) {
+    case Mode.NUMERIC:
+      return Math.floor((usableBits / 10) * 3)
+
+    case Mode.ALPHANUMERIC:
+      return Math.floor((usableBits / 11) * 2)
+
+    case Mode.KANJI:
+      return Math.floor(usableBits / 13)
+
+    case Mode.BYTE:
+    default:
+      return Math.floor(usableBits / 8)
+  }
+}
+
+/**
+ * Returns the minimum version needed to contain the amount of data
+ *
+ * @param  {Segment} data                    Segment of data
+ * @param  {Number} [errorCorrectionLevel=H] Error correction level
+ * @param  {Mode} mode                       Data mode
+ * @return {Number}                          QR Code version
+ */
+exports.getBestVersionForData = function getBestVersionForData (data, errorCorrectionLevel) {
+  let seg
+
+  const ecl = ECLevel.from(errorCorrectionLevel, ECLevel.M)
+
+  if (Array.isArray(data)) {
+    if (data.length > 1) {
+      return getBestVersionForMixedData(data, ecl)
+    }
+
+    if (data.length === 0) {
+      return 1
+    }
+
+    seg = data[0]
+  } else {
+    seg = data
+  }
+
+  return getBestVersionForDataLength(seg.mode, seg.getLength(), ecl)
+}
+
+/**
+ * Returns version information with relative error correction bits
+ *
+ * The version information is included in QR Code symbols of version 7 or larger.
+ * It consists of an 18-bit sequence containing 6 data bits,
+ * with 12 error correction bits calculated using the (18, 6) Golay code.
+ *
+ * @param  {Number} version QR Code version
+ * @return {Number}         Encoded version info bits
+ */
+exports.getEncodedBits = function getEncodedBits (version) {
+  if (!VersionCheck.isValid(version) || version < 7) {
+    throw new Error('Invalid QR Code version')
+  }
+
+  let d = version << 12
+
+  while (Utils.getBCHDigit(d) - G18_BCH >= 0) {
+    d ^= (G18 << (Utils.getBCHDigit(d) - G18_BCH))
+  }
+
+  return (version << 12) | d
+}
+
+},{"./error-correction-code":192,"./error-correction-level":193,"./mode":199,"./utils":206,"./version-check":207}],209:[function(require,module,exports){
+const Utils = require('./utils')
+
+function clearCanvas (ctx, canvas, size) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+  if (!canvas.style) canvas.style = {}
+  canvas.height = size
+  canvas.width = size
+  canvas.style.height = size + 'px'
+  canvas.style.width = size + 'px'
+}
+
+function getCanvasElement () {
+  try {
+    return document.createElement('canvas')
+  } catch (e) {
+    throw new Error('You need to specify a canvas element')
+  }
+}
+
+exports.render = function render (qrData, canvas, options) {
+  let opts = options
+  let canvasEl = canvas
+
+  if (typeof opts === 'undefined' && (!canvas || !canvas.getContext)) {
+    opts = canvas
+    canvas = undefined
+  }
+
+  if (!canvas) {
+    canvasEl = getCanvasElement()
+  }
+
+  opts = Utils.getOptions(opts)
+  const size = Utils.getImageWidth(qrData.modules.size, opts)
+
+  const ctx = canvasEl.getContext('2d')
+  const image = ctx.createImageData(size, size)
+  Utils.qrToImageData(image.data, qrData, opts)
+
+  clearCanvas(ctx, canvasEl, size)
+  ctx.putImageData(image, 0, 0)
+
+  return canvasEl
+}
+
+exports.renderToDataURL = function renderToDataURL (qrData, canvas, options) {
+  let opts = options
+
+  if (typeof opts === 'undefined' && (!canvas || !canvas.getContext)) {
+    opts = canvas
+    canvas = undefined
+  }
+
+  if (!opts) opts = {}
+
+  const canvasEl = exports.render(qrData, canvas, opts)
+
+  const type = opts.type || 'image/png'
+  const rendererOpts = opts.rendererOpts || {}
+
+  return canvasEl.toDataURL(type, rendererOpts.quality)
+}
+
+},{"./utils":211}],210:[function(require,module,exports){
+const Utils = require('./utils')
+
+function getColorAttrib (color, attrib) {
+  const alpha = color.a / 255
+  const str = attrib + '="' + color.hex + '"'
+
+  return alpha < 1
+    ? str + ' ' + attrib + '-opacity="' + alpha.toFixed(2).slice(1) + '"'
+    : str
+}
+
+function svgCmd (cmd, x, y) {
+  let str = cmd + x
+  if (typeof y !== 'undefined') str += ' ' + y
+
+  return str
+}
+
+function qrToPath (data, size, margin) {
+  let path = ''
+  let moveBy = 0
+  let newRow = false
+  let lineLength = 0
+
+  for (let i = 0; i < data.length; i++) {
+    const col = Math.floor(i % size)
+    const row = Math.floor(i / size)
+
+    if (!col && !newRow) newRow = true
+
+    if (data[i]) {
+      lineLength++
+
+      if (!(i > 0 && col > 0 && data[i - 1])) {
+        path += newRow
+          ? svgCmd('M', col + margin, 0.5 + row + margin)
+          : svgCmd('m', moveBy, 0)
+
+        moveBy = 0
+        newRow = false
+      }
+
+      if (!(col + 1 < size && data[i + 1])) {
+        path += svgCmd('h', lineLength)
+        lineLength = 0
+      }
+    } else {
+      moveBy++
+    }
+  }
+
+  return path
+}
+
+exports.render = function render (qrData, options, cb) {
+  const opts = Utils.getOptions(options)
+  const size = qrData.modules.size
+  const data = qrData.modules.data
+  const qrcodesize = size + opts.margin * 2
+
+  const bg = !opts.color.light.a
+    ? ''
+    : '<path ' + getColorAttrib(opts.color.light, 'fill') +
+      ' d="M0 0h' + qrcodesize + 'v' + qrcodesize + 'H0z"/>'
+
+  const path =
+    '<path ' + getColorAttrib(opts.color.dark, 'stroke') +
+    ' d="' + qrToPath(data, size, opts.margin) + '"/>'
+
+  const viewBox = 'viewBox="' + '0 0 ' + qrcodesize + ' ' + qrcodesize + '"'
+
+  const width = !opts.width ? '' : 'width="' + opts.width + '" height="' + opts.width + '" '
+
+  const svgTag = '<svg xmlns="http://www.w3.org/2000/svg" ' + width + viewBox + ' shape-rendering="crispEdges">' + bg + path + '</svg>\n'
+
+  if (typeof cb === 'function') {
+    cb(null, svgTag)
+  }
+
+  return svgTag
+}
+
+},{"./utils":211}],211:[function(require,module,exports){
+function hex2rgba (hex) {
+  if (typeof hex === 'number') {
+    hex = hex.toString()
+  }
+
+  if (typeof hex !== 'string') {
+    throw new Error('Color should be defined as hex string')
+  }
+
+  let hexCode = hex.slice().replace('#', '').split('')
+  if (hexCode.length < 3 || hexCode.length === 5 || hexCode.length > 8) {
+    throw new Error('Invalid hex color: ' + hex)
+  }
+
+  // Convert from short to long form (fff -> ffffff)
+  if (hexCode.length === 3 || hexCode.length === 4) {
+    hexCode = Array.prototype.concat.apply([], hexCode.map(function (c) {
+      return [c, c]
+    }))
+  }
+
+  // Add default alpha value
+  if (hexCode.length === 6) hexCode.push('F', 'F')
+
+  const hexValue = parseInt(hexCode.join(''), 16)
+
+  return {
+    r: (hexValue >> 24) & 255,
+    g: (hexValue >> 16) & 255,
+    b: (hexValue >> 8) & 255,
+    a: hexValue & 255,
+    hex: '#' + hexCode.slice(0, 6).join('')
+  }
+}
+
+exports.getOptions = function getOptions (options) {
+  if (!options) options = {}
+  if (!options.color) options.color = {}
+
+  const margin = typeof options.margin === 'undefined' ||
+    options.margin === null ||
+    options.margin < 0
+    ? 4
+    : options.margin
+
+  const width = options.width && options.width >= 21 ? options.width : undefined
+  const scale = options.scale || 4
+
+  return {
+    width: width,
+    scale: width ? 4 : scale,
+    margin: margin,
+    color: {
+      dark: hex2rgba(options.color.dark || '#000000ff'),
+      light: hex2rgba(options.color.light || '#ffffffff')
+    },
+    type: options.type,
+    rendererOpts: options.rendererOpts || {}
+  }
+}
+
+exports.getScale = function getScale (qrSize, opts) {
+  return opts.width && opts.width >= qrSize + opts.margin * 2
+    ? opts.width / (qrSize + opts.margin * 2)
+    : opts.scale
+}
+
+exports.getImageWidth = function getImageWidth (qrSize, opts) {
+  const scale = exports.getScale(qrSize, opts)
+  return Math.floor((qrSize + opts.margin * 2) * scale)
+}
+
+exports.qrToImageData = function qrToImageData (imgData, qr, opts) {
+  const size = qr.modules.size
+  const data = qr.modules.data
+  const scale = exports.getScale(size, opts)
+  const symbolSize = Math.floor((size + opts.margin * 2) * scale)
+  const scaledMargin = opts.margin * scale
+  const palette = [opts.color.light, opts.color.dark]
+
+  for (let i = 0; i < symbolSize; i++) {
+    for (let j = 0; j < symbolSize; j++) {
+      let posDst = (i * symbolSize + j) * 4
+      let pxColor = opts.color.light
+
+      if (i >= scaledMargin && j >= scaledMargin &&
+        i < symbolSize - scaledMargin && j < symbolSize - scaledMargin) {
+        const iSrc = Math.floor((i - scaledMargin) / scale)
+        const jSrc = Math.floor((j - scaledMargin) / scale)
+        pxColor = palette[data[iSrc * size + jSrc] ? 1 : 0]
+      }
+
+      imgData[posDst++] = pxColor.r
+      imgData[posDst++] = pxColor.g
+      imgData[posDst++] = pxColor.b
+      imgData[posDst] = pxColor.a
+    }
+  }
+}
+
+},{}],212:[function(require,module,exports){
+/********************************************************************************
+    vCards-js, Eric J Nesser, November 2014
+********************************************************************************/
+/*jslint node: true */
+'use strict';
+
+/**
+ * Represents a contact that can be imported into Outlook, iOS, Mac OS, Android devices, and more
+ */
+var vCard = (function () {
+    /**
+     * Get photo object for storing photos in vCards
+     */
+    function getPhoto() {
+        return {
+            url: '',
+            mediaType: '',
+            base64: false,
+
+            /**
+             * Attach a photo from a URL
+             * @param  {string} url       URL where photo can be found
+             * @param  {string} mediaType Media type of photo (JPEG, PNG, GIF)
+             */
+            attachFromUrl: function(url, mediaType) {
+                this.url = url;
+                this.mediaType = mediaType;
+                this.base64 = false;
+            },
+
+            /**
+             * Embed a photo from a file using base-64 encoding (not implemented yet)
+             * @param  {string} filename
+             */
+            embedFromFile: function(fileLocation) {
+              var fs   = require('fs');
+              var path = require('path');
+              this.mediaType = path.extname(fileLocation).toUpperCase().replace(/\./g, "");
+              var imgData = fs.readFileSync(fileLocation);
+              this.url = imgData.toString('base64');
+              this.base64 = true;
+            },
+
+            /**
+             * Embed a photo from a base-64 string
+             * @param  {string} base64String
+             */
+            embedFromString: function(base64String, mediaType) {
+              this.mediaType = mediaType;
+              this.url = base64String;
+              this.base64 = true;
+            }
+        };
+    }
+
+    /**
+     * Get a mailing address to attach to a vCard.
+     */
+    function getMailingAddress() {
+        return {
+            /**
+             * Represents the actual text that should be put on the mailing label when delivering a physical package
+             * @type {String}
+             */
+            label: '',
+
+            /**
+             * Street address
+             * @type {String}
+             */
+            street: '',
+
+            /**
+             * City
+             * @type {String}
+             */
+            city: '',
+
+            /**
+             * State or province
+             * @type {String}
+             */
+            stateProvince: '',
+
+            /**
+             * Postal code
+             * @type {String}
+             */
+            postalCode: '',
+
+            /**
+             * Country or region
+             * @type {String}
+             */
+            countryRegion: ''
+        };
+    }
+
+    /**
+     * Get social media URLs
+     * @return {object} Social media URL hash group
+     */
+    function getSocialUrls() {
+        return {
+            'facebook': '',
+            'linkedIn': '',
+            'twitter': '',
+            'flickr': ''
+        };
+    }
+
+    /********************************************************************************
+     * Public interface for vCard
+     ********************************************************************************/
+    return {
+
+        /**
+         * Specifies a value that represents a persistent, globally unique identifier associated with the vCard
+         * @type {String}
+         */
+        uid: '',
+
+        /**
+         * Date of birth
+         * @type {Datetime}
+         */
+        birthday: '',
+
+        /**
+         * Cell phone number
+         * @type {String}
+         */
+        cellPhone: '',
+
+        /**
+         * Other cell phone number or pager
+         * @type {String}
+         */
+        pagerPhone: '',
+
+        /**
+         * The address for private electronic mail communication
+         * @type {String}
+         */
+        email: '',
+
+        /**
+         * The address for work-related electronic mail communication
+         * @type {String}
+         */
+        workEmail: '',
+
+        /**
+         * First name
+         * @type {String}
+         */
+        firstName: '',
+
+        /**
+         * Formatted name string associated with the vCard object (will automatically populate if not set)
+         * @type {String}
+         */
+        formattedName: '',
+
+        /**
+         * Gender.
+         * @type {String} Must be M or F for Male or Female
+         */
+        gender: '',
+
+        /**
+         * Home mailing address
+         * @type {object}
+         */
+        homeAddress: getMailingAddress(),
+
+        /**
+         * Home phone
+         * @type {String}
+         */
+        homePhone: '',
+
+        /**
+         * Home facsimile
+         * @type {String}
+         */
+        homeFax: '',
+
+        /**
+         * Last name
+         * @type {String}
+         */
+        lastName: '',
+
+        /**
+         * Logo
+         * @type {object}
+         */
+        logo: getPhoto(),
+
+        /**
+         * Middle name
+         * @type {String}
+         */
+        middleName: '',
+
+        /**
+         * Prefix for individual's name
+         * @type {String}
+         */
+        namePrefix: '',
+
+        /**
+         * Suffix for individual's name
+         * @type {String}
+         */
+        nameSuffix: '',
+
+        /**
+         * Nickname of individual
+         * @type {String}
+         */
+        nickname: '',
+
+        /**
+         * Specifies supplemental information or a comment that is associated with the vCard
+         * @type {String}
+         */
+        note: '',
+
+        /**
+         * The name and optionally the unit(s) of the organization associated with the vCard object
+         * @type {String}
+         */
+        organization: '',
+
+        /**
+         * Individual's photo
+         * @type {object}
+         */
+        photo: getPhoto(),
+
+        /**
+         * The role, occupation, or business category of the vCard object within an organization
+         * @type {String}
+         */
+        role: '',
+
+        /**
+         * Social URLs attached to the vCard object (ex: Facebook, Twitter, LinkedIn)
+         * @type {String}
+         */
+        socialUrls: getSocialUrls(),
+
+        /**
+         * A URL that can be used to get the latest version of this vCard
+         * @type {String}
+         */
+        source: '',
+
+        /**
+         * Specifies the job title, functional position or function of the individual within an organization
+         * @type {String}
+         */
+        title: '',
+
+        /**
+         * URL pointing to a website that represents the person in some way
+         * @type {String}
+         */
+        url: '',
+
+        /**
+         * URL pointing to a website that represents the person's work in some way
+         * @type {String}
+         */
+        workUrl: '',
+
+        /**
+         * Work mailing address
+         * @type {object}
+         */
+        workAddress: getMailingAddress(),
+
+        /**
+         * Work phone
+         * @type {String}
+         */
+        workPhone: '',
+
+        /**
+         * Work facsimile
+         * @type {String}
+         */
+        workFax: '',
+
+        /**
+         * vCard version
+         * @type {String}
+         */
+        version: '3.0',
+
+        /**
+         * Get major version of the vCard format
+         * @return {integer}
+         */
+        getMajorVersion: function() {
+            var majorVersionString = this.version ? this.version.split('.')[0] : '4';
+            if (!isNaN(majorVersionString)) {
+                return parseInt(majorVersionString);
+            }
+            return 4;
+        },
+
+        /**
+         * Get formatted vCard
+         * @return {String} Formatted vCard in VCF format
+         */
+        getFormattedString: function() {
+            var vCardFormatter = require('./lib/vCardFormatter');
+            return vCardFormatter.getFormattedString(this);
+        },
+
+        /**
+         * Save formatted vCard to file
+         * @param  {String} filename
+         */
+        saveToFile: function(filename) {
+            var vCardFormatter = require('./lib/vCardFormatter');
+            var contents = vCardFormatter.getFormattedString(this);
+
+            var fs = require('fs');
+            fs.writeFileSync(filename, contents, { encoding: 'utf8' });
+        }
+    };
+});
+
+module.exports = vCard;
+
+},{"./lib/vCardFormatter":213,"fs":178,"path":183}],213:[function(require,module,exports){
+/********************************************************************************
+ vCards-js, Eric J Nesser, November 2014,
+ ********************************************************************************/
+/*jslint node: true */
+'use strict';
+
+/**
+ * vCard formatter for formatting vCards in VCF format
+ */
+(function vCardFormatter() {
+	var majorVersion = '3';
+
+	/**
+	 * Encode string
+	 * @param  {String}     value to encode
+	 * @return {String}     encoded string
+	 */
+	function e(value) {
+		if (value) {
+			if (typeof(value) !== 'string') {
+				value = '' + value;
+			}
+			return value.replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+		}
+		return '';
+	}
+
+	/**
+	 * Return new line characters
+	 * @return {String} new line characters
+	 */
+	function nl() {
+		return '\r\n';
+	}
+
+	/**
+	 * Get formatted photo
+	 * @param  {String} photoType       Photo type (PHOTO, LOGO)
+	 * @param  {String} url             URL to attach photo from
+	 * @param  {String} mediaType       Media-type of photo (JPEG, PNG, GIF)
+	 * @return {String}                 Formatted photo
+	 */
+	function getFormattedPhoto(photoType, url, mediaType, base64) {
+
+		var params;
+
+		if (majorVersion >= 4) {
+			params = base64 ? ';ENCODING=b;MEDIATYPE=image/' : ';MEDIATYPE=image/';
+		} else if (majorVersion === 3) {
+			params = base64 ? ';ENCODING=b;TYPE=' : ';TYPE=';
+		} else {
+			params = base64 ? ';ENCODING=BASE64;' : ';';
+		}
+
+		var formattedPhoto = photoType + params + mediaType + ':' + e(url) + nl();
+		return formattedPhoto;
+	}
+
+	/**
+	 * Get formatted address
+	 * @param  {object}         address
+	 * @param  {object}         encoding prefix
+	 * @return {String}         Formatted address
+	 */
+	function getFormattedAddress(encodingPrefix, address) {
+
+		var formattedAddress = '';
+
+		if (address.details.label ||
+			address.details.street ||
+			address.details.city ||
+			address.details.stateProvince ||
+			address.details.postalCode ||
+			address.details.countryRegion) {
+
+			if (majorVersion >= 4) {
+				formattedAddress = 'ADR' + encodingPrefix + ';TYPE=' + address.type +
+					(address.details.label ? ';LABEL="' + e(address.details.label) + '"' : '') + ':;;' +
+					e(address.details.street) + ';' +
+					e(address.details.city) + ';' +
+					e(address.details.stateProvince) + ';' +
+					e(address.details.postalCode) + ';' +
+					e(address.details.countryRegion) + nl();
+			} else {
+				if (address.details.label) {
+					formattedAddress = 'LABEL' + encodingPrefix + ';TYPE=' + address.type + ':' + e(address.details.label) + nl();
+				}
+				formattedAddress += 'ADR' + encodingPrefix + ';TYPE=' + address.type + ':;;' +
+					e(address.details.street) + ';' +
+					e(address.details.city) + ';' +
+					e(address.details.stateProvince) + ';' +
+					e(address.details.postalCode) + ';' +
+					e(address.details.countryRegion) + nl();
+
+			}
+		}
+
+		return formattedAddress;
+	}
+
+	/**
+	 * Convert date to YYYYMMDD format
+	 * @param  {Date}       date to encode
+	 * @return {String}     encoded date
+	 */
+	function YYYYMMDD(date) {
+		return date.getFullYear() + ('0' + (date.getMonth()+1)).slice(-2) + ('0' + date.getDate()).slice(-2);
+	}
+
+	module.exports = {
+
+		/**
+		 * Get formatted vCard in VCF format
+		 * @param  {object}     vCard object
+		 * @return {String}     Formatted vCard in VCF format
+		 */
+		getFormattedString: function(vCard) {
+
+			majorVersion = vCard.getMajorVersion();
+
+			var formattedVCardString = '';
+			formattedVCardString += 'BEGIN:VCARD' + nl();
+			formattedVCardString += 'VERSION:' + vCard.version + nl();
+
+			var encodingPrefix = majorVersion >= 4 ? '' : ';CHARSET=UTF-8';
+			var formattedName = vCard.formattedName;
+
+			if (!formattedName) {
+				formattedName = '';
+
+				[vCard.firstName, vCard.middleName, vCard.lastName]
+					.forEach(function(name) {
+						if (name) {
+							if (formattedName) {
+								formattedName += ' ';
+							}
+						}
+						formattedName += name;
+					});
+			}
+
+			formattedVCardString += 'FN' + encodingPrefix + ':' + e(formattedName) + nl();
+			formattedVCardString += 'N' + encodingPrefix + ':' +
+				e(vCard.lastName) + ';' +
+				e(vCard.firstName) + ';' +
+				e(vCard.middleName) + ';' +
+				e(vCard.namePrefix) + ';' +
+				e(vCard.nameSuffix) + nl();
+
+			if (vCard.nickname && majorVersion >= 3) {
+				formattedVCardString += 'NICKNAME' + encodingPrefix + ':' + e(vCard.nickname) + nl();
+			}
+
+			if (vCard.gender) {
+				formattedVCardString += 'GENDER:' + e(vCard.gender) + nl();
+			}
+
+			if (vCard.uid) {
+				formattedVCardString += 'UID' + encodingPrefix + ':' + e(vCard.uid) + nl();
+			}
+
+			if (vCard.birthday) {
+				formattedVCardString += 'BDAY:' + YYYYMMDD(vCard.birthday) + nl();
+			}
+
+			if (vCard.anniversary) {
+				formattedVCardString += 'ANNIVERSARY:' + YYYYMMDD(vCard.anniversary) + nl();
+			}
+
+			if (vCard.email) {
+				if(!Array.isArray(vCard.email)){
+					vCard.email = [vCard.email];
+				}
+				vCard.email.forEach(
+					function(address) {
+						if (majorVersion >= 4) {
+							formattedVCardString += 'EMAIL' + encodingPrefix + ';type=HOME:' + e(address) + nl();
+						} else if (majorVersion >= 3 && majorVersion < 4) {
+							formattedVCardString += 'EMAIL' + encodingPrefix + ';type=HOME,INTERNET:' + e(address) + nl();
+						} else {
+							formattedVCardString += 'EMAIL' + encodingPrefix + ';HOME;INTERNET:' + e(address) + nl();
+						}
+					}
+				);
+			}
+
+			if (vCard.workEmail) {
+				if(!Array.isArray(vCard.workEmail)){
+					vCard.workEmail = [vCard.workEmail];
+				}
+				vCard.workEmail.forEach(
+					function(address) {
+						if (majorVersion >= 4) {
+							formattedVCardString += 'EMAIL' + encodingPrefix + ';type=WORK:' + e(address) + nl();
+						} else if (majorVersion >= 3 && majorVersion < 4) {
+							formattedVCardString += 'EMAIL' + encodingPrefix + ';type=WORK,INTERNET:' + e(address) + nl();
+						} else {
+							formattedVCardString += 'EMAIL' + encodingPrefix + ';WORK;INTERNET:' + e(address) + nl();
+						}
+					}
+				);
+			}
+
+			if (vCard.otherEmail) {
+				if(!Array.isArray(vCard.otherEmail)){
+					vCard.otherEmail = [vCard.otherEmail];
+				}
+				vCard.otherEmail.forEach(
+					function(address) {
+						if (majorVersion >= 4) {
+							formattedVCardString += 'EMAIL' + encodingPrefix + ';type=OTHER:' + e(address) + nl();
+						} else if (majorVersion >= 3 && majorVersion < 4) {
+							formattedVCardString += 'EMAIL' + encodingPrefix + ';type=OTHER,INTERNET:' + e(address) + nl();
+						} else {
+							formattedVCardString += 'EMAIL' + encodingPrefix + ';OTHER;INTERNET:' + e(address) + nl();
+						}
+					}
+				);
+			}
+
+			if (vCard.logo.url) {
+				formattedVCardString += getFormattedPhoto('LOGO', vCard.logo.url, vCard.logo.mediaType, vCard.logo.base64);
+			}
+
+			if (vCard.photo.url) {
+				formattedVCardString += getFormattedPhoto('PHOTO', vCard.photo.url, vCard.photo.mediaType, vCard.photo.base64);
+			}
+
+			if (vCard.cellPhone) {
+				if(!Array.isArray(vCard.cellPhone)){
+					vCard.cellPhone = [vCard.cellPhone];
+				}
+				vCard.cellPhone.forEach(
+					function(number){
+						if (majorVersion >= 4) {
+							formattedVCardString += 'TEL;VALUE=uri;TYPE="voice,cell":tel:' + e(number) + nl();
+						} else {
+							formattedVCardString += 'TEL;TYPE=CELL:' + e(number) + nl();
+						}
+					}
+				);
+			}
+
+			if (vCard.pagerPhone) {
+				if(!Array.isArray(vCard.pagerPhone)){
+					vCard.pagerPhone = [vCard.pagerPhone];
+				}
+				vCard.pagerPhone.forEach(
+					function(number) {
+						if (majorVersion >= 4) {
+							formattedVCardString += 'TEL;VALUE=uri;TYPE="pager,cell":tel:' + e(number) + nl();
+						} else {
+							formattedVCardString += 'TEL;TYPE=PAGER:' + e(number) + nl();
+						}
+					}
+				);
+			}
+
+			if (vCard.homePhone) {
+				if(!Array.isArray(vCard.homePhone)){
+					vCard.homePhone = [vCard.homePhone];
+				}
+				vCard.homePhone.forEach(
+					function(number) {
+						if (majorVersion >= 4) {
+							formattedVCardString += 'TEL;VALUE=uri;TYPE="voice,home":tel:' + e(number) + nl();
+						} else {
+							formattedVCardString += 'TEL;TYPE=HOME,VOICE:' + e(number) + nl();
+						}
+					}
+				);
+			}
+
+			if (vCard.workPhone) {
+				if(!Array.isArray(vCard.workPhone)){
+					vCard.workPhone = [vCard.workPhone];
+				}
+				vCard.workPhone.forEach(
+					function(number) {
+						if (majorVersion >= 4) {
+							formattedVCardString += 'TEL;VALUE=uri;TYPE="voice,work":tel:' + e(number) + nl();
+
+						} else {
+							formattedVCardString += 'TEL;TYPE=WORK,VOICE:' + e(number) + nl();
+						}
+					}
+				);
+			}
+
+			if (vCard.homeFax) {
+				if(!Array.isArray(vCard.homeFax)){
+					vCard.homeFax = [vCard.homeFax];
+				}
+				vCard.homeFax.forEach(
+					function(number) {
+						if (majorVersion >= 4) {
+							formattedVCardString += 'TEL;VALUE=uri;TYPE="fax,home":tel:' + e(number) + nl();
+
+						} else {
+							formattedVCardString += 'TEL;TYPE=HOME,FAX:' + e(number) + nl();
+						}
+					}
+				);
+			}
+
+			if (vCard.workFax) {
+				if(!Array.isArray(vCard.workFax)){
+					vCard.workFax = [vCard.workFax];
+				}
+				vCard.workFax.forEach(
+					function(number) {
+						if (majorVersion >= 4) {
+							formattedVCardString += 'TEL;VALUE=uri;TYPE="fax,work":tel:' + e(number) + nl();
+
+						} else {
+							formattedVCardString += 'TEL;TYPE=WORK,FAX:' + e(number) + nl();
+						}
+					}
+				);
+			}
+
+			if (vCard.otherPhone) {
+				if(!Array.isArray(vCard.otherPhone)){
+					vCard.otherPhone = [vCard.otherPhone];
+				}
+				vCard.otherPhone.forEach(
+					function(number) {
+						if (majorVersion >= 4) {
+							formattedVCardString += 'TEL;VALUE=uri;TYPE="voice,other":tel:' + e(number) + nl();
+
+						} else {
+							formattedVCardString += 'TEL;TYPE=OTHER:' + e(number) + nl();
+						}
+					}
+				);
+			}
+
+			[{
+				details: vCard.homeAddress,
+				type: 'HOME'
+			}, {
+				details: vCard.workAddress,
+				type: 'WORK'
+			}].forEach(
+				function(address) {
+					formattedVCardString += getFormattedAddress(encodingPrefix, address);
+				}
+			);
+
+			if (vCard.title) {
+				formattedVCardString += 'TITLE' + encodingPrefix + ':' + e(vCard.title) + nl();
+			}
+
+			if (vCard.role) {
+				formattedVCardString += 'ROLE' + encodingPrefix + ':' + e(vCard.role) + nl();
+			}
+
+			if (vCard.organization) {
+				formattedVCardString += 'ORG' + encodingPrefix + ':' + e(vCard.organization) + nl();
+			}
+
+			if (vCard.url) {
+				formattedVCardString += 'URL' + encodingPrefix + ':' + e(vCard.url) + nl();
+			}
+
+			if (vCard.workUrl) {
+				formattedVCardString += 'URL;type=WORK' + encodingPrefix + ':' + e(vCard.workUrl) + nl();
+			}
+
+			if (vCard.note) {
+				formattedVCardString += 'NOTE' + encodingPrefix + ':' + e(vCard.note) + nl();
+			}
+
+			if (vCard.socialUrls) {
+				for (var key in vCard.socialUrls) {
+					if (vCard.socialUrls.hasOwnProperty(key) &&
+						vCard.socialUrls[key]) {
+						formattedVCardString += 'X-SOCIALPROFILE' + encodingPrefix + ';TYPE=' + key + ':' + e(vCard.socialUrls[key]) + nl();
+					}
+				}
+			}
+
+			if (vCard.source) {
+				formattedVCardString += 'SOURCE' + encodingPrefix + ':' + e(vCard.source) + nl();
+			}
+
+			formattedVCardString += 'REV:' + (new Date()).toISOString() + nl();
+			
+			if (vCard.isOrganization) {
+				formattedVCardString += 'X-ABShowAs:COMPANY' + nl();
+			} 
+			
+			formattedVCardString += 'END:VCARD' + nl();
+			return formattedVCardString;
+		}
+	};
+})();
 },{}]},{},[1]);

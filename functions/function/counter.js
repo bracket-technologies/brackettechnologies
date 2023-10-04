@@ -1,5 +1,5 @@
 module.exports = {
-  counter: ({ length = 0, counter = 0, end, reset = "daily", timer }) => {
+  counter: ({ length = 0, counter = 0, end, reset = "daily", timer = 0 }) => {
 
     counter = parseInt(counter)
     var _date = new Date(), timestamp

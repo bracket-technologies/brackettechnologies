@@ -10,6 +10,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0, ...p
     if (index === 8) index = 1
     var global = _window ? _window.global : window.global
     if (typeof string !== "string") return string
+    string = string.split("[]").join("__map__")
 
     string = string.replaceAll("<", "&#60;")
     string = string.replaceAll(">", "&#62;")
@@ -75,6 +76,7 @@ const colorize = ({ _window, id, string, start = "[", end = "]", index = 0, ...p
       }
       string = newString
     }
+    string = string.split("__map__").join("[]")
     
     if (index !== 0) {
       

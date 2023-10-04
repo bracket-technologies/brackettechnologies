@@ -1119,6 +1119,6 @@
             ]
         }
     ],
-    "view": "View:main",
+    "view": "View:main??false",
     "creation-date": 1637494484000
 }

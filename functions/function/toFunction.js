@@ -4,9 +4,9 @@ const { toCode } = require("./toCode")
 const { isParam } = require("./isParam")
 const { toValue } = require("./toValue")
 const { toParam } = require("./toParam")
-const { toApproval } = require("./toApproval")
 const actions = require("./actions.json")
 const { generate } = require("./generate")
+const { toApproval } = require("./toApproval")
 
 const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, condition, params = {}, mount, asyncer, toView, executer, object, lookupActions = {}, awaits = [], isView = false }) => {
 
@@ -26,7 +26,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
       clone(fn).reverse().map((myfn, i) => {
 
         if (!isFn) {
-
+          
           var functions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data[lookupActions.viewType][lookupActions.view].functions) || {}
           isFn = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o[k] || {}, functions)).find(fn => fn === path0.slice(0, -2))
 
@@ -47,8 +47,10 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
     if (!isFn) {
 
       clone(["_project_", ...myViews]).reverse().map((myview, i) => {
+
         if (!isFn) {
           
+          if (myview !== "_project_" && !global.data[i === myViews.length - 1 ? "page" : view.viewType][myview]) return
           var functions = myview === "_project_" ? global.functions : (global.data[i === myViews.length - 1 ? "page" : view.viewType][myview].functions) || {}
           isFn = (Array.isArray(functions) ? functions : Object.keys(functions)).find(fn => fn === path0.slice(0, -2))
           if (isFn) {
@@ -90,7 +92,7 @@ const toFunction = ({ _window, id, req, res, _, __, ___, e, path, path0, conditi
         if (global.__waiters__.length > 0) myawait.waiter = global.__waiters__[0]
         
         console.log("ACTION " + path0);
-        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait, params, lookupActions: newLookupActions ? newLookupActions : lookupActions })
+        var answer = func({ _window, req, res, id, e, func: _func, _, __, ___, asyncer: true, awaits, myawait, params, lookupActions: newLookupActions ? newLookupActions : lookupActions, oldlookupActions: lookupActions })
         
         return answer
       }

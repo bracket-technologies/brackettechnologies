@@ -35,8 +35,10 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     
     // encode
     view.type = toCode({ _window, string: toCode({ _window, string: view.type }), start: "'", end: "'" })
+    if (view.type.split(".")[0].split(":")[0].slice(-2) === "()") {
     var isFn = await toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0], isView: true })
     if (isFn !== "__CONTINUE__") return resolve(isFn)
+    }
     
     // 
     var type = view.type.split("?")[0]
@@ -57,6 +59,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
 
       type = global.codes[type]
       type = toValue({ req, res, _window, id, value: type, _, __, ___ })
+      view.__viewName__ = type
 
       // sub params
       if (subParams) {
@@ -152,9 +155,8 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
               else if (type === "Text") _view.text = _data
               else if (type === "Checkbox") _view.label = { text: _data }
             }
-            
+
             views[_id] = _view
-            
             return await toView({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: _, ___: __, viewer })
           }))
 
@@ -176,8 +178,6 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           views[_id] = _view
           var tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: _, ___: __, viewer })
           return resolve(tags)
-          
-          // return resolve(tags)
         }
         
         delete views[view.id]
@@ -187,7 +187,8 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       view.mapType = ["data"]
     }
 
-    view.type = type = toValue({ req, res, _window, id, value: type, _, __, ___ })
+    view.type = view.__viewName__ = type = toValue({ req, res, _window, id, value: type, _, __, ___ })
+
 
     // events
     if (view.event) {
@@ -212,16 +213,6 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         
         if (views[_id] && view.id !== _id) view.id = _id + generate()
         else view.id = id = _id
-        
-        if (global.data[viewer][_id] && !view["creation-date"] && id !== _id) {
-          
-          view["my-views"].push(_id)
-          views[_id] = { ...view, ...clone(global.data[viewer][_id]) }
-          delete views[id]
-          
-          tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, _, __, ___, viewer })
-          return resolve(tags)
-        }
       }
     }
 
@@ -261,7 +252,8 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     // push destructured params from type to view
     if (params) {
       
-      params = toParam({ _window, lookupActions, awaits, string: params, id, req, res, mount: true, toView: true, _, __, ___ })
+      params = toValue({ _window, lookupActions, awaits, value: params, id, req, res, mount: true, toView: true, _, __, ___ })
+      if (typeof params !== "object") params = { [params]: generate() }
 
       if (params.id && params.id !== id) {
 
@@ -342,7 +334,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       if (!newView) return resolve("")
       if (newView.id && views[newView.id]) newView.id += generate()
       
-      views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
+      views[id] = { ...view,  ...newView, __viewName__: viewId, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
 
       tags = await toView({ _window, lookupActions, awaits, id, req, res, _: Object.keys(params).length > 0 ? params : _, __: Object.keys(params).length > 0 ? _ : __, ___: Object.keys(params).length > 0 ? __ : ___, viewer })
       return resolve(tags)

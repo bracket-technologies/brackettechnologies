@@ -26,7 +26,7 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
   var mainID = id
 
   // 'string'
-  var events = toArray(controls.event), _events = ""
+  var events = toArray(controls.event)[0]/*, _events = ""
     
   _events = events[0].split("{")[0]
   events[0].split("{").slice(1).map(str => {
@@ -37,13 +37,13 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
     }
   })
 
-  events = _events
-  events = toCode({ _window, lookupActions, awaits, id, string: events })
-  events = toCode({ _window, lookupActions, awaits, id, string: events, start: "'", end: "'" })
-  // if (events.split("'").length > 2) events = toCode({ _window, lookupActions, awaits, string: events, start: "'", end: "'" })
+  events = _events*/
+  events = toCode({ _window, id, string: events })
+  events = toCode({ _window, id, string: events, start: "'", end: "'" })
+  // if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   
   events = events.split("?")
-  var _idList = toValue({ id, lookupActions, awaits, value: events[3] || id })
+  var _idList = id // toValue({ id, lookupActions, awaits, value: events[3] || id })
 
   // droplist
   /*var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
@@ -232,7 +232,7 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
             if (!approved) return
 
             // params
-            toParam({ string: events[1], e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
+            toParam({ string: events[1], lookupActions, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
 
             // break
             if (view["break()"]) delete view["break()"]

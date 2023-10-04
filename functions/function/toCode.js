@@ -6,6 +6,9 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
   var codeName = start === "'" ? "codedS()" : "coded()", global = {}
   if (!codes) global = _window ? _window.global : window.global
 
+  // split []
+  if (start === "[") string = string.split("[]").join("__map__")
+
   // split () & )(
   if (start === "(") string = string.split("()").join("___action___").split(")(").join("___global___")
 
@@ -37,6 +40,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
     if (start === "(") subKey[0] = subKey[0].split("___action___").join("()").split("___global___").join(")(")
 
+    if (start === "[") subKey[0] = subKey[0].split("__map__").join("[]")
     if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, string: subKey[0], start: "'", end: "'" })
     if (codes) codes[key] = subKey[0]
     else global.codes[key] = subKey[0]
@@ -53,6 +57,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
   if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, string, e, start, end })
 
   // 
+  if (start === "[") string = string.split("__map__").join("[]")
   if (start === "(") string = string.split("___action___").join("()").split("___global___").join(")(")
 
   return string

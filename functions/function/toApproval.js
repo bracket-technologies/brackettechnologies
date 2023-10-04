@@ -102,8 +102,10 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
     var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0], myKey
 
     // function
+    if (path0.slice(-2) === "()") {
     var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition: true });
     if (isFn !== "__CONTINUE__") return approval = notEqual ? !isFn : isFn
+    }
 
     if (!key && object !== undefined) myKey = object
     else if (key === "undefined") myKey = undefined

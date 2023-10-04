@@ -6,6 +6,7 @@ const { generate } = require("./generate")
 const { authorizer } = require("./authorizer")
 const DeviceDetector = require('node-device-detector')
 const router = require('./router')
+const { contactNumberHandler, generateQRCode } = require("./contactNumberHandler")
 const Global = { today: (new Date()).getDay(), functions: {} }
 
 require("dotenv").config();
@@ -103,7 +104,11 @@ module.exports = ({ app, db, storage, rdb }) => {
         
         var path = req.url.split("/"), i = 1, id = generate()
         var _window = initialize({ req, res, id })
-        console.log("GET", path); 
+        console.log("GET", path);
+
+        if (path[1] === "generateQRCode") return generateQRCode({ req, res, _window })
+
+        if (path[1] === "contactNumber") return contactNumberHandler({ req, res, _window })
 
         // favicon
         if (req.url === "/favicon.ico") return res.sendStatus(204)

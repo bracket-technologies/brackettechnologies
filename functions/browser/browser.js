@@ -9,6 +9,7 @@ const { toParam } = require("../function/toParam")
 const { toApproval } = require("../function/toApproval")
 const { execute } = require("../function/execute")
 const { toCode } = require("../function/toCode")
+const { setData } = require("../function/setData")
 // const downloadsFolder = require('downloads-folder')
 
 window.views = JSON.parse(document.getElementById("views").textContent)
@@ -154,6 +155,10 @@ document.body.addEventListener("mouseup", (e) => {
 
 document.addEventListener('keydown', e => {
     if (e.ctrlKey) global.ctrlKey = true
+    if (global.projectId === "brackettechnologies" && e.ctrlKey && e.key === "s") {
+        e.preventDefault();
+        toParam({ id: "saveBtn", e, string: "click()" })
+    }
 })
 
 document.addEventListener('keyup', e => {

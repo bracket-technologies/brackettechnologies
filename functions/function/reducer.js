@@ -24,6 +24,7 @@ const { lengthConverter } = require("./resize")
 const actions = require("./actions.json")
 const events = require("./events.json")
 const { func } = require("./func")
+const { decode } = require("./decode")
 
 const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value, key, params = {}, object, _, __, ___,  e, req, res, mount, condition, toView }) => {
     
@@ -61,6 +62,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     // path[0] = path0:args
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0]) args = path[0].toString().split(":")
+
     
     if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, awaits, id, e, string: pathJoined, _, __, ___,  object, mount, toView })
     
@@ -93,25 +95,28 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
             path0 = path0.split("?")[0]
+            _object = toValue({ _window, value: path0, e, id, req, res, object, asyncer: true, _, __, ___, awaits, lookupActions })
             
             if (!condition) {
                 
-                _object = toValue({ _window, value: path0, e, id, req, res, object, asyncer: true, _, __, ___, awaits, lookupActions })
                 // ex: [_]() & _ = 'action_name()' --> action_name()
-                if (typeof _object === "string") {
+                if (typeof _object === "string" && (_object.includes(".") || _object.includes("()"))) {
                     _object = toCode({ _window, string: toCode({ _window, string: _object, start: "'", end: "'" }) })
                     _object = toValue({ _window, lookupActions, awaits, id, value: _object, key, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___),  e, req, res, mount, condition, toView })
                 }
 
                 global.__waiters__.splice(0, 1)
-            } else _object = toApproval({ _window, string: path0, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
-    
+
+            } else {
+                _object = toApproval({ _window, string: _object, e, id, req, res, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+            }
+
             // await params
             if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
                 
                 if (_await) {
 
-                    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __: _, ___: __ })
+                    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _, __, ___ })
 
                 } else {
 
@@ -193,24 +198,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
       if (_value !== pathJoined) return _value
     }
 
-    // coded
-    /*if (path0.slice(0, 7) === "coded()" && path[0].length === 12 && path.length === 1 && object === undefined) {
-        //console.log(global.codes[path0], object);
-        //path0 = path[0] = global.codes[path0]
-        //coded = true
-        return toValue({ req, res, _window, lookupActions, awaits, object, id, value: global.codes[path0], params, _, __, ___, e })
-    }*/
-
-    // codeds (string)
-    if (path0.slice(0, 8) === "codedS()" && path0.length === 13 && path[0] === path0) {
-        
-        _object = global.codes[path[0]]
-        path.shift()
-        path0 = ""
-    }
-
     // if
     if (path0 === "if()") {
+        
       var approved = toApproval({ _window, lookupActions, awaits, e, string: args[1], params, id, _, __, ___,  req, res, object })
 
       if (!approved) {
@@ -289,24 +279,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     }
     
     var view
-    // view => ():id:timer:conditions
-    if (path0.slice(0, 2) === "()") {
+    // view => ():id
+    if (path0 === "()") {
 
-        if (args[1] || args[2] || args[3]) {
-
-            // timer
-            if (args[2]) {
-                var _timer = parseInt(args[2])
-                args[2] = ""
-                path[0] = args.join(":")
-                return setTimeout(() => reducer({ _window, lookupActions, awaits, id, path, value, key, params, object, _, __, ___, e, req, res }), _timer)
-            }
-
-            // conditions
-            if (args[3]) {
-                var approved = toApproval({ _window, lookupActions, awaits, e, string: args[3], id, _, __, ___, req, res })
-                if (!approved) return
-            }
+        if (args[1]) {
 
             // id
             var _id = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, _, __, ___,  object })
@@ -341,9 +317,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
       } else {
         
-          if (/*view && view.labeled && path0 !== "txt()" && path0 !== "val()" && path0 !== "Data()" && path0 !== "doc()" && 
-          path0 !== "data()" && path0 !== "derivations()" && path0 !== "readonly()" && path0 !== "min()" && path0 !== "max()"*/
-          (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
+          if (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent")) {
 
               if (view.labeled && view.templated) path = ["parent()", "parent()", ...path]
               else if ((view.labeled && !view.templated) || view.templated || view.link) path.unshift("parent()")
@@ -353,22 +327,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               if (view.islabel || view.templated || view.link || view.labeled) path.unshift("input()")
           }
           
-          if (!object && !_object) {
+          /*if (!object && !_object) {
+
             path.unshift("()")
             path0 = "()"
-          }
+          }*/
       }
+    }
 
-    }/* else if (view && path[0] === "()" && path[1] && path[1].includes("()")) {
-        
-        if (path[1] !== "txt()" && path[1] !== "val()" && path[1] !== "min()" && path[1] !== "max()" && path[1] !== "Data()" && path[1] !== "data()" && path[1] !== "derivations()" && path[1] !== "readonly()") {
-            
-            if (view.labeled) path = ["()", "parent()", "parent()", ...path.slice(1)]
-            else if (view.templated) path = ["()", "parent()", ...path.slice(1)]
-
-            path0 = "()"
-        }
-    }*/
     _object = path0 === "()" ? (view || views.root)
     : (path0 === "global()" || path0 === ")(") ? _window ? _window.global : window.global
     : (path0 === "e()" || path0 === "event()") ? e
@@ -382,17 +348,22 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     : (path0 === "navigator()" || path0 === "nav()") ? navigator
     : (path0 === "req()" || path0 === "request()") ? req
     : (path0 === "res()" || path0 === "response()") ? res
+    : (path0 === "math()") ? Math
     : _object !== undefined ? _object
     : object
 
+    var sliced = false
     if (path0 === "()" || path0 === "index()" || path0 === "global()" || path0 === ")(" || path0 === "e()" || path0 === "_" || path0 === "__" || path0 === "___" || path0 === "document()" 
-    || path0 === "window()" || path0 === "win()" || path0 === "history()") path = path.slice(1)
-        
+    || path0 === "window()" || path0 === "win()" || path0 === "history()" || path0 === "math()") {
+        path = path.slice(1)
+        sliced = true
+    }
+
     if (!_object && _object !== 0 && _object !== false) {
 
         if (path[0]) {
 
-            if (path0 === "undefined") return undefined
+            if (path0 === "undefined" || sliced) return undefined
             else if (path0 === "false") return false
             else if (path0 === "true") return true
             else if (path0 === "desktop()") return global.device.device.type === "desktop"
@@ -400,8 +371,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             else if (path0 === "mobile()") return global.device.device.type === "phone"
             else if (path0 === "clicked()") _object = global["clicked()"]
             else if (path0 === "log()") {
-                var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, value: arg || "here", params, _, __, ___,  e, object }))
+
+                var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, value: arg || "here", params, _, __, ___, e, object }))
                 console.log(..._log)
+                path = path.slice(1)
+                path0 = (path[1] || "").split(":")[0]
             }
 
             else if (path0.slice(0, 7) === "coded()" && path[0].length === 12) {
@@ -411,8 +385,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
             
             else if (path0 === "today()") _object = new Date()
-            else if (path0 === "" || path0 === "_string") _object = ""
-            else if (path0 === "_array" || path0 === "_list") {
+            else if (path0 === "_array" || path0 === "_list" || (!path0 && path[0].charAt(0) === ":")) {
 
                 _object = []
                 path[0].split(":").slice(1).map(el => {
@@ -423,6 +396,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 })
             } 
             
+            else if (path0 === "" || path0 === "_string") _object = ""
             else if (path0 === "_map") {
 
                 _object = {}
@@ -445,15 +419,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                   })
                 }
             }
-
-            else if (path0 === "{}") {
-
-                _object = {}
-                path[0].split(":").slice(1).map(el => {
-                    el = toValue({ req, res, _window, lookupActions, awaits, id, _, __, ___, e, value: el, params }) || {}
-                    _object = { ..._object, ...el }
-                })
-            }
             
             else if (mount) {
                 _object = view
@@ -463,8 +428,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         if (_object || _object === "" || _object === 0/* || coded*/) path = path.slice(1)
         else {
-
-            if (path[1] && path[1].toString().includes("()")) {
+            if (actions.includes(path0)) {
+                _object = view
+            } else if (path[1] && path[1].toString().includes("()")) {
                 
                 _object = toValue({ req, res, _window, lookupActions, awaits, id, _, __, ___, e, value: path[0], params }) || {}//path[0]
                 path = path.slice(1)
@@ -474,16 +440,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     }
     
     var lastIndex = path.length - 1, k0
-    /*path.map((k, i) => {
-        k = k.toString()
-        var k0 = k.split(":")[0]
-        var k1 = k.split(":")[1]
-        if (k0 && k1 && !k0.includes("()") && k1 !== "()") {
-            path[i] = path[i].split(":").slice(1).join(":")
-            path.splice(i, 0, k0)
-            console.log(k,path);
-        }
-    })*/
     
     var answer = path.reduce((o, k, i) => {
         
@@ -532,17 +488,24 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var tolog
             if (k0[0] === "_") tolog = o
             
-            var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, e, _: tolog ? tolog : _, __, ___,  value: arg, params }))
+            var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, e, _: tolog ? tolog : _, __, ___,  value: arg, object: o }))
 
-            console.log(o, ..._log)
+            console.log(..._log)
             return o
         }
 
-        if (o === undefined || o === null) return o
+        if (o === undefined || o === null && k0 !== "push()") return o
 
         /*if (path0.slice(-2) === "()" && typeof o === "object" && !Array.isArray(o) && o.__ISVIEW__ && o.functions[path0.slice(-2)]) {
 
             return toFunction({ _window, lookupActions, awaits, id: o.id, req, res, _, __, ___, e, path: [k], path0: k0, condition, params, mount, toView, object })
+        }*/
+
+        // push() with undefined
+        /*if (path[i+1] === "push()" && !isNaN(toValue({ req, res, _window, id, e, _, __, ___, value: k0 })) && o[toValue({ req, res, _window, id, e, _, __, ___, value: k0 })] === undefined) {
+            breakRequest = i + 1
+            o[k0] = []
+            o[k0].push
         }*/
         
         if (k0 !== "data()" && k0 !== "Data()" && k0 !== "doc()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
@@ -580,15 +543,23 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
         } else if (k0 === "_" && _ !== undefined) {
           
+            if (o.__ISVIEW__) return o._
             if (value !== undefined && key && i === lastIndex) answer = o[_] = value
             else if (typeof o === "object") answer = o[_]
 
-        }else if (k0 === "__" && __ !== undefined) {
+        } else if (k0 === "__" && __ !== undefined) {
             
+            if (o.__ISVIEW__) return o.__
             if (value !== undefined && key && i === lastIndex) answer = o[__] = value
             else if (typeof o === "object") answer = o[__]
 
-        }  else if (k0 === ")(") {
+        } else if (k0 === "___" && ___ !== undefined) {
+            
+            if (o.__ISVIEW__) return o.___
+            if (value !== undefined && key && i === lastIndex) answer = o[___] = value
+            else if (typeof o === "object") answer = o[___]
+
+        } else if (k0 === ")(") {
 
             var _state = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___, e })
             answer = global[_state]
@@ -605,7 +576,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               if (!isNaN(toValue({ req, res, _window, lookupActions, awaits, id, value: path[i + 1], params, _, __, ___, e }))) answer = o[_coded] = []
               else answer = o[_coded] = {}
             }
-            else answer = o[_coded]
+            else answer = o[_coded] //|| _coded
             /*
             _coded = _coded !== undefined ? [...toArray(_coded), ...path.slice(i + 1)] : path.slice(i + 1)
             answer = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _coded, object: o, params, _, __, ___ })
@@ -1251,6 +1222,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "style()") { // style():key || style():[key=value;id||el||view||element]
             
             var _o, _params = {}
+            
             if (args[1]) {
                   
               if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, _, __, ___,  string: args[1] })
@@ -1268,7 +1240,6 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               if (!o.element) _o = views[id]
               else _o = o
             }
-
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             
             // get element
@@ -1288,6 +1259,64 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               })
             }
             
+        } else if (k0 === "qr()") {
+
+            if (res && !res.headersSent) {
+
+                var params = isParam({ _window, string: args[1] }) ? toParam({ req, res, _window, id, e, _, __, ___, string: args[1] }) : toValue({ req, res, _window, id, e, _, __, ___, value: args[1] })
+                if (typeof params !== "object") params = { data: params }
+                if (params.text && params.data === undefined) params.data = params.text
+                if (params.wifi && params.password && (params.ssid || params.name)) params.data = `WIFI:S:${params.name || params.ssid};T:${params.type || "WPA"};P:${params.password || ""};;${params.url || ""}` 
+                
+                require('qrcode').toDataURL(params.data).then(data => {
+
+                    var _params = { message: "QR generated successfully!", data, success: true }
+                    toParam({ req, res, _window, id, e, _: _params, __: _, ___: __, string: args[2] })
+                })
+            }
+
+        } else if (k0 === "contact()") {
+
+            if (res && !res.headersSent) {
+                
+                var data = toValue({ req, res, _window, id, e, _, __, ___, string: args[1] })
+                if (typeof data !== "obejct") return o
+
+                if (data.firstName && data.lastName && data.workPhone) {
+
+                    // create a new vCard
+                    const vCard = require("vcards-js")();
+                
+                    vCard.firstName = data.firstName || "";
+                    vCard.middleName = data.middleName || "";
+                    vCard.lastName = data.lastName || "";
+                    vCard.organization = data.organization || "";
+                    if (data.photo) vCard.photo.attachFromUrl(data.photo)
+                    if (data.logo) vCard.logo.attachFromUrl(data.logo)
+
+                    if (data.birthday && data.birthday.split("/")[0] !== undefined && data.birthday.split("/")[1] !== undefined && data.birthday.split("/")[2] !== undefined) 
+                        vCard.birthday = new Date(parseInt(data.birthday.split("/")[2]), parseInt(data.birthday.split("/")[1] - 1), parseInt(data.birthday.split("/")[0]));
+
+                    
+                        delete data.firstName
+                        delete data.lastName
+                        delete data.middleName
+                        delete data.photo
+                        delete data.logo
+                        delete data.birthday
+
+                    Object.entries(data).map(([key, value]) => {
+                        vCard[key] = value
+                    })
+                
+                    res.set('Content-Type', `text/vcard; name="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
+                    res.set('Content-Disposition', `inline; filename="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
+                    
+                    res.send(vCard.getFormattedString())
+                }
+                
+            } else func({ _window, id, e, func: { actions: decode({ _window, string: k }) }, _, __, ___, asyncer: true, awaits, myawait, lookupActions })
+
         } else if (k0 === "getTagElements()") {
 
             var _o, _params = {}, _tag_name
@@ -1533,6 +1562,31 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
             answer = answer.map(o => window.views[o.id])
             
+        } else if (k0 === "name()") {
+
+            var _o
+            if (o.__ISVIEW__) _o = o
+            else _o = views[id]
+            var _name = toValue({ req, res, _window, id, e, _, __, ___, value: args[1] })
+            if (_o.__viewName__ === _name) return _o
+            else {
+                var children_ = getDeepChildren({ _window, id: _o.id })
+                return children_.find(child => child.__viewName__ === _name)
+            }
+
+        } else if (k0 === "names()") {
+
+            var _o
+            if (o.__ISVIEW__) _o = o
+            else _o = views[id]
+            var _name = toValue({ req, res, _window, id, e, _, __, ___, value: args[1] }), _views_ = []
+            if (_o.__viewName__ === _name) _views_.push(_o)
+            else {
+                var children_ = getDeepChildren({ _window, id: _o.id })
+                _views_.push(...children_.filter(child => child.__viewName__ === _name))
+            }
+            return _views_
+
         } else if (k0 === "classlist()" || k0 === "classList()") {
             
             var _params = {}, _o
@@ -1606,7 +1660,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
               
           } else _o = o.__ISVIEW__ ? o : views[id]
           
-          if (typeof _o === "string" && views[_o]) views[_o].element.click()
+          if (typeof _o === "string" && views[_o]) views[_o].element.q()
           else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
           else if (typeof _o === "object" && _o.element) _o.element.click()
 
@@ -1929,6 +1983,16 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (o.type && o.id) o[generate() + "-timer"] = answer
 
+        } else if (k0 === "repeat()") {
+
+            var _data_ = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, _, __, ___, e, object })
+            var times = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, _, __, ___,  e, object })
+            var loop = []
+            for (var i = 0; i < times; i++) {
+                loop.push(_data_)
+            }
+            return loop
+
         } else if (k0 === "timer()" || k0 === "setTimeout()") {
             
             // timer():params:timer:repeats
@@ -1948,7 +2012,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 }
             }
             
-            if (o.__view__) toArray(answer).map(timer => o[generate() + "-timer"] = timer)
+            if (o.__ISVIEW__) toArray(answer).map(timer => o[generate() + "-timer"] = timer)
 
         } /*else if (k0 === "path()") {
 
@@ -2320,10 +2384,21 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 
                 if (answer.includes(",") || b.includes(",")) isPrice = true
                 
-                b = toNumber(b)
-                answer = toNumber(answer)
+                if (typeof b === "number") {
 
-                answer = answer * b
+                    b = toNumber(b)
+                    answer = toNumber(answer)
+
+                    answer = answer * b
+
+                } else if (typeof answer !== "number") {
+
+                    var textt = ""
+                    for (var i = 0; i < b; i++) {
+                        textt += answer
+                    }
+                    return textt
+                }
             })
             if (isPrice) answer = answer.tovieweString()
             
@@ -2606,6 +2681,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 
             } else if (view && view.type === "Input") {
 
+                console.log("ttttttttt0", _o);
                 if (i === lastIndex && key && value !== undefined) answer = _o[view.element.value] = value
                 else if (path[i + 1] === "del()") {
                   breakRequest = i + 1
@@ -2615,6 +2691,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             } else if (view && view.type !== "Input") {
 
+                console.log("ttttttttt1", _o);
                 if (i === lastIndex && key && value !== undefined) answer = _o[view.element.innerHTML] = value
                 else if (path[i + 1] === "del()") {
                   breakRequest = i + 1
@@ -2686,7 +2763,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           answer = o
             
         } else if (k0.includes("push()")) {
-            if (!Array.isArray(o)) return undefined
+
+            if (!Array.isArray(o)) {
+                o = reducer({ req, res, _window, id, path: path.slice(0, i), value: [], key: true, _, __, ___, e, object: _object })
+            }
             
             var _item, _index
             if (k0.charAt(0) === "_") {
@@ -2709,6 +2789,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else if (Array.isArray(o)) o.splice(_index, 0, _item)
             answer = o
             
+        } else if (k0 === "pushItems()") {
+
+            args.slice(1).map(arg => {
+                arg = toValue({ req, res, _window, id, value: args[1], _, __, e, object })
+                o.splice(o.length, 0, arg)
+            })
+
         } else if (k0 === "pull()") { // pull by index or by conditions
 
             // if no index pull the last element
@@ -3727,6 +3814,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           
         } else if (k0 === "replace()") { //replace():prev:new
 
+            if (!Array.isArray(o) && typeof o !== "string") {
+                o = reducer({ req, res, _window, id, path: path.slice(0, i), value: [], key: true, _, __, ___, e, object: _object })
+            }
+
             var rec0, rec1
 
             rec0 = toValue({ req, res, _window, lookupActions, awaits, id, e, _, __, ___, value: args[1] || "", params })
@@ -4579,11 +4670,39 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "readonly()") {
           
             if (typeof o === "object") {
+
                 if (key && value !== undefined) answer = o.element.readOnly = value
-                answer = o.element.readOnly
+                else answer = o.element.readOnly = true
+
+                if (key && value !== undefined) answer = o.element.setAttribute("contenteditable", value)
+                else answer = o.element.setAttribute("contenteditable", false)
+
             } else if (o.nodeType === Node.ELEMENT_NODE) {
+
                 if (key && value !== undefined) answer = o.readOnly = value
-                answer = o.readOnly
+                else answer = o.readOnly = true
+
+                if (key && value !== undefined) answer = o.setAttribute("contenteditable", value)
+                else answer = o.setAttribute("contenteditable", false)
+            }
+
+        } else if (k0 === "editable()") {
+          
+            if (typeof o === "object") {
+
+                if (key && value !== undefined) answer = o.element.readOnly = value
+                else answer = o.element.readOnly = false
+
+                if (key && value !== undefined) answer = o.element.setAttribute("contenteditable", value)
+                else answer = o.element.setAttribute("contenteditable", true)
+
+            } else if (o.nodeType === Node.ELEMENT_NODE) {
+
+                if (key && value !== undefined) answer = o.readOnly = value
+                else answer = o.readOnly = false
+
+                if (key && value !== undefined) answer = o.setAttribute("contenteditable", value)
+                else answer = o.setAttribute("contenteditable", true)
             }
 
         } else if (k0 === "html()") {
@@ -4956,6 +5075,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             k0 = k0.split("?")[0]
             
             if (!condition) {
+
                 answer = toValue({ _window, value: k0, e, id, req, res, object: object || o, asyncer: true, _, __, ___, awaits, lookupActions })
                 
                 // ex: [_]() & _ = 'action_name()' --> action_name()
@@ -4964,8 +5084,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     reducer({ _window, lookupActions, awaits, id, path: [answer], value, key, params, object, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___),  e, req, res, mount, condition, toView })
                 }
                 
-            } else answer = toApproval({ _window, string: k0, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
-    
+            } else {
+                answer = toValue({ _window, value: k0, e, id, req, res, object: object || o, asyncer: true, _, __, ___, awaits, lookupActions })
+                answer = toApproval({ _window, string: answer, e, id, req, res, params, object: object || o, _: (_params !== undefined ? _params : _), __: (_params !== undefined ? _ : __), ___: (_params !== undefined ? __ : ___), awaits, lookupActions })
+            }
             // await params
             if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
                 
@@ -5085,7 +5207,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k.includes(":coded()")) {
           
             breakRequest = true
-            
+
             // k0 is encoded
             if (k0.includes("coded()") && k0.length === 12) k0 = global.codes["coded()" + k0.slice(-5)]
             else if (k0.includes("codedS()") && k0.length === 13) k0 = global.codes["codedS()" + k0.slice(-5)]
@@ -5093,10 +5215,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             o[k0] = o[k0] || {}
             if (toView && events.includes(k.split(":coded()")[0])) {
               
-              if (o.id) {
+              if (o.__ISVIEW__) {
 
                 var _params_ = global.codes["coded()" + args[1].slice(-5)]
                 var _conditions = _params_.split("?")[1] || ""
+                
                 _params_ = _params_.split("?")[0]
 
                 views[id].controls = toArray(views[id].controls)
@@ -5109,13 +5232,18 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                   _conditions += "e().ctrlKey"
                 } else if (k0 === "longclick") {
                   views[id].controls.push({
-                    "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?${_conditions};clickTimer=timestamp()`
+                    "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?clickTimer=timestamp()?${_conditions}`
                   })
                   views[id].controls.push({
                     "event": `mouseup:${o.id !== id ? (":" + o.id) : ""};touchend:${o.id !== id ? (":" + o.id) : ""}?${global.codes["coded()" + args[1].slice(-5)]}?${_conditions};timestamp()-clickTimer>=1000`
                   })
                   return
-                }
+                } else if (k0 === "dblclick") {
+                    views[id].controls.push({
+                      "event": `click:${o.id !== id ? (":" + o.id) : ""}?${_conditions};clickTimer=timestamp()`
+                    })
+                    return
+                  }
                 
                 views[id].controls.push({
                   "event": k0 + (o.id !== id ? (":" + o.id) : "") + "?" + global.codes["coded()" + args[1].slice(-5)] + "?" + _conditions
@@ -5205,7 +5333,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     return answer
 }
 
-const getDeepChildren = ({ _window, lookupActions, awaits, id }) => {
+const getDeepChildren = ({ _window, id }) => {
 
     var views = _window ? _window.views : window.views
     var view = views[id]
@@ -5227,7 +5355,7 @@ const getDeepChildren = ({ _window, lookupActions, awaits, id }) => {
     return all
 }
 
-const getDeepChildrenId = ({ _window, lookupActions, awaits, id }) => {
+const getDeepChildrenId = ({ _window, id }) => {
 
     var views = _window ? _window.views : window.views
     var view = views[id]

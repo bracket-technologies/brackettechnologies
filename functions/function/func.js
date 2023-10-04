@@ -65,7 +65,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, oldlookupActions,
         global.function = global.func = clone(data)
   
         console.log(params.func, global.func, awaits)
-    
+
         // await params
         if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions: oldlookupActions, myawait, awaits, id, e, ...params, req, res,  _: global.func, __: _, ___: __ })
         resolve()

@@ -163,7 +163,7 @@
                   ]
                 },
                 {
-                  "view": "View?class=flexbox pointer;tooltip.text=save;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
+                  "view": "View:saveBtn?class=flexbox pointer;tooltip.text=save;hover.style.backgroundColor=#f6f6f6;style:[width=4.5rem;height=100%;transition=.2s]",
                   "children": [
                     {
                       "view": "Icon?name=save_as;google.symbol.outlined;style.fontSize=2.4rem;hover.style.color=blue;hover.id=parent().id"

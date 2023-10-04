@@ -10,8 +10,11 @@ const defaultInputHandler = ({ id }) => {
   var view = window.views[id]
   var global = window.global
 
+
   if (!view) return
   if (view.type !== "Input" && view.type !== "Entry" && !view.editable) return
+
+  if (view.input.preventDefault) return
 
   // checkbox input
   if (view.input && view.input.type === "checkbox") {
@@ -68,6 +71,20 @@ const defaultInputHandler = ({ id }) => {
       return 
     }
 
+    // contentfull
+    if (view.input.type === "text") {
+      
+      if (value.includes("&amp;")) {
+        value = value.replace('&amp;','&')
+        e.target.value = value
+      }
+
+      if (value.includes("&nbsp;")) {
+        value = value.replace('&nbsp;',' ')
+        e.target.value = value
+      }
+    }
+
     if (!view.preventDefault && view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : false) {
       
       // for number inputs, strings are rejected
@@ -94,27 +111,13 @@ const defaultInputHandler = ({ id }) => {
           return global.files = [...e.target.files]
         }
 
-        // contentfull
-        if (view.input.type === "text") {
-          
-          if (value.includes("&amp;")) {
-            value = value.replace('&amp;','&')
-            e.target.value = value
-          }
-
-          if (value.includes("&nbsp;")) {
-            value = value.replace('&nbsp;',' ')
-            e.target.value = value
-          }
-        }
-
-        if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
+        /*if (e.data === ")" && value.slice(e.target.selectionStart - 3, e.target.selectionStart - 1) === "()") {
 
           var _prev = value.slice(0, e.target.selectionStart - 1)
           var _next = value.slice(e.target.selectionStart)
           e.target.value = value = _prev + _next
           e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length)
-        }
+        }*/
       }
 
       if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
@@ -132,6 +135,26 @@ const defaultInputHandler = ({ id }) => {
   }
 
   var myFn1 = (e) => {
+
+    // contentfull
+    /*if (view.input.type === "text") {
+  
+      var value 
+      if (view.type === "Input") value = e.target.value
+      else if (view.type === "Entry" || view.editable) value = (e.target.textContent===undefined) ? e.target.innerText : e.target.textContent
+      
+      if (value.includes("&amp;")) {
+        value = value.replace('&amp;','&')
+        e.target.value = value
+      }
+
+      if (value.includes("&nbsp;")) {
+        value = value.replace('&nbsp;',' ')
+        e.target.value = value
+      }
+
+      if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
+    }*/
 
     var value
     if (view.type === "Input") value = view.element.value

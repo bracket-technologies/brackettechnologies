@@ -8,6 +8,7 @@ const { isParam } = require("./isParam")
 const { toArray } = require("./toArray")
 const actions = require("./actions.json")
 const { getType } = require("./getType")
+const { override } = require("./merge")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -335,6 +336,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
     if (path0 === "") return
 
     // function
+    if (path0.slice(-2) === "()") {
     var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition, mount, asyncer, toView, executer, object })
     if (isFn !== "__CONTINUE__") return isFn
     else isFn = false
@@ -368,6 +370,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       // if (backendFn) return require("./func").func({ _window, lookupActions, awaits, req, res, id, e, func: `${_field}:coded()${_key}`, _, __, ___, asyncer: true })
       return toParam({ _window, lookupActions, awaits, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, _, __, ___, _i, asyncer, toView, executer })
     }
+  }
 
     ////////////////////////////////// end of function /////////////////////////////////////////
     
@@ -386,7 +389,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
       } else {
         
-        if (id && view && mount) reducer({ _window, lookupActions, awaits, id, path: ["()", ...path], value, key, params, e, req, res, _, __, ___, _i, mount, object, toView, condition })
+        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: view, toView, condition })
         reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, _, __, ___, _i, mount, object: params, toView, condition })
       }
       
@@ -496,6 +499,8 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
   
     //////////////////////////////////////////////////////// End /////////////////////////////////////////////////////////
   })
+  
+  //if (mount && toView && views[id]) override(views[id], params)
 
   if (params["return()"] !== undefined) return params["return()"]
   return params

@@ -46,11 +46,11 @@ const getData = async ({ _window, req, res, search }) => {
   var collection = search.collection
   if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
-console.log("ttttttt", search);
+
   var doc = search.document || search.doc,
     docs = search.documents || search.docs,
     field = search.field || search.fields,
-    limit = search.limit || 100,
+    limit = search.limit || 1000,
     data = {}, success, message,
     ref = collection && db.collection(collection),
     promises = [], project
@@ -301,7 +301,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
 
   var db = req.db, docs
   var storage = req.storage
-  var collection = erase.collection
+  var collection = erase.collection, data
   if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
   
@@ -366,7 +366,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
     docs = Object.keys(data)
   }*/
 
-  docs = erase.docs
+  docs = erase.docs || [erase.doc]
   await docs.map(async doc => {
     
     await ref.doc(doc.toString()).delete().then(() => {

@@ -18,7 +18,7 @@ const execFunction = async ({ _window, lookupActions, req, res, id = generate() 
   if (!project.functions[func] && !actions) return res.send({ success, message: `Action ${func} does not exist!` })
 
   // interpret
-  if (!actions) lookupActions = { view: "_project_", fn: [func] }
+  if (!actions && func) lookupActions = { view: "_project_", fn: [func] }
 
   var isFn = "", myfn = actions || project.functions[func]
   if (typeof myfn === "object") isFn = myfn._

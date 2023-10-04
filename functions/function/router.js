@@ -29,7 +29,7 @@ const getProject = ({ window }) => {
 
         console.log("Document started loading:")
         
-        if (isBracket) {
+        /*if (isBracket) {
 
           // get page
           console.log("before page", new Date().getTime() - global.timer);
@@ -44,16 +44,9 @@ const getProject = ({ window }) => {
               search: { collection: `view-${project.id}` },
           });
           console.log("after view", new Date().getTime() - global.timer);
-
-          // get collection
-          console.log("before collection", new Date().getTime() - global.timer);
-          global.data.collection = getJsonFiles({
-              search: { collection: `collection-${project.id}` },
-          });
-          console.log("after collection", new Date().getTime() - global.timer);
-          global.__ISBRACKET__ = true
           
-        } else {
+        } else {*/
+
             console.log("before page / firestore", new Date().getTime() - global.timer);
             
             promises.push(db
@@ -107,7 +100,7 @@ const getProject = ({ window }) => {
                     })
                     console.log("after collection", new Date().getTime() - global.timer)
                 }))
-        }
+        //}
         
         await Promise.all(promises)
         resolve()
