@@ -4,7 +4,7 @@ const { reducer } = require("./reducer")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 
-const remove = ({ _window, remove: _remove, id }) => {
+const remove = ({ _window, remove: _remove, id, __ }) => {
 
   var views = window.views
   var view = window.views[id]
@@ -19,24 +19,24 @@ const remove = ({ _window, remove: _remove, id }) => {
   if (!_remove.onlyChild && keys.length > 0 && !_remove.keepData) {
 
     keys.unshift(`${view.Data}:()`)
-    var parentData = reducer({ id, path: keys.slice(0, -1) })
+    var parentData = reducer({ id, path: keys.slice(0, -1), __ })
     if (Array.isArray(parentData) && parentData.length === 0) {
-      reducer({ id, path: keys.slice(0, -1), value: [], key: true })
+      reducer({ id, path: keys.slice(0, -1), value: [], key: true, __ })
     } else {
       keys.push("del()")
-      reducer({ id, path: keys })
+      reducer({ id, path: keys, __ })
     }
   }
 
   // close droplist
-  if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()" })
+  if (global["__droplistPositioner__"] && view.element.contains(views[global["__droplistPositioner__"]].element)) {
+    var closeDroplist = toCode({ _window, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
   // close actionlist
   if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
-    var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()" })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
   }
 

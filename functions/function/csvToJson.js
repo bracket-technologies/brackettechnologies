@@ -1,7 +1,7 @@
 const { toParam } = require("./toParam");
 
 module.exports = {
-    csvToJson: ({ id, e, file, onload, _, __, ___ }) => {
+    csvToJson: ({ id, e, file, onload, __ }) => {
         
         var reader = new FileReader();
         reader.onload = function () {
@@ -41,7 +41,7 @@ module.exports = {
             /* Convert the final array to JSON */
             console.log(result)
             window.views[id].file = window.global.file = { data: result, message: "Data converted successfully!" }
-            toParam({ id, e, string: onload, mount: true, _: window.global.file, __: _, ___: __ })
+            toParam({ id, e, string: onload, mount: true, __: [window.global.file, ...__] })
         };
 
         // start reading the file. When it is done, calls the onload event defined above.

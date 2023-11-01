@@ -1,9 +1,9 @@
 {
     "view": "View:droplist?class=box-shadow flex column;style:[width=fit-content;transition=opacity .1s, transform .1s, background-color .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
     "controls": [{
-        "event": "click:body?mouseleave()?droplist-positioner:();!droplist-positioner:().contains():[clicked:()];!droplist.contains():[clicked:()]?false"
+        "event": "click:body?mouseleave()?__droplistPositioner__:();!__droplistPositioner__:().contains():[clicked:()];!droplist.contains():[clicked:()]?false"
     }, {
-        "event": "mouseleave?clearTimer():[droplist-timer:()];droplist-timer:()=timer():[if():[!():[droplist-positioner:()].mouseentered]:[droplist-mouseenterer:().del();():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];clearTimer():[droplist-timer:()];timer():[():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];droplist-positioner:().del()]:0]]:400"
+        "event": "mouseleave?clearTimer():[droplist-timer:()];droplist-timer:()=timer():[if():[!():[__droplistPositioner__:()].mouseentered]:[droplist-mouseenterer:().del();():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];clearTimer():[droplist-timer:()];timer():[():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];__droplistPositioner__:().del()]:0]]:400"
     }, {
         "event": "mouseenter?clearTimer():[().droplistLeaved];clearTimer():[droplist-timer:()]"
     }]

@@ -7,6 +7,9 @@ const { authorizer } = require("./authorizer")
 const DeviceDetector = require('node-device-detector')
 const router = require('./router')
 const { contactNumberHandler, generateQRCode } = require("./contactNumberHandler")
+const { toCode } = require("./toCode")
+const { isParam } = require("./isParam")
+const { toParam } = require("./toParam")
 const Global = { today: (new Date()).getDay(), functions: {} }
 
 require("dotenv").config();
@@ -23,6 +26,7 @@ const initialize = ({ req, res, id }) => {
     global: { 
       timer: new Date().getTime(),
       __waiters__: [],
+      __actionReturns__: [],
       codes: {}, 
       promises: {}, 
       innerHTML: {}, 
@@ -47,7 +51,7 @@ module.exports = ({ app, db, storage, rdb }) => {
         req.rdb = rdb
         req.cookies = JSON.parse(req.cookies.__session || "{}")
         var path = req.url.split("/"), i = 1, id = generate()
-        var _window = initialize({ req, res, id })
+        var _window = initialize({ req, res, id }), __ = []
         console.log("POST", path); 
   
         // authorize
@@ -56,16 +60,16 @@ module.exports = ({ app, db, storage, rdb }) => {
         if (!success) return res.send({ success, message, error })
         
         // action
-        if (path[i] === "action") return execFunction({ _window, req, res, id })
+        if (path[i] === "action") return execFunction({ _window, req, res, id, __ })
 
         // confirmEmail
-        if (path[i] === "confirmEmail") return sendConfirmationEmail({ _window, req, res, id })
+        if (path[i] === "confirmEmail") return sendConfirmationEmail({ _window, req, res, id, __ })
 
         // storage
-        if (path[i] === "storage") return postFile({ _window, req, res, id })
+        if (path[i] === "storage") return postFile({ _window, req, res, id, __ })
 
         // database
-        if (path[i] === "database") return postdb({ _window, req, res, id })
+        if (path[i] === "database") return postdb({ _window, req, res, id, __ })
     })
 
     // delete
@@ -77,7 +81,7 @@ module.exports = ({ app, db, storage, rdb }) => {
         req.rdb = rdb
         req.cookies = JSON.parse(req.cookies.__session || "{}")
         var path = req.url.split("/"), i = 1, id = generate()
-        var _window = initialize({ req, res, id })
+        var _window = initialize({ req, res, id }), __ = []
         console.log("DELETE", path);
   
         // authorize
@@ -86,15 +90,15 @@ module.exports = ({ app, db, storage, rdb }) => {
         if (!success) return res.send({ success, message, error })
 
         // storage
-        if (path[i] === "storage") return deleteFile({ _window, req, res, id })
+        if (path[i] === "storage") return deleteFile({ _window, req, res, id, __ })
 
         // database
-        if (path[i] === "database") return deletedb({ _window, req, res, id })
+        if (path[i] === "database") return deletedb({ _window, req, res, id, __ })
     })
 
     // get
     app.get("*", async (req, res) => {
-
+ 
         res.status(200)
         req.db = db
         req.global = Global
@@ -121,13 +125,18 @@ module.exports = ({ app, db, storage, rdb }) => {
         var {success, message, error} = await authorizer({ window: _window, req })
         if (!success) return res.send({ success, message, error })
 
+        var __ = [], encodedPath = toCode({ _window, string: toCode({ _window, string: decodeURI(req.url), start: "'", end: "'" }) }), encodedPathList = encodedPath.split("/")
+        if (isParam({ _window, string: encodedPathList[encodedPathList.length - 1] })) {
+          __ = [toParam({ _window, string: encodedPathList[encodedPathList.length - 1], req, res, id })]
+        }
+
         // storage
-        if (path[i] === "storage") return getFile({ _window, req, res, id })
+        if (path[i] === "storage") return getFile({ _window, req, res, id, __ })
 
         // database
-        if (path[i] === "database") return getdb({ _window, req, res, id })
+        if (path[i] === "database") return getdb({ _window, req, res, id, __ })
         
         // respond
-        return router.app({ _window, req, res, id })
+        return router.app({ _window, req, res, id, __ })
     })
 }

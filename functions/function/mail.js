@@ -2,7 +2,7 @@ const { toArray } = require("./toArray")
 const readFile = require("./readFile");
 
 module.exports = {
-    mail: async ({ _window, req, res, id, subject, content, text, html, recipient, attachments, recipients = [], _, __, ___, ...params }) => {
+    mail: async ({ _window, req, res, id, subject, content, text, html, recipient, attachments, recipients = [], __, ...params }) => {
         
         const { google } = _window.__PACKAGE__.googleapis
         const nodemailer = _window.__PACKAGE__.nodemailer
@@ -50,6 +50,6 @@ module.exports = {
         console.log(global.mail)
 
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, _: global.mail, __: _, ___: __ })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __: [global.mail, ...__] })
     }
 }

@@ -159,6 +159,9 @@ document.addEventListener('keydown', e => {
         e.preventDefault();
         toParam({ id: "saveBtn", e, string: "click()" })
     }
+    if (global.projectId === "brackettechnologies" && e.ctrlKey && e.shiftKey && e.key === "Delete") {
+        e.preventDefault();
+    }
 })
 
 document.addEventListener('keyup', e => {
@@ -207,13 +210,6 @@ document.addEventListener('scroll', () => {
         
         var closeDroplist = toCode({ string: "if():[!():droplist.mouseentered]:[():droplist.mouseleave()]" })
         toParam({ string: closeDroplist, id: "droplist" })
-    }
-
-    // close actionlist
-    if (views.actionlist.element.style.pointerEvents === "auto") {
-
-        var closeActionlist = toCode({ string: "if():[!():actionlist.mouseentered]:[():actionlist.mouseleave()]" })
-        toParam({ string: closeActionlist, id: "actionlist" })
     }
 }, true)
 

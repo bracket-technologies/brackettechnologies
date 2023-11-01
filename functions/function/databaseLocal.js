@@ -2,7 +2,7 @@ const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 const axios = require("axios")
 const { getJsonFiles, postJsonFiles, removeJsonFiles } = require("./jsonFiles")
-const { toString } = require("./toString")
+const { jsonToBracket } = require("./jsonToBracket")
 var _window = { views: {}, global: { codes: {} } }
 
 var getdb = async ({ req, res }) => {
@@ -35,7 +35,7 @@ var getdb = async ({ req, res }) => {
 
     var url = search.url
     delete search.url
-    url +=`/${toString(search)}`
+    url +=`/${jsonToBracket(search)}`
     if (url.slice(-1) === "/") url = url.slice(0, -1)
     data = await axios.get(url, {
       timeout: 1000 * 40

@@ -1,13 +1,10 @@
 const { isEqual } = require("./isEqual")
 
-const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id = "root", _, __, ___, req, res, object, elser }) => {
+const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id = "root", __, req, res, object, elser }) => {
 
   const { toFunction } = require("./toFunction")
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
-
-  if (params && params["return()"] !== undefined) return params["return()"]
-  else if (params["break()"]) return params
 
   // no string but object exists
   if (!string)
@@ -20,6 +17,8 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
   var mainId = id, approval = true
+  
+  if ((global.__actionReturns__[0] || {}).returned) return
 
   // coded
   if (string.includes('coded()') && string.length === 12) string = global.codes[string]
@@ -47,7 +46,7 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
       approval = false
       while (!approval && conditions[_i] !== undefined) {
         if (conditions[_i].slice(0,2) === "=") conditions[_i] = conditions[0] + conditions[_i]
-        approval = toApproval({ _window, lookupActions, awaits, e, string: conditions[_i], id, _, __, ___, params, req, res, object, elser: true })
+        approval = toApproval({ _window, lookupActions, awaits, e, string: conditions[_i], id, __, params, req, res, object, elser: true })
         _i += 1
       }
       return approval
@@ -72,7 +71,7 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
 
     // /////////////////// value /////////////////////
 
-    if (value) value = toValue({ _window, lookupActions, awaits, id: mainId, value, e, _, __, ___, req, res, params, condition: true })
+    if (value) value = toValue({ _window, lookupActions, awaits, id: mainId, value, e, __, req, res, params, condition: true })
 
     // /////////////////// key /////////////////////
 
@@ -103,7 +102,7 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
 
     // function
     if (path0.slice(-2) === "()") {
-    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, e, path, path0, condition: true });
+    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, __, e, path, path0, condition: true });
     if (isFn !== "__CONTINUE__") return approval = notEqual ? !isFn : isFn
     }
 
@@ -114,11 +113,9 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
     else if (key === "desktop()") myKey = global.device.device.type === "desktop"
     else if (key === "tablet()") myKey = global.device.device.type === "tablet"
     else if (key === "mobile()") myKey = global.device.device.type === "smartphone"
-    else if (key === "_") myKey = _
-    else if (key === "__") myKey = __
-    else if (key === "___") myKey = ___
-    else if (object || path[0].includes("()") || path[0].includes(")(") || (path[1] && path[1].includes("()"))) myKey = reducer({ _window, lookupActions, awaits, id, path, e, _, __, ___, params, req, res, object, condition: true })
-    else myKey = reducer({ _window, lookupActions, awaits, id, path, e, _, __, ___, req, res, params, object: object ? object : view, condition: true })
+    else if (key.charAt(0) === "_" && !key.split("_").find(i => i !== "_" && i !== "")) myKey = __[key.split("_").length - 2]
+    else if (object || path[0].includes("()") || (path[1] && path[1].includes("()"))) myKey = reducer({ _window, lookupActions, awaits, id, path, e, __, params, req, res, object, condition: true })
+    else myKey = reducer({ _window, lookupActions, awaits, id, path, e, __, req, res, params, object: object ? object : view, condition: true })
     // else myKey = key
 
     if (params["return()"] !== undefined) {

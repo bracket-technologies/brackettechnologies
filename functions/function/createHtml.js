@@ -6,7 +6,7 @@ const { toCode } = require("./toCode")
 const { toStyle } = require("./toStyle")
 
 module.exports = {
-    createHtml: ({ _window, lookupActions, awaits, id: _id, req, res, import: _import, _, __, ___, viewer }) => {
+    createHtml: ({ _window, lookupActions, awaits, id: _id, req, res, import: _import, __, viewer }) => {
     
     return new Promise (async resolve => {
 
@@ -30,7 +30,7 @@ module.exports = {
         views[id].index = index
         views[id].parent = view.id
         
-        return await toView({ _window, lookupActions, awaits, id, req, res, import: _import, _, __, ___, viewer })
+        return await toView({ _window, lookupActions, awaits, id, req, res, import: _import, __, viewer })
       }))
 
       // siblings
@@ -47,7 +47,7 @@ module.exports = {
           views[id].index = view.index + ":" + index
           views[id].parent = view.parent
           
-          return await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+          return await toView({ _window, lookupActions, awaits, id, req, res, __, viewer })
         }))
 
         siblings += _siblings.join("")
@@ -67,7 +67,7 @@ module.exports = {
           views[id].index = view.index + ":" + index
           views[id].parent = view.parent
           
-          return await toView({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+          return await toView({ _window, lookupActions, awaits, id, req, res, __, viewer })
         }))
 
         prevSiblings += _siblings.join("")

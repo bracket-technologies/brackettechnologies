@@ -9,7 +9,7 @@ const {toApproval} = require("./toApproval")
 const {toComponent} = require("./toComponent")
 const {toId} = require("./toId")
 const {toParam} = require("./toParam")
-const {toString} = require("./toString")
+const {jsonToBracket} = require("./jsonToBracket")
 const {update, removeChildren} = require("./update")
 const {toControls} = require("./toControls")
 const {toArray} = require("./toArray")
@@ -117,7 +117,7 @@ module.exports = {
   toId,
   toParam,
   fileReader,
-  toString,
+  jsonToBracket,
   update,
   execute,
   removeChildren,

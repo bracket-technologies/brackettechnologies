@@ -1,11 +1,11 @@
 const axios = require('axios')
-const { toString } = require('./toString')
+const { jsonToBracket } = require('./jsonToBracket')
 const { clone } = require('./clone')
 const { toFirebaseOperator } = require('./toFirebaseOperator')
 const { toArray } = require('./toArray')
 
 module.exports = {
-  search: async ({ _window, lookupActions, awaits, id = "root", req, res, e, _, __, ___, ...params }) => {
+  search: async ({ _window, lookupActions, awaits, id = "root", req, res, e, __, ...params }) => {
       
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -132,8 +132,15 @@ module.exports = {
       }
 
       else if (!doc && !field) {
-
-        if (limit) ref = ref.limit(limit)
+          
+        if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
+        if (search.skip) ref = ref.offset(search.skip)
+        if (search.limitToLast) ref = ref.limitToLast(search.limitToLast)
+        if (search.startAt) ref = ref.startAt(search.startAt)
+        if (search.startAfter) ref = ref.startAfter(search.startAfter)
+        if (search.endAt) ref = ref.endAt(search.endAt)
+        if (search.endBefore) ref = ref.endBefore(search.endBefore)
+        if (limit || 100) ref = ref.limit(limit || 100)
         
         global.promises[id].push(ref.get().then(q => {
           
@@ -182,16 +189,14 @@ module.exports = {
             _ref = _ref.where(key, operator, _value)
           })
           
-          if (search.orderBy) _ref = _ref.orderBy(search.orderBy)
-          if (limit || 100) _ref = _ref.limit(limit || 100)
-          if (search.offset) _ref = _ref.endAt(search.offset)
+          if (search.orderBy || search.skip) _ref = _ref.orderBy(...toArray(search.orderBy || "id"))
+          if (search.skip) _ref = _ref.offset(search.skip)
           if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
-
           if (search.startAt) _ref = _ref.startAt(search.startAt)
-          if (search.startAfter || search.skip) _ref = _ref.startAfter(search.startAfter || search.skip)
-
+          if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
           if (search.endAt) _ref = _ref.endAt(search.endAt)
           if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
+          if (limit || 100) _ref = _ref.limit(limit || 100)
           
           // retrieve data
           await _ref.get().then(query => {
@@ -227,13 +232,13 @@ module.exports = {
       view.search = global.search = clone(_data)
     
       // await params
-      if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search ? global.search : _, __: global.search ? _ : __, ___: global.search ? __ : ___ })
+      if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __: [...(global.search ? [global.search] : []), ...__] })
 
     } else {
 
       // search
       var myFn
-      headers.search = encodeURI(toString({ search }))
+      headers.search = encodeURI(jsonToBracket({ search }))
       headers["timestamp"] = (new Date()).getTime()
       headers["timezone"] = Math.abs((new Date()).getTimezoneOffset())
 
@@ -253,7 +258,7 @@ module.exports = {
             view.search = global.search = clone(_data)
     
             // await params
-            if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search ? global.search : _, __: global.search ? _ : __, ___: global.search ? __ : ___ })
+            if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __: [...(global.search ? [global.search] : []), ...__] })
     
             resolve()
           })
@@ -272,10 +277,8 @@ module.exports = {
         view.search = global.search = clone(_data)
 
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search ? global.search : _, __: global.search ? _ : __, ___: global.search ? __ : ___ })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __: [...(global.search ? [global.search] : []), ...__] })
       }
     }
-    
-    // if (_data.message === "Force reload!") return location.reload()
   }
 }

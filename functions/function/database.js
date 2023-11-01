@@ -54,7 +54,7 @@ const getData = async ({ _window, req, res, search }) => {
     data = {}, success, message,
     ref = collection && db.collection(collection),
     promises = [], project
-  
+
   if (search.url) {
 
     var url = search.url
@@ -133,8 +133,20 @@ const getData = async ({ _window, req, res, search }) => {
 
   if (!doc && !field) {
 
-    if (limit) ref = ref.limit(limit)
     
+    if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
+    if (search.skip) ref = ref.offset(search.skip)
+    if (search.orderBy) ref = ref.orderBy(search.orderBy)
+    if (search.offset) ref = ref.endAt(search.offset)
+    if (search.limitToLast) ref = ref.limitToLast(search.limitToLast)
+
+    if (search.startAt) ref = ref.startAt(search.startAt)
+    if (search.startAfter) ref = ref.startAfter(search.startAfter)
+    
+    if (search.endAt) ref = ref.endAt(search.endAt)
+    if (search.endBefore) ref = ref.endBefore(search.endBefore)
+    if (limit) ref = ref.limit(limit)
+
     await ref.get().then(q => {
       
       q.forEach(doc => data[doc.id] = doc.data())
@@ -159,8 +171,9 @@ const getData = async ({ _window, req, res, search }) => {
     var multiIN = false, _ref = ref
     if (field) Object.entries(field).map(([key, value]) => {
 
-      var _value = value[Object.keys(value)[0]]
+      if (typeof value !== "object") value = { equal: value }
       var operator = toFirebaseOperator(Object.keys(value)[0])
+      var _value = value[Object.keys(value)[0]]
       if (operator === "in" && _value.length > 10) {
 
         field[key][Object.keys(value)[0]] = [..._value.slice(10)]
@@ -170,16 +183,16 @@ const getData = async ({ _window, req, res, search }) => {
       _ref = _ref.where(key, operator, _value)
     })
     
-    if (search.orderBy) _ref = _ref.orderBy(search.orderBy)
-    if (limit || 100) _ref = _ref.limit(limit || 100)
-    if (search.offset) _ref = _ref.endAt(search.offset)
+    if (search.orderBy || search.skip) _ref = _ref.orderBy(...toArray(search.orderBy || "id"))
+    if (search.skip) _ref = _ref.offset(search.skip)
     if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
 
     if (search.startAt) _ref = _ref.startAt(search.startAt)
-    if (search.startAfter || search.skip) _ref = _ref.startAfter(search.startAfter || search.skip)
+    if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
 
     if (search.endAt) _ref = _ref.endAt(search.endAt)
     if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
+    if (limit || 100) _ref = _ref.limit(limit || 100)
 
     // retrieve data
     await _ref.get().then(query => {
@@ -218,7 +231,7 @@ const postData = async ({ _window, req, res, save }) => {
 
   var ref = db.collection(collection)
   var success, message
-
+console.log(data, save);
   // get schema
   if (save.schematize) {
 
@@ -241,7 +254,7 @@ const postData = async ({ _window, req, res, save }) => {
   
   if (Array.isArray(data)) {
 
-    var idList = toArray(save.idList)
+    var idList = toArray(save.idList || save.doc || save.id)
     if (save.idList) {
 
       var batch = db.batch()
@@ -278,9 +291,7 @@ const postData = async ({ _window, req, res, save }) => {
 
     if (!data.id && !save.doc && !save.id) data.id = generate({ length: 20 })
 
-    if (!data["creation-date"] && req.headers.timestamp) {
-      data["creation-date"] = parseInt(req.headers.timestamp)
-    }
+    if (!data["creation-date"] && req.headers.timestamp) data["creation-date"] = parseInt(req.headers.timestamp)
 
     await ref.doc(save.doc.toString() || save.id.toString() || data.id.toString()).set(data).then(() => {
 
@@ -369,7 +380,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
   docs = erase.docs || [erase.doc]
   await docs.map(async doc => {
     
-    await ref.doc(doc.toString()).delete().then(() => {
+    return await ref.doc(doc.toString()).delete().then(() => {
 
       success = true,
       message = `Document erased successfuly!`

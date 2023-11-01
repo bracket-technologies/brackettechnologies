@@ -15,7 +15,7 @@ const createData = ({ data, id }) => {
   }, global[view.Data])
 }
 
-const clearData = ({ id, e, clear = {} }) => {
+const clearData = ({ id, e, clear = {}, __ }) => {
 
   var view = window.views[id]
 
@@ -25,7 +25,7 @@ const clearData = ({ id, e, clear = {} }) => {
   path = path ? path.split(".") : clone(view.derivations)
   path.push('delete()')
   
-  reducer({ id, e, path, object: global[view.Data] })
+  reducer({ id, e, path, object: global[view.Data], __ })
 
   setContent({ id })
   console.log("data removed", global[view.Data])

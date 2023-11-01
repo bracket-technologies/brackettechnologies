@@ -1,12 +1,12 @@
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
-const { toString } = require("./toString")
+const { jsonToBracket } = require("./jsonToBracket")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
 const { toParam } = require("./toParam")
 
-const droplist = ({ id, e, droplist: params = {} }) => {
+const droplist = ({ id, e, droplist: params = {}, __ }) => {
   
   if (params.positioner || params.id) id = params.positioner || params.id
   var views = window.views
@@ -53,7 +53,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
         : item.toString().toLowerCase().slice(0, global["droplist-search-txt"].toString().length) === global["droplist-search-txt"].toString().toLowerCase()
       )
 
-      global["keyup-index"] = 0
+      global["__keyupIndex__"] = 0
     }
   }
 
@@ -76,19 +76,19 @@ const droplist = ({ id, e, droplist: params = {} }) => {
       delete title.container
 
       dropList.children.push({
-        type: `View?style:[minHeight=3rem;height=100%;gap=1rem;cursor=default];${toString({ style: view.droplist.item && view.droplist.item.style || {} })};${toString(view.droplist.item && view.droplist.item.container || {})};${toString(Title.container || {})};class=flex align-items pointer ${(Title.container || {}).class || ""}`,
+        type: `View?style:[minHeight=3rem;height=100%;gap=1rem;cursor=default];${jsonToBracket({ style: view.droplist.item && view.droplist.item.style || {} })};${jsonToBracket(view.droplist.item && view.droplist.item.container || {})};${jsonToBracket(Title.container || {})};class=flex align-items pointer ${(Title.container || {}).class || ""}`,
         children: [{
-          type: `View?style:[height=100%;width=fit-content];${toString(Title.icon.container || {})};class=flexbox ${(Title.icon.container || {}).class || ""}`,
+          type: `View?style:[height=100%;width=fit-content];${jsonToBracket(Title.icon.container || {})};class=flexbox ${(Title.icon.container || {}).class || ""}`,
           children: [{
-            type: `Icon?style:[color=#888;fontSize=1.8rem];${toString(view.droplist.icon || {})};${toString(Title.icon || {})};class=flexbox ${(Title.icon || {}).class || ""}`
+            type: `Icon?style:[color=#888;fontSize=1.8rem];${jsonToBracket(view.droplist.icon || {})};${jsonToBracket(Title.icon || {})};class=flexbox ${(Title.icon || {}).class || ""}`
           }]
         }, {
-          type: `Text?style:[padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%;fontWeight=bold];${toString(title)};class=flex align-center ${(title || {}).class || ""}`,
+          type: `Text?style:[padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%;fontWeight=bold];${jsonToBracket(title)};class=flex align-center ${(title || {}).class || ""}`,
         }]
       })
 
     } else dropList.children.push({
-      type: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%;fontWeight=bold;cursor=default];${toString(view.droplist.item || {})};${toString(Title)};class=flex align-center ${(Title || {}).class || ""}`,
+      type: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%;fontWeight=bold;cursor=default];${jsonToBracket(view.droplist.item || {})};${jsonToBracket(Title)};class=flex align-center ${(Title || {}).class || ""}`,
     })
   }
   
@@ -106,19 +106,18 @@ const droplist = ({ id, e, droplist: params = {} }) => {
         if (typeof item.text === "string") item.text = { text: item.text }
         
         return ({
-          view: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(view.droplist.item || {})};${toString(item || {})};class=flex align-items pointer ${(item || {}).class || ""}`,
+          view: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item || {})};${jsonToBracket(item || {})};class=flex align-items pointer ${(item || {}).class || ""}`,
           children: [{
-            view: `View?style:[height=inherit;width=fit-content];${toString(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
+            view: `View?style:[height=inherit;width=fit-content];${jsonToBracket(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
             children: [{
-              view: `Icon?style:[color=#888;fontSize=1.8rem];${toString(view.droplist.item && view.droplist.item.icon || {})};${toString(view.droplist.icon || {})};${toString(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
+              view: `Icon?style:[color=#888;fontSize=1.8rem];${jsonToBracket(view.droplist.item && view.droplist.item.icon || {})};${jsonToBracket(view.droplist.icon || {})};${jsonToBracket(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
             }]
           }, {
-            view: `Text?style:[fontSize=1.3rem;width=100%];${toString(view.droplist.item && view.droplist.item.text || {})};${toString(view.droplist.text || {})};${toString(item.text)};class=flex align-center ${(item.text || {}).class || ""};caller=${id}?${item.text.text ? true : false}`,
+            view: `Text?style:[fontSize=1.3rem;width=100%];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item.text)};class=flex align-center ${(item.text || {}).class || ""};caller=${id}?${item.text.text ? true : false}`,
             controls: [...(view.droplist.controls || []), {
               event: `click??!():${id}.droplist.preventDefault`,
-              actions: [ // :[focus:${input_id}]
+              actions: [
                 `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-                `?if():[txt()=list||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;3rdParent():${id}.data().type()=map]:[_list:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;3rdParent():${id}.data().type()=map]:[_list:[_map:view:_string]].elif():[txt()=children]:[_map:view:_string].elif():[txt()=text]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=list]:[_list:_string].elif():[txt()=map]:[_map:_string:_string];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];droplist-positioner:().del();myParent:()=():${id}.2ndParent();():${id}.2ndParent().update();().quit=false;myParent:().inputs().():[if():[!().quit;!txt()||txt()=0]:[focus();().quit=true]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
                 `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
               ]
             }]
@@ -128,13 +127,13 @@ const droplist = ({ id, e, droplist: params = {} }) => {
       } else {
         
         return ({
-          view: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${toString(view.droplist.item && view.droplist.item.text || {})};${toString(view.droplist.text || {})};${toString(item)};class=flex align-center pointer ${(item || {}).class || ""};caller=${id}`,
+          view: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${(item || {}).class || ""};caller=${id}`,
           controls: [...(view.droplist.controls || []), {
             event: `click??!():${id}.droplist.preventDefault`,
             actions: [ // :[focus:${input_id}]
               `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-              `?if():[txt()=list||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():-]];():${id}.data()=if():[txt()=controls;3rdParent():${id}.data().type()=map]:[_list:[_map:event:_string]].elif():[txt()=controls]:[_map:event:_string].elif():[txt()=children;3rdParent():${id}.data().type()=map]:[_list:[_map:view:_string]].elif():[txt()=children]:[_map:view:_string].elif():[txt()=text]:_string.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=list]:[_list:_string].elif():[txt()=map]:[_map:_string:_string];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];droplist-positioner:().del();myParent:()=():${id}.2ndParent();():${id}.2ndParent().update();().quit=false;myParent:().inputs().():[if():[!txt()||txt()=0]:[focus();().quit=true]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
-              `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
+              `?if():[txt()=list||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():'-']];():${id}.data()=if():[txt()=children]:[_list:[view='']].elif():[txt()=text]:''.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=list]:[_list:''].elif():[txt()=map]:[''=''];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];__droplistPositioner__:().del();myParent:()=():${id}.2ndParent();():${id}.2ndParent().update()::[quit=false;_.view.inputs().filter():[!classlist().inc():'comment'].():[if():[!txt()||txt()=0;!().quit]:[focus();().quit=true]]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
+              `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style().[_]=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
             ]
           }]
         })
@@ -145,7 +144,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
   
   dropList.positioner = dropList.caller = id
   dropList.unDeriveData = true
-  update({ id: "droplist" })
+  update({ id: "droplist", __ })
   
   // searchable
   var myFn = () => {
@@ -181,7 +180,7 @@ const droplist = ({ id, e, droplist: params = {} }) => {
                 view.contenteditable = false
               }
               
-              reducer({ id, path: dropList.derivations, value: items[_index], object: global[dropList.Data], key: true })
+              reducer({ id, path: dropList.derivations, value: items[_index], object: global[dropList.Data], key: true, __ })
               
             } else if (view.contenteditable === false || views[input_id].contenteditable === false) {
               
@@ -196,18 +195,18 @@ const droplist = ({ id, e, droplist: params = {} }) => {
                 view.contenteditable = true
               }
 
-              reducer({ id, path: dropList.derivations, value: items[_index], object: global[dropList.Data], key: true })
+              reducer({ id, path: dropList.derivations, value: items[_index], object: global[dropList.Data], key: true, __ })
             }
             
           }
 
-          global["keyup-index"] = _index
+          global["__keyupIndex__"] = _index
         }
       }
     }
     
-    global["keyup-index"] = global["keyup-index"] || 0
-    views.droplist.element.children[view.droplist.title ? global["keyup-index"] + 1 : global["keyup-index"]].dispatchEvent(new Event("mouseenter"))
+    global["__keyupIndex__"] = global["__keyupIndex__"] || 0
+    views.droplist.element.children[view.droplist.title ? global["__keyupIndex__"] + 1 : global["__keyupIndex__"]].dispatchEvent(new Event("mouseenter"))
   }
 
   if (!view.droplist.preventDefault) global.droplistTimer = setTimeout(myFn, 100)

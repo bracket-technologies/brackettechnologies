@@ -10,12 +10,10 @@ const { toArray } = require("./toArray")
 const { createHtml } = require("./createHtml")
 const { override } = require("./merge")
 const { isParam } = require("./isParam")
-
-const myViews = require("./views.json")
 const { toFunction } = require("./toFunction")
 const _imports = [ "link", "meta", "title", "script", "style" ]
 
-const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import, params: inheritedParams = {}, _, __, ___, viewer = "view" }) => {
+const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import, params: inheritedParams = {}, __, viewer = "view" }) => {
 
   return new Promise (async resolve => {
 
@@ -26,17 +24,17 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
 
     // use view instead of type
     if (view.view) view.type = view.view
-    view.__ISVIEW__ = true
+    view.__view__ = true
 
     // view is empty
     if (!view.type) return resolve("")
     if (!view["my-views"]) view["my-views"] = [...(parent["my-views"] || [])]
-    view.viewType = viewer = view.viewType || parent.viewType || viewer
+    view.viewType = viewer = view.viewType || parent.viewType || viewer || "view"
     
     // encode
     view.type = toCode({ _window, string: toCode({ _window, string: view.type }), start: "'", end: "'" })
     if (view.type.split(".")[0].split(":")[0].slice(-2) === "()") {
-    var isFn = await toFunction({ _window, lookupActions, awaits, id, req, res, _, __, ___, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0], isView: true })
+    var isFn = await toFunction({ _window, lookupActions, awaits, id, req, res, __, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0], isView: true })
     if (isFn !== "__CONTINUE__") return resolve(isFn)
     }
     
@@ -58,7 +56,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     if (/*!view.duplicatedElement && */type.length === 12 && type.includes("coded()")) {
 
       type = global.codes[type]
-      type = toValue({ req, res, _window, id, value: type, _, __, ___ })
+      type = toValue({ req, res, _window, id, value: type, __ })
       view.__viewName__ = type
 
       // sub params
@@ -72,7 +70,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         var _conditions_ = subParams.split("?")[1]
         
         if (_conditions_) {
-          var approved = toApproval({ _window, string: _conditions_, id, req, res, _, __, ___ })
+          var approved = toApproval({ _window, string: _conditions_, id, req, res, __ })
           if (!approved) {
             delete views[id]
             return resolve("")
@@ -81,9 +79,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         
         subParams = subParams.split("?")[0]
         
-        var _params = {}
-        if (isParam({ _window, string: subParams })) _params = toParam({ req, res, _window, id, string: subParams, _, __, ___ })
-        else _params.data = toValue({ req, res, _window, id, value: subParams, _, __, ___ })
+        var _params = toValue({ req, res, _window, id, value: subParams, __ })
         if (_params.data === "mount") {
           _params.data = parent.data
           _params.mount = true
@@ -101,14 +97,14 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
             _params.Data = _params.doc = _params.doc || _params.Data || generate()
             global[_params.Data] = global[_params.Data] || _params.data || {}
             _params.derivations = [...(_params.derivations || []), ...(_params.path || [])]
-            loopData = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, _, __, ___ })
+            loopData = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, __ })
 
           } else {
 
             _params.Data = _params.doc = _params.doc || _params.Data || view.Data || parent.Data || generate()
             global[_params.Data] = global[_params.Data] || _params.data || {}
             _params.derivations = [...(_params.derivations || _params.derivations || parent.derivations || []), ...(_params.path || [])]
-            loopData = _params.data = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, _, __, ___ })
+            loopData = _params.data = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, __ })
           }
 
         } else if (_params.data) {
@@ -123,7 +119,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           _params.Data = _params.doc = _params.doc || _params.Data
           global[_params.Data] = global[_params.Data] || {}
           _params.derivations = _params.derivations || []
-          loopData = _params.data = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, _, __, ___ })
+          loopData = _params.data = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, __ })
         }
         
         /*if (_params.mount) {
@@ -132,7 +128,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           else if (_params.data && !_params.doc) view.doc = view.Data = generate()
           view.Data = Data = view.Data || Data
           global[Data] = global[Data] || _params.data || {}
-          _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, _, __, ___, key: _params.data !== undefined ? true : false, value: _params.data })
+          _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, __, key: _params.data !== undefined ? true : false, value: _params.data })
         }*/
         
         var tags = []
@@ -157,7 +153,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
             }
 
             views[_id] = _view
-            return await toView({ _window, lookupActions, awaits, id: _id, req, res, _: _data, __: _, ___: __, viewer })
+            return await toView({ _window, lookupActions, awaits, id: _id, req, res, __: [_data, ...__], viewer })
           }))
 
         } else {
@@ -176,7 +172,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           }
           
           views[_id] = _view
-          var tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, _: "", __: _, ___: __, viewer })
+          var tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, __: ["", ...__], viewer })
           return resolve(tags)
         }
         
@@ -187,7 +183,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       view.mapType = ["data"]
     }
 
-    view.type = view.__viewName__ = type = toValue({ req, res, _window, id, value: type, _, __, ___ })
+    view.type = view.__viewName__ = type = toValue({ req, res, _window, id, value: type, __ })
 
 
     // events
@@ -203,13 +199,13 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
 
       if (isParam({ _window, lookupActions, awaits, string: subParams })) {
 
-        inheritedParams = {...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, _, __, ___ })}
+        inheritedParams = {...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, __ })}
 
       } else {
         
         view.Data = view.Data || view.doc || parent.Data
         view.derivations = view.derivations || [...(parent.derivations || [])]
-        var _id = toValue({ _window, lookupActions, awaits, value: subParams, id, req, res, _, __, ___ })
+        var _id = toValue({ _window, lookupActions, awaits, value: subParams, id, req, res, __ })
         
         if (views[_id] && view.id !== _id) view.id = _id + generate()
         else view.id = id = _id
@@ -228,9 +224,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       view.controls = view.controls || []
       view.status = "Loading"
       view.childrenID = []
-      view._ = _
       view.__ = __
-      view.___ = ___
       views[id] = view
       
       if (global.breaktoView[id]) {
@@ -241,7 +235,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     }
 
     // approval (after repeated  views conditions)
-    var approved = toApproval({ _window, lookupActions, awaits, string: conditions, id, req, res, _, __, ___ })
+    var approved = toApproval({ _window, lookupActions, awaits, string: conditions, id, req, res, __ })
     if (!approved) {
       delete views[id]
       return resolve("")
@@ -252,7 +246,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     // push destructured params from type to view
     if (params) {
       
-      params = toValue({ _window, lookupActions, awaits, value: params, id, req, res, mount: true, toView: true, _, __, ___ })
+      params = toValue({ _window, lookupActions, awaits, value: params, id, req, res, mount: true, toView: true, __ })
       if (typeof params !== "object") params = { [params]: generate() }
 
       if (params.id && params.id !== id) {
@@ -262,24 +256,6 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         id = params.id
         view = views[id]
       }
-
-      // view
-      /*if (!_import && (params.view || (!myViews.includes(view.type) && global.data[viewer][view.type]))) {
-
-        var viewId = params.view || view.type
-        delete view.view
-        delete params.view
-        view["my-views"].push(viewId)
-        
-        var newView = clone(global.data[viewer][viewId])
-        if (!newView) return resolve("")
-        if (newView.id && views[newView.id]) newView.id += generate()
-
-        views[id] = { ...view,  ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
-        
-        tags = await toView({ _window, lookupActions, awaits, id, req, res, params, _, __, ___, viewer })
-        return resolve(tags)
-      }*/
     } else params = {}
       
     // inherited params
@@ -299,9 +275,9 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           var event = toCode({ _window, lookupActions, awaits, string: controls.event })
           event = toCode({ _window, lookupActions, awaits, string: event, start: "'", end: "'" })
 
-          if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2], _, __, ___ })) {
+          if (event.split("?")[0].split(";").find(event => event.slice(0, 13) === "beforeLoading") && toApproval({ req, res, _window, id, string: event.split('?')[2], __ })) {
 
-            toParam({ req, res, _window, id, string: event.split("?")[1], toView: true, _, __, ___ })
+            toParam({ req, res, _window, id, string: event.split("?")[1], toView: true, __ })
             view.controls = view.controls.filter((controls = {}) => !controls.event.split("?")[0].includes("beforeLoading"))
           }
         })
@@ -322,7 +298,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       })
     }
     
-    if (!_import && (params.view || (!myViews.includes(view.type) && global.data[viewer][view.type]))) {
+    if (!_import && (params.view || global.data[viewer][view.type])) {
       
       var viewId = params.view || view.type
       view["my-views"].push(viewId)
@@ -336,7 +312,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       
       views[id] = { ...view,  ...newView, __viewName__: viewId, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
 
-      tags = await toView({ _window, lookupActions, awaits, id, req, res, _: Object.keys(params).length > 0 ? params : _, __: Object.keys(params).length > 0 ? _ : __, ___: Object.keys(params).length > 0 ? __ : ___, viewer })
+      tags = await toView({ _window, lookupActions, awaits, id, req, res, __: [ ...(Object.keys(params).length > 0 ? [params] : []), ...__], viewer })
       return resolve(tags)
     }
 
@@ -352,14 +328,14 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       view.data = view.data || ""
       view.unDeriveData = true
 
-    } else view.data = reducer({ _window, lookupActions, awaits, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res, _, __, ___ })
+    } else view.data = reducer({ _window, lookupActions, awaits, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res, __ })
     
     // doc
     if (!global[view.Data] && view.data) global[view.Data] = view.data
 
     // root
     if (view.parent === "root") views.root.child = view.id
-    tags = await createTags({ _window, lookupActions, awaits, id, req, res, _, __, ___, viewer })
+    tags = await createTags({ _window, lookupActions, awaits, id, req, res, __, viewer })
     resolve(tags)
   })
 }

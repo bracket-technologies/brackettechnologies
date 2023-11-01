@@ -2,7 +2,6 @@
 const { toView } = require("./toView");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
-const fs = require("fs");
 const bracketDomains = ["brackettechnologies.com", "localhost", "brackettechnologies.localhost", "bracket-technologies.web.app"];
 
 require("dotenv").config();
@@ -107,19 +106,7 @@ const getProject = ({ window }) => {
     })
 }
 
-const status = (window = {}) => {
-
-    var { global } = window
-
-    if (!global.data.project || !global.data.project.id) return "Project not found!"
-    if (!global.data.page) return "No pages found!"
-    if (!global.data.page[global.currentPage]) return "Page not found!"
-    if (!global.data.view) return "No views found!"
-    if (!global.data.public) return "No public views found!"
-    return "Document is ready!"
-}
-
-const initializer = ({ window }) => {
+const initializer = ({ window, __ }) => {
   
     // Create a cookies object
     var { req, res } = window, host = req.headers.host || req.headers.referer
@@ -135,6 +122,7 @@ const initializer = ({ window }) => {
         //children: { head: "", body: "" },
         __INNERHTML__: {},
         __waiters__: [],
+        __actionReturns__: [],
         __TAGS__: {
             body: "",
             head: ""
@@ -179,6 +167,7 @@ const initializer = ({ window }) => {
         },
         root: {
             id: "root",
+            __,
             parent: "body",
             view: "View",
             "my-views": [],
@@ -197,7 +186,7 @@ const initializer = ({ window }) => {
     }
 }
 
-const interpreter = ({ window: _window }) => {
+const interpreter = ({ window: _window, __ }) => {
 
     return new Promise(async resolve => {
       
@@ -224,10 +213,10 @@ const interpreter = ({ window: _window }) => {
         // create views
         console.log("Create document started!")
 
-        await toView({ _window, id: "html", req, res })
+        await toView({ _window, id: "html", req, res, __ })
         
-        var publicInnerHTML = await toView({ _window, id: "public", req, res, viewer: "public" })
-        var rootInnerHTML = await toView({ _window, id: "root", req, res })
+        var publicInnerHTML = await toView({ _window, id: "public", req, res, viewer: "public", __ })
+        var rootInnerHTML = await toView({ _window, id: "root", req, res, __ })
 
         console.log("Create document ended!")
         
@@ -240,15 +229,15 @@ const interpreter = ({ window: _window }) => {
     })
 }
 
-const app = async ({ _window: window, req, res }) => {
+const app = async ({ _window: window, req, res, __ }) => {
     
     window.req = req
     window.res = res
-    initializer({ window })
+    initializer({ window, __ })
     if (res.headersSent) return
-    await getProject({ window })
+    await getProject({ window, __ })
     if (res.headersSent) return
-    await interpreter({ window })
+    await interpreter({ window, __ })
     if (res.headersSent) return
 
     var { global, views } = window
@@ -262,7 +251,8 @@ const app = async ({ _window: window, req, res }) => {
     global.breaktoView = {}
     
     // head tags
-    var favicon = global.data.project.browser.favicon
+    var favicon = global.data.project.favicon
+    var faviconType = global.data.project.faviconType
     var language = global.language = view.language || view.lang || html.lang || html.language || "en"
     var direction = view.direction || view.dir || html.direction || html.dir || (language === "ar" || language === "fa" ? "rtl" : "ltr")
     var title = view.title || html.title || "Bracket App Title"
@@ -300,7 +290,7 @@ const app = async ({ _window: window, req, res }) => {
                 ${metaKeywords ? `<meta name="keywords" content="${metaKeywords}">` : ""}
                 ${metaDescription ? `<meta name="description" content="${metaDescription}">` : ""}
                 ${metaTitle ? `<meta name="title" content="${metaTitle}">` : ""}
-                ${favicon ? `<link rel="icon" type="image/x-icon" href="${favicon}"/>` : ""}
+                ${favicon ? `<link rel="icon" type="image/${faviconType || "x-icon"}" href="${favicon}"/>` : ""}
                 <link rel="preconnect" href="https://fonts.googleapis.com">
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                 <link rel="manifest" href="/resources/manifest.json" mimeType="application/json; charset=UTF-8"/>
@@ -327,4 +317,4 @@ const app = async ({ _window: window, req, res }) => {
 }
 
 // <meta http-equiv="X-UA-Compatible" content="IE=edge">
-module.exports = { status, getProject, initializer, interpreter, app }
+module.exports = { getProject, initializer, interpreter, app }

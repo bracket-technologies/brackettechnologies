@@ -1,0 +1,248 @@
+[debug] [2023-11-01T22:02:43.207Z] ----------------------------------------------------------------------
+[debug] [2023-11-01T22:02:43.209Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\USER\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2023-11-01T22:02:43.210Z] CLI Version:   12.4.0
+[debug] [2023-11-01T22:02:43.210Z] Platform:      win32
+[debug] [2023-11-01T22:02:43.210Z] Node Version:  v18.16.0
+[debug] [2023-11-01T22:02:43.211Z] Time:          Thu Nov 02 2023 00:02:43 GMT+0200 (Eastern European Standard Time)
+[debug] [2023-11-01T22:02:43.211Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-11-01T22:02:43.292Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-11-01T22:02:43.293Z] > authorizing via signed-in user (brackettechnologiescompany@gmail.com)
+[debug] [2023-11-01T22:02:43.293Z] [iam] checking project bracket-technologies for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2023-11-01T22:02:43.295Z] > refreshing access token with scopes: []
+[debug] [2023-11-01T22:02:43.297Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-11-01T22:02:43.297Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-11-01T22:02:43.620Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-11-01T22:02:43.620Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-11-01T22:02:43.629Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/bracket-technologies:testIamPermissions [none]
+[debug] [2023-11-01T22:02:43.630Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/bracket-technologies:testIamPermissions x-goog-quota-user=projects/bracket-technologies
+[debug] [2023-11-01T22:02:43.630Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/bracket-technologies:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2023-11-01T22:02:44.525Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/bracket-technologies:testIamPermissions 200
+[debug] [2023-11-01T22:02:44.525Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/bracket-technologies:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2023-11-01T22:02:44.525Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/bracket-technologies/serviceAccounts/bracket-technologies@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2023-11-01T22:02:44.526Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/bracket-technologies/serviceAccounts/bracket-technologies@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2023-11-01T22:02:45.551Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/bracket-technologies/serviceAccounts/bracket-technologies@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2023-11-01T22:02:45.551Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/bracket-technologies/serviceAccounts/bracket-technologies@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'bracket-technologies'...
+[info] 
+[info] i  deploying functions 
+[debug] [2023-11-01T22:02:45.556Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/bracket-technologies [none]
+[debug] [2023-11-01T22:02:46.039Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/bracket-technologies 200
+[debug] [2023-11-01T22:02:46.040Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/bracket-technologies {"projectId":"bracket-technologies","projectNumber":"2565745282","displayName":"Bracket Technologies","name":"projects/bracket-technologies","resources":{"hostingSite":"bracket-technologies","realtimeDatabaseInstance":"bracket-technologies-default-rtdb","storageBucket":"bracket-technologies.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_c2e763cc-1cf3-4f78-bb83-421a2ec41ed0"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2023-11-01T22:02:46.042Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/cloudfunctions.googleapis.com [none]
+[debug] [2023-11-01T22:02:46.042Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/bracket-technologies
+[debug] [2023-11-01T22:02:46.044Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/runtimeconfig.googleapis.com [none]
+[debug] [2023-11-01T22:02:46.044Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/bracket-technologies
+[debug] [2023-11-01T22:02:46.045Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/cloudbuild.googleapis.com [none]
+[debug] [2023-11-01T22:02:46.045Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/cloudbuild.googleapis.com x-goog-quota-user=projects/bracket-technologies
+[debug] [2023-11-01T22:02:46.046Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/artifactregistry.googleapis.com [none]
+[debug] [2023-11-01T22:02:46.046Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/artifactregistry.googleapis.com x-goog-quota-user=projects/bracket-technologies
+[debug] [2023-11-01T22:02:47.204Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/runtimeconfig.googleapis.com 200
+[debug] [2023-11-01T22:02:47.204Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2023-11-01T22:02:47.204Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/cloudbuild.googleapis.com 200
+[debug] [2023-11-01T22:02:47.204Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/cloudbuild.googleapis.com [omitted]
+[info] +  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2023-11-01T22:02:47.223Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/artifactregistry.googleapis.com 200
+[debug] [2023-11-01T22:02:47.223Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/artifactregistry.googleapis.com [omitted]
+[info] +  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2023-11-01T22:02:47.226Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/cloudfunctions.googleapis.com 200
+[debug] [2023-11-01T22:02:47.226Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/bracket-technologies/services/cloudfunctions.googleapis.com [omitted]
+[info] +  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2023-11-01T22:02:47.226Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/bracket-technologies/adminSdkConfig [none]
+[debug] [2023-11-01T22:02:47.587Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/bracket-technologies/adminSdkConfig 200
+[debug] [2023-11-01T22:02:47.587Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/bracket-technologies/adminSdkConfig {"projectId":"bracket-technologies","databaseURL":"https://bracket-technologies-default-rtdb.firebaseio.com","storageBucket":"bracket-technologies.appspot.com","locationId":"us-central"}
+[debug] [2023-11-01T22:02:47.588Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/bracket-technologies/configs [none]
+[debug] [2023-11-01T22:02:48.026Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/bracket-technologies/configs 200
+[debug] [2023-11-01T22:02:48.026Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/bracket-technologies/configs {}
+[debug] [2023-11-01T22:02:48.030Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2023-11-01T22:02:49.860Z] > [functions] package.json contents: {
+  "name": "bracketjs",
+  "version": "1.0.0",
+  "description": "Bracket Website Builder",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "deploy": "npm-run-all --parallel browserify firebase",
+    "firebase": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "server": "node index.js",
+    "browserify": "cd browser && browserify browser.js > index.js",
+    "start": "npm-run-all --parallel browserify server"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1135.0",
+    "axios": "*",
+    "body-parser": "*",
+    "cookie-parser": "^1.4.6",
+    "dom-to-image": "^2.6.0",
+    "dotenv": "*",
+    "downloads-folder": "^3.0.3",
+    "express": "^4.18.1",
+    "express-device": "*",
+    "firebase": "^9.8.1",
+    "firebase-admin": "^10.2.0",
+    "firebase-functions": "*",
+    "googleapis": "^112.0.0",
+    "html2pdf.js": "^0.10.1",
+    "node-device-detector": "^2.0.12",
+    "nodemailer": "^6.9.1",
+    "qrcode": "^1.5.3",
+    "qrcode-terminal": "^0.12.0",
+    "serialport": "^10.4.0",
+    "serverless-http": "^3.0.2",
+    "socket.io": "^4.5.1",
+    "usb": "^2.4.2",
+    "uuid": "^8.3.2",
+    "vcards-js": "^2.10.0",
+    "web3": "^1.8.2",
+    "whatsapp-web.js": "^1.16.7",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "browserify": "*",
+    "npm-run-all": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MohamadObeid/BracketJs.git"
+  },
+  "author": "Mohamad Baqer Obeid"
+}
+[debug] [2023-11-01T22:02:49.860Z] Building nodejs source
+[warn] !  functions: You are using an old version of firebase-functions SDK (3.19.0). Please update firebase-functions SDK to >=3.20.0 
+[info] i  functions: Loaded environment variables from .env. 
+[info] i  functions: preparing functions directory for uploading... 
+[info] i  functions: packaged C:\Users\USER\Desktop\brackettechnologies\functions (3.02 MB) for uploading 
+[debug] [2023-11-01T22:02:53.159Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/-/functions [none]
+[debug] [2023-11-01T22:02:53.836Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/-/functions 200
+[debug] [2023-11-01T22:02:53.836Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/-/functions {"functions":[{"name":"projects/bracket-technologies/locations/us-central1/functions/app","httpsTrigger":{"url":"https://us-central1-bracket-technologies.cloudfunctions.net/app","securityLevel":"SECURE_ALWAYS"},"status":"ACTIVE","entryPoint":"app","timeout":"60s","availableMemoryMb":256,"serviceAccountEmail":"bracket-technologies@appspot.gserviceaccount.com","updateTime":"2023-11-01T15:02:36.562Z","versionId":"171","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"ed982ce51af7cbcf554785e130593e882ad93701"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-92791592042.us-central1.cloudfunctions.appspot.com/438f995a-82aa-4b14-8053-fe589f70d98d.zip","environmentVariables":{"FBSA":"{ \"type\": \"service_account\", \"project_id\": \"bracket-technologies\", \"private_key_id\": \"0d7aadbbcdc56380b9e504c79138d185847a871c\", \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCWJQ8LBhNZAnhk\\nHIbyo0x4CuuYnZbzNgl0wZhQRx3QEjGaWGL91tTXf7iXjzTk+iJSkwSTQrKG7sb7\\n4Fl/gSmTcMzYLNeX5eRTHBxVrp09APaReAJXDfdsR2078us/PiJy/wHDLRG309uL\\nT/ANYfiWLtf7FX1EQp/kwyZ40kKuFGw3CzN+LVDT0ep07grJodtk/l1xSGWLJBy2\\nIzWrLY17+7Z1ChjzyfRhy3JC4F6NM7idegpYYyMNHYeydjSUjeRfUderMXLIa9w+\\nd2mj6bQI+VIdEun43v2/bFsyltvGPfPBWk5aVYtZd0idIlYDIkuStMOpZt12uMQo\\newLYp1dxAgMBAAECggEAHtOSAJnpPAOpUyiWPlfvuc/IKkfkt5+XFm0vCABp6w/p\\nNj7CaEqE3Y/gBuIEoqSGinyb2l49yD1bBli8F1UeA6MLs7CVPR8an0Osv5y/tMgv\\nV5OTq2r3KziJAV9xFEV+Di00H+3vbtYlA7fQWfcM8kzA1FDHrM2fBXlZu0G0JghD\\nshNQAu9UmZd6xTwJYIdB8fJwt8yDHgoVQN+aGp4F5mwI2NJEYY/Vrykj/p08/0jd\\nUDRe4737He9Ft0AchcnzGFssG7bcXhqdJTtpoC6X0xWYuFh+KaegkvU2Am9oWOFh\\naFznvPqOaD0KB9+fR9WvVWpSr+jR9LRfa0XfRaCZzwKBgQDSNjQRgcVxxH2ckfdT\\nGzAo4JGImgSCIaGOsnRhvIBNb3cHXLT140E+LL84OFTh5Uc+qKGqctzIN/5ktm3x\\nHJdJEQXZgcznuQLCxGY2IEpjgk8lmp4Wx0FPOHqPd2tVh7Tu7obVklaZryQSBahI\\n7fXUJWirWGhyhYGXrvtVh9nLXwKBgQC22WjUad98L1aoEt/Cyorg2bW8EwyLUoEO\\nP486BRsJm6Pj9ewmQTAm7Mg0/CqidaQ5eiK3NAloB0aB5zZDL2PwnuTf09Da1eVy\\nVGUu6usG8Nup0sTp1OEYSgwjMutRHn3dQ7fuIkHx8fK/eT33D7Hozv257PJ44MpE\\nteZURoWfLwKBgGyiwIPvqedioXvh34xed6QYcn3DAuNxl/mT9htwfGoIWd4/JfIR\\nMO192JCoZA2eHRSft3TMCZebgGfx851wpiqHlptSvl9euLOJJj2AsJD+jgKkBmFF\\nNlZHnOc50wmPqYz1Tk9fYkvoPF7n95FBERNDBfXPKaNNpayLLK6GF6NHAoGAFKbV\\nijgy/6mxFeab0zphGSg9uHJGVm4JGXzgRmNRPHKRviuGcoOmVp8jtahNgG/dDojW\\n5u4/qbo4om9k143AseqgWw9nZXAHLDSQAQ6TYQNPLA0cJHTgv4eNe2RC47SX7qe5\\nXHIOFK+JBUtCTmc9ZtgKHDfA4xowfjY1P4t/iA0CgYEAyV93ot7q6AteiywCAF40\\nf/YUsQGKg41hp2Ehndwu+hlsJKoBtTrUYROzH1spCCZ/TZuvIZTP2KW8CkUQsqhL\\nKM4sWZl1viuyhnQwaD5dksxGqAAR+qIrU2Jk+i/a9awix3HMXrw7zfNIObH1O2sp\\ntIdWemtXcg7Y7XZVWwPG2gs=\\n-----END PRIVATE KEY-----\\n\", \"client_email\": \"firebase-adminsdk-kcrle@bracket-technologies.iam.gserviceaccount.com\", \"client_id\": \"115334355195024365750\", \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\", \"token_uri\": \"https://oauth2.googleapis.com/token\", \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\", \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com\", \"universe_domain\": \"googleapis.com\" }","CU":"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-3gkdr%40bracketjs.iam.gserviceaccount.com","APU":"https://www.googleapis.com/oauth2/v1/certs","PKI":"dbb6b504587a2dc87f79f45910a5beaad2bafd84","PR":"bracket-technologies","E":"brackettechnologiescompany@gmail.com","EP":"bakir1598753","DBU":"https://bracket-technologies-default-rtdb.firebaseio.com/","AK":"yV3ZbTLM9HRpKmtLyGbLOQIkeEoaWJxFWsFhpTHm","AD":"bracket-technologies.firebaseapp.com","SB":"bracket-technologies.appspot.com","MSI":"869789439383","PI":"bracket-technologies","AI":"1:869789439383:web:09ed5cda97e32200bba0d2","FIREBASE_CONFIG":"{\"projectId\":\"bracket-technologies\",\"databaseURL\":\"https://bracket-technologies-default-rtdb.firebaseio.com\",\"storageBucket\":\"bracket-technologies.appspot.com\",\"locationId\":\"us-central\"}","GCLOUD_PROJECT":"bracket-technologies","EVENTARC_CLOUD_EVENT_SOURCE":"projects/bracket-technologies/locations/us-central1/functions/app"},"runtime":"nodejs16","ingressSettings":"ALLOW_ALL","buildId":"e012e2c1-2466-4d58-9082-ca29e7112d55","buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"buildName":"projects/2565745282/locations/us-central1/builds/e012e2c1-2466-4d58-9082-ca29e7112d55","dockerRegistry":"ARTIFACT_REGISTRY"}]}
+[debug] [2023-11-01T22:02:53.838Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/bracket-technologies/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2023-11-01T22:02:54.911Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/bracket-technologies/locations/-/functions 200
+[debug] [2023-11-01T22:02:54.911Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/bracket-technologies/locations/-/functions {}
+[debug] [2023-11-01T22:02:54.920Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/bracket-technologies [none]
+[debug] [2023-11-01T22:02:55.260Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/bracket-technologies 200
+[debug] [2023-11-01T22:02:55.260Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/bracket-technologies {"projectId":"bracket-technologies","projectNumber":"2565745282","displayName":"Bracket Technologies","name":"projects/bracket-technologies","resources":{"hostingSite":"bracket-technologies","realtimeDatabaseInstance":"bracket-technologies-default-rtdb","storageBucket":"bracket-technologies.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_c2e763cc-1cf3-4f78-bb83-421a2ec41ed0"}
+[debug] [2023-11-01T22:02:55.262Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/us-central1/functions:generateUploadUrl [none]
+[debug] [2023-11-01T22:02:55.262Z] >>> [apiv2][body] POST https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/us-central1/functions:generateUploadUrl {}
+[debug] [2023-11-01T22:02:55.803Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/us-central1/functions:generateUploadUrl 200
+[debug] [2023-11-01T22:02:55.804Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/uploads-92791592042.us-central1.cloudfunctions.appspot.com/7a1c1557-0b5d-462f-96d3-5b63f8f658f3.zip?GoogleAccessId=service-2565745282@gcf-admin-robot.iam.gserviceaccount.com&Expires=1698877974&Signature=HmYj5ji6RmnC21Z12EPNKeGWJO6y%2Bj6Ijipm5VKgx6I97hN7DnaojiXXXScFN5h8Oof5sTegPGMYlmz9Awl3HGyWnbJ51%2ByE2xbVRPKMS1GG8jbLzlb3qoMvvXJ8Nol3hyV%2FEnx5Aryl9uuyQwyfEeCHiSOQoG2aVSxHTTme1sCP88pj1RXc7trGANo13gOXspZvzfQiJI80TalLvSEmgElyvq7ISoFoQ2li7zk2R%2FQCfM%2BzrS3cOiFj6qEOLqUcbHJXd8euqeyi9wPRVcnvet61HsroIn7PBJHhnNirjMX1FPd8A0ksJnFc2RBoDEYGT3RRBL0q5RaHoMLaxd%2B4XA%3D%3D"}
+[debug] [2023-11-01T22:02:55.805Z] >>> [apiv2][query] PUT https://storage.googleapis.com/uploads-92791592042.us-central1.cloudfunctions.appspot.com/7a1c1557-0b5d-462f-96d3-5b63f8f658f3.zip GoogleAccessId=service-2565745282%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1698877974&Signature=HmYj5ji6RmnC21Z12EPNKeGWJO6y%2Bj6Ijipm5VKgx6I97hN7DnaojiXXXScFN5h8Oof5sTegPGMYlmz9Awl3HGyWnbJ51%2ByE2xbVRPKMS1GG8jbLzlb3qoMvvXJ8Nol3hyV%2FEnx5Aryl9uuyQwyfEeCHiSOQoG2aVSxHTTme1sCP88pj1RXc7trGANo13gOXspZvzfQiJI80TalLvSEmgElyvq7ISoFoQ2li7zk2R%2FQCfM%2BzrS3cOiFj6qEOLqUcbHJXd8euqeyi9wPRVcnvet61HsroIn7PBJHhnNirjMX1FPd8A0ksJnFc2RBoDEYGT3RRBL0q5RaHoMLaxd%2B4XA%3D%3D
+[debug] [2023-11-01T22:02:55.805Z] >>> [apiv2][body] PUT https://storage.googleapis.com/uploads-92791592042.us-central1.cloudfunctions.appspot.com/7a1c1557-0b5d-462f-96d3-5b63f8f658f3.zip [stream]
+[debug] [2023-11-01T22:02:58.987Z] <<< [apiv2][status] PUT https://storage.googleapis.com/uploads-92791592042.us-central1.cloudfunctions.appspot.com/7a1c1557-0b5d-462f-96d3-5b63f8f658f3.zip 200
+[debug] [2023-11-01T22:02:58.987Z] <<< [apiv2][body] PUT https://storage.googleapis.com/uploads-92791592042.us-central1.cloudfunctions.appspot.com/7a1c1557-0b5d-462f-96d3-5b63f8f658f3.zip [omitted]
+[info] +  functions: functions folder uploaded successfully 
+[info] i  functions: updating Node.js 16 (1st Gen) function app(us-central1)... 
+[debug] [2023-11-01T22:02:58.994Z] >>> [apiv2][query] PATCH https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/us-central1/functions/app updateMask=name%2CsourceUploadUrl%2CentryPoint%2Cruntime%2CdockerRegistry%2Clabels%2ChttpsTrigger.securityLevel%2CenvironmentVariables%2CavailableMemoryMb%2CsourceToken%2CbuildEnvironmentVariables
+[debug] [2023-11-01T22:02:58.994Z] >>> [apiv2][body] PATCH https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/us-central1/functions/app {"name":"projects/bracket-technologies/locations/us-central1/functions/app","sourceUploadUrl":"https://storage.googleapis.com/uploads-92791592042.us-central1.cloudfunctions.appspot.com/7a1c1557-0b5d-462f-96d3-5b63f8f658f3.zip?GoogleAccessId=service-2565745282@gcf-admin-robot.iam.gserviceaccount.com&Expires=1698877974&Signature=HmYj5ji6RmnC21Z12EPNKeGWJO6y%2Bj6Ijipm5VKgx6I97hN7DnaojiXXXScFN5h8Oof5sTegPGMYlmz9Awl3HGyWnbJ51%2ByE2xbVRPKMS1GG8jbLzlb3qoMvvXJ8Nol3hyV%2FEnx5Aryl9uuyQwyfEeCHiSOQoG2aVSxHTTme1sCP88pj1RXc7trGANo13gOXspZvzfQiJI80TalLvSEmgElyvq7ISoFoQ2li7zk2R%2FQCfM%2BzrS3cOiFj6qEOLqUcbHJXd8euqeyi9wPRVcnvet61HsroIn7PBJHhnNirjMX1FPd8A0ksJnFc2RBoDEYGT3RRBL0q5RaHoMLaxd%2B4XA%3D%3D","entryPoint":"app","runtime":"nodejs16","dockerRegistry":"ARTIFACT_REGISTRY","labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"e931e21c92f6eae521878d1f1f1f3d0703c82cb3"},"httpsTrigger":{"securityLevel":"SECURE_ALWAYS"},"environmentVariables":{"FBSA":"{ \"type\": \"service_account\", \"project_id\": \"bracket-technologies\", \"private_key_id\": \"0d7aadbbcdc56380b9e504c79138d185847a871c\", \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCWJQ8LBhNZAnhk\\nHIbyo0x4CuuYnZbzNgl0wZhQRx3QEjGaWGL91tTXf7iXjzTk+iJSkwSTQrKG7sb7\\n4Fl/gSmTcMzYLNeX5eRTHBxVrp09APaReAJXDfdsR2078us/PiJy/wHDLRG309uL\\nT/ANYfiWLtf7FX1EQp/kwyZ40kKuFGw3CzN+LVDT0ep07grJodtk/l1xSGWLJBy2\\nIzWrLY17+7Z1ChjzyfRhy3JC4F6NM7idegpYYyMNHYeydjSUjeRfUderMXLIa9w+\\nd2mj6bQI+VIdEun43v2/bFsyltvGPfPBWk5aVYtZd0idIlYDIkuStMOpZt12uMQo\\newLYp1dxAgMBAAECggEAHtOSAJnpPAOpUyiWPlfvuc/IKkfkt5+XFm0vCABp6w/p\\nNj7CaEqE3Y/gBuIEoqSGinyb2l49yD1bBli8F1UeA6MLs7CVPR8an0Osv5y/tMgv\\nV5OTq2r3KziJAV9xFEV+Di00H+3vbtYlA7fQWfcM8kzA1FDHrM2fBXlZu0G0JghD\\nshNQAu9UmZd6xTwJYIdB8fJwt8yDHgoVQN+aGp4F5mwI2NJEYY/Vrykj/p08/0jd\\nUDRe4737He9Ft0AchcnzGFssG7bcXhqdJTtpoC6X0xWYuFh+KaegkvU2Am9oWOFh\\naFznvPqOaD0KB9+fR9WvVWpSr+jR9LRfa0XfRaCZzwKBgQDSNjQRgcVxxH2ckfdT\\nGzAo4JGImgSCIaGOsnRhvIBNb3cHXLT140E+LL84OFTh5Uc+qKGqctzIN/5ktm3x\\nHJdJEQXZgcznuQLCxGY2IEpjgk8lmp4Wx0FPOHqPd2tVh7Tu7obVklaZryQSBahI\\n7fXUJWirWGhyhYGXrvtVh9nLXwKBgQC22WjUad98L1aoEt/Cyorg2bW8EwyLUoEO\\nP486BRsJm6Pj9ewmQTAm7Mg0/CqidaQ5eiK3NAloB0aB5zZDL2PwnuTf09Da1eVy\\nVGUu6usG8Nup0sTp1OEYSgwjMutRHn3dQ7fuIkHx8fK/eT33D7Hozv257PJ44MpE\\nteZURoWfLwKBgGyiwIPvqedioXvh34xed6QYcn3DAuNxl/mT9htwfGoIWd4/JfIR\\nMO192JCoZA2eHRSft3TMCZebgGfx851wpiqHlptSvl9euLOJJj2AsJD+jgKkBmFF\\nNlZHnOc50wmPqYz1Tk9fYkvoPF7n95FBERNDBfXPKaNNpayLLK6GF6NHAoGAFKbV\\nijgy/6mxFeab0zphGSg9uHJGVm4JGXzgRmNRPHKRviuGcoOmVp8jtahNgG/dDojW\\n5u4/qbo4om9k143AseqgWw9nZXAHLDSQAQ6TYQNPLA0cJHTgv4eNe2RC47SX7qe5\\nXHIOFK+JBUtCTmc9ZtgKHDfA4xowfjY1P4t/iA0CgYEAyV93ot7q6AteiywCAF40\\nf/YUsQGKg41hp2Ehndwu+hlsJKoBtTrUYROzH1spCCZ/TZuvIZTP2KW8CkUQsqhL\\nKM4sWZl1viuyhnQwaD5dksxGqAAR+qIrU2Jk+i/a9awix3HMXrw7zfNIObH1O2sp\\ntIdWemtXcg7Y7XZVWwPG2gs=\\n-----END PRIVATE KEY-----\\n\", \"client_email\": \"firebase-adminsdk-kcrle@bracket-technologies.iam.gserviceaccount.com\", \"client_id\": \"115334355195024365750\", \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\", \"token_uri\": \"https://oauth2.googleapis.com/token\", \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\", \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com\", \"universe_domain\": \"googleapis.com\" }","CU":"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-3gkdr%40bracketjs.iam.gserviceaccount.com","APU":"https://www.googleapis.com/oauth2/v1/certs","PKI":"dbb6b504587a2dc87f79f45910a5beaad2bafd84","PR":"bracket-technologies","E":"brackettechnologiescompany@gmail.com","EP":"bakir1598753","DBU":"https://bracket-technologies-default-rtdb.firebaseio.com/","AK":"yV3ZbTLM9HRpKmtLyGbLOQIkeEoaWJxFWsFhpTHm","AD":"bracket-technologies.firebaseapp.com","SB":"bracket-technologies.appspot.com","MSI":"869789439383","PI":"bracket-technologies","AI":"1:869789439383:web:09ed5cda97e32200bba0d2","FIREBASE_CONFIG":"{\"projectId\":\"bracket-technologies\",\"databaseURL\":\"https://bracket-technologies-default-rtdb.firebaseio.com\",\"storageBucket\":\"bracket-technologies.appspot.com\",\"locationId\":\"us-central\"}","GCLOUD_PROJECT":"bracket-technologies","EVENTARC_CLOUD_EVENT_SOURCE":"projects/bracket-technologies/locations/us-central1/functions/app"},"availableMemoryMb":256,"buildEnvironmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""}}
+[debug] [2023-11-01T22:02:59.509Z] <<< [apiv2][status] PATCH https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/us-central1/functions/app 403
+[debug] [2023-11-01T22:02:59.509Z] <<< [apiv2][body] PATCH https://cloudfunctions.googleapis.com/v1/projects/bracket-technologies/locations/us-central1/functions/app {"error":{"code":403,"message":"Unable to retrieve the repository metadata for projects/bracket-technologies/locations/us-central1/repositories/gcf-artifacts. Ensure that the Cloud Functions service account has 'artifactregistry.repositories.list' and 'artifactregistry.repositories.get' permissions. You can add the permissions by granting the role 'roles/artifactregistry.reader'.","status":"PERMISSION_DENIED"}}
+[warn] !  functions: failed to update function projects/bracket-technologies/locations/us-central1/functions/app 
+[error] Failed to update function projects/bracket-technologies/locations/us-central1/functions/app
+[debug] [2023-11-01T22:02:59.520Z] Total Function Deployment time: 521
+[debug] [2023-11-01T22:02:59.520Z] 1 Functions Deployed
+[debug] [2023-11-01T22:02:59.520Z] 1 Functions Errored
+[debug] [2023-11-01T22:02:59.520Z] 0 Function Deployments Aborted
+[debug] [2023-11-01T22:02:59.520Z] Average Function Deployment time: 520
+[info] 
+[info] Functions deploy had errors with the following functions:
+	app(us-central1)
+[debug] [2023-11-01T22:02:59.688Z] Not printing URL for HTTPS function. Typically this means it didn't match a filter or we failed deployment
+[info] i  functions: cleaning up build files... 
+[debug] [2023-11-01T22:02:59.690Z] >>> [apiv2][query] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/bracket-technologies/locations/us-central1/repositories/gcf-artifacts/packages/app [none]
+[debug] [2023-11-01T22:02:59.692Z] >>> [apiv2][query] GET https://us.gcr.io/v2/bracket-technologies/gcf/us-central1/tags/list [none]
+[debug] [2023-11-01T22:03:00.421Z] <<< [apiv2][status] GET https://us.gcr.io/v2/bracket-technologies/gcf/us-central1/tags/list 200
+[debug] [2023-11-01T22:03:00.421Z] <<< [apiv2][body] GET https://us.gcr.io/v2/bracket-technologies/gcf/us-central1/tags/list {"child":[],"manifest":{},"name":"bracket-technologies/gcf/us-central1","tags":[]}
+[debug] [2023-11-01T22:03:00.421Z] Could not find image for function projects/bracket-technologies/locations/us-central1/functions/app
+[debug] [2023-11-01T22:03:00.554Z] <<< [apiv2][status] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/bracket-technologies/locations/us-central1/repositories/gcf-artifacts/packages/app 403
+[debug] [2023-11-01T22:03:00.554Z] <<< [apiv2][body] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/bracket-technologies/locations/us-central1/repositories/gcf-artifacts/packages/app {"error":{"code":403,"message":"This API method requires billing to be enabled. Please enable billing on project #bracket-technologies by visiting https://console.developers.google.com/billing/enable?project=bracket-technologies then retry. If you enabled billing for this project recently, wait a few minutes for the action to propagate to our systems and retry.","status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console billing","url":"https://console.developers.google.com/billing/enable?project=bracket-technologies"}]},{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"BILLING_DISABLED","domain":"googleapis.com","metadata":{"service":"artifactregistry.googleapis.com","consumer":"projects/bracket-technologies"}}]}}
+[warn] !  functions: Unhandled error cleaning up build images. This could result in a small monthly bill if not corrected. You can attempt to delete these images by redeploying or you can delete them manually at https://console.cloud.google.com/artifacts/docker/bracket-technologies/us-central1/gcf-artifacts 
+[debug] [2023-11-01T22:03:00.555Z] Functions deploy failed.
+[debug] [2023-11-01T22:03:00.555Z] {
+  "endpoint": {
+    "id": "app",
+    "project": "bracket-technologies",
+    "region": "us-central1",
+    "entryPoint": "app",
+    "platform": "gcfv1",
+    "runtime": "nodejs16",
+    "httpsTrigger": {},
+    "environmentVariables": {
+      "FBSA": "{ \"type\": \"service_account\", \"project_id\": \"bracket-technologies\", \"private_key_id\": \"0d7aadbbcdc56380b9e504c79138d185847a871c\", \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCWJQ8LBhNZAnhk\\nHIbyo0x4CuuYnZbzNgl0wZhQRx3QEjGaWGL91tTXf7iXjzTk+iJSkwSTQrKG7sb7\\n4Fl/gSmTcMzYLNeX5eRTHBxVrp09APaReAJXDfdsR2078us/PiJy/wHDLRG309uL\\nT/ANYfiWLtf7FX1EQp/kwyZ40kKuFGw3CzN+LVDT0ep07grJodtk/l1xSGWLJBy2\\nIzWrLY17+7Z1ChjzyfRhy3JC4F6NM7idegpYYyMNHYeydjSUjeRfUderMXLIa9w+\\nd2mj6bQI+VIdEun43v2/bFsyltvGPfPBWk5aVYtZd0idIlYDIkuStMOpZt12uMQo\\newLYp1dxAgMBAAECggEAHtOSAJnpPAOpUyiWPlfvuc/IKkfkt5+XFm0vCABp6w/p\\nNj7CaEqE3Y/gBuIEoqSGinyb2l49yD1bBli8F1UeA6MLs7CVPR8an0Osv5y/tMgv\\nV5OTq2r3KziJAV9xFEV+Di00H+3vbtYlA7fQWfcM8kzA1FDHrM2fBXlZu0G0JghD\\nshNQAu9UmZd6xTwJYIdB8fJwt8yDHgoVQN+aGp4F5mwI2NJEYY/Vrykj/p08/0jd\\nUDRe4737He9Ft0AchcnzGFssG7bcXhqdJTtpoC6X0xWYuFh+KaegkvU2Am9oWOFh\\naFznvPqOaD0KB9+fR9WvVWpSr+jR9LRfa0XfRaCZzwKBgQDSNjQRgcVxxH2ckfdT\\nGzAo4JGImgSCIaGOsnRhvIBNb3cHXLT140E+LL84OFTh5Uc+qKGqctzIN/5ktm3x\\nHJdJEQXZgcznuQLCxGY2IEpjgk8lmp4Wx0FPOHqPd2tVh7Tu7obVklaZryQSBahI\\n7fXUJWirWGhyhYGXrvtVh9nLXwKBgQC22WjUad98L1aoEt/Cyorg2bW8EwyLUoEO\\nP486BRsJm6Pj9ewmQTAm7Mg0/CqidaQ5eiK3NAloB0aB5zZDL2PwnuTf09Da1eVy\\nVGUu6usG8Nup0sTp1OEYSgwjMutRHn3dQ7fuIkHx8fK/eT33D7Hozv257PJ44MpE\\nteZURoWfLwKBgGyiwIPvqedioXvh34xed6QYcn3DAuNxl/mT9htwfGoIWd4/JfIR\\nMO192JCoZA2eHRSft3TMCZebgGfx851wpiqHlptSvl9euLOJJj2AsJD+jgKkBmFF\\nNlZHnOc50wmPqYz1Tk9fYkvoPF7n95FBERNDBfXPKaNNpayLLK6GF6NHAoGAFKbV\\nijgy/6mxFeab0zphGSg9uHJGVm4JGXzgRmNRPHKRviuGcoOmVp8jtahNgG/dDojW\\n5u4/qbo4om9k143AseqgWw9nZXAHLDSQAQ6TYQNPLA0cJHTgv4eNe2RC47SX7qe5\\nXHIOFK+JBUtCTmc9ZtgKHDfA4xowfjY1P4t/iA0CgYEAyV93ot7q6AteiywCAF40\\nf/YUsQGKg41hp2Ehndwu+hlsJKoBtTrUYROzH1spCCZ/TZuvIZTP2KW8CkUQsqhL\\nKM4sWZl1viuyhnQwaD5dksxGqAAR+qIrU2Jk+i/a9awix3HMXrw7zfNIObH1O2sp\\ntIdWemtXcg7Y7XZVWwPG2gs=\\n-----END PRIVATE KEY-----\\n\", \"client_email\": \"firebase-adminsdk-kcrle@bracket-technologies.iam.gserviceaccount.com\", \"client_id\": \"115334355195024365750\", \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\", \"token_uri\": \"https://oauth2.googleapis.com/token\", \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\", \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com\", \"universe_domain\": \"googleapis.com\" }",
+      "CU": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-3gkdr%40bracketjs.iam.gserviceaccount.com",
+      "APU": "https://www.googleapis.com/oauth2/v1/certs",
+      "PKI": "dbb6b504587a2dc87f79f45910a5beaad2bafd84",
+      "PR": "bracket-technologies",
+      "E": "brackettechnologiescompany@gmail.com",
+      "EP": "bakir1598753",
+      "DBU": "https://bracket-technologies-default-rtdb.firebaseio.com/",
+      "AK": "yV3ZbTLM9HRpKmtLyGbLOQIkeEoaWJxFWsFhpTHm",
+      "AD": "bracket-technologies.firebaseapp.com",
+      "SB": "bracket-technologies.appspot.com",
+      "MSI": "869789439383",
+      "PI": "bracket-technologies",
+      "AI": "1:869789439383:web:09ed5cda97e32200bba0d2",
+      "FIREBASE_CONFIG": "{\"projectId\":\"bracket-technologies\",\"databaseURL\":\"https://bracket-technologies-default-rtdb.firebaseio.com\",\"storageBucket\":\"bracket-technologies.appspot.com\",\"locationId\":\"us-central\"}",
+      "GCLOUD_PROJECT": "bracket-technologies",
+      "EVENTARC_CLOUD_EVENT_SOURCE": "projects/bracket-technologies/locations/us-central1/functions/app"
+    },
+    "codebase": "default",
+    "availableMemoryMb": 256,
+    "securityLevel": "SECURE_ALWAYS",
+    "targetedByOnly": false,
+    "hash": "e931e21c92f6eae521878d1f1f1f3d0703c82cb3",
+    "labels": {
+      "deployment-tool": "cli-firebase"
+    }
+  },
+  "op": "update",
+  "original": {
+    "name": "FirebaseError",
+    "children": [],
+    "context": {
+      "function": "projects/bracket-technologies/locations/us-central1/functions/app"
+    },
+    "exit": 1,
+    "message": "Failed to update function projects/bracket-technologies/locations/us-central1/functions/app",
+    "original": {
+      "name": "FirebaseError",
+      "children": [],
+      "context": {
+        "body": {
+          "error": {
+            "code": 403,
+            "message": "Unable to retrieve the repository metadata for projects/bracket-technologies/locations/us-central1/repositories/gcf-artifacts. Ensure that the Cloud Functions service account has 'artifactregistry.repositories.list' and 'artifactregistry.repositories.get' permissions. You can add the permissions by granting the role 'roles/artifactregistry.reader'.",
+            "status": "PERMISSION_DENIED"
+          }
+        },
+        "response": {
+          "statusCode": 403
+        }
+      },
+      "exit": 1,
+      "message": "HTTP Error: 403, Unable to retrieve the repository metadata for projects/bracket-technologies/locations/us-central1/repositories/gcf-artifacts. Ensure that the Cloud Functions service account has 'artifactregistry.repositories.list' and 'artifactregistry.repositories.get' permissions. You can add the permissions by granting the role 'roles/artifactregistry.reader'.",
+      "status": 403
+    },
+    "status": 403,
+    "code": 403
+  }
+}
+[debug] [2023-11-01T22:03:00.715Z] Error: Failed to update function app in region us-central1
+    at C:\Users\USER\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:51:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Fabricator.updateV1Function (C:\Users\USER\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:344:32)
+    at async Fabricator.updateEndpoint (C:\Users\USER\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:150:13)
+    at async handle (C:\Users\USER\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:88:17)
+[error] 
+[error] Error: There was an error deploying functions

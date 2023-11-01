@@ -1,5 +1,5 @@
 const { toComponent } = require('../function/toComponent')
-const { toString } = require('../function/toString')
+const { jsonToBracket } = require('../function/jsonToBracket')
 const { override } = require('../function/merge')
 const { clone } = require('../function/clone')
 const { generate } = require('../function/generate')
@@ -98,18 +98,18 @@ const Input = (component) => {
 
         return {
             id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true, preventDefault,
-            "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=${component.style.width||"100%"};style.maxWidth=${component.style.maxWidth||"100%"};${toString(container)}`,
+            "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=${component.style.width||"100%"};style.maxWidth=${component.style.maxWidth||"100%"};${jsonToBracket(container)}`,
             "children": [{
                 "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
                 "children": [{
-                  "type": `Text?id=${id}-label;text='${text || "Label"}';if():[parent().required]:[required=true];style.fontSize=1.1rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
+                  "type": `Text?id=${id}-label;text='${text || "Label"}';if():[parent().required]:[required=true];style.fontSize=1.1rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
                   "controls": [{
                     "event": "click?parent().input().focus()"
                   }]
                 }, Input({ ...component, component: true, labeled: id, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
                 ]
             }, {
-                "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${toString(password)}?${password}`,
+                "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${jsonToBracket(password)}?${password}`,
                 "children": [{
                     "type": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
                     "controls": [{
@@ -158,10 +158,10 @@ const Input = (component) => {
         
         return {
           id, Data, parent, derivations, path, islabel: true, preventDefault,
-          "type": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width ||"100%"};style.maxWidth=${component.style.maxWidth ||"100%"};${toString(container)}`,
+          "type": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width ||"100%"};style.maxWidth=${component.style.maxWidth ||"100%"};${jsonToBracket(container)}`,
           "children": [
             {
-              "type": `Text?id=${id}-label;text='${text || "Label"}';${required ? "required=true": ""};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${toString(label)}`,
+              "type": `Text?id=${id}-label;text='${text || "Label"}';${required ? "required=true": ""};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
               "controls": [{
                 "event": "click?parent().input().focus()"
               }]
@@ -172,7 +172,7 @@ const Input = (component) => {
               "children": [{
                 "type": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
               }, {
-                "type": `Text?text=${required && required.text || "Required blank"};style.color=#D72C0D;style.fontSize=1.3rem;${toString(required)}`
+                "type": `Text?text=${required && required.text || "Required blank"};style.color=#D72C0D;style.fontSize=1.3rem;${jsonToBracket(required)}`
               }]
             }
           ],
@@ -269,7 +269,7 @@ const Input = (component) => {
                     ...input.style
                 },
                 controls: [...controls, {
-                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[if():${duplicatable?true:false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked:()]]:[click():[droplist-positioner:().del();]]]?!preventDefault`
+                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[if():${duplicatable?true:false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked:()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
                 }, /*{
                     event: `clickfocus;keyfocus?parent().clicked.mount;parent().clicked.style.keys()._():[parent().style()._=parent()..clicked.style._];state:().[parent().clicked.state]=parent().id?parent().clicked`
                 }, */{

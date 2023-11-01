@@ -70,12 +70,12 @@ var data = Object.values(views)*/
 //})
 
 /*var test = async () => {
-  var { data, success, message } = await getData({ req: { db, headers: { project: "brackettechnologies" } }, _window: { global: { data: { project: { datastore: [] } } }}, search: { collection: "page" } })
+  var { data, success, message } = await getData({ req: { db, headers: { project: "brackettechnologies" } }, _window: { global: { data: { project: { datastore: [] } } }}, search: { collection: "view" } })
   console.log(data);
   var docs = Object.keys(data)
   docs.map(async doc => {
     if (doc.length === 20) {
-      await deleteData({ req: { db, headers: { project: "brackettechnologies" } }, _window: { global: { data: { project: { datastore: [] } } }}, erase: { collection: "page", doc } })
+      await deleteData({ req: { db, headers: { project: "brackettechnologies" } }, _window: { global: { data: { project: { datastore: [] } } }}, erase: { collection: "view", doc } })
       console.log(doc + " deleted!");
     }
   })

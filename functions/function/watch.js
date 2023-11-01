@@ -5,7 +5,7 @@ const { toValue } = require("./toValue")
 const { isEqual } = require("./isEqual")
 const { toCode } = require("./toCode")
 
-const watch = ({ _window, lookupActions, awaits, controls, id }) => {
+const watch = ({ _window, lookupActions, awaits, controls, id, __ }) => {
 
     const { execute } = require("./execute")
 
@@ -34,7 +34,7 @@ const watch = ({ _window, lookupActions, awaits, controls, id }) => {
             view[`${_watch}-watch`] = clone(value)
             
             // params
-            toParam({ id, lookupActions, awaits, string: watch.split('?')[1], mount: true })
+            toParam({ id, lookupActions, awaits, string: watch.split('?')[1], mount: true, __ })
 
             // break
             if (view["break()"]) delete view["break()"]
@@ -51,7 +51,7 @@ const watch = ({ _window, lookupActions, awaits, controls, id }) => {
             if (!approved) return
             
             // once
-            if (controls.actions || controls.action) await execute({ controls, lookupActions, awaits, id })
+            if (controls.actions || controls.action) await execute({ controls, lookupActions, awaits, id, __ })
                 
             // await params
             if (view.await) toParam({ id, lookupActions, awaits, string: view.await.join(';') })

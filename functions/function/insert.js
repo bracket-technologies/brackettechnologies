@@ -7,7 +7,7 @@ const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 
 module.exports = {
-  insert: async ({ _window, lookupActions, awaits, id, _, __, ___, ...params }) => {
+  insert: async ({ _window, lookupActions, awaits, id, __, ...params }) => {
     
     var insert = params.insert, { index, value = {}, el, elementId, component, view, replace, path, data } = insert
     if (view) component = view
@@ -67,7 +67,7 @@ module.exports = {
         views[id].style.opacity = "0"
         views[id]["my-views"] = [...views[appendTo]["my-views"]]
         
-        return await toView({ id, lookupActions })
+        return await toView({ id, lookupActions, __: views[appendTo].__ })
       }))
       
       innerHTML = innerHTML.join("")
@@ -108,6 +108,6 @@ module.exports = {
     }
 
     // await params
-    if (params.asyncer) require("./toAwait").toAwait({ id, lookupActions, awaits, _: view.insert, __: _, ___: __, ...params })
+    if (params.asyncer) require("./toAwait").toAwait({ id, lookupActions, awaits, __: [view.insert, ...__], ...params })
   }
 }

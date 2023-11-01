@@ -7,7 +7,7 @@ const { toAwait } = require("./toAwait")
 const { toValue } = require("./toValue")
 const { isParam } = require("./isParam")
 
-const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, params }) => {
+const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, params, __ }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id] || {}
@@ -31,11 +31,11 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
     actions = actions[0].split(";")
 
     // approval
-    if (conditions) approved = toApproval({ _window, lookupActions, awaits, string: conditions, params, id: viewId, e })
-    if (!approved) return toAwait({ id, lookupActions, awaits, e, params: _params })
+    if (conditions) approved = toApproval({ _window, lookupActions, awaits, string: conditions, params, id: viewId, e, __ })
+    if (!approved) return toAwait({ id, lookupActions, awaits, e, params: _params, __ })
 
     // params
-    params = toParam({ _window, lookupActions, awaits, string: params, e, id: viewId, executer: true, mount: true })
+    params = toParam({ _window, lookupActions, awaits, string: params, e, id: viewId, executer: true, mount: true, __ })
     if (_params) params = {..._params, ...params}
 
     // break
@@ -54,13 +54,13 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
       }
       
       // action is coded
-      if (action.slice(0, 7) === "coded()") return execute({ _window, lookupActions, awaits, actions: global.codes[action], e, id, params })
+      if (action.slice(0, 7) === "coded()") return execute({ _window, lookupActions, awaits, actions: global.codes[action], e, id, params, __ })
       
       var name, caseCondition, timer = "", isInterval = false, actionid, args = action.split(':'), name = args[0], __params = {}
 
       if (isParam({ _window, lookupActions, awaits, string: args[1] }) || (args[2] && isNaN(args[2].split("i")[0]) && !args[3])) { // action:[params]:[conditions]
 
-        __params = toParam({ _window, lookupActions, awaits, id: viewId, e, string: args[1], mount: true })
+        __params = toParam({ _window, lookupActions, awaits, id: viewId, e, string: args[1], mount: true, __ })
 
         // break
         if (view["break()"]) delete view["break()"]
@@ -72,7 +72,7 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
 
       } else { // action:id:timer:condition
 
-        actionid = toArray(args[1] ? toValue({ _window, lookupActions, awaits, value: args[1], params, id: viewId, e }) : viewId) // timer
+        actionid = toArray(args[1] ? toValue({ _window, lookupActions, awaits, value: args[1], params, id: viewId, e, __ }) : viewId) // timer
         if (args[2]) timer = args[2] // timer
         if (args[3]) caseCondition = args[3] // conditions
       }
@@ -105,15 +105,15 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
         if (isAwaiter) return
 
         // case condition approval
-        if (caseCondition) approved = toApproval({ _window, lookupActions, awaits, string: caseCondition, params, id: viewId, e })
-        if (!approved) return toAwait({ id, lookupActions, awaits, e, params })
+        if (caseCondition) approved = toApproval({ _window, lookupActions, awaits, string: caseCondition, params, id: viewId, e, __ })
+        if (!approved) return toAwait({ id, lookupActions, awaits, e, params, __ })
         
         if (_method[name]) actionid.map(async id => {
           
           if (typeof id !== "string") return
 
           // id = value.path
-          if (id.indexOf(".") > -1) id = toValue({ _window, lookupActions, awaits, value: id, e, id: viewId })
+          if (id.indexOf(".") > -1) id = toValue({ _window, lookupActions, awaits, value: id, e, id: viewId, __ })
           
           // component does not exist
           if (!id || !views[id]) return
@@ -124,7 +124,7 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
           }
           
           await _method[name]({ _window, lookupActions, awaits, ...params, ...__params, e, id })
-          if (name !== "SEARCH" && name !== "save" && name !== "erase" && name !== "importJson" && name !== "upload" && name !== "wait") toAwait({ id, lookupActions, awaits, e, params })
+          if (name !== "SEARCH" && name !== "save" && name !== "erase" && name !== "importJson" && name !== "upload" && name !== "wait") toAwait({ id, lookupActions, awaits, e, params, __ })
         })
       }
 

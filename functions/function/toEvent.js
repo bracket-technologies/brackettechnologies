@@ -1,6 +1,6 @@
 const { toArray } = require("./toArray");
 module.exports = {
-  toEvent: ({ _window, id, string: param = "", _ }) => {
+  toEvent: ({ _window, id, string: param = "", __ }) => {
 
       var view = _window ? _window.views[id] : window.views[id]
       var global = _window ? _window.global : window.global
@@ -138,22 +138,6 @@ module.exports = {
         if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
         view.controls = toArray(view.controls)
         return view.controls.push({ event: `beforeLoading?${param}` })
-      }
-
-      // controls
-      if (param.slice(0, 9) === "controls:") {
-
-        var _controls = []
-        param = param.slice(9)
-        param.split(":").map(param => {
-
-          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
-          _controls.push({ event: param })
-        })
-
-        view.controls = toArray(view.controls)
-        view.controls.unshift(..._controls)
-        return //view.controls
       }
 
       // children

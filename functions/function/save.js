@@ -4,7 +4,7 @@ const { generate } = require("./generate")
 const { schematize } = require("./schematize")
 const { toArray } = require("./toArray")
 
-const save = async ({ _window, lookupActions, awaits, req, res, id, e, _, __, ___, ...params }) => {
+const save = async ({ _window, lookupActions, awaits, req, res, id, e, __, ...params }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -177,7 +177,7 @@ const save = async ({ _window, lookupActions, awaits, req, res, id, e, _, __, __
   /*if (!_window) */console.log("save", _data)
 
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, _: _data, __: _, ___: __, ...params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, __: [_data, ...__], ...params })
 }
 
 module.exports = { save }

@@ -3,7 +3,6 @@ module.exports = {
   list: require("./list"),
   popup: require("./popup"),
   droplist: require("./droplist"),
-  actionlist: require("./actionlist"),
   tooltip: require("./tooltip"),
   mininote: require("./mininote"),
   pricable: require("./pricable"),

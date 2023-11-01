@@ -7,14 +7,9 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
   if (!codes) global = _window ? _window.global : window.global
 
   // split []
-  if (start === "[") string = string.split("[]").join("__map__")
-
-  // split () & )(
-  if (start === "(") string = string.split("()").join("___action___").split(")(").join("___global___")
+  //if (start === "[") string = string.split("[]").join("__map__")
 
   var keys = string.split(start)
-  
-  if (keys.length === 1) return string.split("___action___").join("()").split("___global___").join(")(")
 
   if (keys[1] !== undefined) {
 
@@ -25,7 +20,9 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
     while (subKey[0] === keys[1] && keys[2] !== undefined) {
 
       keys[1] += `${start}${keys[2]}`
-      if (keys[1].includes(end) && keys[2]) keys[1] = toCode({ _window, string: keys[1], e, start, end })
+      if (keys[1].includes(end) && keys[2]) {
+        keys[1] = toCode({ _window, string: keys[1], e, start, end })
+      }
       keys.splice(2, 1)
       subKey = keys[1].split(end)
     }
@@ -34,13 +31,10 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
     if (subKey[0] === keys[1] && keys.length === 2) {
 
       keys = keys.join(start)
-      if (start === "(") keys = keys.split("___action___").join("()").split("___global___").join(")(")
       return keys
     }
 
-    if (start === "(") subKey[0] = subKey[0].split("___action___").join("()").split("___global___").join(")(")
-
-    if (start === "[") subKey[0] = subKey[0].split("__map__").join("[]")
+    //if (start === "[") subKey[0] = subKey[0].split("__map__").join("[]")
     if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, string: subKey[0], start: "'", end: "'" })
     if (codes) codes[key] = subKey[0]
     else global.codes[key] = subKey[0]
@@ -55,10 +49,6 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
   }
 
   if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, string, e, start, end })
-
-  // 
-  if (start === "[") string = string.split("__map__").join("[]")
-  if (start === "(") string = string.split("___action___").join("()").split("___global___").join(")(")
 
   return string
 }

@@ -16,7 +16,7 @@ const events = [
   "touchend"
 ]
 
-const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, res }) => {
+const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
   
   const { execute } = require("./execute")
 
@@ -26,46 +26,12 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
   var mainID = id
 
   // 'string'
-  var events = toArray(controls.event)[0]/*, _events = ""
-    
-  _events = events[0].split("{")[0]
-  events[0].split("{").slice(1).map(str => {
-    var num = str.split("}")[0]
-
-    if (!isNaN(num) && num !== "" && parseInt(num)) {
-      _events += `[${events[parseInt(num)]}]${str.split("}")[1]}`
-    }
-  })
-
-  events = _events*/
+  var events = toArray(controls.event)[0]
   events = toCode({ _window, id, string: events })
   events = toCode({ _window, id, string: events, start: "'", end: "'" })
-  // if (events.split("'").length > 2) events = toCode({ _window, string: events, start: "'", end: "'" })
   
   events = events.split("?")
-  var _idList = id // toValue({ id, lookupActions, awaits, value: events[3] || id })
-
-  // droplist
-  /*var droplist = (events[1] || "").split(";").find(param => param === "droplist()")
-  if (droplist && view.droplist) {
-    
-    view.droplist.controls = view.droplist.controls || []
-    return view.droplist.controls.push({
-      event: events.join("?").replace("droplist()", ""),
-      actions: controls.actions
-    })
-  }*/
-
-  // actionlist
-  /*var actionlist = (events[1] || "").split(";").find(param => param === "actionlist()")
-  if (actionlist && view.actionlist) {
-    
-    view.actionlist.controls = view.actionlist.controls || []
-    return view.actionlist.controls.push({
-      event: events.join("?").replace("actionlist()", ""),
-      actions: controls.actions
-    })
-  }*/
+  var _idList = id
 
   // popup
   var popup = (events[1] || "").split(";").find(param => param === "popup()")
@@ -94,7 +60,7 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
     }
 
     // id
-    if (viewEventIdList) mainID = toValue({ _window, lookupActions, awaits, req, res, id, value: viewEventIdList }) || viewEventIdList
+    if (viewEventIdList) mainID = toValue({ _window, lookupActions: controls.lookupActions, awaits, req, res, id, value: viewEventIdList }) || viewEventIdList
     
     var timer = 0, idList, clickEvent, keyEvent
     var once = events[1] && events[1].includes('once')
@@ -115,7 +81,7 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
 
     // action:id
     var eventid = event.split(":")[1]
-    if (eventid) idList = toValue({ _window, lookupActions, awaits, req, res, id, value: eventid })
+    if (eventid) idList = toValue({ _window, lookupActions: controls.lookupActions, awaits, req, res, id, value: eventid })
     else idList = clone(_idList)
 
     idList = toArray(idList).map(id => {
@@ -143,37 +109,39 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
         setTimeout(async () => {
 
           var myView = views[mainID]
+          if (!myView) return
 
           if (view[event] && typeof view[event] === "object" && view[event].disable) return
+
           // approval
           if (viewEventConditions) {
-            var approved = toApproval({ _window, lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
+            var approved = toApproval({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID, __: controls.__ || myView.__ })
             if (!approved) return
           }
           
           // approval
-          var approved = toApproval({ _window, lookupActions, awaits, req, res, string: events[2], e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
+          var approved = toApproval({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: events[2], e, id: mainID, __: controls.__ || myView.__ })
           if (!approved) return
 
           // once
           if (once) e.target.removeEventListener(event, myFn)
-          
+
           // params
-          await toParam({ _window, lookupActions, awaits, req, res, string: events[1], e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
+          await toParam({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: events[1], e, id: mainID, mount: true, __: controls.__ || myView.__ })
 
           // break
           if (view.break) return delete view.break
           
           // approval
-          if (viewEventParams) await toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
+          if (viewEventParams) await toParam({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, __: controls.__ || myView.__ })
           
           // execute
-          if (controls.actions || controls.action) await execute({ _window, lookupActions, awaits, req, res, controls, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
+          if (controls.actions || controls.action) await execute({ _window, lookupActions: controls.lookupActions, awaits, req, res, controls, e, id: mainID, __: controls.__ || myView.__ })
         }, timer)
       }
       
       // onload event
-      if (event === "loaded"/* || event === "loading" || event === "beforeLoading"*/) return setTimeout(() => myFn({ target: _view.element }), 0)
+      if (event === "loaded") return setTimeout(myFn({ target: _view.element }), 0)
       else if (id === "window") return window.addEventListener(event, myFn)
 
       // body event
@@ -204,8 +172,8 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
             return 
           }
 
-          if (eventid === "droplist" && !global["droplist-positioner"]) return
-          if (eventid === "droplist" && !views[global["droplist-positioner"]].element.contains(views[id].element)) return
+          if (eventid === "droplist" && !global["__droplistPositioner__"]) return
+          if (eventid === "droplist" && !views[global["__droplistPositioner__"]].element.contains(views[id].element)) return
           
           if (eventid === "popup" && (!global["popup-positioner"] || !global["popup-confirmed"])) return
           if (eventid === "popup" && !views[global["popup-positioner"]].element.contains(views[id].element)) return
@@ -213,9 +181,6 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
           if (eventid === "actionlist" && !views[global["actionlistCaller"]].element.contains(views[id].element)) return
 
           if (once) e.target.removeEventListener(event, myFn)
-        
-          // content not editable
-          // if (event === "input" && !views[id].contenteditable) return
 
           var _myFn = async () => {
 
@@ -223,24 +188,19 @@ const addEventListener = ({ _window, lookupActions, awaits, controls, id, req, r
             
             // approval
             if (viewEventConditions) {
-              var approved = toApproval({ _window, lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
+              var approved = toApproval({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID, __: controls.__ || myView.__ })
               if (!approved) return
             }
             
             // approval
-            var approved = toApproval({ string: events[2], e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
+            var approved = toApproval({ string: events[2], e, id: mainID, __: controls.__ || myView.__ })
             if (!approved) return
-
-            // params
-            toParam({ string: events[1], lookupActions, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
-
-            // break
-            if (view["break()"]) delete view["break()"]
-            if (view["return()"]) return delete view["return()"]
-          
-            if (viewEventParams) toParam({ _window, lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, _: myView._, __: myView.__, ___: myView.___ })
             
-            if (controls.actions || controls.action) execute({ controls, e, id: mainID, _: myView._, __: myView.__, ___: myView.___ })
+            // params
+            toParam({ string: events[1], lookupActions: controls.lookupActions, e, id: mainID, mount: true, __: controls.__ || myView.__ })
+            if (viewEventParams) toParam({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: viewEventParams, e, id: mainID, mount: true, __: controls.__ || myView.__ })
+            
+            if (controls.actions || controls.action) execute({ controls, e, id: mainID, __: controls.__ || myView.__ })
           }
 
           if (eventid === "droplist" || eventid === "actionlist" || eventid === "popup") setTimeout(_myFn, 100)

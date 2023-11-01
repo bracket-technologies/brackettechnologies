@@ -4,7 +4,7 @@ const { toView } = require("./toView")
 const { toArray } = require("./toArray")
 
 module.exports = {
-    route: async ({ id, _window, route = {}, req, res }) => {
+    route: async ({ id, _window, route = {}, req, res, __ }) => {
       
       var views = _window ? _window.views : window.views
       var global = _window ? _window.global : window.global
@@ -30,7 +30,7 @@ module.exports = {
 
           global.promises[id].push(new Promise (async resolve => {
               
-              var innerHTML = await toView({ _window, id: "root", req, res })
+              var innerHTML = await toView({ _window, id: "root", req, res, __ })
               if (!global.__INNERHTML__.root) global.__INNERHTML__.root = innerHTML
               global.breaktoView[id] = true
               resolve()
@@ -45,7 +45,7 @@ module.exports = {
         route.currentPage = global.currentPage
         
         if (document.getElementById("loader-container").style.display === "none") document.getElementById("loader-container").style.display = "flex"
-        update({ _window, req, res, id: "root", route })
+        update({ _window, req, res, id: "root", route, __ })
       }
     }
 }

@@ -6,7 +6,7 @@ const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
 
-const refresh = async ({ id, update = {}, lookupActions }) => {
+const refresh = async ({ id, update = {}, lookupActions, __ }) => {
 
   var views = window.views
   var view = views[id]
@@ -42,7 +42,7 @@ const refresh = async ({ id, update = {}, lookupActions }) => {
     views[id].style.opacity = "0"
     if (timer) views[id].style.transition = `opacity ${timer}ms`
     
-    return await toView({ id, lookupActions })
+    return await toView({ id, lookupActions, __ })
 
   }))
   

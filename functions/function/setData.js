@@ -1,7 +1,7 @@
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
-const setData = ({ id, data }) => {
+const setData = ({ id, data, __ }) => {
 
   var view = window.views[id]
   var global = window.global
@@ -28,7 +28,7 @@ const setData = ({ id, data }) => {
   var keys = [...derivations, ...path]
   
   // set value
-  reducer({ id, object: global[view.Data], path: keys, value: defValue, key: true })
+  reducer({ id, object: global[view.Data], path: keys, value: defValue, key: true, __: ["_"] })
 /*
   view.data = value
   if (view.input && view.input.type === "file") return

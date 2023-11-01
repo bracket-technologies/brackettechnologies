@@ -7,7 +7,7 @@ const { removeChildren } = require("./update")
 const { toCode } = require("./toCode")
 const { toParam } = require("./toParam")
 
-const toggleView = async ({ _window, toggle = {}, id, res }) => {
+const toggleView = async ({ _window, toggle = {}, id, res, __ }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -69,14 +69,14 @@ const toggleView = async ({ _window, toggle = {}, id, res }) => {
     if (!view || !view.element) return
 
     // close droplist
-    if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-      var closeDroplist = toCode({ _window, string: "clearTimer():[)(:droplist-timer];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()" })
+    if (global["__droplistPositioner__"] && view.element.contains(views[global["__droplistPositioner__"]].element)) {
+      var closeDroplist = toCode({ _window, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
       toParam({ string: closeDroplist, id: "droplist" })
     }
     
     // close actionlist
     if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
-      var closeActionlist = toCode({ _window, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()" })
+      var closeActionlist = toCode({ _window, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
       toParam({ string: closeActionlist, id: "actionlist" })
     }
           
@@ -102,7 +102,7 @@ const toggleView = async ({ _window, toggle = {}, id, res }) => {
       views[id].style.opacity = toggle.fadein.before.opacity || "0"
       views[id].style.transform = toggle.fadein.before.transform || null
 
-      return await toView({ id })
+      return await toView({ id, __ })
     }))
 
     if (toggleId && views[toggleId] && views[toggleId].element) {

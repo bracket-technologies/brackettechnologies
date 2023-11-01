@@ -1,4 +1,4 @@
 [ 
-  "View", "Box", "Text", "Icon", "Image", "Input", "Video", "Entry", "Map",
-  "Swiper", "Switch", "Checkbox", "Swiper", "List", "Item", "Chevron", "Tag"
+  "View", "Box", "Text", "Icon", "Image", "Input", "Video",
+  "Swiper", "Checkbox", "Swiper", "Chevron"
 ]

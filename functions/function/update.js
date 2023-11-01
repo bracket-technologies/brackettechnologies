@@ -7,7 +7,7 @@ const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 
-const update = async ({ id, _window, lookupActions, awaits, req, res, update = {}, _, __, ___, route, mainId, ...params }) => {
+const update = async ({ id, _window, lookupActions, awaits, req, res, update = {}, __, route, mainId, ...params }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.views : window.global
@@ -16,15 +16,15 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
   if (!view || !view.element) return
 
   // close droplist
-  if (global["droplist-positioner"] && view.element.contains(views[global["droplist-positioner"]].element)) {
-    var closeDroplist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[)(:droplist-timer];():[droplist-positioner:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];droplist-positioner:().del()" })
-    toParam({ _window, lookupActions, awaits, req, res, string: closeDroplist, id: "droplist" })
+  if (global["__droplistPositioner__"] && view.element.contains(views[global["__droplistPositioner__"]].element)) {
+    var closeDroplist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
+    toParam({ _window, lookupActions, awaits, req, res, string: closeDroplist, id: "droplist", __ })
   }
   
   // close actionlist
   if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
-    var closeActionlist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[)(:actionlist-timer];():[)(:actionlistCaller].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];)(:actionlistCaller.del()" })
-    toParam({ _window, lookupActions, awaits, req, res, string: closeActionlist, id: "actionlist" })
+    var closeActionlist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
+    toParam({ _window, lookupActions, awaits, req, res, string: closeActionlist, id: "actionlist", __ })
   }
 
   // children
@@ -48,7 +48,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
     views[id].style = views[id].style || {}
     views[id]["my-views"] = views[id]["my-views"] || [...view["my-views"]]
     
-    return await toView({ _window, lookupActions, awaits, req, res, id, _: view._, __: view.__, ___: view.___ })
+    return await toView({ _window, lookupActions, awaits, req, res, id, __: view.__ })
   }))
 
   if (id === "root" && route.currentPage && route.currentPage !== global.currentPage) return
@@ -79,7 +79,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
   }
 
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id: mainId || id, _: global.update, __: _, ___: __, /*object: global.update.view,*/ ...params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id: mainId || id, __: [global.update, ...__], /*object: global.update.view,*/ ...params })
 }
 
 const removeChildren = ({ id }) => {
