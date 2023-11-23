@@ -246,488 +246,7 @@ window.addEventListener('appinstalled', () => {
   link.href = window.location.href.replace('http://', 'https://');
   requireHTTPS.classList.remove('hidden');
 }*/
-},{"../function/execute":63,"../function/setData":106,"../function/setElement":107,"../function/starter":110,"../function/toApproval":115,"../function/toCode":120,"../function/toParam":130}],2:[function(require,module,exports){
-const { clone } = require('../function/clone')
-const { toComponent } = require('../function/toComponent')
-const { jsonToBracket } = require('../function/jsonToBracket')
-
-module.exports = (view) => {
-
-  var path = clone(view.path)
-  delete view.path
-  view = toComponent(view)
-  var { icon, box, label, style, checked, model2, text, value, required, group = {} } = view
-  label = label || {}
-  icon = icon || {}
-  box = box || {}
-
-  if (typeof checked === "string" || typeof checked === "boolean") checked = { checked: true }
-  else if (typeof checked !== "object") checked = {}
-  box.checked = box.checked || checked.box || {}
-  icon.checked = icon.checked || checked.icon || {}
-  label.checked = label.checked || checked.label || {}
-  if (checked.checked) box.checked.checked = icon.checked.checked = label.checked.checked = true
-  if (model2) model2 = true
-  else model2 = false
-
-  // text
-  if (text !== undefined) label.text = text
-  text = label.text || ""
-  value = value !== undefined ? value : (label.value !== undefined ? label.value : text)
-  delete label.text
-
-  if (typeof group === "string" || typeof group === "number") group = { state: group }
-  if (group.id) group.state = group.id
-  if (!group.multiple) group.multiple = false
-  else group.multiple = true
-  if (required) group.required = true
-  
-  return {
-    ...view, path, group,
-    "view": `View?class=flex align-center;style:[gap=1.5rem];${jsonToBracket(style)}`,
-    "children": [
-      {
-        "view": `View:${view.id}-box?${jsonToBracket(box)};if():[parent().group.state]:[CHECKBOX_STATE:().${group.state}.clicked=_list];if():[${group.multiple};!data()]:[data()=_list];class=flexbox pointer +${box.class||""};style:[height=[().style.height||2rem];width=[().style.width||2rem];position=[().style.position||relative];borderRadius=[().style.borderRadius||.35rem];transition=[().style.transition||.1s]];if():${model2}:[checked.style:[backgroundColor=[().checked.style.backgroundColor||#fff];border=[().checked.style.border||1px solid #ccc]]];style:[backgroundColor=if():[checked.checked]:[().checked.style.backgroundColor||'#2C6ECB']:[().style.backgroundColor||'#fff'];border=if():[checked.checked]:[().checked.style.border||'1px solid #ffffff00']:[().style.border||'1px solid #ccc']]`,
-        "children": [{
-          "view": `Icon:${view.id}-icon?name=check;google.symbol;${jsonToBracket(icon)};style:[position=[().style.position||absolute];color=[().style.color||#fff];transition=[().style.transition||.1s]];if():${model2}:[style:[fontSize=[().style.fontSize||3.5rem];left=[().style.left||'-.5rem'];bottom=[().style.bottom||'-.5rem']];checked.style.color=[().checked.style.bottom||blue]]:[style.fontSize=[().style.fontSize||1.8rem]];style:[opacity=if():[checked.checked]:1:0]`
-        }],
-        "controls": [{
-          "event": `click?if():[parent().group.state;${!group.multiple};CHECKBOX_STATE:().${group.state}.clicked.0;if():[parent().required||parent().group.required]:true:[CHECKBOX_STATE:().${group.state}.clicked.0!=().id]]:[clickedItem=CHECKBOX_STATE:().${group.state}.clicked.0;CHECKBOX_STATE:().${group.state}.clicked.pull():0;():[().clickedItem]._():[_.checked.checked=false;_.child()._():[_.style().opacity=0;_.checked.style._():[__.style()._=[__.style._||null]]];if():${!group.multiple}:[_.data().del()]:[_.data().pullItem():[_.next().value]];_.style():[backgroundColor=#fff;border=1px solid #ccc];_.checked.style._():[__.style()._=[__.style._||null]]]];if():[!checked.checked]:[checked.checked=true;if():[parent().group.state]:[CHECKBOX_STATE:().${group.state}.clicked.push():[().id]];child()._():[_.style().opacity=1;_.style():[_.checked.style]];if():${!group.multiple}:[data()=next().value]:[data().replaceItem():[next().value]];style():[backgroundColor=#2C6ECB;border=1px solid #ffffff00];style():[().checked.style]]:[if():[[parent().group.required;data().len()>[parent().group.min||1]]||!parent().group.required]:[checked.checked=false;CHECKBOX_STATE:().${group.state}.clicked.pullItem():[().id];child()._():[_.style().opacity=0;_.checked.style._():[__.style()._=[__.style._||null]]];if():[parent().group.state]:[${!group.multiple}:[data().del()]:[data().pullItem():[next().value]]];style():[backgroundColor=#fff;border=1px solid #ccc];().checked.style._():[style()._=[().style._||null]]]]?parent().group.state`
-        },
-        {
-          "event": `loaded?if():${group.multiple}:[if():[data().inc():[next().value]]:click()]:[if():[[parent().boolean;data()]||data()=next().value]:click()]`
-        }, 
-        {
-          "event": `click?if():[checked.checked=true]:[data()=false;checked.checked=false;child()._():[_.style().opacity=0;_.checked.style._():[__.style()._=[__.style._||null]]];style():[backgroundColor=#fff;border=1px solid #ccc];checked.style._():[__.style()._=[__.style._||null]]]:[data()=true;checked.checked=true;child()._():[_.style().opacity=1;_.style():[_.checked.style]];style():[backgroundColor=#2C6ECB;border=1px solid #ffffff00];style():[().checked.style]]?!parent().group.state;parent().boolean`
-        }]
-      },
-      {
-        "view": `Text:${view.id}-label?${jsonToBracket(label)};style:[fontSize=[().style.fontSize||1.6rem];width=[().style.width||fit-content];cursor=[().style.cursor||pointer]]`,
-        text, value,
-        "controls": [{
-          "event": "click?prev().click()"
-        }]
-      }
-    ]
-  }
-}
-},{"../function/clone":42,"../function/jsonToBracket":83,"../function/toComponent":121}],3:[function(require,module,exports){
-module.exports = (view) => {
-  var scrollWidth = `[px():[().swiper.scroll]||100]`
-  var clickLeft = `():[().swiper.id]._():[clearTimer():[_.mytimer];_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)';if():[_.autorun]:[_.mytimer=interval():[_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)']:[_.autorun.timer||100]]]`
-  var clickRight = `():[().swiper.id]._():[clearTimer():[_.mytimer];_.scroll-=[_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll<0]:[_.scroll=_.scrollable];_.style().transform='translateX('+_.scroll+'px)';if():[_.autorun]:[_.mytimer=interval():[_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)']:[_.autorun.timer||100]]]`
-  return {
-    ...view,
-    view: `Icon?class='flexbox pointer '+[().class||];name=if():[direction=right]:'bi-chevron-right'.elif():[direction=left]:'bi-chevron-left';style:[fontSize=[().style.fontSize||2.5rem];if():[().direction=left]:[left=[().style.left||0]].elif():[().direction=right]:[right=[().style.right||0]]];click:[if():[direction=left;swiper.id]:[${clickLeft}].elif():[direction=right;swiper.id]:[${clickRight}]]`
-  }
-}
-},{}],4:[function(require,module,exports){
-const { toComponent } = require('../function/toComponent')
-const { jsonToBracket } = require('../function/jsonToBracket')
-const { override } = require('../function/merge')
-const { clone } = require('../function/clone')
-const { generate } = require('../function/generate')
-
-const Input = (component) => {
-
-    if (component.templated) return component
-
-    component.hover = component.hover || {}
-    component.style = component.style || {}
-    component.hover.style = component.hover.style || {}
-    component.style.after = component.style.after || {}
-
-    // container
-    component.container = component.container || {}
-
-    // icon
-    component.icon = component.icon || {}
-    component.icon.style = component.icon.style || {}
-    component.icon.hover = component.icon.hover || {}
-    component.icon.hover.style = component.icon.hover.style || {}
-    component.icon.style.after = component.icon.style.after || {}
-
-    // input
-    component.input = component.input || {}
-    component.input.hover = component.input.hover || {}
-    component.input.type = component.password && "password" || component.input.type || 'text'
-    component.input.style = component.input.style || {}
-    component.input.hover.style = component.input.hover.style || {}
-    component.input.style.after = component.input.style.after || {}
-
-    // required
-    if (component.required) component.required = typeof component.required === "object" ? component.required : {}
-    
-    component = toComponent(component)
-
-    var {
-      id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
-      placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
-      duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
-    } = component
-    
-    if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
-    if (duplicatable) removable = removable || {}
-    if (removable && typeof removable !== "object") removable = {}
-    if (clearable && typeof clearable !== "object") clearable = {}
-    if (generator && typeof generator !== "object") generator = {}
-    if (label && typeof label !== "object") label = { text: "Label Name" }
-    if (label && !label.location) label.location = "outside"
-
-    readonly = readonly ? true : false
-
-    if (minlength === undefined) minlength = 1
-    if (droplist) droplist.align = droplist.align || "left"
-    
-    // upload input styles
-    var uploadInputStyle = input.type === 'file'
-    ? {
-        position: 'absolute',
-        left: '0',
-        top: '0',
-        opacity: '0',
-        cursor: 'pointer',
-    } : {}
-
-    var _component = component = {
-      ...component, id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
-      placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
-      duplicatable, lang, unit, currency, google, key, minlength , children, container, generator
-    }
-    
-    if (duplicatable) {
-      component.removable = true
-      removable = true 
-    }
-
-    if (label && (label.location === "inside" || label.position === "inside")) {
-
-        var label = clone(component.label)
-        var derivations = clone(component.derivations)
-        var path = component.path
-        var parent = component.parent
-        var Data = component.Data
-        var password = component.password && true
-        var text = label.text
-        id = id || generate()
-        component.controls = component.controls || []
-        
-        delete component.parent
-        delete component.label
-        delete component.path
-        delete component.id
-        delete component.password
-        delete component.derivations
-        delete label.text
-
-        return {
-            id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true, preventDefault,
-            "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=${component.style.width||"100%"};style.maxWidth=${component.style.maxWidth||"100%"};${jsonToBracket(container)}`,
-            "children": [{
-                "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
-                "children": [{
-                  "type": `Text?id=${id}-label;text='${text || "Label"}';if():[parent().required]:[required=true];style.fontSize=1.1rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
-                  "controls": [{
-                    "event": "click?parent().input().focus()"
-                  }]
-                }, Input({ ...component, component: true, labeled: id, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
-                ]
-            }, {
-                "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${jsonToBracket(password)}?${password}`,
-                "children": [{
-                    "type": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
-                    "controls": [{
-                        "event": "click?parent().prev().getInput().element.type=text;next().style().display=flex;style().display=none"
-                    }]
-                }, {
-                    "type": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
-                    "controls": [{
-                        "event": "click?parent().prev().getInput().element.type=password;prev().style().display=flex;style().display=none"
-                    }]
-                }]
-            }],
-            "controls": [{
-                "event": "click:body?style().border=if():[clicked:().outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked:()];!droplist.contains():[clicked:()]"
-            }, {
-                "event": "click?getInput().focus()?!getInput().focus"
-            }]
-        }
-    }
-    
-    if ((label && (label.location === "outside" || label.position === "outside")) || label) {
-
-        var label = clone(component.label)
-        var derivations = clone(component.derivations)
-        var path = component.path
-        var parent = component.parent
-        var Data = component.Data
-        var tooltip = component.tooltip
-        var text = label.text
-        id = id || generate()
-        //var clickedBorder = component.clicked && component.clicked.style.border
-        component.controls = component.controls || []
-
-        /*if (component.clicked) {
-          component.clicked.preventDefault = true
-          if (component.clicked.style.border) delete component.clicked
-        }*/
-        
-        delete component.label
-        delete component.path
-        delete component.id
-        delete component.tooltip
-        delete component.required
-        delete label.text
-        label.tooltip = tooltip
-        
-        return {
-          id, Data, parent, derivations, path, islabel: true, preventDefault,
-          "type": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width ||"100%"};style.maxWidth=${component.style.maxWidth ||"100%"};${jsonToBracket(container)}`,
-          "children": [
-            {
-              "type": `Text?id=${id}-label;text='${text || "Label"}';${required ? "required=true": ""};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
-              "controls": [{
-                "event": "click?parent().input().focus()"
-              }]
-            },
-              Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
-            {
-              "type": `View:${id}-required?class=flex gap-1;style:[alignItems=center;opacity=${required && required.style && required.style.opacity || "0"};transition=.2s]?${required ? true : false}`,
-              "children": [{
-                "type": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
-              }, {
-                "type": `Text?text=${required && required.text || "Required blank"};style.color=#D72C0D;style.fontSize=1.3rem;${jsonToBracket(required)}`
-              }]
-            }
-          ],
-          /*"controls": [{
-            "event": `click:1stChild();click:[if():[${duplicatable?true:false}]:[2ndChild().children()]:2ndChild()]?clicked=true;if():[!${duplicatable?true:false}]:[2ndChild().style().border=${clickedBorder}]:[2ndChild().lastChild().style().border=${clickedBorder}]?!mobile();${clickedBorder?true:false}`
-          }, {
-            "event": `click:body?clicked=false;if():[${duplicatable?true:false}]:[2ndChild().children().():[style().border=${style.border || "1px solid #ccc"}]]:[2ndChild().style().border=${style.border || "1px solid #ccc"}]?${clickedBorder?true:false};!mobile();!contains():[clicked:()];!droplist.contains():[clicked:()]`
-          }]*/
-        }
-    }
-
-    if (model === 'featured' || password || clearable || removable || duplicatable || copyable || generator) {
-
-      delete component.type
-      
-      return {
-            ...component,
-            view: "View",
-            class: `flex align-items-center unselectable ${component.class || ""}`,
-            // remove from comp
-            controls: [{
-                event: `mouseenter?if():[clearable||removable||duplicatable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=1]];if():generator:[():[${id}+'-generate'].style().opacity=1]?!mobile()`
-            }, {
-                event: `mouseleave?if():[clearable||removable||duplicatable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=0]];if():generator:[():[${id}+'-generate'].style().opacity=0]?!mobile()`
-            }],
-            style: {
-                cursor: readonly ? "pointer" : "auto",
-                display: "inline-flex",
-                width: "fit-content",
-                maxWidth: "100%",
-                position: "relative",
-                backgroundColor: "inherit",
-                height: "fit-content",
-                borderRadius: "0.25rem",
-                overflow: "hidden",
-                transition: ".1s",
-                border: input.type === "file" ? "1px dashed #ccc" : "0",
-                ...style,
-            },
-            children: [...children, { // message
-              view: `Text?id=${id}-msg;msg=parent().msg;text=parent().msg?parent().msg`,
-                style: {
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                    fontSize: '1.3rem',
-                    maxWidth: '95%',
-                }
-            }, {
-              view: `Input`,
-                id: `${id}-input`,
-                class: `${component.class.includes("ar") ? "ar " : ""}${input.class || ""}`,
-                input,
-                currency, 
-                day,
-                unit,
-                key,
-                lang,
-                google,
-                duration,
-                textarea,
-                readonly,
-                labeled,
-                placeholder,
-                duplicated,
-                disabled,
-                duplicatable,
-                preventDefault,
-                templated: true,
-                'placeholder-ar': component['placeholer-ar'],
-                /*hover: {
-                    ...input.hover,
-                    style: {
-                        backgroundColor: style.after.backgroundColor,
-                        color: style.after.color || style.color,
-                        ...input.style.after,
-                        ...input.hover.style
-                    }
-                },*/
-                style: {
-                    width: password || clearable || removable || copyable || generator ? "100%" : "fit-content",
-                    height: 'fit-content',
-                    borderRadius: style.borderRadius || '0.25rem',
-                    backgroundColor: style.backgroundColor || 'inherit',
-                    fontSize: style.fontSize || '1.4rem',
-                    maxHeight: style.maxHeight || "initial",
-                    border: '0',
-                    height: style.height || "100%",
-                    padding: "0.5rem",
-                    color: input.type === "number" ? "blue" : '#444',
-                    outline: 'none',
-                    userSelect: password ? "none" : "initial",
-                    ...uploadInputStyle,
-                    ...input.style
-                },
-                controls: [...controls, {
-                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[if():${duplicatable?true:false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked:()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
-                }, /*{
-                    event: `clickfocus;keyfocus?parent().clicked.mount;parent().clicked.style.keys()._():[parent().style()._=parent()..clicked.style._];state:().[parent().clicked.state]=parent().id?parent().clicked`
-                }, */{
-                    event: `blur?():body.click()`
-                }, {
-                    event: "select;mousedown?preventDefault()"
-                }, {
-                    event: `keyup?():'${id}-duplicate'.click()?duplicatable;e().key=Enter`
-                }]
-            }, {
-              view: `Icon:${id}-clear?class=pointer;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:'0.5rem']:[right=if():[parent().password]:4rem:'0.5rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();prev().txt()=;#prev().focus()].elif():[parent().removable;if():[parent().clearable]:[!prev().txt()]:true;doc():[path=path().slice():0:-1].len()>1]:[parent().rem()]]?parent().clearable||parent().removable||parent().duplicatable`,
-            }, {
-              view: `Icon:${id}-duplicate?class=pointer duplicater;name=bi-plus;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:'5.5rem':'3rem']:[right=if():[parent().password]:'5.5rem':'3rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[!parent().max||parent().max>2ndParent().className():duplicater.len()]:[doc():[path=path().slice():0:'-1'].push():[if():[data().type()=number]:0:''];2ndParent().update()::[className():duplicater.lastEl().2ndPrev().focus()]]]?parent().duplicatable`,
-            }, {
-              view: `Text:${id}-generate?class=flexbox pointer;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
-            }, {
-              view: `Icon:${id}-copy?class=pointer;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();#():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
-            }, {
-              view: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
-                children: [{
-                  view: `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
-                    controls: [{
-                        event: "click?parent().prev().element.type=text;next().style().display=flex;style().display=none"
-                    }]
-                }, {
-                  view: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
-                    controls: [{
-                        event: "click?parent().prev().element.type=password;prev().style().display=flex;style().display=none"
-                    }]
-                }]
-            }]
-        }
-    }
-
-    if (model === 'classic') {
-
-      delete _component.type
-      return {
-        ..._component,
-        view: "Input",
-        style: {
-          cursor: readonly ? "pointer" : "auto",
-          border: "0",
-          width: "fit-content",
-          padding: '0.5rem',
-          color: '#444',
-          color: input.type === "number" ? "blue" : '#444',
-          backgroundColor: 'inherit',
-          height: 'fit-content',
-          borderRadius: '0.25rem',
-          fontSize: '1.4rem',
-          transition: "border .1s",
-          ...input.style,
-          ...style,
-        },
-        controls: [...controls, {
-          event: `clickfocus;keyfocus?clicked.mount;clicked.style.keys()._():[().style()._=().clicked.style._];state:().[().clicked.state]=().id`
-        }, {
-          event: `blur?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style()._=[__.style._||null]]]]`
-        }]
-      }
-    }
-}
-
-module.exports = Input
-},{"../function/clone":42,"../function/generate":70,"../function/jsonToBracket":83,"../function/merge":88,"../function/toComponent":121}],5:[function(require,module,exports){
-module.exports = (view) => {
-
-  var AutorunScrollInPixel = `[px():[().autorun.scroll]||100]`
-  var toScrollWidth = `[${AutorunScrollInPixel}-().scroll%${AutorunScrollInPixel}||${AutorunScrollInPixel}]`
-  var autorunInterval = `mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]`
-  var loadedActions = `loaded:[scrollable=el().scrollWidth-parent().el().clientWidth;if():[autorun]:[${autorunInterval}]]`
-  var mouseenterActions = `mouseenter:[clearTimer():[().mytimer]]`
-  var mouseleaveActions = `mouseleave:[if():[!mousedn]:[style().transition=[().style.transition||.2s];${autorunInterval}]]`
-  var mousedownActions = `mousedown:[mousedn=true;style().transition=null;mouseposition=e().screenX;scrollLeft=().scroll]`
-  var bodyMousemoveActions = `():body.mousemove:[if():[mousedn]:[scroll=().scrollLeft+e().screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']]`
-  var touchstartActions = `touchstart:[clearTimer():[().mytimer];touchst=true;style().transition=null;mouseposition=e().changedTouches.0.screenX;scrollLeft=().scroll]`
-  var touchmoveActions = `touchmove:[if():[touchst]:[scroll=().scrollLeft+e().changedTouches.0.screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']]`
-  var touchendActions = `touchend:[if():[touchst]:[touchst=false;if():[autorun]:[mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`
-  var bodyMouseupActions = `():body.mouseup:[if():[mousedn]:[mousedn=false;if():[autorun;!mouseentered]:[mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`
-  return {
-    ...view,
-    view: `View?style:[display=flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;if():[vertical]:[flexDirection=column]];scrollLeft=0;scroll=0;${loadedActions};if():[autorun]:[${mouseenterActions};${mouseleaveActions}];${mousedownActions};${bodyMousemoveActions};${bodyMouseupActions};${touchstartActions};${touchmoveActions};${touchendActions}`,
-  }
-}
-},{}],6:[function(require,module,exports){
-module.exports = (view) => {
-  return {
-    ...view,
-    view: `View?class='hide-scrollbar '+if():[().class]:[().class]:'';style:[display=if():[().style.display]:[().style.display]:flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;position=if():[().style.position]:[().style.position]:relative;overflowX=if():[().style.overflowX]:[().style.overflowX]:hidden]`,
-  }
-}
-},{}],7:[function(require,module,exports){
-const { toComponent } = require("../function/toComponent")
-const { jsonToBracket } = require("../function/jsonToBracket")
-
-module.exports = (component) => {
-
-  var { icon, pin, controls, style } = toComponent(component)
-
-  pin = pin || {}
-  icon = icon || {}
-  icon.on = icon.on || {}
-  icon.off = icon.off || {}
-
-  return {
-    ...component,
-    type: `Box?class=flexbox pointer;hover.style.backgroundColor=#ddd;style.justifyContent=flex-start;style.width=5rem;style.height=2.4rem;style.position=relative;style.borderRadius=2.2rem;style.backgroundColor=#eee;${jsonToBracket({ style })}`,
-    children: [{
-      type: `Box?class=flexbox;style.transition=.3s;style.width=2rem;style.height=2rem;style.borderRadius=2rem;style.backgroundColor=#fff;style.position=absolute;style.left=0.3rem;${jsonToBracket(pin)}`,
-      children: [{
-          type: `Icon?style.color=red;style.fontSize=1.8rem;style.position=absolute;style.transition=.3s;${jsonToBracket(icon.off)}?[${icon.off.name}]`
-        }, {
-          type: `Icon?style.color=blue;style.fontSize=1.3rem;style.position=absolute;style.opacity=0;style.transition=.3s;${jsonToBracket(icon.on)}?[${icon.on.name}]`
-        }]
-    }],
-    controls: [{
-        event: "click?().element.checked=[true].if().[().element.checked.notexist()].else().[false];().checked=().element.checked;().1stChild().element.style.left=[calc(100% - 2.3rem)].if().[().element.checked].else().[0.3rem];().1stChild().1stChild().element.style.opacity=[0].if().[().element.checked].else().[1];().1stChild().2ndChild().element.style.opacity=[1].if().[().element.checked].else().[0]"
-      },
-      ...controls
-    ]
-  }
-}
-
-},{"../function/jsonToBracket":83,"../function/toComponent":121}],8:[function(require,module,exports){
-module.exports = {
-  Input : require("./Input"),
-  Switch : require("./Switch"),
-  Checkbox : require("./Checkbox"),
-  Swiper : require("./Swiper"),
-  Chevron : require("./Chevron"),
-  SwiperWrapper : require("./SwiperWrapper")
-}
-},{"./Checkbox":2,"./Chevron":3,"./Input":4,"./Swiper":5,"./SwiperWrapper":6,"./Switch":7}],9:[function(require,module,exports){
+},{"../function/execute":57,"../function/setData":100,"../function/setElement":101,"../function/starter":104,"../function/toApproval":109,"../function/toCode":114,"../function/toParam":123}],2:[function(require,module,exports){
 module.exports = ({ id, controls }) => {
     if (window.views[id].type !== "Input" && !window.views[id].editable) {
       var _input = window.views[id].element.getElementsByTagName("INPUT")
@@ -737,21 +256,21 @@ module.exports = ({ id, controls }) => {
       event: `blur:${id}?${controls}??${id}`
     }]
 }
-},{}],10:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `change:[getInput().id]?${controls}??getInput().id`
     }]
 }
-},{}],11:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `click?${controls}`
     }]
 }
-},{}],12:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 const { generate } = require("../function/generate");
 
 module.exports = ({ controls, id }) => {
@@ -777,14 +296,14 @@ module.exports = ({ controls, id }) => {
       event: `loaded:${_id}?click()?clicked.mount`,
     },
     {
-      event: `click:${_id}?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style()._=[__.style._||null]]]];clicked.mount;clicked.style.keys()._():[():${_id}.style()._=().clicked.style._];state:().[().clicked.state]=${_id}?!required.mount;!clicked.disable`,
+      event: `click:${_id}?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style().[_]=[__.style._||null]]]];clicked.mount;clicked.style.keys()._():[():${_id}.style().[_]=().clicked.style.[_]];state:().[().clicked.state]=${_id}?!required.mount;!clicked.disable`,
     },
     {
-      event: `click:body?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style()._=[__.style._||null]]]];state:().[().clicked.state].del()?!required.mount;!clicked.disable;!clicked.sticky`,
+      event: `click:body?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style().[_]=[__.style._||null]]]];state:().[().clicked.state].del()?!required.mount;!clicked.disable;!clicked.sticky`,
     }
   ]
 }
-},{"../function/generate":70}],13:[function(require,module,exports){
+},{"../function/generate":64}],6:[function(require,module,exports){
 module.exports = {
   item: require("./item"),
   list: require("./list"),
@@ -815,29 +334,29 @@ module.exports = {
   touchcancel: require("./touchcancel"),
   contentful: require("../function/contentful").contentful
 }
-},{"../function/contentful":45,"./blur":9,"./change":10,"./click":11,"./clicked":12,"./droplist":14,"./focus":15,"./hover":16,"./item":17,"./keydown":18,"./keypress":19,"./keyup":20,"./list":21,"./loaded":22,"./mininote":23,"./mousedown":24,"./mouseenter":25,"./mouseleave":26,"./mouseover":27,"./mouseup":28,"./popup":29,"./pricable":30,"./scroll":31,"./tooltip":32,"./touchcancel":33,"./touchend":34,"./touchmove":35,"./touchstart":36}],14:[function(require,module,exports){
+},{"../function/contentful":38,"./blur":2,"./change":3,"./click":4,"./clicked":5,"./droplist":7,"./focus":8,"./hover":9,"./item":10,"./keydown":11,"./keypress":12,"./keyup":13,"./list":14,"./loaded":15,"./mininote":16,"./mousedown":17,"./mouseenter":18,"./mouseleave":19,"./mouseover":20,"./mouseup":21,"./popup":22,"./pricable":23,"./scroll":24,"./tooltip":25,"./touchcancel":26,"./touchend":27,"./touchmove":28,"./touchstart":29}],7:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   window.views[id].droplist.id = controls.id = id = controls.id || id
   
   return [{
-    event: "[keyup:input()??e().key=Escape];[blur:input()??clicked:().id!=droplist;!():droplist.contains():[clicked:()]]?clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()"
+    event: "[keyup:input()??e().key=Escape];[blur:input()??clicked:().id!=droplist;!():droplist.contains():[clicked:()]]?clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()"
   }, {
-    event: `click;[focus:input()??clicked:().id!=().id;!clicked:().contains():[input().id]]?__keyupIndex__:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[__droplistPositioner__:()!=${id}]:[().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]];if():[__droplistPositioner__:()=${id}]:[droplist-timer:()=timer():[().droplist.style.keys()._():[():droplist.style()._=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];__droplistPositioner__:().del()]:0];if():[__droplistPositioner__:()!=().id]:[__droplistPositioner__:()=${id};():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transition=null;pointerEvents=none]];():${id}.droplist();timer():[():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._];():droplist.():[children().():[style().pointerEvents=auto];style():[transition='opacity .1s, transform .1s';opacity=1;transform='scale(1)';pointerEvents=auto]]]:0]`,
+    event: `click;[focus:input()??clicked:().id!=().id;!clicked:().contains():[input().id]]?__keyupIndex__:()=0;droplist-search-txt:().del();if():[input().txt()]:[droplist-search-txt:()=input().txt()];clearTimer():[droplist-timer:()];if():[__droplistPositioner__:()!=${id}]:[().droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]]];if():[__droplistPositioner__:()=${id}]:[droplist-timer:()=timer():[().droplist.style.keys()._():[():droplist.style().[_]=():droplist.style._||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];__droplistPositioner__:().del()]:0];if():[__droplistPositioner__:()!=().id]:[__droplistPositioner__:()=${id};():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transition=null;pointerEvents=none]];():${id}.droplist();timer():[():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]];():droplist.():[children().():[style().pointerEvents=auto];style():[transition='opacity .1s, transform .1s';opacity=1;transform='scale(1)';pointerEvents=auto]]]:0]`,
   }, {
     event: `mouseenter?clearTimer():[().droplistLeaved];if():[droplist-mouseenterer:()!=().id]:[click();droplist-mouseenterer:()=().id]?droplist.hoverable`
   }, {
     event: `mouseleave?droplistLeaved=timer():[if():[!():droplist.mouseentered;droplist-mouseenterer:()=().id;():droplist.style().opacity='1']:[click();droplist-mouseenterer:().del()]]:400?droplist.hoverable`
   }, {
     event: "input:input()?droplist-search-txt:()=input().txt()?input();droplist.searchable",
-    actions: `droplist:${id}?__droplistPositioner__:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform='scale(1)';pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style()._=().droplist.style._]`
+    actions: `droplist:${id}?__droplistPositioner__:()=${id};():droplist.():[children().():[style().pointerEvents=auto];style():[opacity=1;transform='scale(1)';pointerEvents=auto]];():droplist.position():[positioner=${controls.positioner || id};placement=${controls.placement || "bottom"};distance=${controls.distance};align=${controls.align}];().droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]]`
   }, {
     event: `keyup:input()?if():[__droplistPositioner__:();__keyupIndex__:()]:[():droplist.children().[__keyupIndex__:()].click();().break=true;#():droplist.mouseleave()];__keyupIndex__:()=0;#if():[__droplistPositioner__:()!=2ndChild().id]:[2ndChild().click()];#timer():[():droplist.children().0.mouseenter()]:200?!():${id}.droplist.preventDefault;e().key=Enter`
   }, {
     event: `keyup:input()?():droplist.children().():mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[[__keyupIndex__:()]-1];():droplist.children().[__keyupIndex__:()].mouseenter()?!():${id}.droplist.preventDefault;e().keyCode=40||e().keyCode=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children.lastIndex()]`
   }]
 }
-},{}],15:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = ({ id, controls }) => {
   if (window.views[id].type !== "Input" && !window.views[id].editable) {
     var _input = window.views[id].element.getElementsByTagName("INPUT")
@@ -847,7 +366,7 @@ module.exports = ({ id, controls }) => {
     event: `focus:${id}?${controls}??${id}`
   }]
 }
-},{}],16:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var view = window.views[id]
@@ -863,12 +382,12 @@ module.exports = ({ controls, id }) => {
     return [{
         "event": `loaded:${_id}?mouseenter()?hover.mount;!clicked.mount`
     }, {
-        "event": `mouseenter:${_id}?hover.style.keys()._():[style()._=.hover.style._]?!clicked.disable;!clicked.mount;!hover.disable`
+        "event": `mouseenter:${_id}?hover.style.keys()._():[style().[_]=.hover.style.[_]]?!clicked.disable;!clicked.mount;!hover.disable`
     }, {
-        "event": `mouseleave:${_id}?hover.default.style.keys()._():[style()._=.hover.default.style._]?!clicked.disable;!clicked.mount;!hover.disable`
+        "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!clicked.disable;!clicked.mount;!hover.disable`
     }]
 }
-},{}],17:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = ({params}) => [
   "setData?data.value=().text",
   `resetStyles?():[)(:${params.state}.0].mountonload=false??${params.state}:()`,
@@ -880,28 +399,28 @@ module.exports = ({params}) => [
   `mountAfterStyles?().mountonload:)(:${params.state}.0??${params.state}:()`,
 ];
 
-},{}],18:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `keydown?${controls}`
     }]
 }
-},{}],19:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
   return [{
     event: `keypress?${controls}`
   }]
 }
-},{}],20:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `keyup?${controls}`
     }]
 }
-},{}],21:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = ({ controls }) => {
 
   return [{
@@ -920,56 +439,56 @@ module.exports = ({ controls }) => {
   }]
 }
 
-},{}],22:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
         event: `loaded?${controls}`
     }]
 }
-},{}],23:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = () => {
   
   return [{
     event: `click?():mininote-text.txt()=[.mininote.text||.mininote.note||''];clearTimeout():[mininote-timer:()];():mininote.style():[opacity=1;transform='scale(1)'];mininote-timer:()=():root.timer():[():mininote.style():[opacity=0;transform=scale(0)]]:[.mininote.timer||3000]`
   }]
 }
-},{}],24:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mousedown?${controls}`
     }]
 }
-},{}],25:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = ({ controls }) => {
   
     return [{
       event: `mouseenter?${controls}`
     }]
 }
-},{}],26:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mouseleave?${controls}`
     }]
 }
-},{}],27:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
     return [{
       event: `mouseover?${controls}`
     }]
 }
-},{}],28:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = ({ controls }) => {
   
     return [{
       event: `mouseup?${controls}`
     }]
 }
-},{}],29:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   var view = window.views[id]
@@ -981,10 +500,10 @@ module.exports = ({ controls, id }) => {
   if (!view.popup.model) view.popup.model = "model1"
   
   return [{
-    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style()._=():popup.style._||null];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(0.5)'];style():[opacity=0;pointerEvents=none]];popup-positioner:().del()]:0].elif():[popup-positioner:()!=${id}]:[popup-positioner:()=${id};update():popup;timer():[if():[():${id}.popup.model=model1]:[():popup.position():[positioner=${controls.positioner || id};placement=${controls.placement || "left"};distance=${controls.distance};align=${controls.align}]];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(1)'];style():[opacity=1;pointerEvents=auto]];().popup.style():[().popup.style]]:50]`
+    event: `click?clearTimer():[popup-timer:()];if():[popup-positioner:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style().[_]=():popup.style._||null];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(0.5)'];style():[opacity=0;pointerEvents=none]];popup-positioner:().del()]:0].elif():[popup-positioner:()!=${id}]:[popup-positioner:()=${id};update():popup;timer():[if():[():${id}.popup.model=model1]:[():popup.position():[positioner=${controls.positioner || id};placement=${controls.placement || "left"};distance=${controls.distance};align=${controls.align}]];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(1)'];style():[opacity=1;pointerEvents=auto]];().popup.style():[().popup.style]]:50]`
   }]
 }
-},{}],30:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = ({ id }) => {
     
     var input_id = window.views[id].type === 'Input' ? id : `${id}-input`
@@ -992,14 +511,14 @@ module.exports = ({ id }) => {
         "event": `input:${input_id}?():${input_id}.data()=():${input_id}.element.value().toPrice().else().0;():${input_id}.element.value=():${input_id}.data().else().0`
     }]
 }
-},{}],31:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
   return [{
     event: `scroll?${controls}`
   }]
 }
-},{}],32:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -1014,35 +533,35 @@ module.exports = ({ controls, id }) => {
     event: "mouseleave?clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0"
   }]
 }
-},{}],33:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
   return [{
     event: `touchcancel?${controls}`
   }]
 }
-},{}],34:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
   return [{
     event: `touchend?${controls}`
   }]
 }
-},{}],35:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
   return [{
     event: `touchmove?${controls}`
   }]
 }
-},{}],36:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = ({ controls }) => {
     
   return [{
     event: `touchstart?${controls}`
   }]
 }
-},{}],37:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports=[
   "data()", "Data()", "doc()", "mail()", "function()", "exec()", "notification()", "notify()", "alert()", "tag()", "view()"
  , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()", "same()", "checker()"
@@ -1067,7 +586,7 @@ module.exports=[
  , "replaceItem()", "replaceItems()", "findAndReplaceItem()", "grandParent()", "grandChild()", "grandChildren()", "2ndNext()", "isNaN()"
  , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()"
 ]
-},{}],38:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
 
 const axios = async ({ id, lookupActions, awaits, ...params }) => {
@@ -1111,7 +630,7 @@ const axios = async ({ id, lookupActions, awaits, ...params }) => {
 }
 
 module.exports = { axios }
-},{"./toAwait":117,"axios":142}],39:[function(require,module,exports){
+},{"./toAwait":111,"axios":135}],32:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -1134,7 +653,7 @@ const blur = ({ id }) => {
 
 module.exports = {blur}
 
-},{}],40:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 const capitalize = (string, minimize) => {
   if (typeof string !== "string") return string
 
@@ -1159,7 +678,7 @@ const capitalizeFirst = (string, minimize) => {
 
 module.exports = {capitalize, capitalizeFirst}
 
-},{}],41:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 const {clone} = require("./clone");
 
 const clearValues = (obj) => {
@@ -1201,7 +720,7 @@ const clearValues = (obj) => {
 
 module.exports = {clearValues};
 
-},{"./clone":42}],42:[function(require,module,exports){
+},{"./clone":35}],35:[function(require,module,exports){
 const clone = (obj) => {
 
   if (!obj) return obj
@@ -1223,7 +742,7 @@ const clone = (obj) => {
 
 module.exports = {clone}
 
-},{}],43:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 const { decode } = require("./decode")
 
 const _colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
@@ -1274,12 +793,7 @@ const colorizeComment = ({ _window, id, start, end, index, params, string, color
   if (string.charAt(0) === "#" || string.includes("?#") || string.includes(";#") || string.includes("[#")) {
 
     var string0 = "", operator = ""
-    if (string.charAt(0) === "#") {
-
-      string0 = string.split("#")[0]
-      operator = ""
-
-    } else if (string.split("?#")[1]) {
+    if (string.split("?#")[1]) {
 
       string0 = string.split("?#")[0]
       operator = "?"
@@ -1321,13 +835,13 @@ const colorizeText = ({ _window, id, start, end, index, params, string, colors }
   var global = _window ? _window.global : window.global
 
   // text
-  while (string.includes("codedS()")) {
+  while (string.includes("codedT@")) {
 
-    var string0 = string.split("codedS()")[0]
-    var key = global.codes["codedS()" + string.split("codedS()")[1].slice(0, 5)]
+    var string0 = string.split("codedT@")[0]
+    var key = global.__codes__["codedT@" + string.split("codedT@")[1].slice(0, 5)]
 
     key = `<span contenteditable style="background-color:#00000000; color:${colors[index + 1]}; white-space:nowrap">'${key}'</span>`
-    string = string0 + key + string.split("codedS()")[1].slice(5) + (string.split("codedS()").length > 2 ? "codedS()" + string.split("codedS()").slice(2).join("codedS()") : "")
+    string = string0 + key + string.split("codedT@")[1].slice(5) + (string.split("codedT@").length > 2 ? "codedT@" + string.split("codedT@").slice(2).join("codedT@") : "")
   }
 
   return string
@@ -1337,19 +851,19 @@ const colorizeMap = ({ _window, id, start, end, index, params, string, colors })
   var global = _window ? _window.global : window.global
 
   // map
-  while (string.includes("coded()")) {
+  while (string.includes("coded@")) {
 
-    var string0 = string.split("coded()")[0]
-    var key = global.codes["coded()" + string.split("coded()")[1].slice(0, 5)]
+    var string0 = string.split("coded@")[0]
+    var key = global.__codes__["coded@" + string.split("coded@")[1].slice(0, 5)]
     key = colorize({ _window, id, string: start + key + end, index: index + 1, ...params })
-    string = string0 + key + string.split("coded()")[1].slice(5) + (string.split("coded()").length > 2 ? "coded()" + string.split("coded()").slice(2).join("coded()") : "")
+    string = string0 + key + string.split("coded@")[1].slice(5) + (string.split("coded@").length > 2 ? "coded@" + string.split("coded@").slice(2).join("coded@") : "")
   }
 
   return string
 }
 
 module.exports = { colorize }
-},{"./decode":57}],44:[function(require,module,exports){
+},{"./decode":51}],37:[function(require,module,exports){
 module.exports = {
     compare: (value1, operator, value2) => {
         if (operator === "==") return value1 === value2
@@ -1360,7 +874,7 @@ module.exports = {
         else if (operator === "in") return value1.includes(value2)
     }
 }
-},{}],45:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = {
     contentful: ({ id }) => {
         var local = window.views[id]
@@ -1406,7 +920,7 @@ module.exports = {
         }))
     }
 }
-},{}],46:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 const controls = ({ _window, lookupActions, awaits, controls, id, req, res }) => {
@@ -1438,7 +952,7 @@ const setControls = ({ id, params }) => {
 
 module.exports = { controls, setControls }
 
-},{"./event":61,"./toArray":116,"./watch":141}],47:[function(require,module,exports){
+},{"./event":55,"./toArray":110,"./watch":134}],40:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
@@ -1474,7 +988,7 @@ const eraseCookie = ({ _window, name }) => {
 }
 
 module.exports = {setCookie, getCookie, eraseCookie}
-},{}],48:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 module.exports = {
   counter: ({ length = 0, counter = 0, end, reset = "daily", timer = 0 }) => {
 
@@ -1511,7 +1025,7 @@ module.exports = {
     return { counter: _counter, length, reset, timer: timestamp }
   }
 }
-},{}],49:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 const control = require("../control/control")
 
 const createActions = ({ params, id }) => {
@@ -1526,13 +1040,13 @@ const createActions = ({ params, id }) => {
 
 module.exports = {createActions}
 
-},{"../control/control":13,"./execute":63}],50:[function(require,module,exports){
+},{"../control/control":6,"./execute":57}],43:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 
-const component = require("../component/component")
+const builtInViews = require("../view/views")
 const { toCode } = require("./toCode")
 
 module.exports = {
@@ -1541,8 +1055,8 @@ module.exports = {
     var views = _window ? _window.views : window.views
     var view = views[id], parent = view.parent
     
-    if (!component[view.type]) return
-    views[id] = view = component[view.type](view)
+    if (!builtInViews[view.type]) return
+    views[id] = view = builtInViews[view.type](view)
     
     // my views
     if (!view["my-views"]) view["my-views"] = [...views[view.parent]["my-views"]]
@@ -1580,18 +1094,20 @@ module.exports = {
   }
 }
 
-},{"../component/component":8,"./clone":42,"./generate":70,"./toApproval":115,"./toCode":120,"./toParam":130}],51:[function(require,module,exports){
+},{"../view/views":218,"./clone":35,"./generate":64,"./toApproval":109,"./toCode":114,"./toParam":123}],44:[function(require,module,exports){
 const { clone } = require("./clone")
 const { colorize } = require("./colorize")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
+const { toHTML } = require("./toHTML")
 const { toStyle } = require("./toStyle")
+const cssStyleKeyNames = require("./cssStyleKeyNames")
 
 module.exports = {
-    createHtml: ({ _window, lookupActions, awaits, id: _id, req, res, import: _import, __, viewer }) => {
-    
-    return new Promise (async resolve => {
+  createHtml: ({ _window, lookupActions, awaits, id: _id, req, res, import: _import, __, viewer }) => {
+
+    return new Promise(async resolve => {
 
       var { toView } = require("./toView")
 
@@ -1599,11 +1115,11 @@ module.exports = {
       var views = _window ? _window.views : window.views, id = _id
       var global = _window ? _window.global : window.global
       var view = views[id], type = view.type, siblings = "", prevSiblings = ""
-      
+
       if (view.children) view.children = toArray(view.children)
-      
+
       var innerHTML = await Promise.all(toArray(view.children).map(async (child, index) => {
-    
+
         if (!child) return ""
         var id = child.id
         if (id && views[id]) id += generate()
@@ -1612,67 +1128,27 @@ module.exports = {
         views[id].id = id
         views[id].index = index
         views[id].parent = view.id
-        
+
         return await toView({ _window, lookupActions, awaits, id, req, res, import: _import, __, viewer })
       }))
 
-      // siblings
-      if (view.sibling || view.siblings) {
-        
-        var _siblings = await Promise.all(toArray(view.sibling || view.siblings).map(async (child, index) => {
-    
-          if (!child) return ""
-          var id = child.id
-          if (id && views[id]) id += generate()
-          else if (!id) id = generate()
-          views[id] = clone(child)
-          views[id].id = id
-          views[id].index = view.index + ":" + index
-          views[id].parent = view.parent
-          
-          return await toView({ _window, lookupActions, awaits, id, req, res, __, viewer })
-        }))
-
-        siblings += _siblings.join("")
-      }
-
-      // prev siblings
-      if (view.prevSibling || view.prevSiblings) {
-        
-        var _siblings = await Promise.all(toArray(view.prevSibling || view.prevSiblings).map(async (child, index) => {
-    
-          if (!child) return ""
-          var id = child.id
-          if (id && views[id]) id += generate()
-          else if (!id) id = generate()
-          views[id] = clone(child)
-          views[id].id = id
-          views[id].index = view.index + ":" + index
-          views[id].parent = view.parent
-          
-          return await toView({ _window, lookupActions, awaits, id, req, res, __, viewer })
-        }))
-
-        prevSiblings += _siblings.join("")
-      }
-      
       innerHTML = innerHTML.join("")
 
       // colorize
       if (view.colorize) {
-    
+
         innerHTML = innerHTML || view.text || (view.editable ? view.data : "")
-        innerHTML = toCode({ _window, lookupActions, awaits, string: innerHTML  })
+        innerHTML = toCode({ _window, lookupActions, awaits, string: innerHTML })
         innerHTML = toCode({ _window, lookupActions, awaits, string: innerHTML, start: "'", end: "'" })
         innerHTML = colorize({ _window, lookupActions, awaits, string: innerHTML, ...(typeof view.colorize === "object" ? view.colorize : {}) })
       }
 
       if (_id === "html") return resolve("")
-      
-      var tag = _import ? "" : require("./toHTML")({ _window, lookupActions, awaits, id: _id, innerHTML }) || ""
+
+      var tag = _import ? "" : toHTML({ _window, lookupActions, awaits, id: _id, innerHTML }) || ""
       if (prevSiblings) tag = prevSiblings + tag
       if (siblings) tag += siblings
-      
+
       if (_import) {
 
         type = type.toLowerCase()
@@ -1682,12 +1158,12 @@ module.exports = {
         delete view.parent
         delete view["my-views"]
         delete view.viewType
-    
+
         /*if (view.body) view.body = true
         else view.head = true*/
-    
+
         if (type === "link" || type === "meta") {
-          
+
           delete view.id
           delete view.index
 
@@ -1698,10 +1174,10 @@ module.exports = {
           tag = `
           <style>
     
-            ${Object.entries(view).map(([key, value]) => 
-              typeof value === "object" && !Array.isArray(value)
-                ? `${key} {
-                ${Object.entries(value).map(([key, value]) => `${require("./styleName")(key)}: ${value.toString().replace(/\\/g, '')}`).join(`;
+            ${Object.entries(view).map(([key, value]) =>
+            typeof value === "object" && !Array.isArray(value)
+              ? `${key} {
+                ${Object.entries(value).map(([key, value]) => `${cssStyleKeyNames[key] || key}: ${value.toString().replace(/\\/g, '')}`).join(`;
                 `)};
                 }` : "").filter(style => style).join(`
               `)}
@@ -1712,37 +1188,37 @@ module.exports = {
 
           tag = `<${type} ${Object.entries(view).map(([key, value]) => key !== "head" && key !== "body" ? `${key}="${value.toString().replace(/\\/g, '')}"` : "").filter(i => i).join(" ")}>${(view.text || "").replace(/\\/g, '')}</${type}>`
         }
-        
+
         if (view.head) {
-    
-          global.__TAGS__.head += tag.replace(` head="true"`, "")
-          return resolve(global.__TAGS__.head)
+
+          global.__tags__.head += tag.replace(` head="true"`, "")
+          return resolve(global.__tags__.head)
 
         } else {
-    
-          global.__TAGS__.body += tag.replace(` body="true"`, "")
-          return resolve(global.__TAGS__.body)
+
+          global.__tags__.body += tag.replace(` body="true"`, "")
+          return resolve(global.__tags__.body)
         }
       }
-    
+
       // linkable
       if (view.link) {
-    
+
         var id = generate(), style = '', _view, link = typeof view.link === "string" && view.link.includes("http") ? view.link : (view.link.url || view.link.path || global.host)
-    
+
         _view = { id, parent: view.id, controls: [{ "event": `click?route():${view.link.path}?${view.link.path};${view.link.preventDafault ? false : true}` }] }
         _view.style = view.link.style
         views[id] = _view
         if (_view.style) style = toStyle({ _window, lookupActions, awaits, id })
-        
+
         tag = `<a ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} id='${id}' href=${link} style='${style}' index='${view.index || 0}'>${tag}</a>`
       }
-      
+
       resolve(tag)
     })
   }
 }
-},{"./clone":42,"./colorize":43,"./generate":70,"./styleName":113,"./toArray":116,"./toCode":120,"./toHTML":126,"./toStyle":133,"./toView":135}],52:[function(require,module,exports){
+},{"./clone":35,"./colorize":36,"./cssStyleKeyNames":47,"./generate":64,"./toArray":110,"./toCode":114,"./toHTML":119,"./toStyle":126,"./toView":128}],45:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { createComponent } = require("./createComponent")
@@ -2019,7 +1495,7 @@ const arrange = ({ data, arrange, id, _window }) => {
 
 module.exports = { createTags }
 
-},{"./clone":42,"./createComponent":50,"./createHtml":51,"./generate":70,"./toArray":116,"./toView":135}],53:[function(require,module,exports){
+},{"./clone":35,"./createComponent":43,"./createHtml":44,"./generate":64,"./toArray":110,"./toView":128}],46:[function(require,module,exports){
 const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {clone} = require("./clone")
@@ -2037,7 +1513,71 @@ const createView = ({ view, id = generate(), lookupActions }) => {
 }
 
 module.exports = {createView}
-},{"./clone":42,"./generate":70,"./toArray":116,"./update":137}],54:[function(require,module,exports){
+},{"./clone":35,"./generate":64,"./toArray":110,"./update":130}],47:[function(require,module,exports){
+module.exports = {
+  "userSelect": "user-select",
+  "inlineSize": "inline-size",
+  "clipPath": "clip-path",
+  "flexWrap": "flex-wrap",
+  "wordWrap": "word-wrap",
+  "wordBreak": "word-break",
+  "verticalAlign": "vertical-align",
+  "borderBottom": "border-bottom",
+  "borderLeft": "border-left",
+  "borderRight": "border-right",
+  "borderTop": "border-top",
+  "paddingBottom": "padding-bottom",
+  "paddingLeft": "padding-left",
+  "paddingRight": "padding-right",
+  "paddingTop": "padding-top",
+  "marginBottom": "margin-bottom",
+  "marginLeft": "margin-left",
+  "marginRight": "margin-right",
+  "marginTop": "margin-top",
+  "fontFamily": "font-family",
+  "fontSize": "font-size",
+  "fontStyle": "font-style",
+  "fontWeight": "font-weight",
+  "textDecoration": "text-decoration",
+  "lineHeight": "line-height",
+  "letterSpacing": "letter-spacing",
+  "textOverflow": "text-overflow",
+  "whiteSpace": "white-space",
+  "backgroundImage": "background-image",
+  "backgroundColor": "background-color",
+  "zIndex": "z-index",
+  "boxShadow": "box-shadow",
+  "borderRadius": "border-radius",
+  "zIndex": "z-index",
+  "alignItems": "align-items",
+  "alignSelf": "align-self",
+  "justifyContent": "justify-content",
+  "justifySelf": "justify-self",
+  "userSelect": "user-select",
+  "userDrag": "user-drag",
+  "textAlign": "text-align",
+  "pointerEvents": "pointer-events",
+  "flexDirection": "flex-direction",
+  "flexGrow": "flex-grow",
+  "flexShrink": "flex-shrink",
+  "maxWidth": "max-width",
+  "minWidth": "min-width",
+  "maxHeight": "max-height",
+  "minHeight": "min-height",
+  "overflowX": "overflow-x",
+  "overflowY": "overflow-y",
+  "rowGap": "row-gap",
+  "columnGap": "column-gap",
+  "pageBreakInside": "page-break-inside",
+  "pageBreakBefore": "page-break-before",
+  "pageBreakAfter": "page-break-after",
+  "gridTemplateColumns": "grid-template-columns",
+  "gridAutoColumns": "grid-auto-columns",
+  "gridTemplateRows": "grid-template-rows",
+  "gridAutoRows": "grid-auto-columns",
+  "writingMode": "writing-mode"
+}
+},{}],48:[function(require,module,exports){
 const { toParam } = require("./toParam");
 
 module.exports = {
@@ -2088,7 +1628,7 @@ module.exports = {
         reader.readAsBinaryString(file || e.target.files[0]);
     }
 }
-},{"./toParam":130}],55:[function(require,module,exports){
+},{"./toParam":123}],49:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -2126,7 +1666,7 @@ const clearData = ({ id, e, clear = {}, __ }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":42,"./reducer":96,"./setContent":105,"./setData":106}],56:[function(require,module,exports){
+},{"./clone":35,"./reducer":90,"./setContent":99,"./setData":100}],50:[function(require,module,exports){
 const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
@@ -2507,9 +2047,9 @@ const deleteData = async ({ _window, req, res, erase }) => {
   }*/
 
   docs = erase.docs || [erase.doc]
-  await docs.map(async doc => {
+  var promises = docs.map(async doc => {
     
-    return await ref.doc(doc.toString()).delete().then(() => {
+    await ref.doc(doc.toString()).delete().then(() => {
 
       success = true,
       message = `Document erased successfuly!`
@@ -2541,6 +2081,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
     }
   })
   
+  Promise.all(promises)
   return ({ data, success, message })
 }
 
@@ -2552,36 +2093,36 @@ module.exports = {
   deletedb,
   deleteData
 }
-},{"./toArray":116,"./toCode":120,"./toFirebaseOperator":124,"./toParam":130,"axios":142}],57:[function(require,module,exports){
+},{"./toArray":110,"./toCode":114,"./toFirebaseOperator":118,"./toParam":123,"axios":135}],51:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
   if (typeof string !== "string") return string
   
-  if (string.includes("coded()")) {
+  if (string.includes("coded@")) {
 
-    string.split("coded()").map((state, i) => {
+    string.split("coded@").map((state, i) => {
 
       if (i === 0) return string = state
       
       var code = state.slice(0, 5)
       var after = state.slice(5)
-      var statement = global.codes[`coded()${code}`]
+      var statement = global.__codes__[`coded@${code}`]
 
       statement = decode({ _window, string: statement })
       string += `[${statement}]` + after
     })
   }
   
-  if (string.includes("codedS()")) {
+  if (string.includes("codedT@")) {
 
-    string.split("codedS()").map((state, i) => {
+    string.split("codedT@").map((state, i) => {
 
       if (i === 0) return string = state
       
       var code = state.slice(0, 5)
       var after = state.slice(5)
-      var statement = global.codes[`codedS()${code}`]
+      var statement = global.__codes__[`codedT@${code}`]
 
       statement = decode({ _window, string: statement })
       string += `'${statement}'` + after
@@ -2593,7 +2134,7 @@ const decode = ({ _window, string }) => {
 
 module.exports = {decode}
 
-},{}],58:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -2716,7 +2257,7 @@ const defaultInputHandler = ({ id }) => {
         }*/
       }
 
-      if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
+      if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value }, __: view.__ })
 
     }
     // resize
@@ -2865,14 +2406,13 @@ module.exports = { defaultInputHandler }
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
 }*/
-},{"./clone":42,"./colorize":43,"./data":55,"./isArabic":78,"./resize":100,"./toCode":120}],59:[function(require,module,exports){
+},{"./clone":35,"./colorize":36,"./data":49,"./isArabic":72,"./resize":94,"./toCode":114}],53:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { toValue } = require("./toValue")
 const { jsonToBracket } = require("./jsonToBracket")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
-const { toParam } = require("./toParam")
 
 const droplist = ({ id, e, droplist: params = {}, __ }) => {
   
@@ -2906,10 +2446,10 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
 
     } else global["droplist-search-txt"] = views[view.id].element.innerHTML
   }
-
+  
   // items
   if (typeof items === "string")
-    items = clone(toValue({ id, e, value: toCode({ string: toCode({ string: items }), start: "'", end: "'" }) }))
+    items = clone(toValue({ id, e, value: toCode({ string: toCode({ string: items, start: "'", end: "'" }), __ }) }))
 
   // filterable
   if (!view.droplist.preventDefault) {
@@ -2967,7 +2507,8 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
     dropList.children.push(...clone(items).map(item => {
 
       if (typeof item === "string" || typeof item === "number") item = { text: item }
-      item.text = item.text !== undefined ? `'${item.text}'` : ""
+      item.text = item.text !== undefined ? `${item.text}` : ""
+
       if (item.icon) {
   
         if (typeof item.icon === "string") item.icon = { name: item.icon }
@@ -2978,7 +2519,7 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
           children: [{
             view: `View?style:[height=inherit;width=fit-content];${jsonToBracket(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
             children: [{
-              view: `Icon?style:[color=#888;fontSize=1.8rem];${jsonToBracket(view.droplist.item && view.droplist.item.icon || {})};${jsonToBracket(view.droplist.icon || {})};${jsonToBracket(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
+              view: `Icon?style:[color=#666;fontSize=1.7rem];${jsonToBracket(view.droplist.item && view.droplist.item.icon || {})};${jsonToBracket(view.droplist.icon || {})};${jsonToBracket(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
             }]
           }, {
             view: `Text?style:[fontSize=1.3rem;width=100%];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item.text)};class=flex align-center ${(item.text || {}).class || ""};caller=${id}?${item.text.text ? true : false}`,
@@ -2986,7 +2527,7 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
               event: `click??!():${id}.droplist.preventDefault`,
               actions: [
                 `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-                `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
+                `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style().[_]=():${id}.droplist.style.[_]]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
               ]
             }]
           }]
@@ -3000,8 +2541,8 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
             event: `click??!():${id}.droplist.preventDefault`,
             actions: [ // :[focus:${input_id}]
               `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-              `?if():[txt()=list||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():'-']];():${id}.data()=if():[txt()=children]:[_list:[view='']].elif():[txt()=text]:''.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=list]:[_list:''].elif():[txt()=map]:[''=''];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];__droplistPositioner__:().del();myParent:()=():${id}.2ndParent();():${id}.2ndParent().update()::[quit=false;_.view.inputs().filter():[!classlist().inc():'comment'].():[if():[!txt()||txt()=0;!().quit]:[focus();().quit=true]]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
-              `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style().[_]=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
+              `?if():[txt()=list||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():'-']];():${id}.data()=if():[txt()=children]:[_list:[view='']].elif():[txt()=text]:''.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:[true.bool()].elif():[txt()=list]:[_list:''].elif():[txt()=map]:[''=''];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];__droplistPositioner__:().del();myParent:()=():${id}.2ndParent();():${id}.2ndParent().update()::[quit=false;_.view.inputs().filter():[!classlist().inc():'comment'].():[if():[!txt()||txt()=0;!().quit]:[focus();().quit=true]]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
+              `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style().[_]=():${id}.droplist.style.[_]]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
             ]
           }]
         })
@@ -3081,7 +2622,7 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":42,"./jsonToBracket":83,"./reducer":96,"./toCode":120,"./toParam":130,"./toValue":134,"./update":137}],60:[function(require,module,exports){
+},{"./clone":35,"./jsonToBracket":77,"./reducer":90,"./toCode":114,"./toValue":127,"./update":130}],54:[function(require,module,exports){
 const axios = require("axios");
 const { clone } = require("./clone");
 const { deleteData } = require("./database");
@@ -3106,7 +2647,7 @@ const erase = async ({ _window, lookupActions, awaits, req, res, id, e, __, ...p
     view.erase = global.erase = clone(data)
     console.log("erase", data)
   
-    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, __: [data, ...__], ...params })
+    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, _: data, __: [data, ...(params.myawait.__ || __)], ...params })
 
   } else {
 
@@ -3129,12 +2670,12 @@ const erase = async ({ _window, lookupActions, awaits, req, res, id, e, __, ...p
     view.erase = global.erase = clone(data)
     console.log("erase", data)
   
-    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, __: [data, ...__], ...params })
+    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, _: data, __, ...params })
   }
 }
 
 module.exports = { erase }
-},{"./clone":42,"./database":56,"./jsonToBracket":83,"./toArray":116,"./toAwait":117,"axios":142}],61:[function(require,module,exports){
+},{"./clone":35,"./database":50,"./jsonToBracket":77,"./toArray":110,"./toAwait":111,"axios":135}],55:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
@@ -3186,8 +2727,8 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
   events[0].split(";").map(event => {
 
     // case event is coded
-    if (event.slice(0, 7) === "coded()") {
-      event = global.codes[event]
+    if (event.slice(0, 6) === "coded@") {
+      event = global.__codes__[event]
       if (event.includes("?")) {
         var viewEventIdList = event.split("?")[3]
         var viewEventConditions = event.split("?")[2]
@@ -3233,17 +2774,20 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
     event = event.split(":")[0]
 
     if (!event || !view) return
-    clearTimeout(view[`${event}-timer`])
 
     // add event listener
     idList.map(id => {
 
-      var _view = views[id]
-      if (!_view && id !== "window") return
+      var _view = views[id], eventAddress = { id: generate(), targetID: id, event }
+      view.__timers__ = view.__timers__ || {}
+      view.__eventAddresses__ = view.__eventAddresses__ || {}
+      view.__eventAddresses__[eventAddress.id] = eventAddress
+
+      if (!_view && id !== "window") return delete view.__eventAddresses__[eventAddress.id]
       
       var myFn = (e) => {
 
-        setTimeout(async () => {
+        view.__timers__[eventAddress.id] = setTimeout(async () => {
 
           var myView = views[mainID]
           if (!myView) return
@@ -3293,7 +2837,8 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
 
       var myFn = (e) => {
         
-        view[`${event}-timer`] = setTimeout(() => {
+        view.__timers__ = view.__timers__ || {}
+        view.__timers__[eventAddress.id] = setTimeout(() => {
           
           if (view[event] && typeof view[event] === "object" && view[event].disable) return
           if (clickEvent) return global["click-events"].push({ id, viewEventConditions, viewEventParams, events: clickEvent, controls })
@@ -3304,10 +2849,7 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
 
           // view doesnot exist
           var __view = views[id]
-          if (!__view) {
-            if (e.target) e.target.removeEventListener(event, myFn)
-            return 
-          }
+          if (!__view) return (e.target || {}).removeEventListener(event, myFn)
 
           if (eventid === "droplist" && !global["__droplistPositioner__"]) return
           if (eventid === "droplist" && !views[global["__droplistPositioner__"]].element.contains(views[id].element)) return
@@ -3324,10 +2866,8 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
             var myView = views[mainID]
             
             // approval
-            if (viewEventConditions) {
-              var approved = toApproval({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID, __: controls.__ || myView.__ })
-              if (!approved) return
-            }
+            var approved = toApproval({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: viewEventConditions || "", e, id: mainID, __: controls.__ || myView.__ })
+            if (!approved) return
             
             // approval
             var approved = toApproval({ string: events[2], e, id: mainID, __: controls.__ || myView.__ })
@@ -3358,85 +2898,56 @@ const defaultEventHandler = ({ id }) => {
 
   var view = window.views[id]
   var views = window.views
+  view.focused = false
   view.touchstarted = false
   view.mouseentered = false
   view.mousedowned = false
+  
+  view.__eventAddresses__ = view.__eventAddresses__ || {}
+  var eventAddress = { id: generate(), event: "click" }
+  view.__eventAddresses__[eventAddress.id] = eventAddress
 
-  if (view.link && typeof view.link === "object" && view.link.preventDefault) view.element.addEventListener("click", (e) => { /*if (!view.link.link)*/ e.preventDefault() })
+  // linkable
+  if (view.link && typeof view.link === "object" && view.link.preventDefault) 
+    view.element.addEventListener("click", (e) => { e.preventDefault() })
 
   // input
-  if (view.type === "Input") {
-
-    // focus
-    var setEventType = (e) => {
-
-      if (!window.views[id]) return e.target.removeEventListener("focus", setEventType)
-      view.focused = true
-    }
-
-    view.element.addEventListener("focus", setEventType)
-
-    // blur
-    var setEventType = (e) => {
-
-      if (!window.views[id]) return e.target.removeEventListener("blur", setEventType)
-      view.focused = false
-    }
-
-    view.element.addEventListener("blur", setEventType)
+  if (view.type === "Input" || view.editable) {
+    
+    defaultInputHandlerByEvent({ views, view, id, event: "focus", keyName: "focused", value: true })
+    defaultInputHandlerByEvent({ views, view, id, event: "blur", keyName: "focused", value: false })
   }
   
-  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mouseentered = true }
-  view.element.addEventListener("mouseenter", setEventType)
-
-  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mouseentered = false }
-  view.element.addEventListener("mouseleave", setEventType)
+  defaultInputHandlerByEvent({ views, view, id, event: "mouseenter", keyName: "mouseentered", value: true })
+  defaultInputHandlerByEvent({ views, view, id, event: "mouseleave", keyName: "mouseentered", value: false })
   
-  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mousedowned = true }
-  view.element.addEventListener("mousedown", setEventType)
+  defaultInputHandlerByEvent({ views, view, id, event: "mousedown", keyName: "mousedowned", value: true })
+  defaultInputHandlerByEvent({ views, view, id, event: "mouseup", keyName: "mousedowned", value: false })
+}
 
-  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mousedowned = false }
-  view.element.addEventListener("mouseup", setEventType)
+const defaultInputHandlerByEvent = ({ views, view, id, event, keyName, value }) => {
 
-/*
-  events.map((event) => {
-    
-    var setEventType = (e) => {
+  var eventAddress = { id: generate(), targetID: id, event }
+  view.__eventAddresses__[eventAddress.id] = eventAddress
 
-      if (!window.views[id]) return e.target.removeEventListener(event, setEventType)
+  // function
+  eventAddress.function = (e) => { if (views[view.id]) view[keyName] = value }
 
-      if (event === "mouseenter") view.mouseenter = true
-      else if (event === "mouseleave") view.mouseenter = false
-      else if (event === "mousedown") {
-
-        view.mousedown = true
-        window.views["tooltip"].element.style.opacity = "0"
-        clearTimeout(global["tooltip-timer"])
-        delete global["tooltip-timer"]
-
-      } 
-      else if (event === "mouseup") view.mousedown = false
-      else if (event === "touchstart") view.touchstart = true
-      else if (event === "touchend") view.touchstart = false
-    }
-
-    view.element.addEventListener(event, setEventType)
-  })
-*/
+  view.element.addEventListener(event, eventAddress.function)
 }
 
 module.exports = { addEventListener, defaultEventHandler }
 
-},{"./clone":42,"./execute":63,"./generate":70,"./toApproval":115,"./toArray":116,"./toCode":120,"./toParam":130,"./toValue":134}],62:[function(require,module,exports){
+},{"./clone":35,"./execute":57,"./generate":64,"./toApproval":109,"./toArray":110,"./toCode":114,"./toParam":123,"./toValue":127}],56:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
   "keydown", "scroll", "beforeLoading", "loaded", "controls", "children", "child", "change", "entry", 
   "enter", "longclick", "sibling", "siblings", "prevSiblings", "prevSibling", "unload", "undo", "storage",
   "resize", "redo", "popstate", "online", "offline", "message", "load", "languagechange",
-  "error", "afterprint", "beforeprint", "beforeunload"
+  "error", "afterprint", "beforeprint", "beforeunload", "paste"
 ]
-},{}],63:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -3493,7 +3004,7 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
       }
       
       // action is coded
-      if (action.slice(0, 7) === "coded()") return execute({ _window, lookupActions, awaits, actions: global.codes[action], e, id, params, __ })
+      if (action.slice(0, 6) === "coded@") return execute({ _window, lookupActions, awaits, actions: global.__codes__[action], e, id, params, __ })
       
       var name, caseCondition, timer = "", isInterval = false, actionid, args = action.split(':'), name = args[0], __params = {}
 
@@ -3590,7 +3101,7 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
 
 module.exports = { execute }
 
-},{"./function":69,"./isParam":80,"./toApproval":115,"./toArray":116,"./toAwait":117,"./toCode":120,"./toParam":130,"./toValue":134}],64:[function(require,module,exports){
+},{"./function":63,"./isParam":74,"./toApproval":109,"./toArray":110,"./toAwait":111,"./toCode":114,"./toParam":123,"./toValue":127}],58:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, name }) => {
         
@@ -3606,7 +3117,7 @@ module.exports = {
         // linkElement.delete()
     }
 }
-},{}],65:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 const { toValue } = require("./function")
 
 module.exports = {
@@ -3617,7 +3128,7 @@ module.exports = {
         reader.readAsDataURL(file)
     }
 }
-},{"./function":69}],66:[function(require,module,exports){
+},{"./function":63}],60:[function(require,module,exports){
 (function (global){(function (){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
@@ -3680,7 +3191,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":42,"./compare":44,"./isEqual":79,"./toArray":116,"./toOperator":129}],67:[function(require,module,exports){
+},{"./clone":35,"./compare":37,"./isEqual":73,"./toArray":110,"./toOperator":122}],61:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -3716,7 +3227,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],68:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toCode } = require("./toCode")
 const { getCookie } = require("./cookie")
@@ -3760,7 +3271,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, id = "root", req,
       
       if (myawait) {
 
-        require("./toAwait").toAwait({ _window, lookupActions: myawait.lookupActions, id, e, asyncer: true, myawait, awaits, req, res,  __: [...(global.data ? [global.data] : []), ...__] })
+        require("./toAwait").toAwait({ _window, lookupActions: myawait.lookupActions, id, e, asyncer: true, myawait, awaits, req, res, __ })
 
       } else {
 
@@ -3789,7 +3300,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, id = "root", req,
         console.log(params.func, global.func, awaits, myawait)
         
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions: myawait.lookupActions, myawait, awaits, id, e, ...params, req, res, __: [global.func, ...__] })
+        if (myawait.await) require("./toAwait").toAwait({ _window, lookupActions: myawait.lookupActions, myawait, awaits, id, e, ...params, req, res, _: global.func, __ })
         resolve()
       })
     )
@@ -3797,7 +3308,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, id = "root", req,
 }
 
 module.exports = { func }
-},{"./clone":42,"./cookie":47,"./toArray":116,"./toAwait":117,"./toCode":120,"./toParam":130,"axios":142}],69:[function(require,module,exports){
+},{"./clone":35,"./cookie":40,"./toArray":110,"./toAwait":111,"./toCode":114,"./toParam":123,"axios":135}],63:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -3973,7 +3484,7 @@ module.exports = {
   insert,
   axios
 }
-},{"./axios":38,"./blur":39,"./capitalize":40,"./clearValues":41,"./clone":42,"./compare":44,"./contentful":45,"./controls":46,"./cookie":47,"./createActions":49,"./createComponent":50,"./createHtml":51,"./createView":53,"./data":55,"./decode":57,"./defaultInputHandler":58,"./droplist":59,"./erase":60,"./event":61,"./execute":63,"./exportJson":64,"./fileReader":65,"./filter":66,"./focus":67,"./generate":70,"./getDateTime":72,"./getDaysInMonth":73,"./getParam":74,"./importJson":76,"./insert":77,"./isArabic":78,"./isEqual":79,"./isPath":81,"./jsonFiles":82,"./jsonToBracket":83,"./keys":84,"./log":86,"./merge":88,"./note":89,"./overflow":90,"./popup":91,"./position":92,"./preventDefault":93,"./reducer":96,"./refresh":97,"./reload":98,"./remove":99,"./resize":100,"./route":101,"./save":102,"./search":104,"./setContent":105,"./setData":106,"./setElement":107,"./setPosition":108,"./sort":109,"./starter":110,"./state":111,"./style":112,"./switchMode":114,"./toApproval":115,"./toArray":116,"./toAwait":117,"./toCSV":118,"./toCode":120,"./toComponent":121,"./toControls":122,"./toId":127,"./toNumber":128,"./toOperator":129,"./toParam":130,"./toStyle":133,"./toValue":134,"./toView":135,"./toggleView":136,"./update":137,"./upload":139,"./wait":140}],70:[function(require,module,exports){
+},{"./axios":31,"./blur":32,"./capitalize":33,"./clearValues":34,"./clone":35,"./compare":37,"./contentful":38,"./controls":39,"./cookie":40,"./createActions":42,"./createComponent":43,"./createHtml":44,"./createView":46,"./data":49,"./decode":51,"./defaultInputHandler":52,"./droplist":53,"./erase":54,"./event":55,"./execute":57,"./exportJson":58,"./fileReader":59,"./filter":60,"./focus":61,"./generate":64,"./getDateTime":66,"./getDaysInMonth":67,"./getParam":68,"./importJson":70,"./insert":71,"./isArabic":72,"./isEqual":73,"./isPath":75,"./jsonFiles":76,"./jsonToBracket":77,"./keys":78,"./log":80,"./merge":82,"./note":83,"./overflow":84,"./popup":85,"./position":86,"./preventDefault":87,"./reducer":90,"./refresh":91,"./reload":92,"./remove":93,"./resize":94,"./route":95,"./save":96,"./search":98,"./setContent":99,"./setData":100,"./setElement":101,"./setPosition":102,"./sort":103,"./starter":104,"./state":105,"./style":106,"./switchMode":107,"./toApproval":109,"./toArray":110,"./toAwait":111,"./toCSV":112,"./toCode":114,"./toComponent":115,"./toControls":116,"./toId":120,"./toNumber":121,"./toOperator":122,"./toParam":123,"./toStyle":126,"./toValue":127,"./toView":128,"./toggleView":129,"./update":130,"./upload":132,"./wait":133}],64:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -3992,7 +3503,7 @@ const generate = (params = {}) => {
 
 module.exports = {generate}
 
-},{}],71:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = ({ el, id }) => {
   var view = window.views[id]
   el = el || view.element
@@ -4018,7 +3529,7 @@ module.exports = ({ el, id }) => {
 
   return { top: Math.round(top), left: Math.round(left), right: Math.round(right), bottom: Math.round(bottom), height: Math.round(height), width: Math.round(width) };
 }
-},{}],72:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 module.exports = {
     getDateTime: (time) => {
         
@@ -4039,13 +3550,13 @@ module.exports = {
         return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],73:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],74:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 const getParam = ({ string, param, defValue }) => {
@@ -4069,7 +3580,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":130}],75:[function(require,module,exports){
+},{"./toParam":123}],69:[function(require,module,exports){
 const getType = (value) => {
   const { emptySpaces } = require("./toValue")
 
@@ -4090,7 +3601,7 @@ const getType = (value) => {
   if (typeof value === "string") return "string"
 }
 module.exports = { getType }
-},{"./toValue":134}],76:[function(require,module,exports){
+},{"./toValue":127}],70:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
 
 const getJson = (url) => {
@@ -4134,7 +3645,7 @@ const importJson = ({ _window, id, e, __, ...params }) => {
 }
 
 module.exports = {importJson, getJson}
-},{"./toAwait":117}],77:[function(require,module,exports){
+},{"./toAwait":111}],71:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toView } = require("./toView")
 const { starter } = require("./starter")
@@ -4245,10 +3756,10 @@ module.exports = {
     }
 
     // await params
-    if (params.asyncer) require("./toAwait").toAwait({ id, lookupActions, awaits, __: [view.insert, ...__], ...params })
+    if (params.asyncer) require("./toAwait").toAwait({ id, lookupActions, awaits, __, _: view.insert, ...params })
   }
 }
-},{"./clone":42,"./generate":70,"./setElement":107,"./starter":110,"./toArray":116,"./toAwait":117,"./toCode":120,"./toView":135}],78:[function(require,module,exports){
+},{"./clone":35,"./generate":64,"./setElement":101,"./starter":104,"./toArray":110,"./toAwait":111,"./toCode":114,"./toView":128}],72:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -4282,7 +3793,7 @@ const isArabic = ({ id, value, text }) => {
 
 module.exports = { isArabic }
 
-},{}],79:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -4393,20 +3904,20 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual}
 
-},{}],80:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 module.exports = {
   isParam: ({ _window, string }) => {
       
     if (typeof string !== "string") return false
     var global = _window ? _window.global : window.global
-    if (string.slice(0, 7) === "coded()" && string.length === 12) string = global.codes[string]
+    if (string.slice(0, 6) === "coded@" && string.length === 11) string = global.__codes__[string]
 // 
     if (string) if (string.includes("=") || string.includes(";") || string.includes("?") || string === "break()" || string === "return()" || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")
     || string.slice(0, 9) === "controls:" || string.slice(0, 9) === "children:" || string.slice(0, 6) === "child:" || string.slice(0, 9) === "siblings:" || string.slice(0, 8) === "sibling:" || string.slice(0, 12) === "prevSibling:") return true
     return false
   }
 }
-},{}],81:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
@@ -4423,7 +3934,7 @@ module.exports = {
   },
 };
 
-},{}],82:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -4597,7 +4108,7 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":116,"./toOperator":129,"fs":172}],83:[function(require,module,exports){
+},{"./toArray":110,"./toOperator":122,"fs":165}],77:[function(require,module,exports){
 const jsonToBracket = (object, field) => {
 
   if (!object) return ""
@@ -4632,13 +4143,13 @@ const jsonToBracket = (object, field) => {
 
 module.exports = {jsonToBracket}
 
-},{}],84:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],85:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toStyle } = require("./toStyle")
 
@@ -4671,22 +4182,22 @@ module.exports = {
     return `<div ${containerAtts} ${container.draggable !== undefined ? `draggable='${container.draggable}'` : ''} spellcheck='false' ${container.editable && !container.readonly ? 'contenteditable' : ''} class='${container.class}' id='${containerId}' style='${containerStyle}' index='${container.index || 0}'>${labelTag}${tag}</div>`
   }
 }
-},{"./generate":70,"./toStyle":133}],86:[function(require,module,exports){
+},{"./generate":64,"./toStyle":126}],80:[function(require,module,exports){
 const log = ({ log }) => {
   console.log( log || 'here')
 }
 
 module.exports = {log}
 
-},{}],87:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const readFile = require("./readFile");
 
 module.exports = {
     mail: async ({ _window, req, res, id, subject, content, text, html, recipient, attachments, recipients = [], __, ...params }) => {
         
-        const { google } = _window.__PACKAGE__.googleapis
-        const nodemailer = _window.__PACKAGE__.nodemailer
+        const { google } = _window.__package__.googleapis
+        const nodemailer = _window.__package__.nodemailer
         const OAuth2 = google.auth.OAuth2;
         var data = req.body.data
         var global = _window.global
@@ -4734,7 +4245,7 @@ module.exports = {
         if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __: [global.mail, ...__] })
     }
 }
-},{"./readFile":95,"./toArray":116,"./toAwait":117}],88:[function(require,module,exports){
+},{"./readFile":89,"./toArray":110,"./toAwait":111}],82:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -4805,7 +4316,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":42,"./toArray":116}],89:[function(require,module,exports){
+},{"./clone":35,"./toArray":110}],83:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -4841,7 +4352,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":78}],90:[function(require,module,exports){
+},{"./isArabic":72}],84:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var view = window.views[id]
@@ -4898,14 +4409,14 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],91:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 const popup = ({ id }) => {
   
 }
 
 module.exports = {popup}
 
-},{}],92:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 const { lengthConverter } = require("./resize")
 
 const getPadding = (el) => {
@@ -4952,14 +4463,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":100}],93:[function(require,module,exports){
+},{"./resize":94}],87:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],94:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 module.exports = {
@@ -4981,7 +4492,7 @@ module.exports = {
         window.print()
     }
 }   
-},{"./toAwait":117,"./toParam":130}],95:[function(require,module,exports){
+},{"./toAwait":111,"./toParam":123}],89:[function(require,module,exports){
 module.exports = (file) => new Promise(res => {
 
     var myFile = file.file || file.url
@@ -4993,7 +4504,7 @@ module.exports = (file) => new Promise(res => {
         myReader.readAsDataURL(file)
     }
 })
-},{}],96:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -5027,7 +4538,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     const { toValue, calcSubs, calcDivision, calcModulo } = require("./toValue")
     const { toParam } = require("./toParam")
     const { insert } = require("./insert")
-    const { toFunction } = require("./toFunction")
+    const { toAction } = require("./toAction")
 
     var views = _window ? _window.views : window.views
     var view = views[id], breakRequest, coded, mainId = id
@@ -5057,15 +4568,26 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     if (path[0] !== undefined) args = path[0].toString().split(":")
 
     if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, awaits, id, e, string: pathJoined, __, object, mount, toView })
-    
-    if (path0.length === 14 && path0.slice(-2) === "()" && path0.slice(0, 7) === 'coded()') { // [actions?conditions]():[params]:[awaits]
+
+
+    // flat()
+    if (pathJoined.slice(0, 3) === "...") {
+        var _data = toValue({ req, res, _window, lookupActions, awaits, object, id, value: pathJoined.slice(3), params, __, e })
+        _object = _object || object || (mount ? view : {})
+        if (typeof _data === "object" && typeof _object === "object") {
+            Object.entries(_data).map(([key, value]) => _object[key] = value)
+        }
+        path.splice(0, 4)
+    }
+
+    if (path0.length === 13 && path0.slice(-2) === "()" && path0.slice(0, 6) === "coded@") { // [actions?conditions]():[params]:[awaits]
 
         path0 = path0.slice(0, -2)
-        var _await = "", myawait = { id: generate(), hold: true }
+        var _await = "", myawait = { id: generate(), hold: true, params: { __ } }
         if (args[2]) {
 
-            _await = global.codes[args[2]]
-            myawait = { id: generate(), hold: true, await: _await, action: "[...]()" }
+            _await = global.__codes__[args[2]]
+            myawait = { id: generate(), hold: true, await: _await, action: "[...]()", params: { __ } }
             awaits.unshift(myawait)
 
             // push waiter id
@@ -5077,73 +4599,73 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         global.__waiters__.unshift(myawait.id)
         console.log("ACTION", "[...]()");
 
-            if (path0.includes('coded()') && path0.length === 12) path0 = global.codes[path0]
+        if (path0.includes('coded@') && path0.length === 11) path0 = global.__codes__[path0]
+        
+        var conditions = path0.split("?")[1]
+        if (conditions) {
+            var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, __ })
+            if (!approved) {
+                myawait.hold = false
+                return global.__waiters__.splice(0, 1)
+            }
+        }
 
-            var conditions = path0.split("?")[1]
-            if (conditions) {
-                var approved = toApproval({ _window, string: conditions, e, id, req, res, params, object, __ })
-                if (!approved) {
-                    myawait.hold = false
-                    return global.__waiters__.splice(0, 1)
-                }
+        path0 = path0.split("?")[0]
+        
+        _object = toValue({ _window, value: path0, e, id, req, res, object, asyncer: true, __, awaits, lookupActions })
+        
+        if (!condition) {
+
+            // ex: [_]() & _ = 'action_name()' --> action_name()
+            if (typeof _object === "string" && (isParam({ _window, string: _object }) || _object.includes(".") || _object.includes("()") || _object.includes("coded@"))) {
+                _object = toCode({ _window, string: toCode({ _window, string: _object, start: "'", end: "'" }) })
+                _object = toValue({ _window, lookupActions, awaits, id, value: _object, key, params, object, __: [...(_params !== undefined ? [_params] : []), ...__], e, req, res, mount, condition, toView })
             }
 
-            //path0 = toCode({ _window, string: toCode({ _window, string: path0, start: "'", end: "'" })})
-            path0 = path0.split("?")[0]
-            _object = toValue({ _window, value: path0, e, id, req, res, object, asyncer: true, __, awaits, lookupActions })
+        } else {
+            _object = toApproval({ _window, string: _object, e, id, req, res, params, object, __: [...(_params !== undefined ? [_params] : []), ...__], awaits, lookupActions })
+        }
 
-            if (!condition) {
-                
-                // ex: [_]() & _ = 'action_name()' --> action_name()
-                if (typeof _object === "string" && (isParam({ _window, string: _object }) || _object.includes(".") || _object.includes("()"))) {
-                    _object = toCode({ _window, string: toCode({ _window, string: _object, start: "'", end: "'" }) })
-                    _object = toValue({ _window, lookupActions, awaits, id, value: _object, key, params, object, __: [...(_params !== undefined ? [_params] : []), ...__], e, req, res, mount, condition, toView })
-                }
+        global.__waiters__.splice(0, 1)
+        myawait.hold = false
+
+        // await params
+        if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
+
+            if (_await) {
+
+                require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, __ })
 
             } else {
-                _object = toApproval({ _window, string: _object, e, id, req, res, params, object, __: [...(_params !== undefined ? [_params] : []), ...__], awaits, lookupActions })
+
+                awaits.splice(awaits.findIndex(i => i.id === myawait.id), 1)
+                console.log({ action: "[...]()", data: _params, success: true, message: "Action executed successfully!", path: (lookupActions || {}).fn })
             }
+        }
 
-            global.__waiters__.splice(0, 1)
-            myawait.hold = false
 
-            // await params
-            if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
-                
-                if (_await) {
-
-                    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, __ })
-
-                } else {
-
-                    awaits.splice(awaits.findIndex(i => i.id === myawait.id), 1)
-                    console.log({ action: "[...]()", data: _params, success: true, message: "Action executed successfully!", path: (lookupActions || {}).fn })
-                }
-            }
-
-            
-            path0 = (path[1] || "").split(":")[0]
-            path.splice(0, 1)
+        path0 = (path[1] || "").split(":")[0]
+        path.splice(0, 1)
     }
 
-    if (path0.slice(-2) === "()" && path0.slice(-3) === ":()" && path0 !=="()") {
+    if (path0.slice(-2) === "()" && path0.slice(-3) === ":()" && path0 !== "()") {
 
-        var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, object })
-        if (isFn !== "__CONTINUE__") _object = isFn 
+        var isFn = toAction({ _window, lookupActions, awaits, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, object })
+        if (isFn !== "__CONTINUE__") _object = isFn
     }
 
     // division
     if (pathJoined.includes("/") && pathJoined.split("/")[1] !== "" && !key) {
 
-      var _value = calcDivision({ _window, lookupActions, awaits, value: pathJoined, params, __, id, e, req, res, object, condition })
-      if (_value !== value && _value !== undefined) return _value
+        var _value = calcDivision({ _window, lookupActions, awaits, value: pathJoined, params, __, id, e, req, res, object, condition })
+        if (_value !== value && _value !== undefined) return _value
     }
 
     // modulo
     if (pathJoined.includes("%") && pathJoined.split("%")[1] !== "" && !key) {
 
-      var _value = calcModulo({ _window, lookupActions, awaits, value: pathJoined, params, __, id, e, req, res, object, condition })
-      if (_value !== value && _value !== undefined) return _value
+        var _value = calcModulo({ _window, lookupActions, awaits, value: pathJoined, params, __, id, e, req, res, object, condition })
+        if (_value !== value && _value !== undefined) return _value
     }
 
     // multiplication
@@ -5152,20 +4674,20 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         var values = pathJoined.split("*").map(value => toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, mount }))
         var newVal = values[0]
         values.slice(1).map(val => {
-          if (!isNaN(newVal) && !isNaN(val)) newVal *= val
-          else if (isNaN(newVal) && !isNaN(val)) {
-            while (val > 1) {
-              newVal += newVal
-              val -= 1
+            if (!isNaN(newVal) && !isNaN(val)) newVal *= val
+            else if (isNaN(newVal) && !isNaN(val)) {
+                while (val > 1) {
+                    newVal += newVal
+                    val -= 1
+                }
+            } else if (!isNaN(newVal) && isNaN(val)) {
+                var index = newVal
+                newVal = val
+                while (index > 1) {
+                    newVal += newVal
+                    index -= 1
+                }
             }
-          } else if (!isNaN(newVal) && isNaN(val)) {
-            var index = newVal
-            newVal = val
-            while (index > 1) {
-              newVal += newVal
-              index -= 1
-            }
-          }
         })
         return newVal
     }
@@ -5173,75 +4695,75 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
     // addition
     if (pathJoined.includes("+") && !key) {
 
-      // increment
-      if (pathJoined.slice(-2) === "++") {
-        
-        return toValue({ req, res, _window, lookupActions, awaits, id, e, value: pathJoined.slice(0, -2)+"1", __, object, mount, condition })
-  
-      } else {
-  
-        var values = pathJoined.split("+").map(value => toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object }))
-        var answer = values[0]
-        values.slice(1).map(val => answer += val)
-        return answer
-      }
+        // increment
+        if (pathJoined.slice(-2) === "++") {
+
+            return toValue({ req, res, _window, lookupActions, awaits, id, e, value: pathJoined.slice(0, -2) + "1", __, object, mount, condition })
+
+        } else {
+
+            var values = pathJoined.split("+").map(value => toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object }))
+            var answer = values[0]
+            values.slice(1).map(val => answer += val)
+            return answer
+        }
     }
 
     // subtraction
     if (pathJoined.includes("-") && !key) {
-  
-      var _value = calcSubs({ _window, lookupActions, awaits, value: pathJoined, params, __, id, e, req, res, object })
-      if (_value !== pathJoined) return _value
+
+        var _value = calcSubs({ _window, lookupActions, awaits, value: pathJoined, params, __, id, e, req, res, object })
+        if (_value !== pathJoined) return _value
     }
 
     // if
     if (path0 === "if()") {
-        
-      var approved = toApproval({ _window, lookupActions, awaits, e, string: args[1], params, id, __, req, res, object })
 
-      if (!approved) {
-          
-        if (args[3]) {
+        var approved = toApproval({ _window, lookupActions, awaits, e, string: args[1], params, id, __, req, res, object })
 
-            if (condition) return toApproval({ _window, lookupActions, awaits, e, params, string: args[3], id, __, req, res, object })
-            if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, __, e, object, mount, toView })
-            else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, __, e, object, mount, toView })
-        }
+        if (!approved) {
 
-        if (path[1] && path[1].includes("else()")) {
+            if (args[3]) {
 
-          if (path[2]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: path[1].split(":")[1], params, __, e, object, mount })
-          else return toValue({ req, res, _window, lookupActions, awaits, id, value: path[1].split(":")[1], params, __, e, object, mount })
+                if (condition) return toApproval({ _window, lookupActions, awaits, e, params, string: args[3], id, __, req, res, object })
+                if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, __, e, object, mount, toView })
+                else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, __, e, object, mount, toView })
+            }
 
-        } else if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
+            if (path[1] && path[1].includes("else()")) {
 
-            var _path = path.slice(2)
-            _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
-            return reducer({ _window, lookupActions, awaits, id, value, key, path: _path, params, object, __, e, req, res, mount, condition })
+                if (path[2]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: path[1].split(":")[1], params, __, e, object, mount })
+                else return toValue({ req, res, _window, lookupActions, awaits, id, value: path[1].split(":")[1], params, __, e, object, mount })
 
-        } else if (!path[1]) return
-        
-        path.shift()
-        path0 = path[0].split(":")[0] || ""
-        args = path[0].split(":")
+            } else if (path[1] && (path[1].includes("elseif()") || path[1].includes("elif()"))) {
 
-      } else {
-        
-        if (condition) return toApproval({ _window, lookupActions, awaits, e, params, string: args[2], id, __, req, res, object, toView })
-        if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e, object, mount, toView })
-        else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e, object, mount, toView })
+                var _path = path.slice(2)
+                _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
+                return reducer({ _window, lookupActions, awaits, id, value, key, path: _path, params, object, __, e, req, res, mount, condition })
 
-        path.shift()
-        while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
+            } else if (!path[1]) return
+
             path.shift()
-        }
-        if (path[0]) {
             path0 = path[0].split(":")[0] || ""
             args = path[0].split(":")
-        } else return _object
-      }
+
+        } else {
+
+            if (condition) return toApproval({ _window, lookupActions, awaits, e, params, string: args[2], id, __, req, res, object, toView })
+            if (path[1]) _object = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e, object, mount, toView })
+            else return toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e, object, mount, toView })
+
+            path.shift()
+            while (path[0] && (path[0].includes("else()") || path[0].includes("elseif()") || path[0].includes("elif()"))) {
+                path.shift()
+            }
+            if (path[0]) {
+                path0 = path[0].split(":")[0] || ""
+                args = path[0].split(":")
+            } else return _object
+        }
     }
-    
+
     // global
     if (path0 === ")(") {
 
@@ -5262,15 +4784,15 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         // state:()
         if (path.length === 1 && key && state) return global[state] = value
-        
+
         if (state) path.splice(1, 0, state)
         path[0] = path0 = "global()"
     }
-    
+
     var view
     // view => ():id
     if (path0 === "()") {
-        
+
         if (args[1]) {
 
             // id
@@ -5281,6 +4803,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         }
     }
 
+    // .keyName => [object||view].keyName
     if (path[0] === "" && path.length > 1 && _object === undefined) {
         if (isNaN(path[1].charAt(0)) || path[1].includes("()")) {
             path.splice(0, 1)
@@ -5292,59 +4815,63 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
     // while
     if (path0 === "while()") {
-            
-      while (toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __, req, res, object })) {
-        toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e, object, mount, toView })
-      }
-      // path = path.slice(1)
-      return global.return = false
+
+        while (toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __, req, res, object })) {
+            toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e, object, mount, toView })
+        }
+        // path = path.slice(1)
+        return global.return = false
     }
 
     // initialize by methods
     if (actions.includes(path0)) {
 
-      if (path0 === "getChildrenByClassName()" || path0 === "className()") {
+        if (path0 === "getChildrenByClassName()" || path0 === "className()") {
 
-        if (!object) {
-          path.unshift("document()")
-          path0 = "document()"
+            if (!object) {
+                path.unshift("document()")
+                path0 = "document()"
+            }
+
+        } else {
+
+            var __o = ((typeof object === "object" && object.__view__) ? object : views[id]) || {}
+            if (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent")) {
+
+                if (__o.labeled && __o.templated) path = ["parent()", "parent()", ...path]
+                else if ((__o.labeled && !__o.templated) || __o.templated || __o.link) path.unshift("parent()")
+
+            } else if (__o && path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
+
+                if (__o.islabel || __o.templated || __o.link || __o.labeled) path.unshift("input()")
+            }
         }
-
-      } else {
-        
-        var __o = ((typeof object === "object" && object.__view__) ? object : views[id]) || {}
-        if (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent")) {
-
-            if (__o.labeled && __o.templated) path = ["parent()", "parent()", ...path]
-            else if ((__o.labeled && !__o.templated) || __o.templated || __o.link) path.unshift("parent()")
-
-        } else if (__o && path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
-            
-            if (__o.islabel || __o.templated || __o.link || __o.labeled) path.unshift("input()")
-        }
-      }
     }
-    
+
     // assign reserved vars
     var reservedVars = {
-        keys: ["()", "global()", "e()", "console()", "document()", "window()", "history()", "navigator()", "request()", "response()", "math()"],
+        keys: ["()", "global()", "e()", "console()", "document()", "window()", "win()", "history()", "navigator()", "nav()", "request()", "response()", "req()", "res()", "math()"],
         "()": view || views[id],
         "global()": _window ? _window.global : window.global,
         "e()": e,
         "console()": console,
         "document()": _window ? {} : document,
         "window()": _window || window,
-        "history()":_window ? {} :  history,
+        "win()": _window || window,
+        "history()": _window ? {} : history,
+        "nav()": _window ? {} : navigator,
         "navigator()": _window ? {} : navigator,
         "request()": req,
+        "req()": req,
         "response()": res,
+        "res()": res,
         "math()": Math
     }
 
     var reservedVar = false
     var underScored0 = path0.charAt(0) === "_" && !path0.split("_").find(i => i !== "_" && i !== "")
     if (reservedVars.keys.includes(path0) || underScored0) {
-        
+
         if (reservedVars.keys.includes(path0)) _object = reservedVars[path0]
         else _object = __[path0.split("_").length - 2]
 
@@ -5372,12 +4899,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 path0 = (path[1] || "").split(":")[0]
             }
 
-            else if (path0.slice(0, 7) === "coded()" && path[0].length === 12) {
+            else if (path0.slice(0, 6) === "coded@" && path[0].length === 11) {
 
                 // coded = true
-                _object = toValue({ req, res, _window, lookupActions, awaits, object, id, value: global.codes[path0], params, __, e })
+                _object = toValue({ req, res, _window, lookupActions, awaits, object, id, value: global.__codes__[path0], params, __, e })
             }
-            
+
             else if (path0 === "today()") _object = new Date()
             else if (path0 === "_array" || path0 === "_list" || (!path0 && path[0].charAt(0) === ":")) {
 
@@ -5388,32 +4915,32 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     else el = toValue({ req, res, _window, id, __, e, value: el, params })
                     _object.push(el)
                 })
-            } 
-            
+            }
+
             else if (path0 === "" || path0 === "_string") _object = ""
             else if (path0 === "_map") {
 
                 var __object = {}
                 if (isParam({ _window, string: args[1] })) {
 
-                  return args.slice(1).map(arg => reducer({ _window, lookupActions, awaits, id, params, path: arg, object: __object, e, req, res, __, mount }))
+                    return args.slice(1).map(arg => reducer({ _window, lookupActions, awaits, id, params, path: arg, object: __object, e, req, res, __, mount }))
 
                 } else {
 
-                  var args = path[0].split(":").slice(1)
-                  args.map((arg, i) => {
+                    var args = path[0].split(":").slice(1)
+                    args.map((arg, i) => {
 
-                      if (i % 2) return
-                      var f = toValue({ req, res, _window, id, __, e, value: arg, params })
-                      var v
-                    if (isParam({ _window, string: args[i + 1] })) v = toParam({ req, res, _window, id, e, __, string: args[i + 1]/*, object*/ })
-                      else v = toValue({ req, res, _window, id, __, e, value: args[i + 1], params, object })
-                      if (v !== undefined) __object[f] = v
+                        if (i % 2) return
+                        var f = toValue({ req, res, _window, id, __, e, value: arg, params })
+                        var v
+                        if (isParam({ _window, string: args[i + 1] })) v = toParam({ req, res, _window, id, e, __, string: args[i + 1]/*, object*/ })
+                        else v = toValue({ req, res, _window, id, __, e, value: args[i + 1], params, object })
+                        if (v !== undefined) __object[f] = v
 
-                  })
+                    })
                 }
             }
-            
+
             else if (mount) {
                 _object = view
                 path.unshift("()")
@@ -5425,17 +4952,17 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (actions.includes(path0)) {
                 _object = view
             } else if (path[1] && path[1].toString().includes("()")) {
-                
+
                 _object = toValue({ req, res, _window, lookupActions, awaits, id, __, e, value: path[0], params }) || {}//path[0]
                 path = path.slice(1)
 
             } else return pathJoined//return decode({ _window, lookupActions, awaits, string: pathJoined })
         }
     }
-    
+
     var lastIndex = path.length - 1, k0
     var answer = path.reduce((o, k, i) => {
-        
+
         if (k === undefined) console.log(view, id, path)
 
         k = k.toString()
@@ -5448,18 +4975,18 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             underScored += 1
             k00 = k00.slice(1)
         }
-        
+
         // fake lastIndex
         if (lastIndex !== path.length - 1) {
             if (key === true) key = false
             lastIndex = path.length - 1
         }
-                    
+
         // break
         if (breakRequest === true || breakRequest >= i) return o
-        
+
         if (k0 === "else()" || k0 === "or()") {
-            
+
             var args = k.split(":").slice(1)
             if (o || o === 0 || o === "") answer = o
             else if (args[0]) {
@@ -5469,26 +4996,26 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
             return answer
         }
-        
+
         if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
-        
+
         // isEmpty
         if (k === "isEmpty()") return answer = o === "" ? true : false
 
         // isnotEmpty
         if (k === "isnotEmpty()") return (answer = o !== "" && typeof o === "string") ? true : false
-        
+
         // notExist
-        if (k === "notexist()" || k === "doesnotexist()" || k === "doesnotExist()" || k === "notExist()") 
-        return answer = !o ? true : false
+        if (k === "notexist()" || k === "doesnotexist()" || k === "doesnotExist()" || k === "notExist()")
+            return answer = !o ? true : false
 
         // log
         if (k0.includes("log()")) {
 
             var tolog
             if (k0[0] === "_") tolog = o
-            
-            var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, e, __: tolog ? [tolog, ...__] : __, value: arg, object: o }))
+
+            var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, awaits, id, e, __: tolog ? [tolog, ...__] : __, value: arg, object: k0[0] !== "_" ? o : object }))
 
             console.log(..._log)
             return o
@@ -5498,7 +5025,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         /*if (path0.slice(-2) === "()" && typeof o === "object" && !Array.isArray(o) && o.__view__ && o.functions[path0.slice(-2)]) {
 
-            return toFunction({ _window, lookupActions, awaits, id: o.id, req, res, __, e, path: [k], path0: k0, condition, params, mount, toView, object })
+            return toAction({ _window, lookupActions, awaits, id: o.id, req, res, __, e, path: [k], path0: k0, condition, params, mount, toView, object })
         }*/
 
         // push() with undefined
@@ -5507,13 +5034,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             o[k0] = []
             o[k0].push
         }*/
-        
+
         if (k0 !== "data()" && k0 !== "Data()" && k0 !== "doc()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
-            
+
             var el = k
             breakRequest = i + 1
             el = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: k, params })
-            
+
             if (Array.isArray(o)) {
                 if (isNaN(el)) {
                     if (o[0] && o[0][el]) {
@@ -5523,79 +5050,51 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 }
                 o.splice(el, 1)
             } else delete o[el]
-            
+
             return o
-            
+
         } else if (k0 === "del()") {
-            
+
             if (args[1]) {
                 var myparam = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
                 delete o[myparam]
             }
 
             return o
-            
+
         } else if (k0 === "while()") {
-            
+
             while (toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })) {
                 toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e })
             }
-            
-        } else if (underScored && !k00) { // _ || __ || ___ ...
-            
+
+        } else if (underScored && !k00 && o.__) { // _ || __ || ___ ...
+
             if (o.__view__) return o.__[underScored - 1]
             if (value !== undefined && key && i === lastIndex) answer = o[__[underScored - 1]] = value
             else if (typeof o === "object") answer = o[__[underScored - 1]]
 
-        } /*else if (k0 === "_" && _ !== undefined) {
-          
-            if (o.__view__) return o._
-            if (value !== undefined && key && i === lastIndex) answer = o[_] = value
-            else if (typeof o === "object") answer = o[_]
+        } else if ((k0.slice(0, 6) === "coded@" && k.length === 11) || (k0.slice(0, 7) === "codedT@" && k.length === 12)) {
 
-        } else if (k0 === "__" && __ !== undefined) {
-            
-            if (o.__view__) return o.__
-            if (value !== undefined && key && i === lastIndex) answer = o[__] = value
-            else if (typeof o === "object") answer = o[__]
-
-        } else if (k0 === "___" && ___ !== undefined) {
-            
-            if (o.__view__) return o.___
-            if (value !== undefined && key && i === lastIndex) answer = o[___] = value
-            else if (typeof o === "object") answer = o[___]
-
-        } else if (k0 === ")(") {
-
-            var _state = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
-            answer = global[_state]
-
-        } */else if ((k0.slice(0, 7) === "coded()" && k.length === 12) || (k0.slice(0, 8) === "codedS()" && k.length === 13)) {
-            
             var _coded
-            if (k0.slice(0, 7) === "coded()") _coded = toValue({ req, res, _window, lookupActions, awaits, id, e, value: global.codes[k], params, __ })
-            else if (k0.slice(0, 8) === "codedS()") _coded = global.codes[k]
+            if (k0.slice(0, 6) === "coded@") _coded = toValue({ req, res, _window, lookupActions, awaits, id, e, value: global.__codes__[k], params, __ })
+            else if (k0.slice(0, 7) === "codedT@") _coded = global.__codes__[k]
 
             if (typeof _coded !== "object") {
                 if (i === lastIndex && key && value !== undefined) answer = o[_coded] = value
                 else if (key && value !== undefined && o[_coded] === undefined) {
-                
+
                     if (!isNaN(toValue({ req, res, _window, lookupActions, awaits, id, value: path[i + 1], params, __, e }))) answer = o[_coded] = []
                     else answer = o[_coded] = {}
                 }
                 else answer = o[_coded]
             } else answer = _coded
-            
-            /*
-            _coded = _coded !== undefined ? [...toArray(_coded), ...path.slice(i + 1)] : path.slice(i + 1)
-            answer = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _coded, object: o, params, __ })
-            */
-            
+
         } else if (k0 === "data()") {
 
             var _o = o.type ? o : view
             var _params = {}
-            
+
             if (!o) return
             if (_o.type) breakRequest = true
 
@@ -5604,15 +5103,15 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             // just get data()
             if (!_o.derivations) {
 
-              var _path = _params.path || views[id].derivations || []
-              var _data 
-              if (_params.data) _data = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _params.path || views[id].derivations, object: _params.data || global[views[id].Data], params, __ })
-              else {
-                
-                _path.unshift(`${views[id].Data}:()`)
-                _data = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _path, object, params, __ })
-              }
-              return answer = _o[_data]
+                var _path = _params.path || views[id].derivations || []
+                var _data
+                if (_params.data) _data = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _path, object: _params.data || global[views[id].Data], params, __ })
+                else {
+
+                    _path.unshift(`${views[id].Data}:()`)
+                    _data = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _path, object, params, __ })
+                }
+                return answer = _o[_data]
             }
 
             if (_params.path) return answer = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _params.path, object: _params.data || object, params, __ })
@@ -5620,18 +5119,18 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (path[i + 1] !== undefined) {
 
-                //if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, lookupActions, awaits, id, value: global.codes[path[i + 1]], params, __, e })
                 if (!_o.Data) return
                 var _path = [..._derivations, ...path.slice(i + 1)]
                 _path.unshift(`${_o.Data}:()`)
                 answer = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: _path, object, params, __ })
 
             } else {
+
                 var _path = [..._derivations]
                 _path.unshift(`${_o.Data}:()`)
                 answer = reducer({ req, res, _window, lookupActions, awaits, id, value, key: path[i + 1] === undefined ? key : false, path: _path, object, params, __, e })
             }
-            
+
         } else if (k0 === "Data()" || k0 === "doc()") {
 
             var _path = args[1], _Data
@@ -5651,7 +5150,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     return answer = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: [`${_Data}:()`, ..._path, ...path.slice(i + 1)], object, params, __ })
                 }
 
-                if (_path.slice(0, 7) === "coded()") _path = global.codes[_path]
+                if (_path.slice(0, 6) === "coded@") _path = global.__codes__[_path]
                 _path = toValue({ req, res, _window, lookupActions, awaits, id, value: _path, params, __, e })
                 if (typeof _path === "string") _path = _path.split(".")
 
@@ -5660,7 +5159,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (path[i + 1] !== undefined) {
 
-                if (path[i + 1] && path[i + 1].slice(0, 7) === "coded()") path[i + 1] = toValue({ req, res, _window, lookupActions, awaits, id, value: global.codes[path[i + 1]], params, __, e })
+                if (path[i + 1] && path[i + 1].slice(0, 6) === "coded@") path[i + 1] = toValue({ req, res, _window, lookupActions, awaits, id, value: global.__codes__[path[i + 1]], params, __, e })
                 answer = reducer({ req, res, _window, lookupActions, awaits, id, e, value, key, path: [`${_Data}:()`, ...path.slice(i + 1)], object, params, __ })
 
             } else answer = global[_Data]
@@ -5682,64 +5181,64 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "parent()") {
 
-          var _o, _parent, _params = {}
-          if (args[1]) {
+            var _o, _parent, _params = {}
+            if (args[1]) {
 
-            if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-            _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
 
-          } else _o = o
+            } else _o = o
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
-          if (typeof _o === "object") {
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "object") {
 
-            if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
-            else _parent = views[_o.parent]
-          }
-          
-          answer = _parent
-            
+                if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
+                else _parent = views[_o.parent]
+            }
+
+            answer = _parent
+
         } else if (k0 === "2ndParent()" || k0 === "grandParent()") {
 
-          var _o, _parent, _params = {}
-          if (args[1]) {
+            var _o, _parent, _params = {}
+            if (args[1]) {
 
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
 
-          } else _o = o
+            } else _o = o
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
-          if (typeof _o === "object") {
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "object") {
 
-            if (_o.status === "Mounted") {
-              if (_o.element.parentNode && _o.element.parentNode.parentNode) return answer = views[_o.element.parentNode.parentNode.id]
-            } else {
-              if (views[_o.parent] && views[_o.parent].parent) return answer = views[views[_o.parent].parent]
+                if (_o.status === "Mounted") {
+                    if (_o.element.parentNode && _o.element.parentNode.parentNode) return answer = views[_o.element.parentNode.parentNode.id]
+                } else {
+                    if (views[_o.parent] && views[_o.parent].parent) return answer = views[views[_o.parent].parent]
+                }
             }
-          }
-          
+
         } else if (k0 === "3rdParent()") {
 
-          var _o, _parent, _params = {}
-          if (args[1]) {
+            var _o, _parent, _params = {}
+            if (args[1]) {
 
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
 
-          } else _o = o
+            } else _o = o
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
-          if (typeof _o === "object") {
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "object") {
 
-            if (_o.status === "Mounted") {
-              if (_o.element.parentNode && _o.element.parentNode.parentNode && _o.element.parentNode.parentNode.parentNode) 
-              return answer = views[_o.element.parentNode.parentNode.parentNode.id]
-            } else {
-              if (views[_o.parent] && views[_o.parent].parent && views[views[_o.parent].parent].parent) return answer = views[views[views[_o.parent].parent].parent]
+                if (_o.status === "Mounted") {
+                    if (_o.element.parentNode && _o.element.parentNode.parentNode && _o.element.parentNode.parentNode.parentNode)
+                        return answer = views[_o.element.parentNode.parentNode.parentNode.id]
+                } else {
+                    if (views[_o.parent] && views[_o.parent].parent && views[views[_o.parent].parent].parent) return answer = views[views[views[_o.parent].parent].parent]
+                }
             }
-          }
-          
+
         } else if (k0 === "siblings()") {
 
             var _o, _params = {}
@@ -5750,10 +5249,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-            
+
             var _parent = views[window.views[_o.id].parent]
             answer = [..._parent.element.children].map(el => {
-                
+
                 var _id = el.id, _view = views[_id]
                 if (!_view) return
                 if (_view.component === "Input") {
@@ -5766,22 +5265,22 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "next()" || k0 === "nextSibling()") {
 
-          var _o, _params = {}
-          if (args[1]) {
+            var _o, _params = {}
+            if (args[1]) {
 
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-          } else _o = o
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            } else _o = o
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
 
-          var element = _o.element
-          if (!element) return
-          var nextSibling = element.nextElementSibling
-          if (!nextSibling) return
-          var _id = nextSibling.id
-          answer = views[_id]
-            
+            var element = _o.element
+            if (!element) return
+            var nextSibling = element.nextElementSibling
+            if (!nextSibling) return
+            var _id = nextSibling.id
+            answer = views[_id]
+
         } else if (k0 === "2ndNext()" || k0 === "2nd()" || k0 === "2ndNextSibling()") {
 
             var _o, _params = {}
@@ -5795,13 +5294,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             var element = _o.element
             // if (_o.templated || _o.link) element = views[_o.parent].element
-            
+
             if (!element.nextElementSibling || !element.nextElementSibling.nextElementSibling) return
             var nextSibling = element.nextElementSibling.nextElementSibling
             if (!nextSibling) return
             var _id = nextSibling.id
             answer = views[_id]
-            
+
         } else if (k0 === "3rdNext()" || k0 === "3rd()" || k0 === "3rdNextSibling()") {
 
             var _o, _params = {}
@@ -5815,13 +5314,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             var element = _o.element
             // if (_o.templated || _o.link) element = views[_o.parent].element
-            
+
             if (!element.nextElementSibling || !element.nextElementSibling.nextElementSibling || !element.nextElementSibling.nextElementSibling.nextElementSibling) return
             var nextSibling = element.nextElementSibling.nextElementSibling.nextElementSibling
             if (!nextSibling) return
             var _id = nextSibling.id
             answer = views[_id]
-            
+
         } else if (k0 === "nextSiblings()") {
 
             var _o, _params = {}
@@ -5839,14 +5338,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             var nextSibling = element.nextElementSibling
             if (!nextSibling) return
-            
+
             while (nextSibling) {
                 var _id = nextSibling.id
                 nextSiblings.push(views[_id])
                 nextSibling = (views[_id]).element.nextElementSibling
             }
             answer = nextSiblings
-            
+
         } else if (k0 === "last()" || k0 === "lastSibling()") {
 
             var _o, _params = {}
@@ -5861,16 +5360,16 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (Array.isArray(_o)) {
 
-              if (value !== undefined && key) answer = _o[_o.length - 1] = value
-              answer = _o[_o.length - 1]
+                if (value !== undefined && key) answer = _o[_o.length - 1] = value
+                answer = _o[_o.length - 1]
 
             } else if (_o.type && _o.id) {
 
-              var element = _o.element
-              // if (_o.templated || _o.link) element = views[o.parent].element
-              var lastSibling = element.parentNode.children[element.parentNode.children.length - 1]
-              var _id = lastSibling.id
-              answer = views[_id]
+                var element = _o.element
+                // if (_o.templated || _o.link) element = views[o.parent].element
+                var lastSibling = element.parentNode.children[element.parentNode.children.length - 1]
+                var _id = lastSibling.id
+                answer = views[_id]
             }
 
         } else if (k0 === "2ndLast()" || k0 === "2ndLastSibling()") {
@@ -5890,7 +5389,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var seclastSibling = element.parentNode.children[element.parentNode.children.length - 2]
             var _id = seclastSibling.id
             answer = views[_id]
-            
+
         } else if (k0 === "3rdLast()" || k0 === "3rdLastSibling()") {
 
             var _o, _params = {}
@@ -5944,147 +5443,147 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "prev()" || k0 === "prevSibling()" || k0 === "1stPrev()") {
 
-          var _o, _params = {}
-          if (args[1]) {
+            var _o, _params = {}
+            if (args[1]) {
 
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-          } else _o = o
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            } else _o = o
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
 
-          var element, _el = _o.element
-          // if (_o.templated || _o.link) _el = views[_o.parent]
-          
-          if (!_el) return
-          if (_el.nodeType === Node.ELEMENT_NODE) element = _el
-          else if (_el) element = _el.element
-          else return
-          
-          var previousSibling = element.previousSibling
-          if (!previousSibling) return
-          
-          var _id = previousSibling.id
-          answer = views[_id]
+            var element, _el = _o.element
+            // if (_o.templated || _o.link) _el = views[_o.parent]
+
+            if (!_el) return
+            if (_el.nodeType === Node.ELEMENT_NODE) element = _el
+            else if (_el) element = _el.element
+            else return
+
+            var previousSibling = element.previousSibling
+            if (!previousSibling) return
+
+            var _id = previousSibling.id
+            answer = views[_id]
 
         } else if (k0 === "2ndPrev()") {
 
-          var _o, _params = {}
-          if (args[1]) {
+            var _o, _params = {}
+            if (args[1]) {
 
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-          } else _o = o
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            } else _o = o
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
 
-          var _element, _el = _o.element, previousSibling
-          // if (_o.templated || _o.link) _el = views[_o.parent]
-          
-          if (!_el) return
-          if (_el.nodeType === Node.ELEMENT_NODE) _element = _el
-          else if (_el) _element = _el.element
-          else return
-          
-          if (_element.previousSibling && _element.previousSibling.previousSibling)
-          previousSibling = _element.previousSibling.previousSibling
-          
-          if (!previousSibling) return
-          var _id = previousSibling.id
-          return views[_id]
+            var _element, _el = _o.element, previousSibling
+            // if (_o.templated || _o.link) _el = views[_o.parent]
+
+            if (!_el) return
+            if (_el.nodeType === Node.ELEMENT_NODE) _element = _el
+            else if (_el) _element = _el.element
+            else return
+
+            if (_element.previousSibling && _element.previousSibling.previousSibling)
+                previousSibling = _element.previousSibling.previousSibling
+
+            if (!previousSibling) return
+            var _id = previousSibling.id
+            return views[_id]
 
         } else if (k0 === "3rdPrev()") {
 
-          var _o, _params = {}
-          if (args[1]) {
+            var _o, _params = {}
+            if (args[1]) {
 
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-          } else _o = o
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            } else _o = o
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
 
-          var _element, _el = _o.element, previousSibling
-          // if (_o.templated || _o.link) _el = views[_o.parent]
-          
-          if (!_el) return
-          if (_el.nodeType === Node.ELEMENT_NODE) _element = _el
-          else if (_el) _element = _el.element
-          else return
-          
-          if (_element.previousSibling && _element.previousSibling.previousSibling && _element.previousSibling.previousSibling.previousSibling)
-          previousSibling = _element.previousSibling.previousSibling.previousSibling
-          
-          if (!previousSibling) return
-          var _id = previousSibling.id
-          return views[_id]
+            var _element, _el = _o.element, previousSibling
+            // if (_o.templated || _o.link) _el = views[_o.parent]
+
+            if (!_el) return
+            if (_el.nodeType === Node.ELEMENT_NODE) _element = _el
+            else if (_el) _element = _el.element
+            else return
+
+            if (_element.previousSibling && _element.previousSibling.previousSibling && _element.previousSibling.previousSibling.previousSibling)
+                previousSibling = _element.previousSibling.previousSibling.previousSibling
+
+            if (!previousSibling) return
+            var _id = previousSibling.id
+            return views[_id]
 
         } else if (k0 === "1stChild()" || k0 === "child()") {// o could be a string or element or view
-            
-          var _o, _params = {}
-          if (args[1]) {
 
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            var _o, _params = {}
+            if (args[1]) {
 
-          } else _o = o
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
-          else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-          
-          if (!_o.element) return
-          if (!_o.element.children[0]) return
-          var _id = _o.element.children[0].id
-          
-          if (views[_id]) answer = views[_id]
-          else answer = views[_id] = { id: _id, element: _o.element.children[0] }
-            
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
+
+            if (!_o.element) return
+            if (!_o.element.children[0]) return
+            var _id = _o.element.children[0].id
+
+            if (views[_id]) answer = views[_id]
+            else answer = views[_id] = { id: _id, element: _o.element.children[0] }
+
         } else if (k0 === "grandChild()") {
-            
-          var _o, _params = {}
-          if (args[1]) {
 
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            var _o, _params = {}
+            if (args[1]) {
 
-          } else _o = o
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
-          else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-          
-          if (!_o.element) return
-          if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
-          var _id = _o.element.children[0].children[0].id
-          
-          if (views[_id]) answer = views[_id]
-          else answer = views[_id] = { id: _id, element: _o.element.children[0].children[0] }
-          
-      } else if (k0 === "grandChildren()") {
-            
-        var _o, _params = {}
-        if (args[1]) {
+            } else _o = o
 
-            if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-            _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
 
-        } else _o = o
+            if (!_o.element) return
+            if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
+            var _id = _o.element.children[0].children[0].id
 
-        if (typeof _o === "string" && views[_o]) _o = views[_o]
-        else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-        
-        if (!_o.element) return
-        if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
-        var _children = [..._o.element.children[0].children]
-        
-        var _views = []
-        _children.map(child => {
-          _views.push(views[child.id])
-        })
+            if (views[_id]) answer = views[_id]
+            else answer = views[_id] = { id: _id, element: _o.element.children[0].children[0] }
 
-        answer = _views
-        
-      } else if (k0 === "2ndChild()") {// o could be a string or element or view
-            
+        } else if (k0 === "grandChildren()") {
+
+            var _o, _params = {}
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+
+            } else _o = o
+
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
+
+            if (!_o.element) return
+            if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
+            var _children = [..._o.element.children[0].children]
+
+            var _views = []
+            _children.map(child => {
+                _views.push(views[child.id])
+            })
+
+            answer = _views
+
+        } else if (k0 === "2ndChild()") {// o could be a string or element or view
+
             var _o, _params = {}
             if (args[1]) {
 
@@ -6098,12 +5597,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (!_o.element) return
             if (!_o.element.children[1]) return
             var _id = _o.element.children[1].id
-            
+
             if (views[_id]) answer = views[_id]
             else answer = views[_id] = { id: _id, element: _o.element.children[1] }
 
         } else if (k0 === "3rdChild()") {// o could be a string or element or view
-            
+
             var _o, _params = {}
             if (args[1]) {
 
@@ -6117,12 +5616,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (!_o.element) return
             if (!_o.element.children[2]) return
             var _id = _o.element.children[2].id
-            
+
             if (views[_id]) answer = views[_id]
             else answer = views[_id] = { id: _id, element: _o.element.children[2] }
 
         } else if (k0 === "3rdLastChild()") { // o could be a string or element or view
-            
+
             var _o, _params = {}
             if (args[1]) {
 
@@ -6136,30 +5635,30 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (!_o.element) return
             if (!_o.element.children[_o.element.children.length - 3]) return
             var _id = _o.element.children[_o.element.children.length - 3].id
-            
+
             if (views[_id]) answer = views[_id]
             else answer = views[_id] = { id: _id, element: _o.element.children[_o.element.children.length - 3] }
 
         } else if (k0 === "2ndLastChild()") { // o could be a string or element or view
-            
+
             var _o, _params = {}
             if (args[1]) {
 
                 if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
                 _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             } else _o = o
-            
+
             if (typeof _o === "string" && views[_o]) _o = views[_o]
             else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
 
             if (!_o.element) return
             if (!_o.element.children[_o.element.children.length - 2]) return
             var _id = _o.element.children[_o.element.children.length - 2].id
-            
+
             answer = views[_id]
 
         } else if (k0 === "lastChild()") {  // o could be a string or element or view
-            
+
             var _o, _params = {}
             if (args[1]) {
 
@@ -6174,11 +5673,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (!_o.element) return
             if (!_o.element.children[_o.element.children.length - 1]) return
             var _id = _o.element.children[_o.element.children.length - 1].id
-            
+
             answer = views[_id]
 
         } else if (k0 === "children()") {
-            
+
             var _o, _params = {}
             if (args[1]) {
 
@@ -6187,13 +5686,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-            
+
             if (!_o.element) return
             answer = [..._o.element.children].map(el => {
-                
+
                 var _id = el.id, _view = views[_id]
                 if (!_view) return
-                
+
                 if (_view.component === "Input") {
 
                     _id = (_view).element.getElementsByTagName("INPUT")[0].id
@@ -6201,7 +5700,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else return _view
             })
-        
+
         } else if (k0 === "display()") {
 
             var _i
@@ -6215,7 +5714,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
             toParam({ req, res, _window, lookupActions, awaits, id: _id, e, __, string: `style().display=flex` })
-            
+
         } else if (k0 === "hide()") {
 
             var _i
@@ -6229,48 +5728,48 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
             toParam({ req, res, _window, lookupActions, awaits, id: _id, e, __, string: `style().display=none` })
-            
-        } else if (k0 === "style()") { // style():key || style():[key=value;id||el||view||element]
-            
-            var _o, _params = {}
-            
-            if (args[1]) {
-                  
-              if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              else _params = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
 
-              if (!_params) return
-              _o = _params.view || _params.id || _params.el || _params.element// || o
-              if (!_o) {
-                if (!o.element) _o = views[id]
-                else _o = o
-              }
+        } else if (k0 === "style()") { // style():key || style():[key=value;id||el||view||element]
+
+            var _o, _params = {}
+
+            if (args[1]) {
+
+                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                else _params = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+
+                if (!_params) return
+                _o = _params.view || _params.id || _params.el || _params.element// || o
+                if (!_o) {
+                    if (!o.element) _o = views[id]
+                    else _o = o
+                }
 
             } else {
 
-              if (!o.element) _o = views[id]
-              else _o = o
+                if (!o.element) _o = views[id]
+                else _o = o
             }
-            
+
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-            
+
             // get element
             if (_o.nodeType && _o.nodeType === Node.ELEMENT_NODE) answer = _o.style
             else if (typeof _o === "object") {
 
-              if (_o.element) answer = _o.element.style
-              else answer = _o.style = _o.style || {}
+                if (_o.element) answer = _o.element.style
+                else answer = _o.style = _o.style || {}
             }
 
-            var { view: _view, id: _id, el: _el, element: _element, ...__params} = _params
+            var { view: _view, id: _id, el: _el, element: _element, ...__params } = _params
 
             if (Object.keys(__params).length > 0) {
 
-              Object.entries(__params).map(([key, value]) => {
-                  answer[key] = value
-              })
+                Object.entries(__params).map(([key, value]) => {
+                    answer[key] = value
+                })
             }
-            
+
         } else if (k0 === "qr()") {
 
             if (res && !res.headersSent) {
@@ -6278,8 +5777,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 var params = isParam({ _window, string: args[1] }) ? toParam({ req, res, _window, id, e, __, string: args[1] }) : toValue({ req, res, _window, id, e, __, value: args[1] })
                 if (typeof params !== "object") params = { data: params }
                 if (params.text && params.data === undefined) params.data = params.text
-                if (params.wifi && params.password && (params.ssid || params.name)) params.data = `WIFI:S:${params.name || params.ssid};T:${params.type || "WPA"};P:${params.password || ""};;${params.url || ""}` 
-                
+                if (params.wifi && params.password && (params.ssid || params.name)) params.data = `WIFI:S:${params.name || params.ssid};T:${params.type || "WPA"};P:${params.password || ""};;${params.url || ""}`
+
                 require('qrcode').toDataURL(params.data).then(data => {
 
                     var _params = { message: "QR generated successfully!", data, success: true }
@@ -6290,7 +5789,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "contact()") {
 
             if (res && !res.headersSent) {
-                
+
                 var data = toValue({ req, res, _window, id, e, __, string: args[1] })
                 if (typeof data !== "obejct") return o
 
@@ -6298,7 +5797,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                     // create a new vCard
                     const vCard = require("vcards-js")();
-                
+
                     vCard.firstName = data.firstName || "";
                     vCard.middleName = data.middleName || "";
                     vCard.lastName = data.lastName || "";
@@ -6306,27 +5805,27 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     if (data.photo) vCard.photo.attachFromUrl(data.photo)
                     if (data.logo) vCard.logo.attachFromUrl(data.logo)
 
-                    if (data.birthday && data.birthday.split("/")[0] !== undefined && data.birthday.split("/")[1] !== undefined && data.birthday.split("/")[2] !== undefined) 
+                    if (data.birthday && data.birthday.split("/")[0] !== undefined && data.birthday.split("/")[1] !== undefined && data.birthday.split("/")[2] !== undefined)
                         vCard.birthday = new Date(parseInt(data.birthday.split("/")[2]), parseInt(data.birthday.split("/")[1] - 1), parseInt(data.birthday.split("/")[0]));
 
-                    
-                        delete data.firstName
-                        delete data.lastName
-                        delete data.middleName
-                        delete data.photo
-                        delete data.logo
-                        delete data.birthday
+
+                    delete data.firstName
+                    delete data.lastName
+                    delete data.middleName
+                    delete data.photo
+                    delete data.logo
+                    delete data.birthday
 
                     Object.entries(data).map(([key, value]) => {
                         vCard[key] = value
                     })
-                
+
                     res.set('Content-Type', `text/vcard; name="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
                     res.set('Content-Disposition', `inline; filename="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
-                    
+
                     res.send(vCard.getFormattedString())
                 }
-                
+
             } else func({ _window, id, e, func: { actions: decode({ _window, string: k }) }, __, asyncer: true, awaits, myawait, lookupActions })
 
         } else if (k0 === "jsonToBracketCode()") {
@@ -6346,13 +5845,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else _tag_name = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             } else _o = o
-            
+
             _tag_name = _tag_name.toUpperCase()
             if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)
             else answer = _o.element && _o.element.getElementsByTagName(_tag_name)
 
-          } else if (k0 === "getTagElement()") {
-          
+        } else if (k0 === "getTagElement()") {
+
             var _o, _params = {}, _tag_name
             if (args[1]) {
 
@@ -6364,12 +5863,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else _tag_name = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             } else _o = o
-            
+
             _tag_name = _tag_name.toUpperCase()
             if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)[0]
             else answer = _o.element && _o.element.getElementsByTagName(_tag_name)[0]
 
-          } else if (k0 === "getTags()" || k0 === "tags()") {
+        } else if (k0 === "getTags()" || k0 === "tags()") {
 
             var _o, _params = {}, _tag_name
             if (args[1]) {
@@ -6382,15 +5881,15 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else _tag_name = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             } else _o = o
-            
+
             _tag_name = _tag_name.toUpperCase()
             if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)
             else answer = _o.element && _o.element.getElementsByTagName(_tag_name)
 
             answer = [...answer].map(o => views[o.id])
 
-          } else if (k0 === "getTag()" || k0 === "tag()") {
-          
+        } else if (k0 === "getTag()" || k0 === "tag()") {
+
             var _o, _params = {}, _tag_name
             if (args[1]) {
 
@@ -6402,14 +5901,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else _tag_name = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             } else _o = o
-            
+
             _tag_name = _tag_name.toUpperCase()
             if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)[0]
             else answer = _o.element && _o.element.getElementsByTagName(_tag_name)[0]
             answer = window.views[answer.id]
 
         } else if (k0 === "getInputs()" || k0 === "inputs()") {
-            
+
             var _input, _textarea, _editables, _params = {}, _o
             if (args[1]) {
 
@@ -6438,7 +5937,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = [..._input, ..._textarea, ..._editables].map(o => views[o.id])
 
         } else if (k0 === "getInput()" || k0 === "input()") {
-            
+
             var _o, __o, _params = {}, _o
             if (args[1]) {
 
@@ -6451,7 +5950,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-            
+
             if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
             else __o = _o
 
@@ -6460,7 +5959,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 if (__o.element.getElementsByTagName("INPUT")[0]) answer = views[__o.element.getElementsByTagName("INPUT")[0].id]
                 else if (__o.element.getElementsByTagName("TEXTAREA")[0]) answer = views[__o.element.getElementsByTagName("TEXTAREA")[0].id]
                 else {
-                    var deepChildren = getDeepChildren({ _window, lookupActions, awaits, id:__o.id })
+                    var deepChildren = getDeepChildren({ _window, lookupActions, awaits, id: __o.id })
                     if (__o.editable || deepChildren.find(view => view.editable)) {
                         answer = __o.editable ? __o : deepChildren.find(view => view.editable)
                     } else return
@@ -6468,7 +5967,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else answer = __o
 
         } else if (k0 === "getEntry()" || k0 === "entry()") {
-            
+
             var _o, __o, _params = {}, _o
             if (args[1]) {
 
@@ -6482,13 +5981,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-            
+
             if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
             else __o = _o
 
             if (!__o) return
             if (__o.type !== "Entry") {
-                
+
                 var _elements, _entry
                 if (__o.element.getElementsByTagName("P")[0]) _elements = [...__o.element.getElementsByTagName("P")]
                 answer = _entry = _elements.find(el => views[el.id].type === "Entry")
@@ -6496,7 +5995,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else answer = __o
 
         } else if (k0 === "getEntries()" || k0 === "entries()") {
-            
+
             var _o, __o, _params = {}, _o
             if (args[1]) {
 
@@ -6509,13 +6008,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else _o = o
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-            
+
             if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
             else __o = _o
 
             if (!__o) return
             if (__o.type !== "Entry") {
-                
+
                 var _elements, _entry
                 if (__o.element.getElementsByTagName("P")[0]) _elements = [...__o.element.getElementsByTagName("P")]
                 answer = _entry = _elements.filter(el => views[el.id].type === "Entry")
@@ -6524,20 +6023,20 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "px()") {
 
-          if (args[1]) {
-            return lengthConverter(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }))
-          }
-          return lengthConverter(o)
+            if (args[1]) {
+                return lengthConverter(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }))
+            }
+            return lengthConverter(o)
 
         } else if (k0 === "touchable()") {
 
-          if (_window) {
-            
-            return req.device.type === "phone" || req.device.type === "tablet"
- 
-          } else return (('ontouchstart' in window) ||
-            (navigator.maxTouchPoints > 0) ||
-            (navigator.msMaxTouchPoints > 0));
+            if (_window) {
+
+                return req.device.type === "phone" || req.device.type === "tablet"
+
+            } else return (('ontouchstart' in window) ||
+                (navigator.maxTouchPoints > 0) ||
+                (navigator.msMaxTouchPoints > 0));
 
         }/*else if (k0 === "position()") {
 
@@ -6556,7 +6055,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = relativeTo.getBoundingClientRect()
 
         } */else if (k0 === "getChildrenByClassName()" || k0 === "className()") {
-            
+
             var className, _params = {}, _o
             if (isParam({ _window, string: args[1] })) {
 
@@ -6565,19 +6064,19 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 className = _params.className || _params.class
 
             } else {
-              className = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-              _o = o
+                className = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                _o = o
             }
 
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-            
+
             if (className) {
                 if (typeof _o === "object" && _o.element) answer = [..._o.element.getElementsByClassName(className)]
                 else if (_o.nodeType === Node.ELEMENT_NODE) answer = [..._o.element.getElementsByClassName(className)]
             } else answer = []
-            
+
             answer = answer.map(o => window.views[o.id])
-            
+
         } else if (k0 === "name()") {
 
             var _o
@@ -6604,7 +6103,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             return _views_
 
         } else if (k0 === "classlist()" || k0 === "classList()") {
-            
+
             var _params = {}, _o
             if (args[1]) {
 
@@ -6620,7 +6119,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (typeof _o === "object" && _o.element) answer = [..._o.element.classList]
             else if (_o.nodeType === Node.ELEMENT_NODE) answer = [..._o.classList]
-            
+
         } else if (k0 === "getElementsByClassName()" || k0 === "class()") {
 
             // map not loaded yet
@@ -6630,10 +6129,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     event: `loaded?${key}`
                 })
             }
-            
+
             var className, _params = {}
             if (args[1]) className = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-            
+
             if (className && o.element) answer = [...o.element.getElementsByClassName(className)]
             else answer = []
 
@@ -6648,33 +6147,33 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = Math.round(toNumber(integer))
 
         } else if (k0 === "click()") {
-            
-          if (_window) return view.controls.push({
-            event: `loaded?${pathJoined}`
-          })
 
-          var _params = {}, _o
-          if (args[1]) {
+            if (_window) return view.controls.push({
+                event: `loaded?${pathJoined}`
+            })
 
-              if (isParam({ _window, string: args[1] })) {
+            var _params = {}, _o
+            if (args[1]) {
 
-                  _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-                  _o = _params.view || _params.id || _params.el || _params.element || o
+                if (isParam({ _window, string: args[1] })) {
 
-              } else _o = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-              
-          } else _o = o.__view__ ? o : views[id]
-          
-          if (typeof _o === "string" && views[_o]) views[_o].element.q()
-          else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
-          else if (typeof _o === "object" && _o.element) _o.element.click()
+                    _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                    _o = _params.view || _params.id || _params.el || _params.element || o
+
+                } else _o = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+
+            } else _o = o.__view__ ? o : views[id]
+
+            if (typeof _o === "string" && views[_o]) views[_o].element.q()
+            else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
+            else if (typeof _o === "object" && _o.element) _o.element.click()
 
         } else if (k0 === "dblclick()") {
-            
-          if (_window) return view.controls.push({
-            event: `loaded?${pathJoined}`
-          })
-            
+
+            if (_window) return view.controls.push({
+                event: `loaded?${pathJoined}`
+            })
+
             var _params = {}, _o
             if (args[1]) {
 
@@ -6685,11 +6184,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else _o = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             } else _o = o
-            
+
             if (typeof _o === "string" && views[_o]) views[_o].element.click()
             else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
             else if (typeof _o === "object" && _o.element) _o.element.click()
-            
+
             setTimeout(() => {
                 if (typeof _o === "string" && views[_o]) views[_o].element.click()
                 else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
@@ -6697,10 +6196,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }, 0)
 
         } else if (k0 === "focus()") {
-            
-          if (_window) return view.controls.push({
-            event: `loaded?${pathJoined}`
-          })
+
+            if (_window) return view.controls.push({
+                event: `loaded?${pathJoined}`
+            })
 
             var _params = {}, _o
             if (args[1]) {
@@ -6712,16 +6211,16 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else _o = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             } else _o = o
-            
+
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-            
+
             focus({ id: _o.id })
 
         } else if (k0 === "blur()") { // blur
-            
-          if (_window) return view.controls.push({
-            event: `loaded?${pathJoined}`
-          })
+
+            if (_window) return view.controls.push({
+                event: `loaded?${pathJoined}`
+            })
 
             var _params = {}, _o
             if (args[1]) {
@@ -6733,9 +6232,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else _o = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             } else _o = o
-            
+
             if (typeof _o === "string" && views[_o]) _o = views[_o]
-            
+
             _o.element.blur()
 
         } else if (k0 === "axios()") {
@@ -6756,7 +6255,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             } else _o = o
-            
+
             answer = _o.getElementById(_id)
 
         } else if (k0 === "mousedown()") {
@@ -6770,8 +6269,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     _o = _params.view || _params.el || _params.id || _params.element || o
 
                 } else {
-                  _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-                  _o = views[_id]
+                    _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                    _o = views[_id]
                 }
             } else _o = o
 
@@ -6793,8 +6292,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     _o = _params.view || _params.el || _params.id || _params.element || o
 
                 } else {
-                  _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-                  _o = views[_id]
+                    _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                    _o = views[_id]
                 }
             } else _o = o
 
@@ -6816,8 +6315,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     _o = _params.view || _params.el || _params.id || _params.element || o
 
                 } else {
-                  _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-                  _o = views[_id]
+                    _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                    _o = views[_id]
                 }
             } else _o = o
 
@@ -6839,8 +6338,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     _o = _params.view || _params.el || _params.id || _params.element || o
 
                 } else {
-                  _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-                  _o = views[_id]
+                    _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                    _o = views[_id]
                 }
             } else _o = o
 
@@ -6853,53 +6352,53 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "keyup()") {
 
-          var _params = {}, _o, _id
-          if (args[1]) {
+            var _params = {}, _o, _id
+            if (args[1]) {
 
-              if (isParam({ _window, string: args[1] })) {
+                if (isParam({ _window, string: args[1] })) {
 
-                  _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-                  _o = _params.view || _params.el || _params.id || _params.element || o
+                    _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
 
-              } else {
-                _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-                _o = views[_id]
-              }
+                } else {
+                    _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                    _o = views[_id]
+                }
 
-          } else _o = o
+            } else _o = o
 
-          if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
 
-          var keyupevent = new Event("keyup")
+            var keyupevent = new Event("keyup")
 
-          if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(keyupevent)
-          else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(keyupevent)
+            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(keyupevent)
+            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(keyupevent)
 
-      } else if (k0 === "keydown()") {
+        } else if (k0 === "keydown()") {
 
-        var _params = {}, _o, _id
-        if (args[1]) {
+            var _params = {}, _o, _id
+            if (args[1]) {
 
-            if (isParam({ _window, string: args[1] })) {
+                if (isParam({ _window, string: args[1] })) {
 
-                _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-                _o = _params.view || _params.el || _params.id || _params.element || o
+                    _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                    _o = _params.view || _params.el || _params.id || _params.element || o
 
-            } else {
-              _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-              _o = views[_id]
-            }
+                } else {
+                    _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                    _o = views[_id]
+                }
 
-        } else _o = o
+            } else _o = o
 
-        if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (typeof _o === "string" && views[_o]) _o = views[_o]
 
-        var keyupevent = new Event("keydown")
+            var keyupevent = new Event("keydown")
 
-        if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(keyupevent)
-        else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(keyupevent)
+            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(keyupevent)
+            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(keyupevent)
 
-    } else if (k0 === "device()") {
+        } else if (k0 === "device()") {
 
             answer = global.device.type
 
@@ -6917,14 +6416,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "installApp()") {
 
-          const installApp = async () => {
+            const installApp = async () => {
 
-            global["installApp"].prompt();
-            const { outcome } = await global["installApp"].userChoice;
-            console.log(`User response to the install prompt: ${outcome}`);
-          }
+                global["installApp"].prompt();
+                const { outcome } = await global["installApp"].userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+            }
 
-          installApp()
+            installApp()
 
         } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
 
@@ -6938,16 +6437,16 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     _timer = _params.timer
 
                 } else {
-                    return args.slice(1).map(arg => { 
+                    return args.slice(1).map(arg => {
 
                         _timer = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: arg, params })
                         clearTimeout(_timer)
                     })
                 }
             } else _timer = o
-            
+
             clearTimeout(_timer)
-            
+
         } else if (k0 === "clearInterval()") {
 
             var _params = {}, _onterval
@@ -6960,30 +6459,30 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     _interval = _params.interval
 
                 } else {
-                    return args.slice(1).map(arg => { 
+                    return args.slice(1).map(arg => {
 
                         _timer = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: arg, params })
                         clearInterval(_timer)
                     })
                 }
             } else _interval = o
-            
+
             answer = clearInterval(_interval)
-            
+
         } else if (k0 === "interval()") {
-            
+
             if (!isNaN(toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e }))) { // interval():params:timer
 
-              var _timer = parseInt(toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e }))
-              var myFn = () => toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], mount: true })
-              answer = setInterval(myFn, _timer)
-              
+                var _timer = parseInt(toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e }))
+                var myFn = () => toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], mount: true })
+                answer = setInterval(myFn, _timer)
+
             } else if (isParam({ _window, string: args[1] }) && !args[2]) { // interval():[params;timer]
 
-              var _params
-              _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], mount: true })
-              var myFn = () => toValue({ req, res, _window, lookupActions, awaits, id, value: _params.params || _params.parameters, params, __, e })
-              answer = setInterval(myFn, _params.timer)
+                var _params
+                _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], mount: true })
+                var myFn = () => toValue({ req, res, _window, lookupActions, awaits, id, value: _params.params || _params.parameters, params, __, e })
+                answer = setInterval(myFn, _params.timer)
             }
 
             if (o.type && o.id) o[generate() + "-timer"] = answer
@@ -6999,7 +6498,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             return loop
 
         } else if (k0 === "timer()" || k0 === "setTimeout()") {
-            
+
             // timer():params:timer:repeats
             var _timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e, object })) : 0
             var _repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, awaits, id, value: args[3], params, __, e, object })) : false
@@ -7016,7 +6515,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     }
                 }
             }
-            
+
             if (o.__view__) toArray(answer).map(timer => o[generate() + "-timer"] = timer)
 
         } /*else if (k0 === "path()") {
@@ -7034,7 +6533,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             _o.pop()
             answer = _o
-            
+
         } else if (k0 === "shift()") {
 
             var _o
@@ -7061,11 +6560,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 _start = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __, object })
                 _end = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[2], params, __, object })
             }
-                
+
             if (_end !== undefined) {
 
                 if (!isNaN(_end)) {
-                    
+
                     if (!isNaN(_start)) answer = o.slice(parseInt(_start), parseInt(_end))
                     else {
                         answer = o.split(_start)[1]
@@ -7083,8 +6582,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 if (!isNaN(_start)) answer = o.slice(parseInt(_start) || 0)
                 else answer = o.split(_start)[1]
-            }   
-            
+            }
+
         } else if (k0 === "reduce()") {
 
             var _params = {}
@@ -7098,7 +6597,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
             answer = reducer({ _window, lookupActions, awaits, id, path: _params.path, object: o, e, req, res, __, mount, key: _params.value !== undefined ? true : key, value: _params.value !== undefined ? _params.value : value })
-          
+
         } else if (k0 === "derivations()" || k0 === "path()") {
 
             var _params = {}
@@ -7110,10 +6609,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 } else _params.path = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __ })
             }
-            
+
             _o = _params.object || _params.map || o
             if (_params.index) return _o.derivations[_params.index]
-            
+
             if ((key && value !== undefined && lastIndex) || _params.value !== undefined) {
 
                 if (_params.path !== undefined) return toArray(_params.path).reduce((o, k, i) => {
@@ -7128,13 +6627,13 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 if (_params.path !== undefined) return toArray(_params.path).reduce((o, k) => o[k], _o)
                 else return _o.derivations
             }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         } else if (k0 === "_array" || k0 === "_list") {
-            
+
             answer = []
             k.split(":").slice(1).map(el => {
                 el = toValue({ req, res, _window, lookupActions, awaits, id, __, e, value: el, params })
@@ -7142,24 +6641,24 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             })
 
         } else if (k0 === "_map") {
-            
+
             answer = {}
             if (isParam({ _window, string: args[1] })) {
 
-              return args.slice(1).map(arg => reducer({ _window, lookupActions, awaits, id, params, path: arg, object: answer, e, req, res, __, mount }))
+                return args.slice(1).map(arg => reducer({ _window, lookupActions, awaits, id, params, path: arg, object: answer, e, req, res, __, mount }))
             } else {
 
-              k.split(":").slice(1).map((el, i) => {
+                k.split(":").slice(1).map((el, i) => {
 
-                  if (i % 2) return
-                  var f = toValue({ req, res, _window, lookupActions, awaits, id, __, e, value: el, params })
-                  var v = toValue({ req, res, _window, lookupActions, awaits, id, __, e, value: args[i + 1], params })
-                  if (v !== undefined) answer[f] = v
-              })
+                    if (i % 2) return
+                    var f = toValue({ req, res, _window, lookupActions, awaits, id, __, e, value: el, params })
+                    var v = toValue({ req, res, _window, lookupActions, awaits, id, __, e, value: args[i + 1], params })
+                    if (v !== undefined) answer[f] = v
+                })
             }
 
         } else if (k0 === "_semi" || k0 === ";") {
-  
+
             answer = o + ";"
             var args = k.split(":").slice(1)
             if (args[0]) {
@@ -7168,7 +6667,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
         } else if (k0 === "_quest" || k0 === "?") {
-            
+
             answer = o + "?"
             var args = k.split(":").slice(1)
             if (args[0]) {
@@ -7193,57 +6692,57 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 var _text = toValue({ req, res, _window, lookupActions, awaits, id, __, e, value: args.join(":"), params })
                 answer = o = o + _text
             }
-            
+
         } else if (k0 === "_equal" || k0 === "=") {
-            
+
             answer = o + "="
             var args = k.split(":").slice(1)
             if (args[0]) {
                 var _text = toValue({ req, res, _window, lookupActions, awaits, id, __, e, value: args.join(":"), params })
                 answer = o = o + _text
             }
-            
+
         } else if (k0 === "_comma" || k0 === ",") {
-            
+
             answer = o + ","
             var args = k.split(":").slice(1)
             if (args[0]) {
                 var _text = toValue({ req, res, _window, lookupActions, awaits, id, __, e, value: args.join(":"), params })
                 answer = o = o + _text
             }
-            
+
         } else if (k0 === "return()") {
 
             global.__actionReturns__[0].value = answer = toValue({ _window, value: args[1], e, id, object, __, awaits, lookupActions })
             global.__actionReturns__[0].returned = true
-            
+
         } else if (k0 === "reload()") {
 
             document.location.reload(true)
-            
+
         } else if (k0 === "same()" || k0 === "isSame()") {
 
             var _next = toValue({ req, res, _window, lookupActions, awaits, id: mainId, value: args[1], params, __, e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = _next === o
-            
+                answer = _next === o
+
         } else if (k0 === "isnotSameNode()" || k0 === "isnotSame()") {
 
             var _next = toValue({ req, res, _window, lookupActions, awaits, id: mainId, value: args[1], params, __, e }) || {}
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = _next !== o
-            
+                answer = _next !== o
+
         } else if (k0 === "inOrSame()" || k0 === "insideOrSame()") {
 
             var _next = toValue({ req, res, _window, lookupActions, awaits, id: mainId, value: args[1], params, __, e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = _next.contains(o) || _next === o
-            
+                answer = _next.contains(o) || _next === o
+
         } else if (k0 === "contains()" || k0 === "contain()") {
-            
+
             var _first, _next = toValue({ req, res, _window, lookupActions, awaits, id: mainId, value: args[1], params, __, e })
             if (!_next) return
-            if (_next.nodeType === Node.ELEMENT_NODE) {}
+            if (_next.nodeType === Node.ELEMENT_NODE) { }
             else if (typeof _next === "object") _next = _next.element
             else if (typeof _next === "string" && views[_next]) _next = views[_next].element
 
@@ -7253,42 +6752,42 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (!_first || !_next) return
             if (_first.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = _first.contains(_next)
-            
+                answer = _first.contains(_next)
+
         } else if (k0 === "in()" || k0 === "inside()") {
-            
+
             var _next = toValue({ req, res, _window, lookupActions, awaits, id: mainId, value: args[1], params, __, e })
             if (_next) {
-              if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = _next.includes(o)
-              else if (typeof o === "object") answer = _next[o] !== undefined
-              else if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) return answer = _next.contains(o)
+                if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = _next.includes(o)
+                else if (typeof o === "object") answer = _next[o] !== undefined
+                else if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) return answer = _next.contains(o)
             } else return false
 
         } else if (k0 === "out()" || k0 === "outside()" || k0 === "isout()" || k0 === "isoutside()") {
 
             var _next = toValue({ req, res, _window, lookupActions, awaits, id: mainId, value: args[1], params, __, e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = !_next.contains(o) && _next !== o
-            
+                answer = !_next.contains(o) && _next !== o
+
         } else if (k0 === "doesnotContain()") {
 
             var args = k.split(":")
             var _next = toValue({ req, res, _window, lookupActions, awaits, id: mainId, value: args[1], params, __, e })
             if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-            answer = !o.contains(_next)
-            
+                answer = !o.contains(_next)
+
         } else if (k0 === "then()") {
 
             var args = k.split(":").slice(1)
-            
+
             if (args[0]) {
                 args.map(arg => {
                     toValue({ req, res, _window, lookupActions, awaits, id: mainId, value: arg, params, __, e })
                 })
             }
-            
+
         } else if (k0 === "and()") {
-            
+
             if (!o) {
                 answer = false
             } else {
@@ -7299,33 +6798,33 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     })
                 }
             }
-            
+
         } else if (k0 === "isEqual()" || k0 === "is()") {
-            
+
             var args = k.split(":")
             var b = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             // console.log(`'${o}'`, `'${b}'`);
             answer = isEqual(o, b)
             // console.log(answer, o[3] === b[3], o == b);
-            
+
         } else if (k0 === "greater()" || k0 === "isgreater()" || k0 === "isgreaterthan()" || k0 === "isGreaterThan()") {
-            
+
             var args = k.split(":")
             var b = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             answer = parseFloat(o) > parseFloat(b)
-            
+
         } else if (k0 === "less()" || k0 === "isless()" || k0 === "islessthan()" || k0 === "isLessThan()") {
-            
+
             var args = k.split(":")
             var b = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             answer = parseFloat(o) < parseFloat(b)
-            
+
         } else if (k0 === "isNot()" || k0 === "isNotEqual()" || k0 === "not()" || k0 === "isnot()") {
-            
+
             var args = k.split(":")
             var isNot = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             answer = !isEqual(o, isNot)
-            
+
         } else if (k0 === "true()" || k0 === "istrue()" || k0 === "isTrue()") {
 
             answer = o === true
@@ -7333,7 +6832,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
         } else if (k0 === "false()" || k0 === "falsy()" || k0 === "isfalse()" || k0 === "isFalse()") {
 
             answer = o === false
-            
+
         } else if (k0 === "notundefined()" || k0 === "isdefined()") {
 
             answer = o !== undefined
@@ -7356,7 +6855,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = o > 0 ? o : o < 0 ? -o : o
 
         } else if (k0 === "abs()") {
-            
+
             o = o.toString()
 
             var isPrice
@@ -7365,42 +6864,42 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             answer = Math.abs(o)
             if (isPrice) answer = answer.tovieweString()
-            
+
         } else if (k0 === "dividedBy()" || k0 === "divide()" || k0 === "divided()" || k0 === "divideBy()" || k0 === "/()") {
-            
+
             var args = k.split(":").slice(1), isPrice
             answer = o
             args.map(arg => {
                 var b = toValue({ req, res, _window, lookupActions, awaits, id, value: arg, params, __, e })
-                
+
                 answer = answer === 0 ? answer : (answer || "")
                 b = b === 0 ? b : (b || "")
                 answer = answer.toString()
                 b = b.toString()
-            
+
                 if (answer.includes(",") || b.includes(",")) isPrice = true
-                
+
                 b = toNumber(b)
                 answer = toNumber(answer)
 
                 answer = answer % b === 0 ? answer / b : answer * 1.0 / b
             })
             if (isPrice) answer = answer.tovieweString()
-            
+
         } else if (k0 === "times()" || k0 === "multiplyBy()" || k0 === "multiply()" || k0 === "mult()" || k0 === "x()" || k0 === "*()") {
-            
+
             var args = k.split(":").slice(1), isPrice
             answer = o
             args.map(arg => {
                 var b = toValue({ req, res, _window, lookupActions, awaits, id, value: arg, params, __, e })
-                
+
                 answer = answer === 0 ? answer : (answer || "")
                 b = b === 0 ? b : (b || "")
                 answer = answer.toString()
                 b = b.toString()
-                
+
                 if (answer.includes(",") || b.includes(",")) isPrice = true
-                
+
                 if (typeof b === "number") {
 
                     b = toNumber(b)
@@ -7418,46 +6917,46 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 }
             })
             if (isPrice) answer = answer.tovieweString()
-            
+
         } else if (k0 === "add()" || k0 === "plus()" || k0 === "+()") {
-            
+
             var args = k.split(":").slice(1), isPrice
             answer = o
             args.map(arg => {
                 var b = toValue({ req, res, _window, lookupActions, awaits, id, value: arg, params, __, e })
-                
+
                 answer = answer === 0 ? answer : (answer || "")
                 b = b === 0 ? b : (b || "")
                 answer = answer.toString()
                 b = b.toString()
                 var space = answer.slice(-1) === " " || b.slice(-1) === " "
-                
+
                 if (answer.includes(",") || b.includes(",")) isPrice = true
-                
+
                 b = toNumber(b)
                 answer = toNumber(answer)
 
                 answer = space ? answer + " " + b : answer + b
             })
             if (isPrice) answer = answer.tovieweString()
-            
+
         } else if (k0 === "subs()" || k0 === "minus()" || k0 === "-()") {
-            
+
             var args = k.split(":").slice(1), isPrice
             answer = o
             args.map(arg => {
 
                 var b = toValue({ req, res, _window, lookupActions, awaits, id, value: arg, params, e, __ })
-            
+
                 answer = answer.toString()
                 b = b.toString()
-                
+
                 var isPrice
                 if (answer.includes(",") || b.includes(",")) isPrice = true
-                
+
                 b = toNumber(b)
                 answer = toNumber(answer)
-                
+
                 if (!isNaN(o) && !isNaN(b)) answer = answer - b
                 else answer = answer.split(b)[0] - answer.split(b)[1]
             })
@@ -7465,9 +6964,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (isPrice) answer = answer.tovieweString()
 
         } else if (k0 === "mod()") {
-            
+
             var b = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
-            
+
             /*o = o === 0 ? o : (o || "")
             b = b === 0 ? b : (b || "")
             o = o.toString()
@@ -7475,19 +6974,19 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
             var isPrice
             if (o.includes(",") || b.includes(",")) isPrice = true*/
-            
+
             b = toNumber(b)
             o = toNumber(o)
 
             answer = o % b
             //if (isPrice) answer = answer.tovieweString()
-            
+
         } else if (k0 === "sum()") {
-            
+
             answer = o.reduce((o, k) => o + toNumber(k), 0)
 
         } else if (k0 === "src()") {
-            
+
             var _o
             if (args[1]) _o = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             else _o = o
@@ -7497,9 +6996,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var __o
             if (_o.type !== "Image") {
 
-              var imageEl = _o.element.getElementsByTagName("IMG")[0]
-              if (imageEl) __o = views[imageEl.id]
-              else return
+                var imageEl = _o.element.getElementsByTagName("IMG")[0]
+                if (imageEl) __o = views[imageEl.id]
+                else return
 
             } else __o = _o
 
@@ -7511,125 +7010,125 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else if (__o.nodeType === Node.ELEMENT_NODE) answer = __o.src = value
 
         } else if (k0 === "fileReader()") {
-            
-          var _files = [], _params = args[1]
-          if (args.length === 2 && e.target && e.target.files) {
 
-            // fileReader():actions
-            _files = [...e.target.files]
+            var _files = [], _params = args[1]
+            if (args.length === 2 && e.target && e.target.files) {
 
-          } else {
+                // fileReader():actions
+                _files = [...e.target.files]
 
-            // fileReader():file:actions
-            if (isParam({ _window, string: args[1] })) {
-                _params = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
-                _files = _params.files ? _params.files : (_params.file ? toArray(_params.file) : [])
-            } else _files = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
-            _params = args[2]
-          }
+            } else {
 
-          if (!_files || (Array.isArray(_files) && _files.length === 0)) return
-          if (typeof _files !== "object") _files = [_files]
-          _files = [..._files]
-          global.fileReader = []
-          var __key = generate()
-          global.__COUNTER__ = global.__COUNTER__ || {}
-          global.__COUNTER__[__key] = {
-            length: _files.length,
-            count: 0
-          }
-
-          _files.map(file => {
-            
-            var reader = new FileReader()
-            reader.onload = (e) => {
-              global.__COUNTER__[__key].count++;
-              global.fileReader.push({
-                readAsDataURL: true,
-                type: file.type,
-                lastModified: file.lastModified,
-                name: file.name,
-                size: file.size,
-                file: e.target.result,
-                url: e.target.result
-              })
-              if (global.__COUNTER__[__key].count === global.__COUNTER__[__key].length) {
-                global.file = global.fileReader[0]
-                global.files = global.fileReader
-                console.log(global.files);
-                toParam({ req, res, _window, lookupActions, awaits, id, e, __: [(global.files.length > 1 ? global.files : global.file), ...__],  string: _params })
-              } 
+                // fileReader():file:actions
+                if (isParam({ _window, string: args[1] })) {
+                    _params = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
+                    _files = _params.files ? _params.files : (_params.file ? toArray(_params.file) : [])
+                } else _files = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
+                _params = args[2]
             }
 
-            reader.readAsDataURL(file)
-          })
+            if (!_files || (Array.isArray(_files) && _files.length === 0)) return
+            if (typeof _files !== "object") _files = [_files]
+            _files = [..._files]
+            global.fileReader = []
+            var __key = generate()
+            global.__COUNTER__ = global.__COUNTER__ || {}
+            global.__COUNTER__[__key] = {
+                length: _files.length,
+                count: 0
+            }
+
+            _files.map(file => {
+
+                var reader = new FileReader()
+                reader.onload = (e) => {
+                    global.__COUNTER__[__key].count++;
+                    global.fileReader.push({
+                        readAsDataURL: true,
+                        type: file.type,
+                        lastModified: file.lastModified,
+                        name: file.name,
+                        size: file.size,
+                        file: e.target.result,
+                        url: e.target.result
+                    })
+                    if (global.__COUNTER__[__key].count === global.__COUNTER__[__key].length) {
+                        global.file = global.fileReader[0]
+                        global.files = global.fileReader
+                        console.log(global.files);
+                        toParam({ req, res, _window, lookupActions, awaits, id, e, __: [(global.files.length > 1 ? global.files : global.file), ...__], string: _params })
+                    }
+                }
+
+                reader.readAsDataURL(file)
+            })
 
         } else if (k0 === "clear()") {
 
             o.element.value = null
 
         } else if (k0 === "arr()" || k0 === "list()") {
-            
+
             answer = toArray(o)
             answer = [...answer]
 
         } else if (k0 === "json") {
-            
+
             answer = o + ".json"
 
         } else if (k0 === "notification()" || k0 === "notify()") {
 
-          var notify = () => {
-            if (isParam({ _window, string: args[1] })) {
+            var notify = () => {
+                if (isParam({ _window, string: args[1] })) {
 
-              var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              new Notification(_params.title || "", _params)
+                    var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                    new Notification(_params.title || "", _params)
 
-            } else {
+                } else {
 
-              var title = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-              new Notification(title || "")
+                    var title = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                    new Notification(title || "")
+                }
             }
-          }
 
-          if (!("Notification" in window)) {
-            // Check if the browser supports notifications
-            alert("This browser does not support notification");
-          } else if (Notification.permission === "granted") {
-            // Check whether notification permissions have already been granted;
-            // if so, create a notification
-            notify()
-            // …
-          } else if (Notification.permission !== "denied") {
-
-            // We need to ask the user for permission
-            Notification.requestPermission().then((permission) => {
-              // If the user accepts, let's create a notification
-              if (permission === "granted") {
+            if (!("Notification" in window)) {
+                // Check if the browser supports notifications
+                alert("This browser does not support notification");
+            } else if (Notification.permission === "granted") {
+                // Check whether notification permissions have already been granted;
+                // if so, create a notification
                 notify()
                 // …
-              }
-            });
-          }
-          
+            } else if (Notification.permission !== "denied") {
+
+                // We need to ask the user for permission
+                Notification.requestPermission().then((permission) => {
+                    // If the user accepts, let's create a notification
+                    if (permission === "granted") {
+                        notify()
+                        // …
+                    }
+                });
+            }
+
         } else if (k0 === "exists()") {
-            
+
             answer = o !== undefined ? true : false
 
         } else if (k0 === "alert()") {
-            
+
             var text = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             alert(text)
 
         } else if (k0 === "clone()") {
-            
+
             var _o
             if (args[1]) _o = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             else _o = o
             answer = clone(_o)
 
         } else if (k0 === "override()") {
-            
+
             var args = k.split(":"), _obj, _o
             if (args[2]) {
 
@@ -7648,12 +7147,12 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 else if (typeof _obj === "object") answer = _o = [..._o, ...Object.values(_obj)]
 
             } else if (typeof _o === "object") {
-                
-                if (typeof _obj === "object") answer = _o = {..._o, ..._obj}
+
+                if (typeof _obj === "object") answer = _o = { ..._o, ..._obj }
                 else if (Array.isArray(_obj)) {
                     var __obj = {}
                     _obj.map(obj => __obj[obj.id] = obj)
-                    answer = _o = {..._o, ...__obj}
+                    answer = _o = { ..._o, ...__obj }
                 }
             } else answer = _o = _obj
 
@@ -7667,41 +7166,41 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (typeof _o === "string" && views[_o]) el = views[_o].element
             else if (_o.nodeType === Node.ELEMENT_NODE) el = _o
             else if (_o.element) el = _o.element
-            
+
             var _view
             if (el) _view = views[el.id]
-            
+
             if (_view && (_view.islabel || _view.labeled) && el && _view.type !== "Input") el = el.getElementsByTagName("INPUT")[0]
             else if (_view && _view.editable) el = _view.element
-            
+
             if (el) {
                 if (window.views[el.id].type === "Input") {
 
                     answer = el.value
                     if (i === lastIndex && key && value !== undefined && o.element) answer = el.value = value
                     else if (path[i + 1] === "del()") {
-                      breakRequest = i + 1
-                      answer = el.value = ""
+                        breakRequest = i + 1
+                        answer = el.value = ""
                     }
-                    
+
                 } else {
 
-                    answer = (el.textContent===undefined) ? el.innerText : el.textContent
+                    answer = (el.textContent === undefined) ? el.innerText : el.textContent
                     if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
                     else if (path[i + 1] === "del()") {
-                      breakRequest = i + 1
-                      answer = el.innerHTML = ""
+                        breakRequest = i + 1
+                        answer = el.innerHTML = ""
                     }
                 }
-                
+
                 if (views[el.id].required) answer = answer.slice(0, -1)
-                
+
             } else if (view && view.type === "Input") {
 
                 if (i === lastIndex && key && value !== undefined) answer = _o[view.element.value] = value
                 else if (path[i + 1] === "del()") {
-                  breakRequest = i + 1
-                  answer = _o[view.element.value] = ""
+                    breakRequest = i + 1
+                    answer = _o[view.element.value] = ""
                 }
                 else return answer = _o[view.element.value]
 
@@ -7709,32 +7208,32 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 if (i === lastIndex && key && value !== undefined) answer = _o[view.element.innerHTML] = value
                 else if (path[i + 1] === "del()") {
-                  breakRequest = i + 1
-                  answer = _o[view.element.innerHTML] = ""
+                    breakRequest = i + 1
+                    answer = _o[view.element.innerHTML] = ""
                 }
                 answer = (view.element.textContent === undefined) ? view.element.innerText : view.element.textContent
             }
- 
+
         } else if (k0 === "min()") {
-            
+
             var el
             if (o.nodeType === Node.ELEMENT_NODE) el = o
             else if (o.element) el = o.element
-            
+
             if (el) answer = el.min
             if (i === lastIndex && key && value !== undefined) el.min = value
- 
+
         } else if (k0 === "max()") {
-            
+
             var el
             if (o.nodeType === Node.ELEMENT_NODE) el = o
             else if (o.element) el = o.element
-            
+
             if (el) answer = el.max
             if (i === lastIndex && key && value !== undefined) el.max = value
- 
+
         } else if (k0 === "field()") {
-            
+
             var fields = k.split(":").slice(1)
             fields.map((field, i) => {
                 if (i % 2) return
@@ -7743,7 +7242,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 o[f] = v
             })
             answer = o
-            
+
         } /*else if (k0 === "object()" || k0 === "{}") {
             
             answer = {}
@@ -7763,26 +7262,26 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             
         } */else if (k0 === "unshift()" || k0 === "pushFirst()" || k0 === "pushStart()") { // push to the begining, push first, push start
 
-          var _item = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e, object })
-          var _index = 0
-          if (_index === undefined) _index = o.length
-          
-          if (Array.isArray(_item)) {
-              
-              _item.map(_item => {
-                  o.splice(_index, 0, _item)
-                  _index += 1
-              })
+            var _item = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e, object })
+            var _index = 0
+            if (_index === undefined) _index = o.length
 
-          } else if (Array.isArray(o)) o.splice(_index, 0, _item)
-          answer = o
-            
+            if (Array.isArray(_item)) {
+
+                _item.map(_item => {
+                    o.splice(_index, 0, _item)
+                    _index += 1
+                })
+
+            } else if (Array.isArray(o)) o.splice(_index, 0, _item)
+            answer = o
+
         } else if (k0.includes("push()")) {
-            
+
             if (!Array.isArray(o)) {
                 o = reducer({ req, res, _window, id, path: path.slice(0, i), value: [], key: true, __, e, object: _object })
             }
-            
+
             var _item, _index
             if (k0.charAt(0) === "_") {
                 _item = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], __: [o, ...__], e, object })
@@ -7793,9 +7292,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
             if (_index === undefined) _index = o.length
-            
+
             if (Array.isArray(_item)) {
-                
+
                 _item.map(_item => {
                     o.splice(_index, 0, _item)
                     _index += 1
@@ -7803,7 +7302,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             } else if (Array.isArray(o)) o.splice(_index, 0, _item)
             answer = o
-            
+
         } else if (k0 === "pushItems()") {
 
             args.slice(1).map(arg => {
@@ -7818,7 +7317,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var _first
             if (!isParam({ _window, id, string: args[1] })) _first = args[1] !== undefined ? toValue({ _window, id, value: args[1], __, e, object }) : 0
             if (args[2]) _last = toValue({ _window, id, value: args[2], __, e, object })
-            
+
             if (typeof _first !== "number") {
 
                 var _items = o.filter(o => toApproval({ _window, e, string: args[1], id, object: o, __ }))
@@ -7827,48 +7326,48 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
                 })
-                
+
                 return answer = o
             }
 
             o.splice(_first, _last || 1)
             answer = o
-            
+
         } else if (k0 === "pullItem()") { // pull item
 
             var _item = toValue({ _window, id, value: args[1], __, e, object })
             var _index = o.findIndex(item => isEqual(item, _item))
-            if (_index !== -1) o.splice(_index,1)
+            if (_index !== -1) o.splice(_index, 1)
             answer = o
 
         } else if (k0 === "pullLast()") {
-            
+
             // if no it pulls the last element
             o.splice(o.length - 1, 1)
             answer = o
-            
+
         } else if (k0 === "findItems()") {
 
             var _item = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             answer = o.filter(item => isEqual(item, _item))
-            
+
         } else if (k0 === "findItem()") {
 
             var _item = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             answer = o.find(item => isEqual(item, _item))
-            
+
         } else if (k0 === "findItemIndex()") {
 
             var _item = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
             answer = o.findIndex(item => isEqual(item, _item))
-            
+
         } else if (k0 === "filterItems()") {
-            
+
             var _items
 
-            if (k[0] === "_") _items = o.filter(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __: [o, ...__], req, res }) )
+            if (k[0] === "_") _items = o.filter(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __: [o, ...__], req, res }))
             else _items = o.filter(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, object: o, req, res, __ }))
-            
+
             _items.map(_item => {
                 var _index = o.findIndex(item => isEqual(item, _item))
                 if (_index !== -1) o.splice(_index, 1)
@@ -7880,31 +7379,31 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             var _index
 
-            if (k[0] === "_") _index = o.findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __: [o, ...__], req, res }) )
+            if (k[0] === "_") _index = o.findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __: [o, ...__], req, res }))
             else _index = o.findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, object: o, req, res, __ }))
 
-            if (_index !== -1) o.splice(_index , 1)
+            if (_index !== -1) o.splice(_index, 1)
             answer = o
-            
+
         } else if (k0 === "splice()") {
 
             // push at a specific index / splice():value:index
-            var _value = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __,e })
-            var _index = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __,e })
+            var _value = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
+            var _index = toValue({ req, res, _window, lookupActions, awaits, id, value: args[2], params, __, e })
             if (_index === undefined) _index = o.length - 1
             // console.log(clone(o), _valuendex);
             o.splice(parseInt(_index), 0, _value)
             answer = o
-            
+
         } else if (k0 === "remove()" || k0 === "rem()") { // remove child with data
-            
+
             clearTimeout(global["tooltip-timer"])
             delete global["tooltip-timer"]
             views.tooltip.element.style.opacity = "0"
-            
+
             if (args[1] && !isParam({ _window, string: args[1] })) {
 
-                var _id = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __,e })
+                var _id = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
                 if (!views[_id]) return console.log("Element doesnot exist!")
                 return remove({ id: _id })
 
@@ -7919,14 +7418,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             var _parent = views[views[o.id].parent]
             _parent.length = (_parent.element.children.length - 1) || 0
-            
+
             remove({ id: o.id })
             return true
 
         } else if (k0 === "removeChild()" || k0 === "remChild()" || k0 === "removeView()" || k0 === "remView()") { // remove only view without removing data
 
             if (args[1]) {
-                var _id = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __,e })
+                var _id = toValue({ req, res, _window, lookupActions, awaits, id, value: args[1], params, __, e })
                 if (!views[_id]) return console.log("Element doesnot exist!")
                 return remove({ id: _id, remove: { onlyChild: true } })
             }
@@ -7943,41 +7442,41 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "scrollTo()") {
 
-          var _x = toValue({ req, res, _window, lookupActions, awaits, e, id, value: args[1], __, params })
-          var _y = toValue({ req, res, _window, lookupActions, awaits, e, id, value: args[2], __, params })
-          window.scrollTo(_x, _y)
-          
+            var _x = toValue({ req, res, _window, lookupActions, awaits, e, id, value: args[1], __, params })
+            var _y = toValue({ req, res, _window, lookupActions, awaits, e, id, value: args[2], __, params })
+            window.scrollTo(_x, _y)
+
         } else if (k0 === "droplist()") {
-            
+
             var _params = toParam({ req, res, _window, lookupActions, awaits, e, id, string: args[1], __, params })
             require("./droplist").droplist({ id, e, droplist: _params, __ })
-            
+
         } else if (k0 === "keys()") {
-            
+
             answer = Object.keys(o)
-            
+
         } else if (k0 === "key()") {
-            
+
             if (i === lastIndex && value !== undefined && key) answer = Object.keys(o)[0] = value
             else answer = Object.keys(o)[0]
-            
+
         } else if (k0 === "values()") { // values in an object
-            
+
             if (Array.isArray(o)) answer = o
             else answer = Object.values(o)
-            
+
         } else if (k0 === "value()") { // value 0 in an object
-            
+
             if (i === lastIndex && value !== undefined && key) answer = o[Object.keys(o)[0]] = value
             else answer = Object.values(o)[0]
-            
+
         } else if (k0 === "toId()") {
-            
+
             var checklist = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }) || []
             answer = toId({ string: o, checklist })
 
         } else if (k0 === "generate()" || k0 === "gen()") {
-            
+
             if (isParam({ _window, string: args[1] })) {
 
                 _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
@@ -7992,21 +7491,21 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
         } else if (k0 === "includes()" || k0 === "inc()") {
-          
+
             var _item = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __ })
             if (typeof o === "string") {
                 answer = o.split(_item).length > 1
             } else if (Array.isArray(o)) {
                 answer = o.find(item => isEqual(item, _item)) ? true : false
             }
-            
+
         } else if (k0 === "notInclude()" || k0 === "doesnotInclude()") {
-            
+
             var _include = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __ })
             answer = !o.includes(_include)
-            
+
         } else if (k0 === "capitalize()") {
-            
+
             if (isParam({ _window, string: args[1] })) {
 
                 _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
@@ -8014,63 +7513,63 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 else answer = capitalizeFirst(o)
 
             } else answer = capitalize(o)
-            
+
         } else if (k0 === "capitalizeFirst()") {
-            
+
             answer = capitalizeFirst(o)
-            
+
         } else if (k0 === "uncapitalize()") {
-            
+
             answer = capitalize(o, true)
-            
+
         } else if (k0 === "uppercase()" || k0 === "toUpperCase()" || k0 === "touppercase()") {
-            
+
             var _o
             if (args[1]) _o = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __ })
             else _o = o
             answer = typeof _o === "string" ? _o.toUpperCase() : _o
-            
+
         } else if (k0 === "lowercase()" || k0 === "toLowerCase()" || k0 === "tolowercase()") {
-            
+
             answer = o.toLowerCase()
-            
+
         } else if (k0 === "len()" || k0 === "length()") {
-            
-          if (Array.isArray(o)) answer = o.length
-          else if (typeof o === "string") answer = o.split("").length
-          else if (typeof o === "object") answer = Object.keys(o).length
-            
+
+            if (Array.isArray(o)) answer = o.length
+            else if (typeof o === "string") answer = o.split("").length
+            else if (typeof o === "object") answer = Object.keys(o).length
+
         } else if (k0 === "promise()") {
-            
-          async () => {
-            var _params = await new Promise((res) => {
-              toParam({ req, res, _window, lookupActions, awaits, id, e, string: args[1], params, __ })
-            })
-            toParam({ req, res, _window, lookupActions, awaits, id, e, string: args[1], params, __: [_params, ...__] })
-          }
+
+            async () => {
+                var _params = await new Promise((res) => {
+                    toParam({ req, res, _window, lookupActions, awaits, id, e, string: args[1], params, __ })
+                })
+                toParam({ req, res, _window, lookupActions, awaits, id, e, string: args[1], params, __: [_params, ...__] })
+            }
 
         } else if (k0 === "resolve()") {
 
-          res(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }))
+            res(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }))
 
         } else if (k0 === "require()") {
 
-          require(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }))
+            require(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }))
 
         } else if (k0 === "new()") {
-            
-          var myparams = [], _className = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-          args.slice(1).map(arg => {
-            myparams.push(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: arg || "", params }))
-          })
-          if (_className && typeof (new [_className]()) === "object") answer = new [_className](...myparams)
+
+            var myparams = [], _className = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            args.slice(1).map(arg => {
+                myparams.push(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: arg || "", params }))
+            })
+            if (_className && typeof (new [_className]()) === "object") answer = new [_className](...myparams)
 
         } else if (k0 === "today()") {
-            
-          answer = new Date()
+
+            answer = new Date()
 
         } else if (k0 === "todayEnd()") {
-            
+
             answer = new Date()
             answer.setUTCHours(23, 59, 59, 999)
 
@@ -8079,9 +7578,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var _date = new Date()
             var timeZone = Math.abs(_date.getTimezoneOffset()) * 60 * 1000
             return timeZone
-            
+
         } else if (k0 === "toClock()") { // dd:hh:mm:ss
-            
+
             /*
             if (args[1]) days_ = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __ })
             if (args[2]) hours_ = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[2], params, __ })
@@ -8092,27 +7591,27 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (!_params.timestamp) _params.timestamp = o
 
             answer = toClock(_params)
-            
+
         } else if (k0 === "toSimplifiedDateAr()") {
-            
+
             answer = toSimplifiedDate({ timestamp: o, lang: "ar" })
 
         } else if (k0 === "toSimplifiedDateTimeAr()") {
-            
+
             answer = toSimplifiedDate({ timestamp: o, lang: "ar", time: true })
 
         } else if (k0 === "toSimplifiedDate()" || k0 === "toSimplifiedDateEn()") {
-            
+
             answer = toSimplifiedDate({ timestamp: o, lang: "en" })
 
         } else if (k0 === "toSimplifiedDateTime()" || k0 === "toSimplifiedDateTimeEn()") {
-            
+
             answer = toSimplifiedDate({ timestamp: o, lang: "en", time: true })
 
         } else if (k0 === "ar()" || k0 === "arabic()") {
             //
-            if (Array.isArray(o)) answer = o.map(o => o.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d]))
-            else answer = o.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+            if (Array.isArray(o)) answer = o.map(o => o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
+            else answer = o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])
 
         } else if (k0 === "date()" || k0 === "toDate()") {
 
@@ -8133,7 +7632,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 if (typeof o === "string") {
 
                     if (format.split("/").length > 1) {
-                        
+
                         var _date = o.split("/")
                         format.split("/").map((format, i) => {
                             if (format === "dd") day = _date[i]
@@ -8144,29 +7643,29 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                             else if (format === "ss") sec = _date[i]
                         })
                     }
-                    
+
                     return new Date(year, month, day, hour, min, sec)
 
                 } else if (_options.excel && typeof o === "number") {
 
                     function ExcelDateToJSDate(serial) {
 
-                      var utc_days  = Math.floor(serial - 25569)
-                      var utc_value = utc_days * 86400                                        
-                      var date_info = new Date(utc_value * 1000)
-                    
-                      var fractional_day = serial - Math.floor(serial) + 0.0000001
-                    
-                      var total_seconds = Math.floor(86400 * fractional_day)
-                    
-                      var seconds = total_seconds % 60
-                    
-                      total_seconds -= seconds
-                    
-                      var hours = Math.floor(total_seconds / (60 * 60))
-                      var minutes = Math.floor(total_seconds / 60) % 60
-                    
-                      return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds)
+                        var utc_days = Math.floor(serial - 25569)
+                        var utc_value = utc_days * 86400
+                        var date_info = new Date(utc_value * 1000)
+
+                        var fractional_day = serial - Math.floor(serial) + 0.0000001
+
+                        var total_seconds = Math.floor(86400 * fractional_day)
+
+                        var seconds = total_seconds % 60
+
+                        total_seconds -= seconds
+
+                        var hours = Math.floor(total_seconds / (60 * 60))
+                        var minutes = Math.floor(total_seconds / 60) % 60
+
+                        return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds)
                     }
 
                     return ExcelDateToJSDate(o)
@@ -8174,23 +7673,23 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             } else {
 
-              var format = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __ }) || "format1"
+                var format = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __ }) || "format1"
 
-              if (!isNaN(o) && typeof o === "string") o = parseInt(o)
-              var _date = new Date(o)
-              var _year = _date.getFullYear()
-              var _month = _date.getMonth() + 1
-              var _day = _date.getDate()
-              var _dayofWeek = _date.getDay()
-              var _hour = _date.getHours()
-              var _mins = _date.getMinutes()
-              var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-              var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+                if (!isNaN(o) && typeof o === "string") o = parseInt(o)
+                var _date = new Date(o)
+                var _year = _date.getFullYear()
+                var _month = _date.getMonth() + 1
+                var _day = _date.getDate()
+                var _dayofWeek = _date.getDay()
+                var _hour = _date.getHours()
+                var _mins = _date.getMinutes()
+                var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+                var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
 
-              if (format.replace(" ", "") === "format1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
-              else if (format.replace(" ", "") === "format2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
-              else if (format.replace(" ", "") === "format3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
-              else if (format.replace(" ", "") === "format4")return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
+                if (format.replace(" ", "") === "format1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
+                else if (format.replace(" ", "") === "format2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
+                else if (format.replace(" ", "") === "format3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
+                else if (format.replace(" ", "") === "format4") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
             }
 
         } else if (k0 === "toDateInputFormat()" || k0 === "formatDate()") { // returns date for input in a specific format
@@ -8245,7 +7744,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     }
                 })
 
-            } else if (format.split("T").length === 2 || format.split("T")[0].split("-").length === 3) { 
+            } else if (format.split("T").length === 2 || format.split("T")[0].split("-").length === 3) {
 
                 var length = format.split("T").length
                 format.split("T").map((format, i) => {
@@ -8297,37 +7796,37 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 // T${_hour.toString().length === 1 ? `0${_hour}` :_hour}:${_min.toString().length === 1 ? `0${_min}` :_min}
                 return `${_year}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
             }*/
-            
+
             return newDate
 
         } else if (k0 === "toUTCString()") {
-            
+
             if (!isNaN(o) && (parseFloat(o) + "").length === 13) o = new Date(parseFloat(o))
             answer = o.toUTCString()
-            
+
         } else if (k0 === "getGeoLocation") {
 
-          navigator.geolocation.getCurrentPosition((position) => { console.log(position); global.geolocation = position })
+            navigator.geolocation.getCurrentPosition((position) => { console.log(position); global.geolocation = position })
 
         } else if (k0 === "counter()") {
-            
-          var _options = {}
-          if (isParam({ _window, string: args[1] })) _options = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-          else _options = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __ })
 
-          _options.counter = _options.counter || _options.start || _options.count || 0
-          _options.length = _options.length || _options.len || _options.maxLength || 0
-          _options.end = _options.end || _options.max || _options.maximum || 999999999999
-          //_options.timer = _options.timer || (new Date(_date.setHours(0,0,0,0))).getTime()
+            var _options = {}
+            if (isParam({ _window, string: args[1] })) _options = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+            else _options = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1], params, __ })
 
-          answer = require("./counter").counter({ ..._options })
+            _options.counter = _options.counter || _options.start || _options.count || 0
+            _options.length = _options.length || _options.len || _options.maxLength || 0
+            _options.end = _options.end || _options.max || _options.maximum || 999999999999
+            //_options.timer = _options.timer || (new Date(_date.setHours(0,0,0,0))).getTime()
+
+            answer = require("./counter").counter({ ..._options })
 
         } else if (k0 === "time()") {
 
             var _o
             if (args[1]) _o = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1] || "", params, __ })
             else _o = o
-            
+
             if (parseInt(_o)) {
 
                 var _1Day = 24 * 60 * 60 * 1000, _1Hr = 60 * 60 * 1000, _1Min = 60 * 1000
@@ -8346,15 +7845,15 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
         } else if (k0 === "setTime()") {
-            
+
             answer = new Date().setTime(o)
-            
+
         } else if (k0 === "getTime()" || k0 === "timestamp()") {
-            
+
             var _o
             if (args[1]) _o = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1] || "", params, __ })
             else _o = o
-            
+
             if (_o instanceof Date) answer = _o.getTime()
             else if (_o.length === 5 && _o.split(":").length === 2) {
 
@@ -8371,22 +7870,22 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             } else {
 
-              _o = new Date(_o)
-              if (_o.getTime()) return answer = _o.getTime()
-              _o = new Date()
-              answer = _o.getTime()
+                _o = new Date(_o)
+                if (_o.getTime()) return answer = _o.getTime()
+                _o = new Date()
+                answer = _o.getTime()
             }
-            
+
         } else if (k0 === "getDateTime()") {
-            
+
             answer = getDateTime(o)
 
         } else if (k0 === "getDaysInMonth()") {
-            
+
             answer = getDaysInMonth(o)
 
         } else if (k0 === "1MonthLater()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
@@ -8396,7 +7895,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
 
         } else if (k0 === "2MonthLater()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
@@ -8408,7 +7907,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
 
         } else if (k0 === "3MonthLater()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
@@ -8422,7 +7921,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
 
         } else if (k0 === "1MonthEarlier") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
@@ -8432,7 +7931,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
 
         } else if (k0 === "2MonthEarlier") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
@@ -8444,7 +7943,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
 
         } else if (k0 === "3MonthEarlier") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
@@ -8458,78 +7957,78 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
 
         } else if (k0 === "todayStart()" || k0 === "today()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = _date.setHours(_hrs,_min,0,0)
-            
+            answer = _date.setHours(_hrs, _min, 0, 0)
+
         } else if (k0 === "todayEnd()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = _date.setHours(23 + _hrs,59 + _min,59,999)
-            
+            answer = _date.setHours(23 + _hrs, 59 + _min, 59, 999)
+
         } else if (k0 === "monthStart()" || k0 === "month()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(_hrs,_min,0,0)
+            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "monthEnd()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = new Date(_date.setMonth(_date.getMonth(), getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
+            answer = new Date(_date.setMonth(_date.getMonth(), getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "nextMonthStart()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
@@ -8537,17 +8036,17 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
-            
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+
         } else if (k0 === "nextMonthEnd()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
@@ -8555,203 +8054,203 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "2ndNextMonthStart()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
+
             var month = o.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "2ndNextMonthEnd()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
+
             var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
             var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "prevMonthStart()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
+
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "prevMonthEnd()") {
-            
+
             var _date
             if (typeof _date.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
+
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "2ndPrevMonthStart()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
+
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs,_min,0,0)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "2ndPrevMonthEnd()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
+
             var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
             var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
+            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "yearStart()" || k0 === "year()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
-            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
+
+            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "yearEnd()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
+
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "nextYearStart()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
-            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
+
+            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "nextYearEnd()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
+
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "prevYearStart()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
-            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs,_min,0,0)
+
+            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "removeDuplicates()") {
 
@@ -8770,14 +8269,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             removeDuplicates(o);
             return o
 
-          } /*else if (k0 === "duplicate()") {
+        } /*else if (k0 === "duplicate()") {
 
             var _id = args[1] ? toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }) : o.id
             require("./duplicate").duplicate({ _window, lookupActions, awaits, __, id: _id })
             return true
 
           } */else if (k0 === "stopWatchers()") {
-            
+
             var _view
             if (args[1]) _view = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             else _view = o
@@ -8790,25 +8289,25 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             })
 
         } else if (k0 === "prevYearEnd()") {
-            
+
             var _date
             if (typeof o.getMonth === 'function') _date = o
             else _date = new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
-            
+
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
-            
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs,59 + _min,59,999)
+
+            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "exist()" || k0 === "exists()") {
-            
+
             answer = o !== undefined ? true : false
-            
+
         } /*else if (k0 === "open()") {
             
           var _url
@@ -8817,17 +8316,17 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
           open(_url)
           
         } */else if (k0 === "removeMapping()") {
-            
+
             if (o.type.slice(0, 1) === "[") {
                 var _type = o.type.slice(1).split("]")[0]
                 o.type = _type + o.type.split("]").slice(1).join("]")
             }
             answer = o
-            
+
         } else if (k0 === "files()") {
-            
-          if (e) answer = [...e.target.files]
-          
+
+            if (e) answer = [...e.target.files]
+
         } else if (k0 === "replace()") { //replace():prev:new
 
             if (!Array.isArray(o) && typeof o !== "string") {
@@ -8851,7 +8350,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 else o.push(rec2)
                 return o
             }
-            
+
         } else if (k0 === "replaceItem()") {
 
             if (!Array.isArray(o)) return
@@ -8866,57 +8365,57 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else if (args[1]) {
 
                 var _data = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-                
+
                 if (typeof o[0] === "object" || (typeof o[0] === "undefined" && typeof _data === "object")) {
 
-                  var _index = o.findIndex(item => item.id === _data.id)
-                  if (_index >= 0) o[_index] = _data
-                  else o.push(_data)
+                    var _index = o.findIndex(item => item.id === _data.id)
+                    if (_index >= 0) o[_index] = _data
+                    else o.push(_data)
 
                 } else if ((typeof o[0] === "undefined" && typeof _data !== "object") || typeof o[0] === "number" || typeof o[0] === "string") {
 
-                  var _index = o.findIndex(item => item === _data)
-                  if (_index < 0) o.push(_data)
+                    var _index = o.findIndex(item => item === _data)
+                    if (_index < 0) o.push(_data)
                 }
             }
-            
+
         } else if (k0 === "replaceItems()") {
 
-          if (isParam({ _window, string: args[1] })) {
+            if (isParam({ _window, string: args[1] })) {
 
-              var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
-              toArray(_data).map(_data => {
-
-                var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, awaits, id, path: _path || [], value, params, __: [o, ...__], e, object: item }), reducer({ req, res, _window, lookupActions, awaits, id, path: _path || [], value, params, __: [o, ...__], e, object: _data })))
-                if (_index >= 0) o[_index] = _data
-                else o.push(_data)
-              })
-
-          } else if (args[1]) {
-
-              var _data = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }).filter(data => data !== undefined && data !== null)
-              if (typeof o[0] === "object") {
-
+                var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
                 toArray(_data).map(_data => {
-                  
-                  var _index = o.findIndex(item => item.id === _data.id)
-                  if (_index >= 0) o[_index] = _data
-                  else o.push(_data)
+
+                    var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, awaits, id, path: _path || [], value, params, __: [o, ...__], e, object: item }), reducer({ req, res, _window, lookupActions, awaits, id, path: _path || [], value, params, __: [o, ...__], e, object: _data })))
+                    if (_index >= 0) o[_index] = _data
+                    else o.push(_data)
                 })
 
-              } else if (typeof o[0] === "number" || typeof o[0] === "string") {
+            } else if (args[1]) {
 
-                toArray(_data).map(_data => {
-                  
-                  var _index = o.findIndex(item => item === _data)
-                  if (_index >= 0) o[_index] = _data
-                  else o.push(_data)
-                })
-              }
-          }
-          
-      } else if (k0 === "findAndReplaceItem()") {
+                var _data = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }).filter(data => data !== undefined && data !== null)
+                if (typeof o[0] === "object") {
+
+                    toArray(_data).map(_data => {
+
+                        var _index = o.findIndex(item => item.id === _data.id)
+                        if (_index >= 0) o[_index] = _data
+                        else o.push(_data)
+                    })
+
+                } else if (typeof o[0] === "number" || typeof o[0] === "string") {
+
+                    toArray(_data).map(_data => {
+
+                        var _index = o.findIndex(item => item === _data)
+                        if (_index >= 0) o[_index] = _data
+                        else o.push(_data)
+                    })
+                }
+            }
+
+        } else if (k0 === "findAndReplaceItem()") {
 
             if (isParam({ _window, string: args[1] })) {
 
@@ -8931,57 +8430,57 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 var _index = o.findIndex(item => item.id === _data.id)
                 if (_index >= 0) o[_index] = _data
             }
-            
+
         } else if (k0 === "replaceLast()") {
-        
+
             var _item = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1] || "", params })
             if (Array.isArray(o)) {
 
                 o[o.length - 1] = _item
                 return o
             }
-        
+
         } else if (k0 === "replaceSecondLast()" || k0 === "replace2ndLast()") {
-        
+
             var _item = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1] || "", params })
             if (Array.isArray(o)) {
 
                 o[o.length - 2] = _item
                 return o
             }
-        
+
         } else if (k0 === "replaceFirst()" || k0 === "replace1st()") {
-        
+
             var _item = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1] || "", params })
             if (Array.isArray(o)) {
 
                 o[0] = _item
                 return o
             }
-        
+
         } else if (k0 === "replaceSecond()" || k0 === "replace2nd()") {
-        
+
             var _item = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1] || "", params })
             if (Array.isArray(o)) {
 
                 o[1] = _item
                 return o
             }
-        
+
         } else if (k0 === "import()") {
-        
+
             var _params = toParam({ req, res, _window, id, e, __, string: args[1] })
             _params.type = _params.json ? "json" : _params.type
 
-            var _await = "", myawait = {}
+            var _await = "", myawait = { id: generate(), params: { __ } }
             if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "import()" }
+                _await = global.__codes__[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "import()", params: { __ } }
                 awaits.unshift(myawait)
             }
 
             if (_params.type === "json") {
-                
+
                 importJson({ req, res, _window, myawait, lookupActions, awaits, id, e, __, params, asyncer: true })
                 return true
 
@@ -8989,16 +8488,16 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 require(toValue({ req, res, _window, lookupActions, awaits, myawait, id, e, __, value: args[1], params }))
             }
-        
+
         } else if (k0 === "export()") {
-        
+
             var _params = toParam({ req, res, _window, id, e, __, string: args[1] })
             _params.type = _params.json ? "json" : _params.type
 
             if (_params.type === "json") exportJson(_params)
-        
+
         } else if (k0 === "exportJson()") {
-            
+
             if (isParam({ _window, string: args[1] })) {
 
                 var _params = toParam({ req, res, _window, id, e, __, string: args[1] })
@@ -9007,41 +8506,44 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             } else {
 
                 var _name = toValue({ req, res, _window, id, e, __, value: args[1], params })
-                exportJson({ data: o, name: _name})
+                exportJson({ data: o, name: _name })
             }
-            
+
         } else if (k0 === "flat()") {
-            
-          if (typeof o === "object") {
-            if (Array.isArray(o)) {
-                o = [...o]
-                answer =  o.flat()
-            } else {
-                _object = {..._object, ...o}
-                return _object
-            }
-          } else return o
-            
+
+            if (typeof o === "object") {
+                if (Array.isArray(o)) {
+                    o = [...o]
+                    answer = o.flat()
+                } else {
+                    //_object = {..._object, ...o}
+                    if (typeof _object === "object") {
+                        Object.entries(o).map(([key, value]) => _object[key] = value)
+                    }
+                    return _object
+                }
+            } else return o
+
         } else if (k0 === "getDeepChildrenId()") {
-            
+
             answer = getDeepChildrenId({ _window, lookupActions, awaits, id: o.id })
-            
+
         } else if (k0 === "deep()" || k0 === "deepChildren()" || k0 === "getDeepChildren()") {
-            
+
             answer = getDeepChildren({ _window, lookupActions, awaits, id: o.id })
-            
+
         } else if (k0.includes("filter()")) {
-            
+
             var args = k.split(":").slice(1), isnot
             if (!args[0]) isnot = true
-            
+
             if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
             else args.map(arg => {
-                
-                if (k[0] === "_") answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, awaits, e, string: arg, params, id, __: [o, ...__], req, res }) )
+
+                if (k[0] === "_") answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, awaits, e, string: arg, params, id, __: [o, ...__], req, res }))
                 else answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, awaits, e, string: arg, id, params, object: o, req, res, __ }))
             })
-            
+
         } /*else if (k0.includes("filterById()")) {
 
             if (k[0] === "_") {
@@ -9052,82 +8554,82 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
         } */else if (k0.includes("find()")) {
-            
+
 
             if (i === lastIndex && key && value !== undefined) {
 
                 var _index
-                if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], params, id, __: [o, ...__], req, res }) )
-                else _index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, params, __, req, res, object: o }) )
+                if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], params, id, __: [o, ...__], req, res }))
+                else _index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, params, __, req, res, object: o }))
                 if (_index !== undefined && _index !== -1) o[_index] = answer = value
-                
+
             } else {
 
-                if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], params, id, __: [o, ...__], req, res }) )
-                else answer = toArray(o).find(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, params, __, req, res, object: o }) )
+                if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], params, id, __: [o, ...__], req, res }))
+                else answer = toArray(o).find(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, params, __, req, res, object: o }))
             }
-            
+
         } else if (k0 === "sort()") {
-            
+
             var _array, _params = {}
             if (Array.isArray(o)) _array = o
             if (isParam({ _window, string: args[1] })) {
-                
+
                 _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], params })
                 _params.data = _params.data || _params.map || _params.array || _params.object || _params.list || _array
 
             } else if (args[1]) {
-              
-              _params.data = _array
-              _params.path = toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] })
+
+                _params.data = _array
+                _params.path = toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] })
             }
-            
+
             if (!_params.data && _array) _params.data = _array
             // else return o
             _params.data = answer = require("./sort").sort({ _window, lookupActions, awaits, sort: _params, id, e })
-            
+
             return answer
 
         } else if (k0.includes("findIndex()")) {
-            
+
             if (typeof o !== "object") return
-            
-            if (k[0] === "_") answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __: [o, ...__], req, res }) )
-            else answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __, req, res, object: o }) )
-            
+
+            if (k[0] === "_") answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __: [o, ...__], req, res }))
+            else answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, awaits, e, string: args[1], id, __, req, res, object: o }))
+
         } else if (k0 === "_()" || k0 === "__()" || k0 === "()") { // map()
 
             var notArray = false
-            if (args[1] && args[1].slice(0, 7) === "coded()") args[1] = global.codes[args[1]]
+            if (args[1] && args[1].slice(0, 6) === "coded@") args[1] = global.__codes__[args[1]]
             if (typeof o === "object" && !Array.isArray(o)) notArray = true
-            
+
             if (k0 === "_()") {
-              
-              toArray(o).map(o => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], value, params, __: [o, ...__], e, object, toView }) )
-              answer = o
-                
+
+                toArray(o).map(o => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], value, params, __: [o, ...__], e, object, toView }))
+                answer = o
+
             } else if (k0 === "__()") {
-              
-              toArray(o).map((o, index) => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], value, params, __: [o, index, ...__], e, object, toView }) )
-              answer = o
-              
+
+                toArray(o).map((o, index) => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], value, params, __: [o, index, ...__], e, object, toView }))
+                answer = o
+
             } else {
-              answer = toArray(o).map(o  => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], object: o, value, params, __, e, toView }))
+                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, awaits, id, path: args[1] || [], object: o, value, params, __, e, toView }))
             }
 
             if (notArray) return o
 
         } else if (k0 === "index()") {
-            
+
             var element = views[o.parent].element
             if (!element) answer = o.mapIndex
-            else { 
+            else {
                 var children = [...element.children]
                 var index = children.findIndex(child => child.id === o.id)
                 if (index > -1) answer = index
                 else answer = 0
             }
-            
+
         } else if (k0 === "html2pdf()") {
 
             window.devicePixelRatio = 2
@@ -9141,25 +8643,25 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             else if (o) _el = o
 
             var opt = {
-                margin:       [0.1, 0.1],
-                filename:     _params.name || generate({ length: 20 }),
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, dpi: 300 },
-                jsPDF:        { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
+                margin: [0.1, 0.1],
+                filename: _params.name || generate({ length: 20 }),
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, dpi: 300 },
+                jsPDF: { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
                 execludeImages: _params.execludeImages || false
             }
 
-            var _await = "", myawait = {}
+            var _await = "", myawait = { id: generate(), params: { __ } }
             if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "html2pdf()" }
+                _await = global.__codes__[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "html2pdf()", params: { __ } }
                 awaits.unshift(myawait)
             }
-            
+
             var pages = _params.pages || [_el], _elements = []
             console.log("here", _params.pages);
             pages.map(page => {
-                
+
                 var _element
                 if (typeof page === "object" && page.id) _element = views[page.id].element
                 else if (page.nodeType === Node.ELEMENT_NODE) _element = page
@@ -9167,7 +8669,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 _elements.push(_element)
                 var images = [..._element.getElementsByTagName("IMG")]
-                
+
                 if (images.length > 0) {
 
                     images.map((image, i) => {
@@ -9184,7 +8686,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                                 } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
 
                                     var totalPages = pdf.internal.getNumberOfPages()
-                                    
+
                                     for (i = 1; i <= totalPages; i++) {
 
                                         pdf.setPage(i)
@@ -9192,7 +8694,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                                         pdf.setTextColor(150)
                                         pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
                                     }
-                                    
+
                                 }).save().then((pdf) => {
 
                                     // await params
@@ -9230,9 +8732,9 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     images.push(new File([blob], 'rick.jpg', { type: blob.type }))
 
                     if (images.length === _params.images.length)
-                    await navigator.share({ title: _params.title, text: _params.text, url: _params.url, files: images })
+                        await navigator.share({ title: _params.title, text: _params.text, url: _params.url, files: images })
                 }
-            
+
                 if (_params.images) _params.images.map(async url => getFileFromUrl(url, _params.title))
                 else {
                     console.log(_params);
@@ -9240,127 +8742,127 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 }
 
             } else if (args[1]) { // share():url
-                navigator.share({ url: toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] })})
+                navigator.share({ url: toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] }) })
             }
 
         } else if (k0 === "loader()") {
 
-          var _params = {}
-          if (isParam({ _window, string: args[1] })) {
-          
-            _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-            if (_params.hide) _params.show = false
+            var _params = {}
+            if (isParam({ _window, string: args[1] })) {
 
-          } else {
+                _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                if (_params.hide) _params.show = false
 
-            if (args[1] === "show") _params.show = true
-            else if (args[1] === "hide") _params.show = false
-          }
-          
-          var _o
-          if (_params.id) _o = views[_params.id]
-          else if (_params.window) _o = views["root"]
-          else _o = o
-          
-          if (typeof _o !== "object") return
-          if (_o.status === "Loading") {
-            _o.controls = toArray(_o.controls)
-            return _o.controls.push({
-              event: "loaded?" + k
-            })
-          }
+            } else {
 
-          if (_params.show) {
-            
-            var lDiv = document.createElement("div")
-            document.body.appendChild(lDiv)
-            lDiv.classList.add("loader-container")
-            lDiv.setAttribute("id", _o.id + "-loader")
-            if (_o.id !== "root") {
-
-              lDiv.style.position = "absolute"
-              var coords = require("./getCoords")({ id: _o.id || id })
-              lDiv.style.top = coords.top + "px"
-              lDiv.style.bottom = coords.bottom + "px"
-              lDiv.style.height = coords.height + "px"
-              lDiv.style.left = coords.left + "px"
-              lDiv.style.right = coords.right + "px"
-              lDiv.style.width = coords.width + "px"
-            }
-            
-            var loader = document.createElement("div")
-            lDiv.appendChild(loader)
-            loader.classList.add("loader")
-            lDiv.style.display = "flex"
-
-            if (_params.style) {
-              Object.entries(_params.style).map(([key, value]) => {
-                loader.style[key] = value
-              })
+                if (args[1] === "show") _params.show = true
+                else if (args[1] === "hide") _params.show = false
             }
 
-            if (_params.background && _params.background.style) {
-              Object.entries(_params.background.style).map(([key, value]) => {
-                lDiv.style[key] = value
-              })
+            var _o
+            if (_params.id) _o = views[_params.id]
+            else if (_params.window) _o = views["root"]
+            else _o = o
+
+            if (typeof _o !== "object") return
+            if (_o.status === "Loading") {
+                _o.controls = toArray(_o.controls)
+                return _o.controls.push({
+                    event: "loaded?" + k
+                })
             }
 
-            return sleep(10)
+            if (_params.show) {
 
-          } else if (_params.show === false) {
-            
-            var lDiv = document.getElementById(_o.id + "-loader")
-            if (lDiv) lDiv.parentNode.removeChild(lDiv)
-            else console.log("Loader doesnot exist!")
-          }
+                var lDiv = document.createElement("div")
+                document.body.appendChild(lDiv)
+                lDiv.classList.add("loader-container")
+                lDiv.setAttribute("id", _o.id + "-loader")
+                if (_o.id !== "root") {
+
+                    lDiv.style.position = "absolute"
+                    var coords = require("./getCoords")({ id: _o.id || id })
+                    lDiv.style.top = coords.top + "px"
+                    lDiv.style.bottom = coords.bottom + "px"
+                    lDiv.style.height = coords.height + "px"
+                    lDiv.style.left = coords.left + "px"
+                    lDiv.style.right = coords.right + "px"
+                    lDiv.style.width = coords.width + "px"
+                }
+
+                var loader = document.createElement("div")
+                lDiv.appendChild(loader)
+                loader.classList.add("loader")
+                lDiv.style.display = "flex"
+
+                if (_params.style) {
+                    Object.entries(_params.style).map(([key, value]) => {
+                        loader.style[key] = value
+                    })
+                }
+
+                if (_params.background && _params.background.style) {
+                    Object.entries(_params.background.style).map(([key, value]) => {
+                        lDiv.style[key] = value
+                    })
+                }
+
+                return sleep(10)
+
+            } else if (_params.show === false) {
+
+                var lDiv = document.getElementById(_o.id + "-loader")
+                if (lDiv) lDiv.parentNode.removeChild(lDiv)
+                else console.log("Loader doesnot exist!")
+            }
 
         } else if (k0 === "typeof()" || k0 === "type()") {
-            
+
             if (args[1]) answer = getType(toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] }))
             else answer = getType(o)
 
         } else if (k0 === "coords()") {
 
-          var _id = o.id
-          if (args[1]) _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] })
-          require("./getCoords")({ id: _id || id })
+            var _id = o.id
+            if (args[1]) _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] })
+            require("./getCoords")({ id: _id || id })
 
         } else if (k0 === "function()") {
-            
+
             answer = (...my_) => {
 
-              if (my_.length === 0) toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], object }) 
-              else if (my_.length === 1) toParam({ req, res, _window, lookupActions, awaits, id, e, __: [my_[0], ...__], string: args[1], object })
-              else toParam({ req, res, _window, lookupActions, awaits, id, e, __: [my_, ...__], string: args[1], object })
+                if (my_.length === 0) toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], object })
+                else if (my_.length === 1) toParam({ req, res, _window, lookupActions, awaits, id, e, __: [my_[0], ...__], string: args[1], object })
+                else toParam({ req, res, _window, lookupActions, awaits, id, e, __: [my_, ...__], string: args[1], object })
             }
-            
+
         } else if (k0 === "exec()") {
 
             answer = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], object })
-            
+
         } else if (k0 === "exportCSV()") {
-            
+
             var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], object })
             require("./toCSV").toCSV(_params)
-            
+
         } else if (k0 === "exportExcel()") {
-            
+
             var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], object })
             require("./toExcel").toExcel(_params)
-            
+
         } else if (k0 === "exportPdf()") {
-            
+
             var options = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1], object })
             require("./toPdf").toPdf({ options })
-            
+
         } else if (k0 === "toPrice()" || k0 === "price()") {
-            
+
             var _price
             if (args[1]) _price = toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] })
             else _price = o
             answer = parseFloat(_price);//.toLocaleString()
             answer = formatter.format(answer).slice(1)
-            
+
             /*var realnumbers = answer.toString().split(".")[1]
             if (realnumbers) {
               realnumbers.toString().split
@@ -9371,15 +8873,15 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 answer += '0'
                 afterDigits += 1
             }*/
-            
+
         } else if (k0 === "toBoolean()" || k0 === "boolean()" || k0 === "bool()") {
 
             answer = o === "true" ? true : o === "false" ? false : undefined
-            
+
         } else if (k0 === "toNumber()" || k0 === "number()" || k0 === "num()") {
 
             answer = toNumber(o)
-            
+
         } else if (k0 === "isNaN()") {
 
             answer = isNaN(o)
@@ -9387,33 +8889,33 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
         } else if (k0 === "round()") {
 
-          if (!isNaN(o)) {
-            var nth = toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] }) || 2
-            answer = parseFloat(o || 0).toFixed(nth)
-          }
-            
-        } else if (k0 === "toString()" || k0 === "string()" || k0 === "str()") {
-            
-            if (args[1]) {
-              var number = toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] })
-              answer = number + ""
-            } else {
-              if (typeof o !== "object") answer = o + ""
-              else answer = toString(o)
+            if (!isNaN(o)) {
+                var nth = toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] }) || 2
+                answer = parseFloat(o || 0).toFixed(nth)
             }
-            
+
+        } else if (k0 === "toString()" || k0 === "string()" || k0 === "str()") {
+
+            if (args[1]) {
+                var number = toValue({ req, res, _window, lookupActions, awaits, id, e, __, params, value: args[1] })
+                answer = number + ""
+            } else {
+                if (typeof o !== "object") answer = o + ""
+                else answer = toString(o)
+            }
+
         } else if (k0 === "1stElement()" || k0 === "1stEl()") {
-            
+
             if (value !== undefined && key && i === lastIndex) answer = o[0] = value
             answer = o[0]
-            
+
         } else if (k0 === "2ndElement()" || k0 === "2ndEl()") {
-            
+
             if (value !== undefined && key && i === lastIndex) answer = o[1] = value
             answer = o[1]
 
         } else if (k0 === "3rdElement()" || k0 === "3rdEl()") {
-            
+
             if (value !== undefined && key && i === lastIndex) answer = o[2] = value
             answer = o[2]
 
@@ -9421,17 +8923,17 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (value !== undefined && key && i === lastIndex) answer = o[o.length - 3] = value
             answer = o[o.length - 3]
-            
+
         } else if (k0 === "2ndLastElement()" || k0 === "2ndLastEl()") {
 
             if (value !== undefined && key && i === lastIndex) answer = o[o.length - 2] = value
             answer = o[o.length - 2]
-            
+
         } else if (k0 === "lastElement()" || k0 === "lastEl()") {
 
             if (value !== undefined && key && i === lastIndex) answer = o[o.length - 1] = value
             answer = o[o.length - 1]
-            
+
         } else if (k0 === "lastIndex()") {
 
             answer = o.length ? o.length - 1 : 0
@@ -9441,7 +8943,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
 
         } else if (k0 === "element()" || k0 === "el()") {
-          
+
             answer = o.element
 
         } else if (k0 === "checked()") {
@@ -9453,7 +8955,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (value !== undefined && key) answer = _o.checked.checked = _o.element.checked = value
             else answer = _o.checked.checked || _o.element.checked || false
-        
+
         } else if (k0 === "check()") {
 
             breakRequest = true
@@ -9463,32 +8965,32 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             else _o = o
 
             answer = _o.checked.checked = _o.element.checked = true
-        
+
         } else if (k0 === "checker()") {
 
-          breakRequest = true
-          var _o
-          if (typeof o === "string") _o = views[o]
-          else if (o.nodeType === Node.ELEMENT_NODE) _o = views[o.id]
-          else _o = o
+            breakRequest = true
+            var _o
+            if (typeof o === "string") _o = views[o]
+            else if (o.nodeType === Node.ELEMENT_NODE) _o = views[o.id]
+            else _o = o
 
-          if (_o.checked.checked || _o.element.checked) answer = _o.checked.checked = _o.element.checked = false
-          else answer = _o.checked.checked = _o.element.checked = true
-      
-      } else if (k0 === "parseFloat()") {
-            
+            if (_o.checked.checked || _o.element.checked) answer = _o.checked.checked = _o.element.checked = false
+            else answer = _o.checked.checked = _o.element.checked = true
+
+        } else if (k0 === "parseFloat()") {
+
             answer = parseFloat(o)
 
         } else if (k0 === "parseInt()") {
-            
+
             answer = parseInt(o)
 
         } else if (k0 === "stringify()") {
-            
+
             answer = JSON.stringify(o)
 
         } else if (k0 === "parse()") {
-            
+
             answer = JSON.parse(o)
 
         } else if (k0 === "getCookie()") {
@@ -9510,14 +9012,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             if (_window) return views.root.controls.push({ event: `loading?${pathJoined}` })
 
-              // getCookie():name
-              if (isParam({ _window, req, res, string: args[1] })) {
-                  var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, params, string: args[1] })
-                  return eraseCookie({ ..._params, req, res, _window })
-              }
-              var _name = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1] })
-              var _cookie = eraseCookie({ name: _name, req, res, _window })
-              return _cookie
+            // getCookie():name
+            if (isParam({ _window, req, res, string: args[1] })) {
+                var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, params, string: args[1] })
+                return eraseCookie({ ..._params, req, res, _window })
+            }
+            var _name = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1] })
+            var _cookie = eraseCookie({ name: _name, req, res, _window })
+            return _cookie
 
         } else if (k0 === "setCookie()") {
 
@@ -9544,7 +9046,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                 setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
             }
 
-            
+
             if (cookies.length === 1) return cookies[0]
             else return cookies
 
@@ -9558,28 +9060,28 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             if (params.method === "get") return getCookie({ ..._params, req, res, _window })
 
         } else if (k0 === "split()") {
-            
+
             var splited = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             answer = o.split(splited)
 
         } else if (k0 === "join()") {
-            
+
             var joiner = toValue({ req, res, _window, lookupActions, awaits, id, e, value: args[1] || "", params, __ })
             answer = o.join(joiner)
 
         } else if (k0 === "clean()") {
-            
+
             answer = o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
-            
+
         } else if (k0 === "route()") {
-            
+
             if (isParam({ _window, string: args[1] })) {
 
                 var route = toParam({ req, res, _window, id, e, string: args[1] || "", params, __ })
                 require("./route").route({ _window, lookupActions, awaits, req, res, id, route, __ })
-                
+
             } else {
-                
+
                 // route():page:path
                 var _page = toValue({ req, res, _window, id, e, value: args[1] || "", params, __ })
                 var _path = toValue({ req, res, _window, id, e, value: args[2] || "", params, __ })
@@ -9587,7 +9089,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
         } else if (k0 === "toggleView()") {
-          
+
             var toggle = {}
             if (isParam({ _window, string: args[1] })) {
 
@@ -9603,65 +9105,65 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             require("./toggleView").toggleView({ _window, lookupActions, awaits, req, res, toggle, id: o.id, __ })
 
         } else if (k0 === "preventDefault()") {
-            
+
             if (o.target) answer = o.preventDefault()
             else if (e) answer = e.preventDefault()
 
         } else if (k0 === "stopPropagation()") {
-            
+
             answer = o.stopPropagation()
 
         } else if (k0 === "isChildOf()") {
-            
+
             var el = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             answer = isEqual(el, o)
 
         } else if (k0 === "isChildOfId()") {
-            
+
             var _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             var _ids = getDeepChildren({ _window, lookupActions, awaits, id: _id }).map(val => val.id)
             answer = _ids.find(_id => _id === o)
 
         } else if (k0 === "isnotChildOfId()") {
-            
+
             var _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             var _ids = getDeepChildren({ _window, lookupActions, awaits, id: _id }).map(val => val.id)
             answer = _ids.find(_id => _id === o)
             answer = answer ? false : true
 
-        } else if (k0 === "allChildren()" || k0 === "deepChildren()") { 
+        } else if (k0 === "allChildren()" || k0 === "deepChildren()") {
             // all values of view element and children elements in object formula
-            
+
             answer = getDeepChildren({ _window, lookupActions, awaits, id: o.id })
-            
+
         } else if (k0 === "view()") {
 
-          var _o
-          if (typeof o === "object" && o.type && o.id) _o = o
-          else _o = view
+            var _o
+            if (typeof o === "object" && o.type && o.id) _o = o
+            else _o = view
 
-          var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-          _params.parent = _params.parent || _o.id
-          _params.id = _params.id || generate()
-          if (!_params.type && _params.text) _params.type = _params.type = "Text"
-          views[_params.id] = _params
-          var _view = require("./toHTML")({ _window, lookupActions, awaits, id: _params.id })
-          return _view
+            var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+            _params.parent = _params.parent || _o.id
+            _params.id = _params.id || generate()
+            if (!_params.type && _params.text) _params.type = _params.type = "Text"
+            views[_params.id] = _params
+            var _view = require("./toHTML")({ _window, lookupActions, awaits, id: _params.id })
+            return _view
 
         } else if (k0 === "note()") { // note
-            
+
             if (isParam({ _window, string: args[1] })) {
-              var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-              note({ note: _params })
+                var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
+                note({ note: _params })
             } else {
-              var text = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-              var type = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[2], params })
-              note({ note: { text, type } })
+                var text = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+                var type = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[2], params })
+                note({ note: { text, type } })
             }
             return true
-            
+
         } else if (k0 === "mininote()") {
-          
+
             var _text = k.split(":")[1]
             _text = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: _text, params })
             var mininoteControls = toCode({ _window, lookupActions, awaits, string: `():mininote-text.txt()=${_text};clearTimer():[mininote-timer:()];():mininote.style():[opacity=1;transform=scale(1)];mininote-timer:()=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000` })
@@ -9669,7 +9171,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             return true
 
         } else if (k0 === "tooltip()") {
-          
+
             var _text = k.split(":")[1]
             _text = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: _text, params })
             var mininoteControls = toCode({ _window, lookupActions, awaits, string: `():tooltip-text.txt()=${_text};clearTimer():[tooltip-timer:()];():tooltip.style():[opacity=1;transform=scale(1)];tooltip-timer:()=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
@@ -9677,7 +9179,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             return true
 
         } else if (k0 === "readonly()") {
-          
+
             if (typeof o === "object") {
 
                 if (key && value !== undefined) answer = o.element.readOnly = value
@@ -9696,7 +9198,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
         } else if (k0 === "editable()") {
-          
+
             if (typeof o === "object") {
 
                 if (key && value !== undefined) answer = o.element.readOnly = value
@@ -9715,11 +9217,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
         } else if (k0 === "html()") {
-          
+
             answer = o.element.innerHTML
 
         } else if (k0 === "range()") {
-          
+
             var args = k.split(":").slice(1)
             var _index = 0, _range = []
             var _startIndex = args[1] ? toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[0], params }) : 0 || 0
@@ -9733,144 +9235,144 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
                     _index += _steps
                 }
             }
-            if (_lang === "ar") _range = _range.map(num => num.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d]))
+            if (_lang === "ar") _range = _range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
             answer = _range
-            
+
         } else if (k0 === "wait()") {
-            
-          var _params = { await: args.join(":"), awaiter: `wait():${args.slice(1).map(() => "nothing").join(":")}` }
-          toAwait({ id, e, params: _params, lookupActions })
+
+            var _params = { await: args.join(":"), awaiter: `wait():${args.slice(1).map(() => "nothing").join(":")}` }
+            toAwait({ id, e, params: _params, lookupActions })
 
         } else if (k0 === "update()") {
-          
-          var __id, _id, _params, _self
-          if (_window) return view.controls.push({
-            event: `loaded?${pathJoined}`
-          })
-          
-          if (isParam({ _window, string: args[1] })) {
 
-            _params = toParam({ req, res, _window, id, e, __, string: args[1] })
-            __id = _params.id || id
-            _self = _params.self
+            var __id, _id, _params, _self
+            if (_window) return view.controls.push({
+                event: `loaded?${pathJoined}`
+            })
 
-          } else if (args[1]) __id = toValue({ req, res, _window, id, e, __, value: args[1], params })
+            if (isParam({ _window, string: args[1] })) {
 
-          if (typeof __id === "object" && __id.id) _id = __id.id
-          else _id = __id
+                _params = toParam({ req, res, _window, id, e, __, string: args[1] })
+                __id = _params.id || id
+                _self = _params.self
 
-          if (!_id && o.id) _id = o.id
-          
-            var _await = "", myawait = {}
+            } else if (args[1]) __id = toValue({ req, res, _window, id, e, __, value: args[1], params })
+
+            if (typeof __id === "object" && __id.id) _id = __id.id
+            else _id = __id
+
+            if (!_id && o.id) _id = o.id
+
+            var _await = "", myawait = { params: { __ } }
             if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "update()" }
+                _await = global.__codes__[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "update()", params: { __ } }
                 awaits.unshift(myawait)
             }
 
-          if (_self) return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, mainId: id, id: _id, myawait, asyncer: true, __ })
-          else return require("./update").update({ _window, lookupActions, awaits, req, res, id: _id, mainId: id, myawait, asyncer: true, __ })
+            if (_self) return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, mainId: id, id: _id, myawait, asyncer: true, __ })
+            else return require("./update").update({ _window, lookupActions, awaits, req, res, id: _id, mainId: id, myawait, asyncer: true, __ })
 
         } else if (k0 === "updateSelf()") {
-          
-          var __id, _id, _params, _self
-          if (_window) return view.controls.push({
-            event: `loaded?${pathJoined}`
-          })
-          
-          if (isParam({ _window, string: args[1] })) {
 
-            _params = toParam({ req, res, _window, id, e, __, string: args[1] })
-            __id = _params.id || id
+            var __id, _id, _params, _self
+            if (_window) return view.controls.push({
+                event: `loaded?${pathJoined}`
+            })
 
-          } else if (args[1]) __id = toValue({ req, res, _window, id, e, __, value: args[1], params }) || id
+            if (isParam({ _window, string: args[1] })) {
 
-          if (typeof __id === "object" && __id.id) _id = __id.id
-          else _id = __id
+                _params = toParam({ req, res, _window, id, e, __, string: args[1] })
+                __id = _params.id || id
 
-          if (!_id && o.id) _id = o.id
-          
+            } else if (args[1]) __id = toValue({ req, res, _window, id, e, __, value: args[1], params }) || id
 
-          var _await = "", myawait = {}
-          if (args[2]) {
-              _await = global.codes[args[2]]
-              myawait = { id: generate(), hold: true, await: _await, action: "updateSelf()" }
-              awaits.unshift(myawait)
-          }
-          
-          return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, id: _id, myawait, asyncer: true, __ })
+            if (typeof __id === "object" && __id.id) _id = __id.id
+            else _id = __id
+
+            if (!_id && o.id) _id = o.id
+
+
+            var _await = "", myawait = {}
+            if (args[2]) {
+                _await = global.__codes__[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "updateSelf()", params: { __ } }
+                awaits.unshift(myawait)
+            }
+
+            return require("./updateSelf").updateSelf({ _window, lookupActions, awaits, req, res, id: _id, myawait, asyncer: true, __ })
 
         } else if (k0 === "upload()") {
-          
-          if (isParam({ _window, string: args[1] })) {
 
-            var _await = "", myawait = {}
-            if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "upload()" }
-                awaits.unshift(myawait)
+            if (isParam({ _window, string: args[1] })) {
+
+                var _await = "", myawait = {}
+                if (args[2]) {
+                    _await = global.__codes__[args[2]]
+                    myawait = { id: generate(), hold: true, await: _await, action: "upload()", params: { __ } }
+                    awaits.unshift(myawait)
+                }
+
+                var _upload = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })
+                require("./upload")({ _window, lookupActions, awaits, req, res, id, myawait, e, __, upload: _upload, asyncer: true })
+                return true
             }
-            
-            var _upload = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })
-            require("./upload")({ _window, lookupActions, awaits, req, res, id, myawait, e, __, upload: _upload, asyncer: true })
-            return true
-          }
 
-          return require("./upload")({ _window, lookupActions, awaits, req, res, id, e, save: { upload: { file: global.upload } }, __ })
+            return require("./upload")({ _window, lookupActions, awaits, req, res, id, e, save: { upload: { file: global.upload } }, __ })
 
         } else if (k0 === "confirmEmail()") {
-          
-          if (isParam({ _window, string: args[1] })) {
 
-            var _await = "", myawait = {}
-            if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "confirmEmail()" }
-                awaits.unshift(myawait)
+            if (isParam({ _window, string: args[1] })) {
+
+                var _await = "", myawait = {}
+                if (args[2]) {
+                    _await = global.__codes__[args[2]]
+                    myawait = { id: generate(), hold: true, await: _await, action: "confirmEmail()", params: { __ } }
+                    awaits.unshift(myawait)
+                }
+
+                var _save = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })
+                _save.store = "confirmEmail"
+                return require("./save").save({ id, lookupActions, awaits, myawait, e, __, save: _save, asyncer: true })
             }
-
-            var _save = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })
-            _save.store = "confirmEmail"
-            return require("./save").save({ id, lookupActions, awaits, myawait, e, __, save: _save, asyncer: true })
-          }
 
         } else if (k0 === "save()") {
-          
-          if (isParam({ _window, string: args[1] })) {
 
-            var _await = "", myawait = {}
-            if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "save()" }
-                awaits.unshift(myawait)
+            if (isParam({ _window, string: args[1] })) {
+
+                var _await = "", myawait = {}
+                if (args[2]) {
+                    _await = global.__codes__[args[2]]
+                    myawait = { id: generate(), hold: true, await: _await, action: "save()", params: { __ } }
+                    awaits.unshift(myawait)
+                }
+
+                var _save = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })
+                return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, __, myawait, asyncer: true, save: _save })
             }
 
-            var _save = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })
-            return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, __, myawait, asyncer: true, save: _save })
-          }
+            var _collection = toValue({ req, res, _window, lookupActions, id, e, __, value: args[1], params })
+            var _doc = toValue({ req, res, _window, lookupActions, id, e, __, value: args[2], params })
+            var _data = toValue({ req, res, _window, lookupActions, id, e, __, value: args[3], params })
+            var _save = { collection: _collection, doc: _doc, data: _data }
 
-          var _collection = toValue({ req, res, _window, lookupActions, id, e, __, value: args[1], params })
-          var _doc = toValue({ req, res, _window, lookupActions, id, e, __, value: args[2], params })
-          var _data = toValue({ req, res, _window, lookupActions, id, e, __, value: args[3], params })
-          var _save = { collection: _collection, doc: _doc, data: _data }
-
-          return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, save: _save, __ })
+            return require("./save").save({ _window, lookupActions, awaits, req, res, id, e, save: _save, __ })
 
         } else if (k0 === "fetch()") {
 
 
 
         } else if (k0 === "insert()") {
-            
+
             var _id = id
             if (o.type) _id = o.id
-            
+
             if (isParam({ _window, string: args[1] })) {
 
-                var _await = "", myawait = {}
+                var _await = "", myawait = { params: { __ } }
                 if (args[2]) {
-                    _await = global.codes[args[2]]
-                    myawait = { id: generate(), hold: true, await: _await, action: "insert()" }
+                    _await = global.__codes__[args[2]]
+                    myawait = { id: generate(), hold: true, await: _await, action: "insert()", params: { __ } }
                     awaits.unshift(myawait)
                 }
 
@@ -9884,8 +9386,8 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             var _await = "", myawait = {}
             if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "mail()" }
+                _await = global.__codes__[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "mail()", params: { __ } }
                 awaits.unshift(myawait)
             }
 
@@ -9900,7 +9402,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             //if (_window) {
 
             else require("./mail").mail({ req, res, _window, lookupActions, awaits, myawait, asyncer: true, id, e, __, ..._params })
-            
+
             /*} else {
 
                 if (isParam({ _window, string: args[1] })) {
@@ -9934,15 +9436,15 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }*/
 
         } else if (k0 === "print()") {
-          
+
             var _options = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             if (!_options.id && !_options.view) _options.id = o.id
             if (_options.view) _options.id = _options.view.id
 
             var _await = "", myawait = {}
             if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "print()" }
+                _await = global.__codes__[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "print()", params: { __ } }
                 awaits.unshift(myawait)
             }
 
@@ -9953,7 +9455,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var _params = {}
             if (isParam({ _window, string: args[1] }))
                 _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
-             else _params.file = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            else _params.file = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
 
             _params.files = (_params.file ? toArray(_params.file) : _params.files) || []
 
@@ -9962,39 +9464,39 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var __key = generate()
             global.__COUNTER__ = global.__COUNTER__ || {}
             global.__COUNTER__[__key] = {
-              length: _params.files.length,
-              count: 0
+                length: _params.files.length,
+                count: 0
             };
-            
+
             ([..._params.files]).map(file => {
-                
-              var reader = new FileReader()
-              reader.onload = (e) => {
 
-                global.__COUNTER__[__key].count++;
-                global.fileReader.push({
-                  type: file.type,
-                  lastModified: file.lastModified,
-                  name: file.name,
-                  size: file.size,
-                  url: e.target.result
-                })
-                
-                if (global.__COUNTER__[__key].count === global.__COUNTER__[__key].length) {
+                var reader = new FileReader()
+                reader.onload = (e) => {
 
-                  global.file = global.fileReader[0]
-                  global.files = global.fileReader
-                  console.log(global.files, global.file);
-                  var my_ = {success: true, data: global.files.length === 1 ? global.files[0] : global.files}
-                  toParam({ req, res, _window, lookupActions, awaits, id, e, __: [my_, ...__],  string: args[2] })
-                } 
-              }
+                    global.__COUNTER__[__key].count++;
+                    global.fileReader.push({
+                        type: file.type,
+                        lastModified: file.lastModified,
+                        name: file.name,
+                        size: file.size,
+                        url: e.target.result
+                    })
 
-              try {
-                reader.readAsDataURL(file)
-              } catch (er) {
-                document.getElementById("loader-container").style.display = "none"
-              }
+                    if (global.__COUNTER__[__key].count === global.__COUNTER__[__key].length) {
+
+                        global.file = global.fileReader[0]
+                        global.files = global.fileReader
+                        console.log(global.files, global.file);
+                        var my_ = { success: true, data: global.files.length === 1 ? global.files[0] : global.files }
+                        toParam({ req, res, _window, lookupActions, awaits, id, e, __: [my_, ...__], string: args[2] })
+                    }
+                }
+
+                try {
+                    reader.readAsDataURL(file)
+                } catch (er) {
+                    document.getElementById("loader-container").style.display = "none"
+                }
             })
 
         } else if (k0 === "search()") {
@@ -10002,10 +9504,10 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             var _await = "", myawait = {}
             if (args[2]) {
 
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "search()" }
+                _await = global.__codes__[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "search()", params: { __ } }
                 awaits.unshift(myawait)
-                
+
                 if (global.__waiters__.length > 0) myawait.waiter = global.__waiters__[0]
             }
             var _search = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })
@@ -10014,68 +9516,68 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             return true
 
         } else if (k0 === "erase()") {
-          
+
             if (isParam({ _window, string: args[1] })) {
 
                 var _await = "", myawait = {}
                 if (args[2]) {
-                    _await = global.codes[args[2]]
-                    myawait = { id: generate(), hold: true, await: _await, action: "erase()" }
+                    _await = global.__codes__[args[2]]
+                    myawait = { id: generate(), hold: true, await: _await, action: "erase()", params: { __ } }
                     awaits.unshift(myawait)
                 }
 
                 var _erase = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })
                 return require("./erase").erase({ _window, lookupActions, awaits, myawait, req, res, id, e, __, erase: _erase, asyncer: true })
             }
-  
+
             var _collection = toValue({ req, res, _window, lookupActions, id, e, __, value: args[1], params })
             var _doc = toValue({ req, res, _window, lookupActions, id, e, __, value: args[2], params })
             var _erase = { collection: _collection, doc: _doc }
-  
+
             return require("./erase").erase({ _window, lookupActions, awaits, req, res, id, e, save: _erase, __ })
-  
+
         } else if (k0 === "send()") {
-            
-          breakRequest = true
-          if (!res || res.headersSent) return
-          if (isParam({ _window, string: args[1] })) {
-            
-            var _params = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })//, _params_ = {}
 
-            _params.success = _params.success !== undefined ? _params.success : true
-            _params.message = _params.message || _params.msg || "Action executed successfully!"
-            delete _params.msg
-            
-            if (!_window.function) return global.func = _params
-            else res.send(_params)
+            breakRequest = true
+            if (!res || res.headersSent) return
+            if (isParam({ _window, string: args[1] })) {
 
-          } else {
-            
-            var _data = toValue({ req, res, _window, lookupActions, id, e, __, value: args[1], params })
-            if (!_window.function) return global.func = { success: true, message: "Action executed successfully!", data: _data }
-            else res.send({ success: true, message: "Action executed successfully!", data: _data })
-          }
-          console.log("RESPONDED");
+                var _params = toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] })//, _params_ = {}
+
+                _params.success = _params.success !== undefined ? _params.success : true
+                _params.message = _params.message || _params.msg || "Action executed successfully!"
+                delete _params.msg
+
+                if (!_window.function) return global.func = _params
+                else res.send(_params)
+
+            } else {
+
+                var _data = toValue({ req, res, _window, lookupActions, id, e, __, value: args[1], params })
+                if (!_window.function) return global.func = { success: true, message: "Action executed successfully!", data: _data }
+                else res.send({ success: true, message: "Action executed successfully!", data: _data })
+            }
+            console.log("RESPONDED");
 
         } else if (k0 === "sent()") {
 
-          if (!res || res.headersSent) return true
-          else return false
+            if (!res || res.headersSent) return true
+            else return false
 
-        } else if (k0.length === 14 && k0.slice(-2) === "()" && k0.slice(0, 7) === 'coded()') { // [actions?conditions]():[params]:[awaits]
-            
-            k0 = k0.slice(0, 12)
+        } else if (k0.length === 13 && k0.slice(-2) === "()" && k0.slice(0, 6) === "coded@") { // [actions?conditions]():[params]:[awaits]
+
+            k0 = k0.slice(0, 11)
 
             var _await = "", myawait = {}
             if (args[2]) {
-                _await = global.codes[args[2]]
-                myawait = { id: generate(), hold: true, await: _await, action: "action()" }
+                _await = global.__codes__[args[2]]
+                myawait = { id: generate(), hold: true, await: _await, action: "action()", params: { __ } }
                 awaits.unshift(myawait)
             }
-            
+
             var _params = args[1] ? toParam({ req, res, _window, lookupActions, id, e, __, string: args[1] }) : undefined
 
-            if (k0.includes('coded()') && k0.length === 12) k0 = global.codes[k0]
+            if (k0.includes("coded@") && k0.length === 11) k0 = global.__codes__[k0]
 
             var conditions = k0.split("?")[1]
             if (conditions) {
@@ -10084,24 +9586,24 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
             k0 = k0.split("?")[0]
-            
+
             if (!condition) {
 
                 answer = toValue({ _window, value: k0, e, id, req, res, object: object || o, asyncer: true, __, awaits, lookupActions })
-                
+
                 // ex: [_]() & _ = 'action_name()' --> action_name()
                 if (typeof answer === "string") {
                     answer = toCode({ _window, string: toCode({ _window, string: answer, start: "'", end: "'" }) })
-                    reducer({ _window, lookupActions, awaits, id, path: [answer], value, key, params, object, __: [...(_params !== undefined ? [_params] : []), ...__],  e, req, res, mount, condition, toView })
+                    reducer({ _window, lookupActions, awaits, id, path: [answer], value, key, params, object, __: [...(_params !== undefined ? [_params] : []), ...__], e, req, res, mount, condition, toView })
                 }
-                
+
             } else {
                 answer = toValue({ _window, value: k0, e, id, req, res, object: object || o, asyncer: true, __, awaits, lookupActions })
                 answer = toApproval({ _window, string: answer, e, id, req, res, params, object: object || o, __: [...(_params !== undefined ? [_params] : []), ...__], awaits, lookupActions })
             }
             // await params
             if (!_await || awaits.findIndex(i => i.id === myawait.id) === 0) {
-                
+
                 if (_await) {
 
                     require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, __: [global.search, ...__] })
@@ -10114,7 +9616,7 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
         } else if (k0 === "setPosition()" || k0 === "position()") {
-          
+
             // setPosition():toBePositioned:positioner:placement:align
             /*
             var toBePositioned = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
@@ -10127,21 +9629,21 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             return require("./setPosition").setPosition({ position, id: o.id || id, e })
 
         } else if (k0 === "refresh()") {
-          
+
             var _id = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params }) || id
             return require("./refresh").refresh({ id: _id, lookupActions })
 
         } else if (k0 === "csvToJson()") {
-          
-          var file = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
-          require("./csvToJson").csvToJson({ id, lookupActions, awaits, e, file, onload: args[2] || "", __ })
+
+            var file = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
+            require("./csvToJson").csvToJson({ id, lookupActions, awaits, e, file, onload: args[2] || "", __ })
 
         } else if (k0 === "copyToClipBoard()") {
-          
-            var text 
+
+            var text
             if (args[1]) text = toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: args[1], params })
             else text = o
-            
+
             if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
             else {
                 var textArea = document.createElement("textarea")
@@ -10156,14 +9658,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             }
 
         } else if (k0 === "addClass()") {
-            
+
             var _o, _class
             if (isParam({ _window, string: args[1] })) {
 
                 var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
                 _o = _params.element || _params.view || _params.id || o
                 _class = _params.class
-                
+
             } else {
 
                 _o = o
@@ -10175,14 +9677,14 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             else answer = _o.classList.add(_class)
 
         } else if (k0 === "removeClass()" || k0 === "remClass()") {
-            
+
             var _o, _class
             if (isParam({ _window, string: args[1] })) {
 
                 var _params = toParam({ req, res, _window, lookupActions, awaits, id, e, __, string: args[1] })
                 _o = _params.element || _params.view || _params.id || o
                 _class = _params.class
-                
+
             } else {
 
                 _o = o
@@ -10202,95 +9704,95 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
             answer = encodeURI(o)
 
         } else if (k0.includes("()") && typeof o[k0.slice(0, -2)] === "function") {
-            
-          var myparams = []
-          args.slice(1).map(arg => {
-            myparams.push(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: arg || "" }))
-          })
-          
-          answer = o[k0.slice(0, -2)](...myparams)
+
+            var myparams = []
+            args.slice(1).map(arg => {
+                myparams.push(toValue({ req, res, _window, lookupActions, awaits, id, e, __, value: arg || "" }))
+            })
+
+            answer = o[k0.slice(0, -2)](...myparams)
 
         } else if (k0.slice(-2) === "()") {
-            
-            if (k0.slice(0, -2).includes("coded()")) {
+
+            if (k0.slice(0, -2).includes("coded@")) {
                 if (isParam({ _window, string: k0 })) return toParam({ req, res, _window, id, e, __, string: k0, object })
                 else k0 = toValue({ req, res, _window, id, e, __, value: k0, object })
             }
 
             if (k0.charAt(0) === "_") {
-                answer = toFunction({ _window, lookupActions, awaits, id, req, res, __: [o, ...__], e, path: [k], path0: k0, condition, mount, toView, object })
+                answer = toAction({ _window, lookupActions, awaits, id, req, res, __: [o, ...__], e, path: [k], path0: k0, condition, mount, toView, object })
             } else {
-                answer = toFunction({ _window, lookupActions, awaits, id, req, res, __, e, path: [k], path0: k0, condition, mount, toView, object: object || o })
+                answer = toAction({ _window, lookupActions, awaits, id, req, res, __, e, path: [k], path0: k0, condition, mount, toView, object: object || o })
             }
 
-        } else if (k.includes(":coded()")) {
-          
+        } else if (k.includes(":coded@")) {
+
             breakRequest = true
 
             // k0 is encoded
-            if (k0.includes("coded()") && k0.length === 12) k0 = global.codes["coded()" + k0.slice(-5)]
-            else if (k0.includes("codedS()") && k0.length === 13) k0 = global.codes["codedS()" + k0.slice(-5)]
+            if (k0.includes("coded@") && k0.length === 11) k0 = global.__codes__["coded@" + k0.slice(-5)]
+            else if (k0.includes("codedT@") && k0.length === 12) k0 = global.__codes__["codedT@" + k0.slice(-5)]
 
             o[k0] = o[k0] || {}
-            if (toView && events.includes(k.split(":coded()")[0])) {
-              
-              if (o.__view__) {
+            if (toView && events.includes(k.split(":coded@")[0])) {
 
-                var _params_ = global.codes["coded()" + args[1].slice(-5)]
-                var _conditions = _params_.split("?")[1] || ""
-                
-                _params_ = _params_.split("?")[0]
+                if (o.__view__) {
 
-                views[id].controls = toArray(views[id].controls)
-                if (k0 === "entry") k0 = "input"
-                else if (k0 === "enter") {
-                  k0 = "keyup"
-                  _conditions += "e().key=Enter||e().keyCode=13"
-                } else if (k0 === "ctrl") {
-                  k0 = "keydown"
-                  _conditions += "e().ctrlKey"
-                } else if (k0 === "longclick") {
-                  views[id].controls.push({
-                    "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?clickTimer=timestamp()?${_conditions}`, __, lookupActions
-                  })
-                  views[id].controls.push({
-                    "event": `mouseup:${o.id !== id ? (":" + o.id) : ""};touchend:${o.id !== id ? (":" + o.id) : ""}?${global.codes["coded()" + args[1].slice(-5)]}?${_conditions};timestamp()-clickTimer>=1000`, __, lookupActions
-                  })
-                  return
-                } else if (k0 === "dblclick") {
+                    var _params_ = global.__codes__["coded@" + args[1].slice(-5)]
+                    var _conditions = _params_.split("?")[1] || ""
+
+                    _params_ = _params_.split("?")[0]
+
+                    views[id].controls = toArray(views[id].controls)
+                    if (k0 === "entry") k0 = "input"
+                    else if (k0 === "enter") {
+                        k0 = "keyup"
+                        _conditions += "e().key=Enter||e().keyCode=13"
+                    } else if (k0 === "ctrl") {
+                        k0 = "keydown"
+                        _conditions += "e().ctrlKey"
+                    } else if (k0 === "longclick") {
+                        views[id].controls.push({
+                            "event": `mousedown:${o.id !== id ? (":" + o.id) : ""};touchstart:${o.id !== id ? (":" + o.id) : ""}?clickTimer=timestamp()?${_conditions}`, __, lookupActions
+                        })
+                        views[id].controls.push({
+                            "event": `mouseup:${o.id !== id ? (":" + o.id) : ""};touchend:${o.id !== id ? (":" + o.id) : ""}?${global.__codes__["coded@" + args[1].slice(-5)]}?${_conditions};timestamp()-clickTimer>=1000`, __, lookupActions
+                        })
+                        return
+                    } else if (k0 === "dblclick") {
+                        views[id].controls.push({
+                            "event": `click:${o.id !== id ? (":" + o.id) : ""}?${_conditions};clickTimer=timestamp()`, __, lookupActions
+                        })
+                        return
+                    }
+
                     views[id].controls.push({
-                      "event": `click:${o.id !== id ? (":" + o.id) : ""}?${_conditions};clickTimer=timestamp()`, __, lookupActions
+                        "event": k0 + (o.id !== id ? (":" + o.id) : "") + "?" + global.__codes__["coded@" + args[1].slice(-5)] + "?" + _conditions, __, lookupActions
                     })
-                    return
-                  }
-                  
-                views[id].controls.push({
-                  "event": k0 + (o.id !== id ? (":" + o.id) : "") + "?" + global.codes["coded()" + args[1].slice(-5)] + "?" + _conditions, __, lookupActions
-                })
-              }
-              return
+                }
+                return
             }
-            
-            args[1] = (global.codes["coded()" + args[1].slice(-5)] || "").split(".")
+
+            args[1] = (global.__codes__["coded@" + args[1].slice(-5)] || "").split(".")
             if (args[1]) answer = reducer({ req, res, _window, lookupActions, awaits, id, e, key, path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0], params, __ })
             else return
-            
-        } 
+
+        }
         else if (k0 === "device()") return global.device.device
-        
+
         else if (key && value !== undefined && i === lastIndex) {
 
-            if (k.includes("coded()")) {
+            if (k.includes("coded@")) {
 
-              var _key = k.split("coded()")[0]
-              k.split("coded()").slice(1).map(code => {
-                _key += toValue({ _window, lookupActions, awaits, value: global.codes[`coded()${code.slice(0, 5)}`], params, __, id, e, req, res, object })
-                _key += code.slice(5)
-              })
-              
-              k = _key
+                var _key = k.split("coded@")[0]
+                k.split("coded@").slice(1).map(code => {
+                    _key += toValue({ _window, lookupActions, awaits, value: global.__codes__[`coded@${code.slice(0, 5)}`], params, __, id, e, req, res, object })
+                    _key += code.slice(5)
+                })
+
+                k = _key
             }
-            
+
             if (Array.isArray(o)) {
                 if (isNaN(k)) {
                     if (o.length === 0) o.push({})
@@ -10300,11 +9802,11 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
             answer = o[k] = value
 
-        } else if (k.includes("coded()")) {
+        } else if (k.includes("coded@")) {
 
-            var _key = k.split("coded()")[0]
-            k.split("coded()").slice(1).map(code => {
-                _key += toValue({ _window, lookupActions, awaits, value: global.codes[`coded()${code.slice(0, 5)}`], params, __, id, e, req, res, object })
+            var _key = k.split("coded@")[0]
+            k.split("coded@").slice(1).map(code => {
+                _key += toValue({ _window, lookupActions, awaits, value: global.__codes__[`coded@${code.slice(0, 5)}`], params, __, id, e, req, res, object })
                 _key += code.slice(5)
             })
             k = _key
@@ -10313,42 +9815,42 @@ const reducer = ({ _window, lookupActions, awaits = [], id = "root", path, value
 
                 if (!isNaN(path[i + 1])) answer = o[k] = []
                 else answer = o[k] = {}
-    
+
             } else answer = o[k]
 
         } else if (key && o[k] === undefined && i !== lastIndex) {
 
-          if (!isNaN(path[i + 1]) || (path[i + 1] || "").slice(0, 4) === "_():" || (path[i + 1] || "").slice(0, 3) === "():" || (path[i + 1] || "").includes("find()") || (path[i + 1] || "").includes("filter()")) answer = o[k] = []
-          else {
-          
-            if (Array.isArray(o)) {
-                if (isNaN(k)) {
-                    if (o.length === 0) o.push({})
-                    o = o[0]
+            if (!isNaN(path[i + 1]) || (path[i + 1] || "").slice(0, 4) === "_():" || (path[i + 1] || "").slice(0, 3) === "():" || (path[i + 1] || "").includes("find()") || (path[i + 1] || "").includes("filter()")) answer = o[k] = []
+            else {
+
+                if (Array.isArray(o)) {
+                    if (isNaN(k)) {
+                        if (o.length === 0) o.push({})
+                        o = o[0]
+                    }
                 }
+                answer = o[k] = {}
             }
-            answer = o[k] = {}
-          }
 
         } else {
-            
+
             if (Array.isArray(o)) {
-              if (isNaN(k) && o.length === 0) {
+                if (isNaN(k) && o.length === 0) {
 
-                  if (o.length === 0) o.push({})
-                  o = o[0]
+                    if (o.length === 0) o.push({})
+                    o = o[0]
 
-              } else k = parseFloat(k)
+                } else k = parseFloat(k)
             }
-            
+
             answer = o[k]
             //console.log(k, o, lastIndex, path, i, o[k]);
         }
-        
+
         return answer
 
     }, _object)
-    
+
     return answer
 }
 
@@ -10358,18 +9860,18 @@ const getDeepChildren = ({ _window, id }) => {
     var view = views[id]
     var all = [view]
     if (!view) return []
-    
-    if ([...view.element.children].length > 0) 
-    ([...view.element.children]).map(el => {
 
-        var _view = views[el.id]
-        if (!_view) return
-        
-        if ([..._view.element.children].length > 0) 
-            all.push(...getDeepChildren({ id: el.id }))
+    if ([...view.element.children].length > 0)
+        ([...view.element.children]).map(el => {
 
-        else all.push(_view)
-    })
+            var _view = views[el.id]
+            if (!_view) return
+
+            if ([..._view.element.children].length > 0)
+                all.push(...getDeepChildren({ id: el.id }))
+
+            else all.push(_view)
+        })
 
     return all
 }
@@ -10380,18 +9882,18 @@ const getDeepChildrenId = ({ _window, id }) => {
     var view = views[id]
     var all = [id]
     if (!view) return []
-    
-    if ([...view.element.children].length > 0) 
-    ([...view.element.children]).map(el => {
-        
-        var _view = views[el.id]
-        if (!_view) return
 
-        if ([..._view.element.children].length > 0) 
-            all.push(...getDeepChildrenId({ id: el.id }))
+    if ([...view.element.children].length > 0)
+        ([...view.element.children]).map(el => {
 
-        else all.push(el.id)
-    })
+            var _view = views[el.id]
+            if (!_view) return
+
+            if ([..._view.element.children].length > 0)
+                all.push(...getDeepChildrenId({ id: el.id }))
+
+            else all.push(el.id)
+        })
 
     return all
 }
@@ -10404,7 +9906,7 @@ const getDeepParentId = ({ _window, lookupActions, awaits, id }) => {
 
     var parentId = view.element.parentNode.id
     var all = [parentId]
-    
+
     all.push(...getDeepParentId({ _window, lookupActions, awaits, id: parentId }))
 
     return all
@@ -10414,18 +9916,18 @@ function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
     do {
-      currentDate = Date.now();
+        currentDate = Date.now();
     } while (currentDate - date < milliseconds);
-  }
-  
+}
+
 const exportHTMLToPDF = async ({ _window, pages, opt, lookupActions, awaits, myawait, req, res, id, e, __ }) => {
-    
+
     const { jsPDF } = jspdf
     const doc = new jsPDF(opt.jsPDF)
     const pageSize = jsPDF.getPageSize(opt.jsPDF)
-    
+
     if (opt.execludeImages) {
-        
+
         var promises = []
         pages.map(page => { promises.push(html2pdf().from(page).set(opt).outputImg()) })
         await Promise.all(promises)
@@ -10447,7 +9949,7 @@ const exportHTMLToPDF = async ({ _window, pages, opt, lookupActions, awaits, mya
             doc.addImage(pageImage.src, 'jpeg', 0.1, 0.1, pageSize.width - 0.2, pageSize.height - 0.2);
         }
     }
-    
+
     doc.save(opt.filename)
 
     // await params
@@ -10455,21 +9957,21 @@ const exportHTMLToPDF = async ({ _window, pages, opt, lookupActions, awaits, mya
 }
 
 const toDataURL = url => fetch(url)
-.then(response => response.blob())
-.then(blob => new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onloadend = () => resolve(reader.result)
-    reader.onerror = reject
-    reader.readAsDataURL(blob)
-}))
+    .then(response => response.blob())
+    .then(blob => new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onloadend = () => resolve(reader.result)
+        reader.onerror = reject
+        reader.readAsDataURL(blob)
+    }))
 
 var formatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
+    style: 'currency',
+    currency: 'USD',
 });
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./actions.json":37,"./axios":38,"./capitalize":40,"./clone":42,"./cookie":47,"./counter":48,"./csvToJson":54,"./decode":57,"./droplist":59,"./erase":60,"./events.json":62,"./exportJson":64,"./focus":67,"./func":68,"./generate":70,"./getCoords":71,"./getDateTime":72,"./getDaysInMonth":73,"./getType":75,"./importJson":76,"./insert":77,"./isEqual":79,"./isParam":80,"./jsonToBracket":83,"./mail":87,"./note":89,"./print":94,"./refresh":97,"./remove":99,"./resize":100,"./route":101,"./save":102,"./search":104,"./setPosition":108,"./sort":109,"./toApproval":115,"./toArray":116,"./toAwait":117,"./toCSV":118,"./toClock":119,"./toCode":120,"./toExcel":123,"./toFunction":125,"./toHTML":126,"./toId":127,"./toNumber":128,"./toParam":130,"./toPdf":131,"./toSimplifiedDate":132,"./toValue":134,"./toggleView":136,"./update":137,"./updateSelf":138,"./upload":139,"qrcode":179,"vcards-js":206}],97:[function(require,module,exports){
+},{"./actions.json":30,"./axios":31,"./capitalize":33,"./clone":35,"./cookie":40,"./counter":41,"./csvToJson":48,"./decode":51,"./droplist":53,"./erase":54,"./events.json":56,"./exportJson":58,"./focus":61,"./func":62,"./generate":64,"./getCoords":65,"./getDateTime":66,"./getDaysInMonth":67,"./getType":69,"./importJson":70,"./insert":71,"./isEqual":73,"./isParam":74,"./jsonToBracket":77,"./mail":81,"./note":83,"./print":88,"./refresh":91,"./remove":93,"./resize":94,"./route":95,"./save":96,"./search":98,"./setPosition":102,"./sort":103,"./toAction":108,"./toApproval":109,"./toArray":110,"./toAwait":111,"./toCSV":112,"./toClock":113,"./toCode":114,"./toExcel":117,"./toHTML":119,"./toId":120,"./toNumber":121,"./toParam":123,"./toPdf":124,"./toSimplifiedDate":125,"./toValue":127,"./toggleView":129,"./update":130,"./updateSelf":131,"./upload":132,"qrcode":183,"vcards-js":210}],91:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -10558,13 +10060,13 @@ const refresh = async ({ id, update = {}, lookupActions, __ }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":42,"./generate":70,"./setElement":107,"./starter":110,"./toArray":116,"./toView":135,"./update":137}],98:[function(require,module,exports){
+},{"./clone":35,"./generate":64,"./setElement":101,"./starter":104,"./toArray":110,"./toView":128,"./update":130}],92:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],99:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -10597,17 +10099,24 @@ const remove = ({ _window, remove: _remove, id, __ }) => {
 
   // close droplist
   if (global["__droplistPositioner__"] && view.element.contains(views[global["__droplistPositioner__"]].element)) {
-    var closeDroplist = toCode({ _window, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
   // close actionlist
   if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
-    var closeActionlist = toCode({ _window, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style().[_]=():actionlist.style.[_]];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
   }
 
   removeChildren({ id })
+
+  // NEWWWWWWWWWWWWWWWWWW
+  // pull id from parent childrenID
+  var childrenID = views[view.parent].__childrenID__
+  var index = childrenID.findIndex(childID => childID === view.id)
+  childrenID.splice(index, 1)
+  // END
   
   if (keys.length === 0) {
     
@@ -10653,7 +10162,7 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":42,"./reducer":96,"./toCode":120,"./toParam":130,"./update":137}],100:[function(require,module,exports){
+},{"./clone":35,"./reducer":90,"./toCode":114,"./toParam":123,"./update":130}],94:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -10756,7 +10265,7 @@ var lengthConverter = (length) => {
 
 module.exports = {resize, dimensions, lengthConverter}
 
-},{}],101:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 const { clone } = require("./clone")
 const { update } = require("./update")
 const { toView } = require("./toView")
@@ -10790,7 +10299,7 @@ module.exports = {
           global.promises[id].push(new Promise (async resolve => {
               
               var innerHTML = await toView({ _window, id: "root", req, res, __ })
-              if (!global.__INNERHTML__.root) global.__INNERHTML__.root = innerHTML
+              if (!global.__html__.root) global.__html__.root = innerHTML
               global.breaktoView[id] = true
               resolve()
             })
@@ -10808,7 +10317,7 @@ module.exports = {
       }
     }
 }
-},{"./clone":42,"./toArray":116,"./toView":135,"./update":137}],102:[function(require,module,exports){
+},{"./clone":35,"./toArray":110,"./toView":128,"./update":130}],96:[function(require,module,exports){
 var { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { generate } = require("./generate")
@@ -10988,11 +10497,11 @@ const save = async ({ _window, lookupActions, awaits, req, res, id, e, __, ...pa
   /*if (!_window) */console.log("save", _data)
 
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, __: [_data, ...__], ...params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, _: _data, __, ...params })
 }
 
 module.exports = { save }
-},{"./clone":42,"./generate":70,"./schematize":103,"./toArray":116,"./toAwait":117,"./toParam":130,"axios":142}],103:[function(require,module,exports){
+},{"./clone":35,"./generate":64,"./schematize":97,"./toArray":110,"./toAwait":111,"./toParam":123,"axios":135}],97:[function(require,module,exports){
 const schematize = ({ data, schema }) => {
   var _data = {}
   schema.map(schema => {
@@ -11012,7 +10521,7 @@ const schematize = ({ data, schema }) => {
 }
 
 module.exports = { schematize }
-},{}],104:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 const axios = require('axios')
 const { jsonToBracket } = require('./jsonToBracket')
 const { clone } = require('./clone')
@@ -11247,7 +10756,7 @@ module.exports = {
       view.search = global.search = clone(_data)
     
       // await params
-      if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __: [...(global.search ? [global.search] : []), ...__] })
+      if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __, _: _data })
 
     } else {
 
@@ -11271,9 +10780,9 @@ module.exports = {
     
             console.log("SEARCH", _data)
             view.search = global.search = clone(_data)
-    
+            
             // await params
-            if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __: [...(global.search ? [global.search] : []), ...__] })
+            if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __, _: _data })
     
             resolve()
           })
@@ -11292,12 +10801,12 @@ module.exports = {
         view.search = global.search = clone(_data)
 
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __: [...(global.search ? [global.search] : []), ...__] })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search, __ })
       }
     }
   }
 }
-},{"./clone":42,"./jsonToBracket":83,"./toArray":116,"./toAwait":117,"./toFirebaseOperator":124,"axios":142}],105:[function(require,module,exports){
+},{"./clone":35,"./jsonToBracket":77,"./toArray":110,"./toAwait":111,"./toFirebaseOperator":118,"axios":135}],99:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -11320,7 +10829,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":78}],106:[function(require,module,exports){
+},{"./isArabic":72}],100:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
@@ -11351,7 +10860,7 @@ const setData = ({ id, data, __ }) => {
   var keys = [...derivations, ...path]
   
   // set value
-  reducer({ id, object: global[view.Data], path: keys, value: defValue, key: true, __: ["_"] })
+  reducer({ id, object: global[view.Data], path: keys, value: defValue, key: true, __ })
 /*
   view.data = value
   if (view.input && view.input.type === "file") return
@@ -11364,7 +10873,7 @@ const setData = ({ id, data, __ }) => {
 
 module.exports = { setData }
 
-},{"./clone":42,"./reducer":96}],107:[function(require,module,exports){
+},{"./clone":35,"./reducer":90}],101:[function(require,module,exports){
 const { controls } = require("./controls")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -11413,7 +10922,7 @@ const setElement = ({ _window, id }) => {
 }
     
 module.exports = { setElement }
-},{"./controls":46,"./defaultInputHandler":58,"./isArabic":78,"./resize":100,"./toApproval":115,"./toArray":116,"./toCode":120,"./toParam":130}],108:[function(require,module,exports){
+},{"./controls":39,"./defaultInputHandler":52,"./isArabic":72,"./resize":94,"./toApproval":109,"./toArray":110,"./toCode":114,"./toParam":123}],102:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
   var views = window.views
@@ -11595,7 +11104,7 @@ const setPosition = ({ position = {}, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],109:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
@@ -11720,7 +11229,7 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":96,"./toArray":116,"./toCode":120}],110:[function(require,module,exports){
+},{"./reducer":90,"./toArray":110,"./toCode":114}],104:[function(require,module,exports){
 const _controls_ = require("../control/control")
 const { toArray } = require("./toArray")
 
@@ -11757,12 +11266,12 @@ const starter = ({ id }) => {
 
 module.exports = { starter }
 
-},{"../control/control":13,"./controls":46,"./event":61,"./toArray":116}],111:[function(require,module,exports){
+},{"../control/control":6,"./controls":39,"./event":55,"./toArray":110}],105:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],112:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -11882,73 +11391,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":100,"./toArray":116}],113:[function(require,module,exports){
-module.exports = (k) => {
-  
-  if (k === "userSelect") k = "user-select";
-  else if (k === "inlineSize") k = "inline-size";
-  else if (k === "clipPath") k = "clip-path";
-  else if (k === "flexWrap") k = "flex-wrap";
-  else if (k === "wordWrap") k = "word-wrap";
-  else if (k === "wordBreak") k = "word-break";
-  else if (k === "verticalAlign") k = "vertical-align";
-  else if (k === "borderBottom") k = "border-bottom";
-  else if (k === "borderLeft") k = "border-left";
-  else if (k === "borderRight") k = "border-right";
-  else if (k === "borderTop") k = "border-top";
-  else if (k === "paddingBottom") k = "padding-bottom";
-  else if (k === "paddingLeft") k = "padding-left";
-  else if (k === "paddingRight") k = "padding-right";
-  else if (k === "paddingTop") k = "padding-top";
-  else if (k === "marginBottom") k = "margin-bottom";
-  else if (k === "marginLeft") k = "margin-left";
-  else if (k === "marginRight") k = "margin-right";
-  else if (k === "marginTop") k = "margin-top";
-  else if (k === "fontFamily") k = "font-family";
-  else if (k === "fontSize") k = "font-size";
-  else if (k === "fontStyle") k = "font-style";
-  else if (k === "fontWeight") k = "font-weight";
-  else if (k === "textDecoration") k = "text-decoration";
-  else if (k === "lineHeight") k = "line-height";
-  else if (k === "letterSpacing") k = "letter-spacing";
-  else if (k === "textOverflow") k = "text-overflow";
-  else if (k === "whiteSpace") k = "white-space";
-  else if (k === "backgroundImage") k = "background-image";
-  else if (k === "backgroundColor") k = "background-color";
-  else if (k === "zIndex") k = "z-index";
-  else if (k === "boxShadow") k = "box-shadow";
-  else if (k === "borderRadius") k = "border-radius";
-  else if (k === "zIndex") k = "z-index";
-  else if (k === "alignItems") k = "align-items";
-  else if (k === "alignSelf") k = "align-self";
-  else if (k === "justifyContent") k = "justify-content";
-  else if (k === "justifySelf") k = "justify-self";
-  else if (k === "userSelect") k = "user-select";
-  else if (k === "userDrag") k = "user-drag";
-  else if (k === "textAlign") k = "text-align";
-  else if (k === "pointerEvents") k = "pointer-events";
-  else if (k === "flexDirection") k = "flex-direction";
-  else if (k === "flexGrow") k = "flex-grow";
-  else if (k === "flexShrink") k = "flex-shrink";
-  else if (k === "maxWidth") k = "max-width";
-  else if (k === "minWidth") k = "min-width";
-  else if (k === "maxHeight") k = "max-height";
-  else if (k === "minHeight") k = "min-height";
-  else if (k === "overflowX") k = "overflow-x";
-  else if (k === "overflowY") k = "overflow-y";
-  else if (k === "rowGap") k = "row-gap";
-  else if (k === "columnGap") k = "column-gap";
-  else if (k === "pageBreakInside") k = "page-break-inside";
-  else if (k === "pageBreakBefore") k = "page-break-before";
-  else if (k === "pageBreakAfter") k = "page-break-after";
-  else if (k === "gridTemplateColumns") k = "grid-template-columns";
-  else if (k === "gridAutoColumns") k = "grid-auto-columns";
-  else if (k === "gridTemplateRows") k = "grid-template-rows";
-  else if (k === "gridAutoRows") k = "grid-auto-columns";
-  else if (k === "writingMode") k = "writing-mode";
-  return k
-}
-},{}],114:[function(require,module,exports){
+},{"./resize":94,"./toArray":110}],107:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -12012,474 +11455,7 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":40,"./clone":42,"./style":112}],115:[function(require,module,exports){
-const { isEqual } = require("./isEqual")
-
-const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id = "root", __, req, res, object, elser }) => {
-
-  const { toFunction } = require("./toFunction")
-  const { toValue } = require("./toValue")
-  const { reducer } = require("./reducer")
-
-  // no string but object exists
-  if (!string)
-    if (object) return true
-    else if (object !== undefined) return false
-
-  // no string
-  if (!string || typeof string !== "string") return true
-
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
-  var mainId = id, approval = true
-  
-  if ((global.__actionReturns__[0] || {}).returned) return
-
-  // coded
-  if (string.includes('coded()') && string.length === 12) string = global.codes[string]
-
-  // ==
-  string = string.replace("==", "=")
-
-  string.split(";").map(condition => {
-
-    // no condition
-    if (condition === "") return true
-    if (!approval) return false
-
-    id = mainId
-    var view = views[id] || {}
-
-    if (condition.charAt(0) === "#") {
-      if (elser) return approval = false
-      else return
-    }
-
-    // or
-    if (condition.includes("||")) {
-      var conditions = condition.split("||"), _i = 0
-      approval = false
-      while (!approval && conditions[_i] !== undefined) {
-        if (conditions[_i].slice(0,2) === "=") conditions[_i] = conditions[0] + conditions[_i]
-        approval = toApproval({ _window, lookupActions, awaits, e, string: conditions[_i], id, __, params, req, res, object, elser: true })
-        _i += 1
-      }
-      return approval
-    }
-
-    condition = condition.split("=")
-    var equalOp = condition.length > 1
-    var greaterOp = condition[0].split(">")[1] !== undefined
-    if (greaterOp) {
-      condition[1] = condition[1] || condition[0].split(">")[1]
-      condition[0] = condition[0].split(">")[0]
-    }
-    var lessOp = condition[0].split("<")[1] !== undefined
-    if (lessOp) {
-      condition[1] = condition[1] || condition[0].split("<")[1]
-      condition[0] = condition[0].split("<")[0]
-    }
-
-    var key = condition[0]
-    var value = condition[1]
-    var notEqual
-
-    // /////////////////// value /////////////////////
-
-    if (value) value = toValue({ _window, lookupActions, awaits, id: mainId, value, e, __, req, res, params, condition: true })
-
-    // /////////////////// key /////////////////////
-
-    if (key && key.includes('coded()') && key.length === 12) key = global.codes[key]
-    if (key && key.includes('codedS()') && key.length === 13) {
-      if (value === undefined) return approval = global.codes[key] ? true : false
-      else return approval = global.codes[key] === value
-    }
-
-    // operator has !
-    if (key.includes("!")) {
-      if (key.split("!")[0]) {
-
-        if (condition[1]) {
-          notEqual = true
-          key = key.split("!")[0]
-        }
-
-      } else {
-
-        key = key.split("!")[1]
-        notEqual = true
-      }
-    }
-
-    //
-    var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0], myKey
-
-    // function
-    if (path0.slice(-2) === "()") {
-    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, __, e, path, path0, condition: true });
-    if (isFn !== "__CONTINUE__") return approval = notEqual ? !isFn : isFn
-    }
-
-    if (!key && object !== undefined) myKey = object
-    else if (key === "undefined") myKey = undefined
-    else if (key === "false") myKey = false
-    else if (key === "true") myKey = true
-    else if (key === "desktop()") myKey = global.device.device.type === "desktop"
-    else if (key === "tablet()") myKey = global.device.device.type === "tablet"
-    else if (key === "mobile()") myKey = global.device.device.type === "smartphone"
-    else if (key.charAt(0) === "_" && !key.split("_").find(i => i !== "_" && i !== "")) myKey = __[key.split("_").length - 2]
-    else if (object || path[0].includes("()") || (path[1] && path[1].includes("()"))) myKey = reducer({ _window, lookupActions, awaits, id, path, e, __, params, req, res, object, condition: true })
-    else myKey = reducer({ _window, lookupActions, awaits, id, path, e, __, req, res, params, object: object ? object : view, condition: true })
-    // else myKey = key
-
-    if (params["return()"] !== undefined) {
-
-      approval = params["return()"]
-
-    } else if (!equalOp && !greaterOp && !lessOp) {
-
-      approval = notEqual ? !myKey : (myKey === 0 ? true : myKey)
-
-    } else {
-      
-      if (equalOp) approval = notEqual ? !isEqual(myKey, value) : isEqual(myKey, value)
-      if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(myKey) > parseFloat(value)) : (parseFloat(myKey) > parseFloat(value))
-      if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(myKey) < parseFloat(value)) : (parseFloat(myKey) < parseFloat(value))
-    }
-  })
-
-  return approval
-}
-
-module.exports = { toApproval }
-
-},{"./isEqual":79,"./reducer":96,"./toFunction":125,"./toValue":134}],116:[function(require,module,exports){
-const toArray = (data) => {
-  return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
-}
-
-module.exports = {toArray}
-
-},{}],117:[function(require,module,exports){
-const { clone } = require("./clone")
-const { toArray } = require("./toArray")
-const { toCode } = require("./toCode")
-
-const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res, __, asyncer, awaiter, ...params }) => {
-
-  const { execute } = require("./execute")
-  const { toParam } = require("./toParam")
-  
-  if (!asyncer) return
-  var keepGoingOn = true
-  var global = _window ? _window.global : window.global
-
-  if (myawait && myawait.await) awaitHandler({ _window, myawait, req, res, lookupActions, awaits, id, e, __, ...params })
-
-  // get params
-  while (awaits.length > 0 && keepGoingOn) {
-  
-    var _await = awaits[0]
-    if (keepGoingOn) keepGoingOn = !_await.hold
-    if (keepGoingOn) {
-
-      if (_await.await) {
-
-        var _await_ = toCode({ _window, string: toCode({ _window, string: _await.await }), start: "'", end: "'" })
-        var __params = _await.passGlobalFuncData ? { __: [...(global.func ? [global.func] : []), ...__] } : { __ }
-
-        var conditions = _await_.split("?")[1], approved = true
-        if (conditions) approved = toApproval({ _window, string: conditions, e, id, req, res, __, awaits, lookupActions })
-
-        _await_ = _await_.split("?")[0]
-
-        if (_await.waiter) global.__waiters__.unshift(_await.waiter)
-        if (approved) toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, ...__params, req, res, ...(_await.params || {}) })
-        if (_await.waiter) global.__waiters__.splice(0, 1)
-
-        if (_await.log) console.log(_await.log);
-      }
-      
-      var index = toArray(awaits).findIndex(item => item.id === _await.id)
-      if (index !== -1) toArray(awaits).splice(index, 1)
-      if (index !== 0) keepGoingOn = false
-
-      if (_await.waiter) console.log("STACK", _await.action, clone(awaits).reverse().map((z, i) => ([i, z.action, "hold: " + (z.hold || "false"), "wait: " + (z.await || "X"), "id: " + z.id, "waiter: " + (z.waiter || "X")])));
-      //if (_await.waiter && awaits.length > 0 && awaits[0].id === _await.waiter) awaits[0].hold = false
-   }
-  }
-
-  // override params
-  if (awaiter) execute({ _window, lookupActions, awaits, id, e, actions: awaiter, params: _params, __, req, res})
-}
-
-const awaitHandler = ({_window, req, res, myawait, lookupActions, awaits, id, e, __, ...params }) => {
-  
-  var global = _window ? _window.global : window.global
-  const { toParam } = require("./toParam")
-
-  if (myawait.await) {
-    var _params, _await_ = toCode({ _window, string: toCode({ _window, string: myawait.await, start: "'", end: "'" }) })
-
-    var conditions = _await_.split("?")[1], approved = true
-    if (conditions) {
-      approved = toApproval({ _window, string: conditions, e, id, req, res, __: [...(_params !== undefined ? [_params] : []), ...__], awaits, lookupActions, ...params })
-    }
-
-    _await_ = _await_.split("?")[0]
-    var _params = myawait.params
-    var index = awaits.findIndex(item => item.id === myawait.id)
-
-    if (index !== -1) {
-
-      if (awaits[index].log) console.log(awaits[index].log);
-      awaits.splice(index, 1)
-    }
-    
-    if (myawait.waiter) global.__waiters__.unshift(myawait.waiter)
-    if (approved) _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, __, req, res, ...params, ...(_params || {}) })
-    if (myawait.waiter) global.__waiters__.splice(0, 1)
-  }
-
-  console.log("STACK", myawait.action, clone(awaits).reverse().map((z, i) => ([i, z.action, "hold: " + (z.hold || "false"), "wait: " + (z.await || "X"), "id: " + z.id, "waiter: " + (z.waiter || "X")])));
-  //if (myawait.waiter && awaits.length > 0 && awaits[0].id === myawait.waiter) { awaits[0].hold = false }
-}
-
-module.exports = {toAwait}
-},{"./clone":42,"./execute":63,"./toArray":116,"./toCode":120,"./toParam":130}],118:[function(require,module,exports){
-module.exports = {
-    toCSV: (file = {}) => {
-
-        var data = file.data
-        var fileName = file.name
-        var CSV = ''
-        
-        //Set Report title in first row or line
-
-        // This condition will generate the Label/Header
-        var row = ""
-        var keys = file.fields || []
-
-        // get all keys
-        if (keys.length === 0)
-        data.slice(0, 5).map(data => {
-            Object.keys(data).map(key => {
-                if (!keys.includes(key)) keys.push(key)
-            })
-        })
-
-        //This loop will extract the label from 1st index of on array
-        keys.map(key => row += key + ',')
-
-        row = row.slice(0, -1)
-
-        // line break
-        CSV += row + '\n'
-
-        // extract each row
-        data.map(d => {
-            var row = ""
-
-            // extract each column and convert it in string comma-separated
-            keys.map(k => { 
-                if (d[k] !== undefined) row += `${d[k]},`
-                else row += ','
-            })
-
-            row = row.slice(0, -1)
-
-            //add a line break after each row
-            CSV += row + '\n'
-        })
-
-        if (CSV == '') {
-            alert("Invalid data")
-            return
-        }
-
-        var blob = new Blob([CSV], { type: 'text/csv;charset=utf-8;' })
-
-        if (navigator.msSaveBlob) { // IE 10+
-
-            navigator.msSaveBlob(blob, fileName)
-
-        } else {
-
-            var link = document.createElement("a")
-            if (link.download !== undefined) { // feature detection
-
-                // Browsers that support HTML5 download attribute
-                var url = URL.createObjectURL(blob)
-                link.setAttribute("href", url)
-                link.style = "visibility:hidden"
-                link.download = fileName + ".csv"
-                document.body.appendChild(link)
-                link.click()
-                document.body.removeChild(link)
-
-            }
-        }
-    }
-}
-},{}],119:[function(require,module,exports){
-module.exports = {
-    toClock: ({ timestamp, day, hr, min, sec }) => {
-
-        if (!timestamp) return "00:00"
-        var days_ = Math.floor(timestamp / 86400000) + ""
-        var _days = timestamp % 86400000
-        var hrs_ = Math.floor(_days / 3600000) + ""
-        var _hrs = _days % 3600000
-        var mins_ = Math.floor(_hrs / 60000) + ""
-        var _mins = _hrs % 60000
-        var secs_ = Math.floor(_mins / 1000) + ""
-
-        if (days_.length === 1) days_ = "0" + days_
-        if (hrs_.length === 1) hrs_ = "0" + hrs_
-        if (mins_.length === 1) mins_ = "0" + mins_
-        if (secs_.length === 1) secs_ = "0" + secs_
-
-        return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
-    }
-}
-},{}],120:[function(require,module,exports){
-const { generate } = require("./generate")
-
-const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
-
-  if (typeof string !== "string") return string
-  var codeName = start === "'" ? "codedS()" : "coded()", global = {}
-  if (!codes) global = _window ? _window.global : window.global
-
-  // split []
-  //if (start === "[") string = string.split("[]").join("__map__")
-
-  var keys = string.split(start)
-
-  if (keys[1] !== undefined) {
-
-    var key = `${codeName}${generate()}`
-    var subKey = keys[1].split(end)
-
-    // ex. [ [ [] [] ] ]
-    while (subKey[0] === keys[1] && keys[2] !== undefined) {
-
-      keys[1] += `${start}${keys[2]}`
-      if (keys[1].includes(end) && keys[2]) {
-        keys[1] = toCode({ _window, string: keys[1], e, start, end })
-      }
-      keys.splice(2, 1)
-      subKey = keys[1].split(end)
-    }
-
-    // ex. 1.2.3.[4.5.6
-    if (subKey[0] === keys[1] && keys.length === 2) {
-
-      keys = keys.join(start)
-      return keys
-    }
-
-    //if (start === "[") subKey[0] = subKey[0].split("__map__").join("[]")
-    if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, string: subKey[0], start: "'", end: "'" })
-    if (codes) codes[key] = subKey[0]
-    else global.codes[key] = subKey[0]
-
-    var value = key
-    var before = keys[0]
-    subKey = subKey.slice(1)
-    keys = keys.slice(2)
-    var after = keys.join(start) ? `${start}${keys.join(start)}` : ""
-
-    string = `${before}${value}${subKey.join(end)}${after}`
-  }
-
-  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, string, e, start, end })
-
-  return string
-}
-
-module.exports = { toCode }
-},{"./generate":70}],121:[function(require,module,exports){
-const {generate} = require("./generate")
-const {toArray} = require("./toArray")
-
-const toComponent = (obj) => {
-  // class
-  obj.class = obj.class || ""
-
-  // id
-  obj.id = obj.id || generate()
-
-  // style
-  obj.style = obj.style || {}
-  obj.style.after = obj.style.after || {}
-
-  // controls
-  obj.controls = toArray(obj.controls)
-
-  // children
-  obj.children = toArray(obj.children)
-
-  // model
-  obj.featured = obj.featured && "featured"
-  obj.model = obj.model || obj.featured || "classic"
-
-  // component
-  obj.component = true
-
-  return obj
-}
-
-module.exports = {toComponent}
-
-},{"./generate":70,"./toArray":116}],122:[function(require,module,exports){
-const toControls = ({ id }) => {}
-
-module.exports = {toControls}
-
-},{}],123:[function(require,module,exports){
-// const XLSX = require("xlsx")
-
-module.exports = {
-    toExcel: (file = {}) => {
-
-        var data = file.data || file.json
-        var fileName = file.name
-        var myObject = []
-
-        // This condition will generate the Label/Header
-        var keys = file.fields || file.keys || file.headers || []
-        if (keys.length > 0) data.map((data, i) => {
-            myObject[i] = {}
-            keys.map(key => myObject[i][key] = data[key])
-        })
-        else myObject = data
-
-        var myFile = `${fileName}.xlsx`
-        var myWorkSheet = XLSX.utils.json_to_sheet(myObject)
-        var myWorkBook = XLSX.utils.book_new()
-        XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "Sheet")
-        XLSX.writeFile(myWorkBook, myFile)
-    }
-}
-},{}],124:[function(require,module,exports){
-module.exports = {
-    toFirebaseOperator: (string) => {
-        if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
-        if (string === 'notEqual' || string === 'different' || string === 'isnot') return '!='
-        if (string === 'greaterOrEqual' || string === 'greaterorequal') return '>='
-        if (string === 'lessOrEqual' || string === 'lessorequal') return '<='
-        if (string === 'less' || string === 'lessthan' || string === 'lessThan') return '<'
-        if (string === 'greater' || string === 'greaterthan' || string === 'greaterThan') return '>'
-        if (string === 'contains' || string === 'contain') return 'array-contains'
-        if (string === '!contains' || string === 'doesnotContain' || string === 'doesnotcontain') return 'array-contains-any'
-        if (string === 'includes' || string === 'include') return 'in'
-        if (string === '!includes' || string === 'doesnotInclude' || string === 'doesnotinclude') return 'not-in'
-        else return string
-    }
-}
-},{}],125:[function(require,module,exports){
+},{"./capitalize":33,"./clone":35,"./style":106}],108:[function(require,module,exports){
 const { func } = require("./func")
 const { clone } = require("./clone")
 const { toCode } = require("./toCode")
@@ -12491,13 +11467,13 @@ const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 
-const toFunction = ({ _window, id, req, res, __, e, path, path0, condition, params = {}, mount, asyncer, toView, executer, object, lookupActions = {}, awaits = [], isView = false }) => {
+const toAction = ({ _window, id, req, res, __, e, path, path0, condition, params = {}, mount, asyncer, toView, executer, object, lookupActions = {}, awaits = [], isView = false }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
   var view = views[id], backendFn = false, isFn = false
   
-  if (path.length === 1 && path0 !== "()" && path0.slice(-2) === "()" && path0 !== "_()" && !actions.includes(path0) && path0.slice(0, 7) !== "coded()") {
+  if (path.length === 1 && path0 !== "()" && path0.slice(-2) === "()" && path0 !== "_()" && !actions.includes(path0) && path0.slice(0, 6) !== "coded@") {
     
     var newLookupActions
     var myViews = (view || {})["my-views"] || []
@@ -12574,8 +11550,8 @@ const toFunction = ({ _window, id, req, res, __, e, path, path0, condition, para
         else _data = toValue({ req, res, _window, id, e, __, value: args[1], params, condition, lookupActions })
 
         var _func = { function: isFn, data: _data, log: { action: params.func, send: global.func } }
-        var _await = global.codes[args[2]], myawait = { id: generate(), hold: true, await: _await, action: path0, passGlobalFuncData: _window ? true: false, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn || [] }, params: { e, id, mount, object, asyncer, toView, executer, condition, lookupActions } }
-    
+        var _await = global.__codes__[args[2]], myawait = { id: generate(), hold: true, await: _await, action: path0, passGlobalFuncData: _window ? true: false, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn || [] }, params: { e, id, __, mount, object, asyncer, toView, executer, condition, lookupActions } }
+
         if (_await) awaits.unshift(myawait)
         if (global.__waiters__.length > 0) myawait.waiter = global.__waiters__[0]
 
@@ -12595,7 +11571,7 @@ const toFunction = ({ _window, id, req, res, __, e, path, path0, condition, para
       if (isFn) {
 
         // await
-        var answer, _await = global.codes[args[2]], myawait = { id: generate(), hold: false, await: _await, action: path0, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn }, params: {e, id, mount, object, __: [...(_params !== undefined ? [_params] : []), ...__], asyncer, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions} }
+        var answer, _await = global.__codes__[args[2]], myawait = { id: generate(), hold: false, await: _await, action: path0, log: { action: path0, await: _await, data: _params, success: true, message: "Action executed successfully!", path: (newLookupActions ? newLookupActions : lookupActions).fn }, params: {e, id, mount, object, __, asyncer, toView, params, executer, condition, lookupActions: newLookupActions ? newLookupActions : lookupActions} }
         awaits.unshift(myawait)
         if (global.__waiters__.length > 0) myawait.waiter = global.__waiters__[0]
         
@@ -12605,7 +11581,7 @@ const toFunction = ({ _window, id, req, res, __, e, path, path0, condition, para
 
           isFn = toCode({ _window, id, string: toCode({ _window, id, string: isFn, start: "'", end: "'" }) })
 
-          if (isFn.includes('coded()') && isFn.length === 12) isFn = global.codes[isFn]
+          if (isFn.includes("coded@") && isFn.length === 11) isFn = global.__codes__[isFn]
           
           var conditions = isFn.split("?")[1]
           if (conditions) {
@@ -12646,7 +11622,7 @@ const toFunction = ({ _window, id, req, res, __, e, path, path0, condition, para
 
           if (_await) {
 
-            require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, __: [global.search, ...__] })
+            require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, myawait, awaits, req, res, _: global.search, __ })
 
           } else {
 
@@ -12663,13 +11639,479 @@ const toFunction = ({ _window, id, req, res, __, e, path, path0, condition, para
   return "__CONTINUE__"
 }
 
-module.exports = { toFunction }
-},{"./actions.json":37,"./clone":42,"./func":68,"./generate":70,"./isParam":80,"./toApproval":115,"./toArray":116,"./toAwait":117,"./toCode":120,"./toParam":130,"./toValue":134,"./toView":135}],126:[function(require,module,exports){
+module.exports = { toAction }
+},{"./actions.json":30,"./clone":35,"./func":62,"./generate":64,"./isParam":74,"./toApproval":109,"./toArray":110,"./toAwait":111,"./toCode":114,"./toParam":123,"./toValue":127,"./toView":128}],109:[function(require,module,exports){
+const { isEqual } = require("./isEqual")
+
+const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id = "root", __, req, res, object, elser }) => {
+
+  const { toAction } = require("./toAction")
+  const { toValue } = require("./toValue")
+  const { reducer } = require("./reducer")
+
+  // no string but object exists
+  if (!string)
+    if (object) return true
+    else if (object !== undefined) return false
+
+  // no string
+  if (!string || typeof string !== "string") return true
+
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.global : window.global
+  var mainId = id, approval = true
+  
+  if ((global.__actionReturns__[0] || {}).returned) return
+
+  // coded
+  if (string.includes("coded@") && string.length === 11) string = global.__codes__[string]
+
+  // ==
+  string = string.replace("==", "=")
+
+  string.split(";").map(condition => {
+
+    // no condition
+    if (condition === "") return true
+    if (!approval) return false
+
+    id = mainId
+    var view = views[id] || {}
+
+    if (condition.charAt(0) === "#") {
+      if (elser) return approval = false
+      else return
+    }
+
+    // or
+    if (condition.includes("||")) {
+      var conditions = condition.split("||"), _i = 0
+      approval = false
+      while (!approval && conditions[_i] !== undefined) {
+        if (conditions[_i].slice(0,2) === "=") conditions[_i] = conditions[0] + conditions[_i]
+        approval = toApproval({ _window, lookupActions, awaits, e, string: conditions[_i], id, __, params, req, res, object, elser: true })
+        _i += 1
+      }
+      return approval
+    }
+
+    condition = condition.split("=")
+    var equalOp = condition.length > 1
+    var greaterOp = condition[0].split(">")[1] !== undefined
+    if (greaterOp) {
+      condition[1] = condition[1] || condition[0].split(">")[1]
+      condition[0] = condition[0].split(">")[0]
+    }
+    var lessOp = condition[0].split("<")[1] !== undefined
+    if (lessOp) {
+      condition[1] = condition[1] || condition[0].split("<")[1]
+      condition[0] = condition[0].split("<")[0]
+    }
+
+    var key = condition[0]
+    var value = condition[1]
+    var notEqual
+
+    // /////////////////// value /////////////////////
+
+    if (value) value = toValue({ _window, lookupActions, awaits, id: mainId, value, e, __, req, res, params, condition: true })
+
+    // /////////////////// key /////////////////////
+
+    if (key && key.includes('coded@') && key.length === 11) key = global.__codes__[key]
+    if (key && key.includes('codedT@') && key.length === 12) {
+      if (value === undefined) return approval = global.__codes__[key] ? true : false
+      else return approval = global.__codes__[key] === value
+    }
+
+    // operator has !
+    if (key.includes("!")) {
+      if (key.split("!")[0]) {
+
+        if (condition[1]) {
+          notEqual = true
+          key = key.split("!")[0]
+        }
+
+      } else {
+
+        key = key.split("!")[1]
+        notEqual = true
+      }
+    }
+
+    //
+    var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0], myKey
+
+    // function
+    if (path0.slice(-2) === "()") {
+    var isFn = toAction({ _window, lookupActions, awaits, id, req, res, __, e, path, path0, condition: true });
+    if (isFn !== "__CONTINUE__") return approval = notEqual ? !isFn : isFn
+    }
+
+    if (!key && object !== undefined) myKey = object
+    else if (key === "undefined") myKey = undefined
+    else if (key === "false") myKey = false
+    else if (key === "true") myKey = true
+    else if (key === "desktop()") myKey = global.device.device.type === "desktop"
+    else if (key === "tablet()") myKey = global.device.device.type === "tablet"
+    else if (key === "mobile()") myKey = global.device.device.type === "smartphone"
+    else if (key.charAt(0) === "_" && !key.split("_").find(i => i !== "_" && i !== "")) myKey = __[key.split("_").length - 2]
+    else if (object || path[0].includes("()") || (path[1] && path[1].includes("()"))) myKey = reducer({ _window, lookupActions, awaits, id, path, e, __, params, req, res, object, condition: true })
+    else myKey = reducer({ _window, lookupActions, awaits, id, path, e, __, req, res, params, object: object ? object : view, condition: true })
+    // else myKey = key
+
+    if (params["return()"] !== undefined) {
+
+      approval = params["return()"]
+
+    } else if (!equalOp && !greaterOp && !lessOp) {
+
+      approval = notEqual ? !myKey : (myKey === 0 ? true : myKey)
+
+    } else {
+      
+      if (equalOp) approval = notEqual ? !isEqual(myKey, value) : isEqual(myKey, value)
+      if (greaterOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(myKey) > parseFloat(value)) : (parseFloat(myKey) > parseFloat(value))
+      if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(myKey) < parseFloat(value)) : (parseFloat(myKey) < parseFloat(value))
+    }
+  })
+
+  return approval
+}
+
+module.exports = { toApproval }
+
+},{"./isEqual":73,"./reducer":90,"./toAction":108,"./toValue":127}],110:[function(require,module,exports){
+const toArray = (data) => {
+  return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
+}
+
+module.exports = {toArray}
+
+},{}],111:[function(require,module,exports){
+const { clone } = require("./clone")
+const { toArray } = require("./toArray")
+const { toCode } = require("./toCode")
+
+const toAwait = ({ _window, lookupActions, awaits = [], myawait, id, e, req, res, __, _, asyncer, awaiter, ...params }) => {
+
+  const { execute } = require("./execute")
+  const { toParam } = require("./toParam")
+  
+  if (!asyncer) return
+  var keepGoingOn = true
+  var global = _window ? _window.global : window.global
+
+  if (myawait && myawait.await) awaitHandler({ _window, myawait, req, res, lookupActions, awaits, id, e, _, __, ...params })
+
+  // get params
+  while (awaits.length > 0 && keepGoingOn) {
+  
+    var _await = awaits[0]
+    if (keepGoingOn) keepGoingOn = !_await.hold
+    if (keepGoingOn) {
+
+      if (_await.await) {
+
+        var _await_ = toCode({ _window, string: toCode({ _window, string: _await.await }), start: "'", end: "'" })
+        var my__ = _await.params.__ || __
+        //var my__ = _await.passGlobalFuncData ? [...(global.func ? [global.func] : []), ...((_await.params || {}).__ || __)] : ((_await.params || {}).__ || __)
+
+        var conditions = _await_.split("?")[1], approved = true
+        if (conditions) approved = toApproval({ _window, string: conditions, e, id, req, res, __: my__, awaits, lookupActions })
+
+        _await_ = _await_.split("?")[0]
+
+        if (_await.waiter) global.__waiters__.unshift(_await.waiter)
+        if (approved) toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, req, res, ...(_await.params || {}), __: my__ })
+        if (_await.waiter) global.__waiters__.splice(0, 1)
+
+        if (_await.log) console.log(_await.log);
+      }
+      
+      var index = toArray(awaits).findIndex(item => item.id === _await.id)
+      if (index !== -1) toArray(awaits).splice(index, 1)
+      if (index !== 0) keepGoingOn = false
+
+      if (_await.waiter) console.log("STACK", _await.action, clone(awaits).reverse().map((z, i) => ([i, z.action, "hold: " + (z.hold || "false"), "wait: " + (z.await || "X"), "id: " + z.id, "waiter: " + (z.waiter || "X")])));
+      //if (_await.waiter && awaits.length > 0 && awaits[0].id === _await.waiter) awaits[0].hold = false
+   }
+  }
+
+  // override params
+  if (awaiter) execute({ _window, lookupActions, awaits, id, e, actions: awaiter, params, __, req, res})
+}
+
+const awaitHandler = ({_window, req, res, myawait, lookupActions, awaits, id, e, _, __, ...params }) => {
+  
+  var global = _window ? _window.global : window.global
+  const { toParam } = require("./toParam")
+
+  if (myawait.await) {
+    var _params, _await_ = toCode({ _window, string: toCode({ _window, string: myawait.await, start: "'", end: "'" }) })
+    var my__ = (!myawait.passGlobalFuncData && _ !== undefined) ? [_, ...(myawait.params.__ || __)] : (myawait.params.__ || __)
+
+    var conditions = _await_.split("?")[1], approved = true
+    if (conditions) approved = toApproval({ _window, string: conditions, e, id, req, res, awaits, lookupActions, ...params, ...(myawait.params || {}), __: my__ })
+
+    _await_ = _await_.split("?")[0]
+    var _params = myawait.params
+    var index = awaits.findIndex(item => item.id === myawait.id)
+
+    if (index !== -1) {
+
+      if (awaits[index].log) console.log(awaits[index].log);
+      awaits.splice(index, 1)
+    }
+    
+    if (myawait.waiter) global.__waiters__.unshift(myawait.waiter)
+    if (approved) _params = toParam({ _window, lookupActions, awaits, id, e, string: _await_, asyncer: true, req, res, ...params, ...(myawait.params || {}), __: my__ })
+    if (myawait.waiter) global.__waiters__.splice(0, 1)
+  }
+
+  console.log("STACK", myawait.action, clone(awaits).reverse().map((z, i) => ([i, z.action, "hold: " + (z.hold || "false"), "wait: " + (z.await || "X"), "id: " + z.id, "waiter: " + (z.waiter || "X")])));
+  //if (myawait.waiter && awaits.length > 0 && awaits[0].id === myawait.waiter) { awaits[0].hold = false }
+}
+
+module.exports = { toAwait }
+},{"./clone":35,"./execute":57,"./toArray":110,"./toCode":114,"./toParam":123}],112:[function(require,module,exports){
+module.exports = {
+    toCSV: (file = {}) => {
+
+        var data = file.data
+        var fileName = file.name
+        var CSV = ''
+        
+        //Set Report title in first row or line
+
+        // This condition will generate the Label/Header
+        var row = ""
+        var keys = file.fields || []
+
+        // get all keys
+        if (keys.length === 0)
+        data.slice(0, 5).map(data => {
+            Object.keys(data).map(key => {
+                if (!keys.includes(key)) keys.push(key)
+            })
+        })
+
+        //This loop will extract the label from 1st index of on array
+        keys.map(key => row += key + ',')
+
+        row = row.slice(0, -1)
+
+        // line break
+        CSV += row + '\n'
+
+        // extract each row
+        data.map(d => {
+            var row = ""
+
+            // extract each column and convert it in string comma-separated
+            keys.map(k => { 
+                if (d[k] !== undefined) row += `${d[k]},`
+                else row += ','
+            })
+
+            row = row.slice(0, -1)
+
+            //add a line break after each row
+            CSV += row + '\n'
+        })
+
+        if (CSV == '') {
+            alert("Invalid data")
+            return
+        }
+
+        var blob = new Blob([CSV], { type: 'text/csv;charset=utf-8;' })
+
+        if (navigator.msSaveBlob) { // IE 10+
+
+            navigator.msSaveBlob(blob, fileName)
+
+        } else {
+
+            var link = document.createElement("a")
+            if (link.download !== undefined) { // feature detection
+
+                // Browsers that support HTML5 download attribute
+                var url = URL.createObjectURL(blob)
+                link.setAttribute("href", url)
+                link.style = "visibility:hidden"
+                link.download = fileName + ".csv"
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link)
+
+            }
+        }
+    }
+}
+},{}],113:[function(require,module,exports){
+module.exports = {
+    toClock: ({ timestamp, day, hr, min, sec }) => {
+
+        if (!timestamp) return "00:00"
+        var days_ = Math.floor(timestamp / 86400000) + ""
+        var _days = timestamp % 86400000
+        var hrs_ = Math.floor(_days / 3600000) + ""
+        var _hrs = _days % 3600000
+        var mins_ = Math.floor(_hrs / 60000) + ""
+        var _mins = _hrs % 60000
+        var secs_ = Math.floor(_mins / 1000) + ""
+
+        if (days_.length === 1) days_ = "0" + days_
+        if (hrs_.length === 1) hrs_ = "0" + hrs_
+        if (mins_.length === 1) mins_ = "0" + mins_
+        if (secs_.length === 1) secs_ = "0" + secs_
+
+        return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
+    }
+}
+},{}],114:[function(require,module,exports){
+const { generate } = require("./generate")
+
+const toCode = ({ _window, string, e, start = "[", end = "]" }) => {
+
+  if (typeof string !== "string") return string
+  var codeName = start === "'" ? "codedT@" : "coded@", global = {}
+  var global = _window ? _window.global : window.global
+
+  // split []
+  //if (start === "[") string = string.split("[]").join("__map__")
+
+  var keys = string.split(start)
+
+  if (keys[1] !== undefined) {
+
+    var key = `${codeName}${generate()}`
+    var subKey = keys[1].split(end)
+
+    // ex. [ [ [] [] ] ]
+    while (subKey[0] === keys[1] && keys[2] !== undefined) {
+
+      keys[1] += `${start}${keys[2]}`
+      if (keys[1].includes(end) && keys[2]) {
+        keys[1] = toCode({ _window, string: keys[1], e, start, end })
+      }
+      keys.splice(2, 1)
+      subKey = keys[1].split(end)
+    }
+
+    // ex. 1.2.3.[4.5.6
+    if (subKey[0] === keys[1] && keys.length === 2) {
+
+      keys = keys.join(start)
+      return keys
+    }
+
+    //if (start === "[") subKey[0] = subKey[0].split("__map__").join("[]")
+    if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, string: subKey[0], start: "'", end: "'" })
+    global.__codes__[key] = subKey[0]
+
+    var value = key
+    var before = keys[0]
+    subKey = subKey.slice(1)
+    keys = keys.slice(2)
+    var after = keys.join(start) ? `${start}${keys.join(start)}` : ""
+
+    string = `${before}${value}${subKey.join(end)}${after}`
+  }
+
+  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, string, e, start, end })
+
+  return string
+}
+
+module.exports = { toCode }
+},{"./generate":64}],115:[function(require,module,exports){
+const {generate} = require("./generate")
+const {toArray} = require("./toArray")
+
+const toComponent = (obj) => {
+  // class
+  obj.class = obj.class || ""
+
+  // id
+  obj.id = obj.id || generate()
+
+  // style
+  obj.style = obj.style || {}
+  obj.style.after = obj.style.after || {}
+
+  // controls
+  obj.controls = toArray(obj.controls)
+
+  // children
+  obj.children = toArray(obj.children)
+
+  // model
+  obj.featured = obj.featured && "featured"
+  obj.model = obj.model || obj.featured || "classic"
+
+  // component
+  obj.component = true
+
+  return obj
+}
+
+module.exports = {toComponent}
+
+},{"./generate":64,"./toArray":110}],116:[function(require,module,exports){
+const toControls = ({ id }) => {}
+
+module.exports = {toControls}
+
+},{}],117:[function(require,module,exports){
+// const XLSX = require("xlsx")
+
+module.exports = {
+    toExcel: (file = {}) => {
+
+        var data = file.data || file.json
+        var fileName = file.name
+        var myObject = []
+
+        // This condition will generate the Label/Header
+        var keys = file.fields || file.keys || file.headers || []
+        if (keys.length > 0) data.map((data, i) => {
+            myObject[i] = {}
+            keys.map(key => myObject[i][key] = data[key])
+        })
+        else myObject = data
+
+        var myFile = `${fileName}.xlsx`
+        var myWorkSheet = XLSX.utils.json_to_sheet(myObject)
+        var myWorkBook = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "Sheet")
+        XLSX.writeFile(myWorkBook, myFile)
+    }
+}
+},{}],118:[function(require,module,exports){
+module.exports = {
+    toFirebaseOperator: (string) => {
+        if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
+        if (string === 'notEqual' || string === 'different' || string === 'isnot') return '!='
+        if (string === 'greaterOrEqual' || string === 'greaterorequal') return '>='
+        if (string === 'lessOrEqual' || string === 'lessorequal') return '<='
+        if (string === 'less' || string === 'lessthan' || string === 'lessThan') return '<'
+        if (string === 'greater' || string === 'greaterthan' || string === 'greaterThan') return '>'
+        if (string === 'contains' || string === 'contain') return 'array-contains'
+        if (string === '!contains' || string === 'doesnotContain' || string === 'doesnotcontain') return 'array-contains-any'
+        if (string === 'includes' || string === 'include') return 'in'
+        if (string === '!includes' || string === 'doesnotInclude' || string === 'doesnotinclude') return 'not-in'
+        else return string
+    }
+}
+},{}],119:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { labelHandler } = require("./labelHandler")
 
-module.exports = ({ _window, id, innerHTML }) => {
+const toHTML = ({ _window, id, innerHTML }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id]
@@ -12680,8 +12122,8 @@ module.exports = ({ _window, id, innerHTML }) => {
   
   // children IDs
   if (view.parent && views[view.parent]) {
-    if(!views[view.parent].childrenID) views[view.parent].childrenID = []
-    views[view.parent].childrenID.push(id)
+    if(!views[view.parent].__childrenID__) views[view.parent].__childrenID__ = []
+    views[view.parent].__childrenID__.push(id)
   }
 
   if (view.type === "Input") value = (view.input && view.input.value) !== undefined ? view.input.value : view.data !== undefined ? view.data : ""
@@ -12713,19 +12155,7 @@ module.exports = ({ _window, id, innerHTML }) => {
     tag = `<img ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' ${view.src ? `src='${view.src}'` : ""}></img>`
   } else if (type === "Tag" && view.tag) {
     tag = `<${view.tag.toLowerCase()} ${atts} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${view.content}</${view.tag.toLowerCase()}>`
-  } /*else if (type === "Table") {
-    tag = `<table ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</table>`
-  } else if (type === "Row") {
-    tag = `<tr ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</tr>`
-  } else if (type === "Header") {
-    tag = `<th ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</th>`
-  } else if (type === "Cell") {
-    tag = `<td ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</td>`
-  } else if (type === "Label") {
-    tag = `<label ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
-  } else if (type === "Span") {
-    tag = `<span ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</span>`
-  } */else if (type === "Text") {
+  } else if (type === "Text") {
     if (view.label) {
       tag = `<label ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
     } else if (view.h1) {
@@ -12755,9 +12185,7 @@ module.exports = ({ _window, id, innerHTML }) => {
     } else {
       tag = `<input ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} ${view.multiple?"multiple":""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index || 0}'/>`
     }
-  } /*else if (type === "Paragraph") {
-    tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index || 0}'>${text}</textarea>`
-  } */else if (type === "Video") {
+  } else if (type === "Video") {
 
     tag = `<video ${atts} style='${style}' controls>
       ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>`: "")}
@@ -12770,7 +12198,9 @@ module.exports = ({ _window, id, innerHTML }) => {
 
   return tag
 }
-},{"./labelHandler":85,"./toArray":116,"./toStyle":133}],127:[function(require,module,exports){
+
+module.exports = {toHTML}
+},{"./labelHandler":79,"./toArray":110,"./toStyle":126}],120:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -12799,14 +12229,15 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":70}],128:[function(require,module,exports){
+},{"./generate":64}],121:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
     if (!string) return string
     if (typeof string === 'number') return string
     if (!isNaN(string)) return parseFloat(string)
-    else return parseFloat(string.match(/[\d\.]+/) || 0)
+    return string
+    // else return parseFloat(string.match(/[\d\.]+/) || 0)
     
     /*if ((parseFloat(string) || parseFloat(string) === 0)  && (!isNaN(string.charAt(0)) || string.charAt(0) === '-')) {
       if (!isNaN(string.split(",").join(""))) {
@@ -12820,7 +12251,7 @@ module.exports = {
   },
 };
 
-},{}],129:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -12836,18 +12267,14 @@ module.exports = {
         else return string
     }
 } 
-},{}],130:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
-const { decode } = require("./decode")
 const { toCode } = require("./toCode")
 const { clone } = require("./clone")
-const { isParam } = require("./isParam")
 const { toArray } = require("./toArray")
 const actions = require("./actions.json")
-const { getType } = require("./getType")
-const { override } = require("./merge")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -12858,12 +12285,8 @@ function sleep(milliseconds) {
 }
 
 const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", req, res, mount, object, __, _i, asyncer, toView, params = {}, executer, condition }) => {
-  
-  // break
-  if (params && params["return()"] !== undefined) return params["return()"]
-  else if (params["break()"]) return params
 
-  const { toFunction } = require("./toFunction")
+  const { toAction } = require("./toAction")
   const { toApproval } = require("./toApproval")
   var _functions = require("./function")
 
@@ -12876,8 +12299,8 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
   if (typeof string !== "string" || !string) return string || {}
   params = object || params
 
-  while (string.includes('coded()') && string.length === 12) { string = global.codes[string] }
-  if (string.includes('codedS()') && string.length === 13) return global.codes[string]
+  while (string.includes('coded@') && string.length === 11) { string = global.__codes__[string] }
+  if (string.includes('codedT@') && string.length === 12) return global.__codes__[string]
 
   // condition not param
   if (!toView && string.includes("==") || string.includes("!=") || string.slice(0, 1) === "!" || string.includes(">") || string.includes("<")) 
@@ -12889,10 +12312,6 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
     var key, value, id = viewId
     var view = views[id]
     if (param === "") return
-
-    // break
-    if (params && params["return()"] !== undefined) return params["return()"]
-    else if (params["break()"]) return params
     
     if ((global.__actionReturns__[0] || {}).returned) return
 
@@ -12923,8 +12342,8 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
     else if (key && value && key.slice(-2) === "||") {
       key = key.slice(0, -2)
       var _key = generate()
-      global.codes[`coded()${_key}`] = `${key}||${value}`
-      value = `coded()${_key}`
+      global.__codes__[`coded@${_key}`] = `${key}||${value}`
+      value = `coded@${_key}`
     }
 
     // +=
@@ -12933,10 +12352,10 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       key = key.slice(0, -1)
       var _key = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
-      global.codes[`coded()${_key}`] = toCode({ _window, string: `${myVal}||[if():[type():[${value}]=number]:0:'']` })
-      value = `coded()${_key}+${value}`
-      /*global.codes[`coded()${_key0}`] = `${value}||0`
-      value = `coded()${_key}+coded()${_key0}`*/
+      global.__codes__[`coded@${_key}`] = toCode({ _window, string: `${myVal}||[if():[type():[${value}]=number]:0:'']` })
+      value = `coded@${_key}+${value}`
+      /*global.__codes__[`coded@${_key0}`] = `${value}||0`
+      value = `coded@${_key}+coded@${_key0}`*/
     }
 
     // -=
@@ -12945,11 +12364,11 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       key = key.slice(0, -1)
       var _key = generate(), __key = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
-      global.codes[`coded()${_key}`] = toCode({ _window, string: `${myVal}||0` })
-      global.codes[`coded()${__key}`] = toCode({ _window, string: `${value}||0` })
-      value = `coded()${_key}-coded()${__key}`
-      /*global.codes[`coded()${_key0}`] = `${value}||0`
-      value = `coded()${_key}-coded()${_key0}`*/
+      global.__codes__[`coded@${_key}`] = toCode({ _window, string: `${myVal}||0` })
+      global.__codes__[`coded@${__key}`] = toCode({ _window, string: `${value}||0` })
+      value = `coded@${_key}-coded@${__key}`
+      /*global.__codes__[`coded@${_key0}`] = `${value}||0`
+      value = `coded@${_key}-coded@${_key0}`*/
     }
 
     // *=
@@ -12958,10 +12377,10 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
       key = key.slice(0, -1)
       var _key = generate(), _key0 = generate()
       var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
-      global.codes[`coded()${_key}`] = `${myVal}||0`
-      value = `coded()${_key}*${value}`
-      /*global.codes[`coded()${_key0}`] = `${value}||0`
-      value = `coded()${_key}*coded()${_key0}`*/
+      global.__codes__[`coded@${_key}`] = `${myVal}||0`
+      value = `coded@${_key}*${value}`
+      /*global.__codes__[`coded@${_key0}`] = `${value}||0`
+      value = `coded@${_key}*coded@${_key0}`*/
     }
 
     // await
@@ -12969,7 +12388,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
       var awaiter = param.split(":").slice(1)
       if (asyncer) {
-        if (awaiter[0].slice(0, 7) === "coded()") awaiter[0] = global.codes[awaiter[0]]
+        if (awaiter[0].slice(0, 6) === "coded@") awaiter[0] = global.__codes__[awaiter[0]]
         var _params = toParam({ _window, lookupActions, awaits, string: awaiter[0], e, id, req, res, mount, __, })
         params = { ...params, ..._params }
         awaiter = awaiter.slice(1)
@@ -12997,13 +12416,13 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
     // show loader
     if (!_window && param === "loader.show") {
       document.getElementById("loader-container").style.display = "flex"
-      return sleep(10)
+      return sleep(20)
     }
     
     // hide loader
     if (!_window && param === "loader.hide") {
       document.getElementById("loader-container").style.display = "none"
-      return sleep(10)
+      return sleep(20)
     }
 
     if (toView) {
@@ -13015,7 +12434,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
         param = param.slice(9)
         param.split(":").map(param => {
 
-          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          if (param.slice(0, 6) === "coded@" && param.length === 11) param = global.__codes__[param]
           _children.push({ view: param })
         })
 
@@ -13036,7 +12455,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
         param = param.slice(6)
         param.split(":").map(param => {
 
-          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          if (param.slice(0, 6) === "coded@" && param.length === 11) param = global.__codes__[param]
           _children.push({ view: param })
         })
 
@@ -13058,7 +12477,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
         param = param.slice(9)
         param.split(":").map(param => {
 
-          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          if (param.slice(0, 6) === "coded@" && param.length === 11) param = global.__codes__[param]
           siblings.push({ view: param })
         })
 
@@ -13079,7 +12498,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
         param = param.slice(8)
         param.split(":").map(param => {
 
-          if (param.slice(0, 7) === "coded()" && param.length === 12) param = global.codes[param]
+          if (param.slice(0, 6) === "coded@" && param.length === 11) param = global.__codes__[param]
           siblings.push({ view: param })
         })
 
@@ -13106,25 +12525,25 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
     id = viewId
     
-    // :coded()1asd1
-    if (path0 === "") return
+    // :coded@1asd1
+    if (path0 === "" && param.slice(0, 3) !== "...") return
 
     // function
     if (path0.slice(-2) === "()") {
 
-      var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, __, e, path, path0, condition, mount, asyncer, toView, executer, object })
+      var isFn = toAction({ _window, lookupActions, awaits, id, req, res, __, e, path, path0, condition, mount, asyncer, toView, executer, object })
       if (isFn !== "__CONTINUE__") return isFn
       else isFn = false
       
       // field:action()
-      if (path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
+      if (path[0] && pathi.slice(-2) === "()" && !path0.includes("()") && !path0.includes("coded@") && !_functions[pathi.slice(-2)] && !actions.includes(pathi)) {
 
         view && clone(view["my-views"] || []).reverse().map(myview => {
           if (!isFn) {
             isFn = Object.keys(global.data[view.viewType][myview] && global.data[view.viewType][myview].functions || {}).find(fn => fn === pathi.slice(0, -2))
             if (isFn) {
-              isFn = toCode({ _window, lookupActions, awaits, id, string: (global.data[view.viewType][myview].functions || {})[isFn], start: "'", end: "'" })
-              isFn = toCode({ _window, lookupActions, awaits, id, string: isFn })
+              isFn = toCode({ _window, id, string: (global.data[view.viewType][myview].functions || {})[isFn], start: "'", end: "'" })
+              isFn = toCode({ _window, id, string: isFn })
             }
           }
         })
@@ -13140,29 +12559,32 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
         var _field = path[0].split(":")[0]
         var _key = generate()
-        global.codes[`coded()${_key}`] = isFn
+        global.__codes__[`coded@${_key}`] = isFn
 
-        return toParam({ _window, lookupActions, awaits, string: `${_field}:coded()${_key}`, e, id, req, res, mount: true, object, __, _i, asyncer, toView, executer })
+        return toParam({ _window, lookupActions, awaits, string: `${_field}:coded@${_key}`, e, id, req, res, mount: true, object, __, _i, asyncer, toView, executer })
       }
     }
     
     // object structure
-    if (path.length > 1 || path[0].includes("()") || object) {
+    if (path.length > 1 || path[0].includes("()") || object  || path[0].includes("@")) {
       
       // break
-      if (key === "break()" && value !== false) return view.break = true
-      var _path = clone(params.path)
-      delete params.path
+      // if (key === "break()" && value !== false) return view.break = true
+      var _path
+      if (toView && params.path) {
+        _path = clone(params.path)
+        delete params.path
+      }
       
       // mount state & value
-      if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || path[0].includes("_") || object) {
+      if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || /*path[0].includes("@") || */path[0].includes("_") || object) {
         
         reducer({ _window, lookupActions, awaits, id, path, value, key, e, req, res, __, _i, object, mount, toView, condition })
 
       } else {
         
         if (mount) reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, __, _i, mount, object: view, toView, condition })
-        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, __, _i, mount, object: params, toView, condition })
+        reducer({ _window, lookupActions, awaits, id, path, value, key, params, e, req, res, __, _i, mount, object, _object: params, toView, condition })
       }
       
       if (!params.path && _path !== undefined) params.path = _path
@@ -13222,41 +12644,12 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
           var lastIndex = derivations.length - 1
           
           derivations.reduce((o, k, i) => {
-
-            var _type = i === 0 ? o : (o.type || [])
-            if (i !== 0  && !o.type) o.type = _type
-            if (!isNaN(k) && k !== " " && (k.length > 1 ? k.toString().charAt(0) !== "0" : true)) {
-              
-              o.isArray = true
-              return o
-            }
-
-            if (_type.find(o => o.path === k)) {
-
-              var _schema = _type.find(o => o.path === k)
-              if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
-              if (_schema.type === "array") _schema.isArray = true
-              _schema.type = (i !== lastIndex && !Array.isArray(_schema.type)) ? [] : (_schema.type || "any")
-              return _schema
-              
-            } else {
-
-              var _schema = { path: k }
-              if (i === lastIndex) view.schema = _schema = { ..._schema, ...schema, path: k }
-              if (_schema.type === "array") _schema.isArray = true
-              _schema.type = (i !== lastIndex && !Array.isArray(_schema.type)) ? [] : (_schema.type || "any")
-
-              // if (params.data && i === lastIndex) _schema.value = params.data
-              _type.push(_schema)
-              return _schema
-            }
+            return  o ? o[k] : o
           }, mainSchema)
         }
 
         if (typeof schema === "object" ? Array.isArray(schema) : true) myFnn({ path: schema, derivations: view.derivations, mainSchema: global[`${view.Data}-schema`]})
         else if (schema.path) myFnn({ path: clone(schema.path), derivations: view.derivations, mainSchema: global[`${view.Data}-schema`], schema })
-
-        // reducer({ _window, lookupActions, awaits, id, path: view.derivations, value: view.path, key: true, params, e, req, res, __, _i, mount, object: global[`${view.Data}-schema`] })
 
         if (typeof view.data === "object" && !Array.isArray(view.data)) {
 
@@ -13280,7 +12673,7 @@ const toParam = ({ _window, lookupActions, awaits = [], string, e, id = "root", 
 
 module.exports = { toParam }
 
-},{"./actions.json":37,"./clone":42,"./decode":57,"./function":69,"./generate":70,"./getType":75,"./isParam":80,"./merge":88,"./reducer":96,"./toApproval":115,"./toArray":116,"./toCode":120,"./toFunction":125,"./toValue":134}],131:[function(require,module,exports){
+},{"./actions.json":30,"./clone":35,"./function":63,"./generate":64,"./reducer":90,"./toAction":108,"./toApproval":109,"./toArray":110,"./toCode":114,"./toValue":127}],124:[function(require,module,exports){
 module.exports = {
     toPdf: async ({ id, options }) => {
 
@@ -13309,7 +12702,7 @@ module.exports = {
         }
     }
 }
-},{}],132:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -13357,29 +12750,29 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],133:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
+const cssStyleKeyNames = require("./cssStyleKeyNames")
+
 module.exports = {
   toStyle: ({ _window, id }) => {
 
     var view = _window ? _window.views[id] : window.views[id]
-    var style = ""
+    var styles = ""
 
     if (view.style) {
-      Object.entries(view.style).map(([k, v]) => {
-        if (k === "after" || k.includes(">>")) return;
-        k = require("./styleName")(k);
-        style += `${k}:${v}; `
+      Object.entries(view.style).map(([style, value]) => {
+        if (style === "after" || style.includes(">>")) return;
+        styles += `${cssStyleKeyNames[style] || style}:${value}; `
       })
 
-      style = style.slice(0, -2)
+      styles = styles.slice(0, -2)
     }
-
-    return style
+    
+    return styles
   }
 }
 
-},{"./styleName":113}],134:[function(require,module,exports){
-const { clone } = require("./clone");
+},{"./cssStyleKeyNames":47}],127:[function(require,module,exports){
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
@@ -13395,7 +12788,7 @@ function sleep(milliseconds) {
 
 const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e, req, res, object, mount, asyncer, toView, executer, condition }) => {
 
-  const { toFunction } = require("./toFunction")
+  const { toAction } = require("./toAction")
   const { toParam } = require("./toParam")
   
   var view = _window ? _window.views[id] : window.views[id]
@@ -13407,8 +12800,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   
   var coded = false
   // coded
-  while (value.includes('coded()') && value.length === 12) { coded = true; value = global.codes[value] }
-  // if (value.includes('coded()') && value.length === 12) value = global.codes[value]
+  while (value.includes("coded@") && value.length === 11) { coded = true; value = global.__codes__[value] }
 
   // no value
   if (value === "()") return view
@@ -13427,15 +12819,15 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   else if (value === " ") return value
   
   // break & return
-  if (params && params["return()"] !== undefined) return params["return()"]
-  if (params["break()"]) return params
+  /*if (params && params["return()"] !== undefined) return params["return()"]
+  if (params["break()"]) return params*/
   
   // string
   if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
-  while (value.includes('codedS()') && value.length === 13) {
+  while (value.includes('codedT@') && value.length === 12) {
     
-    if (!object) return global.codes[value]
-    else value = global.codes[value]
+    if (!object) return global.__codes__[value]
+    else value = global.__codes__[value]
     return (object ? object[value] : view[value]) || value
   }
 
@@ -13452,11 +12844,9 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   }
   
   // value is a param it has key=value
-  
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, awaits, e, string: value, __, object, mount, toView, condition })
 
-  // or
-  if (value.includes("||")) {
+  if (value.includes("||")) { // or
     var answer
     value.split("||").map(value => {
       if (!answer) { // or answer === undefined ?????
@@ -13553,8 +12943,8 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
 
   // function
-  if (path0.slice(-2) === "()") {
-    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, __, e, path: [path[0]], path0, condition, mount, asyncer, toView, executer, object })
+  if (path0.slice(-2) === "()" && path0.slice(0, 6) !== "coded@") {
+    var isFn = toAction({ _window, lookupActions, awaits, id, req, res, __, e, path: [path[0]], path0, condition, mount, asyncer, toView, executer, object })
     if (isFn !== "__CONTINUE__") {
       if (path.length > 1) {
         path.splice(0, 1)
@@ -13567,8 +12957,8 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   /* value */
   if (!isNaN(value) && !emptySpaces(value) && (value.length > 1 ? value.charAt(0) !== "0" : true)) value = parseFloat(value)
   else if (value === " ") return value
-  else if (object || path[0].includes(":") || path[1] || path[0].includes("()")) {
-    value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, __, e, req, res, mount, toView/*, condition*/ })
+  else if (object || path[0].includes(":") || path[1] || path[0].includes("()") || path[0].includes("@")) {
+    value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, __, e, req, res, mount, toView })
   }
   
   return value
@@ -13594,7 +12984,7 @@ const calcSubs = ({ _window, lookupActions, awaits, value, params, __, id, e, re
 
     var allAreNumbers = true
     var values = value.split("-").map(value => {
-      if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+      if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
       if (allAreNumbers) {
         
@@ -13619,7 +13009,7 @@ const calcSubs = ({ _window, lookupActions, awaits, value, params, __, id, e, re
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+        if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -13642,7 +13032,7 @@ const calcSubs = ({ _window, lookupActions, awaits, value, params, __, id, e, re
         var _values = value.split("-").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
+          if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -13672,7 +13062,7 @@ const calcDivision = ({ _window, lookupActions, awaits, value, params, __, id, e
 
     var allAreNumbers = true
     var values = value.split("/").map(value => {
-      if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+      if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
       if (allAreNumbers) {
         
@@ -13712,7 +13102,7 @@ const calcDivision = ({ _window, lookupActions, awaits, value, params, __, id, e
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+        if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -13750,7 +13140,7 @@ const calcDivision = ({ _window, lookupActions, awaits, value, params, __, id, e
         var _values = value.split("/").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
+          if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -13796,7 +13186,7 @@ const calcModulo = ({ _window, lookupActions, awaits, value, params, __, id, e, 
 
     var allAreNumbers = true
     var values = value.split("%").map(value => {
-      if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+      if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
       if (allAreNumbers) {
         
@@ -13836,7 +13226,7 @@ const calcModulo = ({ _window, lookupActions, awaits, value, params, __, id, e, 
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+        if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -13874,7 +13264,7 @@ const calcModulo = ({ _window, lookupActions, awaits, value, params, __, id, e, 
         var _values = value.split("%").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
+          if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -13915,7 +13305,7 @@ const calcModulo = ({ _window, lookupActions, awaits, value, params, __, id, e, 
 
 module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces }
 
-},{"./clone":42,"./generate":70,"./isParam":80,"./reducer":96,"./toCode":120,"./toFunction":125,"./toParam":130}],135:[function(require,module,exports){
+},{"./generate":64,"./isParam":74,"./reducer":90,"./toAction":108,"./toCode":114,"./toParam":123}],128:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -13928,12 +13318,12 @@ const { toArray } = require("./toArray")
 const { createHtml } = require("./createHtml")
 const { override } = require("./merge")
 const { isParam } = require("./isParam")
-const { toFunction } = require("./toFunction")
-const _imports = [ "link", "meta", "title", "script", "style" ]
+const { toAction } = require("./toAction")
+const _imports = ["link", "meta", "title", "script", "style"]
 
 const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import, params: inheritedParams = {}, __, viewer = "view" }) => {
 
-  return new Promise (async resolve => {
+  return new Promise(async resolve => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -13943,19 +13333,19 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     // use view instead of type
     if (view.view) view.type = view.view
     view.__view__ = true
-
+    
     // view is empty
     if (!view.type) return resolve("")
     if (!view["my-views"]) view["my-views"] = [...(parent["my-views"] || [])]
     view.viewType = viewer = view.viewType || parent.viewType || viewer || "view"
-    
+
     // encode
     view.type = toCode({ _window, string: toCode({ _window, string: view.type }), start: "'", end: "'" })
     if (view.type.split(".")[0].split(":")[0].slice(-2) === "()") {
-    var isFn = await toFunction({ _window, lookupActions, awaits, id, req, res, __, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0], isView: true })
-    if (isFn !== "__CONTINUE__") return resolve(isFn)
+      var isFn = toAction({ _window, lookupActions, awaits, id, req, res, __, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0], isView: true })
+      if (isFn !== "__CONTINUE__") return resolve(isFn)
     }
-    
+
     // 
     var type = view.type.split("?")[0]
     var params = view.type.split("?")[1]
@@ -13963,17 +13353,17 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
     var subParams = type.split(":")[1] || ""
     type = type.split(":")[0]
 
-    if (subParams.slice(0, 7) !== "coded()" && subParams.slice(0, 8) !== "codedS()" && subParams.includes("()")) {
+    if (subParams.includes("()")) {
       type = type + ":" + subParams
       subParams = ""
     }
 
     _import = view.id === "html" || (parent.id === "html" && _imports.includes(type.toLowerCase()))
-    
-    // [type]
-    if (/*!view.duplicatedElement && */type.length === 12 && type.includes("coded()")) {
 
-      type = global.codes[type]
+    // [type]
+    if (type.length === 11 && type.includes("coded@")) {
+
+      type = global.__codes__[type]
       type = toValue({ req, res, _window, id, value: type, __ })
       view.__viewName__ = type
 
@@ -13984,9 +13374,9 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         view.Data = view.Data || view.doc || parent.Data
         view.derivations = view.derivations || [...(parent.derivations || [])]
 
-        while (subParams.includes('coded()') && subParams.length === 12) { subParams = global.codes[subParams] }
+        while (subParams.includes('coded@') && subParams.length === 11) { subParams = global.__codes__[subParams] }
         var _conditions_ = subParams.split("?")[1]
-        
+
         if (_conditions_) {
           var approved = toApproval({ _window, string: _conditions_, id, req, res, __ })
           if (!approved) {
@@ -13994,9 +13384,9 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
             return resolve("")
           }
         }
-        
+
         subParams = subParams.split("?")[0]
-        
+
         var _params = toValue({ req, res, _window, id, value: subParams, __ })
         if (_params.data === "mount") {
           _params.data = parent.data
@@ -14007,11 +13397,11 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         var loopData = []
 
         if (_params.path) {
-          
+
           _params.path = Array.isArray(_params.path) ? _params.path : _params.path.split(".")
 
           if (_params.data) {
-          
+
             _params.Data = _params.doc = _params.doc || _params.Data || generate()
             global[_params.Data] = global[_params.Data] || _params.data || {}
             _params.derivations = [...(_params.derivations || []), ...(_params.path || [])]
@@ -14031,7 +13421,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           global[_params.Data] = global[_params.Data] || _params.data || {}
           _params.derivations = (_params.mount && !_params.preventDefault && !_params.doc && parent.derivations) || _params.derivations || []
           loopData = _params.data
-          
+
         } else if (_params.Data || _params.doc) {
 
           _params.Data = _params.doc = _params.doc || _params.Data
@@ -14039,19 +13429,10 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           _params.derivations = _params.derivations || []
           loopData = _params.data = reducer({ _window, lookupActions, awaits, id, path: _params.derivations, object: global[_params.Data], req, res, __ })
         }
-        
-        /*if (_params.mount) {
 
-          if (_params.doc) view.doc = view.Data = _params.doc
-          else if (_params.data && !_params.doc) view.doc = view.Data = generate()
-          view.Data = Data = view.Data || Data
-          global[Data] = global[Data] || _params.data || {}
-          _params.data = reducer({ _window, lookupActions, awaits, id, path: derivations, object: global[Data], req, res, __, key: _params.data !== undefined ? true : false, value: _params.data })
-        }*/
-        
         var tags = []
         var { Data, doc, data, path, derivations = [], preventDefault, ...myparams } = _params
-        
+
         if (toArray(loopData).length > 0) {
 
           tags = await Promise.all(toArray(loopData).map(async (_data, index) => {
@@ -14059,7 +13440,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
             var _id = view.id + "-" + index
             var _type = type + "?" + view.type.split("?").slice(1).join("?")
             var _view = clone({ ...view, ...myparams, id: _id, view: _type, i: index, mapIndex: index })
-            if (_params.mount) _view = {..._view, Data: Data || _view.Data, doc: doc || _view.doc, data: _data, derivations: [...((derivations.length > 0 ? derivations : _params.derivations) || []), index] }
+            if (_params.mount) _view = { ..._view, Data: Data || _view.Data, doc: doc || _view.doc, data: _data, derivations: [...((derivations.length > 0 ? derivations : _params.derivations) || []), index] }
 
             if (!_params.preventDefault) {
 
@@ -14079,7 +13460,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
           var _id = view.id + "-" + 0
           var _type = type + "?" + view.type.split("?").slice(1).join("?")
           var _view = clone({ ...view, ...myparams, id: _id, view: _type, i: 0, mapIndex: 0 })
-          if (_params.mount) _view = {..._view, Data: Data || _view.Data, doc: doc || _view.doc, derivations: [...((derivations.length > 0 ? derivations : _params.derivations) || []), 0] }
+          if (_params.mount) _view = { ..._view, Data: Data || _view.Data, doc: doc || _view.doc, derivations: [...((derivations.length > 0 ? derivations : _params.derivations) || []), 0] }
 
           if (!_params.preventDefault) {
 
@@ -14088,12 +13469,12 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
             else if (type === "Text") _view.text = ""
             else if (type === "Checkbox") _view.label = { text: "" }
           }
-          
+
           views[_id] = _view
           var tags = await toView({ _window, lookupActions, awaits, id: _id, req, res, __: ["", ...__], viewer })
           return resolve(tags)
         }
-        
+
         delete views[view.id]
         return resolve(tags.join(""))
       }
@@ -14111,20 +13492,20 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       toArray(view.event).map(event => view.controls.push({ event }))
       delete view.event
     }
-    
+
     // id
     if (subParams) {
 
       if (isParam({ _window, lookupActions, awaits, string: subParams })) {
 
-        inheritedParams = {...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, __ })}
+        inheritedParams = { ...inheritedParams, ...toParam({ req, res, _window, id, string: subParams, __ }) }
 
       } else {
-        
+
         view.Data = view.Data || view.doc || parent.Data
         view.derivations = view.derivations || [...(parent.derivations || [])]
         var _id = toValue({ _window, lookupActions, awaits, value: subParams, id, req, res, __ })
-        
+
         if (views[_id] && view.id !== _id) view.id = _id + generate()
         else view.id = id = _id
       }
@@ -14141,10 +13522,12 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       view.derivations = view.derivations || [...(parent.derivations || [])]
       view.controls = view.controls || []
       view.status = "Loading"
-      view.childrenID = []
+      view.__childrenID__ = []
+      view.__timers__ = {}
+      view.__eventAddresses__ = {}
       view.__ = __
       views[id] = view
-      
+
       if (global.breaktoView[id]) {
 
         global.breaktoView[id] = false
@@ -14163,7 +13546,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
 
     // push destructured params from type to view
     if (params) {
-      
+
       params = toValue({ _window, lookupActions, awaits, value: params, id, req, res, mount: true, toView: true, __ })
       if (typeof params !== "object") params = { [params]: generate() }
 
@@ -14175,7 +13558,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         view = views[id]
       }
     } else params = {}
-      
+
     // inherited params
     if (Object.keys(inheritedParams).length > 0) override(view, inheritedParams)
 
@@ -14184,8 +13567,8 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
 
     // before loading controls
     if (!_import && view.controls.length > 0) {
-      await new Promise (async resolve => {
-        
+      await new Promise(async resolve => {
+
         toArray(view.controls).map(async (controls = {}) => {
 
           //
@@ -14201,23 +13584,23 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
         })
 
         if (global.promises[id] && global.promises[id].length > 0) {
-          
+
           await Promise.all((global.promises[id] || []))
           await Promise.all((global.promises[id] || []))
           await Promise.all((global.promises[id] || []))
           await Promise.all((global.promises[id] || []))
           await Promise.all((global.promises[id] || []))
           await Promise.all((global.promises[id] || []))
-          
+
           delete global.promises[id]
         }
 
         resolve()
       })
     }
-    
+
     if (!_import && (params.view || global.data[viewer][view.type])) {
-      
+
       var viewId = params.view || view.type
       view["my-views"].push(viewId)
 
@@ -14227,10 +13610,10 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       var newView = clone(global.data[viewer][viewId])
       if (!newView) return resolve("")
       if (newView.id && views[newView.id]) newView.id += generate()
-      
-      views[id] = { ...view,  ...newView, __viewName__: viewId, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)]}
 
-      tags = await toView({ _window, lookupActions, awaits, id, req, res, __: [ ...(Object.keys(params).length > 0 ? [params] : []), ...__], viewer })
+      views[id] = { ...view, ...newView, __viewName__: viewId, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)] }
+
+      tags = await toView({ _window, lookupActions, awaits, id, req, res, __: [...(Object.keys(params).length > 0 ? [params] : []), ...__], viewer })
       return resolve(tags)
     }
 
@@ -14247,7 +13630,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
       view.unDeriveData = true
 
     } else view.data = reducer({ _window, lookupActions, awaits, id, path: view.derivations, value: view.data, key: true, object: global[view.Data] || {}, req, res, __ })
-    
+
     // doc
     if (!global[view.Data] && view.data) global[view.Data] = view.data
 
@@ -14259,7 +13642,7 @@ const toView = ({ _window, lookupActions, awaits, id, req, res, import: _import,
 }
 
 module.exports = { toView }
-},{"./clone":42,"./createHtml":51,"./createTags":52,"./generate":70,"./isParam":80,"./merge":88,"./reducer":96,"./toApproval":115,"./toArray":116,"./toCode":120,"./toFunction":125,"./toParam":130,"./toValue":134}],136:[function(require,module,exports){
+},{"./clone":35,"./createHtml":44,"./createTags":45,"./generate":64,"./isParam":74,"./merge":82,"./reducer":90,"./toAction":108,"./toApproval":109,"./toArray":110,"./toCode":114,"./toParam":123,"./toValue":127}],129:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -14332,13 +13715,13 @@ const toggleView = async ({ _window, toggle = {}, id, res, __ }) => {
 
     // close droplist
     if (global["__droplistPositioner__"] && view.element.contains(views[global["__droplistPositioner__"]].element)) {
-      var closeDroplist = toCode({ _window, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
+      var closeDroplist = toCode({ _window, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
       toParam({ string: closeDroplist, id: "droplist" })
     }
     
     // close actionlist
     if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
-      var closeActionlist = toCode({ _window, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
+      var closeActionlist = toCode({ _window, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style().[_]=():actionlist.style.[_]];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
       toParam({ string: closeActionlist, id: "actionlist" })
     }
           
@@ -14406,7 +13789,7 @@ const toggleView = async ({ _window, toggle = {}, id, res, __ }) => {
 }
 
 module.exports = { toggleView }
-},{"./clone":42,"./generate":70,"./setElement":107,"./starter":110,"./toCode":120,"./toParam":130,"./toView":135,"./update":137}],137:[function(require,module,exports){
+},{"./clone":35,"./generate":64,"./setElement":101,"./starter":104,"./toCode":114,"./toParam":123,"./toView":128,"./update":130}],130:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -14426,15 +13809,19 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
 
   // close droplist
   if (global["__droplistPositioner__"] && view.element.contains(views[global["__droplistPositioner__"]].element)) {
-    var closeDroplist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
-    toParam({ _window, lookupActions, awaits, req, res, string: closeDroplist, id: "droplist", __ })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
+    toParam({ _window, string: closeDroplist, id: "droplist", __ })
   }
   
   // close actionlist
   if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
-    var closeActionlist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
-    toParam({ _window, lookupActions, awaits, req, res, string: closeActionlist, id: "actionlist", __ })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style().[_]=():actionlist.style.[_]];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
+    toParam({ _window, string: closeActionlist, id: "actionlist", __ })
   }
+  
+  // close tooltip
+  var closeTooltip = toCode({ _window, string: "clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0" })
+  toParam({ _window, string: closeTooltip, id: "tooltip", __ })
 
   // children
   var children = clone(toArray(view.children))
@@ -14443,9 +13830,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") {
-    views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage, ["my-views"]: [global.currentPage] }]
-  }
+  if (id === "root") views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage, ["my-views"]: [global.currentPage] }]
   
   var innerHTML = await Promise.all(children.map(async (child, index) => {
 
@@ -14457,7 +13842,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
     views[id].style = views[id].style || {}
     views[id]["my-views"] = views[id]["my-views"] || [...view["my-views"]]
     
-    return await toView({ _window, lookupActions, awaits, req, res, id, __: view.__ })
+    return await toView({ _window, lookupActions, awaits, req, res, id, __: id === "droplist" ? __ : view.__ })
   }))
 
   if (id === "root" && route.currentPage && route.currentPage !== global.currentPage) return
@@ -14488,7 +13873,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
   }
 
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id: mainId || id, __: [global.update, ...__], /*object: global.update.view,*/ ...params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id: mainId || id, ...params, __, _: global.update /*object: global.update.view,*/ })
 }
 
 const removeChildren = ({ id }) => {
@@ -14505,12 +13890,9 @@ const removeChildren = ({ id }) => {
     var id = child.id
     var view = views[id]
     if (!views[id]) return
-
-    // clear time out
-    Object.entries(views[id]).map(([k, v]) => {
-
-      if (k.includes("-timer")) clearTimeout(v)
-    })
+    
+    Object.values(view.__timers__ || {}).map(timerID => clearTimeout(timerID))
+    Object.values(view.__eventAddresses__ || {}).map(event => view.element.removeEventListener(event.event, event.function))
 
     removeChildren({ id })
     delete global["body-click-events"][id]
@@ -14520,7 +13902,7 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":42,"./generate":70,"./setElement":107,"./starter":110,"./toArray":116,"./toAwait":117,"./toCode":120,"./toParam":130,"./toView":135}],138:[function(require,module,exports){
+},{"./clone":35,"./generate":64,"./setElement":101,"./starter":104,"./toArray":110,"./toAwait":111,"./toCode":114,"./toParam":123,"./toView":128}],131:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { setElement } = require("./setElement")
@@ -14543,13 +13925,13 @@ const updateSelf = async ({ _window, lookupActions, awaits, id, update = {}, rou
 
   // close droplist
   if (global["__droplistPositioner__"] && view.element.contains(views[global["__droplistPositioner__"]].element)) {
-    var closeDroplist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
+    var closeDroplist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
     toParam({ string: closeDroplist, id: "droplist" })
   }
   
   // close actionlist
   if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
-    var closeActionlist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
+    var closeActionlist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style().[_]=():actionlist.style.[_]];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
     toParam({ string: closeActionlist, id: "actionlist" })
   }
 
@@ -14637,7 +14019,7 @@ const updateSelf = async ({ _window, lookupActions, awaits, id, update = {}, rou
 }
 
 module.exports = {updateSelf}
-},{"./clone":42,"./generate":70,"./setElement":107,"./starter":110,"./toArray":116,"./toCode":120,"./toView":135,"./update":137}],139:[function(require,module,exports){
+},{"./clone":35,"./generate":64,"./setElement":101,"./starter":104,"./toArray":110,"./toCode":114,"./toView":128,"./update":130}],132:[function(require,module,exports){
 (function (Buffer){(function (){
 const axios = require("axios")
 const { clone } = require("./clone")
@@ -14694,6 +14076,7 @@ if (!data) return console.log("Data does not exist!");
       
       // post api
       data = {
+        ...data,
         url: url[0],
         id: upload.doc,
         name: data.name,
@@ -14755,10 +14138,10 @@ if (!data) return console.log("Data does not exist!");
   })
   
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, __: [global.uploads.length === 1 ? global.uploads[0] : global.uploads, ...__], ...params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, __, _: global.uploads.length === 1 ? global.uploads[0] : global.uploads, ...params })
 }
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./clone":42,"./generate":70,"./readFile":95,"./toArray":116,"./toAwait":117,"axios":142,"buffer":173}],140:[function(require,module,exports){
+},{"./clone":35,"./generate":64,"./readFile":89,"./toArray":110,"./toAwait":111,"axios":135,"buffer":166}],133:[function(require,module,exports){
 const wait = async ({ id, e, lookupActions, awaits, ...params }) => {
 
   // await params
@@ -14766,17 +14149,16 @@ const wait = async ({ id, e, lookupActions, awaits, ...params }) => {
 }
 
 module.exports = { wait }
-},{"./toAwait":117}],141:[function(require,module,exports){
+},{"./toAwait":111}],134:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
 const { isEqual } = require("./isEqual")
 const { toCode } = require("./toCode")
+const { generate } = require("qrcode-terminal")
 
 const watch = ({ _window, lookupActions, awaits, controls, id, __ }) => {
-
-    const { execute } = require("./execute")
 
     var view = window.views[id]
     if (!view) return
@@ -14789,12 +14171,12 @@ const watch = ({ _window, lookupActions, awaits, controls, id, __ }) => {
 
     watch.split('?')[0].split(';').map(_watch => {
 
-        var timer = 500
+        var timer = 500, watchAddress = { id: generate() }
         view[`${_watch}-watch`] = clone(toValue({ id, lookupActions, awaits, value: _watch }))
         
         const myFn = async () => {
             
-            if (!window.views[id]) return clearInterval(view[`${_watch}-timer`])
+            if (!window.views[id]) return clearInterval(view.__timers__[watchAddress.id])
             
             var value = toValue({ id, lookupActions, awaits, value: _watch })
 
@@ -14804,38 +14186,29 @@ const watch = ({ _window, lookupActions, awaits, controls, id, __ }) => {
             
             // params
             toParam({ id, lookupActions, awaits, string: watch.split('?')[1], mount: true, __ })
-
-            // break
-            if (view["break()"]) delete view["break()"]
-            if (view["return()"]) return delete view["return()"]
             
-            if (view["once"] || view["once()"]) {
+            if (view["once"]) {
 
                 delete view["once"]
-                clearInterval(view[`${_watch}-timer`])
+                clearInterval(view.__timers__[watchAddress.id])
             }
             
             // approval
             var approved = toApproval({ id, lookupActions, awaits, string: watch.split('?')[2] })
             if (!approved) return
-            
-            // once
-            if (controls.actions || controls.action) await execute({ controls, lookupActions, awaits, id, __ })
                 
-            // await params
+            // params
             if (view.await) toParam({ id, lookupActions, awaits, string: view.await.join(';') })
         }
 
-        if (view[`${_watch}-timer`]) clearInterval(view[`${_watch}-timer`])
-        view[`${_watch}-timer`] = setInterval(myFn, timer)
-
+        view.__timers__[watchAddress.id] = setInterval(myFn, timer)
     })
 }
 
 module.exports = { watch }
-},{"./clone":42,"./execute":63,"./isEqual":79,"./toApproval":115,"./toCode":120,"./toParam":130,"./toValue":134}],142:[function(require,module,exports){
+},{"./clone":35,"./isEqual":73,"./toApproval":109,"./toCode":114,"./toParam":123,"./toValue":127,"qrcode-terminal":172}],135:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":144}],143:[function(require,module,exports){
+},{"./lib/axios":137}],136:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15026,7 +14399,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":150,"../core/createError":151,"./../core/settle":155,"./../helpers/buildURL":159,"./../helpers/cookies":161,"./../helpers/isURLSameOrigin":164,"./../helpers/parseHeaders":166,"./../utils":169}],144:[function(require,module,exports){
+},{"../core/buildFullPath":143,"../core/createError":144,"./../core/settle":148,"./../helpers/buildURL":152,"./../helpers/cookies":154,"./../helpers/isURLSameOrigin":157,"./../helpers/parseHeaders":159,"./../utils":162}],137:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -15084,7 +14457,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":145,"./cancel/CancelToken":146,"./cancel/isCancel":147,"./core/Axios":148,"./core/mergeConfig":154,"./defaults":157,"./helpers/bind":158,"./helpers/isAxiosError":163,"./helpers/spread":167,"./utils":169}],145:[function(require,module,exports){
+},{"./cancel/Cancel":138,"./cancel/CancelToken":139,"./cancel/isCancel":140,"./core/Axios":141,"./core/mergeConfig":147,"./defaults":150,"./helpers/bind":151,"./helpers/isAxiosError":156,"./helpers/spread":160,"./utils":162}],138:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15105,7 +14478,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],146:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -15164,14 +14537,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":145}],147:[function(require,module,exports){
+},{"./Cancel":138}],140:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],148:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15321,7 +14694,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":159,"../helpers/validator":168,"./../utils":169,"./InterceptorManager":149,"./dispatchRequest":152,"./mergeConfig":154}],149:[function(require,module,exports){
+},{"../helpers/buildURL":152,"../helpers/validator":161,"./../utils":162,"./InterceptorManager":142,"./dispatchRequest":145,"./mergeConfig":147}],142:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15377,7 +14750,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":169}],150:[function(require,module,exports){
+},{"./../utils":162}],143:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -15399,7 +14772,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":160,"../helpers/isAbsoluteURL":162}],151:[function(require,module,exports){
+},{"../helpers/combineURLs":153,"../helpers/isAbsoluteURL":155}],144:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -15419,7 +14792,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":153}],152:[function(require,module,exports){
+},{"./enhanceError":146}],145:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15503,7 +14876,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":147,"../defaults":157,"./../utils":169,"./transformData":156}],153:[function(require,module,exports){
+},{"../cancel/isCancel":140,"../defaults":150,"./../utils":162,"./transformData":149}],146:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15547,7 +14920,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],154:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -15636,7 +15009,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":169}],155:[function(require,module,exports){
+},{"../utils":162}],148:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -15663,7 +15036,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":151}],156:[function(require,module,exports){
+},{"./createError":144}],149:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15687,7 +15060,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":157,"./../utils":169}],157:[function(require,module,exports){
+},{"./../defaults":150,"./../utils":162}],150:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -15825,7 +15198,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":143,"./adapters/xhr":143,"./core/enhanceError":153,"./helpers/normalizeHeaderName":165,"./utils":169,"_process":178}],158:[function(require,module,exports){
+},{"./adapters/http":136,"./adapters/xhr":136,"./core/enhanceError":146,"./helpers/normalizeHeaderName":158,"./utils":162,"_process":171}],151:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -15838,7 +15211,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],159:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15910,7 +15283,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":169}],160:[function(require,module,exports){
+},{"./../utils":162}],153:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15926,7 +15299,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],161:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -15981,7 +15354,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":169}],162:[function(require,module,exports){
+},{"./../utils":162}],155:[function(require,module,exports){
 'use strict';
 
 /**
@@ -15997,7 +15370,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],163:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 /**
@@ -16010,7 +15383,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],164:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -16080,7 +15453,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":169}],165:[function(require,module,exports){
+},{"./../utils":162}],158:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -16094,7 +15467,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":169}],166:[function(require,module,exports){
+},{"../utils":162}],159:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -16149,7 +15522,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":169}],167:[function(require,module,exports){
+},{"./../utils":162}],160:[function(require,module,exports){
 'use strict';
 
 /**
@@ -16178,7 +15551,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],168:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -16285,7 +15658,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":170}],169:[function(require,module,exports){
+},{"./../../package.json":163}],162:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -16636,7 +16009,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":158}],170:[function(require,module,exports){
+},{"./helpers/bind":151}],163:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -16722,7 +16095,7 @@ module.exports={
   ]
 }
 
-},{}],171:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -16874,9 +16247,9 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],172:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 
-},{}],173:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 (function (Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
@@ -18657,7 +18030,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":171,"buffer":173,"ieee754":176}],174:[function(require,module,exports){
+},{"base64-js":164,"buffer":166,"ieee754":169}],167:[function(require,module,exports){
 'use strict';
 
 /******************************************************************************
@@ -18824,7 +18197,7 @@ if (typeof module !== 'undefined') {
   module.exports = dijkstra;
 }
 
-},{}],175:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict'
 
 module.exports = function encodeUtf8 (input) {
@@ -18881,7 +18254,7 @@ module.exports = function encodeUtf8 (input) {
   return new Uint8Array(result).buffer
 }
 
-},{}],176:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -18968,7 +18341,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],177:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -19501,7 +18874,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":178}],178:[function(require,module,exports){
+},{"_process":171}],171:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -19687,7 +19060,1354 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
+},{}],172:[function(require,module,exports){
+var QRCode = require('./../vendor/QRCode'),
+    QRErrorCorrectLevel = require('./../vendor/QRCode/QRErrorCorrectLevel'),
+    black = "\033[40m  \033[0m",
+    white = "\033[47m  \033[0m",
+    toCell = function (isBlack) {
+        return isBlack ? black : white;
+    },
+    repeat = function (color) {
+        return {
+            times: function (count) {
+                return new Array(count).join(color);
+            }
+        };
+    },
+    fill = function(length, value) {
+        var arr = new Array(length);
+        for (var i = 0; i < length; i++) {
+            arr[i] = value;
+        }
+        return arr;
+    };
+
+module.exports = {
+
+    error: QRErrorCorrectLevel.L,
+
+    generate: function (input, opts, cb) {
+        if (typeof opts === 'function') {
+            cb = opts;
+            opts = {};
+        }
+
+        var qrcode = new QRCode(-1, this.error);
+        qrcode.addData(input);
+        qrcode.make();
+
+        var output = '';
+        if (opts && opts.small) {
+            var BLACK = true, WHITE = false;
+            var moduleCount = qrcode.getModuleCount();
+            var moduleData = qrcode.modules.slice();
+
+            var oddRow = moduleCount % 2 === 1;
+            if (oddRow) {
+                moduleData.push(fill(moduleCount, WHITE));
+            }
+
+            var platte= {
+                WHITE_ALL: '\u2588',
+                WHITE_BLACK: '\u2580',
+                BLACK_WHITE: '\u2584',
+                BLACK_ALL: ' ',
+            };
+
+            var borderTop = repeat(platte.BLACK_WHITE).times(moduleCount + 3);
+            var borderBottom = repeat(platte.WHITE_BLACK).times(moduleCount + 3);
+            output += borderTop + '\n';
+
+            for (var row = 0; row < moduleCount; row += 2) {
+                output += platte.WHITE_ALL;
+
+                for (var col = 0; col < moduleCount; col++) {
+                    if (moduleData[row][col] === WHITE && moduleData[row + 1][col] === WHITE) {
+                        output += platte.WHITE_ALL;
+                    } else if (moduleData[row][col] === WHITE && moduleData[row + 1][col] === BLACK) {
+                        output += platte.WHITE_BLACK;
+                    } else if (moduleData[row][col] === BLACK && moduleData[row + 1][col] === WHITE) {
+                        output += platte.BLACK_WHITE;
+                    } else {
+                        output += platte.BLACK_ALL;
+                    }
+                }
+
+                output += platte.WHITE_ALL + '\n';
+            }
+
+            if (!oddRow) {
+                output += borderBottom;
+            }
+        } else {
+            var border = repeat(white).times(qrcode.getModuleCount() + 3);
+
+            output += border + '\n';
+            qrcode.modules.forEach(function (row) {
+                output += white;
+                output += row.map(toCell).join(''); 
+                output += white + '\n';
+            });
+            output += border;
+        }
+
+        if (cb) cb(output);
+        else console.log(output);
+    },
+
+    setErrorLevel: function (error) {
+        this.error = QRErrorCorrectLevel[error] || this.error;
+    }
+
+};
+
+},{"./../vendor/QRCode":182,"./../vendor/QRCode/QRErrorCorrectLevel":175}],173:[function(require,module,exports){
+var QRMode = require('./QRMode');
+
+function QR8bitByte(data) {
+	this.mode = QRMode.MODE_8BIT_BYTE;
+	this.data = data;
+}
+
+QR8bitByte.prototype = {
+
+	getLength : function() {
+		return this.data.length;
+	},
+	
+	write : function(buffer) {
+		for (var i = 0; i < this.data.length; i++) {
+			// not JIS ...
+			buffer.put(this.data.charCodeAt(i), 8);
+		}
+	}
+};
+
+module.exports = QR8bitByte;
+
+},{"./QRMode":178}],174:[function(require,module,exports){
+function QRBitBuffer() {
+	this.buffer = [];
+	this.length = 0;
+}
+
+QRBitBuffer.prototype = {
+
+	get : function(index) {
+		var bufIndex = Math.floor(index / 8);
+		return ( (this.buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+	},
+	
+	put : function(num, length) {
+		for (var i = 0; i < length; i++) {
+			this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+		}
+	},
+	
+	getLengthInBits : function() {
+		return this.length;
+	},
+	
+	putBit : function(bit) {
+	
+		var bufIndex = Math.floor(this.length / 8);
+		if (this.buffer.length <= bufIndex) {
+			this.buffer.push(0);
+		}
+	
+		if (bit) {
+			this.buffer[bufIndex] |= (0x80 >>> (this.length % 8) );
+		}
+	
+		this.length++;
+	}
+};
+
+module.exports = QRBitBuffer;
+
+},{}],175:[function(require,module,exports){
+module.exports = {
+	L : 1,
+	M : 0,
+	Q : 3,
+	H : 2
+};
+
+
+},{}],176:[function(require,module,exports){
+module.exports = {
+	PATTERN000 : 0,
+	PATTERN001 : 1,
+	PATTERN010 : 2,
+	PATTERN011 : 3,
+	PATTERN100 : 4,
+	PATTERN101 : 5,
+	PATTERN110 : 6,
+	PATTERN111 : 7
+};
+
+},{}],177:[function(require,module,exports){
+var QRMath = {
+
+	glog : function(n) {
+	
+		if (n < 1) {
+			throw new Error("glog(" + n + ")");
+		}
+		
+		return QRMath.LOG_TABLE[n];
+	},
+	
+	gexp : function(n) {
+	
+		while (n < 0) {
+			n += 255;
+		}
+	
+		while (n >= 256) {
+			n -= 255;
+		}
+	
+		return QRMath.EXP_TABLE[n];
+	},
+	
+	EXP_TABLE : new Array(256),
+	
+	LOG_TABLE : new Array(256)
+
+};
+	
+for (var i = 0; i < 8; i++) {
+	QRMath.EXP_TABLE[i] = 1 << i;
+}
+for (var i = 8; i < 256; i++) {
+	QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i - 4]
+		^ QRMath.EXP_TABLE[i - 5]
+		^ QRMath.EXP_TABLE[i - 6]
+		^ QRMath.EXP_TABLE[i - 8];
+}
+for (var i = 0; i < 255; i++) {
+	QRMath.LOG_TABLE[QRMath.EXP_TABLE[i] ] = i;
+}
+
+module.exports = QRMath;
+
+},{}],178:[function(require,module,exports){
+module.exports = {
+    MODE_NUMBER :       1 << 0,
+    MODE_ALPHA_NUM :    1 << 1,
+    MODE_8BIT_BYTE :    1 << 2,
+    MODE_KANJI :        1 << 3
+};
+
 },{}],179:[function(require,module,exports){
+var QRMath = require('./QRMath');
+
+function QRPolynomial(num, shift) {
+	if (num.length === undefined) {
+		throw new Error(num.length + "/" + shift);
+	}
+
+	var offset = 0;
+
+	while (offset < num.length && num[offset] === 0) {
+		offset++;
+	}
+
+	this.num = new Array(num.length - offset + shift);
+	for (var i = 0; i < num.length - offset; i++) {
+		this.num[i] = num[i + offset];
+	}
+}
+
+QRPolynomial.prototype = {
+
+	get : function(index) {
+		return this.num[index];
+	},
+	
+	getLength : function() {
+		return this.num.length;
+	},
+	
+	multiply : function(e) {
+	
+		var num = new Array(this.getLength() + e.getLength() - 1);
+	
+		for (var i = 0; i < this.getLength(); i++) {
+			for (var j = 0; j < e.getLength(); j++) {
+				num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i) ) + QRMath.glog(e.get(j) ) );
+			}
+		}
+	
+		return new QRPolynomial(num, 0);
+	},
+	
+	mod : function(e) {
+	
+		if (this.getLength() - e.getLength() < 0) {
+			return this;
+		}
+	
+		var ratio = QRMath.glog(this.get(0) ) - QRMath.glog(e.get(0) );
+	
+		var num = new Array(this.getLength() );
+		
+		for (var i = 0; i < this.getLength(); i++) {
+			num[i] = this.get(i);
+		}
+		
+		for (var x = 0; x < e.getLength(); x++) {
+			num[x] ^= QRMath.gexp(QRMath.glog(e.get(x) ) + ratio);
+		}
+	
+		// recursive call
+		return new QRPolynomial(num, 0).mod(e);
+	}
+};
+
+module.exports = QRPolynomial;
+
+},{"./QRMath":177}],180:[function(require,module,exports){
+var QRErrorCorrectLevel = require('./QRErrorCorrectLevel');
+
+function QRRSBlock(totalCount, dataCount) {
+	this.totalCount = totalCount;
+	this.dataCount  = dataCount;
+}
+
+QRRSBlock.RS_BLOCK_TABLE = [
+
+	// L
+	// M
+	// Q
+	// H
+
+	// 1
+	[1, 26, 19],
+	[1, 26, 16],
+	[1, 26, 13],
+	[1, 26, 9],
+	
+	// 2
+	[1, 44, 34],
+	[1, 44, 28],
+	[1, 44, 22],
+	[1, 44, 16],
+
+	// 3
+	[1, 70, 55],
+	[1, 70, 44],
+	[2, 35, 17],
+	[2, 35, 13],
+
+	// 4		
+	[1, 100, 80],
+	[2, 50, 32],
+	[2, 50, 24],
+	[4, 25, 9],
+	
+	// 5
+	[1, 134, 108],
+	[2, 67, 43],
+	[2, 33, 15, 2, 34, 16],
+	[2, 33, 11, 2, 34, 12],
+	
+	// 6
+	[2, 86, 68],
+	[4, 43, 27],
+	[4, 43, 19],
+	[4, 43, 15],
+	
+	// 7		
+	[2, 98, 78],
+	[4, 49, 31],
+	[2, 32, 14, 4, 33, 15],
+	[4, 39, 13, 1, 40, 14],
+	
+	// 8
+	[2, 121, 97],
+	[2, 60, 38, 2, 61, 39],
+	[4, 40, 18, 2, 41, 19],
+	[4, 40, 14, 2, 41, 15],
+	
+	// 9
+	[2, 146, 116],
+	[3, 58, 36, 2, 59, 37],
+	[4, 36, 16, 4, 37, 17],
+	[4, 36, 12, 4, 37, 13],
+	
+	// 10		
+	[2, 86, 68, 2, 87, 69],
+	[4, 69, 43, 1, 70, 44],
+	[6, 43, 19, 2, 44, 20],
+	[6, 43, 15, 2, 44, 16],
+
+	// 11
+	[4, 101, 81],
+	[1, 80, 50, 4, 81, 51],
+	[4, 50, 22, 4, 51, 23],
+	[3, 36, 12, 8, 37, 13],
+
+	// 12
+	[2, 116, 92, 2, 117, 93],
+	[6, 58, 36, 2, 59, 37],
+	[4, 46, 20, 6, 47, 21],
+	[7, 42, 14, 4, 43, 15],
+
+	// 13
+	[4, 133, 107],
+	[8, 59, 37, 1, 60, 38],
+	[8, 44, 20, 4, 45, 21],
+	[12, 33, 11, 4, 34, 12],
+
+	// 14
+	[3, 145, 115, 1, 146, 116],
+	[4, 64, 40, 5, 65, 41],
+	[11, 36, 16, 5, 37, 17],
+	[11, 36, 12, 5, 37, 13],
+
+	// 15
+	[5, 109, 87, 1, 110, 88],
+	[5, 65, 41, 5, 66, 42],
+	[5, 54, 24, 7, 55, 25],
+	[11, 36, 12],
+
+	// 16
+	[5, 122, 98, 1, 123, 99],
+	[7, 73, 45, 3, 74, 46],
+	[15, 43, 19, 2, 44, 20],
+	[3, 45, 15, 13, 46, 16],
+
+	// 17
+	[1, 135, 107, 5, 136, 108],
+	[10, 74, 46, 1, 75, 47],
+	[1, 50, 22, 15, 51, 23],
+	[2, 42, 14, 17, 43, 15],
+
+	// 18
+	[5, 150, 120, 1, 151, 121],
+	[9, 69, 43, 4, 70, 44],
+	[17, 50, 22, 1, 51, 23],
+	[2, 42, 14, 19, 43, 15],
+
+	// 19
+	[3, 141, 113, 4, 142, 114],
+	[3, 70, 44, 11, 71, 45],
+	[17, 47, 21, 4, 48, 22],
+	[9, 39, 13, 16, 40, 14],
+
+	// 20
+	[3, 135, 107, 5, 136, 108],
+	[3, 67, 41, 13, 68, 42],
+	[15, 54, 24, 5, 55, 25],
+	[15, 43, 15, 10, 44, 16],
+
+	// 21
+	[4, 144, 116, 4, 145, 117],
+	[17, 68, 42],
+	[17, 50, 22, 6, 51, 23],
+	[19, 46, 16, 6, 47, 17],
+
+	// 22
+	[2, 139, 111, 7, 140, 112],
+	[17, 74, 46],
+	[7, 54, 24, 16, 55, 25],
+	[34, 37, 13],
+
+	// 23
+	[4, 151, 121, 5, 152, 122],
+	[4, 75, 47, 14, 76, 48],
+	[11, 54, 24, 14, 55, 25],
+	[16, 45, 15, 14, 46, 16],
+
+	// 24
+	[6, 147, 117, 4, 148, 118],
+	[6, 73, 45, 14, 74, 46],
+	[11, 54, 24, 16, 55, 25],
+	[30, 46, 16, 2, 47, 17],
+
+	// 25
+	[8, 132, 106, 4, 133, 107],
+	[8, 75, 47, 13, 76, 48],
+	[7, 54, 24, 22, 55, 25],
+	[22, 45, 15, 13, 46, 16],
+
+	// 26
+	[10, 142, 114, 2, 143, 115],
+	[19, 74, 46, 4, 75, 47],
+	[28, 50, 22, 6, 51, 23],
+	[33, 46, 16, 4, 47, 17],
+
+	// 27
+	[8, 152, 122, 4, 153, 123],
+	[22, 73, 45, 3, 74, 46],
+	[8, 53, 23, 26, 54, 24],
+	[12, 45, 15, 28, 46, 16],
+
+	// 28
+	[3, 147, 117, 10, 148, 118],
+	[3, 73, 45, 23, 74, 46],
+	[4, 54, 24, 31, 55, 25],
+	[11, 45, 15, 31, 46, 16],
+
+	// 29
+	[7, 146, 116, 7, 147, 117],
+	[21, 73, 45, 7, 74, 46],
+	[1, 53, 23, 37, 54, 24],
+	[19, 45, 15, 26, 46, 16],
+
+	// 30
+	[5, 145, 115, 10, 146, 116],
+	[19, 75, 47, 10, 76, 48],
+	[15, 54, 24, 25, 55, 25],
+	[23, 45, 15, 25, 46, 16],
+
+	// 31
+	[13, 145, 115, 3, 146, 116],
+	[2, 74, 46, 29, 75, 47],
+	[42, 54, 24, 1, 55, 25],
+	[23, 45, 15, 28, 46, 16],
+
+	// 32
+	[17, 145, 115],
+	[10, 74, 46, 23, 75, 47],
+	[10, 54, 24, 35, 55, 25],
+	[19, 45, 15, 35, 46, 16],
+
+	// 33
+	[17, 145, 115, 1, 146, 116],
+	[14, 74, 46, 21, 75, 47],
+	[29, 54, 24, 19, 55, 25],
+	[11, 45, 15, 46, 46, 16],
+
+	// 34
+	[13, 145, 115, 6, 146, 116],
+	[14, 74, 46, 23, 75, 47],
+	[44, 54, 24, 7, 55, 25],
+	[59, 46, 16, 1, 47, 17],
+
+	// 35
+	[12, 151, 121, 7, 152, 122],
+	[12, 75, 47, 26, 76, 48],
+	[39, 54, 24, 14, 55, 25],
+	[22, 45, 15, 41, 46, 16],
+
+	// 36
+	[6, 151, 121, 14, 152, 122],
+	[6, 75, 47, 34, 76, 48],
+	[46, 54, 24, 10, 55, 25],
+	[2, 45, 15, 64, 46, 16],
+
+	// 37
+	[17, 152, 122, 4, 153, 123],
+	[29, 74, 46, 14, 75, 47],
+	[49, 54, 24, 10, 55, 25],
+	[24, 45, 15, 46, 46, 16],
+
+	// 38
+	[4, 152, 122, 18, 153, 123],
+	[13, 74, 46, 32, 75, 47],
+	[48, 54, 24, 14, 55, 25],
+	[42, 45, 15, 32, 46, 16],
+
+	// 39
+	[20, 147, 117, 4, 148, 118],
+	[40, 75, 47, 7, 76, 48],
+	[43, 54, 24, 22, 55, 25],
+	[10, 45, 15, 67, 46, 16],
+
+	// 40
+	[19, 148, 118, 6, 149, 119],
+	[18, 75, 47, 31, 76, 48],
+	[34, 54, 24, 34, 55, 25],
+	[20, 45, 15, 61, 46, 16]
+];
+
+QRRSBlock.getRSBlocks = function(typeNumber, errorCorrectLevel) {
+	
+	var rsBlock = QRRSBlock.getRsBlockTable(typeNumber, errorCorrectLevel);
+	
+	if (rsBlock === undefined) {
+		throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + errorCorrectLevel);
+	}
+
+	var length = rsBlock.length / 3;
+	
+	var list = [];
+	
+	for (var i = 0; i < length; i++) {
+
+		var count = rsBlock[i * 3 + 0];
+		var totalCount = rsBlock[i * 3 + 1];
+		var dataCount  = rsBlock[i * 3 + 2];
+
+		for (var j = 0; j < count; j++) {
+			list.push(new QRRSBlock(totalCount, dataCount) );	
+		}
+	}
+	
+	return list;
+};
+
+QRRSBlock.getRsBlockTable = function(typeNumber, errorCorrectLevel) {
+
+	switch(errorCorrectLevel) {
+	case QRErrorCorrectLevel.L :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+	case QRErrorCorrectLevel.M :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+	case QRErrorCorrectLevel.Q :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+	case QRErrorCorrectLevel.H :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+	default :
+		return undefined;
+	}
+};
+
+module.exports = QRRSBlock;
+
+},{"./QRErrorCorrectLevel":175}],181:[function(require,module,exports){
+var QRMode = require('./QRMode');
+var QRPolynomial = require('./QRPolynomial');
+var QRMath = require('./QRMath');
+var QRMaskPattern = require('./QRMaskPattern');
+
+var QRUtil = {
+
+    PATTERN_POSITION_TABLE : [
+        [],
+        [6, 18],
+        [6, 22],
+        [6, 26],
+        [6, 30],
+        [6, 34],
+        [6, 22, 38],
+        [6, 24, 42],
+        [6, 26, 46],
+        [6, 28, 50],
+        [6, 30, 54],        
+        [6, 32, 58],
+        [6, 34, 62],
+        [6, 26, 46, 66],
+        [6, 26, 48, 70],
+        [6, 26, 50, 74],
+        [6, 30, 54, 78],
+        [6, 30, 56, 82],
+        [6, 30, 58, 86],
+        [6, 34, 62, 90],
+        [6, 28, 50, 72, 94],
+        [6, 26, 50, 74, 98],
+        [6, 30, 54, 78, 102],
+        [6, 28, 54, 80, 106],
+        [6, 32, 58, 84, 110],
+        [6, 30, 58, 86, 114],
+        [6, 34, 62, 90, 118],
+        [6, 26, 50, 74, 98, 122],
+        [6, 30, 54, 78, 102, 126],
+        [6, 26, 52, 78, 104, 130],
+        [6, 30, 56, 82, 108, 134],
+        [6, 34, 60, 86, 112, 138],
+        [6, 30, 58, 86, 114, 142],
+        [6, 34, 62, 90, 118, 146],
+        [6, 30, 54, 78, 102, 126, 150],
+        [6, 24, 50, 76, 102, 128, 154],
+        [6, 28, 54, 80, 106, 132, 158],
+        [6, 32, 58, 84, 110, 136, 162],
+        [6, 26, 54, 82, 110, 138, 166],
+        [6, 30, 58, 86, 114, 142, 170]
+    ],
+
+    G15 : (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
+    G18 : (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
+    G15_MASK : (1 << 14) | (1 << 12) | (1 << 10)    | (1 << 4) | (1 << 1),
+
+    getBCHTypeInfo : function(data) {
+        var d = data << 10;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0) {
+            d ^= (QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) ) );    
+        }
+        return ( (data << 10) | d) ^ QRUtil.G15_MASK;
+    },
+
+    getBCHTypeNumber : function(data) {
+        var d = data << 12;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0) {
+            d ^= (QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) ) );    
+        }
+        return (data << 12) | d;
+    },
+
+    getBCHDigit : function(data) {
+
+        var digit = 0;
+
+        while (data !== 0) {
+            digit++;
+            data >>>= 1;
+        }
+
+        return digit;
+    },
+
+    getPatternPosition : function(typeNumber) {
+        return QRUtil.PATTERN_POSITION_TABLE[typeNumber - 1];
+    },
+
+    getMask : function(maskPattern, i, j) {
+        
+        switch (maskPattern) {
+            
+        case QRMaskPattern.PATTERN000 : return (i + j) % 2 === 0;
+        case QRMaskPattern.PATTERN001 : return i % 2 === 0;
+        case QRMaskPattern.PATTERN010 : return j % 3 === 0;
+        case QRMaskPattern.PATTERN011 : return (i + j) % 3 === 0;
+        case QRMaskPattern.PATTERN100 : return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 === 0;
+        case QRMaskPattern.PATTERN101 : return (i * j) % 2 + (i * j) % 3 === 0;
+        case QRMaskPattern.PATTERN110 : return ( (i * j) % 2 + (i * j) % 3) % 2 === 0;
+        case QRMaskPattern.PATTERN111 : return ( (i * j) % 3 + (i + j) % 2) % 2 === 0;
+
+        default :
+            throw new Error("bad maskPattern:" + maskPattern);
+        }
+    },
+
+    getErrorCorrectPolynomial : function(errorCorrectLength) {
+
+        var a = new QRPolynomial([1], 0);
+
+        for (var i = 0; i < errorCorrectLength; i++) {
+            a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0) );
+        }
+
+        return a;
+    },
+
+    getLengthInBits : function(mode, type) {
+
+        if (1 <= type && type < 10) {
+
+            // 1 - 9
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 10;
+            case QRMode.MODE_ALPHA_NUM  : return 9;
+            case QRMode.MODE_8BIT_BYTE  : return 8;
+            case QRMode.MODE_KANJI      : return 8;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 27) {
+
+            // 10 - 26
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 12;
+            case QRMode.MODE_ALPHA_NUM  : return 11;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 10;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 41) {
+
+            // 27 - 40
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 14;
+            case QRMode.MODE_ALPHA_NUM  : return 13;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 12;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else {
+            throw new Error("type:" + type);
+        }
+    },
+
+    getLostPoint : function(qrCode) {
+        
+        var moduleCount = qrCode.getModuleCount();
+        var lostPoint = 0;
+        var row = 0; 
+        var col = 0;
+
+        
+        // LEVEL1
+        
+        for (row = 0; row < moduleCount; row++) {
+
+            for (col = 0; col < moduleCount; col++) {
+
+                var sameCount = 0;
+                var dark = qrCode.isDark(row, col);
+
+                for (var r = -1; r <= 1; r++) {
+
+                    if (row + r < 0 || moduleCount <= row + r) {
+                        continue;
+                    }
+
+                    for (var c = -1; c <= 1; c++) {
+
+                        if (col + c < 0 || moduleCount <= col + c) {
+                            continue;
+                        }
+
+                        if (r === 0 && c === 0) {
+                            continue;
+                        }
+
+                        if (dark === qrCode.isDark(row + r, col + c) ) {
+                            sameCount++;
+                        }
+                    }
+                }
+
+                if (sameCount > 5) {
+                    lostPoint += (3 + sameCount - 5);
+                }
+            }
+        }
+
+        // LEVEL2
+
+        for (row = 0; row < moduleCount - 1; row++) {
+            for (col = 0; col < moduleCount - 1; col++) {
+                var count = 0;
+                if (qrCode.isDark(row,     col    ) ) count++;
+                if (qrCode.isDark(row + 1, col    ) ) count++;
+                if (qrCode.isDark(row,     col + 1) ) count++;
+                if (qrCode.isDark(row + 1, col + 1) ) count++;
+                if (count === 0 || count === 4) {
+                    lostPoint += 3;
+                }
+            }
+        }
+
+        // LEVEL3
+
+        for (row = 0; row < moduleCount; row++) {
+            for (col = 0; col < moduleCount - 6; col++) {
+                if (qrCode.isDark(row, col) && 
+                        !qrCode.isDark(row, col + 1) && 
+                         qrCode.isDark(row, col + 2) && 
+                         qrCode.isDark(row, col + 3) && 
+                         qrCode.isDark(row, col + 4) && 
+                        !qrCode.isDark(row, col + 5) && 
+                         qrCode.isDark(row, col + 6) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount - 6; row++) {
+                if (qrCode.isDark(row, col) &&
+                        !qrCode.isDark(row + 1, col) &&
+                         qrCode.isDark(row + 2, col) &&
+                         qrCode.isDark(row + 3, col) &&
+                         qrCode.isDark(row + 4, col) &&
+                        !qrCode.isDark(row + 5, col) &&
+                         qrCode.isDark(row + 6, col) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        // LEVEL4
+        
+        var darkCount = 0;
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount; row++) {
+                if (qrCode.isDark(row, col) ) {
+                    darkCount++;
+                }
+            }
+        }
+        
+        var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+        lostPoint += ratio * 10;
+
+        return lostPoint;       
+    }
+
+};
+
+module.exports = QRUtil;
+
+},{"./QRMaskPattern":176,"./QRMath":177,"./QRMode":178,"./QRPolynomial":179}],182:[function(require,module,exports){
+//---------------------------------------------------------------------
+// QRCode for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//   http://www.opensource.org/licenses/mit-license.php
+//
+// The word "QR Code" is registered trademark of 
+// DENSO WAVE INCORPORATED
+//   http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+// Modified to work in node for this project (and some refactoring)
+//---------------------------------------------------------------------
+
+var QR8bitByte = require('./QR8bitByte');
+var QRUtil = require('./QRUtil');
+var QRPolynomial = require('./QRPolynomial');
+var QRRSBlock = require('./QRRSBlock');
+var QRBitBuffer = require('./QRBitBuffer');
+
+function QRCode(typeNumber, errorCorrectLevel) {
+	this.typeNumber = typeNumber;
+	this.errorCorrectLevel = errorCorrectLevel;
+	this.modules = null;
+	this.moduleCount = 0;
+	this.dataCache = null;
+	this.dataList = [];
+}
+
+QRCode.prototype = {
+	
+	addData : function(data) {
+		var newData = new QR8bitByte(data);
+		this.dataList.push(newData);
+		this.dataCache = null;
+	},
+	
+	isDark : function(row, col) {
+		if (row < 0 || this.moduleCount <= row || col < 0 || this.moduleCount <= col) {
+			throw new Error(row + "," + col);
+		}
+		return this.modules[row][col];
+	},
+
+	getModuleCount : function() {
+		return this.moduleCount;
+	},
+	
+	make : function() {
+		// Calculate automatically typeNumber if provided is < 1
+		if (this.typeNumber < 1 ){
+			var typeNumber = 1;
+			for (typeNumber = 1; typeNumber < 40; typeNumber++) {
+				var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, this.errorCorrectLevel);
+
+				var buffer = new QRBitBuffer();
+				var totalDataCount = 0;
+				for (var i = 0; i < rsBlocks.length; i++) {
+					totalDataCount += rsBlocks[i].dataCount;
+				}
+
+				for (var x = 0; x < this.dataList.length; x++) {
+					var data = this.dataList[x];
+					buffer.put(data.mode, 4);
+					buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+					data.write(buffer);
+				}
+				if (buffer.getLengthInBits() <= totalDataCount * 8)
+					break;
+			}
+			this.typeNumber = typeNumber;
+		}
+		this.makeImpl(false, this.getBestMaskPattern() );
+	},
+	
+	makeImpl : function(test, maskPattern) {
+		
+		this.moduleCount = this.typeNumber * 4 + 17;
+		this.modules = new Array(this.moduleCount);
+		
+		for (var row = 0; row < this.moduleCount; row++) {
+			
+			this.modules[row] = new Array(this.moduleCount);
+			
+			for (var col = 0; col < this.moduleCount; col++) {
+				this.modules[row][col] = null;//(col + row) % 3;
+			}
+		}
+	
+		this.setupPositionProbePattern(0, 0);
+		this.setupPositionProbePattern(this.moduleCount - 7, 0);
+		this.setupPositionProbePattern(0, this.moduleCount - 7);
+		this.setupPositionAdjustPattern();
+		this.setupTimingPattern();
+		this.setupTypeInfo(test, maskPattern);
+		
+		if (this.typeNumber >= 7) {
+			this.setupTypeNumber(test);
+		}
+	
+		if (this.dataCache === null) {
+			this.dataCache = QRCode.createData(this.typeNumber, this.errorCorrectLevel, this.dataList);
+		}
+	
+		this.mapData(this.dataCache, maskPattern);
+	},
+
+	setupPositionProbePattern : function(row, col)  {
+		
+		for (var r = -1; r <= 7; r++) {
+			
+			if (row + r <= -1 || this.moduleCount <= row + r) continue;
+			
+			for (var c = -1; c <= 7; c++) {
+				
+				if (col + c <= -1 || this.moduleCount <= col + c) continue;
+				
+				if ( (0 <= r && r <= 6 && (c === 0 || c === 6) ) || 
+                     (0 <= c && c <= 6 && (r === 0 || r === 6) ) || 
+                     (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+					this.modules[row + r][col + c] = true;
+				} else {
+					this.modules[row + r][col + c] = false;
+				}
+			}		
+		}		
+	},
+	
+	getBestMaskPattern : function() {
+	
+		var minLostPoint = 0;
+		var pattern = 0;
+	
+		for (var i = 0; i < 8; i++) {
+			
+			this.makeImpl(true, i);
+	
+			var lostPoint = QRUtil.getLostPoint(this);
+	
+			if (i === 0 || minLostPoint >  lostPoint) {
+				minLostPoint = lostPoint;
+				pattern = i;
+			}
+		}
+	
+		return pattern;
+	},
+	
+	createMovieClip : function(target_mc, instance_name, depth) {
+	
+		var qr_mc = target_mc.createEmptyMovieClip(instance_name, depth);
+		var cs = 1;
+	
+		this.make();
+
+		for (var row = 0; row < this.modules.length; row++) {
+			
+			var y = row * cs;
+			
+			for (var col = 0; col < this.modules[row].length; col++) {
+	
+				var x = col * cs;
+				var dark = this.modules[row][col];
+			
+				if (dark) {
+					qr_mc.beginFill(0, 100);
+					qr_mc.moveTo(x, y);
+					qr_mc.lineTo(x + cs, y);
+					qr_mc.lineTo(x + cs, y + cs);
+					qr_mc.lineTo(x, y + cs);
+					qr_mc.endFill();
+				}
+			}
+		}
+		
+		return qr_mc;
+	},
+
+	setupTimingPattern : function() {
+		
+		for (var r = 8; r < this.moduleCount - 8; r++) {
+			if (this.modules[r][6] !== null) {
+				continue;
+			}
+			this.modules[r][6] = (r % 2 === 0);
+		}
+	
+		for (var c = 8; c < this.moduleCount - 8; c++) {
+			if (this.modules[6][c] !== null) {
+				continue;
+			}
+			this.modules[6][c] = (c % 2 === 0);
+		}
+	},
+	
+	setupPositionAdjustPattern : function() {
+	
+		var pos = QRUtil.getPatternPosition(this.typeNumber);
+		
+		for (var i = 0; i < pos.length; i++) {
+		
+			for (var j = 0; j < pos.length; j++) {
+			
+				var row = pos[i];
+				var col = pos[j];
+				
+				if (this.modules[row][col] !== null) {
+					continue;
+				}
+				
+				for (var r = -2; r <= 2; r++) {
+				
+					for (var c = -2; c <= 2; c++) {
+					
+						if (Math.abs(r) === 2 || 
+                            Math.abs(c) === 2 ||
+                            (r === 0 && c === 0) ) {
+							this.modules[row + r][col + c] = true;
+						} else {
+							this.modules[row + r][col + c] = false;
+						}
+					}
+				}
+			}
+		}
+	},
+	
+	setupTypeNumber : function(test) {
+	
+		var bits = QRUtil.getBCHTypeNumber(this.typeNumber);
+        var mod;
+	
+		for (var i = 0; i < 18; i++) {
+			mod = (!test && ( (bits >> i) & 1) === 1);
+			this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod;
+		}
+	
+		for (var x = 0; x < 18; x++) {
+			mod = (!test && ( (bits >> x) & 1) === 1);
+			this.modules[x % 3 + this.moduleCount - 8 - 3][Math.floor(x / 3)] = mod;
+		}
+	},
+	
+	setupTypeInfo : function(test, maskPattern) {
+	
+		var data = (this.errorCorrectLevel << 3) | maskPattern;
+		var bits = QRUtil.getBCHTypeInfo(data);
+        var mod;
+	
+		// vertical		
+		for (var v = 0; v < 15; v++) {
+	
+			mod = (!test && ( (bits >> v) & 1) === 1);
+	
+			if (v < 6) {
+				this.modules[v][8] = mod;
+			} else if (v < 8) {
+				this.modules[v + 1][8] = mod;
+			} else {
+				this.modules[this.moduleCount - 15 + v][8] = mod;
+			}
+		}
+	
+		// horizontal
+		for (var h = 0; h < 15; h++) {
+	
+			mod = (!test && ( (bits >> h) & 1) === 1);
+			
+			if (h < 8) {
+				this.modules[8][this.moduleCount - h - 1] = mod;
+			} else if (h < 9) {
+				this.modules[8][15 - h - 1 + 1] = mod;
+			} else {
+				this.modules[8][15 - h - 1] = mod;
+			}
+		}
+	
+		// fixed module
+		this.modules[this.moduleCount - 8][8] = (!test);
+	
+	},
+	
+	mapData : function(data, maskPattern) {
+		
+		var inc = -1;
+		var row = this.moduleCount - 1;
+		var bitIndex = 7;
+		var byteIndex = 0;
+		
+		for (var col = this.moduleCount - 1; col > 0; col -= 2) {
+	
+			if (col === 6) col--;
+	
+			while (true) {
+	
+				for (var c = 0; c < 2; c++) {
+					
+					if (this.modules[row][col - c] === null) {
+						
+						var dark = false;
+	
+						if (byteIndex < data.length) {
+							dark = ( ( (data[byteIndex] >>> bitIndex) & 1) === 1);
+						}
+	
+						var mask = QRUtil.getMask(maskPattern, row, col - c);
+	
+						if (mask) {
+							dark = !dark;
+						}
+						
+						this.modules[row][col - c] = dark;
+						bitIndex--;
+	
+						if (bitIndex === -1) {
+							byteIndex++;
+							bitIndex = 7;
+						}
+					}
+				}
+								
+				row += inc;
+	
+				if (row < 0 || this.moduleCount <= row) {
+					row -= inc;
+					inc = -inc;
+					break;
+				}
+			}
+		}
+		
+	}
+
+};
+
+QRCode.PAD0 = 0xEC;
+QRCode.PAD1 = 0x11;
+
+QRCode.createData = function(typeNumber, errorCorrectLevel, dataList) {
+	
+	var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectLevel);
+	
+	var buffer = new QRBitBuffer();
+	
+	for (var i = 0; i < dataList.length; i++) {
+		var data = dataList[i];
+		buffer.put(data.mode, 4);
+		buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+		data.write(buffer);
+	}
+
+	// calc num max data.
+	var totalDataCount = 0;
+	for (var x = 0; x < rsBlocks.length; x++) {
+		totalDataCount += rsBlocks[x].dataCount;
+	}
+
+	if (buffer.getLengthInBits() > totalDataCount * 8) {
+		throw new Error("code length overflow. (" + 
+            buffer.getLengthInBits() + 
+            ">" +  
+            totalDataCount * 8 + 
+            ")");
+	}
+
+	// end code
+	if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+		buffer.put(0, 4);
+	}
+
+	// padding
+	while (buffer.getLengthInBits() % 8 !== 0) {
+		buffer.putBit(false);
+	}
+
+	// padding
+	while (true) {
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD0, 8);
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD1, 8);
+	}
+
+	return QRCode.createBytes(buffer, rsBlocks);
+};
+
+QRCode.createBytes = function(buffer, rsBlocks) {
+
+	var offset = 0;
+	
+	var maxDcCount = 0;
+	var maxEcCount = 0;
+	
+	var dcdata = new Array(rsBlocks.length);
+	var ecdata = new Array(rsBlocks.length);
+	
+	for (var r = 0; r < rsBlocks.length; r++) {
+
+		var dcCount = rsBlocks[r].dataCount;
+		var ecCount = rsBlocks[r].totalCount - dcCount;
+
+		maxDcCount = Math.max(maxDcCount, dcCount);
+		maxEcCount = Math.max(maxEcCount, ecCount);
+		
+		dcdata[r] = new Array(dcCount);
+		
+		for (var i = 0; i < dcdata[r].length; i++) {
+			dcdata[r][i] = 0xff & buffer.buffer[i + offset];
+		}
+		offset += dcCount;
+		
+		var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+		var rawPoly = new QRPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+		var modPoly = rawPoly.mod(rsPoly);
+		ecdata[r] = new Array(rsPoly.getLength() - 1);
+		for (var x = 0; x < ecdata[r].length; x++) {
+            var modIndex = x + modPoly.getLength() - ecdata[r].length;
+			ecdata[r][x] = (modIndex >= 0)? modPoly.get(modIndex) : 0;
+		}
+
+	}
+	
+	var totalCodeCount = 0;
+	for (var y = 0; y < rsBlocks.length; y++) {
+		totalCodeCount += rsBlocks[y].totalCount;
+	}
+
+	var data = new Array(totalCodeCount);
+	var index = 0;
+
+	for (var z = 0; z < maxDcCount; z++) {
+		for (var s = 0; s < rsBlocks.length; s++) {
+			if (z < dcdata[s].length) {
+				data[index++] = dcdata[s][z];
+			}
+		}
+	}
+
+	for (var xx = 0; xx < maxEcCount; xx++) {
+		for (var t = 0; t < rsBlocks.length; t++) {
+			if (xx < ecdata[t].length) {
+				data[index++] = ecdata[t][xx];
+			}
+		}
+	}
+
+	return data;
+
+};
+
+module.exports = QRCode;
+
+},{"./QR8bitByte":173,"./QRBitBuffer":174,"./QRPolynomial":179,"./QRRSBlock":180,"./QRUtil":181}],183:[function(require,module,exports){
 
 const canPromise = require('./can-promise')
 
@@ -19765,7 +20485,7 @@ exports.toString = renderCanvas.bind(null, function (data, _, opts) {
   return SvgRenderer.render(data, opts)
 })
 
-},{"./can-promise":180,"./core/qrcode":196,"./renderer/canvas":203,"./renderer/svg-tag.js":204}],180:[function(require,module,exports){
+},{"./can-promise":184,"./core/qrcode":200,"./renderer/canvas":207,"./renderer/svg-tag.js":208}],184:[function(require,module,exports){
 // can-promise has a crash in some versions of react native that dont have
 // standard global objects
 // https://github.com/soldair/node-qrcode/issues/157
@@ -19774,7 +20494,7 @@ module.exports = function () {
   return typeof Promise === 'function' && Promise.prototype && Promise.prototype.then
 }
 
-},{}],181:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 /**
  * Alignment pattern are fixed reference pattern in defined positions
  * in a matrix symbology, which enables the decode software to re-synchronise
@@ -19859,7 +20579,7 @@ exports.getPositions = function getPositions (version) {
   return coords
 }
 
-},{"./utils":200}],182:[function(require,module,exports){
+},{"./utils":204}],186:[function(require,module,exports){
 const Mode = require('./mode')
 
 /**
@@ -19920,7 +20640,7 @@ AlphanumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = AlphanumericData
 
-},{"./mode":193}],183:[function(require,module,exports){
+},{"./mode":197}],187:[function(require,module,exports){
 function BitBuffer () {
   this.buffer = []
   this.length = 0
@@ -19959,7 +20679,7 @@ BitBuffer.prototype = {
 
 module.exports = BitBuffer
 
-},{}],184:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 /**
  * Helper class to handle QR Code symbol modules
  *
@@ -20026,7 +20746,7 @@ BitMatrix.prototype.isReserved = function (row, col) {
 
 module.exports = BitMatrix
 
-},{}],185:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 const encodeUtf8 = require('encode-utf8')
 const Mode = require('./mode')
 
@@ -20058,7 +20778,7 @@ ByteData.prototype.write = function (bitBuffer) {
 
 module.exports = ByteData
 
-},{"./mode":193,"encode-utf8":175}],186:[function(require,module,exports){
+},{"./mode":197,"encode-utf8":168}],190:[function(require,module,exports){
 const ECLevel = require('./error-correction-level')
 
 const EC_BLOCKS_TABLE = [
@@ -20195,7 +20915,7 @@ exports.getTotalCodewordsCount = function getTotalCodewordsCount (version, error
   }
 }
 
-},{"./error-correction-level":187}],187:[function(require,module,exports){
+},{"./error-correction-level":191}],191:[function(require,module,exports){
 exports.L = { bit: 1 }
 exports.M = { bit: 0 }
 exports.Q = { bit: 3 }
@@ -20247,7 +20967,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{}],188:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 const getSymbolSize = require('./utils').getSymbolSize
 const FINDER_PATTERN_SIZE = 7
 
@@ -20271,7 +20991,7 @@ exports.getPositions = function getPositions (version) {
   ]
 }
 
-},{"./utils":200}],189:[function(require,module,exports){
+},{"./utils":204}],193:[function(require,module,exports){
 const Utils = require('./utils')
 
 const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0)
@@ -20302,7 +21022,7 @@ exports.getEncodedBits = function getEncodedBits (errorCorrectionLevel, mask) {
   return ((data << 10) | d) ^ G15_MASK
 }
 
-},{"./utils":200}],190:[function(require,module,exports){
+},{"./utils":204}],194:[function(require,module,exports){
 const EXP_TABLE = new Uint8Array(512)
 const LOG_TABLE = new Uint8Array(256)
 /**
@@ -20373,7 +21093,7 @@ exports.mul = function mul (x, y) {
   return EXP_TABLE[LOG_TABLE[x] + LOG_TABLE[y]]
 }
 
-},{}],191:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 const Mode = require('./mode')
 const Utils = require('./utils')
 
@@ -20429,7 +21149,7 @@ KanjiData.prototype.write = function (bitBuffer) {
 
 module.exports = KanjiData
 
-},{"./mode":193,"./utils":200}],192:[function(require,module,exports){
+},{"./mode":197,"./utils":204}],196:[function(require,module,exports){
 /**
  * Data mask pattern reference
  * @type {Object}
@@ -20665,7 +21385,7 @@ exports.getBestMask = function getBestMask (data, setupFormatFunc) {
   return bestPattern
 }
 
-},{}],193:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 const VersionCheck = require('./version-check')
 const Regex = require('./regex')
 
@@ -20834,7 +21554,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{"./regex":198,"./version-check":201}],194:[function(require,module,exports){
+},{"./regex":202,"./version-check":205}],198:[function(require,module,exports){
 const Mode = require('./mode')
 
 function NumericData (data) {
@@ -20879,7 +21599,7 @@ NumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = NumericData
 
-},{"./mode":193}],195:[function(require,module,exports){
+},{"./mode":197}],199:[function(require,module,exports){
 const GF = require('./galois-field')
 
 /**
@@ -20943,7 +21663,7 @@ exports.generateECPolynomial = function generateECPolynomial (degree) {
   return poly
 }
 
-},{"./galois-field":190}],196:[function(require,module,exports){
+},{"./galois-field":194}],200:[function(require,module,exports){
 const Utils = require('./utils')
 const ECLevel = require('./error-correction-level')
 const BitBuffer = require('./bit-buffer')
@@ -21440,7 +22160,7 @@ exports.create = function create (data, options) {
   return createSymbol(data, version, errorCorrectionLevel, mask)
 }
 
-},{"./alignment-pattern":181,"./bit-buffer":183,"./bit-matrix":184,"./error-correction-code":186,"./error-correction-level":187,"./finder-pattern":188,"./format-info":189,"./mask-pattern":192,"./mode":193,"./reed-solomon-encoder":197,"./segments":199,"./utils":200,"./version":202}],197:[function(require,module,exports){
+},{"./alignment-pattern":185,"./bit-buffer":187,"./bit-matrix":188,"./error-correction-code":190,"./error-correction-level":191,"./finder-pattern":192,"./format-info":193,"./mask-pattern":196,"./mode":197,"./reed-solomon-encoder":201,"./segments":203,"./utils":204,"./version":206}],201:[function(require,module,exports){
 const Polynomial = require('./polynomial')
 
 function ReedSolomonEncoder (degree) {
@@ -21498,7 +22218,7 @@ ReedSolomonEncoder.prototype.encode = function encode (data) {
 
 module.exports = ReedSolomonEncoder
 
-},{"./polynomial":195}],198:[function(require,module,exports){
+},{"./polynomial":199}],202:[function(require,module,exports){
 const numeric = '[0-9]+'
 const alphanumeric = '[A-Z $%*+\\-./:]+'
 let kanji = '(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|' +
@@ -21531,7 +22251,7 @@ exports.testAlphanumeric = function testAlphanumeric (str) {
   return TEST_ALPHANUMERIC.test(str)
 }
 
-},{}],199:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 const Mode = require('./mode')
 const NumericData = require('./numeric-data')
 const AlphanumericData = require('./alphanumeric-data')
@@ -21863,7 +22583,7 @@ exports.rawSplit = function rawSplit (data) {
   )
 }
 
-},{"./alphanumeric-data":182,"./byte-data":185,"./kanji-data":191,"./mode":193,"./numeric-data":194,"./regex":198,"./utils":200,"dijkstrajs":174}],200:[function(require,module,exports){
+},{"./alphanumeric-data":186,"./byte-data":189,"./kanji-data":195,"./mode":197,"./numeric-data":198,"./regex":202,"./utils":204,"dijkstrajs":167}],204:[function(require,module,exports){
 let toSJISFunction
 const CODEWORDS_COUNT = [
   0, // Not used
@@ -21928,7 +22648,7 @@ exports.toSJIS = function toSJIS (kanji) {
   return toSJISFunction(kanji)
 }
 
-},{}],201:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 /**
  * Check if QR Code version is valid
  *
@@ -21939,7 +22659,7 @@ exports.isValid = function isValid (version) {
   return !isNaN(version) && version >= 1 && version <= 40
 }
 
-},{}],202:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 const Utils = require('./utils')
 const ECCode = require('./error-correction-code')
 const ECLevel = require('./error-correction-level')
@@ -22104,7 +22824,7 @@ exports.getEncodedBits = function getEncodedBits (version) {
   return (version << 12) | d
 }
 
-},{"./error-correction-code":186,"./error-correction-level":187,"./mode":193,"./utils":200,"./version-check":201}],203:[function(require,module,exports){
+},{"./error-correction-code":190,"./error-correction-level":191,"./mode":197,"./utils":204,"./version-check":205}],207:[function(require,module,exports){
 const Utils = require('./utils')
 
 function clearCanvas (ctx, canvas, size) {
@@ -22169,7 +22889,7 @@ exports.renderToDataURL = function renderToDataURL (qrData, canvas, options) {
   return canvasEl.toDataURL(type, rendererOpts.quality)
 }
 
-},{"./utils":205}],204:[function(require,module,exports){
+},{"./utils":209}],208:[function(require,module,exports){
 const Utils = require('./utils')
 
 function getColorAttrib (color, attrib) {
@@ -22252,7 +22972,7 @@ exports.render = function render (qrData, options, cb) {
   return svgTag
 }
 
-},{"./utils":205}],205:[function(require,module,exports){
+},{"./utils":209}],209:[function(require,module,exports){
 function hex2rgba (hex) {
   if (typeof hex === 'number') {
     hex = hex.toString()
@@ -22353,7 +23073,7 @@ exports.qrToImageData = function qrToImageData (imgData, qr, opts) {
   }
 }
 
-},{}],206:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 /********************************************************************************
     vCards-js, Eric J Nesser, November 2014
 ********************************************************************************/
@@ -22693,7 +23413,7 @@ var vCard = (function () {
 
 module.exports = vCard;
 
-},{"./lib/vCardFormatter":207,"fs":172,"path":177}],207:[function(require,module,exports){
+},{"./lib/vCardFormatter":211,"fs":165,"path":170}],211:[function(require,module,exports){
 /********************************************************************************
  vCards-js, Eric J Nesser, November 2014,
  ********************************************************************************/
@@ -23091,4 +23811,485 @@ module.exports = vCard;
 		}
 	};
 })();
-},{}]},{},[1]);
+},{}],212:[function(require,module,exports){
+const { clone } = require('../function/clone')
+const { toComponent } = require('../function/toComponent')
+const { jsonToBracket } = require('../function/jsonToBracket')
+
+module.exports = (view) => {
+
+  var path = clone(view.path)
+  delete view.path
+  view = toComponent(view)
+  var { icon, box, label, style, checked, model2, text, value, required, group = {} } = view
+  label = label || {}
+  icon = icon || {}
+  box = box || {}
+
+  if (typeof checked === "string" || typeof checked === "boolean") checked = { checked: true }
+  else if (typeof checked !== "object") checked = {}
+  box.checked = box.checked || checked.box || {}
+  icon.checked = icon.checked || checked.icon || {}
+  label.checked = label.checked || checked.label || {}
+  if (checked.checked) box.checked.checked = icon.checked.checked = label.checked.checked = true
+  if (model2) model2 = true
+  else model2 = false
+
+  // text
+  if (text !== undefined) label.text = text
+  text = label.text || ""
+  value = value !== undefined ? value : (label.value !== undefined ? label.value : text)
+  delete label.text
+
+  if (typeof group === "string" || typeof group === "number") group = { state: group }
+  if (group.id) group.state = group.id
+  if (!group.multiple) group.multiple = false
+  else group.multiple = true
+  if (required) group.required = true
+  
+  return {
+    ...view, path, group,
+    "view": `View?class=flex align-center;style:[gap=1.5rem];${jsonToBracket(style)}`,
+    "children": [
+      {
+        "view": `View:${view.id}-box?${jsonToBracket(box)};if():[parent().group.state]:[CHECKBOX_STATE:().${group.state}.clicked=_list];if():[${group.multiple};!data()]:[data()=_list];class=flexbox pointer +${box.class||""};style:[height=[().style.height||2rem];width=[().style.width||2rem];position=[().style.position||relative];borderRadius=[().style.borderRadius||.35rem];transition=[().style.transition||.1s]];if():${model2}:[checked.style:[backgroundColor=[().checked.style.backgroundColor||#fff];border=[().checked.style.border||1px solid #ccc]]];style:[backgroundColor=if():[checked.checked]:[().checked.style.backgroundColor||'#2C6ECB']:[().style.backgroundColor||'#fff'];border=if():[checked.checked]:[().checked.style.border||'1px solid #ffffff00']:[().style.border||'1px solid #ccc']]`,
+        "children": [{
+          "view": `Icon:${view.id}-icon?name=check;google.symbol;${jsonToBracket(icon)};style:[position=[().style.position||absolute];color=[().style.color||#fff];transition=[().style.transition||.1s]];if():${model2}:[style:[fontSize=[().style.fontSize||3.5rem];left=[().style.left||'-.5rem'];bottom=[().style.bottom||'-.5rem']];checked.style.color=[().checked.style.bottom||blue]]:[style.fontSize=[().style.fontSize||1.8rem]];style:[opacity=if():[checked.checked]:1:0]`
+        }],
+        "controls": [{
+          "event": `click?if():[parent().group.state;${!group.multiple};CHECKBOX_STATE:().${group.state}.clicked.0;if():[parent().required||parent().group.required]:true:[CHECKBOX_STATE:().${group.state}.clicked.0!=().id]]:[clickedItem=CHECKBOX_STATE:().${group.state}.clicked.0;CHECKBOX_STATE:().${group.state}.clicked.pull():0;():[().clickedItem]._():[_.checked.checked=false;_.child()._():[_.style().opacity=0;_.checked.style._():[__.style().[_]=[__.style._||null]]];if():${!group.multiple}:[_.data().del()]:[_.data().pullItem():[_.next().value]];_.style():[backgroundColor=#fff;border=1px solid #ccc];_.checked.style._():[__.style().[_]=[__.style._||null]]]];if():[!checked.checked]:[checked.checked=true;if():[parent().group.state]:[CHECKBOX_STATE:().${group.state}.clicked.push():[().id]];child()._():[_.style().opacity=1;_.style():[_.checked.style]];if():${!group.multiple}:[data()=next().value]:[data().replaceItem():[next().value]];style():[backgroundColor=#2C6ECB;border=1px solid #ffffff00];style():[().checked.style]]:[if():[[parent().group.required;data().len()>[parent().group.min||1]]||!parent().group.required]:[checked.checked=false;CHECKBOX_STATE:().${group.state}.clicked.pullItem():[().id];child()._():[_.style().opacity=0;_.checked.style._():[__.style().[_]=[__.style._||null]]];if():[parent().group.state]:[${!group.multiple}:[data().del()]:[data().pullItem():[next().value]]];style():[backgroundColor=#fff;border=1px solid #ccc];().checked.style._():[style().[_]=[().style._||null]]]]?parent().group.state`
+        },
+        {
+          "event": `loaded?if():${group.multiple}:[if():[data().inc():[next().value]]:click()]:[if():[[parent().boolean;data()]||data()=next().value]:click()]`
+        }, 
+        {
+          "event": `click?if():[checked.checked=true]:[data()=false;checked.checked=false;child()._():[_.style().opacity=0;_.checked.style._():[__.style().[_]=[__.style._||null]]];style():[backgroundColor=#fff;border=1px solid #ccc];checked.style._():[__.style().[_]=[__.style._||null]]]:[data()=true;checked.checked=true;child()._():[_.style().opacity=1;_.style():[_.checked.style]];style():[backgroundColor=#2C6ECB;border=1px solid #ffffff00];style():[().checked.style]]?!parent().group.state;parent().boolean`
+        }]
+      },
+      {
+        "view": `Text:${view.id}-label?${jsonToBracket(label)};style:[fontSize=[().style.fontSize||1.6rem];width=[().style.width||fit-content];cursor=[().style.cursor||pointer]]`,
+        text, value,
+        "controls": [{
+          "event": "click?prev().click()"
+        }]
+      }
+    ]
+  }
+}
+},{"../function/clone":35,"../function/jsonToBracket":77,"../function/toComponent":115}],213:[function(require,module,exports){
+module.exports = (view) => {
+  var scrollWidth = `[px():[().swiper.scroll]||100]`
+  var clickLeft = `():[().swiper.id]._():[clearTimer():[_.mytimer];_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)';if():[_.autorun]:[_.mytimer=interval():[_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)']:[_.autorun.timer||100]]]`
+  var clickRight = `():[().swiper.id]._():[clearTimer():[_.mytimer];_.scroll-=[_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll<0]:[_.scroll=_.scrollable];_.style().transform='translateX('+_.scroll+'px)';if():[_.autorun]:[_.mytimer=interval():[_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)']:[_.autorun.timer||100]]]`
+  return {
+    ...view,
+    view: `Icon?class='flexbox pointer '+[().class||];name=if():[direction=right]:'bi-chevron-right'.elif():[direction=left]:'bi-chevron-left';style:[fontSize=[().style.fontSize||2.5rem];if():[().direction=left]:[left=[().style.left||0]].elif():[().direction=right]:[right=[().style.right||0]]];click:[if():[direction=left;swiper.id]:[${clickLeft}].elif():[direction=right;swiper.id]:[${clickRight}]]`
+  }
+}
+},{}],214:[function(require,module,exports){
+const { toComponent } = require('../function/toComponent')
+const { jsonToBracket } = require('../function/jsonToBracket')
+const { override } = require('../function/merge')
+const { clone } = require('../function/clone')
+const { generate } = require('../function/generate')
+
+const Input = (component) => {
+
+    if (component.templated) return component
+
+    component.hover = component.hover || {}
+    component.style = component.style || {}
+    component.hover.style = component.hover.style || {}
+    component.style.after = component.style.after || {}
+
+    // container
+    component.container = component.container || {}
+
+    // icon
+    component.icon = component.icon || {}
+    component.icon.style = component.icon.style || {}
+    component.icon.hover = component.icon.hover || {}
+    component.icon.hover.style = component.icon.hover.style || {}
+    component.icon.style.after = component.icon.style.after || {}
+
+    // input
+    component.input = component.input || {}
+    component.input.hover = component.input.hover || {}
+    component.input.type = component.password && "password" || component.input.type || 'text'
+    component.input.style = component.input.style || {}
+    component.input.hover.style = component.input.hover.style || {}
+    component.input.style.after = component.input.style.after || {}
+
+    // required
+    if (component.required) component.required = typeof component.required === "object" ? component.required : {}
+    
+    component = toComponent(component)
+
+    var {
+      id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
+      placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
+      duplicatable, lang, unit, currency, google, key, minlength , children, container, generator,
+    } = component
+    
+    if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
+    if (duplicatable) removable = removable || {}
+    if (removable && typeof removable !== "object") removable = {}
+    if (clearable && typeof clearable !== "object") clearable = {}
+    if (generator && typeof generator !== "object") generator = {}
+    if (label && typeof label !== "object") label = { text: "Label Name" }
+    if (label && !label.location) label.location = "outside"
+
+    readonly = readonly ? true : false
+
+    if (minlength === undefined) minlength = 1
+    if (droplist) droplist.align = droplist.align || "left"
+    
+    // upload input styles
+    var uploadInputStyle = input.type === 'file'
+    ? {
+        position: 'absolute',
+        left: '0',
+        top: '0',
+        opacity: '0',
+        cursor: 'pointer',
+    } : {}
+
+    var _component = component = {
+      ...component, id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
+      placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, labeled,
+      duplicatable, lang, unit, currency, google, key, minlength , children, container, generator
+    }
+    
+    if (duplicatable) {
+      component.removable = true
+      removable = true 
+    }
+
+    if (label && (label.location === "inside" || label.position === "inside")) {
+
+        var label = clone(component.label)
+        var derivations = clone(component.derivations)
+        var path = component.path
+        var parent = component.parent
+        var Data = component.Data
+        var password = component.password && true
+        var text = label.text
+        id = id || generate()
+        component.controls = component.controls || []
+        
+        delete component.parent
+        delete component.label
+        delete component.path
+        delete component.id
+        delete component.password
+        delete component.derivations
+        delete label.text
+
+        return {
+            id, path, Data, parent, derivations, tooltip: component.tooltip, islabel: true, preventDefault,
+            "type": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=${component.style.width||"100%"};style.maxWidth=${component.style.maxWidth||"100%"};${jsonToBracket(container)}`,
+            "children": [{
+                "type": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
+                "children": [{
+                  "type": `Text?id=${id}-label;text='${text || "Label"}';if():[parent().required]:[required=true];style.fontSize=1.1rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
+                  "controls": [{
+                    "event": "click?parent().input().focus()"
+                  }]
+                }, Input({ ...component, component: true, labeled: id, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
+                ]
+            }, {
+                "type": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${jsonToBracket(password)}?${password}`,
+                "children": [{
+                    "type": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
+                    "controls": [{
+                        "event": "click?parent().prev().getInput().element.type=text;next().style().display=flex;style().display=none"
+                    }]
+                }, {
+                    "type": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
+                    "controls": [{
+                        "event": "click?parent().prev().getInput().element.type=password;prev().style().display=flex;style().display=none"
+                    }]
+                }]
+            }],
+            "controls": [{
+                "event": "click:body?style().border=if():[clicked:().outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked:()];!droplist.contains():[clicked:()]"
+            }, {
+                "event": "click?getInput().focus()?!getInput().focus"
+            }]
+        }
+    }
+    
+    if ((label && (label.location === "outside" || label.position === "outside")) || label) {
+
+        var label = clone(component.label)
+        var derivations = clone(component.derivations)
+        var path = component.path
+        var parent = component.parent
+        var Data = component.Data
+        var tooltip = component.tooltip
+        var text = label.text
+        id = id || generate()
+        //var clickedBorder = component.clicked && component.clicked.style.border
+        component.controls = component.controls || []
+
+        /*if (component.clicked) {
+          component.clicked.preventDefault = true
+          if (component.clicked.style.border) delete component.clicked
+        }*/
+        
+        delete component.label
+        delete component.path
+        delete component.id
+        delete component.tooltip
+        delete component.required
+        delete label.text
+        label.tooltip = tooltip
+        
+        return {
+          id, Data, parent, derivations, path, islabel: true, preventDefault,
+          "type": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width ||"100%"};style.maxWidth=${component.style.maxWidth ||"100%"};${jsonToBracket(container)}`,
+          "children": [
+            {
+              "type": `Text?id=${id}-label;text='${text || "Label"}';${required ? "required=true": ""};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
+              "controls": [{
+                "event": "click?parent().input().focus()"
+              }]
+            },
+              Input({ ...component, component: true, labeled: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
+            {
+              "type": `View:${id}-required?class=flex gap-1;style:[alignItems=center;opacity=${required && required.style && required.style.opacity || "0"};transition=.2s]?${required ? true : false}`,
+              "children": [{
+                "type": `Icon?name=bi-exclamation-circle-fill;style.color=#D72C0D;style.fontSize=1.4rem`
+              }, {
+                "type": `Text?text=${required && required.text || "Required blank"};style.color=#D72C0D;style.fontSize=1.3rem;${jsonToBracket(required)}`
+              }]
+            }
+          ],
+          /*"controls": [{
+            "event": `click:1stChild();click:[if():[${duplicatable?true:false}]:[2ndChild().children()]:2ndChild()]?clicked=true;if():[!${duplicatable?true:false}]:[2ndChild().style().border=${clickedBorder}]:[2ndChild().lastChild().style().border=${clickedBorder}]?!mobile();${clickedBorder?true:false}`
+          }, {
+            "event": `click:body?clicked=false;if():[${duplicatable?true:false}]:[2ndChild().children().():[style().border=${style.border || "1px solid #ccc"}]]:[2ndChild().style().border=${style.border || "1px solid #ccc"}]?${clickedBorder?true:false};!mobile();!contains():[clicked:()];!droplist.contains():[clicked:()]`
+          }]*/
+        }
+    }
+
+    if (model === 'featured' || password || clearable || removable || duplicatable || copyable || generator) {
+
+      delete component.type
+      
+      return {
+            ...component,
+            view: "View",
+            class: `flex align-items-center unselectable ${component.class || ""}`,
+            // remove from comp
+            controls: [{
+                event: `mouseenter?if():[clearable||removable||duplicatable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=1]];if():generator:[():[${id}+'-generate'].style().opacity=1]?!mobile()`
+            }, {
+                event: `mouseleave?if():[clearable||removable||duplicatable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=0]];if():generator:[():[${id}+'-generate'].style().opacity=0]?!mobile()`
+            }],
+            style: {
+                cursor: readonly ? "pointer" : "auto",
+                display: "inline-flex",
+                width: "fit-content",
+                maxWidth: "100%",
+                position: "relative",
+                backgroundColor: "inherit",
+                height: "fit-content",
+                borderRadius: "0.25rem",
+                overflow: "hidden",
+                transition: ".1s",
+                border: input.type === "file" ? "1px dashed #ccc" : "0",
+                ...style,
+            },
+            children: [...children, { // message
+              view: `Text?id=${id}-msg;msg=parent().msg;text=parent().msg?parent().msg`,
+                style: {
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    fontSize: '1.3rem',
+                    maxWidth: '95%',
+                }
+            }, {
+              view: `Input`,
+                id: `${id}-input`,
+                class: `${component.class.includes("ar") ? "ar " : ""}${input.class || ""}`,
+                input,
+                currency, 
+                day,
+                unit,
+                key,
+                lang,
+                google,
+                duration,
+                textarea,
+                readonly,
+                labeled,
+                placeholder,
+                duplicated,
+                disabled,
+                duplicatable,
+                preventDefault,
+                templated: true,
+                'placeholder-ar': component['placeholer-ar'],
+                /*hover: {
+                    ...input.hover,
+                    style: {
+                        backgroundColor: style.after.backgroundColor,
+                        color: style.after.color || style.color,
+                        ...input.style.after,
+                        ...input.hover.style
+                    }
+                },*/
+                style: {
+                    width: password || clearable || removable || copyable || generator ? "100%" : "fit-content",
+                    height: 'fit-content',
+                    borderRadius: style.borderRadius || '0.25rem',
+                    backgroundColor: style.backgroundColor || 'inherit',
+                    fontSize: style.fontSize || '1.4rem',
+                    maxHeight: style.maxHeight || "initial",
+                    border: '0',
+                    height: style.height || "100%",
+                    padding: "0.5rem",
+                    color: input.type === "number" ? "blue" : '#444',
+                    outline: 'none',
+                    userSelect: password ? "none" : "initial",
+                    ...uploadInputStyle,
+                    ...input.style
+                },
+                controls: [...controls, {
+                    event: `clickfocus;keyfocus?if():[labeled]:[if():[!():${labeled}.contains():[clicked:()]]:[if():${duplicatable?true:false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked:()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
+                }, /*{
+                    event: `clickfocus;keyfocus?parent().clicked.mount;parent().clicked.style.keys()._():[parent().style()._=parent()..clicked.style.[_]];state:().[parent().clicked.state]=parent().id?parent().clicked`
+                }, */{
+                    event: `blur?():body.click()`
+                }, {
+                    event: "select;mousedown?preventDefault()"
+                }, {
+                    event: `keyup?():'${id}-duplicate'.click()?duplicatable;e().key=Enter`
+                }]
+            }, {
+              view: `Icon:${id}-clear?class=pointer;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:4rem:'0.5rem']:[right=if():[parent().password]:4rem:'0.5rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();prev().txt()=;#prev().focus()].elif():[parent().removable;if():[parent().clearable]:[!prev().txt()]:true;doc():[path=path().slice():0:-1].len()>1]:[parent().rem()]]?parent().clearable||parent().removable||parent().duplicatable`,
+            }, {
+              view: `Icon:${id}-duplicate?class=pointer duplicater;name=bi-plus;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:'5.5rem':'3rem']:[right=if():[parent().password]:'5.5rem':'3rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[!parent().max||parent().max>2ndParent().className():duplicater.len()]:[doc():[path=path().slice():0:'-1'].push():[if():[data().type()=number]:0:''];2ndParent().update()::[className():duplicater.lastEl().2ndPrev().focus()]]]?parent().duplicatable`,
+            }, {
+              view: `Text:${id}-generate?class=flexbox pointer;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
+            }, {
+              view: `Icon:${id}-copy?class=pointer;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();#():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
+            }, {
+              view: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
+                children: [{
+                  view: `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
+                    controls: [{
+                        event: "click?parent().prev().element.type=text;next().style().display=flex;style().display=none"
+                    }]
+                }, {
+                  view: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
+                    controls: [{
+                        event: "click?parent().prev().element.type=password;prev().style().display=flex;style().display=none"
+                    }]
+                }]
+            }]
+        }
+    }
+
+    if (model === 'classic') {
+
+      delete _component.type
+      return {
+        ..._component,
+        view: "Input",
+        style: {
+          cursor: readonly ? "pointer" : "auto",
+          border: "0",
+          width: "fit-content",
+          padding: '0.5rem',
+          color: '#444',
+          color: input.type === "number" ? "blue" : '#444',
+          backgroundColor: 'inherit',
+          height: 'fit-content',
+          borderRadius: '0.25rem',
+          fontSize: '1.4rem',
+          transition: "border .1s",
+          ...input.style,
+          ...style,
+        },
+        controls: [...controls, {
+          event: `clickfocus;keyfocus?clicked.mount;clicked.style.keys()._():[().style().[_]=().clicked.style.[_]];state:().[().clicked.state]=().id`
+        }, {
+          event: `blur?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style().[_]=[__.style._||null]]]]`
+        }]
+      }
+    }
+}
+
+module.exports = Input
+},{"../function/clone":35,"../function/generate":64,"../function/jsonToBracket":77,"../function/merge":82,"../function/toComponent":115}],215:[function(require,module,exports){
+module.exports = (view) => {
+
+  var AutorunScrollInPixel = `[px():[().autorun.scroll]||100]`
+  var toScrollWidth = `[${AutorunScrollInPixel}-().scroll%${AutorunScrollInPixel}||${AutorunScrollInPixel}]`
+  var autorunInterval = `mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]`
+  var loadedActions = `loaded:[scrollable=el().scrollWidth-parent().el().clientWidth;if():[autorun]:[${autorunInterval}]]`
+  var mouseenterActions = `mouseenter:[clearTimer():[().mytimer]]`
+  var mouseleaveActions = `mouseleave:[if():[!mousedn]:[style().transition=[().style.transition||.2s];${autorunInterval}]]`
+  var mousedownActions = `mousedown:[mousedn=true;style().transition=null;mouseposition=e().screenX;scrollLeft=().scroll]`
+  var bodyMousemoveActions = `():body.mousemove:[if():[mousedn]:[scroll=().scrollLeft+e().screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']]`
+  var touchstartActions = `touchstart:[clearTimer():[().mytimer];touchst=true;style().transition=null;mouseposition=e().changedTouches.0.screenX;scrollLeft=().scroll]`
+  var touchmoveActions = `touchmove:[if():[touchst]:[scroll=().scrollLeft+e().changedTouches.0.screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']]`
+  var touchendActions = `touchend:[if():[touchst]:[touchst=false;if():[autorun]:[mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`
+  var bodyMouseupActions = `():body.mouseup:[if():[mousedn]:[mousedn=false;if():[autorun;!mouseentered]:[mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`
+  return {
+    ...view,
+    view: `View?style:[display=flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;if():[vertical]:[flexDirection=column]];scrollLeft=0;scroll=0;${loadedActions};if():[autorun]:[${mouseenterActions};${mouseleaveActions}];${mousedownActions};${bodyMousemoveActions};${bodyMouseupActions};${touchstartActions};${touchmoveActions};${touchendActions}`,
+  }
+}
+},{}],216:[function(require,module,exports){
+module.exports = (view) => {
+  return {
+    ...view,
+    view: `View?class='hide-scrollbar '+if():[().class]:[().class]:'';style:[display=if():[().style.display]:[().style.display]:flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;position=if():[().style.position]:[().style.position]:relative;overflowX=if():[().style.overflowX]:[().style.overflowX]:hidden]`,
+  }
+}
+},{}],217:[function(require,module,exports){
+const { toComponent } = require("../function/toComponent")
+const { jsonToBracket } = require("../function/jsonToBracket")
+
+module.exports = (component) => {
+
+  var { icon, pin, controls, style } = toComponent(component)
+
+  pin = pin || {}
+  icon = icon || {}
+  icon.on = icon.on || {}
+  icon.off = icon.off || {}
+
+  return {
+    ...component,
+    type: `View?class=flexbox pointer;hover.style.backgroundColor=#ddd;style.justifyContent=flex-start;style.width=5rem;style.height=2.4rem;style.position=relative;style.borderRadius=2.2rem;style.backgroundColor=#eee;${jsonToBracket({ style })}`,
+    children: [{
+      type: `View?class=flexbox;style.transition=.3s;style.width=2rem;style.height=2rem;style.borderRadius=2rem;style.backgroundColor=#fff;style.position=absolute;style.left=0.3rem;${jsonToBracket(pin)}`,
+      children: [{
+          type: `Icon?style.color=red;style.fontSize=1.8rem;style.position=absolute;style.transition=.3s;${jsonToBracket(icon.off)}?[${icon.off.name}]`
+        }, {
+          type: `Icon?style.color=blue;style.fontSize=1.3rem;style.position=absolute;style.opacity=0;style.transition=.3s;${jsonToBracket(icon.on)}?[${icon.on.name}]`
+        }]
+    }],
+    controls: [{
+        event: "click?().element.checked=[true].if().[().element.checked.notexist()].else().[false];().checked=().element.checked;().1stChild().element.style.left=[calc(100% - 2.3rem)].if().[().element.checked].else().[0.3rem];().1stChild().1stChild().element.style.opacity=[0].if().[().element.checked].else().[1];().1stChild().2ndChild().element.style.opacity=[1].if().[().element.checked].else().[0]"
+      },
+      ...controls
+    ]
+  }
+}
+
+},{"../function/jsonToBracket":77,"../function/toComponent":115}],218:[function(require,module,exports){
+module.exports = {
+  Input : require("./Input"),
+  Switch : require("./Switch"),
+  Checkbox : require("./Checkbox"),
+  Swiper : require("./Swiper"),
+  Chevron : require("./Chevron"),
+  SwiperWrapper : require("./SwiperWrapper")
+}
+},{"./Checkbox":212,"./Chevron":213,"./Input":214,"./Swiper":215,"./SwiperWrapper":216,"./Switch":217}]},{},[1]);

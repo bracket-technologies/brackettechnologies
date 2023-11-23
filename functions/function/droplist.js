@@ -4,7 +4,6 @@ const { toValue } = require("./toValue")
 const { jsonToBracket } = require("./jsonToBracket")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
-const { toParam } = require("./toParam")
 
 const droplist = ({ id, e, droplist: params = {}, __ }) => {
   
@@ -38,10 +37,10 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
 
     } else global["droplist-search-txt"] = views[view.id].element.innerHTML
   }
-
+  
   // items
   if (typeof items === "string")
-    items = clone(toValue({ id, e, value: toCode({ string: toCode({ string: items }), start: "'", end: "'" }) }))
+    items = clone(toValue({ id, e, value: toCode({ string: toCode({ string: items, start: "'", end: "'" }), __ }) }))
 
   // filterable
   if (!view.droplist.preventDefault) {
@@ -99,7 +98,8 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
     dropList.children.push(...clone(items).map(item => {
 
       if (typeof item === "string" || typeof item === "number") item = { text: item }
-      item.text = item.text !== undefined ? `'${item.text}'` : ""
+      item.text = item.text !== undefined ? `${item.text}` : ""
+
       if (item.icon) {
   
         if (typeof item.icon === "string") item.icon = { name: item.icon }
@@ -110,7 +110,7 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
           children: [{
             view: `View?style:[height=inherit;width=fit-content];${jsonToBracket(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
             children: [{
-              view: `Icon?style:[color=#888;fontSize=1.8rem];${jsonToBracket(view.droplist.item && view.droplist.item.icon || {})};${jsonToBracket(view.droplist.icon || {})};${jsonToBracket(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
+              view: `Icon?style:[color=#666;fontSize=1.7rem];${jsonToBracket(view.droplist.item && view.droplist.item.icon || {})};${jsonToBracket(view.droplist.icon || {})};${jsonToBracket(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
             }]
           }, {
             view: `Text?style:[fontSize=1.3rem;width=100%];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item.text)};class=flex align-center ${(item.text || {}).class || ""};caller=${id}?${item.text.text ? true : false}`,
@@ -118,7 +118,7 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
               event: `click??!():${id}.droplist.preventDefault`,
               actions: [
                 `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-                `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style()._=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
+                `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style().[_]=():${id}.droplist.style.[_]]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
               ]
             }]
           }]
@@ -132,8 +132,8 @@ const droplist = ({ id, e, droplist: params = {}, __ }) => {
             event: `click??!():${id}.droplist.preventDefault`,
             actions: [ // :[focus:${input_id}]
               `wait():[resize:${input_id}]:[isArabic:${input_id}]?if():${input_id?true:false}:[():${input_id}.data()=txt().replace():'&amp;':'&';if():[():${input_id}.data().type()=boolean]:[():${input_id}.data()=():${input_id}.data().boolean()];():${input_id}.txt()=txt().replace():'&amp;':'&']:[():${id}.data()=txt().replace():'&amp;':'&';():${id}.txt()=txt().replace():'&amp;':'&']?!():${id}.droplist.isMap`,
-              `?if():[txt()=list||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():'-']];():${id}.data()=if():[txt()=children]:[_list:[view='']].elif():[txt()=text]:''.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:true.elif():[txt()=list]:[_list:''].elif():[txt()=map]:[''=''];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];__droplistPositioner__:().del();myParent:()=():${id}.2ndParent();():${id}.2ndParent().update()::[quit=false;_.view.inputs().filter():[!classlist().inc():'comment'].():[if():[!txt()||txt()=0;!().quit]:[focus();().quit=true]]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
-              `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style().[_]=():${id}.droplist.style._]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
+              `?if():[txt()=list||txt()=map]:[opened-maps:().push():[():${id}.derivations.join():'-']];():${id}.data()=if():[txt()=children]:[_list:[view='']].elif():[txt()=text]:''.elif():[txt()=timestamp]:[today().getTime().num()].elif():[txt()=number]:0.elif():[txt()=boolean]:[true.bool()].elif():[txt()=list]:[_list:''].elif():[txt()=map]:[''=''];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];():droplist.children().():[style().pointerEvents=none];__droplistPositioner__:().del();myParent:()=():${id}.2ndParent();():${id}.2ndParent().update()::[quit=false;_.view.inputs().filter():[!classlist().inc():'comment'].():[if():[!txt()||txt()=0;!().quit]:[focus();().quit=true]]]?txt()!=():${id}.data().type();():${id}.droplist.isMap`,
+              `droplist:${id}?droplist-search-txt:()=():${id}.input().txt();():${id}.droplist.style.keys()._():[():droplist.style().[_]=():${id}.droplist.style.[_]]?():${id}.droplist.searchable;!():${id}.droplist.preventDefault`
             ]
           }]
         })

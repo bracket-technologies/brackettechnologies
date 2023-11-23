@@ -31,7 +31,7 @@ module.exports = {
           global.promises[id].push(new Promise (async resolve => {
               
               var innerHTML = await toView({ _window, id: "root", req, res, __ })
-              if (!global.__INNERHTML__.root) global.__INNERHTML__.root = innerHTML
+              if (!global.__html__.root) global.__html__.root = innerHTML
               global.breaktoView[id] = true
               resolve()
             })

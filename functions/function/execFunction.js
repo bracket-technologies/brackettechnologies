@@ -25,7 +25,7 @@ const execFunction = async ({ _window, lookupActions, req, res, id = generate(),
   else isFn = myfn
 
   /*require("./requires.json").map(package => {
-    _window.__PACKAGE__[package] = require(package)
+    _window.__package__[package] = require(package)
   })*/
 
   interpret({ _window, lookupActions, awaits: [], id, string: isFn, req, res, __: [...(data !== undefined ? [data] : []), ...__] })
@@ -38,7 +38,7 @@ const interpret = ({ _window, lookupActions, awaits, id, string, req, res, __ })
 
   string = toCode({ _window, id, string: toCode({ _window, id, string }), start: "'", end: "'" })
   
-  if (string.includes('coded()') && string.length === 12) string = global.codes[string]
+  if (string.includes("coded@") && string.length === 11) string = global.__codes__[string]
 
   var conditions = string.split("?")[1]
   if (conditions) {

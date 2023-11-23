@@ -120,7 +120,7 @@ const defaultInputHandler = ({ id }) => {
         }*/
       }
 
-      if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value } })
+      if (view.Data && (view.input ? !view.input.preventDefault : view.editable ? !view.preventDefault : true)) setData({ id, data: { value }, __: view.__ })
 
     }
     // resize

@@ -54,7 +54,7 @@ const execute = ({ _window, lookupActions, awaits, controls, actions, e, id, par
       }
       
       // action is coded
-      if (action.slice(0, 7) === "coded()") return execute({ _window, lookupActions, awaits, actions: global.codes[action], e, id, params, __ })
+      if (action.slice(0, 6) === "coded@") return execute({ _window, lookupActions, awaits, actions: global.__codes__[action], e, id, params, __ })
       
       var name, caseCondition, timer = "", isInterval = false, actionid, args = action.split(':'), name = args[0], __params = {}
 

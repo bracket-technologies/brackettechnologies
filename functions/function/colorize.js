@@ -48,12 +48,7 @@ const colorizeComment = ({ _window, id, start, end, index, params, string, color
   if (string.charAt(0) === "#" || string.includes("?#") || string.includes(";#") || string.includes("[#")) {
 
     var string0 = "", operator = ""
-    if (string.charAt(0) === "#") {
-
-      string0 = string.split("#")[0]
-      operator = ""
-
-    } else if (string.split("?#")[1]) {
+    if (string.split("?#")[1]) {
 
       string0 = string.split("?#")[0]
       operator = "?"
@@ -95,13 +90,13 @@ const colorizeText = ({ _window, id, start, end, index, params, string, colors }
   var global = _window ? _window.global : window.global
 
   // text
-  while (string.includes("codedS()")) {
+  while (string.includes("codedT@")) {
 
-    var string0 = string.split("codedS()")[0]
-    var key = global.codes["codedS()" + string.split("codedS()")[1].slice(0, 5)]
+    var string0 = string.split("codedT@")[0]
+    var key = global.__codes__["codedT@" + string.split("codedT@")[1].slice(0, 5)]
 
     key = `<span contenteditable style="background-color:#00000000; color:${colors[index + 1]}; white-space:nowrap">'${key}'</span>`
-    string = string0 + key + string.split("codedS()")[1].slice(5) + (string.split("codedS()").length > 2 ? "codedS()" + string.split("codedS()").slice(2).join("codedS()") : "")
+    string = string0 + key + string.split("codedT@")[1].slice(5) + (string.split("codedT@").length > 2 ? "codedT@" + string.split("codedT@").slice(2).join("codedT@") : "")
   }
 
   return string
@@ -111,12 +106,12 @@ const colorizeMap = ({ _window, id, start, end, index, params, string, colors })
   var global = _window ? _window.global : window.global
 
   // map
-  while (string.includes("coded()")) {
+  while (string.includes("coded@")) {
 
-    var string0 = string.split("coded()")[0]
-    var key = global.codes["coded()" + string.split("coded()")[1].slice(0, 5)]
+    var string0 = string.split("coded@")[0]
+    var key = global.__codes__["coded@" + string.split("coded@")[1].slice(0, 5)]
     key = colorize({ _window, id, string: start + key + end, index: index + 1, ...params })
-    string = string0 + key + string.split("coded()")[1].slice(5) + (string.split("coded()").length > 2 ? "coded()" + string.split("coded()").slice(2).join("coded()") : "")
+    string = string0 + key + string.split("coded@")[1].slice(5) + (string.split("coded@").length > 2 ? "coded@" + string.split("coded@").slice(2).join("coded@") : "")
   }
 
   return string

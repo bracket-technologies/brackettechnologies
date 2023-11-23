@@ -17,15 +17,19 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
 
   // close droplist
   if (global["__droplistPositioner__"] && view.element.contains(views[global["__droplistPositioner__"]].element)) {
-    var closeDroplist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style()._=():droplist.style._];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
-    toParam({ _window, lookupActions, awaits, req, res, string: closeDroplist, id: "droplist", __ })
+    var closeDroplist = toCode({ _window, string: "clearTimer():[droplist-timer:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()" })
+    toParam({ _window, string: closeDroplist, id: "droplist", __ })
   }
   
   // close actionlist
   if (global["actionlistCaller"] && view.element.contains(views[global["actionlistCaller"]].element)) {
-    var closeActionlist = toCode({ _window, lookupActions, awaits, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style()._=():actionlist.style._];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
-    toParam({ _window, lookupActions, awaits, req, res, string: closeActionlist, id: "actionlist", __ })
+    var closeActionlist = toCode({ _window, string: "clearTimer():[actionlistTimer:()];():[actionlistCaller:()].actionlist.style.keys()._():[():actionlist.style().[_]=():actionlist.style.[_]];():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];actionlistCaller:().del()" })
+    toParam({ _window, string: closeActionlist, id: "actionlist", __ })
   }
+  
+  // close tooltip
+  var closeTooltip = toCode({ _window, string: "clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0" })
+  toParam({ _window, string: closeTooltip, id: "tooltip", __ })
 
   // children
   var children = clone(toArray(view.children))
@@ -34,9 +38,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") {
-    views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage, ["my-views"]: [global.currentPage] }]
-  }
+  if (id === "root") views.root.children = children = [{ ...clone(global.data.page[global.currentPage]), id: global.currentPage, ["my-views"]: [global.currentPage] }]
   
   var innerHTML = await Promise.all(children.map(async (child, index) => {
 
@@ -48,7 +50,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
     views[id].style = views[id].style || {}
     views[id]["my-views"] = views[id]["my-views"] || [...view["my-views"]]
     
-    return await toView({ _window, lookupActions, awaits, req, res, id, __: view.__ })
+    return await toView({ _window, lookupActions, awaits, req, res, id, __: id === "droplist" ? __ : view.__ })
   }))
 
   if (id === "root" && route.currentPage && route.currentPage !== global.currentPage) return
@@ -79,7 +81,7 @@ const update = async ({ id, _window, lookupActions, awaits, req, res, update = {
   }
 
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id: mainId || id, __: [global.update, ...__], /*object: global.update.view,*/ ...params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id: mainId || id, ...params, __, _: global.update /*object: global.update.view,*/ })
 }
 
 const removeChildren = ({ id }) => {
@@ -96,12 +98,9 @@ const removeChildren = ({ id }) => {
     var id = child.id
     var view = views[id]
     if (!views[id]) return
-
-    // clear time out
-    Object.entries(views[id]).map(([k, v]) => {
-
-      if (k.includes("-timer")) clearTimeout(v)
-    })
+    
+    Object.values(view.__timers__ || {}).map(timerID => clearTimeout(timerID))
+    Object.values(view.__eventAddresses__ || {}).map(event => view.element.removeEventListener(event.event, event.function))
 
     removeChildren({ id })
     delete global["body-click-events"][id]

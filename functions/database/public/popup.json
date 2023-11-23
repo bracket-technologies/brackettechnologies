@@ -61,10 +61,10 @@
   ],
   "controls": [
     {
-      "event": "click:body?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];clearTimer():[popup-timer:()];timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];popup-positioner:().del()]:0]:400?popup-positioner:();!popup-positioner:().contains():[clicked:()];!popup.contains():[clicked:()]"
+      "event": "click:body?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];clearTimer():[popup-timer:()];timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];popup-positioner:().del()]:0]:400?popup-positioner:();!popup-positioner:().contains():[clicked:()];!popup.contains():[clicked:()]"
     },
     {
-      "event": "mouseleave?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];clearTimer():[popup-timer:()];timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style()._=():popup.style._];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];popup-positioner:().del()]:0]:400"
+      "event": "mouseleave?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];clearTimer():[popup-timer:()];timer():[():[popup-positioner:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];popup-positioner:().del()]:0]:400"
     },
     {
       "event": "mouseenter?clearTimer():[popup-timer:()]"

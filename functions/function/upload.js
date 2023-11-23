@@ -53,6 +53,7 @@ if (!data) return console.log("Data does not exist!");
       
       // post api
       data = {
+        ...data,
         url: url[0],
         id: upload.doc,
         name: data.name,
@@ -114,5 +115,5 @@ if (!data) return console.log("Data does not exist!");
   })
   
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, __: [global.uploads.length === 1 ? global.uploads[0] : global.uploads, ...__], ...params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, __, _: global.uploads.length === 1 ? global.uploads[0] : global.uploads, ...params })
 }

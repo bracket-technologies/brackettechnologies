@@ -1,10 +1,10 @@
 const { generate } = require("./generate")
 
-const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
+const toCode = ({ _window, string, e, start = "[", end = "]" }) => {
 
   if (typeof string !== "string") return string
-  var codeName = start === "'" ? "codedS()" : "coded()", global = {}
-  if (!codes) global = _window ? _window.global : window.global
+  var codeName = start === "'" ? "codedT@" : "coded@", global = {}
+  var global = _window ? _window.global : window.global
 
   // split []
   //if (start === "[") string = string.split("[]").join("__map__")
@@ -36,8 +36,7 @@ const toCode = ({ _window, string, e, codes, start = "[", end = "]" }) => {
 
     //if (start === "[") subKey[0] = subKey[0].split("__map__").join("[]")
     if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, string: subKey[0], start: "'", end: "'" })
-    if (codes) codes[key] = subKey[0]
-    else global.codes[key] = subKey[0]
+    global.__codes__[key] = subKey[0]
 
     var value = key
     var before = keys[0]

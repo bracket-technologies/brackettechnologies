@@ -44,6 +44,7 @@ const postFile = async ({ req, res }) => {
   
   // post api
   data = {
+    ...data,
     url: url[0],
     id: upload.doc,
     name: data.name,

@@ -2,7 +2,7 @@ const { isEqual } = require("./isEqual")
 
 const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id = "root", __, req, res, object, elser }) => {
 
-  const { toFunction } = require("./toFunction")
+  const { toAction } = require("./toAction")
   const { toValue } = require("./toValue")
   const { reducer } = require("./reducer")
 
@@ -21,7 +21,7 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
   if ((global.__actionReturns__[0] || {}).returned) return
 
   // coded
-  if (string.includes('coded()') && string.length === 12) string = global.codes[string]
+  if (string.includes("coded@") && string.length === 11) string = global.__codes__[string]
 
   // ==
   string = string.replace("==", "=")
@@ -75,10 +75,10 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
 
     // /////////////////// key /////////////////////
 
-    if (key && key.includes('coded()') && key.length === 12) key = global.codes[key]
-    if (key && key.includes('codedS()') && key.length === 13) {
-      if (value === undefined) return approval = global.codes[key] ? true : false
-      else return approval = global.codes[key] === value
+    if (key && key.includes('coded@') && key.length === 11) key = global.__codes__[key]
+    if (key && key.includes('codedT@') && key.length === 12) {
+      if (value === undefined) return approval = global.__codes__[key] ? true : false
+      else return approval = global.__codes__[key] === value
     }
 
     // operator has !
@@ -102,7 +102,7 @@ const toApproval = ({ _window, lookupActions, awaits, e, string, params = {}, id
 
     // function
     if (path0.slice(-2) === "()") {
-    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, __, e, path, path0, condition: true });
+    var isFn = toAction({ _window, lookupActions, awaits, id, req, res, __, e, path, path0, condition: true });
     if (isFn !== "__CONTINUE__") return approval = notEqual ? !isFn : isFn
     }
 

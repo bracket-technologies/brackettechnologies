@@ -4,5 +4,5 @@
   "keydown", "scroll", "beforeLoading", "loaded", "controls", "children", "child", "change", "entry", 
   "enter", "longclick", "sibling", "siblings", "prevSiblings", "prevSibling", "unload", "undo", "storage",
   "resize", "redo", "popstate", "online", "offline", "message", "load", "languagechange",
-  "error", "afterprint", "beforeprint", "beforeunload"
+  "error", "afterprint", "beforeprint", "beforeunload", "paste"
 ]

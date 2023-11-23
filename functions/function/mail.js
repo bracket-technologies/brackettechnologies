@@ -4,8 +4,8 @@ const readFile = require("./readFile");
 module.exports = {
     mail: async ({ _window, req, res, id, subject, content, text, html, recipient, attachments, recipients = [], __, ...params }) => {
         
-        const { google } = _window.__PACKAGE__.googleapis
-        const nodemailer = _window.__PACKAGE__.nodemailer
+        const { google } = _window.__package__.googleapis
+        const nodemailer = _window.__package__.nodemailer
         const OAuth2 = google.auth.OAuth2;
         var data = req.body.data
         var global = _window.global

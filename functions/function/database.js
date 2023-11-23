@@ -378,9 +378,9 @@ const deleteData = async ({ _window, req, res, erase }) => {
   }*/
 
   docs = erase.docs || [erase.doc]
-  await docs.map(async doc => {
+  var promises = docs.map(async doc => {
     
-    return await ref.doc(doc.toString()).delete().then(() => {
+    await ref.doc(doc.toString()).delete().then(() => {
 
       success = true,
       message = `Document erased successfuly!`
@@ -412,6 +412,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
     }
   })
   
+  Promise.all(promises)
   return ({ data, success, message })
 }
 

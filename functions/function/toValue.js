@@ -1,4 +1,3 @@
-const { clone } = require("./clone");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer")
@@ -14,7 +13,7 @@ function sleep(milliseconds) {
 
 const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e, req, res, object, mount, asyncer, toView, executer, condition }) => {
 
-  const { toFunction } = require("./toFunction")
+  const { toAction } = require("./toAction")
   const { toParam } = require("./toParam")
   
   var view = _window ? _window.views[id] : window.views[id]
@@ -26,8 +25,7 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   
   var coded = false
   // coded
-  while (value.includes('coded()') && value.length === 12) { coded = true; value = global.codes[value] }
-  // if (value.includes('coded()') && value.length === 12) value = global.codes[value]
+  while (value.includes("coded@") && value.length === 11) { coded = true; value = global.__codes__[value] }
 
   // no value
   if (value === "()") return view
@@ -46,15 +44,15 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   else if (value === " ") return value
   
   // break & return
-  if (params && params["return()"] !== undefined) return params["return()"]
-  if (params["break()"]) return params
+  /*if (params && params["return()"] !== undefined) return params["return()"]
+  if (params["break()"]) return params*/
   
   // string
   if (value.split("'").length > 1) value = toCode({ _window, string: value, start: "'", end: "'" })
-  while (value.includes('codedS()') && value.length === 13) {
+  while (value.includes('codedT@') && value.length === 12) {
     
-    if (!object) return global.codes[value]
-    else value = global.codes[value]
+    if (!object) return global.__codes__[value]
+    else value = global.__codes__[value]
     return (object ? object[value] : view[value]) || value
   }
 
@@ -71,11 +69,9 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   }
   
   // value is a param it has key=value
-  
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, awaits, e, string: value, __, object, mount, toView, condition })
 
-  // or
-  if (value.includes("||")) {
+  if (value.includes("||")) { // or
     var answer
     value.split("||").map(value => {
       if (!answer) { // or answer === undefined ?????
@@ -172,8 +168,8 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
 
   // function
-  if (path0.slice(-2) === "()") {
-    var isFn = toFunction({ _window, lookupActions, awaits, id, req, res, __, e, path: [path[0]], path0, condition, mount, asyncer, toView, executer, object })
+  if (path0.slice(-2) === "()" && path0.slice(0, 6) !== "coded@") {
+    var isFn = toAction({ _window, lookupActions, awaits, id, req, res, __, e, path: [path[0]], path0, condition, mount, asyncer, toView, executer, object })
     if (isFn !== "__CONTINUE__") {
       if (path.length > 1) {
         path.splice(0, 1)
@@ -186,8 +182,8 @@ const toValue = ({ _window, lookupActions, awaits, value, params = {}, __, id, e
   /* value */
   if (!isNaN(value) && !emptySpaces(value) && (value.length > 1 ? value.charAt(0) !== "0" : true)) value = parseFloat(value)
   else if (value === " ") return value
-  else if (object || path[0].includes(":") || path[1] || path[0].includes("()")) {
-    value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, __, e, req, res, mount, toView/*, condition*/ })
+  else if (object || path[0].includes(":") || path[1] || path[0].includes("()") || path[0].includes("@")) {
+    value = reducer({ _window, lookupActions, awaits, id, object, path, value, params, __, e, req, res, mount, toView })
   }
   
   return value
@@ -213,7 +209,7 @@ const calcSubs = ({ _window, lookupActions, awaits, value, params, __, id, e, re
 
     var allAreNumbers = true
     var values = value.split("-").map(value => {
-      if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+      if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
       if (allAreNumbers) {
         
@@ -238,7 +234,7 @@ const calcSubs = ({ _window, lookupActions, awaits, value, params, __, id, e, re
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+        if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -261,7 +257,7 @@ const calcSubs = ({ _window, lookupActions, awaits, value, params, __, id, e, re
         var _values = value.split("-").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
+          if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -291,7 +287,7 @@ const calcDivision = ({ _window, lookupActions, awaits, value, params, __, id, e
 
     var allAreNumbers = true
     var values = value.split("/").map(value => {
-      if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+      if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
       if (allAreNumbers) {
         
@@ -331,7 +327,7 @@ const calcDivision = ({ _window, lookupActions, awaits, value, params, __, id, e
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+        if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -369,7 +365,7 @@ const calcDivision = ({ _window, lookupActions, awaits, value, params, __, id, e
         var _values = value.split("/").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
+          if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -415,7 +411,7 @@ const calcModulo = ({ _window, lookupActions, awaits, value, params, __, id, e, 
 
     var allAreNumbers = true
     var values = value.split("%").map(value => {
-      if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+      if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
       if (allAreNumbers) {
         
@@ -455,7 +451,7 @@ const calcModulo = ({ _window, lookupActions, awaits, value, params, __, id, e, 
       _values.unshift(_value)
       
       var values = _values.map(value => {
-        if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+        if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
 
         if (allAreNumbers) {
           var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })
@@ -493,7 +489,7 @@ const calcModulo = ({ _window, lookupActions, awaits, value, params, __, id, e, 
         var _values = value.split("%").slice(3)
         _values.unshift(_value)
         var values = _values.map(value => {
-          if (value.slice(0, 7) !== "coded()" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
+          if (value.slice(0, 6) !== "coded@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
   
           if (allAreNumbers) {
             var num = toValue({ _window, lookupActions, awaits, value, params, __, id, e, req, res, object, condition })

@@ -49,8 +49,8 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
   events[0].split(";").map(event => {
 
     // case event is coded
-    if (event.slice(0, 7) === "coded()") {
-      event = global.codes[event]
+    if (event.slice(0, 6) === "coded@") {
+      event = global.__codes__[event]
       if (event.includes("?")) {
         var viewEventIdList = event.split("?")[3]
         var viewEventConditions = event.split("?")[2]
@@ -96,17 +96,20 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
     event = event.split(":")[0]
 
     if (!event || !view) return
-    clearTimeout(view[`${event}-timer`])
 
     // add event listener
     idList.map(id => {
 
-      var _view = views[id]
-      if (!_view && id !== "window") return
+      var _view = views[id], eventAddress = { id: generate(), targetID: id, event }
+      view.__timers__ = view.__timers__ || {}
+      view.__eventAddresses__ = view.__eventAddresses__ || {}
+      view.__eventAddresses__[eventAddress.id] = eventAddress
+
+      if (!_view && id !== "window") return delete view.__eventAddresses__[eventAddress.id]
       
       var myFn = (e) => {
 
-        setTimeout(async () => {
+        view.__timers__[eventAddress.id] = setTimeout(async () => {
 
           var myView = views[mainID]
           if (!myView) return
@@ -156,7 +159,8 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
 
       var myFn = (e) => {
         
-        view[`${event}-timer`] = setTimeout(() => {
+        view.__timers__ = view.__timers__ || {}
+        view.__timers__[eventAddress.id] = setTimeout(() => {
           
           if (view[event] && typeof view[event] === "object" && view[event].disable) return
           if (clickEvent) return global["click-events"].push({ id, viewEventConditions, viewEventParams, events: clickEvent, controls })
@@ -167,10 +171,7 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
 
           // view doesnot exist
           var __view = views[id]
-          if (!__view) {
-            if (e.target) e.target.removeEventListener(event, myFn)
-            return 
-          }
+          if (!__view) return (e.target || {}).removeEventListener(event, myFn)
 
           if (eventid === "droplist" && !global["__droplistPositioner__"]) return
           if (eventid === "droplist" && !views[global["__droplistPositioner__"]].element.contains(views[id].element)) return
@@ -187,10 +188,8 @@ const addEventListener = ({ _window, awaits, controls, id, req, res }) => {
             var myView = views[mainID]
             
             // approval
-            if (viewEventConditions) {
-              var approved = toApproval({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: viewEventConditions, e, id: mainID, __: controls.__ || myView.__ })
-              if (!approved) return
-            }
+            var approved = toApproval({ _window, lookupActions: controls.lookupActions, awaits, req, res, string: viewEventConditions || "", e, id: mainID, __: controls.__ || myView.__ })
+            if (!approved) return
             
             // approval
             var approved = toApproval({ string: events[2], e, id: mainID, __: controls.__ || myView.__ })
@@ -221,71 +220,42 @@ const defaultEventHandler = ({ id }) => {
 
   var view = window.views[id]
   var views = window.views
+  view.focused = false
   view.touchstarted = false
   view.mouseentered = false
   view.mousedowned = false
+  
+  view.__eventAddresses__ = view.__eventAddresses__ || {}
+  var eventAddress = { id: generate(), event: "click" }
+  view.__eventAddresses__[eventAddress.id] = eventAddress
 
-  if (view.link && typeof view.link === "object" && view.link.preventDefault) view.element.addEventListener("click", (e) => { /*if (!view.link.link)*/ e.preventDefault() })
+  // linkable
+  if (view.link && typeof view.link === "object" && view.link.preventDefault) 
+    view.element.addEventListener("click", (e) => { e.preventDefault() })
 
   // input
-  if (view.type === "Input") {
-
-    // focus
-    var setEventType = (e) => {
-
-      if (!window.views[id]) return e.target.removeEventListener("focus", setEventType)
-      view.focused = true
-    }
-
-    view.element.addEventListener("focus", setEventType)
-
-    // blur
-    var setEventType = (e) => {
-
-      if (!window.views[id]) return e.target.removeEventListener("blur", setEventType)
-      view.focused = false
-    }
-
-    view.element.addEventListener("blur", setEventType)
+  if (view.type === "Input" || view.editable) {
+    
+    defaultInputHandlerByEvent({ views, view, id, event: "focus", keyName: "focused", value: true })
+    defaultInputHandlerByEvent({ views, view, id, event: "blur", keyName: "focused", value: false })
   }
   
-  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mouseentered = true }
-  view.element.addEventListener("mouseenter", setEventType)
-
-  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mouseentered = false }
-  view.element.addEventListener("mouseleave", setEventType)
+  defaultInputHandlerByEvent({ views, view, id, event: "mouseenter", keyName: "mouseentered", value: true })
+  defaultInputHandlerByEvent({ views, view, id, event: "mouseleave", keyName: "mouseentered", value: false })
   
-  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mousedowned = true }
-  view.element.addEventListener("mousedown", setEventType)
+  defaultInputHandlerByEvent({ views, view, id, event: "mousedown", keyName: "mousedowned", value: true })
+  defaultInputHandlerByEvent({ views, view, id, event: "mouseup", keyName: "mousedowned", value: false })
+}
 
-  var setEventType = (e) => { if (views[e.target.id]) views[e.target.id].mousedowned = false }
-  view.element.addEventListener("mouseup", setEventType)
+const defaultInputHandlerByEvent = ({ views, view, id, event, keyName, value }) => {
 
-/*
-  events.map((event) => {
-    
-    var setEventType = (e) => {
+  var eventAddress = { id: generate(), targetID: id, event }
+  view.__eventAddresses__[eventAddress.id] = eventAddress
 
-      if (!window.views[id]) return e.target.removeEventListener(event, setEventType)
+  // function
+  eventAddress.function = (e) => { if (views[view.id]) view[keyName] = value }
 
-      if (event === "mouseenter") view.mouseenter = true
-      else if (event === "mouseleave") view.mouseenter = false
-      else if (event === "mousedown") {
-
-        view.mousedown = true
-        window.views["tooltip"].element.style.opacity = "0"
-        clearTimeout(global["tooltip-timer"])
-        delete global["tooltip-timer"]
-
-      } 
-      else if (event === "mouseup") view.mousedown = false
-      else if (event === "touchstart") view.touchstart = true
-      else if (event === "touchend") view.touchstart = false
-    }
-
-    view.element.addEventListener(event, setEventType)
-  })
-*/
+  view.element.addEventListener(event, eventAddress.function)
 }
 
 module.exports = { addEventListener, defaultEventHandler }

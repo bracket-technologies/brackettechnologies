@@ -2,7 +2,7 @@ const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { labelHandler } = require("./labelHandler")
 
-module.exports = ({ _window, id, innerHTML }) => {
+const toHTML = ({ _window, id, innerHTML }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id]
@@ -13,8 +13,8 @@ module.exports = ({ _window, id, innerHTML }) => {
   
   // children IDs
   if (view.parent && views[view.parent]) {
-    if(!views[view.parent].childrenID) views[view.parent].childrenID = []
-    views[view.parent].childrenID.push(id)
+    if(!views[view.parent].__childrenID__) views[view.parent].__childrenID__ = []
+    views[view.parent].__childrenID__.push(id)
   }
 
   if (view.type === "Input") value = (view.input && view.input.value) !== undefined ? view.input.value : view.data !== undefined ? view.data : ""
@@ -46,19 +46,7 @@ module.exports = ({ _window, id, innerHTML }) => {
     tag = `<img ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' ${view.src ? `src='${view.src}'` : ""}></img>`
   } else if (type === "Tag" && view.tag) {
     tag = `<${view.tag.toLowerCase()} ${atts} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${view.content}</${view.tag.toLowerCase()}>`
-  } /*else if (type === "Table") {
-    tag = `<table ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</table>`
-  } else if (type === "Row") {
-    tag = `<tr ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</tr>`
-  } else if (type === "Header") {
-    tag = `<th ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</th>`
-  } else if (type === "Cell") {
-    tag = `<td ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</td>`
-  } else if (type === "Label") {
-    tag = `<label ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
-  } else if (type === "Span") {
-    tag = `<span ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</span>`
-  } */else if (type === "Text") {
+  } else if (type === "Text") {
     if (view.label) {
       tag = `<label ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' ${view["aria-label"] ? `aria-label="${view["aria-label"]}"` : ""} ${view.for ? `for="${view.for}"` : ""} index='${view.index || 0}'>${innerHTML}</label>`
     } else if (view.h1) {
@@ -88,9 +76,7 @@ module.exports = ({ _window, id, innerHTML }) => {
     } else {
       tag = `<input ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} ${view.multiple?"multiple":""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${style}' ${view.input.name ? `name="${view.input.name}"` : ""} ${view.input.accept ? `accept="${view.input.accept}"` : ""} type='${view.input.type || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${value !== undefined ? `value="${value}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.input.defaultValue ? `defaultValue="${view.input.defaultValue}"` : ""} ${checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index || 0}'/>`
     }
-  } /*else if (type === "Paragraph") {
-    tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' index='${view.index || 0}'>${text}</textarea>`
-  } */else if (type === "Video") {
+  } else if (type === "Video") {
 
     tag = `<video ${atts} style='${style}' controls>
       ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>`: "")}
@@ -103,3 +89,5 @@ module.exports = ({ _window, id, innerHTML }) => {
 
   return tag
 }
+
+module.exports = {toHTML}

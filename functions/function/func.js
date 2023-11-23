@@ -41,7 +41,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, id = "root", req,
       
       if (myawait) {
 
-        require("./toAwait").toAwait({ _window, lookupActions: myawait.lookupActions, id, e, asyncer: true, myawait, awaits, req, res,  __: [...(global.data ? [global.data] : []), ...__] })
+        require("./toAwait").toAwait({ _window, lookupActions: myawait.lookupActions, id, e, asyncer: true, myawait, awaits, req, res, __ })
 
       } else {
 
@@ -70,7 +70,7 @@ const func = async ({ _window, lookupActions, awaits, myawait, id = "root", req,
         console.log(params.func, global.func, awaits, myawait)
         
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions: myawait.lookupActions, myawait, awaits, id, e, ...params, req, res, __: [global.func, ...__] })
+        if (myawait.await) require("./toAwait").toAwait({ _window, lookupActions: myawait.lookupActions, myawait, awaits, id, e, ...params, req, res, _: global.func, __ })
         resolve()
       })
     )

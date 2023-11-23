@@ -3,7 +3,7 @@ const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
 const { toParam } = require("./toParam")
 
-const component = require("../component/component")
+const builtInViews = require("../view/views")
 const { toCode } = require("./toCode")
 
 module.exports = {
@@ -12,8 +12,8 @@ module.exports = {
     var views = _window ? _window.views : window.views
     var view = views[id], parent = view.parent
     
-    if (!component[view.type]) return
-    views[id] = view = component[view.type](view)
+    if (!builtInViews[view.type]) return
+    views[id] = view = builtInViews[view.type](view)
     
     // my views
     if (!view["my-views"]) view["my-views"] = [...views[view.parent]["my-views"]]

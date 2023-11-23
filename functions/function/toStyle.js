@@ -1,19 +1,20 @@
+const cssStyleKeyNames = require("./cssStyleKeyNames")
+
 module.exports = {
   toStyle: ({ _window, id }) => {
 
     var view = _window ? _window.views[id] : window.views[id]
-    var style = ""
+    var styles = ""
 
     if (view.style) {
-      Object.entries(view.style).map(([k, v]) => {
-        if (k === "after" || k.includes(">>")) return;
-        k = require("./styleName")(k);
-        style += `${k}:${v}; `
+      Object.entries(view.style).map(([style, value]) => {
+        if (style === "after" || style.includes(">>")) return;
+        styles += `${cssStyleKeyNames[style] || style}:${value}; `
       })
 
-      style = style.slice(0, -2)
+      styles = styles.slice(0, -2)
     }
-
-    return style
+    
+    return styles
   }
 }

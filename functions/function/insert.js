@@ -108,6 +108,6 @@ module.exports = {
     }
 
     // await params
-    if (params.asyncer) require("./toAwait").toAwait({ id, lookupActions, awaits, __: [view.insert, ...__], ...params })
+    if (params.asyncer) require("./toAwait").toAwait({ id, lookupActions, awaits, __, _: view.insert, ...params })
   }
 }

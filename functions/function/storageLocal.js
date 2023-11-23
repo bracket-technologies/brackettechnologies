@@ -15,7 +15,7 @@ const mime = {
   ico: "image/x-icon"
 }
 
-var getFile = ({ req, res }) => {
+var getLocalFile = ({ req, res }) => {
   
   var folder = req.url.split("/")[1]
   var path = req.url.split(folder)[1]
@@ -37,4 +37,4 @@ const deleteFile = ({  req, res, erase = {} }) => {
   //
 }
 
-module.exports = { getFile, postFile, deleteFile }
+module.exports = { getLocalFile, postFile, deleteFile }

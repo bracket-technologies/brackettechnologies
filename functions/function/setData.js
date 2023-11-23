@@ -28,7 +28,7 @@ const setData = ({ id, data, __ }) => {
   var keys = [...derivations, ...path]
   
   // set value
-  reducer({ id, object: global[view.Data], path: keys, value: defValue, key: true, __: ["_"] })
+  reducer({ id, object: global[view.Data], path: keys, value: defValue, key: true, __ })
 /*
   view.data = value
   if (view.input && view.input.type === "file") return

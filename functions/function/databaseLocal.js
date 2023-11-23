@@ -3,7 +3,6 @@ const { toCode } = require("./toCode")
 const axios = require("axios")
 const { getJsonFiles, postJsonFiles, removeJsonFiles } = require("./jsonFiles")
 const { jsonToBracket } = require("./jsonToBracket")
-var _window = { views: {}, global: { codes: {} } }
 
 var getdb = async ({ req, res }) => {
   /*

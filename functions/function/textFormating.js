@@ -40,7 +40,7 @@ const textFormating = ({ _window, text, id }) => {
         if (format === "red().") newText += `<span style="color:red">`
         if (format === "blue().") newText += `<span style="color:blue">`
 
-        var code = global.codes[__text.slice(0, 12)]
+        var code = global.__codes__[__text.slice(0, 12)]
         if (format === "lowercase().") newText += code.toLowerCase()
         else if (format === "uppercase().") newText += code.toLowerCase()
         else if (format === "capitalize().") newText += capitalize(code)

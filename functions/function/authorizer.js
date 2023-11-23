@@ -5,7 +5,7 @@ module.exports = {
     promises = [], success, message, error,
     project = req.headers["project"],
     global = window.global
-    console.log(req.headers.referer, req.headers.referrer)
+    
     console.log("Authorization started for " + global.host, new Date().getTime() - global.timer)
     
     promises.push(ref.where("domains", "array-contains", global.host).get().then(doc => {

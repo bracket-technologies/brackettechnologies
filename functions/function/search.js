@@ -232,7 +232,7 @@ module.exports = {
       view.search = global.search = clone(_data)
     
       // await params
-      if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __: [...(global.search ? [global.search] : []), ...__] })
+      if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __, _: _data })
 
     } else {
 
@@ -256,9 +256,9 @@ module.exports = {
     
             console.log("SEARCH", _data)
             view.search = global.search = clone(_data)
-    
+            
             // await params
-            if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __: [...(global.search ? [global.search] : []), ...__] })
+            if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __, _: _data })
     
             resolve()
           })
@@ -277,7 +277,7 @@ module.exports = {
         view.search = global.search = clone(_data)
 
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, __: [...(global.search ? [global.search] : []), ...__] })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, id, e, ...params, req, res, _: global.search, __ })
       }
     }
   }

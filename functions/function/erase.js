@@ -22,7 +22,7 @@ const erase = async ({ _window, lookupActions, awaits, req, res, id, e, __, ...p
     view.erase = global.erase = clone(data)
     console.log("erase", data)
   
-    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, __: [data, ...__], ...params })
+    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, _: data, __: [data, ...(params.myawait.__ || __)], ...params })
 
   } else {
 
@@ -45,7 +45,7 @@ const erase = async ({ _window, lookupActions, awaits, req, res, id, e, __, ...p
     view.erase = global.erase = clone(data)
     console.log("erase", data)
   
-    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, __: [data, ...__], ...params })
+    if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req , res, id, e, _: data, __, ...params })
   }
 }
 

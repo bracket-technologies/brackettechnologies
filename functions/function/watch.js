@@ -4,10 +4,9 @@ const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
 const { isEqual } = require("./isEqual")
 const { toCode } = require("./toCode")
+const { generate } = require("qrcode-terminal")
 
 const watch = ({ _window, lookupActions, awaits, controls, id, __ }) => {
-
-    const { execute } = require("./execute")
 
     var view = window.views[id]
     if (!view) return
@@ -20,12 +19,12 @@ const watch = ({ _window, lookupActions, awaits, controls, id, __ }) => {
 
     watch.split('?')[0].split(';').map(_watch => {
 
-        var timer = 500
+        var timer = 500, watchAddress = { id: generate() }
         view[`${_watch}-watch`] = clone(toValue({ id, lookupActions, awaits, value: _watch }))
         
         const myFn = async () => {
             
-            if (!window.views[id]) return clearInterval(view[`${_watch}-timer`])
+            if (!window.views[id]) return clearInterval(view.__timers__[watchAddress.id])
             
             var value = toValue({ id, lookupActions, awaits, value: _watch })
 
@@ -35,31 +34,22 @@ const watch = ({ _window, lookupActions, awaits, controls, id, __ }) => {
             
             // params
             toParam({ id, lookupActions, awaits, string: watch.split('?')[1], mount: true, __ })
-
-            // break
-            if (view["break()"]) delete view["break()"]
-            if (view["return()"]) return delete view["return()"]
             
-            if (view["once"] || view["once()"]) {
+            if (view["once"]) {
 
                 delete view["once"]
-                clearInterval(view[`${_watch}-timer`])
+                clearInterval(view.__timers__[watchAddress.id])
             }
             
             // approval
             var approved = toApproval({ id, lookupActions, awaits, string: watch.split('?')[2] })
             if (!approved) return
-            
-            // once
-            if (controls.actions || controls.action) await execute({ controls, lookupActions, awaits, id, __ })
                 
-            // await params
+            // params
             if (view.await) toParam({ id, lookupActions, awaits, string: view.await.join(';') })
         }
 
-        if (view[`${_watch}-timer`]) clearInterval(view[`${_watch}-timer`])
-        view[`${_watch}-timer`] = setInterval(myFn, timer)
-
+        view.__timers__[watchAddress.id] = setInterval(myFn, timer)
     })
 }
 

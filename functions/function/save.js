@@ -177,7 +177,7 @@ const save = async ({ _window, lookupActions, awaits, req, res, id, e, __, ...pa
   /*if (!_window) */console.log("save", _data)
 
   // await params
-  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, __: [_data, ...__], ...params })
+  if (params.asyncer) require("./toAwait").toAwait({ _window, lookupActions, awaits, req, res, id, e, _: _data, __, ...params })
 }
 
 module.exports = { save }
