@@ -1,4 +1,5 @@
 {
+  "__public__": true,
   "view": "View:loader-container?class=loader-container",
   "children": [
     {

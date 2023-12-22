@@ -1,19 +1,28 @@
 {
-  "view": "View:action-note?class=flexbox box-shadow;style:[position=fixed;zIndex=9999;if():mobile():[maxWidth=40rem];minWidth=25rem;opacity=0;backgroundColor=#0d6efd;padding=1rem 3rem;left=center;top=0;transform=translateY(-200%);transition=transform .2s;borderRadius=0 0 1.5rem 1.5rem]",
-    "children": [{
-        "view": "View?class=flexbox;style.width=100%",
-        "children": [{
-            "view": "Text?id=action-note-text;text=Action Note;style.color=#fff;style.fontSize=1.4rem"
-        }, {
-            "view": "Icon?icon.name=bi-x;style.color=#fff;style.position=absolute;style.fontSize=1.8rem;style.right=.4rem;style.cursor=pointer",
-            "controls": {
-                "event": "click?():action-note.style():[transform=translateY(-200%);opacity=0]"
-            }
-        }]
-    }],
-    "controls" : [{
-        "event": "mouseenter?clearTimer():[().note-timer]"
-    }, {
-        "event": "mouseleave?note-timer=timer():[style().transform=translateY(-200%)]:5000"
-    }]
+    "__public__": true,
+    "view": "View:action-note?class=flexbox box-shadow;style:[position=fixed;zIndex=9999;if():mobile():[maxWidth=40rem];minWidth=25rem;opacity=0;backgroundColor=#0d6efd;padding=1rem 3rem;left=center;top=0;transform=translateY(-200%);transition=transform .2s;borderRadius=0 0 1.5rem 1.5rem]",
+    "children": [
+        {
+            "view": "View?class=flexbox;style.width=100%",
+            "children": [
+                {
+                    "view": "Text?id=action-note-text;text=Action Note;style.color=#fff;style.fontSize=1.4rem"
+                },
+                {
+                    "view": "Icon?icon.name=bi-x;style.color=#fff;style.position=absolute;style.fontSize=1.8rem;style.right=.4rem;style.cursor=pointer",
+                    "controls": {
+                        "event": "click?():action-note.style():[transform=translateY(-200%);opacity=0]"
+                    }
+                }
+            ]
+        }
+    ],
+    "controls": [
+        {
+            "event": "mouseenter?clearTimer():[().note-timer]"
+        },
+        {
+            "event": "mouseleave?note-timer=timer():[style().transform=translateY(-200%)]:5000"
+        }
+    ]
 }

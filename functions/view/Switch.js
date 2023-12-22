@@ -1,9 +1,8 @@
-const { toComponent } = require("../function/toComponent")
-const { jsonToBracket } = require("../function/jsonToBracket")
+const { jsonToBracket } = require("../action/jsonToBracket")
 
 module.exports = (component) => {
 
-  var { icon, pin, controls, style } = toComponent(component)
+  var { icon, pin, controls, style } = component
 
   pin = pin || {}
   icon = icon || {}

@@ -1,4 +1,5 @@
 {
+    "__public__": true,
     "view": "View:mininote?class=flex-start;style.zIndex=99999;style.width=fit-content;style.alignItems=center;style.position=absolute;style.transform=scale(0);style.transition=transform .1s, opacity .2s;style.opacity=0;style.pointerEvents=none;style.padding=.5rem 1rem;style.backgroundColor=#444444dd;style.borderRadius=.5rem",
     "children": [{
         "view": "Text:mininote-text?style.width=fit-content;style.fontSize=1.1rem;style.color=#fff"

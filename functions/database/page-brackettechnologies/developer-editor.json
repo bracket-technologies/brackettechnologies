@@ -1,9 +1,0 @@
-{
-  "creation-date": 1637494484000,
-  "view": "developer-editor?name=Bracket developer editor;title=Developer Editor | Bracket",
-  "controls": [
-    {
-      "event": "beforeLoading?if():[getCookie():_id;path:().split():/.2]:[getProject():[user=getCookie():_id;project=path:().split():/.2]:[if():[!_.success]:[route():login]:[data:().editor.():[account=_.data.user;project=_.data.project]]]]:[route():login]"
-    }
-  ]
-}
